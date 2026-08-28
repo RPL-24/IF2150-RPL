@@ -14,16 +14,16 @@ TOPIC BRAINSTORMING
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[K03\]* |
-| Kelompok | *\[9\]*  |
+| Kelas | *\K03\* |
+| Kelompok | *\9\*  |
 
 | NIM | Nama |
 |---|---|
-| *[13525120]* | *[Naufal Hasbialhaq]* |
-| *[13525009]* | *[Wimar Widiarto]* |
-| *[13525093]* | *[Vinsensius Juan Setiady]* |
-| *[13525126]* | *[Raymond Edson Sabajan]* |
-| *[13525048]* | *[Yohanes Nicholas Setiawan]* |
+| *13525120* | *Naufal Hasbialhaq* |
+| *13525009* | *Wimar Widiarto* |
+| *13525093* | *Vinsensius Juan Setiady* |
+| *13525126* | *Raymond Edson Sabajan* |
+| *13525048* | *Yohanes Nicholas Setiawan* |
 ---
 
 <br>
