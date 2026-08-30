@@ -42,10 +42,10 @@ Lakukan analisis terhadap proses yang berjalan saat ini di dunia nyata, baik itu
 # BAB 2: Analisis Solusi
 
 ## 2.1 Deskripsi Perangkat Lunak
-Abstraksikan solusi perangkat lunak yang diusulkan dari sudut pandang pengguna. Jelaskan target platform yang akan digunakan (misalnya: desktop application) beserta alasan pemilihannya. Deskripsikan juga nilai unik (inovasi inti) dari perangkat lunak kalian dan apa yang membedakannya dari solusi yang sudah ada.
+Aplikasi/website dengan fitur menggambar aksara sesuai outline dan tanpa outline. Hasil gambar pengguna kemudian akan dinilai keakuratannya dengan sumber asli. Kurangnya minat dan keingintahuan akan aksara XXX membuat kami memikirkan suatu solusi untuk permasalahan ini. Dinilai dari pengalaman kami, kurangnya media untuk mengenal dan melatih pengetahuan akan aksara tersebut menjadi penyebab utama. Walaupun sudah ada produk yang serupa, kami melihat belum ada media yang ditujukan untuk mempelajari aksara XXX.
 
 ## 2.2 Asumsi dan Batasan
-Definisikan secara tegas asumsi (baik teknis maupun dari sisi pengguna) yang menjadi dasar pengembangan. Tuliskan batasan seperti regulasi/hukum, keterbatasan sumber daya, dan ruang lingkup solusi.
+Dari segi teknis, pengembangan algoritma deteksi gambar (?) merupakan salah satu aspek yang mungkin akan menjadi konundrum kami. Selain itu, hook apa yang dibutuhkan agar XXX kami dapat menjaga retensi dari pengguna masih menjadi pertimbangan. Kemampuan dan waktu pula menjadi aspek lain yang masih perlu kami ruminasi. XXX
 
 ---
 
