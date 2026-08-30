@@ -34,7 +34,7 @@
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | *04-05-2026* | *[Nama Mahasiswa]* | *[Jelaskan Pekerjaan secara Singkat]* | *[Durasi Pengerjaan]* | *[On Progress/Done]* | [Kendala yang dialami, jika tidak ada cukup tandai "-"] | 
-| *05-05-2026* | *John Doe* | *Mendesain diagram kelas* | *3* | *Done* | *-* | 
+| 30-08-2026 | Raymond Edson Sabajan | Mengerjakan identifikasi aktor sekaligus berdiskusi dengan teman | 1 jam 30 menit | Done | - | 
 | | | | | | | |
 
 **Catatan/Evaluasi Milestone 1:**

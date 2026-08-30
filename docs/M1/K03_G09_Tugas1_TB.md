@@ -9,7 +9,7 @@ TOPIC BRAINSTORMING
 
 ## *Nama Perangkat Lunak*
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Agatha
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
@@ -32,10 +32,32 @@ Dipersiapkan oleh:
 # BAB 1: Analisis Permasalahan
 
 ## 1.1 Latar Belakang Masalah
-Tuliskan deskripsi permasalahan yang kalian pilih secara naratif dan spesifik. Tambahkan keterkaitan permasalahan tersebut dengan Tujuan Pembangunan Berkelanjutan (SDGs) yang telah disepakati. Dukung argumen kalian dengan data yang kredibel, serta jelaskan urgensi mengapa masalah ini perlu dan layak untuk segera diselesaikan.
+Tuliskan deskripsi permasalahan yang kalian pilih secara naratif dan spesifik. Tambahkan keterkaitan permasalahan tersebut dengan Tujuan Pembangunan Berkelanjutan (SDGs) yang telah disepakati. Dukung argumen kalian dengan data yang kredibel, serta jelaskan urgensi mengapa masalah ini perlu dan layak untuk segera diselesaikan. 
+<br>
+jawaban sementara (berupa poin2):
+<br>
+-tingkat pengangguran yang tinggi karena lapangan pekerjaannya bisa dibilang tidak terlalu banyak pada pekerjaan2 ini(ada 7, kayak tukang potong tanaman, handyman, tukang sol sepatu, tukang jahit...)
+<br>
+-banyaknya permintaan jasa dari job ini tetapi akses yang didapat bisa dibilang lumayan sulit
+<br>
+-pekerja jasa Ini tidak dilindungi(maksudnya kayak pekerjaan ini ga punya jaminin income yang tetap)
+<br>
+-dokumen pendukung(jumlah pekerja aktif, permintaan pasar, dan lapangan pekerjaan yang ditawarkan)
+<br>
+-urgensi kenapa masalah ini wajib diselesaikan(dari segi lapangan pekerjaannya sendiri kurangnya akses pekerjaan ke pasar/platform yang jelas,  dan dari permasalahan: ...)
+
 
 ## 1.2 Analisis Kondisi Saat Ini
 Lakukan analisis terhadap proses yang berjalan saat ini di dunia nyata, baik itu sistem lama ataupun solusi yang sudah ada. Soroti kesenjangan atau celah dari kondisi tersebut yang nantinya akan diselesaikan oleh perangkat lunak kalian.
+<br>
+masalah:
+<br>
+-kurangnya akses dan pelatihan pengetahuan digital dari sisi penjual jasa sehingga sedikitnya pemasaran dari jasa pekerjaan tersebut di internet/platform
+<br>
+-platform yang mencakup dan menyediakan jasa dari pekerjaan ini masih belum merata(khususnya tukang sol sepatu dan penjahit)
+<br>
+-konsumen kesulitan mencari penyedia jasa yang lokasinya dekat, karena tidak ada yang memiliki sistem berbasis lokasi yang spesifi pada jasa2 ini 
+
 
 ---
 
@@ -58,7 +80,10 @@ Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan s
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| *Kasir* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memproses transaksi harian dan melayani pembayaran pelanggan. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan saat bertransaksi.* |
+| Pemberi Jasa | Pengguna ini bertindak sebagai pihak penyedia jasa yang menerima pesanan, melakukan pekerjaan fisik di lokasi pelanggan, dan menyelesaikan tugas sesuai dengan persetujuannya dengan pelanggan.  |
+|  Pelanggan| Pengguna ini berperan sebagai pihak yang memerlukan, memesan, dan membayar layanan jasa kasar. |
+| Layanan Pelanggan | Pengguna ini sebagai pihak yang berjaga jaga apabila terdapat sebuah masalah pada sistem atau masalah pada pengguna lain |
+
 | ... | ... |
 
 
