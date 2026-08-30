@@ -88,11 +88,14 @@ Batasan yang dihadapi salah satunya adalah batasan sumber daya. Perihal ini, bat
 # BAB 3: Spesifikasi Kebutuhan dan Proses Bisnis
 
 ## 3.1 Identifikasi Aktor
-Buatlah daftar seluruh aktor (penxgguna) yang akan berinteraksi langsung dengan sistem solusi yang kalian kembangkan. Berikan penjelasan singkat mengenai peran dan karakteristik dari masing-masing aktor tersebut.
+Dari ide solusi perangkat lunak yang telah kami usulkan, kami mengidentifikasi terdapat 4 aktor utama yang akan berinteraksi langsung dengan sistem kami, diantaranya:
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| Kasir | Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memproses transaksi harian dan melayani pembayaran pelanggan. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan saat bertransaksi. |
+| *Warga* | *Pengguna ini merupakan masyarakat umum yang bertindak sebagai pihak yang berhak melaporkan segala bentuk keluhan dan masalah yang ditemukan di lapangan. Pengguna ini juga dapat melihat informasi laporan dari pengguna lain (secara anonim) dan melakukan upvote terhadap laporan lain.* |
+| *Petugas Administrasi* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memverifikasi terlebih dahulu segala laporan yang diterima sistem (apakah valid/spam). Pihak ini juga bertanggung jawab untuk mengatur skala prioritas dari semua laporan berdasarkan berbagai faktor, dan nantinya meneruskan laporan dengan skala prioritas yang tinggi kepada petinggi dinas sembar melakukan update status secara berkala* |
+| *Petinggi Dinas* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab sebagai pengambil keputusan akhir mengenai solusi/tindak lanjut yang perlu dilakukan untuk mengatasi masalah-masalah yang terdapat pada laporan warga. Pihak ini nantinya akan menyampaikan tindak lanjut yang perlu diambil kepada Eksekutor Lapangan dan Petugas Administrasi* |
+| *Eksekutor Lapangan* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk turun langsung ke lapangan dalam menindak lanjuti solusi yang telah diarahkan Petinggi Dinas. Pengguna ini juga bertanggung jawab untuk melakukan update progress kepada Petugas Administrasi dan Petinggi Dinas.* |
 | ... | ... |
 
 
