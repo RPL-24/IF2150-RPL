@@ -52,12 +52,15 @@ Definisikan secara tegas asumsi (baik teknis maupun dari sisi pengguna) yang men
 # BAB 3: Spesifikasi Kebutuhan dan Proses Bisnis
 
 ## 3.1 Identifikasi Aktor
-Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan sistem solusi yang kalian kembangkan. Berikan penjelasan singkat mengenai peran dan karakteristik dari masing-masing aktor tersebut.
+Buatlah daftar seluruh aktor (penxgguna) yang akan berinteraksi langsung dengan sistem solusi yang kalian kembangkan. Berikan penjelasan singkat mengenai peran dan karakteristik dari masing-masing aktor tersebut.
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| *Kasir* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memproses transaksi harian dan melayani pembayaran pelanggan. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan saat bertransaksi.* |
-| ... | ... |
+| Warga | Pengguna ini bertindak sebagai pihak yang melaporkan berbagai kerusakan yang terjadi di sekitar jalanan. Karakteristik dari pengguna ini adalah mengutamakan kemudahan untuk melaporkan masalah dan dapat mellihat progres dari permasalahan-permasalahn yang dilaporkan. |
+| Admin | Pengguna ini bertindak sebagai pihak yang menerima laporan-laporan dari masyarakat serta memverifikasi laporan tersebut. Karakteristik dari pengguna ini adalah kebutuhan pada bentuk laporan yang jelas untuk memverifikasi laporan tersebut serta integrasi data yang baik. |
+| Pejabat Dinas | Pengguna ini bertindak sebagai pihak yang memutuskan mengenai pelaksanaan perbaikan. Karakteristik dari pengguna ini adalah mengutamakan bantuan berupa insight dan overview dari laporan-laporan yang diberikan. |
+| Eksekutor Lapangan | Pengguna ini bertindak sebagai pihak yang mengerjakan kerusakan yang telah disetujui oleh pejabat dinas. Karakteristik dari pengguna ini adalah kejelasan dari detail pekerjaan yang perlu dieksekusi dan kemudahan untuk melaporkan selesainya suatu pekerjaan.  |
+
 
 
 ## 3.2 Kebutuhan Pengguna Awal
