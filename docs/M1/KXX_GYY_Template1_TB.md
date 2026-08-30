@@ -7,7 +7,7 @@ TOPIC BRAINSTORMING
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## *LaporKota*
 
 ### Untuk: *Jordhy*
 
@@ -15,7 +15,7 @@ Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
 | Kelas | *K - 03* |
-| Kelompok | *G07*  |
+| Kelompok | *G07* |
 
 | NIM | Nama |
 |---|---|
@@ -32,10 +32,29 @@ Dipersiapkan oleh:
 # BAB 1: Analisis Permasalahan
 
 ## 1.1 Latar Belakang Masalah
-Tuliskan deskripsi permasalahan yang kalian pilih secara naratif dan spesifik. Tambahkan keterkaitan permasalahan tersebut dengan Tujuan Pembangunan Berkelanjutan (SDGs) yang telah disepakati. Dukung argumen kalian dengan data yang kredibel, serta jelaskan urgensi mengapa masalah ini perlu dan layak untuk segera diselesaikan.
+Infrastruktur fisik perkotaan, seperti jalan raya, penerangan jalan umum (PJU), saluran drainase, pohon peneduh jalan, dan rambu lalu lintas, merupakan penopang utama mobilitas warga serta perputaran ekonomi harian. Namun di lapangan, laju kerusakan fasilitas fisik kerap terjadi lebih cepat dibanding siklus inspeksi rutin yang dilakukan dinas terkait. Kerusakan skala lokal, seperti lubang jalan yang tertutup genangan air, lampu penerangan padam di ruas rawan, trotoar rusak, hingga tumpukan sampah yang menyumbat saluran air, sering kali tidak terpantau oleh dinas teknis hingga akhirnya memicu kemacetan, kecelakaan lalu lintas, dan kerugian material bagi masyarakat.
+
+Permasalahan ini berkaitan erat dengan target Tujuan Pembangunan Berkelanjutan (SDGs), yaitu:
+* **SDG 9: Industri, Inovasi, dan Infrastruktur (Target 9.1):** Mengembangkan infrastruktur yang berkualitas, andal, berkelanjutan, dan tangguh untuk mendukung pembangunan ekonomi serta kesejahteraan manusia melalui akses yang terjangkau dan merata.
+* **SDG 11: Kota dan Komunitas yang Berkelanjutan (Target 11.2):** Menyediakan akses terhadap sistem transportasi yang aman, terjangkau, dan berkelanjutan bagi seluruh lapisan masyarakat.
+
+Data statistik Kementerian PUPR dan Badan Pusat Statistik (BPS) mencatat bahwa puluhan ribu kilometer ruas jalan daerah di Indonesia masih berada dalam kondisi rusak ringan hingga berat. Di sisi lain, data pengaduan publik nasional seperti SP4N-LAPOR! secara konsisten menempatkan masalah sarana dan prasarana jalan serta fasilitas umum pada kategori keluhan teratas setiap tahunnya.
+
+Urgensi penanganan masalah ini bertumpu pada kesenjangan waktu respons (*response time gap*). Masyarakat berada di lokasi kejadian setiap hari dan menjadi pihak pertama yang merasakan dampak kerusakan, sedangkan dinas teknis memiliki keterbatasan jumlah personel dan armada untuk menyisir setiap ruas jalan secara berkala. Ketiadaan platform terpusat yang mampu mengumpulkan laporan masyarakat (*crowdsourcing*) secara terstruktur dan terverifikasi geospasial membuat penanganan perbaikan menjadi lambat, tidak terarah, dan memakan biaya pemulihan yang jauh lebih besar ketika fasilitas fisik sudah terlanjur rusak parah.
 
 ## 1.2 Analisis Kondisi Saat Ini
-Lakukan analisis terhadap proses yang berjalan saat ini di dunia nyata, baik itu sistem lama ataupun solusi yang sudah ada. Soroti kesenjangan atau celah dari kondisi tersebut yang nantinya akan diselesaikan oleh perangkat lunak kalian.
+Saat ini, proses pelaporan kerusakan fasilitas publik yang berjalan di masyarakat masih terpecah ke dalam beberapa saluran yang belum terintegrasi:
+
+* **Media Sosial dan Grup Pesan Instan (X, Instagram, WhatsApp):**
+  Warga kerap mengunggah foto kerusakan fasilitas jalan sambil menandai akun dinas atau kepala daerah. Saluran ini tidak memiliki format data yang terstandarisasi, koordinat GPS sering tidak disertakan secara presisi, dan unggahan laporan mudah tertimbun oleh algoritma linimasa. Selain itu, warga tidak memiliki sarana formal untuk memantau apakah keluhan mereka sudah masuk ke antrean kerja perbaikan atau belum.
+
+* **Kanal Pengaduan Umum Pemerintah (SP4N-LAPOR! atau Portal Pemda):**
+  Layanan resmi saat ini dirancang untuk penanganan birokrasi umum lintas instansi, bukan sebagai sistem operasional tiket lapangan. Alur verifikasi disposisi membutuhkan birokrasi yang panjang. Sistem ini juga belum memiliki mekanisme pengelompokan laporan otomatis (*duplicate clustering*), sehingga dinas sering menerima puluhan aduan terpisah untuk satu titik lubang jalan atau lampu mati yang sama tanpa agregasi data.
+
+* **Patroli Manual Dinas PU dan Perhubungan:**
+  Pemerintah daerah mengandalkan survei lapangan berkala oleh petugas teknis. Metode ini memiliki keterbatasan ruang lingkup karena kendala armada dan anggaran, sehingga pemantauan cenderung hanya terpusat pada jalan protokol utama dan melewatkan jalan arteri sekunder atau jalan lingkungan permukiman warga.
+
+Kesenjangan utama dari kondisi saat ini adalah ketiadaan sistem yang menjembatani laporan warga dengan antrean kerja dinas secara terotomasi. Solusi yang berjalan belum menyediakan pemetaan geospasial terpusat (*heatmap*), penggabungan laporan duplikat berbasis radius lokasi, serta pemeringkatan prioritas penanganan (*risk-based prioritization*) yang mempertimbangkan tingkat bahaya, volume lalu lintas, dan jumlah warga yang terdampak (*upvote*). Akibatnya, dinas teknis kesulitan mengalokasikan tim perbaikan ke titik-titik kerusakan yang paling mendesak.
 
 ---
 
