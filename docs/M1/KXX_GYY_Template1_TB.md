@@ -32,10 +32,10 @@ Dipersiapkan oleh:
 # BAB 1: Analisis Permasalahan
 
 ## 1.1 Latar Belakang Masalah
-Tuliskan deskripsi permasalahan yang kalian pilih secara naratif dan spesifik. Tambahkan keterkaitan permasalahan tersebut dengan Tujuan Pembangunan Berkelanjutan (SDGs) yang telah disepakati. Dukung argumen kalian dengan data yang kredibel, serta jelaskan urgensi mengapa masalah ini perlu dan layak untuk segera diselesaikan.
+Indonesia sebagai salah satu negara multikultural terbesar di dunia memiliki kurang lebih 1340 suku bangsa. Keberagaman yang dimiliki bangsa Indonesia ini menghasilkan berbagai kekayaan budaya, termasuk kurang lebih 700 bahasa daerah yang beberapa diantaranya memiliki sistem penulisan aksara yang unik. Bahasa-bahasa ini bukan hanya menjadi alat komunikasi sehari-hari, tetapi juga memuat nilai-nilai adat istiadat dari tiap daerah.
 
 ## 1.2 Analisis Kondisi Saat Ini
-Lakukan analisis terhadap proses yang berjalan saat ini di dunia nyata, baik itu sistem lama ataupun solusi yang sudah ada. Soroti kesenjangan atau celah dari kondisi tersebut yang nantinya akan diselesaikan oleh perangkat lunak kalian.
+Bahasa lokal yang merupakan kekayaan bangsa ini sekarang tengah mengalami tantangan. Ancaman dari luar seperti globalisasi menjadikan penggunaan bahasa lokal makin ditinggalkan oleh golongan muda. Padahal, bahasa lokal yang merupakan kekayaan bangsa seharusnya dilestarikan. 
 
 ---
 
