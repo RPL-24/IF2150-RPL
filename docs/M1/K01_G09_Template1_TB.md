@@ -34,7 +34,16 @@ Dipersiapkan oleh:
 
 ## 1.1 Latar Belakang Masalah
 
-Tuliskan deskripsi permasalahan yang kalian pilih secara naratif dan spesifik. Tambahkan keterkaitan permasalahan tersebut dengan Tujuan Pembangunan Berkelanjutan (SDGs) yang telah disepakati. Dukung argumen kalian dengan data yang kredibel, serta jelaskan urgensi mengapa masalah ini perlu dan layak untuk segera diselesaikan.
+Penjualan hewan langka di black market listings
+Poacher sering memburu hewan tsb dan menjualnya
+Terkadang terjual juga di website listing yang publik dan umum seperti e-bay
+
+Perdagangan satwa dan flora liar ilegal merupakan salah satu penyebab rusaknya keanekaragaman hayati darat, yang berujung pada ancaman kepunahan spesies endemik. Hal ini merupakan salah satu pengancam pencapaian Sustainable Development Goals (SDGs) Nomor 15: Life on Land yang bertujuan untuk melindungi, memulihkan, dan menghentikan hilangnya keanekaragaman hayati.
+
+Dari perdagangan ilegal ini, komunitas oknum pemburu dan penjual satwa dan flora terancam ini akan terus ada dan dapat mendukung pertumbuhan komunitas oknum tersebut.
+Dulu, perdagangan ilegal ini dilakukan di pasar gelap fisik. Namun seiring berkembangnya dunia digital, aktivitas perdagangan ilegal ini dapat dilakukan dengan lebih masif dan lebih mudah dengan adanya internet, social media dan platform e-commerce.
+
+(Data dan argumen pendukung tambahannya akan dibuat lagi nanti)
 
 ## 1.2 Analisis Kondisi Saat Ini
 
