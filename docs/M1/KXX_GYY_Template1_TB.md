@@ -88,12 +88,13 @@ Batasan yang dihadapi salah satunya adalah batasan sumber daya. Perihal ini, bat
 # BAB 3: Spesifikasi Kebutuhan dan Proses Bisnis
 
 ## 3.1 Identifikasi Aktor
-Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan sistem solusi yang kalian kembangkan. Berikan penjelasan singkat mengenai peran dan karakteristik dari masing-masing aktor tersebut.
+Buatlah daftar seluruh aktor (penxgguna) yang akan berinteraksi langsung dengan sistem solusi yang kalian kembangkan. Berikan penjelasan singkat mengenai peran dan karakteristik dari masing-masing aktor tersebut.
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| *Kasir* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memproses transaksi harian dan melayani pembayaran pelanggan. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan saat bertransaksi.* |
+| Kasir | Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memproses transaksi harian dan melayani pembayaran pelanggan. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan saat bertransaksi. |
 | ... | ... |
+
 
 
 ## 3.2 Kebutuhan Pengguna Awal
@@ -101,9 +102,11 @@ Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dal
 
 | ID | Aktor | Kebutuhan / Aktivitas | Tujuan / Nilai |
 | :--- | :--- | :--- | :--- |
-| US-01 | *Kasir* |  *Memindai barcode barang* | *Proses pembayaran berjalan cepat dan akurat* |
-| US-02 | *[Nama Aktor]* | *[Kebutuhan pengguna]* | *[Tujuan yang dicapai pengguna]* |
-| ... | ... | ... | ... |
+| US-01 | Warga | Mengirimkan laporan | Format laporan yang jelas dan fitur yang mudah digunakan. |
+| US-02 | Admin | Menerima laporan, memverifikasi, dan menentukan tingkat urgensi kerusakan | Format laporan yang jelas dan data yang terintegreasi dengan warga dan pejabat yang mengambil keputusan. |
+| US-03 | Pejabat Dinas | Menerima laporan yang telah terverifikasi dan terbagi berdasarkan urgensinya | Keputusan dapat diambil dengan lebih mudah dan terukur.  |
+| US-04 | Eksekutor Lapangan | Menerima perintah pekerjaan yang perlu dikerjakan dan melaporkan keselasaian pekerjaan | Informasi pekerjaan dapat diketahui seluruh pekerja yang terlibat dan mudah untuk melaporkan hasil pekerjaanya.  |
+
 
 ## 3.3 Model Proses Bisnis
 Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
