@@ -44,6 +44,8 @@ Lakukan analisis terhadap proses yang berjalan saat ini di dunia nyata, baik itu
 ## 2.1 Deskripsi Perangkat Lunak
 Abstraksikan solusi perangkat lunak yang diusulkan dari sudut pandang pengguna. Jelaskan target platform yang akan digunakan (misalnya: desktop application) beserta alasan pemilihannya. Deskripsikan juga nilai unik (inovasi inti) dari perangkat lunak kalian dan apa yang membedakannya dari solusi yang sudah ada.
 
+Ketika pengguna membutuhkan suatu jasa spesifik yang bisa didapatkan dari para pekerja jasa informal (freelance), sering kali pengguna sulit mendapatkan informasi mengenai keberadaan para pekerja yang dapat membantunya. Sebaliknya, para pekerja jasa juga sering kali sulit untuk mendapatkan pelanggan karena ketidaktahuan pelanggan terhadap keberadaan para pekerja. Contohnya, seorang pengguna ingin menjahit pakaian mereka yang rusak namun tidak dapat menemukan lokasi penjahit yang dapat memperbaikinya. Oleh karena itu, kami ingin menghubungkan pengguna yang membutuhkan jasa dengan para pekerja yang membutuhkan pelanggan melalui sebuah platform aplikasi berbentuk mobile application. Platform mobile application dipilih karena perangkat mobile lebih mudah dijangkau oleh berbagai kalangan 
+
 ## 2.2 Asumsi dan Batasan
 Definisikan secara tegas asumsi (baik teknis maupun dari sisi pengguna) yang menjadi dasar pengembangan. Tuliskan batasan seperti regulasi/hukum, keterbatasan sumber daya, dan ruang lingkup solusi.
 
