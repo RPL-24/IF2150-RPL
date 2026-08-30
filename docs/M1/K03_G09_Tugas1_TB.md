@@ -9,7 +9,7 @@ TOPIC BRAINSTORMING
 
 ## *Nama Perangkat Lunak*
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Agatha
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
