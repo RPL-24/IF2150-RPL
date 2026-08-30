@@ -56,10 +56,9 @@ Buatlah daftar seluruh aktor (penxgguna) yang akan berinteraksi langsung dengan 
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| Warga | Pengguna ini bertindak sebagai pihak yang melaporkan berbagai kerusakan yang terjadi di sekitar jalanan. Karakteristik dari pengguna ini adalah mengutamakan kemudahan untuk melaporkan masalah dan dapat mellihat progres dari permasalahan-permasalahn yang dilaporkan. |
-| Admin | Pengguna ini bertindak sebagai pihak yang menerima laporan-laporan dari masyarakat serta memverifikasi laporan tersebut. Karakteristik dari pengguna ini adalah kebutuhan pada bentuk laporan yang jelas untuk memverifikasi laporan tersebut serta integrasi data yang baik. |
-| Pejabat Dinas | Pengguna ini bertindak sebagai pihak yang memutuskan mengenai pelaksanaan perbaikan. Karakteristik dari pengguna ini adalah mengutamakan bantuan berupa insight dan overview dari laporan-laporan yang diberikan. |
-| Eksekutor Lapangan | Pengguna ini bertindak sebagai pihak yang mengerjakan kerusakan yang telah disetujui oleh pejabat dinas. Karakteristik dari pengguna ini adalah kejelasan dari detail pekerjaan yang perlu dieksekusi dan kemudahan untuk melaporkan selesainya suatu pekerjaan.  |
+| *Warga / Pelapor* | Masyarakat yang menggunakan sistem untuk membuat laporan kerusakan fasilitas fisik melalui foto dan GPS, memantau status pengerjaan, serta melakukan upvote pada laporan warga lain. |
+| *Petugas Dinas (Admin)* | Pengelola teknis di kantor dinas yang bertugas memvalidasi laporan masuk, memantau peta sebaran kerusakan, dan mendisposisikan surat perintah kerja ke tim lapangan. |
+| *Verifikator / Tim Lapangan* | Petugas teknis yang melakukan inspeksi fisik di lokasi, mengeksekusi perbaikan, dan mengunggah foto bukti penyelesaian pekerjaan. |
 
 
 
@@ -68,9 +67,11 @@ Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dal
 
 | ID | Aktor | Kebutuhan / Aktivitas | Tujuan / Nilai |
 | :--- | :--- | :--- | :--- |
-| US-01 | *Kasir* |  *Memindai barcode barang* | *Proses pembayaran berjalan cepat dan akurat* |
-| US-02 | *[Nama Aktor]* | *[Kebutuhan pengguna]* | *[Tujuan yang dicapai pengguna]* |
-| ... | ... | ... | ... |
+| US-01 | Warga | Mengirimkan laporan | Format laporan yang jelas dan fitur yang mudah digunakan. |
+| US-02 | Admin | Menerima laporan, memverifikasi, dan menentukan tingkat urgensi kerusakan | Format laporan yang jelas dan data yang terintegreasi dengan warga dan pejabat yang mengambil keputusan. |
+| US-03 | Pejabat Dinas | Menerima laporan yang telah terverifikasi dan terbagi berdasarkan urgensinya | Keputusan dapat diambil dengan lebih mudah dan terukur.  |
+| US-04 | Eksekutor Lapangan | Menerima perintah pekerjaan yang perlu dikerjakan dan melaporkan keselasaian pekerjaan | Informasi pekerjaan dapat diketahui seluruh pekerja yang terlibat dan mudah untuk melaporkan hasil pekerjaanya.  |
+
 
 ## 3.3 Model Proses Bisnis
 Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
