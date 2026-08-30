@@ -61,22 +61,43 @@ Kesenjangan utama dari kondisi saat ini adalah ketiadaan sistem yang menjembatan
 # BAB 2: Analisis Solusi
 
 ## 2.1 Deskripsi Perangkat Lunak
-Abstraksikan solusi perangkat lunak yang diusulkan dari sudut pandang pengguna. Jelaskan target platform yang akan digunakan (misalnya: desktop application) beserta alasan pemilihannya. Deskripsikan juga nilai unik (inovasi inti) dari perangkat lunak kalian dan apa yang membedakannya dari solusi yang sudah ada.
+
+Platform yang kami rencanakan berupa aplikasi web. Dari sudut pandang pengguna, pengguna dapat melaporkan hal yang terjadi di lapangan, kemudian terdapat juga dashboard dinas untuk mengelola laporan. Adapun nilai unuk dari perangkat lunak kami berupa: 
+
+1. Deduplikasi berbasis lokasi dan upvote, dimana laporan titik yang berdekatan dengan kategori mirip otomatis digabung menjadi satu dan menaikkan bobot urgensi. 
+2. Skor prioritas dihitung jadi jumlah pelapor, kelas jalan/fasilitas/hal terlapor, dan dapat dilihat secarap ublik. 
+3. Transparansi dua arah, di mana laporan beserta statusnya dapat dilihat oleh seluruh pengguna. 
 
 ## 2.2 Asumsi dan Batasan
 Definisikan secara tegas asumsi (baik teknis maupun dari sisi pengguna) yang menjadi dasar pengembangan. Tuliskan batasan seperti regulasi/hukum, keterbatasan sumber daya, dan ruang lingkup solusi.
+
+Asumsi dalam pengerjaan perangkat lunak ini kami bagi menjadi 2 asumsi. 
+
+**Asumsi Teknis:**
+  
+  Pengguna memiliki smartphone dengan kamera + GPS dan koneksi internet saat melaporkan. 
+
+**Asumsi Operasional**
+
+   Terdapat pihak pemerintah yang berkomitmen untuk memverifikasi dan menindaklanjuti laporan. 
+
+Batasan yang dihadapi salah satunya adalah batasan sumber daya. Perihal ini, batasan yang dihadapi para _developer_ adlaah perangkat lunak ini hanya dikembangkan oleh tim yang terdiri dari 5 mahasiswa. 
 
 ---
 
 # BAB 3: Spesifikasi Kebutuhan dan Proses Bisnis
 
 ## 3.1 Identifikasi Aktor
-Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan sistem solusi yang kalian kembangkan. Berikan penjelasan singkat mengenai peran dan karakteristik dari masing-masing aktor tersebut.
+Dari ide solusi perangkat lunak yang telah kami usulkan, kami mengidentifikasi terdapat 4 aktor utama yang akan berinteraksi langsung dengan sistem kami, diantaranya:
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| *Kasir* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memproses transaksi harian dan melayani pembayaran pelanggan. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan saat bertransaksi.* |
+| *Warga* | *Pengguna ini merupakan masyarakat umum yang bertindak sebagai pihak yang berhak melaporkan segala bentuk keluhan dan masalah yang ditemukan di lapangan. Pengguna ini juga dapat melihat informasi laporan dari pengguna lain (secara anonim) dan melakukan upvote terhadap laporan lain.* |
+| *Petugas Administrasi* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memverifikasi terlebih dahulu segala laporan yang diterima sistem (apakah valid/spam). Pihak ini juga bertanggung jawab untuk mengatur skala prioritas dari semua laporan berdasarkan berbagai faktor, dan nantinya meneruskan laporan dengan skala prioritas yang tinggi kepada petinggi dinas sembar melakukan update status secara berkala* |
+| *Petinggi Dinas* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab sebagai pengambil keputusan akhir mengenai solusi/tindak lanjut yang perlu dilakukan untuk mengatasi masalah-masalah yang terdapat pada laporan warga. Pihak ini nantinya akan menyampaikan tindak lanjut yang perlu diambil kepada Eksekutor Lapangan dan Petugas Administrasi* |
+| *Eksekutor Lapangan* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk turun langsung ke lapangan dalam menindak lanjuti solusi yang telah diarahkan Petinggi Dinas. Pengguna ini juga bertanggung jawab untuk melakukan update progress kepada Petugas Administrasi dan Petinggi Dinas.* |
 | ... | ... |
+
 
 
 ## 3.2 Kebutuhan Pengguna Awal
@@ -84,9 +105,11 @@ Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dal
 
 | ID | Aktor | Kebutuhan / Aktivitas | Tujuan / Nilai |
 | :--- | :--- | :--- | :--- |
-| US-01 | *Kasir* |  *Memindai barcode barang* | *Proses pembayaran berjalan cepat dan akurat* |
-| US-02 | *[Nama Aktor]* | *[Kebutuhan pengguna]* | *[Tujuan yang dicapai pengguna]* |
-| ... | ... | ... | ... |
+| US-01 | Warga | Mengirimkan laporan | Format laporan yang jelas dan fitur yang mudah digunakan. |
+| US-02 | Admin | Menerima laporan, memverifikasi, dan menentukan tingkat urgensi kerusakan | Format laporan yang jelas dan data yang terintegreasi dengan warga dan pejabat yang mengambil keputusan. |
+| US-03 | Pejabat Dinas | Menerima laporan yang telah terverifikasi dan terbagi berdasarkan urgensinya | Keputusan dapat diambil dengan lebih mudah dan terukur.  |
+| US-04 | Eksekutor Lapangan | Menerima perintah pekerjaan yang perlu dikerjakan dan melaporkan keselasaian pekerjaan | Informasi pekerjaan dapat diketahui seluruh pekerja yang terlibat dan mudah untuk melaporkan hasil pekerjaanya.  |
+
 
 ## 3.3 Model Proses Bisnis
 Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
