@@ -33,19 +33,10 @@ Dipersiapkan oleh:
 
 ## 1.1 Latar Belakang Masalah
 Tuliskan deskripsi permasalahan yang kalian pilih secara naratif dan spesifik. Tambahkan keterkaitan permasalahan tersebut dengan Tujuan Pembangunan Berkelanjutan (SDGs) yang telah disepakati. Dukung argumen kalian dengan data yang kredibel, serta jelaskan urgensi mengapa masalah ini perlu dan layak untuk segera diselesaikan.
-jawaban sementara (berupa poin2):
--tingkat pengangguran yang tinggi karena lapangan pekerjaannya bisa dibilang tidak terlalu banyak pada pekerjaan2 ini(ada 7, kayak tukang potong tanaman, handyman, tukang sol sepatu, tukang jahit...)
--banyaknya permintaan jasa dari job ini tetapi akses yang didapat bisa dibilang lumayan sulit
--pekerja jasa Ini tidak dilindungi(maksudnya kayak pekerjaan ini ga punya jaminin income yang tetap)
--dokumen pendukung(jumlah pekerja aktif, permintaan pasar, dan lapangan pekerjaan yang ditawarkan)
--urgensi kenapa masalah ini wajib diselesaikan(dari segi lapangan pekerjaannya sendiri kurangnya akses pekerjaan ke pasar/platform yang jelas,  dan dari permasalahan: ...)
 
 
 ## 1.2 Analisis Kondisi Saat Ini
 Lakukan analisis terhadap proses yang berjalan saat ini di dunia nyata, baik itu sistem lama ataupun solusi yang sudah ada. Soroti kesenjangan atau celah dari kondisi tersebut yang nantinya akan diselesaikan oleh perangkat lunak kalian.
-masalah: -kurangnya akses dan pelatihan pengetahuan digital dari sisi penjual jasa sehingga sedikitnya pemasaran dari jasa pekerjaan tersebut di internet/platform
-         -platform yang mencakup dan menyediakan jasa dari pekerjaan ini masih belum merata(khususnya tukang sol sepatu dan penjahit)
-         -konsumen kesulitan mencari penyedia jasa yang lokasinya dekat, karena tidak ada yang memiliki sistem berbasis lokasi yang spesifi pada jasa2 ini 
 
 
 ---
