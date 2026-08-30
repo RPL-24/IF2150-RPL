@@ -36,7 +36,7 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
 | *[Nama AI]* | *[Sertakan Tujuan Penggunaan]* | *[Tuliskan Prompt Utama]* | *[Tuliskan Keputusan Hasil Validasi]* |
-| *Gemini* | *Mengecek relasi antar class* | *"Apakah relasi antara class User dan Order dalam UML ini seharusnya composition atau aggregation?"* | *AI menyarankan composition, tapi setelah dicek kembali ke requirement, kami menggunakan aggregation karena Order masih bisa eksis di history.* |
+| Gemini | Mencari penjelasan secara lengkap mengenai SDG 10 | Berikan penjelasan SDG 10 dengan beberapa masalah merupakan sdg 10 | AI menjelaskan bahwa SDG 10 adalah SDG yang menyelesaikan masalah "ketertinggalan" dalam bidang sosial, ekonomi, dan politik dengan masalah utama ketimpangan pendapatan, diskriminasi tempat kerja, dan hukum dan kebijakan berpihak |
 | | | | | |
 
 ### Milestone 2
@@ -52,7 +52,7 @@ Kami yang bertanda tangan di bawah ini menyatakan bahwa seluruh log penggunaan A
 
 | Tanda Tangan | Nama Anggota |
 | :---: | :--- |
-| <img src="./assets/ttd-anggota1.png" width="100"> | **[NIM - Nama Anggota 1]** |
+| <img src="./assets/Document19_1.jpg" width="100"> | **[13525126 - Raymond Edson Sabajan]** |
 | <img src="./assets/ttd-anggota2.png" width="100"> | **[NIM - Nama Anggota 2]** |
 | <img src="./assets/ttd-anggota3.png" width="100"> | **[NIM - Nama Anggota 3]** |
 | <img src="./assets/ttd-anggota4.png" width="100"> | **[NIM - Nama Anggota 4]** |
