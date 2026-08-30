@@ -56,9 +56,8 @@ Buatlah daftar seluruh aktor (penxgguna) yang akan berinteraksi langsung dengan 
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| *Warga / Pelapor* | Masyarakat yang menggunakan sistem untuk membuat laporan kerusakan fasilitas fisik melalui foto dan GPS, memantau status pengerjaan, serta melakukan upvote pada laporan warga lain. |
-| *Petugas Dinas (Admin)* | Pengelola teknis di kantor dinas yang bertugas memvalidasi laporan masuk, memantau peta sebaran kerusakan, dan mendisposisikan surat perintah kerja ke tim lapangan. |
-| *Verifikator / Tim Lapangan* | Petugas teknis yang melakukan inspeksi fisik di lokasi, mengeksekusi perbaikan, dan mengunggah foto bukti penyelesaian pekerjaan. |
+| Kasir | Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memproses transaksi harian dan melayani pembayaran pelanggan. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan saat bertransaksi. |
+| ... | ... |
 
 
 
