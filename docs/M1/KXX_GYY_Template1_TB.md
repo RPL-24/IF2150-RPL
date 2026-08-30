@@ -56,8 +56,8 @@ Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan s
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| *Kasir* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memproses transaksi harian dan melayani pembayaran pelanggan. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan saat bertransaksi.* |
-| ... | ... |
+| Pelajar | Pengguna ini bertindak sebagai pihak yang memanfaatkan perangkat lunak sebagai sarana untuk belajar, berlatih, dan mengembangkan kemampuan menulis aksara XXX. Karakteristik dari pengguna ini adalah membutuhkan pembelajaran yang interaktif, mudah dipahami, dan memberikan umpan balik seperti dalam bentuk nilai. |
+| Guru | Pengguna ini bertindak sebagai pendamping dan fasilitator dalam proses pembelajaran aksara XXX. Karakteristik pengguna ini adalah membutuhkan media pembelajaran yang praktis dan menarik untuk proses pembelajaran para pelajar. |
 
 
 ## 3.2 Kebutuhan Pengguna Awal
