@@ -62,7 +62,9 @@ Kesenjangan utama dari kondisi saat ini adalah ketiadaan sistem yang menjembatan
 
 ## 2.1 Deskripsi Perangkat Lunak
 
-Platform yang kami rencanakan berupa aplikasi web. Dari sudut pandang pengguna, pengguna dapat melaporkan hal yang terjadi di lapangan, kemudian terdapat juga dashboard dinas untuk mengelola laporan. Adapun nilai unuk dari perangkat lunak kami berupa: 
+Platform yang kami rencanakan adalah LaporKota. LaporKota sendiri merupakan platofrm pelaporan dan penanganan kerusakan infrastruktur publik berbasis _crowdsourcing_. Dari sudut pandang pengguna, pengguna dapat melaporkan hal yang terjadi di lapangan dengan cara mengambil foto, memilih kategori kerusakan, serta mengirimkan laporan dengan lokasi yang ditandai secara otomatis melalui GPS perangkat. Kemudian terdapat juga dashboard dinas untuk mengelola laporan. LaporKota akan diimplementasikan sebagai aplikasi web dengan antarmuka yang responsif. Aksesibilitas tanpa instalasi merupakan salah satu aspek yang krusial dalam pengembangan LaporKota. Aplikasi berbasis web ini dapat diakses langsung tanpa terdapat hambatan tambahan seperti instalasi, hal ini diharapkan dapat mempermudah pengguna untuk menggunakan LaporKota. 
+
+ Adapun nilai unik dari perangkat lunak kami berupa: 
 
 1. Deduplikasi berbasis lokasi dan upvote, dimana laporan titik yang berdekatan dengan kategori mirip otomatis digabung menjadi satu dan menaikkan bobot urgensi. 
 2. Skor prioritas dihitung jadi jumlah pelapor, kelas jalan/fasilitas/hal terlapor, dan dapat dilihat secarap ublik. 
@@ -71,17 +73,28 @@ Platform yang kami rencanakan berupa aplikasi web. Dari sudut pandang pengguna, 
 ## 2.2 Asumsi dan Batasan
 Definisikan secara tegas asumsi (baik teknis maupun dari sisi pengguna) yang menjadi dasar pengembangan. Tuliskan batasan seperti regulasi/hukum, keterbatasan sumber daya, dan ruang lingkup solusi.
 
+Pengembangan LaporKota didasarkan pada sejumlah asusmsi dan batasan yang perlu diidentifikasikan sedari awal. 
 Asumsi dalam pengerjaan perangkat lunak ini kami bagi menjadi 2 asumsi. 
 
 **Asumsi Teknis:**
   
-  Pengguna memiliki smartphone dengan kamera + GPS dan koneksi internet saat melaporkan. 
+  1. Pengguna memiliki smartphone dengan kamera + GPS dan koneksi internet saat melaporkan. 
+  2. Layanan pihak ketiga yang digunakan pada proses pengembangan tersedia secara stabil. 
 
 **Asumsi Operasional**
 
-   Terdapat pihak pemerintah yang berkomitmen untuk memverifikasi dan menindaklanjuti laporan. 
+Terdapat pihak pemerintah yang berkomitmen untuk memverifikasi dan menindaklanjuti laporan. 
+
+
+Selain daripada asumsi di atas, terdapat juga batasan-batasan yang memengaruhi pengembangan aplikasi ini. Batasan tersebut mencakup batasan sumber daya, batasan hukum, serta ruang lingkup solusi. 
+
+**Batasan Sumber Daya**
 
 Batasan yang dihadapi salah satunya adalah batasan sumber daya. Perihal ini, batasan yang dihadapi para _developer_ adlaah perangkat lunak ini hanya dikembangkan oleh tim yang terdiri dari 5 mahasiswa. 
+
+**Batasan Hukum**
+
+**Batasan Ruang Lingkup Solusi**
 
 ---
 
