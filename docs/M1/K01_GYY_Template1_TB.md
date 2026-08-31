@@ -108,6 +108,13 @@ Buatlah daftar seluruh aktivitas yang terdapat dalam sistem solusi, lengkap deng
 ## 3.4 Model Proses Bisnis
 Buatlah Activity Diagram atau Swimlane Diagram yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
 <br>
+    <p align="center">
+    <img alt="Contoh Activity Diagram" src="./assets/diagram/WebScraper.drawio.png" width="70%">
+    </p>
+    <p align="center">
+    <i>Gambar 1. Activity Diagram</i>
+    </p>
+<br>
 
 # Referensi
 
