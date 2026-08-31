@@ -52,13 +52,17 @@ Dari POV user, bot bekerja dengan melakukan web-scraping di medsos dan e-commerc
 
 Nilai inovasi:
 
-1. NLP dilatih dengan slang/kode lokal Indonesia
-
-<!-- Abstraksikan solusi perangkat lunak yang diusulkan dari sudut pandang pengguna. Jelaskan target platform yang akan digunakan (misalnya: desktop application) beserta alasan pemilihannya. Deskripsikan juga nilai unik (inovasi inti) dari perangkat lunak kalian dan apa yang membedakannya dari solusi yang sudah ada. -->
+1. NLP dilatih dengan slang/kode lokal Indonesia.
 
 ## 2.2 Asumsi dan Batasan
 
-Definisikan secara tegas asumsi (baik teknis maupun dari sisi pengguna) yang menjadi dasar pengembangan. Tuliskan batasan seperti regulasi/hukum, keterbatasan sumber daya, dan ruang lingkup solusi.
+Asumsi:
+1. Hewan dan/atau satwa langka diperjual-belikan di internet/e-commerce.
+
+Batasan:
+1. Hanya mencakup transaksi ilegal yang terjadi di Indonesia.
+2. Hanya mengambil dan mengelola informasi berbasis teks atau data, bukan gambar.
+3. Kelompok ini tidak memiliki wewenang hukum untuk melakukan penangkapan atau agen penyamar yang dapat membahayakan keselamatan pribadi ataupun melanggar hukum.
 
 ---
 
