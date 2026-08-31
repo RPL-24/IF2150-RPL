@@ -47,7 +47,16 @@ Dulu, perdagangan ilegal ini dilakukan di pasar gelap fisik. Namun seiring berke
 
 ## 1.2 Analisis Kondisi Saat Ini
 
-Lakukan analisis terhadap proses yang berjalan saat ini di dunia nyata, baik itu sistem lama ataupun solusi yang sudah ada. Soroti kesenjangan atau celah dari kondisi tersebut yang nantinya akan diselesaikan oleh perangkat lunak kalian.
+Saat ini, upaya pelacakan perdagangan satwa dan flora liar di internet sebenarnya telah memanfaatkan teknologi tingkat tinggi di skala global. Sistem pemantauan raksasa seperti AI Guardian (dikembangkan oleh IFAW dan Baidu) atau ECO-SOLVE telah menggunakan Kecerdasan Buatan (AI) untuk menyaring jutaan data di platform besar.
+
+Namun, keberadaan teknologi ini menunjukkan gap aktual, khususnya untuk penerapan di negara berkembang seperti Indonesia apalagi di daerah lokal. Terdapat tiga gap utama dari teknologi yang sudah ada saat ini:   
+1. Bersifat Tertutup (Closed-Source): Teknologi pelacakan yang ada saat ini dimiliki dan dikembangkan perusahaan teknologi besar dan hanya diakses oleh penegak hukum. Sistem ini bersifat closed-source, artinya pihak luar atau publik tidak bisa melihat, memodifikasi, atau memakai kode programnya untuk digunakan atau dikembangkan mandiri.
+2. Sistem Terlalu Berat dan Membutuhkan Biaya Besar: Sistem global mengandalkan Large Language Models (LLM), Computer Vision, dan AI yang membutuhkan daya komputasi dan budget yang sangat besar.
+3. Tidak Tahu Konteks Pasar Gelap Lokal: AI buatan perusahaan multinasional dilatih menggunakan bahasa baku dan bahasa luar, bukan Bahasa Indonesia ataupun buzzword lokal. Akibatnya, sistem mereka sering kali gagal beradaptasi saat pedagang di Indonesia memodifikasi teks, menggunakan singkatan daerah atau menggunakan buzzword mereka sendiri.
+
+Berdasarkan gaps tersebut, petugas konservasi umumnya membutuhkan solusi yang lebih terjangkau. Oleh karena itu, perangkat lunak ini dapat dikembangkan sebagai bot pelacak (web scraper) yang ringan, murah, dan dapat digunakan siapapun. Alih-alih menggunakan teknologi yang berat dan rumit, perangkat lunak ini berfokus pada teknologi sistem pencocokan teks menggunakan database kamus buzzword pasar gelap lokal. Dengan struktur yang lebih ringan dan sederhana, perangkat lunak ini dapat dijalankan dengan mudah pada komputer/device pihak berwenang untuk menyaring forum dan komunitas jual-beli tertutup di wilayah mereka masing-masing.
+
+
 
 ---
 
