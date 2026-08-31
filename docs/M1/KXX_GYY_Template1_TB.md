@@ -67,7 +67,7 @@ Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dal
 | :--- | :--- | :--- | :--- |
 | US-01 | *Pelajar* |  *Melihat daftar bentuk dasar aksara XX beserta panduan cara membacanya* | *Dapat menghafal dan mengealibentuk dasar setiap huruf dengan benar.* |
 | US-02 | *Pelajar* | *Melatih penulisan aksara dengan menebalkan garis panduan di layar perangkat.* | *Terbiasa dengan alur, urutan, dan arah goresan penulisan aksara yang tepat* |
-| US-03 | *Pelajar* | *Mendapatkan penilaian dan koreksi otomatis setelah menggambar aksara di layar* | *Mengetahui letak kesalahan goresan dan dapat memperbaiki akurasi tulisan. * |
+| US-03 | *Pelajar* | *Mendapatkan penilaian dan koreksi otomatis setelah menggambar aksara di layar* | *Mengetahui letak kesalahan goresan dan dapat memperbaiki akurasi tulisan.* |
 | US-04 | *Guru* | *Sebagai media bagi guru untuk mengajar.* | *Membantu guru melatih siswa dalam memahami aksara XX.* |
 
 
