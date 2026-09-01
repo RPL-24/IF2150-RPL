@@ -62,26 +62,45 @@ Kesenjangan utama dari kondisi saat ini adalah ketiadaan sistem yang menjembatan
 
 ## 2.1 Deskripsi Perangkat Lunak
 
-Platform yang kami rencanakan berupa aplikasi web. Dari sudut pandang pengguna, pengguna dapat melaporkan hal yang terjadi di lapangan, kemudian terdapat juga dashboard dinas untuk mengelola laporan. Adapun nilai unuk dari perangkat lunak kami berupa: 
+Platform yang kami rencanakan adalah LaporKota. LaporKota sendiri merupakan platofrm pelaporan dan penanganan kerusakan infrastruktur publik berbasis _crowdsourcing_. Dari sudut pandang pengguna, pengguna dapat melaporkan hal yang terjadi di lapangan dengan cara mengambil foto, memilih kategori kerusakan, serta mengirimkan laporan dengan lokasi yang ditandai secara otomatis melalui GPS perangkat. Kemudian terdapat juga dashboard dinas untuk mengelola laporan dari hulu ke hilir. Petugas admin akan menerima dan memverifikasi laporan yang masuk, lalu akan diteruskan ke petinggi dinas setempat. Kemudian, setelah suatu surat tugas diturunkan kepada eksekutor di lapangan, eksekutor lapangan tersebut dapat memberikan _update_ kepada petugas admin yang nantiyna akan menampilkan progres secara berkala ke publik. Dengan tujuan untuk memudahkan para pengguna, LaporKota akan diimplementasikan sebagai aplikasi web dengan antarmuka yang responsif. Aksesibilitas tanpa instalasi merupakan salah satu aspek yang krusial dalam pengembangan LaporKota. Aplikasi berbasis web ini dapat diakses langsung tanpa terdapat hambatan tambahan seperti instalasi, hal ini diharapkan dapat mempermudah pengguna untuk menggunakan LaporKota. 
+
+ Adapun nilai unik dari perangkat lunak kami berupa: 
 
 1. Deduplikasi berbasis lokasi dan upvote, dimana laporan titik yang berdekatan dengan kategori mirip otomatis digabung menjadi satu dan menaikkan bobot urgensi. 
-2. Skor prioritas dihitung jadi jumlah pelapor, kelas jalan/fasilitas/hal terlapor, dan dapat dilihat secarap ublik. 
-3. Transparansi dua arah, di mana laporan beserta statusnya dapat dilihat oleh seluruh pengguna. 
+2. Skor prioritas dihitung jadi jumlah pelapor, kelas jalan/fasilitas/hal terlapor, dan dapat dilihat secara p ublik. 
+3. Transparansi dua arah, di mana laporan beserta statusnya yang diupdate secara _real time_ dapat dilihat oleh seluruh pengguna. 
 
 ## 2.2 Asumsi dan Batasan
-Definisikan secara tegas asumsi (baik teknis maupun dari sisi pengguna) yang menjadi dasar pengembangan. Tuliskan batasan seperti regulasi/hukum, keterbatasan sumber daya, dan ruang lingkup solusi.
-
+Pengembangan LaporKota didasarkan pada sejumlah asusmsi dan batasan yang perlu diidentifikasikan sedari awal. 
 Asumsi dalam pengerjaan perangkat lunak ini kami bagi menjadi 2 asumsi. 
 
 **Asumsi Teknis:**
   
-  Pengguna memiliki smartphone dengan kamera + GPS dan koneksi internet saat melaporkan. 
+  1. Pengguna memiliki smartphone dengan kamera + GPS dan koneksi internet saat melaporkan. 
+  2. Layanan pihak ketiga yang digunakan pada proses pengembangan tersedia secara stabil. 
 
 **Asumsi Operasional**
 
-   Terdapat pihak pemerintah yang berkomitmen untuk memverifikasi dan menindaklanjuti laporan. 
+Terdapat pihak pemerintah yang berkomitmen untuk memverifikasi dan menindaklanjuti laporan. 
+
+
+Selain daripada asumsi di atas, terdapat juga batasan-batasan yang memengaruhi pengembangan aplikasi ini. Batasan tersebut mencakup batasan sumber daya, batasan hukum, serta ruang lingkup solusi. 
+
+**Batasan Sumber Daya**
 
 Batasan yang dihadapi salah satunya adalah batasan sumber daya. Perihal ini, batasan yang dihadapi para _developer_ adlaah perangkat lunak ini hanya dikembangkan oleh tim yang terdiri dari 5 mahasiswa. 
+
+**Batasan Hukum**
+
+Batasan Hukum yang kami gunakan antara lain: 
+1. Foto dan data lokasi yang dikirimkan warga merupakan data yang tunduk pada UU No.27 Tahun 2022 tentang Perlindungan Data Pribadi (UU PDP). Dengan ini, diharapkan bahwa sistem meminimalkan pengumpulan data pribadi dan identatis pelapor ditampilkan secara anonim pada dashboard publik. 
+2. Laporkota juga menjunjung nilai-nilai yang terkandung pada UU No.14 Tahun 2008 tentang Keterbukaan Informasi Publik. Hal ini ditunjukkan pada fitur ketersediaan informasi status laporan dan penanganan kerusakan infrastruktur yang terbuka bagi publik. 
+
+**Batasan Ruang Lingkup Solusi**
+
+Beberapa batasan ruang lingkup solusi juga ditetapkan agar pengembangan berjalan sesuai dengan kapabilitas pengembang. Adapun batasan-batasan ruang lingkup solusi tersebut antara lain: 
+1. Cakupan gegorafis LaporKota dibatasi pada satu wilayah kota/kabupaten sebagai lokasi implementasi. 
+2. Sistem LaporKota mencakup keseluruhan alur mulai dari pelaporan oleh warga setempat, verifikasi oleh admin, pengambilan keputusan oleh petinggi dinas, hingga pemantauan progress yang diberikan oleh eksekutor di lapangan secara real time sampai laporan dinyatakan selesai oleh petinggi dinas.  
 
 ---
 
