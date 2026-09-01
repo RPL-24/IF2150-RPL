@@ -62,14 +62,12 @@ Buatlah daftar seluruh aktor (penxgguna) yang akan berinteraksi langsung dengan 
 
 
 ## 3.2 Kebutuhan Pengguna Awal
-Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dalam format *User Story* (Sebagai [Aktor], saya ingin [Aktivitas/Kebutuhan], sehingga [Tujuan/Nilai]). Pastikan kalian berfokus pada "apa yang ingin dilakukan pengguna".
 
 | ID | Aktor | Kebutuhan / Aktivitas | Tujuan / Nilai |
 | :--- | :--- | :--- | :--- |
-| US-01 | Warga | Mengirimkan laporan | Format laporan yang jelas dan fitur yang mudah digunakan. |
-| US-02 | Admin | Menerima laporan, memverifikasi, dan menentukan tingkat urgensi kerusakan | Format laporan yang jelas dan data yang terintegreasi dengan warga dan pejabat yang mengambil keputusan. |
-| US-03 | Pejabat Dinas | Menerima laporan yang telah terverifikasi dan terbagi berdasarkan urgensinya | Keputusan dapat diambil dengan lebih mudah dan terukur.  |
-| US-04 | Eksekutor Lapangan | Menerima perintah pekerjaan yang perlu dikerjakan dan melaporkan keselasaian pekerjaan | Informasi pekerjaan dapat diketahui seluruh pekerja yang terlibat dan mudah untuk melaporkan hasil pekerjaanya.  |
+| US-01 | Warga | Mengirimkan laporan  | Format laporan yang jelas, fitur yang mudah digunakan, dan mendapat perkembangan terhaadap masalah yang dilaporkan |
+| US-02 | Admin | Menerima laporan, memverifikasi, menentukan tingkat urgensi kerusakan, dan memeriksa hasil pekerjaan lapangan | Format laporan masalah dan laporan eksekusi yang jelas serta data yang terintegrasi dengan warga dan eksekutor lapangan |
+| US-03 | Eksekutor Lapangan | Menerima perintah pekerjaan yang perlu dikerjakan dan melaporkan keselesaian pekerjaan dengan platform ini | Kemudahan mengirimkan hasil pekerjaan dan mendapatkan persetujuan mengenai status (selesai atau tidak) dari eksekusi yang dilakukan  |
 
 
 ## 3.3 Model Proses Bisnis
