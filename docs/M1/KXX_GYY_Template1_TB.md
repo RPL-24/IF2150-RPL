@@ -61,43 +61,22 @@ Kesenjangan utama dari kondisi saat ini adalah ketiadaan sistem yang menjembatan
 # BAB 2: Analisis Solusi
 
 ## 2.1 Deskripsi Perangkat Lunak
-
-Platform yang kami rencanakan berupa aplikasi web. Dari sudut pandang pengguna, pengguna dapat melaporkan hal yang terjadi di lapangan, kemudian terdapat juga dashboard dinas untuk mengelola laporan. Adapun nilai unuk dari perangkat lunak kami berupa: 
-
-1. Deduplikasi berbasis lokasi dan upvote, dimana laporan titik yang berdekatan dengan kategori mirip otomatis digabung menjadi satu dan menaikkan bobot urgensi. 
-2. Skor prioritas dihitung jadi jumlah pelapor, kelas jalan/fasilitas/hal terlapor, dan dapat dilihat secarap ublik. 
-3. Transparansi dua arah, di mana laporan beserta statusnya dapat dilihat oleh seluruh pengguna. 
+Abstraksikan solusi perangkat lunak yang diusulkan dari sudut pandang pengguna. Jelaskan target platform yang akan digunakan (misalnya: desktop application) beserta alasan pemilihannya. Deskripsikan juga nilai unik (inovasi inti) dari perangkat lunak kalian dan apa yang membedakannya dari solusi yang sudah ada.
 
 ## 2.2 Asumsi dan Batasan
 Definisikan secara tegas asumsi (baik teknis maupun dari sisi pengguna) yang menjadi dasar pengembangan. Tuliskan batasan seperti regulasi/hukum, keterbatasan sumber daya, dan ruang lingkup solusi.
-
-Asumsi dalam pengerjaan perangkat lunak ini kami bagi menjadi 2 asumsi. 
-
-**Asumsi Teknis:**
-  
-  Pengguna memiliki smartphone dengan kamera + GPS dan koneksi internet saat melaporkan. 
-
-**Asumsi Operasional**
-
-   Terdapat pihak pemerintah yang berkomitmen untuk memverifikasi dan menindaklanjuti laporan. 
-
-Batasan yang dihadapi salah satunya adalah batasan sumber daya. Perihal ini, batasan yang dihadapi para _developer_ adlaah perangkat lunak ini hanya dikembangkan oleh tim yang terdiri dari 5 mahasiswa. 
 
 ---
 
 # BAB 3: Spesifikasi Kebutuhan dan Proses Bisnis
 
 ## 3.1 Identifikasi Aktor
-Dari ide solusi perangkat lunak yang telah kami usulkan, kami mengidentifikasi terdapat 4 aktor utama yang akan berinteraksi langsung dengan sistem kami, diantaranya:
+Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan sistem solusi yang kalian kembangkan. Berikan penjelasan singkat mengenai peran dan karakteristik dari masing-masing aktor tersebut.
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| *Warga* | *Pengguna ini merupakan masyarakat umum yang bertindak sebagai pihak yang berhak melaporkan segala bentuk keluhan dan masalah yang ditemukan di lapangan. Pengguna ini juga dapat melihat informasi laporan dari pengguna lain (secara anonim) dan melakukan upvote terhadap laporan lain.* |
-| *Petugas Administrasi* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memverifikasi terlebih dahulu segala laporan yang diterima sistem (apakah valid/spam). Pihak ini juga bertanggung jawab untuk mengatur skala prioritas dari semua laporan berdasarkan berbagai faktor, dan nantinya meneruskan laporan dengan skala prioritas yang tinggi kepada petinggi dinas sembar melakukan update status secara berkala* |
-| *Petinggi Dinas* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab sebagai pengambil keputusan akhir mengenai solusi/tindak lanjut yang perlu dilakukan untuk mengatasi masalah-masalah yang terdapat pada laporan warga. Pihak ini nantinya akan menyampaikan tindak lanjut yang perlu diambil kepada Eksekutor Lapangan dan Petugas Administrasi* |
-| *Eksekutor Lapangan* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk turun langsung ke lapangan dalam menindak lanjuti solusi yang telah diarahkan Petinggi Dinas. Pengguna ini juga bertanggung jawab untuk melakukan update progress kepada Petugas Administrasi dan Petinggi Dinas.* |
+| *Kasir* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memproses transaksi harian dan melayani pembayaran pelanggan. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan saat bertransaksi.* |
 | ... | ... |
-
 
 
 ## 3.2 Kebutuhan Pengguna Awal
@@ -105,21 +84,39 @@ Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dal
 
 | ID | Aktor | Kebutuhan / Aktivitas | Tujuan / Nilai |
 | :--- | :--- | :--- | :--- |
-| US-01 | Warga | Mengirimkan laporan | Format laporan yang jelas dan fitur yang mudah digunakan. |
-| US-02 | Admin | Menerima laporan, memverifikasi, dan menentukan tingkat urgensi kerusakan | Format laporan yang jelas dan data yang terintegreasi dengan warga dan pejabat yang mengambil keputusan. |
-| US-03 | Pejabat Dinas | Menerima laporan yang telah terverifikasi dan terbagi berdasarkan urgensinya | Keputusan dapat diambil dengan lebih mudah dan terukur.  |
-| US-04 | Eksekutor Lapangan | Menerima perintah pekerjaan yang perlu dikerjakan dan melaporkan keselasaian pekerjaan | Informasi pekerjaan dapat diketahui seluruh pekerja yang terlibat dan mudah untuk melaporkan hasil pekerjaanya.  |
+| US-01 | *Kasir* |  *Memindai barcode barang* | *Proses pembayaran berjalan cepat dan akurat* |
+| US-02 | *[Nama Aktor]* | *[Kebutuhan pengguna]* | *[Tujuan yang dicapai pengguna]* |
+| ... | ... | ... | ... |
 
+## 3.3 Deskripsi Aktivitas
+Buatlah daftar seluruh aktivitas yang terdapat dalam sistem solusi, lengkap dengan ID dan penjelasan. Telusuri hubungan aktivitas tersebut dengan *user story* yang sudah dituliskan sebelumnya. Bisa dibuat dalam bentuk tabel.
+| ID | Aktivitas | Penjelasan | ID User Story |
+| A01 | Menemukan Kendala/Masalah | Warga menemukan kendala atau permasalahan di lingkungan terkait kerusakan infrastruktur publik | US-01 |
+| A02 | Membuka Aplikasi | Warga membuka aplikasi Lapor Kota untuk melakukan pelaporan permasalahan | US-01 |
+| A03 | Memilih Kategori Laporan | Warga membuka aplikasi Lapor Kota untuk melakukan pelaporan permasalahan | US-01 |
+| A04 | Mengirim Laporan | Warga mengirimkan laporan permasalahan melalui aplikasi | US-01 |
+| A05 | Status Diterima | Sistem memberikan status bahwa laporan telah diterima dan masuk ke proses pemeriksaan administrasi | US-02 |
+| A06 | Validasi Laporan | Tim Administrasi memeriksa laporan untuk menentukan apakah laporan valid dan dapat diproses | US-02 |
+| A07 | Status Ditolak | Jika laporan dinyatakan tidak valid, Tim Administrasi mengubah status laporan menjadi ditolak | US-02 |
+| A08 | Status Dikerjakan | Jika laporan dinyatakan valid, sistem mengubah status laporan menjadi dikerjakan dan keluhan akan diproses | US-02 |
+| A09 | Menentukan Skala Prioritas Laporan | Tim Administrasi menentukan tingkat prioritas laporan berdasarkan jumlah laporan atau urgensi permasalahan | US-02 |
+| A10 | Menerima Laporan | Eksekutor Lapangan menerima laporan dan segera menindaklanjuti | US-03 |
+| A11 | Eksekusi Lapangan | Eksekutor Lapangan menindaklanjuti secara langsung terhadap permasalahan yang dilaporkan | US-03 |
+| A12 | Mengirim Laporan Hasil Eksekusi | Eksekutor Lapangan mengirimkan informasi mengenai hasil penanganan permasalahan melalui aplikasi | US-03 |
+| A13 | Memeriksa Penyelesaian Kendala | Tim Administrasi memeriksa apakah kendala yang dilaporkan telah berhasil diselesaikan berdasarkan hasil eksekusi lapangan | US-02 |
+| A14 | Melakukan Eksekusi Ulang | Jika kendala belum terselesaikan, laporan dikembalikan kepada Eksekutor Lapangan untuk dilakukan penanganan kembali | US-03 |
+| A15 | Status Berhasil | Jika kendala telah terselesaikan, Tim Administrasi mengubah status laporan menjadi berhasil | US-02 |
+| A16 | Melihat Laporan | Warga dapat melihat informasi dan status akhir dari laporan yang telah dibuat, termasuk hasil penanganannya | US-01 |
 
-## 3.3 Model Proses Bisnis
+## 3.4 Model Proses Bisnis
 Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
 <br>
 
 <p align="center">
-<img alt="Contoh Activity Diagram" src="./assets/diagram/diagram-act-1.avif" width="70%">
+<img alt="Contoh Swimlane Diagram Lapor" src="./assets/diagram/ModelProsesBisnisLaporKota.avif" width="70%">
 </p>
 <p align="center">
-<i>Gambar 1. Contoh Activity Diagram</i>
+<i>Gambar 1. Swimlane Diagram Alur Pelaporan dan Penanganan Kerusakan Infrastruktur Publik pada LaporKota</i>
 </p>
 
 <br>
