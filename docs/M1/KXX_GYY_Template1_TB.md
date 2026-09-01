@@ -129,6 +129,7 @@ Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dal
 ## 3.3 Deskripsi Aktivitas
 Buatlah daftar seluruh aktivitas yang terdapat dalam sistem solusi, lengkap dengan ID dan penjelasan. Telusuri hubungan aktivitas tersebut dengan *user story* yang sudah dituliskan sebelumnya. Bisa dibuat dalam bentuk tabel.
 | ID | Aktivitas | Penjelasan | ID User Story |
+| :--- | :--- | :--- | :--- |
 | A01 | Menemukan Kendala/Masalah | Warga menemukan kendala atau permasalahan di lingkungan terkait kerusakan infrastruktur publik | US-01 |
 | A02 | Membuka Aplikasi | Warga membuka aplikasi Lapor Kota untuk melakukan pelaporan permasalahan | US-01 |
 | A03 | Memilih Kategori Laporan | Warga membuka aplikasi Lapor Kota untuk melakukan pelaporan permasalahan | US-01 |
@@ -145,6 +146,7 @@ Buatlah daftar seluruh aktivitas yang terdapat dalam sistem solusi, lengkap deng
 | A14 | Melakukan Eksekusi Ulang | Jika kendala belum terselesaikan, laporan dikembalikan kepada Eksekutor Lapangan untuk dilakukan penanganan kembali | US-03 |
 | A15 | Status Berhasil | Jika kendala telah terselesaikan, Tim Administrasi mengubah status laporan menjadi berhasil | US-02 |
 | A16 | Melihat Laporan | Warga dapat melihat informasi dan status akhir dari laporan yang telah dibuat, termasuk hasil penanganannya | US-01 |
+| ... | ... | ... | ... |
 
 ## 3.4 Model Proses Bisnis
 Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
