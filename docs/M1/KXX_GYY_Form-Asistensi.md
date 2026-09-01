@@ -4,13 +4,13 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | *\[Hari\]* |
-| **Tanggal** | *\[DD/MM/YYYY\]* |
+| **Hari** | *Senin* |
+| **Tanggal** | *\31/08/2026* |
 | **Kelas** | *K-03* |
 | **Nomor Kelompok** | *G07*  |
-| **Nama Kelompok** | *\[Nama Kelompok\]*  |
-| **Nama Perangkat Lunak** | *\[Nama P/L\]*  |
-| **Dokumen** | *\[Nama Dokumen yang diasistensikan\]*  |
+| **Nama Kelompok** | *Siulan*  |
+| **Nama Perangkat Lunak** | *\LaporKota*  |
+| **Dokumen** | *K03-G07_Template1_TB*  |
 
 ### Anggota Kelompok
 
@@ -26,13 +26,11 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. Tambahin source dari berita untuk memperkuat atau artikel |
+| 2. Untuk batasan aturan perlu ada tentang Data privacy, apakah terdapat wajah orang di foto tersebut |
+| 3. Aktor itu adalah role, satu aktor bisa megang dua peran sekaligus. Eksekutor tidak perlu dimasukan ke aktor karena tidak secara langsung menggunakan platformnya |
+| 4. Bedanya aktivitas dan kebutuhan pengguna adalah kebutuhan itu pengguna maunya apa saja, sedangkan aktivitas itu nyampein apa yang akan terjadi di app |
 
-**Notes for this section:**  
-*Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
 
 ## Dokumentasi
 
