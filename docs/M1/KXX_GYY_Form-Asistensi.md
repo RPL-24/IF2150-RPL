@@ -4,12 +4,12 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | *\[Hari\]* |
-| **Tanggal** | *\[DD/MM/YYYY\]* |
+| **Hari** | *Senin* |
+| **Tanggal** | *\31/08/2026* |
 | **Kelas** | *K-03* |
 | **Nomor Kelompok** | *G07*  |
-| **Nama Kelompok** | *\[Nama Kelompok\]*  |
-| **Nama Perangkat Lunak** | *\[Nama P/L\]*  |
+| **Nama Kelompok** | *Siulan*  |
+| **Nama Perangkat Lunak** | *\LaporKota*  |
 | **Dokumen** | *\[Nama Dokumen yang diasistensikan\]*  |
 
 ### Anggota Kelompok
