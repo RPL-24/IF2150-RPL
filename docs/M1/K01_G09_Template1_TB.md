@@ -9,21 +9,21 @@ TOPIC BRAINSTORMING
 
 ## PeerUP
 
-### Untuk: _[Nama Asisten]_
+### Untuk: _Mikhael Andrian Yonatan_
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | _\[Kelas\]_ |
-| Kelompok | _\[Nomor Kelompok\]_ |
+| Kelas | _K01_ |
+| Kelompok | _G09_ |
 
-| NIM      | Nama                            |
-| -------- | ------------------------------- |
-| 13525049 | Hugo Daniel Johansen Napitupulu |
-| 13525001 | Matthew Allen Reynaldo          |
-| 13525010 | Fabian Amzar Susanto            |
-| 13525025 | David Christian                 |
-| 13525028 | Markus Christiano Simanjutak    |
+| NIM        | Nama                              |
+| ---------- | --------------------------------- |
+| _13525049_ | _Hugo Daniel Johansen Napitupulu_ |
+| _13525001_ | _Matthew Allen Reynaldo_          |
+| _13525010_ | _Fabian Amzar Susanto_            |
+| _13525025_ | _David Christian_                 |
+| _13525028_ | _Markus Christiano Simanjutak_    |
 
 ---
 
@@ -95,8 +95,9 @@ Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan s
 
 | Aktor   | Deskripsi                                                                                                                                                                                                                         |
 | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| _Kasir_ | _Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memproses transaksi harian dan melayani pembayaran pelanggan. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan saat bertransaksi._ |
-| ...     | ...                                                                                                                                                                                                                               |
+| Tutor | _User yang mendaftarkan materi, Menentukan ketersediaan waktu dan kapasitas peserta per sesi, lalu memberi materi pada sesi yang terbentuk. Satu orang dapat berperan sebagai Tutor sekaligus Mentee untuk materi yang berbeda_ |
+| Mentee | _User yang mendaftarkan materi yang ingin dipelajarinya beserta ketersediaan waktunya, lalu mengikuti sesi belajar bersama Tutor atau sesama Mentee_ |
+| Sistem | _Menjalankan pencocokan tutor dan mentee secara terjadwal berdasarkan materi dan waktu, serta mencatat keterlaksanaan sesi_ |
 
 ## 3.2 Kebutuhan Pengguna Awal
 
@@ -104,22 +105,43 @@ Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dal
 
 | ID    | Aktor          | Kebutuhan / Aktivitas     | Tujuan / Nilai                                |
 | :---- | :------------- | :------------------------ | :-------------------------------------------- |
-| US-01 | _Kasir_        | _Memindai barcode barang_ | _Proses pembayaran berjalan cepat dan akurat_ |
-| US-02 | _[Nama Aktor]_ | _[Kebutuhan pengguna]_    | _[Tujuan yang dicapai pengguna]_              |
+| US-01 | _Tutor_  | _Saya ingin mendaftar dan masuk menggunakan akun pribadi_ | _sehingga saya bisa mengakses semua fitur_ |
+| US-02 | _Tutor_  | _Saya ingin mengisi materi yang saya bisa_ | _sehingga saya dipertemukan dengan orang yang membutuhkannya_ |
+| US-03 | _Tutor_  | _Saya ingin mengisi ketersediaan waktu_ | _sehingga saya tidak dipasangkan pada jadwal yang saya tidak bisa_ |
+| US-04 | _Tutor_  | _Saya ingin menetapkan jumlah maksimum peserta dalam satu sesi_ | _sehingga sesi tetap efektif_ |
+| US-05 | _Tutor_  | _Saya ingin menerima info mentee beserta materi dan waktunya_ | _sehingga saya tahu harus bertemu siapa dan kapan_ |
+| US-06 | _Tutor_  | _Saya ingin menolak mentee yang tidak sesuai_ | _sehingga saya dipertemukan dengan orang yang tepat_ |
+| US-07 | _Tutor_  | _Saya ingin mencatat apakah sesi jadi terlaksana_ | _sehingga catatan sistem sesuai keadaan sebenarnya_ |
+| US-08 | _Tutor_  | _Saya ingin melihat riwayat sesi yang pernah saya jalani_ | _sehingga saya bisa mengecek apa saja yang sudah saya ajarkan_ |
+| US-09 | _Tutor_  | _Saya ingin memberi penilaian singkat setelah sesi_ | _sehingga kualitas pencocokan berikutnya membaik_ |
+| US-10 | _Mentee_ | _Saya ingin mendaftar dan masuk menggunakan akun pribadi_ | _sehingga saya bisa mengakses semua fitur_ |
+| US-11 | _Mentee_ | _Saya ingin mengisi materi yang ingin saya pelajari_ | _sehingga saya memperoleh bantuan yang sesuai_ |
+| US-12 | _Mentee_ | _Saya ingin mengisi ketersediaan waktu_ | _sehingga saya tidak dipasangkan pada jadwal yang saya tidak bisa_ |
+| US-13 | _Mentee_ | _Saya ingin menerima info tutor atau teman beserta materi dan waktunya_ | _sehingga saya tahu harus bertemu siapa dan kapan_ |
+| US-14 | _Mentee_ | _Saya ingin menolak tutor atau teman yang tidak sesuai_ | _sehingga saya dipertemukan dengan orang yang saya setujui_ |
+| US-15 | _Mentee_ | _Saya ingin mencatat apakah sesi jadi terlaksana_ | _sehingga catatan sistem sesuai keadaan sebenarnya_ |
+| US-16 | _Mentee_ | _Saya ingin melihat riwayat sesi yang pernah saya jalani_ | _sehingga saya bisa menelusuri apa saja yang sudah saya pelajari_ |
+| US-17 | _Mentee_ | _Saya ingin memberi penilaian singkat setelah sesi_ | _sehingga kualitas pencocokan berikutnya membaik dan bisa melaporkan yang bermasalah_ |
 | ...   | ...            | ...                       | ...                                           |
 
-## 3.3 Model Proses Bisnis
+## 3.3 Deskripsi Aktivitas
+Buatlah daftar seluruh aktivitas yang terdapat dalam sistem solusi, lengkap dengan ID dan penjelasan. Telusuri hubungan aktivitas tersebut dengan user story yang sudah dituliskan sebelumnya. Bisa dibuat dalam bentuk tabel.
+| ID | Aktivitas | Penjelasan | ID User Story |
+| :--- | :--- | :--- | :--- |
+| A01 | Melakukan Registrasi dan Autentikasi | User mendaftar dan masuk menggunakan akun pribadi | US-01 US-02 |
+| A02 | Mengisi Kebutuhan Materi  | User memilih materi yang ingin dipelajari dan dikuasai | US-01 US-02 |
+| A03 | Mengisi Ketersediaan Waktu | User menandai waktu saat mereka bisa | US-01 US-02 |
+| A04 | Menetapkan Kapasitas Sesi | User menentukan jumlah maksimum orang pada sesi  | US-03 |
+| A05 | Menjalankan Pencocokan Jadwal | Sistem mencocokan tutor dan mentee berdasarkan materi dan waktu | US-04 |
+| A06 | Mengonfirmasi atau Menolak tutor atau teman | Kedua pihak menyetujui atau menolak pasangan yang diusulkan | US-05 |
+| A07 | Melaksanakan Sesi Belajar | Kedua pihak bertemu sesuai kesepakatan bisa offline atau online | US-04 |
+| A08 | Konfirmasi Sesi | Sistem menanyakan dan mencatat sesi  | US-06 |
+| A09 | Melihat History Sesi | User bisa melihat daftar sesi yang pernah dijalaninya sebagai tutor atau mentee  | US-07 |
+| A10 | Memberikan Feedback Sehabis Sesi | User memberi penilaian singkat dan catatan opsional ke orang pada sesi tersebut  | US-08 |
+| ... | ... | ... | ... |
 
-Buatlah _Activity Diagram_ atau _Swimlane Diagram_ yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
-<br>
-
-<p align="center">
-<img alt="Contoh Activity Diagram" src="./assets/diagram/diagram-act-1.avif" width="70%">
-</p>
-<p align="center">
-<i>Gambar 1. Contoh Activity Diagram</i>
-</p>
-
+## 3.4 Model Proses Bisnis
+Buatlah Activity Diagram atau Swimlane Diagram yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
 <br>
 
 # Referensi
