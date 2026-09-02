@@ -4,13 +4,13 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | *\[Hari\]* |
-| **Tanggal** | *\[DD/MM/YYYY\]* |
-| **Kelas** | *\[Kelas\]* |
-| **Nomor Kelompok** | *\[Nomor Kelompok\]*  |
-| **Nama Kelompok** | *\[Nama Kelompok\]*  |
-| **Nama Perangkat Lunak** | *\[Nama P/L\]*  |
-| **Dokumen** | *\[Nama Dokumen yang diasistensikan\]*  |
+| **Hari** | *\[Senin\]* |
+| **Tanggal** | *\[31/08/2026\]* |
+| **Kelas** | *\[02\]* |
+| **Nomor Kelompok** | *\[04\]*  |
+| **Nama Kelompok** | *\[0sks\]*  |
+| **Nama Perangkat Lunak** | *\[Ngaksara\]*  |
+| **Dokumen** | *\[TB\]*  |
 
 ### Anggota Kelompok
 
@@ -26,10 +26,10 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. *\[Fitur yang terlalu ambisius dapat diganti dengan fitur yang lebih sederhana\]*  |
+| 2. *\[Flowchart dibuat untuk visualisasi alur interaksi pengguna dan para aktor terlibat\]* |
+| 3. *\[Bisa ditambahkan fitur untuk merangkai dan mengenali aksara\]* |
+| 4. *\[Implementasinya nanti bebas, yang ditekankan itu analisis masalah dan solusinya\]* |
 
 **Notes for this section:**  
 *Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
