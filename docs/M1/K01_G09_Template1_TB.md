@@ -148,7 +148,7 @@ Buatlah Activity Diagram atau Swimlane Diagram yang menunjukkan alur kerja prose
 
 - Diagram UML: https://www.drawio.com/, https://staruml.io/
 - Jones, A., Reznik, G., Hossain, A. R., dkk. (2025). Study buddy learning is associated with academic success in undergraduate science courses. bioRxiv.
-- Badan Pusat Statistik (BPS). (2023). Potret Pendidikan Indonesia: Statistik Pendidikan 2023. Jakarta: BPS. (Digunakan sebagai landasan argumen kesenjangan akses bimbingan belajar tambahan berbasis biaya).
-United Nations (UN). (2023). The Sustainable Development Goals Report 2023: Special Edition. New York: United Nations. 
+- Badan Pusat Statistik (BPS). (2023). Potret Pendidikan Indonesia: Statistik Pendidikan 2023. Jakarta: BPS.
+- United Nations (UN). (2023). The Sustainable Development Goals Report 2023: Special Edition. New York: United Nations. 
 - Mahanal, S., & Zubaidah, S. (2024). Keefektifan Peer-to-Peer Tutoring di Era Digital. Jurnal Inovasi Pendidikan, 15(1), 112-125.
 - Torrens University Australia. (n.d.). The 5 Big Benefits of Studying with Friends and How it Could Save You Money. 
