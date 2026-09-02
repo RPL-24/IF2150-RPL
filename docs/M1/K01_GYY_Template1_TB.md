@@ -9,21 +9,21 @@ TOPIC BRAINSTORMING
 
 ## _Nama Perangkat Lunak_
 
-### Untuk: _[Nama Asisten]_
+### Untuk: _Mikhael Andrian Yonatan_
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | _\[Kelas\]_ |
-| Kelompok | _\[Nomor Kelompok\]_ |
+| Kelas | _K01_ |
+| Kelompok | _G09_ |
 
-| NIM       | Nama               |
-| --------- | ------------------ |
-| _[NIM 1]_ | _[Nama Anggota 1]_ |
-| _[NIM 2]_ | _[Nama Anggota 2]_ |
-| _[NIM 3]_ | _[Nama Anggota 3]_ |
-| _[NIM 4]_ | _[Nama Anggota 4]_ |
-| _[NIM 5]_ | _[Nama Anggota 5]_ |
+| NIM        | Nama                              |
+| ---------- | --------------------------------- |
+| _13525049_ | _Hugo Daniel Johansen Napitupulu_ |
+| _13525028_ | _Markus Christiano Simanjutak_    |
+| _13525025_ | _David Christian_                 |
+| _13525001_ | _Matthew Allen Reynaldo_          |
+| _13525010_ | _Fabian Amzar Susanto_            |
 
 ---
 
@@ -79,9 +79,9 @@ Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan s
 
 | Aktor   | Deskripsi                                                                                                                                                                                                                         |
 | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sistem Admin | _Mengelola sumber dan data spesies_ |
-| Pihak Berwenang | _Penerima laporan terverifikasi, yang menindak lanjuti_ |
-| Owner Platform | _Menerima laporan user yang melanggar aturan agar bisa ditindaklanjuti sesuai aturan platform_ |
+| Tutor | _User yang mendaftarkan materi, Menentukan ketersediaan waktu dan kapasitas peserta per sesi, lalu memberi materi pada sesi yang terbentuk. Satu orang dapat berperan sebagai Tutor sekaligus Mentee untuk materi yang berbeda_ |
+| Mentee | _User yang mendaftarkan materi yang ingin dipelajarinya beserta ketersediaan waktunya, lalu mengikuti sesi belajar bersama Tutor atau sesama Mentee_ |
+| Sistem | _Menjalankan pencocokan tutor dan mentee secara terjadwal berdasarkan materi dan waktu, serta mencatat keterlaksanaan sesi_ |
 
 ## 3.2 Kebutuhan Pengguna Awal
 
@@ -89,20 +89,39 @@ Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dal
 
 | ID    | Aktor          | Kebutuhan / Aktivitas     | Tujuan / Nilai                                |
 | :---- | :------------- | :------------------------ | :-------------------------------------------- |
-| US-01 | _Admin_        | _Saya ingin mengelola daftar sumber pemantauan dan data spesies dilindungi_ | _sehingga sistem tetap akurat_ |
-| US-02 | _Pihak berwenang_ | _Saya ingin menerima laporan yang terverifikasi_    | _sehingga bisa langsung ditindaklanjuti_              |
-| US-03 | _Owner Platform_ | _Saya ingin platform bebas dari barang illegal_    | _sehingga aman dan nyaman bagi pengguna_              |
+| US-01 | _Tutor_  | _Saya ingin mendaftar dan masuk menggunakan akun pribadi_ | _sehingga saya bisa mengakses semua fitur_ |
+| US-02 | _Tutor_  | _Saya ingin mengisi materi yang saya bisa_ | _sehingga saya dipertemukan dengan orang yang membutuhkannya_ |
+| US-03 | _Tutor_  | _Saya ingin mengisi ketersediaan waktu_ | _sehingga saya tidak dipasangkan pada jadwal yang saya tidak bisa_ |
+| US-04 | _Tutor_  | _Saya ingin menetapkan jumlah maksimum peserta dalam satu sesi_ | _sehingga sesi tetap efektif_ |
+| US-05 | _Tutor_  | _Saya ingin menerima info mentee beserta materi dan waktunya_ | _sehingga saya tahu harus bertemu siapa dan kapan_ |
+| US-06 | _Tutor_  | _Saya ingin menolak mentee yang tidak sesuai_ | _sehingga saya dipertemukan dengan orang yang tepat_ |
+| US-07 | _Tutor_  | _Saya ingin mencatat apakah sesi jadi terlaksana_ | _sehingga catatan sistem sesuai keadaan sebenarnya_ |
+| US-08 | _Tutor_  | _Saya ingin melihat riwayat sesi yang pernah saya jalani_ | _sehingga saya bisa mengecek apa saja yang sudah saya ajarkan_ |
+| US-09 | _Tutor_  | _Saya ingin memberi penilaian singkat setelah sesi_ | _sehingga kualitas pencocokan berikutnya membaik_ |
+| US-10 | _Mentee_ | _Saya ingin mendaftar dan masuk menggunakan akun pribadi_ | _sehingga saya bisa mengakses semua fitur_ |
+| US-11 | _Mentee_ | _Saya ingin mengisi materi yang ingin saya pelajari_ | _sehingga saya memperoleh bantuan yang sesuai_ |
+| US-12 | _Mentee_ | _Saya ingin mengisi ketersediaan waktu_ | _sehingga saya tidak dipasangkan pada jadwal yang saya tidak bisa_ |
+| US-13 | _Mentee_ | _Saya ingin menerima info tutor atau teman beserta materi dan waktunya_ | _sehingga saya tahu harus bertemu siapa dan kapan_ |
+| US-14 | _Mentee_ | _Saya ingin menolak tutor atau teman yang tidak sesuai_ | _sehingga saya dipertemukan dengan orang yang saya setujui_ |
+| US-15 | _Mentee_ | _Saya ingin mencatat apakah sesi jadi terlaksana_ | _sehingga catatan sistem sesuai keadaan sebenarnya_ |
+| US-16 | _Mentee_ | _Saya ingin melihat riwayat sesi yang pernah saya jalani_ | _sehingga saya bisa menelusuri apa saja yang sudah saya pelajari_ |
+| US-17 | _Mentee_ | _Saya ingin memberi penilaian singkat setelah sesi_ | _sehingga kualitas pencocokan berikutnya membaik dan bisa melaporkan yang bermasalah_ |
 | ...   | ...            | ...                       | ...                                           |
 
 ## 3.3 Deskripsi Aktivitas
 Buatlah daftar seluruh aktivitas yang terdapat dalam sistem solusi, lengkap dengan ID dan penjelasan. Telusuri hubungan aktivitas tersebut dengan user story yang sudah dituliskan sebelumnya. Bisa dibuat dalam bentuk tabel.
 | ID | Aktivitas | Penjelasan | ID User Story |
 | :--- | :--- | :--- | :--- |
-| A01 | Mengelola Sumber Pemantauan | Admin bisa menambah, mengurangi, mengubah platform data dan kata kunci sistem | US-01 |
-| A02 | Mengelola Basis Data Spesies | Admin bisa meng-update list database satwa dilindungi dari sumber terpercaya | US-01 |
-| A03 | Menampilkan Statistik Pemantauan | Sistem bisa menampilkan data berupa list atau chart jumlah temuan | US-01 |
-| A04 | Mengirimkan Laporan ke Instansi | Sistem bisa memberi laporan kepada pihak berwenang  | US-02 |
-| A05 | Menindaklanjuti Temuan | Pihak berwenang menerima laporan, menilai, dan melaksanakan tindak lanjut sesuai kewenangannya | US-03 |
+| A01 | Melakukan Registrasi dan Autentikasi | User mendaftar dan masuk menggunakan akun pribadi | US-01 US-02 |
+| A02 | Mengisi Kebutuhan Materi  | User memilih materi yang ingin dipelajari dan dikuasai | US-01 US-02 |
+| A03 | Mengisi Ketersediaan Waktu | User menandai waktu saat mereka bisa | US-01 US-02 |
+| A04 | Menetapkan Kapasitas Sesi | User menentukan jumlah maksimum orang pada sesi  | US-03 |
+| A05 | Menjalankan Pencocokan Jadwal | Sistem mencocokan tutor dan mentee berdasarkan materi dan waktu | US-04 |
+| A06 | Mengonfirmasi atau Menolak tutor atau teman | Kedua pihak menyetujui atau menolak pasangan yang diusulkan | US-05 |
+| A07 | Melaksanakan Sesi Belajar | Kedua pihak bertemu sesuai kesepakatan bisa offline atau online | US-04 |
+| A08 | Konfirmasi Sesi | Sistem menanyakan dan mencatat sesi  | US-06 |
+| A09 | Melihat History Sesi | User bisa melihat daftar sesi yang pernah dijalaninya sebagai tutor atau mentee  | US-07 |
+| A10 | Memberikan Feedback Sehabis Sesi | User memberi penilaian singkat dan catatan opsional ke orang pada sesi tersebut  | US-08 |
 | ... | ... | ... | ... |
 
 ## 3.4 Model Proses Bisnis
