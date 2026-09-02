@@ -101,8 +101,6 @@ Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan s
 
 ## 3.2 Kebutuhan Pengguna Awal
 
-Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dalam format _User Story_ (Sebagai [Aktor], saya ingin [Aktivitas/Kebutuhan], sehingga [Tujuan/Nilai]). Pastikan kalian berfokus pada "apa yang ingin dilakukan pengguna".
-
 | ID    | Aktor          | Kebutuhan / Aktivitas     | Tujuan / Nilai                                |
 | :---- | :------------- | :------------------------ | :-------------------------------------------- |
 | US-01 | _Tutor_  | _Saya ingin mendaftar dan masuk menggunakan akun universitas valid_ | _sehingga saya bisa mengakses semua fitur_ |
@@ -126,7 +124,7 @@ Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dal
 | US-19 | _Tutor_ | _Saya ingin menghubungi mentee_ | _sehingga bisa berkomunikasi dengan jelas terkait sesi_  |
 
 ## 3.3 Deskripsi Aktivitas
-Buatlah daftar seluruh aktivitas yang terdapat dalam sistem solusi, lengkap dengan ID dan penjelasan. Telusuri hubungan aktivitas tersebut dengan user story yang sudah dituliskan sebelumnya. Bisa dibuat dalam bentuk tabel.
+
 | ID | Aktivitas | Penjelasan | ID User Story |
 | :--- | :--- | :--- | :--- |
 | A01 | Melakukan Registrasi dan Autentikasi | User mendaftar dan masuk menggunakan akun universitas valid | US-01 US-09 |
