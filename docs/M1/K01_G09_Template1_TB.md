@@ -105,40 +105,40 @@ Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dal
 
 | ID    | Aktor          | Kebutuhan / Aktivitas     | Tujuan / Nilai                                |
 | :---- | :------------- | :------------------------ | :-------------------------------------------- |
-| US-01 | _Tutor_  | _Saya ingin mendaftar dan masuk menggunakan akun pribadi_ | _sehingga saya bisa mengakses semua fitur_ |
+| US-01 | _Tutor_  | _Saya ingin mendaftar dan masuk menggunakan akun universitas valid_ | _sehingga saya bisa mengakses semua fitur_ |
 | US-02 | _Tutor_  | _Saya ingin mengisi materi yang saya bisa_ | _sehingga saya dipertemukan dengan orang yang membutuhkannya_ |
-| US-03 | _Tutor_  | _Saya ingin mengisi ketersediaan waktu_ | _sehingga saya tidak dipasangkan pada jadwal yang saya tidak bisa_ |
+| US-03 | _Tutor_  | _Saya ingin membuat sesi mengajar_ | _sehingga saya bisa mengajar dengan waktu kosong_ |
 | US-04 | _Tutor_  | _Saya ingin menetapkan jumlah maksimum peserta dalam satu sesi_ | _sehingga sesi tetap efektif_ |
 | US-05 | _Tutor_  | _Saya ingin menerima info mentee beserta materi dan waktunya_ | _sehingga saya tahu harus bertemu siapa dan kapan_ |
-| US-06 | _Tutor_  | _Saya ingin menolak mentee yang tidak sesuai_ | _sehingga saya dipertemukan dengan orang yang tepat_ |
-| US-07 | _Tutor_  | _Saya ingin mencatat apakah sesi jadi terlaksana_ | _sehingga catatan sistem sesuai keadaan sebenarnya_ |
-| US-08 | _Tutor_  | _Saya ingin melihat riwayat sesi yang pernah saya jalani_ | _sehingga saya bisa mengecek apa saja yang sudah saya ajarkan_ |
-| US-09 | _Tutor_  | _Saya ingin memberi penilaian singkat setelah sesi_ | _sehingga kualitas pencocokan berikutnya membaik_ |
-| US-10 | _Mentee_ | _Saya ingin mendaftar dan masuk menggunakan akun pribadi_ | _sehingga saya bisa mengakses semua fitur_ |
-| US-11 | _Mentee_ | _Saya ingin mengisi materi yang ingin saya pelajari_ | _sehingga saya memperoleh bantuan yang sesuai_ |
-| US-12 | _Mentee_ | _Saya ingin mengisi ketersediaan waktu_ | _sehingga saya tidak dipasangkan pada jadwal yang saya tidak bisa_ |
-| US-13 | _Mentee_ | _Saya ingin menerima info tutor atau teman beserta materi dan waktunya_ | _sehingga saya tahu harus bertemu siapa dan kapan_ |
-| US-14 | _Mentee_ | _Saya ingin menolak tutor atau teman yang tidak sesuai_ | _sehingga saya dipertemukan dengan orang yang saya setujui_ |
-| US-15 | _Mentee_ | _Saya ingin mencatat apakah sesi jadi terlaksana_ | _sehingga catatan sistem sesuai keadaan sebenarnya_ |
-| US-16 | _Mentee_ | _Saya ingin melihat riwayat sesi yang pernah saya jalani_ | _sehingga saya bisa menelusuri apa saja yang sudah saya pelajari_ |
-| US-17 | _Mentee_ | _Saya ingin memberi penilaian singkat setelah sesi_ | _sehingga kualitas pencocokan berikutnya membaik dan bisa melaporkan yang bermasalah_ |
-| ...   | ...            | ...                       | ...                                           |
+| US-06 | _Tutor_  | _Saya ingin mencatat apakah sesi jadi terlaksana_ | _sehingga catatan sistem sesuai keadaan sebenarnya_ |
+| US-07 | _Tutor_  | _Saya ingin melihat riwayat sesi yang pernah saya jalani_ | _sehingga saya bisa mengecek apa saja yang sudah saya ajarkan_ |
+| US-08 | _Tutor_  | _Saya ingin memberi penilaian singkat setelah sesi_ | _sehingga kualitas pencocokan berikutnya membaik_ |
+| US-09 | _Mentee_ | _Saya ingin mendaftar dan masuk menggunakan akun universitas valid_ | _sehingga saya bisa mengakses semua fitur_ |
+| US-10 | _Mentee_ | _Saya ingin mengisi materi yang ingin saya pelajari_ | _sehingga saya memperoleh bantuan yang sesuai_ |
+| US-11 | _Mentee_ | _Saya ingin mengisi ketersediaan waktu_ | _sehingga saya tidak dipasangkan pada jadwal yang saya tidak bisa_ |
+| US-12 | _Mentee_ | _Saya ingin menerima info tutor atau teman beserta materi dan waktunya_ | _sehingga saya tahu harus bertemu siapa dan kapan_ |
+| US-13 | _Mentee_ | _Saya ingin mencatat apakah sesi jadi terlaksana_ | _sehingga catatan sistem sesuai keadaan sebenarnya_ |
+| US-14 | _Mentee_ | _Saya ingin melihat riwayat sesi yang pernah saya jalani_ | _sehingga saya bisa menelusuri apa saja yang sudah saya pelajari_ |
+| US-15 | _Mentee_ | _Saya ingin memberi penilaian singkat setelah sesi_ | _sehingga kualitas pencocokan berikutnya membaik dan bisa melaporkan yang bermasalah_ |
+| US-16 | _Mentee_ | _Saya ingin menentukan online atau offline_ | _sehingga sesuai dengan ketersediaan saya_ |
+| US-17 | _Tutor_ | _Saya ingin menentukan online atau offline_ | _sehingga sesuai dengan ketersediaan saya_  |
+| US-18 | _Mentee_ | _Saya ingin menghubungi teman atau tutor_ | _sehingga bisa berkomunikasi dengan jelas terkait sesi_ |
+| US-19 | _Tutor_ | _Saya ingin menghubungi mentee_ | _sehingga bisa berkomunikasi dengan jelas terkait sesi_  |
 
 ## 3.3 Deskripsi Aktivitas
 Buatlah daftar seluruh aktivitas yang terdapat dalam sistem solusi, lengkap dengan ID dan penjelasan. Telusuri hubungan aktivitas tersebut dengan user story yang sudah dituliskan sebelumnya. Bisa dibuat dalam bentuk tabel.
 | ID | Aktivitas | Penjelasan | ID User Story |
 | :--- | :--- | :--- | :--- |
-| A01 | Melakukan Registrasi dan Autentikasi | User mendaftar dan masuk menggunakan akun pribadi | US-01 US-02 |
-| A02 | Mengisi Kebutuhan Materi  | User memilih materi yang ingin dipelajari dan dikuasai | US-01 US-02 |
-| A03 | Mengisi Ketersediaan Waktu | User menandai waktu saat mereka bisa | US-01 US-02 |
-| A04 | Menetapkan Kapasitas Sesi | User menentukan jumlah maksimum orang pada sesi  | US-03 |
-| A05 | Menjalankan Pencocokan Jadwal | Sistem mencocokan tutor dan mentee berdasarkan materi dan waktu | US-04 |
-| A06 | Mengonfirmasi atau Menolak tutor atau teman | Kedua pihak menyetujui atau menolak pasangan yang diusulkan | US-05 |
-| A07 | Melaksanakan Sesi Belajar | Kedua pihak bertemu sesuai kesepakatan bisa offline atau online | US-04 |
-| A08 | Konfirmasi Sesi | Sistem menanyakan dan mencatat sesi  | US-06 |
-| A09 | Melihat History Sesi | User bisa melihat daftar sesi yang pernah dijalaninya sebagai tutor atau mentee  | US-07 |
-| A10 | Memberikan Feedback Sehabis Sesi | User memberi penilaian singkat dan catatan opsional ke orang pada sesi tersebut  | US-08 |
-| ... | ... | ... | ... |
+| A01 | Melakukan Registrasi dan Autentikasi | User mendaftar dan masuk menggunakan akun universitas valid | US-01 US-09 |
+| A02 | Mengisi Kebutuhan Materi  | User memilih materi yang ingin dipelajari dan dikuasai | US-02 US-010|
+| A03 | Mengisi Ketersediaan Waktu | User menandai waktu saat mereka bisa | US-11 |
+| A04 | Membuat Sesi Baru | User membuat sesi baru dan mengisi slot  | US-03 US-04 |
+| A05 | Menjalankan Pencocokan Jadwal | Sistem mencocokan mentee untuk membuat study group berdasarkan materi dan waktu | US-11 US-10 |
+| A06 | Melaksanakan Sesi Belajar | Kedua pihak bertemu sesuai kesepakatan bisa offline atau online | US-04 US-12 US-16 US-17 |
+| A07 | Konfirmasi Sesi | Sistem menanyakan dan mencatat sesi  | US-06 US-13 |
+| A08 | Melihat History Sesi | User bisa melihat daftar sesi yang pernah dijalaninya sebagai tutor atau mentee  | US-07 US-14 |
+| A09 | Memberikan Feedback Sehabis Sesi | User memberi penilaian singkat dan catatan opsional ke orang pada sesi tersebut  | US-08 US-15 |
+| A10 | Berkomunikasi Melalui Temporary Group Chat | User bisa chat teman atau tutor atau mentee | US-18 US-19 | 
 
 ## 3.4 Model Proses Bisnis
 Buatlah Activity Diagram atau Swimlane Diagram yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
