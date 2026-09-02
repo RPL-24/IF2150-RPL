@@ -42,10 +42,11 @@ Bahasa lokal yang merupakan kekayaan bangsa ini sekarang tengah mengalami tantan
 # BAB 2: Analisis Solusi
 
 ## 2.1 Deskripsi Perangkat Lunak
-Ngaksara merupakan sebuah media yang menawarkan fitur-fitur untuk menunjang pembelajaran bahasa baru, terutama bahasa dengan aksara yang rumit. Salah satu fitur yang terdapat dalam Ngaksara adalah fitur menggambar suatu karakter sesuai outline dan tanpa outline. Hasil gambar pengguna kemudian akan dinilai keakuratannya dengan karakter asli. Selain itu, fitur mencocokan aksara dengan pelanturan serta fitur menulis pelanturan karakter merupakan solusi kami untuk  meningkatkan familiaritas dan pemahaman akan pelanturan karakter. Ngaksara juga memfasilitasi pembelajaran berbagai aksara, sesuai dengan kebutuhan pengguna dengan opsi untuk menambahkan sendiri karakter yang ingin dipelajari.
+Ngaksara merupakan solusi perangkat lunak yang kami usulkan sebagai upaya pemenuhan SDGs 14 (Quality Education) berbasis website. Alasan kami memilih media situs web adalah untuk memperluas aksesiblitas perangkat lunak kami serta tidak perlu ada prasyarat untuk mengunduh aplikasi terlebih dahulu. Situs ini dirancang untuk menunjang proses pembelajaran bahasa baru, dengan fokus pada bahasa dengan aksara/karakter yang rumit. Dengan aplikasi ini, kami berharap untuk dapat berkontribusi dalam pembelajaran berbagai bahasa, mulai dari bahasa lokal maupun global. Salah satu fitur yang terdapat dalam Ngaksara adalah fitur menggambar suatu karakter sesuai dengan outline karakter tersebut, dengan opsi untuk menggambar tanpa outline bagi pengguna yang sudah mahir. Hasil gambar pengguna kemudian akan dinilai keakuratannya dengan karakter asli. Selain itu, fitur mencocokan aksara dengan pelanturan serta fitur menulis pelanturan karakter merupakan solusi kami untuk  meningkatkan familiaritas dan pemahaman akan pelanturan karakter.
 
 ## 2.2 Asumsi dan Batasan
-Dari segi teknis, pengembangan algoritma penilai kesesuaian gambar dan pattern matching merupakan salah satu aspek yang akan menjadi konundrum bagi kami. Selain itu, aspek pengelolaan dan pengembangan lebih lanjut masih dalam bentuk konsiderasi dan belum kami tentukan.
+# Tingkat Kemampuan Pengguna
+
 ---
 
 # BAB 3: Spesifikasi Kebutuhan dan Proses Bisnis
