@@ -153,7 +153,7 @@ Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja p
 <br>
 
 <p align="center">
-<img alt="Contoh Swimlane Diagram Lapor" src="./assets/diagram/ModelProsesBisnisLaporKota.avif-1" width="70%">
+<img alt="Contoh Swimlane Diagram Lapor" src="./assets/diagram/ModelProsesBisnisLaporKota-1.avif" width="70%">
 </p>
 <p align="center">
 <i>Gambar 1. Swimlane Diagram Alur Pelaporan dan Penanganan Kerusakan Infrastruktur Publik pada LaporKota</i>
