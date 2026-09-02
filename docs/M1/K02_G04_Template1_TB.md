@@ -14,7 +14,7 @@ TOPIC BRAINSTORMING
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | K2 |
+| Kelas | K02 |
 | Kelompok | 4  |
 
 | NIM | Nama |
@@ -45,7 +45,22 @@ Bahasa lokal yang merupakan kekayaan bangsa ini sekarang tengah mengalami tantan
 Ngaksara merupakan solusi perangkat lunak yang kami usulkan sebagai upaya pemenuhan SDGs 14 (Quality Education) berbasis website. Alasan kami memilih media situs web adalah untuk memperluas aksesiblitas perangkat lunak kami serta tidak perlu ada prasyarat untuk mengunduh aplikasi terlebih dahulu. Situs ini dirancang untuk menunjang proses pembelajaran bahasa baru, dengan fokus pada bahasa dengan aksara/karakter yang rumit. Dengan aplikasi ini, kami berharap untuk dapat berkontribusi dalam pembelajaran berbagai bahasa, mulai dari bahasa lokal maupun global. Salah satu fitur yang terdapat dalam Ngaksara adalah fitur menggambar suatu karakter sesuai dengan outline karakter tersebut, dengan opsi untuk menggambar tanpa outline bagi pengguna yang sudah mahir. Hasil gambar pengguna kemudian akan dinilai keakuratannya dengan karakter asli. Selain itu, fitur mencocokan aksara dengan pelanturan serta fitur menulis pelanturan karakter merupakan solusi kami untuk  meningkatkan familiaritas dan pemahaman akan pelanturan karakter.
 
 ## 2.2 Asumsi dan Batasan
-# Tingkat Kemampuan Pengguna
+Perancangan dan pengembangan Ngaksara dilandasi oleh sejumlah asumsi, baik secara teknis maupun kemampuan pengguna. Asumsi teknis mencakup kondisi sistem dan kapasitas perangkat lunak untuk menunjang keberlangsungan operasi. Sedangkan, asumsi pengguna mencakup kemampuan individu pengguna untuk dapat mengoperasikan perangkat lunak sesuai dengan tujuan.
+| Kategori | Asumsi |
+| --- | --- |
+| Teknis | Sistem dapat berjalan sesuai dengan fungsi yang dimaksudkan dan dapat diperbarui pada aspek fitur tertentu |
+| Teknis | Sistem mampu berjalan secara berkesinambung dan melayani permintaan pengguna tanpa adanya gangguan yang berarti |
+| Pengguna | Pengguna memiliki gawai serta infrastruktur yang memadai untuk menunjang penggunaan perangkat lunak |
+| Pengguna | Pengguna memiliki kemampuan untuk mengoperasikan website, seperti mendaftarkan akun, menggunakan fitur-fitur yang tersedia, dan melaporkan permasalahan yang muncul |
+| Pengguna | Pengguna memiliki kemampuan untuk mengunggah materi yang sesuai dan mampu mengelola data-data pelajar dibawahnya |
+
+Selain asumsi di atas, terdapat sejumlah batasan yang melatarbelakangi pengembangan perangkat lunak akmi. Keterbatasan berasal dari penetapan fitur dan skema yang realistis, keterbatasan sumber daya, dan regulasi terkait.
+| Kategori | Batasan |
+| --- | --- |
+| Fitur | Fitur yang ditawarkan harus dapat direalisasikan tanpa ada reduksi fitur yang berarti |
+| Sumber Daya | Sistem harus dapat direalisasikan sesuai dengan constraint yang ada, sumber daya manusia dan kemampuan personil |
+| Sumber Daya | Prioritas sistem diletakkan pada fitur inti, pemaparan pengetahuan dan penunjang pembelajaran |
+| Regulasi | Perangkat lunak dapat dipergunakan sesuai dengan regulasi dari lembaga terkait untuk menunjang penggunaan Ngaksara sebagai sarana perolehan sertifikat kemahiran bahasa |
 
 ---
 
