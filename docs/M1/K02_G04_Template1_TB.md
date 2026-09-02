@@ -42,11 +42,10 @@ Bahasa lokal yang merupakan kekayaan bangsa ini sekarang tengah mengalami tantan
 # BAB 2: Analisis Solusi
 
 ## 2.1 Deskripsi Perangkat Lunak
-Aplikasi/website dengan fitur menggambar aksara sesuai outline dan tanpa outline. Hasil gambar pengguna kemudian akan dinilai keakuratannya dengan sumber asli. Kurangnya minat dan keingintahuan akan aksara XXX membuat kami memikirkan suatu solusi untuk permasalahan ini. Dinilai dari pengalaman kami, kurangnya media untuk mengenal dan melatih pengetahuan akan aksara tersebut menjadi penyebab utama. Walaupun sudah ada produk yang serupa, kami melihat belum ada media yang ditujukan untuk mempelajari aksara XXX.
+Ngaksara merupakan sebuah media yang menawarkan fitur-fitur untuk menunjang pembelajaran bahasa baru, terutama bahasa dengan aksara yang rumit. Salah satu fitur yang terdapat dalam Ngaksara adalah fitur menggambar suatu karakter sesuai outline dan tanpa outline. Hasil gambar pengguna kemudian akan dinilai keakuratannya dengan karakter asli. Selain itu, fitur mencocokan aksara dengan pelanturan serta fitur menulis pelanturan karakter merupakan solusi kami untuk  meningkatkan familiaritas dan pemahaman akan pelanturan karakter. Ngaksara juga memfasilitasi pembelajaran berbagai aksara, sesuai dengan kebutuhan pengguna dengan opsi untuk menambahkan sendiri karakter yang ingin dipelajari.
 
 ## 2.2 Asumsi dan Batasan
-Dari segi teknis, pengembangan algoritma deteksi gambar (?) merupakan salah satu aspek yang mungkin akan menjadi konundrum kami. Selain itu, hook apa yang dibutuhkan agar XXX kami dapat menjaga retensi dari pengguna masih menjadi pertimbangan. Kemampuan dan waktu pula menjadi aspek lain yang masih perlu kami ruminasi. XXX
-
+Dari segi teknis, pengembangan algoritma penilai kesesuaian gambar dan pattern matching merupakan salah satu aspek yang akan menjadi konundrum bagi kami. Selain itu, aspek pengelolaan dan pengembangan lebih lanjut masih dalam bentuk konsiderasi dan belum kami tentukan.
 ---
 
 # BAB 3: Spesifikasi Kebutuhan dan Proses Bisnis
