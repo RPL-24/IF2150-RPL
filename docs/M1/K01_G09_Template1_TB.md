@@ -7,7 +7,7 @@ TOPIC BRAINSTORMING
 </h1>
 <br>
 
-## _Nama Perangkat Lunak_
+## PeerUP
 
 ### Untuk: _[Nama Asisten]_
 
@@ -17,13 +17,13 @@ Dipersiapkan oleh:
 | Kelas | _\[Kelas\]_ |
 | Kelompok | _\[Nomor Kelompok\]_ |
 
-| NIM       | Nama               |
-| --------- | ------------------ |
-| _[NIM 1]_ | _[Nama Anggota 1]_ |
-| _[NIM 2]_ | _[Nama Anggota 2]_ |
-| _[NIM 3]_ | _[Nama Anggota 3]_ |
-| _[NIM 4]_ | _[Nama Anggota 4]_ |
-| _[NIM 5]_ | _[Nama Anggota 5]_ |
+| NIM      | Nama                            |
+| -------- | ------------------------------- |
+| 13525049 | Hugo Daniel Johansen Napitupulu |
+| 13525001 | Matthew Allen Reynaldo          |
+| 13525010 | Fabian Amzar Susanto            |
+| 13525025 | David Christian                 |
+| 13525028 | Markus Christiano Simanjutak    |
 
 ---
 
@@ -34,27 +34,29 @@ Dipersiapkan oleh:
 
 ## 1.1 Latar Belakang Masalah
 
-Penjualan hewan langka di black market listings
-Poacher sering memburu hewan tsb dan menjualnya
-Terkadang terjual juga di website listing yang publik dan umum seperti e-bay
+Pencapaian Sustainable Development Goals (SDGs) Nomor 4: Pendidikan Bermutu memiliki target untuk memastikan pendidikan yang inklusif dan merata, serta mendorong kesempatan belajar sepanjang hayat bagi semua orang. Namun, realitas pendidikan di Indonesia, khususnya bagi siswa dan mahasiswa yang mempersiapkan ujian penting seperti Tes Kemampuan Akademik (TKA), Ujian Tulis Berbasis Komputer (UTBK), dan ujian akhir, masih penuh dengan ketimpangan baik dari sisi infrastruktur maupun kesempatan. Bimbingan di luar institusi akademik biasanya membutuhkan biaya yang besar, sehingga siswa-siswi biasanya segan ataupun sulit mendapat akses diskusi dan bimbingan belajar, terutama pelajar kalangan ekonomi menengah ke bawah.
 
-Perdagangan satwa dan flora liar ilegal merupakan salah satu penyebab rusaknya keanekaragaman hayati darat, yang berujung pada ancaman kepunahan spesies endemik. Hal ini merupakan salah satu pengancam pencapaian Sustainable Development Goals (SDGs) Nomor 15: Life on Land yang bertujuan untuk melindungi, memulihkan, dan menghentikan hilangnya keanekaragaman hayati.
+Di zaman di mana teknologi memarak kemana-mana, masalah ini diperparah oleh isolasi sosial. Banyak pelajar di tingkat pendidikan tinggi terus belajar sendirian karena mereka sering mempersepsikan pemeringkatan kelas sebagai kompetisi saling mengalahkan. Padahal, diskusi dan kolaborasi berbasis hubungan pertemanan dan interaksi sosial terbukti secara signifikan meningkatkan performa tim dalam menyelesaikan masalah atau tugas-tugas yang kompleks.
 
-Dari perdagangan ilegal ini, komunitas oknum pemburu dan penjual satwa dan flora terancam ini akan terus ada dan dapat mendukung pertumbuhan komunitas oknum tersebut.
-Dulu, perdagangan ilegal ini dilakukan di pasar gelap fisik. Namun seiring berkembangnya dunia digital, aktivitas perdagangan ilegal ini dapat dilakukan dengan lebih masif dan lebih mudah dengan adanya internet, social media dan platform e-commerce.
-
-(Data dan argumen pendukung tambahannya akan dibuat lagi nanti)
+Pendekatan learning-by-teaching telah diakui dapat meningkatkan penyerapan materi pelajaran dan memperkuat relasi sosial antar-pelajar. Studi terbaru tentang program study buddy membuktikan bahwa kolaborasi antara pelajar yang nilainya di atas rata-rata (bertindak sebagai mentor) dan pelajar di bawah rata-rata (bertindak sebagai protégé) memberikan manfaat peningkatan nilai akademik yang sama besarnya bagi kedua belah pihak. Oleh karena itu, terdapat urgensi yang tinggi untuk menyediakan sebuah ekosistem digital gratis yang meruntuhkan batasan-batasan ini, memfasilitasi pelajar untuk menemukan study buddy yang tepat demi kesuksesan akademik bersama.
 
 ## 1.2 Analisis Kondisi Saat Ini
 
-Saat ini, upaya pelacakan perdagangan satwa dan flora liar di internet sebenarnya telah memanfaatkan teknologi tingkat tinggi di skala global. Sistem pemantauan raksasa seperti AI Guardian (dikembangkan oleh IFAW dan Baidu) atau ECO-SOLVE telah menggunakan Kecerdasan Buatan (AI) untuk menyaring jutaan data di platform besar.
+Di zaman yang sangat maju ini, para pelajar memiliki banyak metode yang dapat mereka pakai untuk belajar. Berikut adalah beberapa situasi metode pembelajaran yang paling sering digunakan oleh para pelajar di zaman sekarang.
 
-Namun, keberadaan teknologi ini menunjukkan gap aktual, khususnya untuk penerapan di negara berkembang seperti Indonesia apalagi di daerah lokal. Terdapat tiga gap utama dari teknologi yang sudah ada saat ini:   
-1. Bersifat Tertutup (Closed-Source): Teknologi pelacakan yang ada saat ini dimiliki dan dikembangkan perusahaan teknologi besar dan hanya diakses oleh penegak hukum. Sistem ini bersifat closed-source, artinya pihak luar atau publik tidak bisa melihat, memodifikasi, atau memakai kode programnya untuk digunakan atau dikembangkan mandiri.
-2. Sistem Terlalu Berat dan Membutuhkan Biaya Besar: Sistem global mengandalkan Large Language Models (LLM), Computer Vision, dan AI yang membutuhkan daya komputasi dan budget yang sangat besar.
-3. Tidak Tahu Konteks Pasar Gelap Lokal: AI buatan perusahaan multinasional dilatih menggunakan bahasa baku dan bahasa luar, bukan Bahasa Indonesia ataupun buzzword lokal. Akibatnya, sistem mereka sering kali gagal beradaptasi saat pedagang di Indonesia memodifikasi teks, menggunakan singkatan daerah atau menggunakan buzzword mereka sendiri.
+# 1.2.1 Ketergantungan pada Kecerdasan Buatan (AI)
+Banyak pelajar kini memanfaatkan AI berbayar maupun gratis sebagai tutor pribadi mereka. Sebenarnya, pemanfaatan AI sebagai tutor belajar itu sangat bagus karena teknologi ini membuat para pelajar memiliki tutor pribadi pintar yang mudah digunakan, dapat dipakai siapa saja, dan relatif murah. 
 
-Berdasarkan gaps tersebut, petugas konservasi umumnya membutuhkan solusi yang lebih terjangkau. Oleh karena itu, perangkat lunak ini dapat dikembangkan sebagai bot pelacak (web scraper) yang ringan, murah, dan dapat digunakan siapapun. Alih-alih menggunakan teknologi yang berat dan rumit, perangkat lunak ini berfokus pada teknologi sistem pencocokan teks menggunakan database kamus buzzword pasar gelap lokal. Dengan struktur yang lebih ringan dan sederhana, perangkat lunak ini dapat dijalankan dengan mudah pada komputer/device pihak berwenang untuk menyaring forum dan komunitas jual-beli tertutup di wilayah mereka masing-masing.
+Akan tetapi, hal ini juga menimbulkan sebuah gap yang kritis. Berinteraksi secara eksklusif dengan mesin menghilangkan komponen interaksi sosial dan bahasa tubuh yang krusial untuk melancarkan komunikasi kognitif antarmanusia. Selain itu, belajar dengan AI tidak memberikan kesempatan kepada pengguna untuk merasakan "efek protégé", yaitu dorongan motivasi dan retensi memori tingkat tinggi yang hanya didapatkan ketika seseorang berusaha keras menjelaskan sebuah konsep kepada orang lain.
+
+# 1.2.2 Platform EdTech Berbasis Subskripsi
+Solusi seperti platform EdTech (Skuling, Pahamify, atau Zenius) menggunakan model bisnis berlangganan yang diskriminatif secara ekonomi yang membuat para pelajar dengan anggaran yang terbatas sulit untuk mengakses platform-platform ini. Sistem ini juga lebih banyak berjalan satu arah. Hal ini juga berarti para pelajar tidak mendapatkan koneksi ataupun sosialisasi yang cukup untuk memaksimalkan potensi dan pembelajaran mereka. Metode belajar ini gagal mewadahi kebutuhan pelajar yang membutuhkan komunikasi dua arah secara real-time dengan tutor ataupun teman sebaya.
+
+# 1.2.3 Pencarian Teman Belajar secara Manual
+Pelajar sering mencari teman belajar secara acak di media sosial, mau itu dari group WhatsApp, Line, ataupun saat diajak. Situasi ini sangat bagus karena mendorong interaksi yang natural dan mendorong kolaborasi yang memang disetujui dan diinginkan oleh semua orang yang terlibat dalam kelompok belajarnya. Akan tetapi, kondisi semacam ini memiliki gap yang cukup besar juga. Banyak pelajar yang memiliki kesulitan dalam bertemu dan berbicara dengan orang baru, mau itu untuk berkomunikasi maupun untuk membuat kelompok belajar. Hal ini diperparah lagi dengan maraknya digitalisasi dan kecanduan sosial media yang dapat menghambat kemampuan sosialisasi para pelajar dan membuat mereka terisolasi dari dunia nyata. Gap-nya juga terletak pada tidak adanya struktur atau sistem pencarian grup belajar yang jelas. Sering kali jadwal mereka berbenturan atau mereka terjebak pada kelompok yang tingkat pemahamannya sama-sama rendah, sehingga tidak terjadi transfer ilmu dari sosok mentor ke protégé.
+
+# Kesenjangan yang Akan Diselesaikan:
+Perangkat lunak yang kami kembangkan hadir untuk membantu mengisi celah ini melalui platform matching study group. Platform ini bertindak seperti fasilitator otomatis yang mencocokkan pengguna berdasarkan metrik yang jelas: tingkat penguasaan materi, ketersediaan waktu, dan topik/pelajaran yang ingin didiskusikan. Dengan memfasilitasi terbentuknya kelompok belajar yang lebih jelas dan terstruktur, aplikasi ini menghadirkan solusi berbiaya rendah dan terukur untuk meningkatkan pengalaman pendidikan pelajar.
 
 
 
