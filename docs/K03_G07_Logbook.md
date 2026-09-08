@@ -29,15 +29,21 @@
 ---
 
 ### Milestone 1
-**Periode:** [Tanggal Mulai] - [Tanggal Selesai]
+**Periode:** 30-08-2026 - 02-09-2026
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
+| *30-08-2026* | *Bagas Anugrah Putra* | *Mengerjakan draft awal bab 1* | *1-2* | *Done* | - | 
 | *30-08-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal bab 2* | *1-2.5* | *Done* | - | 
+| *30-08-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan draft subbab 3.1* | *1* | *Done* | * - * | 
 | *30-08-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan draft bab 3.2* | *1* | *Done* | *Aktor belum pasti* | 
+| *30-08-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan draft bab 3.3* | *1* | *Done* | *Alur aplikasi dan aktor belum pasti* |
 | *31-08-2026* | *Rafi Pradipta Andira Sulistyo* | *Melakukan penyesuaian terhadap draft bab 2 serta melengkapi draft bab 2.* | *1.5* | *Done* | *-* | 
 | *01-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Menambahkan hal-hal yang dibahas pada asistensi ke bab 2* | *1* | *Done* | *-* | 
+| *01-09-2026* | *Pasaribu Fritz T.A.M.* | *Melakukan revisi aktor pada subba 3.1 berdasarkan hasil asistensi* | *1* | *Done* | * - * | 
 | *01-09-2026* | *Gede Pranajayanta Suputra* | *Melakukan revisi aktor beserta aktivitas sesuai dengan masukan pada saat asistensi* | *1* | *Done* | *-* | 
+| *01-09-2026* | *Muhammad Atallah Ramadhan* | *Merevisi swimlane diagram sesuai dengan masukan pada saat asistensi* | *1* | *Done* | *-* | 
+| *01-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab tambahan yaitu bab 3.4* | *1.5* | *Done* | *-* |
 | | | | | | | |
 
 **Catatan/Evaluasi Milestone 1:**
