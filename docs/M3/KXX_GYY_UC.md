@@ -153,5 +153,50 @@ Format tabel skenario: kolom **Aksi Aktor** berisi apa yang dilakukan/diinput ak
 | :--- | :--- | :--- |
 | 1 | *Kasir memasukkan ID Pesanan yang salah/tidak ada* | *Sistem menampilkan pesan "ID Pesanan tidak ditemukan" dan meminta kasir memasukkan ulang* |
 
+### 3.4.3 Skenario UC03
+
+**Nama Use Case:** *Melihat detail makanan surplus*
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | ** | ** |
+| 2 | ** | ** |
+| 3 | ** | ** |
+
+
+<br>
+
+**Skenario Alternatif 1: ...**
+
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | ** | ** |
+| 2 | ** | ** |
+| 3 | ** | ** |
+| 4 | ** | ** |
+
+### 3.4.4 Skenario UC04
+
+**Nama Use Case:** *Menyaring listing makanan surplus*
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | ** | ** |
+
+<br>
+
+**Skenario Alternatif 1: ...**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | ** | ** |
+
+
+
 
 <sub>*Lanjutkanlah pola 3.4.x ini untuk setiap ID UC yang telah diidentifikasi pada 3.2, sampai seluruh use case memiliki skenario normal dan skenario alternatif (tidak usah dibuat jika use case tersebut memang tidak memiliki skenario alternatif).*<sub>
