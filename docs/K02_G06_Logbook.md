@@ -67,6 +67,17 @@
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 
 ---
+### Milestone 3
+**Periode:** 9 September 2026 - 16 September 2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *11-09-2026* | *Nadia Aulia Syafarani* | *Memasukkan bab 1-2 dan mengerjakan bab 3.2* | *1* | *Done* | *-* | 
+| *12-09-2026* | *Nadia Aulia Syafarani* | *Mengerjakan bab 3.4.3 dan 3.4.4* | *1* | *Done* | *-* | 
 
+
+**Catatan/Evaluasi Milestone 3:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+---
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
