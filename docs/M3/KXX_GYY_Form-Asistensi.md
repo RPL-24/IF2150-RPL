@@ -5,12 +5,12 @@
 | Informasi | Keterangan |
 | --- | --- |
 | **Hari** | Senin |
-| **Tanggal** | 07/09/2026 |
+| **Tanggal** | 14/09/2026 |
 | **Kelas** | K03 |
 | **Nomor Kelompok** | 5  |
 | **Nama Kelompok** | HEYSRIUSLAH  |
 | **Nama Perangkat Lunak** | LawHub  |
-| **Dokumen** | K03_G05_RG  |
+| **Dokumen** | K03_G05_UC  |
 
 ### Anggota Kelompok
 
