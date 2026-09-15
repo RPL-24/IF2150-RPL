@@ -112,28 +112,35 @@ Format tabel skenario: kolom **Aksi Aktor** berisi apa yang dilakukan/diinput ak
 
 ### 3.4.1 Skenario UC01
 
-**Nama Use Case:** *Melakukan Pembayaran Digital*
+**Nama Use Case:** *Menambahkan listing makanan surplus*
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan memilih menu checkout* | *Sistem menampilkan ringkasan pesanan dan pilihan metode pembayaran* |
-| 2 | *Pelanggan memilih metode pembayaran (misal: e-wallet)* | *Sistem mengarahkan pelanggan ke halaman konfirmasi e-wallet* |
-| 3 | *Pelanggan mengonfirmasi pembayaran* | *Sistem menerima respons pembayaran berhasil, memperbarui status pesanan menjadi "Lunas", dan menampilkan notifikasi pembayaran berhasil* |
-
+| 1 | *Penjual memilih tombol "tambahkan makanan"* | *Sistem menampilkan halaman untuk mengunggah foto makanan serta menyediakan kolom terstruktur dan kolom bebas untuk deskripsi makanan* |
+| 2 | *Penjual mengonfirmasi penambahan makanan* | *Sistem menerima respons penambahan berhasil, memperbarui listing makanan penjual, dan menampilkan notifikasi penambahan makanan berhasil* |
 
 <br>
 
-**Skenario Alternatif 1: Otorisasi Pembayaran Gagal**
+**Skenario Alternatif 1: Verifikasi Penambahan Makanan Gagal**
 
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan memilih menu checkout* | *Sistem menampilkan ringkasan pesanan dan pilihan metode pembayaran* |
-| 2 | *Pelanggan memilih metode pembayaran (misal: e-wallet)* | *Sistem mengarahkan pelanggan ke halaman konfirmasi e-wallet* |
-| 3 | *Pelanggan mengonfirmasi pembayaran* | *Sistem menerima respons pembayaran gagal (misal: saldo tidak cukup). Sistem menampilkan pesan error dan meminta pelanggan memilih metode pembayaran lain* |
-| 4 | *Pelanggan memilih metode pembayaran lain* | *Sistem kembali ke langkah 2 skenario normal* |
+| 1 | *Penjual memilih tombol "tambahkan makanan"* | *Sistem menampilkan halaman untuk mengunggah foto makanan serta menyediakan kolom terstruktur dan kolom bebas untuk deskripsi makanan* |
+| 2 | *Penjual mengonfirmasi penambahan makanan* | *Sistem menerima respons penambahan gagal (misal: tidak terisi deskripsi yang wajib isi, nama makanan dan harga). Sistem menampilkan pesan error di halaman yang sama dan meminta pelanggan memasukkan isi kolom tersebut* |
+| 4 | *Pelanggan melanjutkan mengisi* | *Sistem kembali ke langkah 1 skenario normal* |
+
+<br>
+
+**Skenario Alternatif 2: Exit dari Penambahan Makanan**
+
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Penjual memilih tombol "tambahkan makanan"* | *Sistem menampilkan halaman untuk mengunggah foto makanan serta menyediakan kolom terstruktur dan kolom bebas untuk deskripsi makanan* |
+| 2 | *Penjual mengonfirmasi penambahan makanan* | *Sistem menerima respons penambahan berhasil, memperbarui listing makanan penjual, dan menampilkan notifikasi penambahan makanan berhasil* |
 
 ### 3.4.2 Skenario UC02
 
