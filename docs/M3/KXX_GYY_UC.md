@@ -148,4 +148,71 @@ Format tabel skenario: kolom **Aksi Aktor** berisi apa yang dilakukan/diinput ak
 | 1 | *Kasir memasukkan ID Pesanan yang salah/tidak ada* | *Sistem menampilkan pesan "ID Pesanan tidak ditemukan" dan meminta kasir memasukkan ulang* |
 
 
+### 3.4.6 Skenario UC06
+
+**Nama Use Case:** *Memantau Status Laporan*
+
+**Pra-kondisi:** 
+* *Warga telah membuka aplikasi LaporKota (baik telah masuk ke akun terdaftar maupun sebagai publik).*
+* *Terdapat minimal satu laporan yang tersimpan di dalam sistem.*
+
+**Pasca-kondisi:** 
+* *Warga melihat linimasa riwayat penanganan laporan secara transparan (mencakup dokumentasi foto perbaikan jika berstatus "Berhasil", atau catatan alasan penolakan jika berstatus "Ditolak").*
+* *Dukungan (upvote) Warga tercatat dan sistem menghitung ulang urutan prioritas penanganan laporan secara otomatis (bila melakukan upvote).*
+
+<br>
+
+**Skenario Normal: Memantau Linimasa Riwayat Laporan Pribadi**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Warga memilih menu "Riwayat Laporan" atau menekan tautan notifikasi pembaruan status laporan* | *Sistem menyajikan daftar laporan yang diajukan oleh Warga, lengkap dengan ID tiket unik, kategori kerusakan, waktu masuk, dan status terkini ("Diterima", "Dikerjakan", atau "Berhasil")* |
+| 2 | *Warga memilih salah satu tiket laporan* | *Sistem menyajikan halaman pelacakan detail yang menampilkan linimasa riwayat status penanganan secara transparan, stempel waktu pembaruan status, serta dokumentasi foto hasil perbaikan fisik oleh Eksekutor Lapangan bila laporan telah berstatus "Berhasil"* |
+
+<br>
+
+**Skenario Alternatif 1: Memantau Laporan Publik via Peta Sebaran dan Memberikan Dukungan (Upvote)**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Warga memilih menu "Peta Sebaran Laporan"* | *Sistem memvisualisasikan peta sebaran seluruh laporan secara real-time dengan menyembunyikan identitas pribadi pelapor (anonim)* |
+| 2 | *Warga memilih salah satu penanda (marker) laporan pada peta* | *Sistem menyajikan kartu ringkasan laporan publik berupa foto bukti kerusakan, kategori, deskripsi keluhan, peta lokasi, status penanganan saat ini, dan jumlah upvote tanpa menampilkan identitas pelapor* |
+| 3 | *Warga menekan tombol "Upvote" (Dukung Laporan)* | *Sistem menambahkan 1 upvote pada laporan tersebut, menghitung ulang dan memperbarui urutan prioritas penanganan secara otomatis, serta memperbarui jumlah upvote terkini pada tampilan antarmuka* |
+
+<br>
+
+**Skenario Alternatif 2: Memantau Laporan yang Berstatus "Ditolak"**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Warga memilih menu "Riwayat Laporan"* | *Sistem menyajikan antrean laporan pribadi, termasuk laporan yang berstatus "Ditolak"* |
+| 2 | *Warga memilih tiket laporan yang berstatus "Ditolak"* | *Sistem menampilkan detail pelacakan tiket dengan status "Ditolak" beserta catatan resmi alasan penolakan yang diinput oleh Tim Administrasi* |
+
+<br>
+
+**Skenario Alternatif 3: Pengalihan Pemantauan dari Deteksi Duplikasi Laporan Baru**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Warga menekan tombol "Dukung Laporan Ini" pada dialog peringatan duplikasi laporan (radius 20 meter dari laporan aktif serupa)* | *Sistem mengalihkan aksi pelapor menjadi upvote, menambahkan 1 dukungan pada laporan aktif tersebut, menghitung ulang urutan prioritas, dan langsung mengarahkan Warga ke halaman linimasa status laporan eksisting tersebut* |
+
+<br>
+
+**Skenario Alternatif 4: Pencarian ID Tiket Laporan Tidak Ditemukan**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Warga memasukkan ID tiket yang keliru pada kolom pencarian tiket lalu menekan tombol "Cari"* | *Sistem mencari data tiket pada basis data, mendeteksi bahwa ID tiket tidak terdaftar, menampilkan pesan kesalahan "ID Tiket tidak ditemukan", dan mempertahankan formulir pencarian* |
+| 2 | *Warga memasukkan ID tiket yang valid lalu menekan tombol "Cari"* | *Sistem kembali ke langkah 2 Skenario Normal (menampilkan rincian linimasa tiket yang bersangkutan)* |
+
+<br>
+
+**Skenario Alternatif 5: Percobaan Upvote Berulang pada Laporan yang Sama**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Warga memilih laporan publik pada peta sebaran yang sebelumnya sudah pernah ia berikan upvote* | *Sistem menampilkan kartu ringkasan laporan dengan status penanda tombol upvote sudah aktif bagi akun Warga* |
+| 2 | *Warga menekan kembali tombol "Upvote"* | *Sistem menolak penambahan suara ganda, menampilkan pemberitahuan bahwa Warga telah mendukung laporan ini sebelumnya, dan tidak mengubah skor prioritas maupun angka upvote* |
+
+
 <sub>*Lanjutkanlah pola 3.4.x ini untuk setiap ID UC yang telah diidentifikasi pada 3.2, sampai seluruh use case memiliki skenario normal dan skenario alternatif (tidak usah dibuat jika use case tersebut memang tidak memiliki skenario alternatif).*<sub>
