@@ -73,6 +73,8 @@
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | *11-09-2026* | *Nadia Aulia Syafarani* | *Memasukkan bab 1-2 dan mengerjakan bab 3.2* | *1* | *Done* | *-* | 
 | *12-09-2026* | *Nadia Aulia Syafarani* | *Mengerjakan bab 3.4.3 dan 3.4.4* | *1* | *Done* | *-* | 
+| *12-09-2026* | *Cendra Asih Chairunnisa* | *Mengerjakan bab 3.4.1* | *1* | *Done* | *-* | 
+| *16-09-2026* | *Cendra Asih Chairunnisa* | *Melanjutkan bab 3.4.1 dan mengerjakan bab 3.4.2* | *1* | *Done* | *-* | 
 
 
 **Catatan/Evaluasi Milestone 3:**
