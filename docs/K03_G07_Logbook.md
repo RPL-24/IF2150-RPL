@@ -71,6 +71,16 @@
 | *09-09-2026* | *Muhammad Atallah Ramadhan* | *Finalisasi bab  2.5: Kebutuhan non-fungsional* | *1* | *Done* | *-* |
 | | | | | | | |
 
+### Milestone 3
+**Periode:** 10-09-2026 - 16-09-2026 
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *13-09-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan draft awal bab 3.2 & 3.3* | *1-2* | *Done* | - | 
+| *15-09-2026* | *Pasaribu Fritz T.A.M.* | *Revisi Use Case Diagram* | *1* | *Done* | - | 
+
+
+
 ---
 
 
