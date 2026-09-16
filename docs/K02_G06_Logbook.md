@@ -74,10 +74,11 @@
 | *11-09-2026* | *Nadia Aulia Syafarani* | *Memasukkan bab 1-2 dan mengerjakan bab 3.2* | *1* | *Done* | *-* | 
 | *12-09-2026* | *Nadia Aulia Syafarani* | *Mengerjakan bab 3.4.3 dan 3.4.4* | *1* | *Done* | *-* | 
 | *12-09-2026* | *Cendra Asih Chairunnisa* | *Mengerjakan bab 3.4.1* | *1* | *Done* | *-* | 
+| *12-09-2026* | *Renata Puspanegara Ninagan* | *Membuat Use Case Diagram* | *1* | *Done* | *-* | 
 | *13-09-2026* | *Sherin Felicia Danessa* | *Mengerjakan bab 3.4.5 dan 3.4.6* | *2* | *Done* | *-* | 
+| *13-09-2026* | *Ghina Emelia Yantes* | *Mengerjakan bab 3.4.7 dan 3.4.8* | *2* | *Done* | *-* | 
 | *16-09-2026* | *Cendra Asih Chairunnisa* | *Melanjutkan bab 3.4.1 dan mengerjakan bab 3.4.2* | *1* | *Done* | *-* | 
 | *16-09-2026* | *Nadia Aulia Syafarani* | *Mennambahkan UC09* | *0.25* | *Done* | *-* | 
-| *12-09-2026* | *Renata Puspanegara Ninagan* | *Membuat Use Case Diagram* | *1* | *Done* | *-* | 
 | *16-09-2026* | *Renata Puspanegara Ninagan* | *Mengedit Use Case Diagram* | *0.08* | *Done* | *-* | 
 
 
