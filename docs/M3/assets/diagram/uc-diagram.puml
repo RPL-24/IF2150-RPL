@@ -13,6 +13,9 @@ rectangle "Sistem LaporKota" {
   usecase "Melaporkan Hasil Perbaikan" as UC4
   usecase "Mengevaluasi Hasil Kerja" as UC5
   usecase "Memantau Status Laporan" as UC6
+  usecase "Mengupdate Status Laporan" as UC_Status
+  usecase "Meminta Perbaikan Ulang" as UC_Rework
+  usecase "Melakukan Upvote Laporan" as UC_Upvote
 }
 
 warga -- UC1
@@ -21,6 +24,12 @@ eksekutor -- UC3
 eksekutor -- UC4
 admin -- UC5
 warga -- UC6
+
+UC1 ..> UC_Status : <<include>>
+UC2 ..> UC_Status : <<include>>
+UC5 ..> UC_Status : <<include>>
+UC6 ..> UC_Upvote : <<include>>
+UC_Rework ..> UC4 : <<extend>>
 
 
 @enduml
