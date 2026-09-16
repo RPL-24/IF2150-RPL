@@ -59,8 +59,6 @@
 | 09-09-2026 | Matthew Allen Reynaldo | Membuat 1 case di bab 2.5 | 1 | Done | Sakit batuk |
 | 09-09-2026 | Fabian Amzar Susanto | Membuat 1 case di bab 2.5 | 1 | Done | - |
 
-<<<<<<< Updated upstream
-=======
 ---
 ### Milestone 3
 **Periode:** [09-09-2026] - [16-09-2026]
@@ -70,11 +68,14 @@
 | *12-09-2026* | *Markus Christiano Simanjuntak* | *Mengevaluasi traceability M2, menemukan anomali pemetaan R ke KF (seperti R10), dan merombak struktur dasar KF* | *1* | *Done* | *Banyak Kebutuhan (R) yang sebelumnya "gaib" dan belum terpetakan ke KF dengan benar* |
 | *13-09-2026* | *Markus Christiano Simanjuntak* | *Memperbaiki penulisan seluruh kalimat Kebutuhan Fungsional (KF01-KF12) agar sesuai dengan standar format EARS* | *1* | *Done* | *Penyesuaian kalimat dari sudut pandang user menjadi sudut pandang sistem cukup membingungkan* |
 | *14-09-2026* | *Markus Christiano Simanjuntak* | *Menambahkan fitur batas partisipan (R21, R22) serta fitur hapus, batal, dan edit sesi (R23, R24) beserta turunan KF-nya (KF13-KF17)* | *1* | *Done* | *-* |
+| *14-09-2026* | *David Christian* | *Membuat use case (UC05-UC08) turunan dari KF10-KF12* | *1* | *Done* | *-* |
 | *15-09-2026* | *Markus Christiano Simanjuntak* | *Menyusun tabel Identifikasi Use Case (UC01-UC12) dan skenario normal/alternatif untuk masing-masing UC* | *1.5* | *Done* | *-* |
+| *15-09-2026* | *David Christian* | *Membuat skenario normal/alternatif untuk UC05-UC08* | *1* | *Done* | *-* |
 | *16-09-2026* | *Markus Christiano Simanjuntak* | *Membuat Use Case Diagram di Draw.io, mengaplikasikan relasi include/extend serta generalisasi aktor Pengguna* | *1.5* | *Done* | *Ada beberapa perubahan setelah use case diagram diselesaikan* |
 | *16-09-2026* | *Hugo Daniel Johansen Napitupulu* | *Menambahkan A13, R23, KF15, KF16, KF17, A14, R24 pada dokumen MS2* | *1* | *Done* | *-* |
 | *16-09-2026* | *Hugo Daniel Johansen Napitupulu* | *Menambahkan US21, US22, US23 serta skenario USnya* | *0.5* | *Done* | *-* |
->>>>>>> Stashed changes
+
+``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
 
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
