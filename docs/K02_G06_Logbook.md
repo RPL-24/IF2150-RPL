@@ -76,6 +76,8 @@
 | *12-09-2026* | *Cendra Asih Chairunnisa* | *Mengerjakan bab 3.4.1* | *1* | *Done* | *-* | 
 | *16-09-2026* | *Cendra Asih Chairunnisa* | *Melanjutkan bab 3.4.1 dan mengerjakan bab 3.4.2* | *1* | *Done* | *-* | 
 | *16-09-2026* | *Nadia Aulia Syafarani* | *Mennambahkan UC09* | *0.25* | *Done* | *-* | 
+| *12-09-2026* | *Renata Puspanegara Ninagan* | *Membuat Use Case Diagram* | *1* | *Done* | *-* | 
+| *16-09-2026* | *Renata Puspanegara Ninagan* | *Mengedit Use Case Diagram* | *0.08* | *Done* | *-* | 
 
 
 **Catatan/Evaluasi Milestone 3:**
