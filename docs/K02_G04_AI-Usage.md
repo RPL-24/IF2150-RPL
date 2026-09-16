@@ -25,6 +25,7 @@
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
 * [Milestone 2](#milestone-2)
+* [Milestone 3](#milestone-3)
 
 ---
 
@@ -46,6 +47,12 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | :--- | :--- | :--- | :--- |
 | ChatGPT | Mencari contoh kebutuhan dari sisi sistem dan pengguna berdasarkan activity yang diberikan | "Berdasarkan activity sistem berikut, berikan saya contoh-contoh kebutuhan dari sisi user dan/atau sistem." | Mengganti ide-ide yang kurang realistis untuk diimplementasikan dan mengembangkannya menjadi format EARS |
 | Gemini | Ide untuk kebutuhan bisnis | Berdasarkan activity/kebutuhan sistem berikut, berikan saya contoh ide untuk kebutuhandari sisi bisnis. | Mencari contoh yang serupa dengan ide awal untuk memastikan |
+
+
+### Milestone 3
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| ... | ... | ... | ... | ... |
 
 
 ### Milestone X
