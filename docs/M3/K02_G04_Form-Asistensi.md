@@ -35,9 +35,9 @@
 
 ## Dokumentasi
 
-<!-- ![](./assets/foto-asistensi.jpg) -->
+<!-- ![](./assets/foto-asistensi.png) -->
 <p align="center">
-  <img src="./assets/foto-asistensi.jpg" width="100%">
+  <img src="./assets/foto-asistensi.png" width="100%">
 </p>
 
 <p align="center">
