@@ -63,8 +63,8 @@
 | 13-09-2026 | Marvel | M3 3.2 | <1 | Progress | - |
 | 15-09-2026 | Naufal, Abduh, Marvel, Diandra, Natan, Ryuza | M3 3.2, 3.4 | 1 | Progress | - |
 | 15-09-2026 | Naufal, Abduh, Marvel, Diandra, Natan, Ryuza | Asistensi | <1 | Done | - |
-| 16-09-2026 | ... | Finishing M3 | ... | blom Done | - |
-| ... | ... | ... | ... | ... | ... |
+| 16-09-2026 | Abduh | Diagram untuk 3.3 | 2 | Done | - |
+| 16-09-2026 | Naufal, Abduh, Marvel, Diandra, Natan, Ryuza | Finishing: form asistensi, AI-Usage, logbook | 1 | Done | - |
 
 **Catatan/Evaluasi Milestone 3:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
