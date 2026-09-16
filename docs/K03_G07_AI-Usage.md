@@ -45,6 +45,12 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | | | | | |
 | | | | | |
 
+### Milestone 3
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Belajar syntax untuk UML Diagram* | *Berikan contoh syntax untuk membuat diagram UML dengan 2 aktor dan 2 use case* | *Menyesuaikan isi kode dengan aktor pribadi, use case pribadi, dan struktur yang menyesuaikan rancangan kelompok* |
+| | | | | |
+
 ---
 ### Pernyataan Integritas dan Persetujuan
 
