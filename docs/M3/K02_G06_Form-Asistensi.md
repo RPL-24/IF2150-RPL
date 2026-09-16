@@ -27,8 +27,8 @@
 
 | Catatan |
 | --- |
-| 1. Menambahkan use case yang belum lengkap*  |
-| 2. ... |
+| 1. Tambahkan aksi mengurangi stok dan menghapus listing makanan (beserta skenarionya) di UC penjual  |
+| 2. KF07 bisa dimasukkan sebagai refrensi seluruh UC |
 | 3. ... |
 | 4. ... |
 
