@@ -39,7 +39,11 @@
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
 | *Claude* | *Memperbaiki kebahasaan* | *[Isi paragraf teks yang sudah ditulis dan masih belum rapi] Berikan saran perubahan tanpa mengubah teks* | *AI memberikan beberapa rekomendasi perbaikan kebahasaan dan diberikan dan kami memilih beberapa bagian yang bisa digunakan* |
-| | | | | |
+
+### Milestone 3
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *-* | *-* | *-* | *-* |
 
 ---
 ### Pernyataan Integritas dan Persetujuan
