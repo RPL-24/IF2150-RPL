@@ -76,6 +76,3 @@
 | *16-09-2026* | *Hugo Daniel Johansen Napitupulu* | *Menambahkan US21, US22, US23 serta skenario USnya* | *0.5* | *Done* | *-* |
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
-
-
-``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
