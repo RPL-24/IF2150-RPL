@@ -27,19 +27,16 @@
 
 | Catatan |
 | --- |
-| 1. Menambahkan use case*  |
+| 1. Menambahkan use case yang belum lengkap*  |
 | 2. ... |
 | 3. ... |
 | 4. ... |
-
-**Notes for this section:**  
-*Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
 
 ## Dokumentasi
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/foto-asistensi.jpg" width="100%">
+<img src="https://github.com/user-attachments/assets/06f49115-24bb-4502-9a9d-76ac7d812c36" width="100%" />
 </p>
 
 <p align="center">
