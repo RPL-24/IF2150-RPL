@@ -54,6 +54,20 @@
 **Catatan/Evaluasi Milestone 2:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 
+### Milestone 3
+**Periode:** 09-09-2026 - 16-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 13-09-2026 | Marvel | M3 3.2 | <1 | Progress | - |
+| 15-09-2026 | Naufal, Abduh, Marvel, Diandra, Natan, Ryuza | M3 3.2, 3.4 | 1 | Progress | - |
+| 15-09-2026 | Naufal, Abduh, Marvel, Diandra, Natan, Ryuza | Asistensi | <1 | Done | - |
+| 16-09-2026 | ... | Finishing M3 | ... | blom Done | - |
+| ... | ... | ... | ... | ... | ... |
+
+**Catatan/Evaluasi Milestone 3:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
 ---
 
 
