@@ -67,3 +67,20 @@
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 ---
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
+
+---
+### Milestone 3
+**Periode** : 09-09-2026 - 16-09-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 13-09-2026 | Ami, Cherinette | Membuat draft UC | 2 | Done | - | 
+| 14-09-2026 | Livy | Asistensi | 1 | Done | - | 
+| 15-09-2026 | Ami | Revisi KF dan UC | 1 | Done | - | 
+| 16-09-2026 | Livy | Menambah draft Skenario Use Case | 2 | Done | - | 
+| 16-09-2026 | Ami, Cherinette | Revisi Bab 2 dan 3.2 | 1 | Done | - | 
+| 16-09-2026 | Raya | Membuat diagram usecase | 1 | Done | - | 
+
+**Catatan/Evaluasi Milestone 2:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+---
+``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
