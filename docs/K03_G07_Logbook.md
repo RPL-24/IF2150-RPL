@@ -55,8 +55,6 @@
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
-| *13-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal UC01 dan UC02* | *1* | *Done* | - | 
-| *16-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Memperbaiki beberapa hal di UC01 dan UC02 serta mengisi logbook* | *0.5* | *Done* | - | 
 | *06-09-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan draft awal bab  2.5: Kebutuhan non-fungsional* | *1* | *Not done* | *-* |
 | *07-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab draft awal 2.3: Deskripsi Aktivitas* | *0.5* | *Done* | *-* |
 | *07-09-2026* | Muhammad Atallah Ramadhan | Mengerjakan draft awal bab  2.5: Kebutuhan non-fungsional | *1* | Done | *-* |
@@ -77,6 +75,9 @@
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | *13-09-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan draft awal bab 3.2 & 3.3* | *1-2* | *Done* | - |
+| *13-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal UC01 dan UC02* | *1* | *Done* | - | 
+| *15-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Memperbaiki beberapa hal di UC01 dan UC02 serta mengisi logbook* | *0.5* | *Done* | - | 
+| *16-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Memperbaiki beberapa hal di UC01 dan UC02 serta mengisi logbook* | *0.25* | *Done* | - | 
 | *13-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 3.4.3: Skenarion UC03* | *1* | *Done* | *-* |
 | *13-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 3.4.4: Skenarion UC04* | *1* | *Done* | *-* |
 | *15-09-2026* | *Pasaribu Fritz T.A.M.* | *Revisi Use Case Diagram* | *1* | *Done* | - | 
