@@ -4,13 +4,13 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | *\[Hari\]* |
-| **Tanggal** | *\[DD/MM/YYYY\]* |
+| **Hari** | *Selasa* |
+| **Tanggal** | *15/09/2026* |
 | **Kelas** | 02 |
 | **Nomor Kelompok** | 04 |
 | **Nama Kelompok** | 0sks |
 | **Nama Perangkat Lunak** | Ngaksara |
-| **Dokumen** | *\[Nama Dokumen yang diasistensikan\]*  |
+| **Dokumen** | *UC*  |
 
 ### Anggota Kelompok
 
@@ -27,13 +27,11 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. *Form feed back sebaiknya diimplementasikan secara langsung di perangkat lunak yang dibuat.*  |
+| 2. *Dalam perangkat lunak tidak wajib ada aspek bisnis (yang berhubungan dengan pendapatan moneter)* |
+| 3. *Aktor administrator boleh dihapus, disesuaikan saja apakah merasa benar-benar diperlukan atau tidak* |
+| 4. *Wajib ada alternatif untuk setiap skenario, jika diperlukan dapat membuat lebih dari satu alternatif untuk tiap skenario* |
 
-**Notes for this section:**  
-*Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
 
 ## Dokumentasi
 
