@@ -76,7 +76,9 @@
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
-| *13-09-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan draft awal bab 3.2 & 3.3* | *1-2* | *Done* | - | 
+| *13-09-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan draft awal bab 3.2 & 3.3* | *1-2* | *Done* | - |
+| *13-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 3.4.3: Skenarion UC03* | *1* | *Done* | *-* |
+| *13-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 3.4.4: Skenarion UC04* | *1* | *Done* | *-* |
 | *15-09-2026* | *Pasaribu Fritz T.A.M.* | *Revisi Use Case Diagram* | *1* | *Done* | - | 
 
 
