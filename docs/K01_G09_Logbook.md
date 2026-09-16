@@ -70,7 +70,8 @@
 | *14-09-2026* | *Markus Christiano Simanjuntak* | *Menambahkan fitur batas partisipan (R21, R22) serta fitur hapus, batal, dan edit sesi (R23, R24) beserta turunan KF-nya (KF13-KF17)* | *1* | *Done* | *-* |
 | *15-09-2026* | *Markus Christiano Simanjuntak* | *Menyusun tabel Identifikasi Use Case (UC01-UC12) dan skenario normal/alternatif untuk masing-masing UC* | *1.5* | *Done* | *-* |
 | *16-09-2026* | *Markus Christiano Simanjuntak* | *Membuat Use Case Diagram di Draw.io, mengaplikasikan relasi include/extend serta generalisasi aktor Pengguna* | *1.5* | *Done* | *Ada beberapa perubahan setelah use case diagram diselesaikan* |
-
+| *14-09-2026* | *David Christian* | *Membuat use case (UC05-UC08) turunan dari KF10-KF12* | *1* | *Done* | *-* |
+| *15-09-2026* | *David Christian* | *Membuat skenario normal/alternatif untuk UC05-UC08* | *1* | *Done* | *-* |
 
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
