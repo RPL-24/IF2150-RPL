@@ -441,14 +441,19 @@ Identifikasi seluruh kelas yang diperlukan berdasarkan use case dan skenarionya.
 
 | ID Kelas | Nama Kelas | Deskripsi Kelas | ID Use Case |
 | :--- | :--- | :--- | :--- |
-| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* | *UC01, UC05* |
-| *C02* | *Pesanan* | *Menyimpan data pesanan beserta status pembayarannya.* | *UC01, UC03, UC05* |
-| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* | *UC01, UC02* |
-| *C04* | *MetodePembayaran* | *Kelas abstrak yang merepresentasikan metode pembayaran yang dipilih pelanggan.* | *UC03, UC04* |
-| *C05* | *Kartu* | *Merealisasikan pembayaran melalui kartu kredit/debit dengan mengirimkan permintaan ke payment gateway (dummy).* | *UC03, UC04* |
-| *C06* | *EWallet* | *Merealisasikan pembayaran melalui e-wallet, termasuk pengecekan saldo, dengan mengirimkan permintaan ke payment gateway (dummy).* | *UC03, UC04* |
-| *C07* | *RiwayatTransaksi* | *Menyimpan catatan transaksi beserta status yang dikembalikan payment gateway (dummy).* | *UC03, UC05* |
-| *...* | *...* | *...* | *...* |
+| *C01* | *User* | *Kelas parent yang merepresentasikan pengguna aplikasi (Mentor, Mentee) yang menyimpan informasi akun dasar seperti profil, email universitas, kata sandi, preferensi materi, dan jadwal.* | *UC01, UC02, UC05, UC06, UC07, UC08, UC09* |
+| *C02* | *Mentor* | *Kelas turunan dari User yang merepresentasikan tutor sebaya. Kelas ini memiliki hak untuk membaut sesi baru, mengedit sesi, dan menghapus sesi.* | *UC01, UC02, UC03, UC05, UC06, UC07, UC08, UC09, UC11, UC12* |
+| *C03* | *Mentee* | *Kelas turunan dari User yang merepresentasikan siswa. Memiliki hak untuk mencari rekomendasi sesi, mendaftarkan ke sesi, serta membatalkan ikutsertaan sesi* | *UC01, UC02, UC04, UC05, UC06, UC07, UC08, UC09, UC10* |
+| *C04* | *Session* | *Kelas yang merepresentasikan sesi belajar yang menyimpan atribut seperti topik materi, jadwal, kapasitas, daftar peserta, dan status sesi* | *UC03, UC04, UC05, UC09, UC10, UC11, UC12* |
+| *C05* | *GroupChat* | *Kelas yang merepresentasikan ruang obrolan sementara untuk komunikasi antar pengguna.* | *UC08* |
+| *C06* | *Feedback* | *Kelas yang merepresentasikan rating dan ulasan yang diberikan oleh Mentee ataupun Mentor pada saat sebuah sesi belajar telah selesai.* | *UC07* |
+| *C07* | *SessionHistory* | *Kelas yang menyimpan kumpulan riwayat sesi milik seorang pengguna dengan mengelompokkannya berdasarkan status (Berlangsung, Terlaksana, Tidak Terlaksana).* | *UC06* |
+| *C08* | *ChatMessage* | *Kelas yang merepresentasikan pesan yang dikirimkan oleh pengguna ke dalam sebuah GroupChat. Menyimpan informasi pengirim, isi pesan teks, dan timestamp pesan dikirim.* | *UC08* |
+| *C09* | *Preference* | *Kelas yang menyimpan pengaturan pengguna, seperti tag mata pelajaran, ketersediaan jadwal pada kalender, dan preferensi metode belajar (luring/daring) agar digunakan oleh algoritma matchmaking.* | *UC02, UC04* |
+| *C10* | *Profile* | *Kelas yang merepresentasikan data identitas pengguna (nama, universitas, program studi, bio) yang dihubungkan dengan akun User.* | *UC01, UC02* |
+| *C11* | *Dashboard* | *Kelas antarmuka utama yang menampilkan rangkuman jadwal sesi terdekat, notifikasi, dan rekomendasi matchmaking untuk Mentee.* | *UC01, UC04, UC06, UC09* |
+| *C12* | *UserDatabase* | *Kelas pengontrol yang bertanggung jawab memvalidasi email universitas, mengelola autentikasi login, serta menyimpan data akun ke dalam sistem.* | *UC01, UC02* |
+| *C13* | *SessionDatabase* | *Kelas pengontrol yang bertanggung jawab menyimpan, memperbarui, memvalidasi tabrakan jadwal, serta mengambil data Session, Feedback, dan SessionHistory dari sistem.* | *UC03, UC04, UC05, UC06, UC10, UC11, UC12* |
 
 Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan untuk merealisasikan fungsi yang dimodelkan. Hindari kelas yang tidak memiliki keterkaitan dengan KF atau use case manapun.
 
