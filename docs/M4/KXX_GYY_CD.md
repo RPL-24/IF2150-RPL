@@ -169,20 +169,24 @@ Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 Bagian ini berisi identifikasi kelas dan pemodelan struktur kelas yang diperlukan untuk merealisasikan use case pada BAB 3. Gunakan skenario use case (3.4) sebagai dasar untuk menentukan kelas, atribut, metode, dan hubungan antarkelas.
 
 ## 4.1 Identifikasi Kelas
-Identifikasi seluruh kelas yang diperlukan berdasarkan use case dan skenarionya. Satu kelas boleh terkait dengan lebih dari satu use case.
+Identifikasi seluruh kelas yang diperlukan berdasarkan use case dan skenarionya. Satu kelas boleh terkait dengan lebih dari satu use case. Pada perancangan ini, kelas dibagi menjadi tiga jenis sesuai dengan arsitektur aplikasi berbasis web: *Entity* (representasi data), *Boundary* (antarmuka pengguna), dan *Controller* (pengelola logika bisnis).
 
 | ID Kelas | Nama Kelas | Deskripsi Kelas | ID Use Case |
 | :--- | :--- | :--- | :--- |
-| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* | *UC01, UC05* |
-| *C02* | *Pesanan* | *Menyimpan data pesanan beserta status pembayarannya.* | *UC01, UC03, UC05* |
-| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* | *UC01, UC02* |
-| *C04* | *MetodePembayaran* | *Kelas abstrak yang merepresentasikan metode pembayaran yang dipilih pelanggan.* | *UC03, UC04* |
-| *C05* | *Kartu* | *Merealisasikan pembayaran melalui kartu kredit/debit dengan mengirimkan permintaan ke payment gateway (dummy).* | *UC03, UC04* |
-| *C06* | *EWallet* | *Merealisasikan pembayaran melalui e-wallet, termasuk pengecekan saldo, dengan mengirimkan permintaan ke payment gateway (dummy).* | *UC03, UC04* |
-| *C07* | *RiwayatTransaksi* | *Menyimpan catatan transaksi beserta status yang dikembalikan payment gateway (dummy).* | *UC03, UC05* |
-| *...* | *...* | *...* | *...* |
-
-Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan untuk merealisasikan fungsi yang dimodelkan. Hindari kelas yang tidak memiliki keterkaitan dengan KF atau use case manapun.
+| C01 | `AkunPengguna` | *(Entity)* Menyimpan data kredensial, profil, dan peran pengguna (Pelajar, Pengajar, Tim Materi). | UC01, UC02, UC03 |
+| C02 | `MateriAksara` | *(Entity)* Menyimpan data modul, outline aksara, dan tingkat kesulitan materi. | UC03, UC04, UC06 |
+| C03 | `RiwayatLatihan` | *(Entity)* Menyimpan catatan penyelesaian modul, nilai evaluasi goresan, dan rekam jejak progres pelajar. | UC03, UC04, UC05 |
+| C04 | `DataFeedback` | *(Entity)* Menyimpan laporan kendala atau masukan yang dikirimkan oleh pengguna beserta status penyelesaiannya. | UC07 |
+| C05 | `HalamanPendaftaran`| *(Boundary)* Antarmuka untuk memasukkan data diri dan persetujuan pembuatan akun baru. | UC01 |
+| C06 | `HalamanLogin` | *(Boundary)* Antarmuka untuk memasukkan kredensial akses masuk pengguna. | UC02 |
+| C07 | `HalamanUtama` | *(Boundary)* Dasbor utama yang menyesuaikan tampilan dengan peran pengguna setelah berhasil *log in*. | UC03 |
+| C08 | `HalamanLatihan` | *(Boundary)* Antarmuka kanvas interaktif bagi pelajar untuk menggambar atau menebalkan aksara. | UC04, UC05 |
+| C09 | `HalamanKelolaMateri`| *(Boundary)* Antarmuka bagi Tim Materi untuk melihat daftar, mengunggah, atau menyunting modul aksara. | UC06 |
+| C10 | `HalamanFeedback` | *(Boundary)* Antarmuka formulir pengaduan kendala untuk diisi oleh pelajar atau pengajar. | UC07 |
+| C11 | `OtentikasiController`| *(Controller)* Menangani logika *backend* enkripsi kata sandi, validasi sesi *login*, dan verifikasi pendaftaran akun. | UC01, UC02 |
+| C12 | `LatihanController` | *(Controller)* Mengelola logika perbandingan akurasi goresan aksara dengan *template* dan memperbarui riwayat belajar. | UC04, UC05 |
+| C13 | `MateriController` | *(Controller)* Mengelola logika pengurutan, penarikan, penambahan, dan pembaruan data materi aksara di *database*. | UC03, UC06 |
+| C14 | `FeedbackController` | *(Controller)* Menerima, memvalidasi format, dan menyimpan kiriman *form feedback* ke dalam *database*. | UC07 |
 
 ## 4.2 Diagram Kelas per Use Case
 Buat diagram kelas untuk setiap use case pada 3.2.
