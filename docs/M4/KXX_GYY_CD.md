@@ -462,21 +462,23 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 
 ### 4.2.1 Use Case UC01
 
-**Nama Use Case:** *Memesan Produk*
+**Nama Use Case:** *Mendaftarkan Akun dan Autentikasi*
 
 #### Identifikasi Kelas
 
 | ID Kelas | Nama Kelas | Deskripsi Kelas |
 | :--- | :--- | :--- |
-| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* |
-| *C02* | *Pesanan* | *Menyimpan data pesanan yang dibuat dari isi keranjang.* |
-| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* |
-| *...* | *...* | *...* |
+| *C01* | *User* | *Kelas parent yang merepresentasikan pengguna aplikasi (Mentor, Mentee) yang menyimpan informasi akun dasar seperti email universitas dan kata sandi.* |
+| *C02* | *Mentor* | *Kelas turunan dari User yang merepresentasikan tutor sebaya.* |
+| *C03* | *Mentee* | *Kelas turunan dari User yang merepresentasikan siswa.* |
+| *C10* | *Profile* | *Kelas yang merepresentasikan data identitas pengguna (nama, universitas, program studi, bio) yang dihubungkan dengan akun User.* |
+| *C11* | *Dashboard* | *Kelas antarmuka utama yang menampilkan rangkuman jadwal sesi terdekat dan notifikasi setelah pengguna masuk.* |
+| *C12* | *UserDatabase* | *Kelas pengontrol yang bertanggung jawab memvalidasi email universitas, mengelola autentikasi login, serta menyimpan data akun ke dalam sistem.* |
 
 #### Diagram Kelas
 
 <p align="center">
-<img alt="Class Diagram UC01" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+<img alt="Class Diagram UC01" src="./assets/diagram/diagram-uc01.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 2. Diagram Kelas Use Case UC01</i>
@@ -487,9 +489,112 @@ Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi 
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
-| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
-| *...* | *...* | *...* | *...* |
+| *C01* | *User* | *idUser, email, passwordHash* | *register(), login(), logout()* |
+| *C02* | *Mentor* | *daftarSesiDibuat* | *inherit dari User* |
+| *C03* | *Mentee* | *daftarSesiDiikuti* | *Inherit dari User* |
+| *C10* | *Profile* | *nama, universitas, programStudi, bio* | *updateProfile()* |
+| *C11* | *Dashboard* | *jadwalUser, notifikasi* | *showDashboard()* |
+| *C12* | *UserDatabase* | *daftarAkun* | *emailValidation(), loginAuth(), saveAccount()* |
+
+### 4.2.2 Use Case UC02
+ 
+**Nama Use Case:** *Mengelola Preferensi Profil*
+ 
+#### Identifikasi Kelas
+ 
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C01* | *User* | *Kelas parent yang merepresentasikan pengguna aplikasi, menyimpan referensi terhadap Profile dan Preference miliknya.* |
+| *C02* | *Mentor* | *Kelas turunan dari User yang merepresentasikan tutor sebaya.* |
+| *C03* | *Mentee* | *Kelas turunan dari User yang merepresentasikan siswa.* |
+| *C09* | *Preference* | *Kelas yang menyimpan pengaturan pengguna, seperti tag mata pelajaran, ketersediaan jadwal, dan preferensi metode belajar (luring/daring) agar digunakan oleh algoritma matchmaking.* |
+| *C10* | *Profile* | *Kelas yang merepresentasikan data identitas pengguna (nama, universitas, program studi, bio) yang dihubungkan dengan akun User.* |
+| *C12* | *UserDatabase* | *Kelas pengontrol yang menyimpan data Profile dan Preference ke dalam sistem.* |
+ 
+#### Diagram Kelas
+ 
+<p align="center">
+<img alt="Class Diagram UC02" src="./assets/diagram/diagram-uc02.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3. Diagram Kelas Use Case UC02</i>
+</p>
+<br>
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+ 
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C01* | *User* | *idUser, email, passwordHash* | *showPreference()* |
+| *C02* | *Mentor* | *daftarSesiDibuat* | *inherit dari User* |
+| *C03* | *Mentee* | *daftarSesiDiikuti* | *inherit dari User* |
+| *C09* | *Preference* | *tagMateri, ketersediaanJadwal, preferensiFormatSesi* | *updatePreference()* |
+| *C10* | *Profile* | *nama, universitas, programStudi, bio* | *updateProfile()* |
+| *C12* | *UserDatabase* | *daftarAkun* | *saveProfile(), savePreference()* |
+
+ 
+### 4.2.3 Use Case UC03
+ 
+**Nama Use Case:** *Membuat Sesi Belajar*
+ 
+#### Identifikasi Kelas
+ 
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C02* | *Mentor* | *Kelas turunan dari User yang memiliki hak untuk membuat sesi baru, mengedit sesi, dan menghapus sesi.* |
+| *C04* | *Session* | *Kelas yang merepresentasikan sesi belajar yang menyimpan atribut seperti topik materi, jadwal, kapasitas, daftar peserta, dan status sesi.* |
+| *C13* | *SessionDatabase* | *Kelas pengontrol yang bertanggung jawab menyimpan, memperbarui, dan memvalidasi tabrakan jadwal Session.* |
+ 
+#### Diagram Kelas
+ 
+<p align="center">
+<img alt="Class Diagram UC03" src="./assets/diagram/diagram-uc03.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 4. Diagram Kelas Use Case UC03</i>
+</p>
+<br>
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+ 
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Mentor* | *daftarSesiDibuat* | *createSession()* |
+| *C04* | *Session* | *idSesi, topik, jadwal, format, kapasitas, daftarPeserta, status* | *createSession(), setCapacity()* |
+| *C13* | *SessionDatabase* | *daftarSesi* | *saveSession(), validateScheduleConflict()* |
+
+ 
+### 4.2.4 Use Case UC04
+ 
+**Nama Use Case:** *Mencari dan Bergabung ke Sesi*
+ 
+#### Identifikasi Kelas
+ 
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C03* | *Mentee* | *Kelas turunan dari User yang memiliki hak untuk mencari rekomendasi sesi, mendaftarkan diri ke sesi, serta membatalkan keikutsertaan sesi.* |
+| *C04* | *Session* | *Kelas yang merepresentasikan sesi belajar yang menyimpan atribut seperti topik materi, jadwal, kapasitas, daftar peserta, dan status sesi.* |
+| *C09* | *Preference* | *Kelas yang menyimpan tag mata pelajaran dan ketersediaan jadwal Mentee, digunakan sebagai dasar algoritma rekomendasi.* |
+| *C11* | *Dashboard* | *Kelas antarmuka yang menampilkan rekomendasi matchmaking untuk Mentee.* |
+| *C13* | *SessionDatabase* | *Kelas pengontrol yang mengambil data Session dan mencocokkannya dengan Preference untuk menghasilkan rekomendasi.* |
+ 
+#### Diagram Kelas
+ 
+<p align="center">
+<img alt="Class Diagram UC04" src="./assets/diagram/diagram-uc04.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 5. Diagram Kelas Use Case UC04</i>
+</p>
+<br>
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+ 
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C03* | *Mentee* | *daftarSesiDiikuti* | *joinSession(), cancelSession()* |
+| *C04* | *Session* | *idSesi, topik, jadwal, format, kapasitas, daftarPeserta, status* | *addParticipant(), checkCapacity()* |
+| *C09* | *Preference* | *tagMateri, ketersediaanJadwal, preferensiFormatSesi* | *showPreference()* |
+| *C11* | *Dashboard* | *rekomendasiSesi* | *showRecommendation()* |
+| *C13* | *SessionDatabase* | *daftarSesi* | *findRecommendation(), saveSession()* |
+
 
 > Lanjutkan pola **4.2.x** untuk setiap use case pada 3.2.
 
