@@ -7,23 +7,24 @@ CLASS DIAGRAM
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## Ngaksara
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Amanda Aurellia Salsabilla
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | K2 |
+| Kelompok | 4  |
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| 13525026 | Ryuza Nadif Aldebaran |
+| 13525029 | Muhammad Naufal Hilmi |
+| 13525077 | Muhammad Abduh |
+| 13525107 | Nathaniel Marvelo |
+| 13525113 | Diandra Aria Yufana |
+| 13525143 | Natan Danuarta Ariel Wicaksana |
 ---
 
 ## Daftar Perubahan
@@ -40,9 +41,13 @@ Dipersiapkan oleh:
 
 # BAB 1: Deskripsi Perangkat Lunak
 
-Tuliskan overview perangkat lunak dalam narasi yang dapat memberikan gambaran tentang konteks perangkat lunak aplikasi Anda.
+Ngaksara merupakan solusi perangkat lunak yang kami usulkan sebagai upaya pemenuhan SDGs 4 (Quality Education) berbasis website. Alasan kami memilih media situs web adalah untuk memperluas aksesibilitas perangkat lunak kami serta tidak perlu ada prasyarat untuk mengunduh aplikasi terlebih dahulu. Situs ini dirancang untuk menunjang proses pembelajaran bahasa baru, dengan fokus pada bahasa dengan aksara/karakter yang rumit. Dengan aplikasi ini, kami berharap untuk dapat berkontribusi dalam pembelajaran berbagai bahasa, mulai dari bahasa lokal maupun global.
 
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
+Salah satu fitur yang terdapat dalam Ngaksara adalah fitur menggambar suatu karakter sesuai dengan outline karakter tersebut, dengan opsi untuk menggambar tanpa outline bagi pengguna yang sudah mahir. Hasil gambar pengguna kemudian akan dinilai keakuratannya dengan karakter asli, sehingga pengguna dapat mengetahui sejauh mana bentuk goresan mereka sudah mendekati bentuk karakter yang benar. Penilaian ini juga dapat digunakan sebagai acuan bagi pengguna untuk mengulang latihan pada karakter tertentu apabila hasil yang didapatkan belum sesuai.
+
+Selain itu, fitur mencocokkan aksara dengan pelafalan serta fitur menulis translasi dari rangkaian karakter merupakan solusi kami untuk meningkatkan familiaritas akan pelafalan karakter dan pemahaman dari bahasa tersebut. Kedua fitur ini kami rancang agar pengguna tidak hanya mampu menulis suatu karakter dengan baik, tetapi juga memahami cara pelafalannya, mengingat pada banyak bahasa dengan aksara rumit, bentuk tulisan dan cara baca suatu karakter tidak selalu berkaitan secara langsung.
+
+Untuk mendukung proses belajar yang berkelanjutan, Ngaksara juga akan menyediakan materi pembelajaran yang disusun secara bertahap, mulai dari pengenalan karakter dasar hingga penggabungan karakter menjadi kata maupun kalimat sederhana. Dengan susunan materi seperti ini, kami berharap pengguna dapat mengikuti proses belajar sesuai dengan kemampuan mereka masing-masing, tanpa perlu merasa tertinggal maupun terlalu terbebani oleh materi yang diberikan.
 
 ---
 
@@ -50,24 +55,28 @@ Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 
 ## 2.1 Kebutuhan Fungsional
 
-Salin ulang seluruh Kebutuhan Fungsional (KF) yang telah dirumuskan pada dokumen sebelumnya, lengkap dengan ID KF, ID Kebutuhan (mengacu ke ID pada tabel Pemetaan Kebutuhan di dokumen *Requirement Gathering*), dan penjelasannya.
-
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
-
-<sub> ***Catatan***: *Kebutuhan ditulis mengikuti pola EARS. Pada contoh di bawah, sebagian besar KF dipicu oleh satu aksi pelanggan, sehingga memakai pola event-driven "Ketika ⟨pemicu⟩, sistem harus ⟨respons⟩".*
-<sub>
-
-Tabel 2.1. Daftar Kebutuhan Fungsional
-
 | ID KF | ID Kebutuhan | Penjelasan |
-| :--- | :--- | :--- |
-| *KF01* | *R01* | *Ketika pelanggan membuka halaman katalog, sistem harus menampilkan daftar produk yang tersedia.* |
-| *KF02* | *R02* | *Ketika pelanggan memilih "Tambah ke Keranjang" pada suatu produk, sistem harus menyimpan produk tersebut ke dalam keranjang pelanggan.* |
-| *KF03* | *R03* | *Ketika pelanggan menekan tombol checkout, sistem harus menampilkan pilihan metode pembayaran yang tersedia.* |
-| *KF04* | *R04* | *Ketika pelanggan memilih metode pembayaran, sistem harus mengirimkan permintaan otorisasi beserta nominal tagihan dan ID pesanan ke payment gateway (dummy).* |
-| *KF05* | *R04* | *Ketika payment gateway (dummy) mengembalikan status pembayaran berhasil, sistem harus memperbarui status pesanan menjadi "Lunas" dan menampilkan notifikasi pembayaran berhasil.* |
-| *KF06* | *R05* | *Ketika pelanggan membuka menu riwayat pesanan, sistem harus menampilkan daftar pesanan beserta statusnya.* |
-| *KFXX* | *...* | *...* |
+| --- | --- | --- |
+| KF01 | R01 | Sistem harus menampilkan pilihan antarmuka pendaftaran akun untuk setiap opsi pengguna (pelajar, pengajar, maupun tim materi) |
+| KF02 | R01 | Sistem harus memberikan akses kontrol/privilege berbeda untuk setiap jenis pengguna |
+| KF03 | R02 | Sistem harus menampilkan pilihan antarmuka log-in untuk setiap opsi pengguna (pelajar, pengajar, maupun tim materi) |
+| KF04 | R02 | Ketika pengguna melakukan pendaftaran akun, log in, atau logout, sistem harus memproses permintaan tersebut melalui pengecekan validitas kredensial |
+| KF05 | R03 | Setelah pengguna membuat kata sandi, sistem harus mengenkripsi kata sandi tersebut sebelum disimpan di database |
+| KF06 | R04 | Sistem harus menampilkan dokumen Terms & Conditions kepada pengguna saat membuat akun |
+| KF07 | R04 | Bila pengguna belum mencapai akhir dokumen Terms & Conditions, maka sistem harus menolak melanjutkan pembuatan akun |
+| KF08 | R05 | Sistem harus menampilkan tampilan antarmuka untuk setiap fitur pengajaran yang ditawarkan |
+| KF09 | R06 | Ketika pengguna berada di halaman utama, sistem harus menampilkan daftar materi secara terurut berdasarkan jenis aksara atau tingkat kesulitan |
+| KF10 | R08 | Jika tersedia opsi menampilkan outline, sistem harus menampilkan tampilan antarmuka fitur menggambar aksara sesuai dengan opsi outline yang dipilih pengguna |
+| KF11 | R08 | Ketika pengguna berinteraksi dengan sistem dalam penggambaran aksara, sistem harus memproses interaksi tersebut |
+| KF12 | R09 | Ketika pengguna menggoreskan aksara di layar, sistem harus menilai akurasi goresan tersebut terhadap template dengan algoritma yang sesuai |
+| KF13 | R11 | Sistem harus menampilkan tampilan antarmuka riwayat pengerjaan latihan pelajar bagi pengajar |
+| KF14 | R12 | Setelah pelajar melakukan aktivitas pembelajaran, sistem harus mencatat dan menyimpan riwayat aktivitas tersebut agar dapat diakses pengajar |
+| KF15 | R13 | Ketika diperlukan pembaharuan materi, sistem harus mensinkronisasi data-data konten dari tim materi ke dalam database terpusat |
+| KF16 | R14 | Ketika diperlukan pembaharuan materi, sistem harus memodifikasi konten pembelajaran sesuai dengan pilihan dan tingkat akses tim materi |
+| KF17 | R16 | Dalam interval waktu yang rutin, sistem harus mencatat dan menyimpan log aktivitas dan error yang terjadi |
+| KF18 | R18 | Saat pelajar memiliki keluhan atau feedback, sistem harus menerima keluhan tersebut melalui form yang tersedia |
+| KF19 | R18 | Ketika sistem menerima keluhan atau feedback dari pelajar, sistem harus mengirimkannya ke server |
+| KF20 | R18 | Ketika server menerima keluhan atau feedback dari pelajar, sistem harus menampilkan keluhan tersebut di tampilan antarmuka admin |
 
 
 ---
@@ -76,92 +85,229 @@ Tabel 2.1. Daftar Kebutuhan Fungsional
 
 ## 3.1 Identifikasi Aktor
 
-Tuliskan kembali daftar aktor yang terlibat dan deskripsi perannya dalam perangkat lunak (P/L). Deskripsi peran harus menjelaskan wewenang aktor tersebut dalam perangkat lunak. Perlu diingat bahwa aktor yang dimaksud adalah pengguna yang berinteraksi langsung dengan P/L. Komponen seperti database, payment gateway, atau library bukan aktor.
-
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
-
-| Aktor | Deskripsi |
-| :--- | :--- |
-| *Pelanggan* | *Pengguna yang memesan produk, mengelola keranjang, dan menyelesaikan pembayaran melalui sistem.* |
-| *...* | *...* |
+| Aktor         | Deskripsi                                                                                                                                                                                                                                                        |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pelajar       | Pengguna yang login ke aplikasi untuk belajar dan berlatih aksara Jawa dan Sunda. Pengguna ini dapat menggunakan fitur komunikasi untuk bertanya langsung kepada pengajar jika mengalami kesulitan dalam menjalankan aplikasi maupun kebingungan terkait materi. |
+| Pengajar      | Pengguna yang login sebagai fasilitator pembelajaran. Pengguna ini memiliki akses untuk melihat rekam jejak latihan pelajar, menganalisis kelemahan yang mereka hadapi berdasarkan data latihan, serta membalas pertanyaan yang diajukan oleh pelajar.           |
+| Tim Materi    | Pengguna yang bertindak sebagai pengelola konten materi. Tim materi membutuhkan akses untuk mengelola modul.                                                                                                                                                     |
+| Administrator | Pengguna yang bertindak sebagai teknisi pemelihara sistem aplikasi. Pengguna ini memantau kelancaran fitur fitur agar aplikasi berjalan lancar.                                                                                                                  |
 
 ## 3.2 Identifikasi Use Case
 
-Use case berfungsi untuk mendeskripsikan interaksi aktor-aktor yang terlibat dengan sistem. Isi daftar use case dan deskripsi singkatnya dalam tabel di bawah.
-
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
-
-| ID UC | Nama Use Case | Deskripsi Singkat | Aktor | ID KF |
-| :--- | :--- | :--- | :--- | :--- |
-| *UC01* | *Memesan Produk* | *Pelanggan memilih produk hingga pesanan tersimpan di sistem.* | *Pelanggan* | *KF01, KF02* |
-| *UC02* | *Melihat Keranjang* | *Pelanggan melihat daftar item yang telah dipilih sebelum checkout.* | *Pelanggan* | *KF02* |
-| *UC03* | *Melakukan Pembayaran* | *Pelanggan menyelesaikan pembayaran atas pesanan yang dibuat.* | *Pelanggan* | *KF03, KF04, KF05* |
-| *UC04* | *Memilih Metode Pembayaran* | *Pelanggan memilih metode pembayaran alternatif (kartu atau e-wallet).* | *Pelanggan* | *KF03* |
-| *UC05* | *Melihat Riwayat Pesanan* | *Pelanggan melihat daftar pesanan yang pernah dibuat beserta statusnya.* | *Pelanggan* | *KF06* |
-| *...* | *...* | *...* | *...* | *...* |
+| ID UC | Nama Use Case                                          | Deskripsi Singkat                                                                                                                       | Aktor Terlibat                   | ID KF Terkait                            |
+| :---- | :----------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------- | :--------------------------------------- |
+| UC01  | Melakukan pendaftaran akun                             | Pelajar, pengajar, atau tim materi melakukan pembuatan akun untuk dapat menggunakan perangkat lunak                                     | Pelajar, pengajar, tim materi    | KF01, KF02, KF03, KF04, KF05, KF06, KF07 |
+| UC02  | Melakukan log in ke akun yang telah ada                | Pelajar, pengajar, atau tim materi melakukan log in ke akun yang telah dibuat                                                           | Pelajar, pengajar, tim materi    | KF01, KF02, KF03, KF04                   |
+| UC03  | Masuk ke halaman utama perangkat lunak                 | Pelajar, pengajar, atau tim materi masuk ke halaman utama perangkat lunak setelah melakukan log in                                      | Pelajar, pengajar, tim materi    | KF08, KF09                               |
+| UC04  | Menulis aksara saat melakukan pembelajaran             | Pelajar menulis aksara saat melakukan pembelajaran pada perangkat lunak                                                                 | Pelajar                          | KF10, KF11, KF12                         |
+| UC05  | Menyelesaikan pembelajaran                             | Pelajar menyelesaikan aktivitas pembelajaran di perangkat lunak                                                                         | Pelajar, pengajar                | KF13, KF14                               |
+| UC06  | Memperbaharui materi pembelajaran pada perangkat lunak | Tim materi melakukan pembaharuan atau perbaikan pada materi pembelajaran yang ada di perangkat lunak                                    | Tim materi                       | KF15, KF16                               |
+| UC07  | Menyampaikan feedback                                  | Pelajar menyampaikan feedback yang dimiliki melalui form yang tersedia di perangkat lunak                                               | Pelajar, pengajar, administrator | KF18, KF19, KF20                         |
 
 ## 3.3 Use Case Diagram
-Buatlah diagram use case keseluruhan berdasarkan identifikasi use case beserta aktor yang melakukan use case tersebut. Perhatikan garis `<<extend>>` dan `<<include>>`.
-
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 
 <br>
+
 <p align="center">
-<img alt="Use Case Diagram" src="../M4/assets/diagram/contoh-uc-diagram.webp" width="80%">
+<img alt="Contoh Activity Diagram" src="./assets/diagram/Diagramusecase.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 1. Use Case Diagram</i>
+<i>Gambar 1. Diagram Use Case Ngaksara</i>
 </p>
 <br>
 
 ## 3.4 Skenario Use Case
-Salin ulang skenario **setiap** use case (skenario normal dan alternatif) dari dokumen *Use Case & Scenario Use Case*. Skenario ini menjadi dasar penentuan atribut dan metode/operasi kelas pada BAB 4.
-
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
-
 ### 3.4.1 Skenario UC01
 
-**Nama Use Case:** *Memesan Produk*
+**Nama Use Case:** Melakukan Pendaftaran Akun
+
+**Skenario Normal**
+
+| No  | Aksi Aktor                                                      | Reaksi Perangkat Lunak                                                                    |
+| :-- | :-------------------------------------------------------------- | :---------------------------------------------------------------------------------------- |
+| 1   | Pengguna memilih opsi pendaftaran akun (pelajar, pengajar)      | Sistem menampilkan antarmuka opsi pemilihan jenis akun yang didaftarkan                   |
+| 2   | Pengguna memasukkan kredensial akun (email, password, username) | Sistem menampilkan antarmuka pendaftaran akun dan memverifikasi kredensial yang digunakan |
+| 3   | Pengguna membaca Terms & Conditions aplikasi                    | Sistem menerima afirmasi bahwa pengguna sudah membaca Terms & Conditions yang berlaku     |
+
+<br>
+
+**Skenario Alternatif 1: Otorisasi Pembayaran Gagal**
+
+| No  | Aksi Aktor                                                      | Reaksi Perangkat Lunak                                                                    |
+| :-- | :-------------------------------------------------------------- | :---------------------------------------------------------------------------------------- |
+| 1   | Pengguna memilih opsi pendaftaran akun (pelajar, pengajar)      | Sistem menampilkan antarmuka opsi pemilihan jenis akun yang didaftarkan                   |
+| 2   | Pengguna memasukkan kredensial akun (email, password, username) | Sistem menampilkan antarmuka pendaftaran akun dan memverifikasi kredensial yang digunakan |
+| 3   | Pengguna memastikan kredensial yang digunakan sesuai.           | Kembali ke langkah 2 Skenario Normal                                                      |
+
+### 3.4.2 Skenario UC02
+
+**Nama Use Case:** _Memverifikasi Status Pembayaran_
+
+**Skenario Normal**
+
+| No  | Aksi Aktor                               | Reaksi Perangkat Lunak                                                                       |
+| :-- | :--------------------------------------- | :------------------------------------------------------------------------------------------- |
+| 1   | Pelanggan memilih menu login             | Sistem menampilkan antarmuka opsi pemilihan jenis akun yang sudah didaftarkan                |
+| 2   | Pengguna memilih jenis akun              | Sistem mengarahkan pengguna ke halaman verifikasi akses pengguna                             |
+| 3   | Pengguna memasukkan kredensial akun      | Sistem mengautentikasi kredensial yang dimasukkan pengguna berdasarkan informasi di database |
+| 4   | Pengguna berhasil masuk ke halaman utama | Sistem mengarahkan pengguna ke halaman utama website                                         |
+
+<br>
+
+**Skenario Alternatif 1: Kredensial Login Tidak Sesuai**
+
+| No  | Aksi Aktor                                           | Reaksi Perangkat Lunak                                                                       |
+| :-- | :--------------------------------------------------- | :------------------------------------------------------------------------------------------- |
+| 1   | Pelanggan memilih menu login                         | Sistem menampilkan antarmuka opsi pemilihan jenis akun yang sudah didaftarkan                |
+| 2   | Pengguna memilih jenis akun                          | Sistem mengarahkan pengguna ke halaman verifikasi akses pengguna                             |
+| 3   | Pengguna memasukkan kredensial akun                  | Sistem mengautentikasi kredensial yang dimasukkan pengguna berdasarkan informasi di database |
+| 4   | Pengguna memastikan kredensial yang digunakan sesuai | Kredensial yang digunakan pengguna tidak sesuai. Kembali ke langkah 3 Skenario Normal        |
+
+
+**Skenario Alternatif 2: Kredensial Pengguna Lupa**
+
+| No  | Aksi Aktor                                           | Reaksi Perangkat Lunak                                                                       |
+| :-- | :--------------------------------------------------- | :------------------------------------------------------------------------------------------- |
+| 1 | Pelanggan memilih menu login | Sistem menampilkan antarmuka opsi pemilihan jenis akun yang sudah didaftarkan |
+| 2 | Pengguna memilih jenis akun | Sistem mengarahkan pengguna ke halaman verifikasi akses pengguna |
+| 3 | Pengguna memasukkan kredensial akun | Sistem mengautentikasi kredensial yang dimasukkan pengguna berdasarkan informasi di database |
+| 4 | Pengguna memilih opsi untuk mengganti password | Sistem mengarahkan pengguna ke halaman penggantian password |
+| 5 | Pengguna memasukkan password pengganti | Sistem menerima password pengganti dan mensinkronisasi perubahan dengan database |
+
+### 3.4.1 Skenario UC03
+
+**Nama Use Case:** Masuk ke halaman utama perangkat lunak
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan memilih produk dari katalog* | *Sistem menampilkan detail produk dan menambahkannya ke keranjang* |
-| 2 | *Pelanggan menekan tombol checkout* | *Sistem membuat pesanan baru dari isi keranjang dan menampilkan ringkasan pesanan* |
-| ... | *...* | *...* |
+| 1 | Pelajar masuk ke menu utama perangkat lunak setelah melakukan log in | Sistem menampilkan halaman utama yang mana terdapat bahasa-bahasa yang dapat dipelajari beserta tiap fitur pengajaran yang ditawarkan |
+| 2 | Pelajar memilih salah satu pilihan bahasa yang tersedia | Sistem menampilkan daftar materi pembelajaran untuk bahasa tersebut beserta fitur pengajaran yang tersedia |
+| 3 | Pelajar melakukan mengurutkan materi pembelajaran berdasarkan tingkat kesulitan, jenis pembelajaran, atau sesuai urutan babnya | Sistem menampilkan materi pembelajaran untuk bahasa yang dipilih yang telah terurut sesuai opsi yang dipilih |
+| 4 | Pengajar masuk ke menu utama perangkat lunak setelah melakukan log in | Sistem menampilkan daftar kelas atau grup dimana ia mengajar |
+| 5 | Pengajar memilih salah satu kelas yang tersedia | Sistem menampilkan daftar peserta kelas/murid dari kelas yang dipilih |
+| 6 | Pengajar memilih salah satu murid yang ada di kelasnya | Sistem menampilkan progress belajar dan nilai dari siswa yang dipilih |
+| 7 | Tim materi masuk ke menu utama perangkat lunak setelah melakukan log in | Sistem menampilkan antarmuka dimana tim materi dapat melakukan perubahan atau pembaharuan terhadap materi pembelajaran yang tersedia |
 
-**Skenario Alternatif 1: Produk Tidak Tersedia**
+<br>
+
+**Skenario Alternatif 1: Halaman utama gagal terload**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan memilih produk dari katalog* | *Sistem menampilkan pesan "Produk tidak tersedia" karena stok habis* |
-| 2 | *Pelanggan memilih produk lain* | *Sistem kembali ke langkah 1 skenario normal* |
-| ... | *...* | *...* |
+| 1 | Pelajar masuk ke menu utama perangkat lunak setelah melakukan log in | Sistem menampilkan halaman utama yang mana terdapat bahasa-bahasa yang dapat dipelajari beserta tiap fitur pengajaran yang ditawarkan |
+| 2 | Pelajar memilih salah satu pilihan bahasa yang tersedia | Sistem menampilkan daftar materi pembelajaran untuk bahasa tersebut beserta fitur pengajaran yang tersedia |
+| 3 | Pelajar melakukan mengurutkan materi pembelajaran berdasarkan tingkat kesulitan, jenis pembelajaran, atau sesuai urutan babnya | Sistem gagal menampilkan materi pembelajaran untuk bahasa yang dipilih yang telah terurut sesuai opsi yang dipilih |
+| 4 | Pelajar me-refresh halaman | Sistem mencoba untuk menampilkan ulang halaman yang di-refresh |
+| 5 | Pengajar masuk ke menu utama perangkat lunak setelah melakukan log in | Sistem gagal menampilkan daftar kelas atau grup dimana ia mengajar |
+| 6 | Pengajar me-refresh halaman | Sistem mencoba untuk menampilkan ulang halaman yang di-refresh |
+| 7 | Pengajar memilih salah satu kelas yang tersedia | Sistem menampilkan daftar peserta kelas/murid dari kelas yang dipilih |
+| 8 | Pengajar memilih salah satu murid yang ada di kelasnya | Sistem menampilkan progress belajar dan nilai dari siswa yang dipilih |
+| 9 | Tim materi masuk ke menu utama perangkat lunak setelah melakukan log in | Sistem gagal menampilkan antarmuka dimana tim materi dapat melakukan perubahan atau pembaharuan terhadap materi pembelajaran yang tersedia |
+| 10 | Tim materi me-refresh halaman | Sistem mencoba untuk menampilkan ulang halaman yang di-refresh |
 
-### 3.4.3 Skenario UC03
+### 3.4.1 Skenario UC04
 
-**Nama Use Case:** *Melakukan Pembayaran*
+**Nama Use Case:** Menulis aksara saat melakukan pembelajaran
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan menekan tombol "Bayar" pada ringkasan pesanan* | *Sistem menampilkan pilihan metode pembayaran yang tersedia (mis. Kartu, E-Wallet)* |
-| 2 | *Pelanggan memilih salah satu metode pembayaran* | *Sistem mengirimkan permintaan otorisasi ke payment gateway (dummy) sesuai metode yang dipilih* |
-| 3 | *-* | *Payment gateway (dummy) mengembalikan status pembayaran berhasil; sistem memperbarui status pesanan menjadi "Lunas" dan menampilkan notifikasi pembayaran berhasil* |
-| ... | *...* | *...* |
+| 1 | Pelajar memilih fitur pembelajaran menulis aksara | Sistem menampilkan outline aksara sesuai materi yang sebelumnya dipilih |
+| 2 | Pelajar menggambarkan aksara sesuai outline yang tampil di perangkat | Sistem menggambarkan di layar sesuai dengan goresan yang dilakukan oleh pelajar |
+| 3 | Pelajar menyelesaikan penggambaran aksara | Sistem menilai keakuratan penulisan aksara berdasarkan data yang ada di sistem dan lanjut ke aksara berikutnya |
 
-**Skenario Alternatif 1: Pembayaran Dummy Gagal**
+<br>
+
+**Skenario Alternatif 1: Pelajar kurang akurat dalam penulisan aksara**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan menekan tombol "Bayar" pada ringkasan pesanan* | *Sistem menampilkan pilihan metode pembayaran yang tersedia* |
-| 2 | *Pelanggan memilih salah satu metode pembayaran* | *Sistem mengirimkan permintaan otorisasi ke payment gateway (dummy), yang mengembalikan status gagal (mis. saldo e-wallet dummy tidak mencukupi)* |
-| 3 | *Pelanggan memilih untuk mencoba lagi atau memilih metode lain* | *Sistem kembali ke langkah 1 skenario normal* |
-| ... | *...* | *...* |
+| 1 | Pelajar memilih fitur pembelajaran menulis aksara | Sistem menampilkan outline aksara sesuai materi yang sebelumnya dipilih |
+| 2 | Pelajar menggambarkan aksara sesuai outline yang tampil di perangkat | Sistem menggambarkan di layar sesuai dengan goresan yang dilakukan oleh pelajar |
+| 3 | Pelajar menyelesaikan penggambaran aksara | Sistem menilai keakuratan penulisan aksara berdasarkan data yang ada di sistem |
+| 4 | Pelajar mengulangi penggambaran aksara | Sistem menilai bahwa keakuratan aksara yang telah digambar oleh pelajar terlalu rendah sehingga outline aksara yang sama akan muncul kembali |
 
-<sub>*Lanjutkan pola 3.4.x ini untuk setiap ID UC pada 3.2, sampai seluruh use case tercakup.*<sub>
+### 3.4.1 Skenario UC05
+
+**Nama Use Case:** Menyelesaikan pembelajaran
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pelajar mengonfirmasi bahwa ia menyelesaikan pembelajaran | Sistem menambahkan hasil pembelajaran ke riwayat pelajar dan menampilkan notifikasi riwayat pelajar telah diperbarui |
+| 2 | Pelajar memilih melihat riwayat pembelajaran | Sistem mengarahkan pelajar ke halaman riwayat dan menampilkan riwayat yang telah diperbarui |
+| 3 | Pengajar memilih menu riwayat pelajar pada kelas yang diajar | Sistem menampilkan daftar pelajar beserta status penyelesaian pembelajaran terbaru |
+| 4 | Pengajar memilih salah satu pelajar untuk melihat detail | Sistem menampilkan detail riwayat dan progres pembelajaran pelajar yang dipilih |
+
+<br>
+
+**Skenario Alternatif 1: Konfirmasi penyelesaian pembelajaran gagal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pelajar mengonfirmasi bahwa ia menyelesaikan pembelajaran | Sistem menampilkan pesan error "gagal mengonfirmasi hasil pembelajaran" |
+| 2 | Pelajar memilih melihat riwayat pembelajaran | Sistem menampilkan riwayat, hasil pembelajaran baru tidak terlihat |
+| 3 | Pelajar mengonfirmasi ulang bahwa ia menyelesaikan pembelajaran | Sistem kembali ke langkah 1 skenario normal |
+
+<br>
+
+**Skenario Alternatif 2: Riwayat pelajar belum tersedia**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pengajar memilih menu riwayat pelajar pada kelas yang diajar | Sistem menampilkan daftar pelajar beserta status penyelesaian pembelajaran terbaru |
+| 2 | Pengajar memilih pelajar yang belum pernah menyelesaikan pembelajaran apa pun | pelajar yang belum pernah menyelesaikan pembelajaran apa punSistem menampilkan pesan "belum ada riwayat pembelajaran untuk pelajar ini" |
+| 3 | Pengajar memilih salah satu pelajar lain untuk melihat detail | Sistem kembali ke langkah 4 skenario normal |
+
+### 3.4.1 Skenario UC06
+
+**Nama Use Case:** Memperbaharui materi pembelajaran
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Tim materi memilih menu pengelolaan materi | Sistem menampilkan daftar materi yang dapat diedit. |
+| 2 | Tim materi memilih opsi menambahkan materi baru | Sistem mengarahkan pelanggan ke halaman menambahkan materi |
+| 3 | Tim materi mengunggah file materi dan mengisi detail (nama, kategori, tingkat kesulitan) | Sistem memvalidasi dan menyimpan materi baru ke database terpusat |
+| 4 | Tim materi menyimpan hasil perbaruan materi. | Sistem menampilkan pesan "materi berhasil ditambahkan". |
+
+<br>
+
+**Skenario Alternatif 1: Penambahan materi gagal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Tim materi memilih menu memperbarui materi | Sistem menampilkan ringkasan pesanan dan pilihan metode pembayaran |
+| 2 | Tim materi menambahkan materi baru | Sistem menerima respons penambahan materi gagal (misal: jenis file tidak didukung website). Materi tidak berubah, sistem menampilkan pesan error dan meminta tim materi memilih ulang file materi baru. |
+| 3 | Tim materi menambahkan materi ulang | Sistem kembali ke langkah 2 skenario normal |
+
+
+### 3.4.1 Skenario UC07
+
+**Nama Use Case:** Menyampaikan feedback
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | User (pelajar dan pengajar) memilih menu feedback di bagian samping pada menu utama | Sistem menampilkan form feedback dengan beberapa pertanyaan terbuka dan tertutup |
+| 2 | User memilih pilihan feedback (performa/tampilan/fitur/materi) | Sistem menampilkan pilihan-pilihan feedback yang dapat diisi oleh user |
+| 3 | User mengirim/submit feedback setelah mengisi | Sistem menampilkan pesan bahwa feedback berhasil terkirim |
+
+<br>
+
+**Skenario Alternatif 1: Feedback gagal terkirim (karena server down/kendala jaringan)**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | User (pelajar dan pengajar) memilih menu feedback di bagian samping pada menu utama | Sistem menampilkan form feedback dengan beberapa pertanyaan terbuka dan tertutup |
+| 2 | User memilih pilihan feedback (performa/tampilan/fitur/materi) | Sistem menampilkan pilihan-pilihan feedback yang dapat diisi oleh user |
+| 3 | User mengirim/submit feedback setelah mengisi | Sistem menampilkan pesan bahwa feedback gagal terkirim |
 
 ---
 
