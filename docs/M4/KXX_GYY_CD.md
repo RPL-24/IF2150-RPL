@@ -386,6 +386,7 @@ Identifikasi seluruh kelas yang diperlukan berdasarkan use case dan skenarionya.
 | C09 | Evaluasi | Menyimpan keputusan verifikasi ulang Tim Administrasi atas suatu hasil perbaikan (diterima atau dikembalikan) beserta catatannya. | UC05 |
 | C10 | Notifikasi | Menyimpan dan mengirimkan pesan perubahan status laporan kepada Warga pelapor. | UC01, UC02, UC05, UC06 |
 | C11 | Video | Menyimpan berkas video beserta format dan ukurannya, serte memeriksa kevalidan dirinya. (MP4/MOV/.MKV) | UC01, UC02, UC04, UC05 |
+| C12 | ListTugas | Menyimpan data daftar laporan yang harus ditangani seorang EksekutorLapangan, bisa diurutkan menurut prioritas & difilter berdasarkan kategori | UC03 |
 
 
 
@@ -414,6 +415,164 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 </p>
 <p align="center">
 <i>Gambar 2. Diagram Kelas Use Case UC01</i>
+</p>
+<br>
+
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
+| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
+| *...* | *...* | *...* | *...* |
+
+### 4.2.2 Use Case UC02
+
+**Nama Use Case:** *Memesan Produk*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* |
+| *C02* | *Pesanan* | *Menyimpan data pesanan yang dibuat dari isi keranjang.* |
+| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* |
+| *...* | *...* | *...* |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC01" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3. Diagram Kelas Use Case UC01</i>
+</p>
+<br>
+
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
+| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
+| *...* | *...* | *...* | *...* |
+
+### 4.2.3 Use Case UC03
+
+**Nama Use Case:** *Melihat Penugasan Lapangan*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C03 | EksekutorLapangan | Menyimpan data akun eksekutor; melihat daftar laporan yang harus ditangani dan mengunggah hasil perbaikan. |
+| C04 | Laporan | Menyimpan data laporan kerusakan (ID tiket, kategori, deskripsi, status, waktu masuk, alasan penolakan) dengan status bernilai Diterima, Ditolak, Dikerjakan, atau Berhasil; memutuskan apakah dirinya duplikat, menghitung skor prioritas, dan mengelola perubahan statusnya sendiri. |
+| C06 | Foto | Menyimpan berkas foto beserta format dan ukurannya, serta memeriksa kevalidan dirinya (JPG/PNG, maksimal 10 MB). | UC01, UC02, UC04, UC05 |
+| C12 | ListTugas | Menyimpan data daftar laporan yang harus ditangani seorang EksekutorLapangan, bisa diurutkan menurut prioritas & difilter berdasarkan kategori |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC03" src="./assets/diagram/class-diagram-uc03.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 4. Diagram Kelas Use Case UC03</i>
+</p>
+<br>
+
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C03 | EksekutorLapangan | nama | lihatTugas() |
+| C04 | Laporan | idTiket, kategori, deskripsi, waktuMasuk, fotoBukti, lokasi, jumlahUpvote, status, alasanPenolakan, skorPrioritas | getRincian(), hitungPrioritas() |
+| C06 | Foto | format, ukuran | isFotoValid() |
+| C12 | ListTugas | jumlahLaporanAktif, daftarLaporan | urutPrioritas(), filterKategori() |
+
+### 4.2.4 Use Case UC04
+
+**Nama Use Case:** *Melaporkan Hasil Penugasan*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C03 | EksekutorLapangan | Menyimpan data akun eksekutor; melihat daftar laporan yang harus ditangani dan mengunggah hasil perbaikan. |
+| C04 | Laporan | Menyimpan data laporan kerusakan (ID tiket, kategori, deskripsi, status, waktu masuk, alasan penolakan) dengan status bernilai Diterima, Ditolak, Dikerjakan, atau Berhasil; memutuskan apakah dirinya duplikat, menghitung skor prioritas, dan mengelola perubahan statusnya sendiri. |
+| C06 | Foto | Menyimpan berkas foto beserta format dan ukurannya, serta memeriksa kevalidan dirinya (JPG/PNG, maksimal 10 MB). |
+| C08 | HasilPerbaikan | Menyimpan bukti penanganan dari Eksekutor Lapangan berupa foto, catatan, dan waktu unggah, di mana satu laporan dapat memiliki lebih dari satu hasil bila dikembalikan untuk eksekusi ulang. |
+| C12 | ListTugas | Menyimpan data daftar laporan yang harus ditangani seorang EksekutorLapangan, bisa diurutkan menurut prioritas & difilter berdasarkan kategori |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC03" src="./assets/diagram/class-diagram-uc04.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 5. Diagram Kelas Use Case UC04</i>
+</p>
+<br>
+
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C03 | EksekutorLapangan | nama | lihatTugas(), kirimHasil() |
+| C04 | Laporan | idTiket, kategori, deskripsi, waktuMasuk, lokasi, jumlahUpvote, status, alasanPenolakan, skorPrioritas | getRincian(), hitungPrioritas(), updateStatus() |
+| C06 | Foto | format, ukuran | isFotoValid() |
+| C08 | HasilPerbaikan | deskripsi, waktuUnggah | isHasilValid() |
+| C12 | ListTugas | jumlahLaporanAktif, daftarLaporan | urutPrioritas(), filterKategori() |
+
+
+### 4.2.5 Use Case UC05
+
+**Nama Use Case:** *Memesan Produk*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* |
+| *C02* | *Pesanan* | *Menyimpan data pesanan yang dibuat dari isi keranjang.* |
+| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* |
+| *...* | *...* | *...* |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC01" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+</p>
+<p align="center">
+<i>Gambar 6. Diagram Kelas Use Case UC01</i>
+</p>
+<br>
+
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
+| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
+| *...* | *...* | *...* | *...* |
+
+### 4.2.6 Use Case UC06
+
+**Nama Use Case:** *Memesan Produk*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* |
+| *C02* | *Pesanan* | *Menyimpan data pesanan yang dibuat dari isi keranjang.* |
+| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* |
+| *...* | *...* | *...* |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC01" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+</p>
+<p align="center">
+<i>Gambar 7. Diagram Kelas Use Case UC01</i>
 </p>
 <br>
 
