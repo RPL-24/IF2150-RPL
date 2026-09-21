@@ -386,6 +386,7 @@ Identifikasi seluruh kelas yang diperlukan berdasarkan use case dan skenarionya.
 | C09 | Evaluasi | Menyimpan keputusan verifikasi ulang Tim Administrasi atas suatu hasil perbaikan (diterima atau dikembalikan) beserta catatannya. | UC05 |
 | C10 | Notifikasi | Menyimpan dan mengirimkan pesan perubahan status laporan kepada Warga pelapor. | UC01, UC02, UC05, UC06 |
 | C11 | Video | Menyimpan berkas video beserta format dan ukurannya, serte memeriksa kevalidan dirinya. (MP4/MOV/.MKV) | UC01, UC02, UC04, UC05 |
+| C12 | ListTugas | Menyimpan data daftar laporan yang harus ditangani seorang EksekutorLapangan, bisa diurutkan menurut prioritas & difilter berdasarkan kategori | UC03 |
 
 
 
@@ -395,6 +396,161 @@ Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan u
 Buat diagram kelas untuk setiap use case pada 3.2.
 
 ### 4.2.1 Use Case UC01
+
+**Nama Use Case:** *Memesan Produk*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* |
+| *C02* | *Pesanan* | *Menyimpan data pesanan yang dibuat dari isi keranjang.* |
+| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* |
+| *...* | *...* | *...* |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC01" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+</p>
+<p align="center">
+<i>Gambar 2. Diagram Kelas Use Case UC01</i>
+</p>
+<br>
+
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
+| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
+| *...* | *...* | *...* | *...* |
+
+### 4.2.2 Use Case UC02
+
+**Nama Use Case:** *Memesan Produk*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* |
+| *C02* | *Pesanan* | *Menyimpan data pesanan yang dibuat dari isi keranjang.* |
+| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* |
+| *...* | *...* | *...* |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC01" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+</p>
+<p align="center">
+<i>Gambar 2. Diagram Kelas Use Case UC01</i>
+</p>
+<br>
+
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
+| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
+| *...* | *...* | *...* | *...* |
+
+### 4.2.3 Use Case UC03
+
+**Nama Use Case:** *Memesan Produk*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* |
+| *C02* | *Pesanan* | *Menyimpan data pesanan yang dibuat dari isi keranjang.* |
+| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* |
+| *...* | *...* | *...* |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC01" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+</p>
+<p align="center">
+<i>Gambar 2. Diagram Kelas Use Case UC01</i>
+</p>
+<br>
+
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
+| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
+| *...* | *...* | *...* | *...* |
+
+### 4.2.4 Use Case UC04
+
+**Nama Use Case:** *Memesan Produk*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* |
+| *C02* | *Pesanan* | *Menyimpan data pesanan yang dibuat dari isi keranjang.* |
+| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* |
+| *...* | *...* | *...* |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC01" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+</p>
+<p align="center">
+<i>Gambar 2. Diagram Kelas Use Case UC01</i>
+</p>
+<br>
+
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
+| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
+| *...* | *...* | *...* | *...* |
+
+### 4.2.5 Use Case UC05
+
+**Nama Use Case:** *Memesan Produk*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* |
+| *C02* | *Pesanan* | *Menyimpan data pesanan yang dibuat dari isi keranjang.* |
+| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* |
+| *...* | *...* | *...* |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC01" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+</p>
+<p align="center">
+<i>Gambar 2. Diagram Kelas Use Case UC01</i>
+</p>
+<br>
+
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
+| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
+| *...* | *...* | *...* | *...* |
+
+### 4.2.6 Use Case UC06
 
 **Nama Use Case:** *Memesan Produk*
 
