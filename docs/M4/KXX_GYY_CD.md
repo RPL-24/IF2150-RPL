@@ -238,6 +238,44 @@ Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi 
 | *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
 | *...* | *...* | *...* | *...* |
 
+### 4.2.5 Use Case UC05
+
+**Nama Use Case:** *Mengevaluasi Hasil Kerja*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C02* | *Admin* | *Memvalidasi dan menentukan apakah hasil pekerjaan sudah dinilai selesai atau tidak.* |
+| *C04* | *Laporan* | *Mengelola perubahan statusnya pekerjaan.* |
+| *C06* | *Foto/Video* | *Menyimpan bukti hasil pekerjaan.* |
+| *C08* | *HasilPerbaikan* | *Menyimpan bukti  serta keterangan penanganan dari Eksekutor Lapangan.* |
+| *C09* | *Evaluasi* | *Menyimpan keputusan validasi ulang Tim Administrasi.* |
+| *C10* | *Notifikasi* | *Mengirimkan peasn perubahan status laporan.* |
+| *...* | *...* | *...* |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC01" src="./assets/diagram/4.3.5.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 2. Diagram Kelas Use Case UC05</i>
+</p>
+<br>
+
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Admin* | *idAdmin* | *validasiLaporan(), laporanSelesai(), laporanTidakSelesai(), saringAntrean* |
+| *C04* | *Laporan* | *idTiket, kategori, deskripsi, status, waktuMasuk, foto, video* | *ubahStatus()* |
+| *C06* | *Foto/Video* | *idFoto, idVideo* | *bukaVideo(), bukaFoto()* |
+| *C08* | *HasilPerbaikan* | *idHasil, idTiket, idEksekutor, catatan, waktuUnggah* | *tambahFoto(), tambahVideo(), tulisKeterangan(), simpanBukti()* |
+| *C09* | *Evaluasi* | *idHasil, keputusan, catatan* | *simpanEvaluasi, laporanTidakSelesai(), laporanSelesai()* |
+| *C010* | *Notifikasi* | *idNotifikasi, idTiket, idWarga, isiPesan, waktuKirim* | *kirimPesan()* |
+| *...* | *...* | *...* | *...* |
+
 > Lanjutkan pola **4.2.x** untuk setiap use case pada 3.2.
 
 ## 4.3 Diagram Kelas Keseluruhan
