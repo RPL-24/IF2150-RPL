@@ -1,0 +1,19 @@
+@startuml
+
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+hide circle
+hide members
+
+class EksekutorLapangan
+class ListTugas
+class Laporan
+
+' 1. Asosiasi
+EksekutorLapangan "1" -- "1" ListTugas
+
+' 2. Agregasi 
+ListTugas "1" o-- "0..*" Laporan
+@enduml
