@@ -10,10 +10,12 @@ hide members
 class EksekutorLapangan
 class ListTugas
 class Laporan
+class Foto
 
 ' 1. Asosiasi
 EksekutorLapangan "1" -- "1" ListTugas
 
 ' 2. Agregasi 
 ListTugas "1" o-- "0..*" Laporan
+Laporan "1" *-- "1..*" Foto
 @enduml
