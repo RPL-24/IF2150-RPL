@@ -31,7 +31,7 @@ Dipersiapkan oleh:
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
+| *A* | Memperjelas deskripsi perangkat lunak |
 | *B* |  |
 | *C* |  |
 | ... |  |
@@ -41,13 +41,19 @@ Dipersiapkan oleh:
 
 # BAB 1: Deskripsi Perangkat Lunak
 
-Ngaksara merupakan solusi perangkat lunak yang kami usulkan sebagai upaya pemenuhan SDGs 4 (Quality Education) berbasis website. Alasan kami memilih media situs web adalah untuk memperluas aksesibilitas perangkat lunak kami serta tidak perlu ada prasyarat untuk mengunduh aplikasi terlebih dahulu. Situs ini dirancang untuk menunjang proses pembelajaran bahasa baru, dengan fokus pada bahasa dengan aksara/karakter yang rumit. Dengan aplikasi ini, kami berharap untuk dapat berkontribusi dalam pembelajaran berbagai bahasa, mulai dari bahasa lokal maupun global.
+Ngaksara merupakan solusi perangkat lunak berbasis web yang kami usulkan sebagai upaya pemenuhan SDGs 4 (Quality Education). Format web ini dipilih untuk meningkatkan aksesibilitas sehingga pengguna dapat langsung mengakses platform tanpa perlu mengunduh aplikasi terlebih dahulu. Ngaksara dirancang khusus untuk menunjang proses pembelajaran aksara yang kompleks, dengan fokus awal pada aksara Jawa dan Sunda. Melalui platform ini, kami berharap dapat berkontribusi dalam pelestarian dan pembelajaran berbagai bahasa daerah.
 
-Salah satu fitur yang terdapat dalam Ngaksara adalah fitur menggambar suatu karakter sesuai dengan outline karakter tersebut, dengan opsi untuk menggambar tanpa outline bagi pengguna yang sudah mahir. Hasil gambar pengguna kemudian akan dinilai keakuratannya dengan karakter asli, sehingga pengguna dapat mengetahui sejauh mana bentuk goresan mereka sudah mendekati bentuk karakter yang benar. Penilaian ini juga dapat digunakan sebagai acuan bagi pengguna untuk mengulang latihan pada karakter tertentu apabila hasil yang didapatkan belum sesuai.
+Platform ini dirancang untuk dua target pengguna utama yaitu pelajar dan pengajar. Pelajar memiliki fleksibilitas untuk belajar secara mandiri atau bergabung ke dalam kelas menggunakan kode yang dibagikan oleh pengajar. Di dalam kelas tersebut, pengajar dapat mendistribusikan latihan, menentukan tenggat waktu, memantau perkembangan siswa, mengidentifikasi bagian yang sering salah, serta memberikan umpan balik dan rekomendasi materi lanjutan.
 
-Selain itu, fitur mencocokkan aksara dengan pelafalan serta fitur menulis translasi dari rangkaian karakter merupakan solusi kami untuk meningkatkan familiaritas akan pelafalan karakter dan pemahaman dari bahasa tersebut. Kedua fitur ini kami rancang agar pengguna tidak hanya mampu menulis suatu karakter dengan baik, tetapi juga memahami cara pelafalannya, mengingat pada banyak bahasa dengan aksara rumit, bentuk tulisan dan cara baca suatu karakter tidak selalu berkaitan secara langsung.
+Untuk metode pembelajarannya, salah satu mode latihan yang ditawarkan Ngaksara adalah menggambar aksara mengikuti garis panduan (outline), dengan opsi tanpa garis panduan bagi pengguna yang sudah mahir. Sistem akan menilai tingkat keakuratan hasil gambar pengguna dibandingkan dengan karakter aslinya. Evaluasi ini berfungsi sebagai tolak ukur sejauh mana goresan mereka sudah presisi sekaligus menjadi acuan untuk mengulang latihan pada karakter tertentu jika hasilnya belum maksimal.
 
-Untuk mendukung proses belajar yang berkelanjutan, Ngaksara juga akan menyediakan materi pembelajaran yang disusun secara bertahap, mulai dari pengenalan karakter dasar hingga penggabungan karakter menjadi kata maupun kalimat sederhana. Dengan susunan materi seperti ini, kami berharap pengguna dapat mengikuti proses belajar sesuai dengan kemampuan mereka masing-masing, tanpa perlu merasa tertinggal maupun terlalu terbebani oleh materi yang diberikan.
+Selain itu, Ngaksara juga menyediakan tiga mode latihan tambahan. Pertama, mode mencocokkan aksara dengan bunyi di mana pengguna memilih aksara atau rangkaian yang tepat berdasarkan audio yang diputar sistem. Kedua, mode merangkai aksara yang melatih pengguna menyusun aksara dan tanda baca menjadi suku kata atau kata sesuai aturan yang berlaku. Ketiga, mode transliterasi yaitu mengubah tulisan latin menjadi aksara Jawa/Sunda atau sebaliknya tanpa menerjemahkan makna kalimat. Ketiga metode latihan di atas merupakan solusi kami untuk meningkatkan penguasaan pelafalan dan pemahaman bahasa tersebut secara menyeluruh. Fitur-fitur ini dirancang agar pengguna tidak sekadar mampu menulis aksara dengan baik, tetapi juga tepat dalam melafalkannya, mengingat bentuk tulisan pada aksara yang kompleks sering kali tidak mencerminkan cara bacanya secara langsung.
+
+Guna mendukung proses belajar yang berkelanjutan, Ngaksara menyediakan materi pembelajaran yang disusun secara bertahap. Materi dimulai dari pengenalan karakter dasar hingga penggabungan karakter menjadi kata dan kalimat sederhana. Melalui susunan yang terstruktur ini, kami berharap pengguna dapat mengikuti proses belajar sesuai dengan kecepatan dan kemampuan masing-masing, tanpa perlu merasa tertinggal atau terlalu terbebani oleh materi.
+
+Untuk menjaga motivasi, Ngaksara menyimpan seluruh hasil latihan untuk membentuk rekam jejak progres belajar. Sistem ini menerapkan fitur streak harian, yang akan bertambah apabila pelajar menyelesaikan setidaknya satu aktivitas belajar yang sah (aktivitas yang hanya dibuka tanpa diselesaikan tidak akan menambah streak atau poin).
+
+Sebagai pelengkap, terdapat fitur papan peringkat yang diterapkan secara eksklusif pada tingkat kelas (bukan global) dan dapat diaktifkan atau dinonaktifkan oleh pengajar. Poin pada papan peringkat diberikan berdasarkan penyelesaian dan ketepatan latihan. Sistem juga membatasi perolehan poin agar pengulangan soal yang sama tidak bisa digunakan untuk mengumpulkan poin tanpa batas. Privasi pelajar juga tetap terjaga karena identitas yang ditampilkan di papan peringkat menggunakan nama tampilan yang bebas mereka pilih.
 
 ---
 
