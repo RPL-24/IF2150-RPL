@@ -498,24 +498,28 @@ Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi 
 | :--- | :--- | :--- |
 | C03 | EksekutorLapangan | Menyimpan data akun eksekutor; melihat daftar laporan yang harus ditangani dan mengunggah hasil perbaikan. |
 | C04 | Laporan | Menyimpan data laporan kerusakan (ID tiket, kategori, deskripsi, status, waktu masuk, alasan penolakan) dengan status bernilai Diterima, Ditolak, Dikerjakan, atau Berhasil; memutuskan apakah dirinya duplikat, menghitung skor prioritas, dan mengelola perubahan statusnya sendiri. |
-| C06 | Foto | Menyimpan berkas foto beserta format dan ukurannya, serta memeriksa kevalidan dirinya (JPG/PNG, maksimal 10 MB). | UC01, UC02, UC04, UC05 |
-| C08 | HasilPerbaikan | Menyimpan bukti penanganan dari Eksekutor Lapangan berupa foto, catatan, dan waktu unggah, di mana satu laporan dapat memiliki lebih dari satu hasil bila dikembalikan untuk eksekusi ulang. | UC04, UC05 |
+| C06 | Foto | Menyimpan berkas foto beserta format dan ukurannya, serta memeriksa kevalidan dirinya (JPG/PNG, maksimal 10 MB). |
+| C08 | HasilPerbaikan | Menyimpan bukti penanganan dari Eksekutor Lapangan berupa foto, catatan, dan waktu unggah, di mana satu laporan dapat memiliki lebih dari satu hasil bila dikembalikan untuk eksekusi ulang. |
 | C12 | ListTugas | Menyimpan data daftar laporan yang harus ditangani seorang EksekutorLapangan, bisa diurutkan menurut prioritas & difilter berdasarkan kategori |
 
 #### Diagram Kelas
 
 <p align="center">
-<img alt="Class Diagram UC03" src="./assets/diagram/class-diagram-uc03.png" width="70%">
+<img alt="Class Diagram UC03" src="./assets/diagram/class-diagram-uc04.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 4. Diagram Kelas Use Case UC03</i>
+<i>Gambar 5. Diagram Kelas Use Case UC04</i>
 </p>
 <br>
 
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| C0x |  |  |  |
+| C03 | EksekutorLapangan | nama | lihatTugas(), kirimHasil() |
+| C04 | Laporan | idTiket, kategori, deskripsi, waktuMasuk, lokasi, jumlahUpvote, status, alasanPenolakan, skorPrioritas | getRincian(), hitungPrioritas(), updateStatus() |
+| C06 | Foto | format, ukuran | isFotoValid() |
+| C08 | HasilPerbaikan | deskripsi, waktuUnggah | isHasilValid() |
+| C12 | ListTugas | jumlahLaporanAktif, daftarLaporan | urutPrioritas(), filterKategori() |
 
 
 ### 4.2.5 Use Case UC05
