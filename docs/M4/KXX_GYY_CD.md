@@ -40,9 +40,11 @@ Dipersiapkan oleh:
 
 # BAB 1: Deskripsi Perangkat Lunak
 
-Tuliskan overview perangkat lunak dalam narasi yang dapat memberikan gambaran tentang konteks perangkat lunak aplikasi Anda.
+Kondisi infrastruktur publik di perkotaan kerap mengalami laju kerusakan yang lebih cepat dibanding siklus inspeksi rutin yang dilakukan dinas terkait. Selama ini proses pelaporan masih terpecah ke dalam beberapa saluran yang belum terintegrasi, seperti Media Sosial, Kanal Pengaduan Umum Pemerintah, dan Patroli Manual. Oleh karena itu, warga membutuhkan saluran terpusat yang mudah diakses dan mampu memberi kepastian tindak lanjut laporan kerusakan secara transparan, sementara pihak dinas kota membutuhkan sistem yang mampu menyaring laporan-laporan dari warga tanpa beban administratif manual yang berulang. LaporKota hadir sebagai sistem perangkat lunak terintegrasi yang menjembatani masyarakat, koordinator dinas/instansi terkait, dan petugas teknis lapangan dalam penanganan infrastruktur perkotaan yang transparan, terstruktur, dan akuntabel.
 
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
+Secara alur kerja, sistem ini dimulai dengan Tahap Pelaporan yang dilakukan oleh warga ketika mereka menemukan kerusakan infrastruktur di lingkungan, dan menggunakan kamera dan modul GPS pada gawai mereka untuk mendokumentasikan bukti visual dan lokasi secara presisi melalui sistem LaporKota. Selain melaporkan secara pribadi, warga juga dapat melakukan Upvote terhadap laporan-laporan yang telah disampaikan warga lain untuk meningkatkan urgensi dari suatu laporan. Data yang dikirimkan warga akan diterima oleh perangkat komputer dasbor pihak Administrasi dan masuk ke Tahap Validasi untuk memastikan laporan yang masuk adalah laporan sungguhan, juga melakukan deduplikasi terhadap laporan yang serupa dan berada pada area yang berdekatan. Kemudian, laporan-laporan sudah dianggap valid akan diurutkan skala prioritasnya berdasarkan jumlah pelapor, tingkat kerusakan, dan dampaknya terhadap publik. Laporan kerusakan yang berada pada tingkat prioritas tertinggi nantinya akan dikirimkan kepada pihak Eksekutor Lapangan untuk memasuki Tahap Penanganan untuk melakukan perbaikan teknis. Jika sudah selesai, pihak Eksekutor akan mendokumentasikan dan melaporkan hasil kerjanya kepada pihak Administrasi untuk diperiksa. Jika hasil penangannya sudah dianggap berhasil, maka sistem akan memvalidasi penyelesaian tugas dan secara otomatis memperbarui status laporan hingga dinyatakan "Selesai".
+
+Implementasi LaporKota diharapkan mampu mempermudah birokrasi penanganan fasilitas publik, meminimalkan waktu respon, dan memberikan transparansi serta kepastian layanan bagi masyarakat melalui pelacakan status penanganan secara real-time. Bagi pihak mengelola infrastruktur, sistem ini menyediakan basis data kerusakan yang akurat untuk mendukung pengambilan keputusan dalam pemeliharaan fasilitas publik yang lebih tepat sasaran dan andal.
 
 ---
 
@@ -50,24 +52,30 @@ Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 
 ## 2.1 Kebutuhan Fungsional
 
-Salin ulang seluruh Kebutuhan Fungsional (KF) yang telah dirumuskan pada dokumen sebelumnya, lengkap dengan ID KF, ID Kebutuhan (mengacu ke ID pada tabel Pemetaan Kebutuhan di dokumen *Requirement Gathering*), dan penjelasannya.
-
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
-
-<sub> ***Catatan***: *Kebutuhan ditulis mengikuti pola EARS. Pada contoh di bawah, sebagian besar KF dipicu oleh satu aksi pelanggan, sehingga memakai pola event-driven "Ketika ⟨pemicu⟩, sistem harus ⟨respons⟩".*
-<sub>
-
 Tabel 2.1. Daftar Kebutuhan Fungsional
 
 | ID KF | ID Kebutuhan | Penjelasan |
 | :--- | :--- | :--- |
-| *KF01* | *R01* | *Ketika pelanggan membuka halaman katalog, sistem harus menampilkan daftar produk yang tersedia.* |
-| *KF02* | *R02* | *Ketika pelanggan memilih "Tambah ke Keranjang" pada suatu produk, sistem harus menyimpan produk tersebut ke dalam keranjang pelanggan.* |
-| *KF03* | *R03* | *Ketika pelanggan menekan tombol checkout, sistem harus menampilkan pilihan metode pembayaran yang tersedia.* |
-| *KF04* | *R04* | *Ketika pelanggan memilih metode pembayaran, sistem harus mengirimkan permintaan otorisasi beserta nominal tagihan dan ID pesanan ke payment gateway (dummy).* |
-| *KF05* | *R04* | *Ketika payment gateway (dummy) mengembalikan status pembayaran berhasil, sistem harus memperbarui status pesanan menjadi "Lunas" dan menampilkan notifikasi pembayaran berhasil.* |
-| *KF06* | *R05* | *Ketika pelanggan membuka menu riwayat pesanan, sistem harus menampilkan daftar pesanan beserta statusnya.* |
-| *KFXX* | *...* | *...* |
+| **KF01** | R02 | Ketika Warga membuka formulir pelaporan, sistem harus mendeteksi dan mengunci koordinat geospasial (*latitude* dan *longitude*) perangkat secara otomatis melalui layanan geolokasi perangkat. |
+| **KF02** | R02 | Ketika Warga mengakses formulir pelaporan, sistem harus memfasilitasi pemilihan kategori kerusakan infrastruktur publik serta pengisian uraian deskripsi keluhan. |
+| **KF03** | R04 | Bila Warga mengunggah berkas foto yang tidak didukung atau berukuran melebihi 10 MB, maka sistem harus menolak berkas tersebut dan menampilkan pesan peringatan validasi. |
+| **KF04** | R04 | Ketika formulir pelaporan yang valid dikirimkan, sistem harus menerbitkan ID tiket unik, menyimpan data laporan ke basis data, dan secara otomatis menetapkan status awal laporan sebagai 'Diterima'. |
+| **KF05** | R05 | Ketika laporan baru dikirimkan, sistem harus menghitung jarak radius spasial terhadap laporan-laporan aktif lain berkategori sama untuk mendeteksi potensi duplikasi. |
+| **KF06** | R05 | Bila laporan baru berada dalam radius toleransi (maksimal 20 meter) dari laporan aktif berkategori serupa, maka sistem harus menampilkan konfirmasi duplikasi dan mengalihkan aksi pelapor menjadi dukungan (*upvote*). |
+| **KF07** | R06 | Ketika status penanganan suatu laporan diperbarui, sistem harus mengirimkan notifikasi pembaruan status secara otomatis kepada akun Warga pelapor. |
+| **KF08** | R07 | Bila pengiriman formulir terindikasi berasal dari *bot* otomatis, maka sistem harus memicu verifikasi keamanan dan menahan penyimpanan data hingga verifikasi tuntas. |
+| **KF09** | R08 | Ketika Tim Administrasi membuka dasbor penanganan, sistem harus menyajikan antrean daftar laporan yang dapat diurutkan berdasarkan waktu masuk serta difilter menurut kategori kerusakan. |
+| **KF10** | R08 | Ketika Tim Administrasi memilih suatu tiket laporan, sistem harus menampilkan rincian laporan (foto bukti, deskripsi keluhan, waktu masuk, dan peta lokasi) untuk evaluasi validitas. |
+| **KF11** | R10 | Bila Tim Administrasi menyatakan laporan tidak valid atau *spam*, maka sistem harus mewajibkan input alasan penolakan dan memperbarui status laporan menjadi "Ditolak". |
+| **KF12** | R10 | Ketika Tim Administrasi mengonfirmasi validitas laporan, sistem harus memperbarui status laporan menjadi "Dikerjakan". |
+| **KF13** | R11 | Ketika suatu laporan menerima tambahan *upvote*, sistem harus menghitung ulang dan memperbarui urutan prioritas penanganan laporan secara otomatis. |
+| **KF14** | R13 | Ketika Eksekutor Lapangan mengakses aplikasi, sistem harus menampilkan daftar penugasan aktif lengkap dengan titik koordinat dan deskripsi kerusakan. |
+| **KF15** | R13 | Ketika penanganan fisik selesai, sistem harus memfasilitasi Eksekutor Lapangan untuk mengunggah foto bukti penyelesaian dan mencatat ringkasan teknis hasil kerja. |
+| **KF16** | R14 | Ketika berkas hasil eksekusi dikirimkan, sistem harus menyajikan rangkuman komparasi foto bukti serta catatan hasil kerja kepada Tim Administrasi untuk dievaluasi. |
+| **KF17** | R14, R16 | Bila Tim Administrasi menolak hasil eksekusi lapangan, maka sistem harus memfasilitasi pengembalian tiket ke Eksekutor Lapangan disertai catatan evaluasi dan mencatat siklusnya ke log audit. |
+| **KF18** | R16 | Ketika Tim Administrasi menyetujui penyelesaian penanganan, sistem harus memperbarui status laporan menjadi "Berhasil" dan merekam stempel waktu penyelesaian. |
+| **KF19** | R17 | Ketika Warga membuka halaman pelacakan, sistem harus menyajikan linimasa riwayat status laporan beserta dokumentasi foto hasil perbaikan penanganan secara transparan. |
+| **KF20** | R17, R18 | Ketika publik membuka peta sebaran, sistem harus visualisasi peta sebaran seluruh laporan secara real-time dengan menyembunyikan identitas pribadi pelapor (anonymity). |
 
 
 ---
@@ -76,92 +84,286 @@ Tabel 2.1. Daftar Kebutuhan Fungsional
 
 ## 3.1 Identifikasi Aktor
 
-Tuliskan kembali daftar aktor yang terlibat dan deskripsi perannya dalam perangkat lunak (P/L). Deskripsi peran harus menjelaskan wewenang aktor tersebut dalam perangkat lunak. Perlu diingat bahwa aktor yang dimaksud adalah pengguna yang berinteraksi langsung dengan P/L. Komponen seperti database, payment gateway, atau library bukan aktor.
-
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
-
 | Aktor | Deskripsi |
 | :--- | :--- |
-| *Pelanggan* | *Pengguna yang memesan produk, mengelola keranjang, dan menyelesaikan pembayaran melalui sistem.* |
-| *...* | *...* |
+| *Warga* | *Pengguna ini merupakan masyarakat umum yang bertindak sebagai pihak yang berhak melaporkan segala bentuk keluhan dan masalah yang ditemukan di lapangan. Pengguna ini juga dapat melihat informasi laporan dari pengguna lain (secara anonim) dan melakukan upvote terhadap laporan lain.* |
+| *Tim Administrasi* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memverifikasi terlebih dahulu segala laporan yang diterima sistem (apakah valid/spam). Pihak ini juga bertanggung jawab untuk mengatur skala prioritas dari semua laporan berdasarkan berbagai faktor, dan nantinya meneruskan laporan dengan skala prioritas yang tinggi kepada petinggi dinas sembari melakukan update status secara berkala.* |
+| *Eksekutor Lapangan* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk turun langsung ke lapangan dalam menindak lanjuti instruksi dari Tim Administrasi . Pengguna ini juga bertanggung jawab untuk melakukan update progress kepada Tim Administrasi.* |
 
 ## 3.2 Identifikasi Use Case
 
-Use case berfungsi untuk mendeskripsikan interaksi aktor-aktor yang terlibat dengan sistem. Isi daftar use case dan deskripsi singkatnya dalam tabel di bawah.
-
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
-
 | ID UC | Nama Use Case | Deskripsi Singkat | Aktor | ID KF |
 | :--- | :--- | :--- | :--- | :--- |
-| *UC01* | *Memesan Produk* | *Pelanggan memilih produk hingga pesanan tersimpan di sistem.* | *Pelanggan* | *KF01, KF02* |
-| *UC02* | *Melihat Keranjang* | *Pelanggan melihat daftar item yang telah dipilih sebelum checkout.* | *Pelanggan* | *KF02* |
-| *UC03* | *Melakukan Pembayaran* | *Pelanggan menyelesaikan pembayaran atas pesanan yang dibuat.* | *Pelanggan* | *KF03, KF04, KF05* |
-| *UC04* | *Memilih Metode Pembayaran* | *Pelanggan memilih metode pembayaran alternatif (kartu atau e-wallet).* | *Pelanggan* | *KF03* |
-| *UC05* | *Melihat Riwayat Pesanan* | *Pelanggan melihat daftar pesanan yang pernah dibuat beserta statusnya.* | *Pelanggan* | *KF06* |
-| *...* | *...* | *...* | *...* | *...* |
+| *UC01* | *Mengirim Laporan Kerusakan* | *Warga mengisi formulir pelaporan yang mencakup lokasi, foto bukti, dan keterangan lainnya sampai terkirim kepada sistem.* | *Warga* | *KF01, KF02, KF03, KF04, KF05, KF06, KF07, KF08* |
+| *UC02* | *Memvalidasi Laporan Baru* | *Tim Administrasi melakukan validasi terhadap setiap laporan yang baru apakah laporan diterima/ditolak, serta mengolah skala prioritasnya, sampai mengirimkan daftar laporan yang diterima kepada Eksekutor Lapangan.* | *Tim Administrasi* | *KF07, KF09, KF10, KF11, KF12, KF13* |
+| *UC03* | *Melihat Penugasan Lapangan* | *Eksekutor Lapangan melihat daftar penugasan di lapangan yang sudah terurut berdasarkan skala prioritas untuk dikerjakan.* | *Eksekutor Lapangan* | *KF14* |
+| *UC04* | *Melaporkan Hasil Perbaikan* | *Eksekutor Lapangan mengunggah foto dan deskripsi bukti hasil kerja sampai dikirimkan kepada Tim Administrasi.* | *Eksekutor Lapangan* | *KF15* |
+| *UC05* | *Mengevaluasi Hasil Kerja* | *Tim Administrasi menerima laporan hasil kerja dari Eksekutor Lapangan untuk dinilai apakah perbaikan sudah selesai atau masih diperlukan tindakan lanjutan untuk mengupdate status laporan.* | *Tim Administrasi* | *KF07, KF16, KF17, KF18* |
+| *UC06* | *Memantau Status Laporan* | *Warga memantau status laporan yang diajukan pribadi maupun diajukan orang lain, termasuk melakukan upvote terhadap laporan orang lain.* | *Warga* | *KF06, KF07, KF11, KF12, KF13, KF19, KF20* |
 
 ## 3.3 Use Case Diagram
-Buatlah diagram use case keseluruhan berdasarkan identifikasi use case beserta aktor yang melakukan use case tersebut. Perhatikan garis `<<extend>>` dan `<<include>>`.
-
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 
 <br>
 <p align="center">
-<img alt="Use Case Diagram" src="../M4/assets/diagram/contoh-uc-diagram.webp" width="80%">
+<img alt="Use Case Diagram" src="../M3/assets/diagram/uc-diagram.png" width="80%">
 </p>
 <p align="center">
-<i>Gambar 1. Use Case Diagram</i>
+<i>Gambar 1. Use Case Diagram LaporKota</i>
 </p>
 <br>
 
 ## 3.4 Skenario Use Case
-Salin ulang skenario **setiap** use case (skenario normal dan alternatif) dari dokumen *Use Case & Scenario Use Case*. Skenario ini menjadi dasar penentuan atribut dan metode/operasi kelas pada BAB 4.
-
-Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 
 ### 3.4.1 Skenario UC01
 
-**Nama Use Case:** *Memesan Produk*
+**Nama Use Case:** *Mengirim Laporan Kerusakan*
+
+**Pra-kondisi:** *Warga sudah masuk ke dalam aplikasi dan izin akses lokasi sudah diberikan.*
+
+**Pasca-kondisi:** *Laporan baru tersimpan dengan ID tiket unik dan status "Diterima"; Warga pelapor menerima notifikasi.*
 
 **Skenario Normal**
 
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | *Pelanggan memilih produk dari katalog* | *Sistem menampilkan detail produk dan menambahkannya ke keranjang* |
-| 2 | *Pelanggan menekan tombol checkout* | *Sistem membuat pesanan baru dari isi keranjang dan menampilkan ringkasan pesanan* |
-| ... | *...* | *...* |
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | *Warga memilih menu "Buat Laporan"* | - | - | - |
+| 2 | - | - | - | *Sistem menampilkan formulir pelaporan dan secara otomatis mendeteksi serta mengunci koordinat GPS perangkat* |
+| 3 | *Warga memilih kategori kerusakan, mengisi deskripsi, dan mengunggah foto atau video kerusakan, kemudian memilih opsi deteksi lokasi atau tandai lokasi secara manual pada peta.* | - | - | - |
+| 4 | - | - | - | *Sistem memvalidasi format (JPG/PNG untuk foto, MP4/MOV/MKV untuk video) dan ukuran foto/video (maksimal 10 MB), lalu menampilkan pratinjau foto dan titik lokasi pada peta* |
+| 5 | *Warga menekan tombol "Kirim"* | - | - | - |
+| 6 | - | - | - | *Sistem melakukan verifikasi anti bot, memeriksa duplikasi terhadap laporan aktif berkategori sama dalam radius 20 meter dan tidak menemukan kecocokan, menerbitkan ID tiket unik, menyimpan laporan dengan status "Diterima", menampilkan konfirmasi beserta ID tiket, dan mengirim notifikasi kepada Warga pelapor* |
 
-**Skenario Alternatif 1: Produk Tidak Tersedia**
+<br>
 
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | *Pelanggan memilih produk dari katalog* | *Sistem menampilkan pesan "Produk tidak tersedia" karena stok habis* |
-| 2 | *Pelanggan memilih produk lain* | *Sistem kembali ke langkah 1 skenario normal* |
-| ... | *...* | *...* |
+**Skenario Alternatif 1: Foto/Video Tidak Valid**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | *Warga memilih menu "Buat Laporan"* | - | - | - |
+| 2 | - | - | - | *Sistem menampilkan formulir pelaporan dan secara otomatis mendeteksi serta mengunci koordinat GPS perangkat* |
+| 3 | *Warga memilih kategori kerusakan, mengisi deskripsi, dan mengunggah foto berformat selain JPG/PNG, video selain MP4/MKV/MOV atau berukuran lebih dari 10 MB* | - | - | - |
+| 4 | - | - | - | *Sistem menolak berkas, menampilkan pesan peringatan validasi berupa format dan ukuran yang diterima, dan tidak menyimpan foto atau video tersebut* |
+| 5 | *Warga mengunggah foto/video lain yang valid* | - | - | - |
+| 6 | - | - | - | *Sistem kembali ke langkah 2 skenario normal* |
+
+<br>
+
+**Skenario Alternatif 2: Lokasi Diluar Daerah Penanganan**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | *Warga memilih menu "Buat Laporan" dan mengisi lokasi atau terdeteksi secara otomatis di luar lingkup penanganan* | - | - | - |
+| 2 | - | - | - | *Sistem menolak secara otomatis dan menampilkan pesan "Lokasi di luar daerah penanganan.* |
+| 3 | *Warga membatalkan laporan atau memperbaiki lokasi* | - | - | - |
+| 4 | - | - | - | *Sistem mengulang validasi lokasi. Jika berhasil, sistem kembali ke langkah 1 skenario normal* |
+
+### 3.4.2 Skenario UC02
+
+**Nama Use Case:** *Memvalidasi Laporan Baru*
+
+**Pra-kondisi:** *Tim Administrasi sudah masuk ke akun dan terdapat minimal satu laporan berstatus "Diterima".*
+
+**Pasca-kondisi:** *Status laporan berubah menjadi "Dikerjakan" (masuk antrean penugasan sesuai urutan prioritas) atau "Ditolak" beserta alasannya. Warga pelapor menerima notifikasi perubahan status.*
+
+**Skenario Normal**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | - | - | *Tim Administrasi membuka dasbor penanganan* | - |
+| 2 | - | - | - | *Sistem menampilkan antrean laporan berstatus "Diterima" yang terurut berdasarkan waktu masuk, dilengkapi kontrol filter kategori kerusakan* |
+| 3 | - | - | *Tim Administrasi memilih satu tiket laporan* | - |
+| 4 | - | - | - | *Sistem menampilkan rincian laporan berupa foto/video bukti, deskripsi keluhan, kategori, waktu masuk, peta lokasi, dan jumlah upvote* |
+| 5 | - | - | *Tim Administrasi menekan tombol "Valid"* | - |
+| 6 | - | - | - | *Sistem memperbarui status laporan menjadi "Dikerjakan", menempatkan laporan pada urutan prioritas berdasarkan jumlah upvote, mengirim notifikasi kepada Warga pelapor, menampilkan konfirmasi, dan kembali ke antrean laporan* |
+
+<br>
+
+**Skenario Alternatif 1: Menyaring Antrean Sebelum Meninjau**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | - | - | *Tim Administrasi membuka dasbor penanganan* | - |
+| 2 | - | - | - | *Sistem menampilkan antrean laporan berstatus "Diterima" yang terurut berdasarkan waktu masuk, dilengkapi kontrol filter kategori kerusakan* |
+| 3 | - | - | *Tim Administrasi memilih filter kategori tertentu dan/atau mengubah urutan waktu masuk* | - |
+| 4 | - | - | - | *Sistem menampilkan ulang antrean laporan sesuai filter dan urutan yang dipilih* |
+| 5 | - | - | *Tim Administrasi memilih satu tiket laporan dari hasil saringan* | - |
+| 6 | - | - | - | *Sistem kembali ke langkah 2 skenario normal* |
+
+<br>
+
+**Skenario Alternatif 2: Laporan Dinyatakan Tidak Valid**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | - | - | *Tim Administrasi membuka dasbor penanganan* | - |
+| 2 | - | - | - | *Sistem menampilkan antrean laporan berstatus "Diterima" yang terurut berdasarkan waktu masuk, dilengkapi kontrol filter kategori kerusakan* |
+| 3 | - | - | *Tim Administrasi memilih satu tiket laporan* | - |
+| 4 | - | - | - | *Sistem menampilkan rincian laporan: foto/video bukti, deskripsi keluhan, kategori, waktu masuk, peta lokasi, dan jumlah upvote* |
+| 5 | - | - | *Tim Administrasi menekan tombol "Tolak"* | - |
+| 6 | - | - | - | *Sistem menampilkan kolom alasan penolakan yang wajib diisi* |
+| 7 | - | - | *Tim Administrasi mengisi alasan penolakan lalu mengonfirmasi* | - |
+| 8 | - | - | - | *Sistem memperbarui status laporan menjadi "Ditolak" beserta alasannya, mengirim notifikasi kepada Warga pelapor, menampilkan konfirmasi, dan kembali ke antrean laporan* |
 
 ### 3.4.3 Skenario UC03
 
-**Nama Use Case:** *Melakukan Pembayaran*
+**Nama Use Case:** *Melihat Penugasan Lapangan*
+
+**Pra-kondisi:** *Eksekutor lapangan mendapat surat penugasan dan sudah masuk menggunakan akun Eksekutor Lapangan dan terdapat minimal satu laporan yang berstatus "dikerjakan".*
+
+**Pasca-kondisi:** *Eksekutor Lapangan mengetahui daftar dan rincian penugasan yang harus dikerjakan berdasarkan skala prioritas.*
 
 **Skenario Normal**
 
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | *Pelanggan menekan tombol "Bayar" pada ringkasan pesanan* | *Sistem menampilkan pilihan metode pembayaran yang tersedia (mis. Kartu, E-Wallet)* |
-| 2 | *Pelanggan memilih salah satu metode pembayaran* | *Sistem mengirimkan permintaan otorisasi ke payment gateway (dummy) sesuai metode yang dipilih* |
-| 3 | *-* | *Payment gateway (dummy) mengembalikan status pembayaran berhasil; sistem memperbarui status pesanan menjadi "Lunas" dan menampilkan notifikasi pembayaran berhasil* |
-| ... | *...* | *...* |
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | - | *Eksekutor Lapangan membuka dashboard penugasan* | - | - |
+| 2 | - | - | - | *Sistem menampilkan daftar laporan berstatus "Dikerjakan" yang sudah terurut berdasarkan prioritas serta memiliki fitur filter berdasarkan kategori dan lokasi* |
+| 3 | - | *Eksekutor Lapangan memilih salah satu laporan* | - | - |
+| 4 | - | - | - | *Sistem menampilkan rincian penugasan berupa foto bukti, deskripsi keluhan, kategori, waktu masuk, peta lokasi, dan jumlah upvote* |
 
-**Skenario Alternatif 1: Pembayaran Dummy Gagal**
+**Skenario Alternatif 1: Menyaring Daftar Penugasan Berdasarkan Kategori**
 
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | *Pelanggan menekan tombol "Bayar" pada ringkasan pesanan* | *Sistem menampilkan pilihan metode pembayaran yang tersedia* |
-| 2 | *Pelanggan memilih salah satu metode pembayaran* | *Sistem mengirimkan permintaan otorisasi ke payment gateway (dummy), yang mengembalikan status gagal (mis. saldo e-wallet dummy tidak mencukupi)* |
-| 3 | *Pelanggan memilih untuk mencoba lagi atau memilih metode lain* | *Sistem kembali ke langkah 1 skenario normal* |
-| ... | *...* | *...* |
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | - | *Eksekutor Lapangan membuka dashboard penugasan* | - | - |
+| 2 | - | - | - | *Sistem menampilkan daftar laporan berstatus "Dikerjakan" yang sudah terurut berdasarkan prioritas serta memiliki fitur filter berdasarkan kategori dan lokasi* |
+| 3 | - | *Eksekutor Lapangan memilih filter berdasarkan kategori* | - | - |
+| 4 | - | - | - | *Sistem menampilkan ulang daftar penugasan sesuai kategori yang dipilih, tetap terurut berdasarkan skala prioritas* |
+| 5 | - | *Eksekutor Lapangan memilih salah satu laporan* | - | - |
+| 6 | - | - | - | *Sistem kembali ke langkah 2 skenario normal* |
 
-<sub>*Lanjutkan pola 3.4.x ini untuk setiap ID UC pada 3.2, sampai seluruh use case tercakup.*<sub>
+**Skenario Alternatif 2: Belum Ada Penugasan yang Tersedia**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | - | *Eksekutor Lapangan membuka dashboard penugasan* | - | - |
+| 2 | - | - | - | *Sistem menampilkan keterangan bahwa belum ada penugasan yang perlu dikerjakan saat ini* |
+
+### 3.4.4 Skenario UC04
+
+**Nama Use Case:** *Melaporkan Hasil Penugasan*
+
+**Pra-kondisi:** *Eksekutor lapangan mendapat surat penugasan dan sudah masuk menggunakan akun Eksekutor Lapangan dan sudah menyelesaikan penugasan yang diberikan berdasarkan laporan.*
+
+**Pasca-kondisi:** *Hasil penanganan penugasan tertera dengan detail seperti foto hasil penanganan dan deskripsi hasil perbaikan, kemudian dilanjutkan ke Tim Administrasi untuk dievaluasi.*
+
+**Skenario Normal**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | - | *Eksekutor Lapangan membuka dashboard penugasan* | - | - |
+| 2 | - | - | - | *Sistem menampilkan daftar laporan berstatus "Dikerjakan" yang tersedia* |
+| 3 | - | *Eksekutor Lapangan memilih salah satu laporan* | - | - |
+| 4 | - | - | - | *Sistem menampilkan rincian laporan, serta tertera kolom untuk mengunggah foto bukti prnanganan dan kolom untuk mengisi deskripsi hasil kerja* |
+| 5 | - | *Eksekutor Lapangan mengunggah foto hasil penanganan dan mengisi deskripsi hasil kerja* | - | - |
+| 6 | - | - | - | *Sistem menampilkan foto yang diunggah dan deskripsi yang telah diisi* |
+| 7 | - | *Eksekutor Lapangan menekan tombol "Kirim Laporan"* | - | - |
+| 8 | - | - | - | *Sistem menvalidasi kelengkapan laporan dan mengirimkannya ke Tim Administrasi* |
+
+**Skenario Alternatif 1: Data Laporan Belum Lengkap**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | - | *Eksekutor Lapangan membuka dashboard penugasan* | - | - |
+| 2 | - | - | - | *Sistem menampilkan daftar laporan berstatus "Dikerjakan" yang tersedia* |
+| 3 | - | *Eksekutor Lapangan memilih salah satu laporan* | - | - |
+| 4 | - | - | - | *Sistem menampilkan rincian laporan, serta tertera kolom untuk mengunggah foto bukti penanganan dan kolom untuk mengisi deskripsi hasil kerja* |
+| 5 | - | *Eksekutor Lapangan menekan tombol "Kirim Laporan" tanpa mengunggah foto bukti penanganan dan/atau deskripsi hasil kerja* | - | - |
+| 6 | - | - | - | *Sistem menampilkan pesan kesalahan bahwa foto bukti dan deskripsi wajib diisi, serta tetap menampilkan kolom* |
+| 7 | - | *Eksekutor Lapangan melengkapi foto hasil penanganan dan/atau deskripsi hasil kerja yang belum lengkap* | - | - |
+| 8 | - | - | - | *Sistem kembali ke langkah 3 skenario normal* |
+
+### 3.4.5 Skenario UC05
+
+**Nama Use Case:** *Mengevaluasi Hasil Kerja*
+
+**Pra-kondisi:** *Tim Administrasi sudah masuk ke akun dan terdapat minimal satu pekerjaan yang telah diselesaikan eksekutor lapangan*
+
+**Pasca-kondisi:** *Eksekutor lapangan mendapat informasi mengenai selesai atau tidaknya pekerjaan yang telah dilakukan*
+
+**Skenario Normal**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | - | - | *Admin melihat seluruh pekerjaan untuk ditijau* | - |
+| 2 | - | - | - | *Sistem menampilkan seluruh list pekerjaan yang diurutkan berdasarkan waktu* |
+| 3 | - | - | *Admin meninjau detail hasil salah satu pekerjaan* | - |
+| 4 | - | - | - | *Sistem mengarahkan pelanggan ke halaman detail pekerjaan, hasil pekerjaan berupa foto/video, tanggal pekerjaan selesai, dan keterangan dapat dilihat* |
+| 5 | - | - | *Admin mengonfirmasi bahwa pekerjaan telah selesai* | - |
+| 6 | - | - | - | *Sistem mengubah informasi pekerjaan menjadi selesai* |
+
+<br>
+
+**Skenario Alternatif 1: Pekerjaan belum selesai**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | - | - | *Admin melihat seluruh pekerjaan untuk ditijau* | - |
+| 2 | - | - | - | *Sistem menampilkan seluruh list pekerjaan yang diurutkan berdasarkan waktu* |
+| 3 | - | - | *Admin meninjau detail hasil salah satu pekerjaan* | - |
+| 4 | - | - | - | *Sistem mengarahkan pelanggan ke halaman detail pekerjaan, hasil pekerjaan berupa foto/video, tanggal pekerjaan selesai, dan keterangan dapat dilihat* |
+| 5 | - | - | *Admin mengonfirmasi hasil pekerjaan* | - |
+| 6 | - | - | - | *Sistem mengubah informasi pekerjaan menjadi belum selesai* |
+
+**Skenario Alternatif 2: Foto/video pekerjaan tidak ada atau tidak jelas**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | - | - | *Admin melihat seluruh pekerjaan untuk ditijau* | - |
+| 2 | - | - | - | *Sistem menampilkan seluruh list pekerjaan yang diurutkan berdasarkan waktu* |
+| 3 | - | - | *Admin meninjau detail hasil salah satu pekerjaan* | - |
+| 4 | - | - | - | *Sistem mengarahkan admin ke halaman detail pekerjaan, hasil pekerjaan berupa foto/video, tanggal pekerjaan selesai, dan keterangan dapat dilihat* |
+| 5 | - | - | *Admin meminta ulang foto/video pekerjaan serta menuliskan keterangan dari kesalahan foto atau video* | - |
+| 6 | - | - | - | *Sistem mengubah informasi pekerjaan menjadi selesai serta menyimpan keterangan dari admin* |
+
+<br>
+
+### 3.4.6 Skenario UC06
+
+**Nama Use Case:** *Memantau Status Laporan*
+
+**Pra-kondisi:** 
+* *Warga telah membuka aplikasi LaporKota (baik telah masuk ke akun terdaftar maupun sebagai publik).*
+* *Terdapat minimal satu data laporan yang telah tersimpan di dalam sistem.*
+
+**Pasca-kondisi:** 
+* *Warga memperoleh transparansi linimasa dan status penanganan laporan (termasuk dokumentasi foto hasil perbaikan fisik jika laporan berstatus "Berhasil", atau catatan alasan penolakan jika laporan berstatus "Ditolak").*
+* *Dukungan (upvote) Warga tercatat dan sistem menghitung ulang urutan prioritas penanganan laporan secara otomatis (bila melakukan upvote).*
+
+<br>
+
+**Skenario Normal: Memantau Linimasa Riwayat Laporan Pribadi**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | *Warga memilih menu "Riwayat Laporan" (atau mengakses melalui tautan notifikasi pembaruan status)* | - | - | - |
+| 2 | - | - | - | *Sistem menyajikan daftar seluruh laporan yang pernah diajukan oleh Warga, lengkap dengan ID tiket unik, kategori kerusakan, tanggal pengiriman, dan status terkini ("Diterima", "Dikerjakan", atau "Berhasil")* |
+| 3 | *Warga memilih salah satu tiket laporan* | - | - | - |
+| 4 | - | - | - | *Sistem menyajikan halaman pelacakan detail yang menampilkan linimasa riwayat status penanganan secara transparan, mencakup waktu pembaruan status serta dokumentasi foto hasil perbaikan fisik oleh Eksekutor Lapangan bila laporan telah berstatus "Berhasil"* |
+
+<br>
+
+**Skenario Alternatif 1: Memantau Laporan Publik via Peta Sebaran dan Memberikan Dukungan (Upvote)**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | *Warga memilih menu "Peta Sebaran Laporan"* | - | - | - |
+| 2 | - | - | - | *Sistem memvisualisasikan peta sebaran seluruh laporan kerusakan secara real-time dengan menyembunyikan identitas pribadi pelapor (anonymity)* |
+| 3 | *Warga memilih salah satu penanda (marker) laporan pada peta* | - | - | - |
+| 4 | - | - | - | *Sistem menyajikan kartu rincian laporan publik berupa foto bukti kerusakan, kategori, deskripsi keluhan, peta lokasi, status penanganan saat ini, dan jumlah upvote tanpa menampilkan identitas pribadi pelapor* |
+| 5 | *Warga menekan tombol "Upvote" (Dukung Laporan)* | - | - | - |
+| 6 | - | - | - | *Sistem menambahkan 1 upvote pada laporan tersebut, menghitung ulang dan memperbarui urutan prioritas penanganan secara otomatis, serta memperbarui jumlah upvote terkini pada tampilan antarmuka* |
+
+<br>
+
+**Skenario Alternatif 2: Memantau Laporan yang Berstatus "Ditolak"**
+
+| No | Warga | Eksekutor | Admin | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | *Warga memilih menu "Riwayat Laporan"* | - | - | - |
+| 2 | - | - | - | *Sistem menyajikan antrean laporan pribadi, termasuk laporan yang memiliki status "Ditolak"* |
+| 3 | *Warga memilih tiket laporan yang berstatus "Ditolak"* | - | - | - |
+| 4 | - | - | - | *Sistem menampilkan detail pelacakan tiket dengan status "Ditolak" beserta catatan evaluasi dan alasan penolakan yang diinput oleh Tim Administrasi* |
 
 ---
 
