@@ -180,27 +180,12 @@ Identifikasi seluruh kelas yang diperlukan berdasarkan use case dan skenarionya.
 | C05 | Lokasi | Menyimpan koordinat GPS laporan dan menghitung jarak ke lokasi lain untuk pengecekan duplikat dalam radius 20 m. | UC01, UC02 |
 | C06 | Foto | Menyimpan berkas foto beserta format dan ukurannya, serta memeriksa kevalidan dirinya (JPG/PNG, maksimal 10 MB). | UC01, UC02, UC04, UC05 |
 | C07 | Upvote | Merepresentasikan dukungan seorang Warga terhadap suatu laporan sebagai dasar skor prioritas. | UC01, UC02 |
-| C08 | HasilPerbaikan | Menyimpan bukti penanganan dari Eksekutor Lapangan berupa foto, catatan, dan waktu unggah; satu laporan dapat memiliki lebih dari satu hasil bila dikembalikan untuk eksekusi ulang. | UC04, UC05 |
+| C08 | HasilPerbaikan | Menyimpan bukti penanganan dari Eksekutor Lapangan berupa foto, catatan, dan waktu unggah, di mana satu laporan dapat memiliki lebih dari satu hasil bila dikembalikan untuk eksekusi ulang. | UC04, UC05 |
 | C09 | Evaluasi | Menyimpan keputusan verifikasi ulang Tim Administrasi atas suatu hasil perbaikan (diterima atau dikembalikan) beserta catatannya. | UC05 |
 | C10 | Notifikasi | Menyimpan dan mengirimkan pesan perubahan status laporan kepada Warga pelapor. | UC01, UC02, UC05, UC06 |
+| C11 | Video | Menyimpan berkas video beserta format dan ukurannya, serte memeriksa kevalidan dirinya. (MP4/MOV/.MKV) | UC01, UC02, UC04, UC05 |
 
 
-| ID Kelas | Nama Kelas | Deskripsi Kelas | ID Use Case |
-| :--- | :--- | :--- | :--- |
-| C01 | Pengguna | Kelas yang menyimpan data akun dan autentikasi yang dimiliki seluruh aktor, serta menentukan daftar laporan yang dapat dilihat sesuai perannya. | UC01, UC02, UC03, UC04, UC05, UC06 |
-| C02 | Warga | Turunan Pengguna yang membuat laporan kerusakan, memberikan dukungan (upvote), dan memantau status laporannya. | UC01, UC06 |
-| C03 | Admin | Turunan Pengguna yang memvalidasi atau menolak laporan baru serta mengevaluasi hasil perbaikan. | UC02, UC05 |
-| C04 | Eksekutor | Turunan Pengguna yang melihat laporan yang harus ditangani dan mengunggah hasil perbaikan. | UC03, UC04 |
-| C05 | Laporan | Menyimpan data laporan kerusakan (ID tiket, kategori, deskripsi, status, waktu masuk, alasan penolakan), memutuskan apakah dirinya duplikat, menghitung skor prioritas, dan mengelola perubahan statusnya sendiri. | UC01, UC02, UC03, UC04, UC05, UC06 |
-| C06 | Lokasi | Menyimpan koordinat GPS laporan dan menghitung jarak ke lokasi lain untuk pengecekan duplikat dalam radius 20 m. | UC01, UC02 |
-| C07 | Foto/Video | Menyimpan berkas foto atau video beserta format dan ukurannya, serta memeriksa kevalidan dirinya. | UC01, UC02, UC04, UC05 |
-| C08 | Upvote | Merepresentasikan dukungan seorang Warga terhadap suatu laporan sebagai dasar skor prioritas. | UC01, UC02 |
-| C09 | AntrianLaporan | Mengelola kumpulan laporan: mencari laporan di sekitar lokasi tertentu, menyaring berdasarkan kategori, dan mengurutkan berdasarkan waktu masuk atau prioritas. | UC01, UC02, UC03 |
-| C10 | HasilPerbaikan | Menyimpan bukti penanganan dari Eksekutor Lapangan berupa foto, catatan, dan waktu unggah. Satu laporan dapat memiliki lebih dari satu hasil bila dikembalikan untuk eksekusi ulang. | UC04, UC05 |
-| C11 | Evaluasi | Menyimpan keputusan verifikasi ulang Tim Administrasi atas suatu hasil perbaikan (diterima atau dikembalikan) beserta catatannya. | UC05 |
-| C12 | Notifikasi | Menyimpan dan mengirimkan pesan perubahan status laporan kepada Warga pelapor. | UC01, UC02, UC05, UC06 |
-| C13 | StatusLaporan | Enumerasi status laporan: Diterima, Ditolak, Dikerjakan, dan Berhasil. | UC01, UC02, UC03, UC04, UC05, UC06 |
-| C14 | KategoriKerusakan | Enumerasi kategori kerusakan infrastruktur yang dapat dipilih saat pelaporan dan dipakai untuk penyaringan. | UC01, UC02 |
 
 Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan untuk merealisasikan fungsi yang dimodelkan. Hindari kelas yang tidak memiliki keterkaitan dengan KF atau use case manapun.
 
