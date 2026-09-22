@@ -345,7 +345,7 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 
 ### 4.2.1 Use Case UC01
 
-**Nama Use Case:** *Memesan Produk*
+**Nama Use Case:** Melakukan pendaftaran akun
 
 #### Identifikasi Kelas
 
@@ -375,6 +375,58 @@ Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi 
 | *...* | *...* | *...* | *...* |
 
 > Lanjutkan pola **4.2.x** untuk setiap use case pada 3.2.
+
+### 4.2.2 Use Case UC02
+
+**Nama Use Case:** Melakukan log in ke akun yang telah ada
+
+### 4.2.3 Use Case UC03
+
+**Nama Use Case:** Masuk ke halaman utama perangkat lunak
+
+### 4.2.4 Use Case UC04
+
+**Nama Use Case:** Menulis aksara saat melakukan pembelajaran
+
+### 4.2.5 Use Case UC05
+
+**Nama Use Case:** Menyelesaikan pembelajaran
+
+### 4.2.6 Use Case UC06
+
+**Nama Use Case:** Memperaharui materi pembelajaran pada perangkat lunak
+
+### 4.2.7 Use Case UC07
+
+**Nama Use Case:** Menyampaikan feedback
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C01 | AkunPengguna | (Entity) Menyimpan data kredensial, profil, dan peran pengguna (Pelajar, Pengajar, Tim Materi). |
+| C04 | DataFeedback | (Entity) Menyimpan laporan kendala atau masukan yang dikirimkan oleh pengguna beserta status penyelesaiannya. |
+| C10 | HalamanFeedback | (Boundary) Antarmuka formulir pengaduan kendala untuk diisi oleh pelajar atau pengajar. |
+| C14 | FeedbackController | (Controller) Menerima, memvalidasi format, dan menyimpan kiriman form feedback ke dalam database. |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC01" src="./assets/diagram/UC07.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Use Case UC07</i>
+</p>
+<br>
+
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C01 | AkunPengguna | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
+| C04 | DataFeedback| *daftarItem* | *tambahItem(), checkout()* |
+| C10 | HalamanFeedback | *...* | *...* |
+| C14 | FeedbackController | *...* | *...* |
 
 ## 4.3 Diagram Kelas Keseluruhan
 
