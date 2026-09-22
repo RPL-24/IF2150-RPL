@@ -27,9 +27,9 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
+| 1. *Penjelasan terkait deliverables yang diminta pada milestone 4*  |
+| 2. *Penjelasan terkait notasi Class Diagram yang terdiri dari asosiasi, agregasi, komposiis, inheritance, depenndensi, dan realisasi.* |
+| 3. *Menekankan bahwa tidak harus menggunakan konsep OOP dalam implementasinya, namun dapat memetakan hal-hal dengan kelas diagram.* |
 | 4. ... |
 
 **Notes for this section:**  
