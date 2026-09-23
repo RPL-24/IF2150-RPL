@@ -103,9 +103,7 @@
 | *15-09-2026* | *Bagas Anugrah Putra* | *Mengerjakan bab 3.4.6: Skenario UC06* | *1.5* | *Done* | - |
 | *23-09-2026* | *Muhammad Atallah Ramadhan* | *Revisi bab 4.2.1: Skenarion UC03* | *1* | *Done* | *-* |
 | *23-09-2026* | *Muhammad Atallah Ramadhan* | *Revisi bab 4.2.2: Skenarion UC04* | *1* | *Done* | *-* |
-| *15-09-2026* | *Gede Pranajayanta Suputra* | *memperbaiki bab 4.2.5.: Skenarion UC05* | *1* | *Done* | *-* |
-| *15-09-2026* | *Bagas Anugrah Putra* | *Revisi skenario UC06* | *1* | *Done* | - |
-| *16-09-2026* | *Bagas Anugrah Putra* | *Mengubah format tabel skenario use case* | *0.5* | *Done* | - |
+
 
 
 
