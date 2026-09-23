@@ -1,0 +1,117 @@
+# Logbook Pekerjaan 
+
+## Tugas Besar IF2150 - Rekayasa Perangkat Lunak
+
+| Informasi | Keterangan |
+|---|---|
+| Kelas | *K-03* |
+| Nomor Kelompok | *G07* |
+| Nama Kelompok | *Siulan* |
+| Nama Perangkat Lunak | *LaporKota* |
+
+**Anggota Kelompok:**
+
+| NIM | Nama |
+|---|---|
+| *13525051* | *Rafi Pradipta Andira Sulistyo* |
+| *13525105* | *Pasaribu Fritz T.A.M.* |
+| *13525075* | *Bagas Anugrah Putra* |
+| *13525099* | *Gede Pranajayanta Suputra* |
+| *13525015* | *Muhammad Atallah Ramadhan* |
+
+---
+
+### Daftar Isi
+* [Milestone 1](#milestone-1)
+* Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
+
+
+---
+
+### Milestone 1
+**Periode:** 30-08-2026 - 02-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *30-08-2026* | *Bagas Anugrah Putra* | *Mengerjakan draft awal bab 1* | *1-2* | *Done* | - | 
+| *30-08-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal bab 2* | *1-2.5* | *Done* | - | 
+| *30-08-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan draft subbab 3.1* | *1* | *Done* | * - * | 
+| *30-08-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan draft bab 3.2* | *1* | *Done* | *Aktor belum pasti* | 
+| *30-08-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan draft bab 3.3* | *1* | *Done* | *Alur aplikasi dan aktor belum pasti* |
+| *31-08-2026* | *Rafi Pradipta Andira Sulistyo* | *Melakukan penyesuaian terhadap draft bab 2 serta melengkapi draft bab 2.* | *1.5* | *Done* | *-* | 
+| *01-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Menambahkan hal-hal yang dibahas pada asistensi ke bab 2* | *1* | *Done* | *-* | 
+| *01-09-2026* | *Pasaribu Fritz T.A.M.* | *Melakukan revisi aktor pada subba 3.1 berdasarkan hasil asistensi* | *1* | *Done* | * - * | 
+| *01-09-2026* | *Gede Pranajayanta Suputra* | *Melakukan revisi aktor beserta aktivitas sesuai dengan masukan pada saat asistensi* | *1* | *Done* | *-* | 
+| *01-09-2026* | *Muhammad Atallah Ramadhan* | *Merevisi swimlane diagram sesuai dengan masukan pada saat asistensi* | *1* | *Done* | *-* | 
+| *01-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab tambahan yaitu bab 3.4* | *1.5* | *Done* | *-* |
+| | | | | | | |
+
+**Catatan/Evaluasi Milestone 1:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+
+### Milestone 2
+**Periode:** 3-09-2026 - 09-09-2026 
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *06-09-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan draft awal bab  2.5: Kebutuhan non-fungsional* | *1* | *Not done* | *-* |
+| *07-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab draft awal 2.3: Deskripsi Aktivitas* | *0.5* | *Done* | *-* |
+| *07-09-2026* | Muhammad Atallah Ramadhan | Mengerjakan draft awal bab  2.5: Kebutuhan non-fungsional | *1* | Done | *-* |
+| *07-09-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan draft awal bab 1* | *1-2* | *Done* | *-* | 
+| *08-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Menambahkan beberapa poin pada bab2.3* | *0.5* | *Done* | *-* | 
+| *08-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Penyesuaian bab 2.3 berdasarkan hasil asistensi.* | *1* | *Done* | * - * |
+| *08-09-2026* | *Pasaribu Fritz T.A.M.* | *Mengisi Form Asistensi T2* | *0.5* | *Done* | *-* | 
+| *08-09-2026* | *Muhammad Atallah Ramadhan* | *Melakukan revisi bab 2.3: Deskripsi Aktivitas* | *1* | *Done* | *-* |
+| *09-09-2026* | *Gede Pranajayanta Suputra* | *Finalisasi bab  2.5: Kebutuhan non-fungsional* | *1* | *Not done* | *-* |
+| *09-09-2026* | *Pasaribu Fritz T.A.M.* | *Penyesuaian bab 1.1 berdasarkan hasil asistensi* | *0.5* | *Done* | *-* | 
+| *09-09-2026* | *Bagas Anugrah Putra* | *Revisi dan penyelarasan Subbab 2.4 (KF) terhadap pemetaan kebutuhan Bab 2.3 serta arahan asistensi* | *1* | *Done* | - |
+| *09-09-2026* | *Muhammad Atallah Ramadhan* | *Finalisasi bab  2.5: Kebutuhan non-fungsional* | *1* | *Done* | *-* |
+| | | | | | | |
+
+### Milestone 3
+**Periode:** 10-09-2026 - 16-09-2026 
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *13-09-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan draft awal bab 3.2 & 3.3* | *1-2* | *Done* | - |
+| *13-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal UC01 dan UC02* | *1* | *Done* | - | 
+| *15-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Memperbaiki beberapa hal di UC01 dan UC02 serta mengisi logbook* | *0.5* | *Done* | - | 
+| *16-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Memperbaiki beberapa hal di UC01 dan UC02 serta mengisi logbook* | *0.25* | *Done* | - | 
+| *13-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 3.4.3: Skenarion UC03* | *1* | *Done* | *-* |
+| *13-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 3.4.4: Skenarion UC04* | *1* | *Done* | *-* |
+| *13-09-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan bab 3.4.5: Skenarion UC05* | *1* | *Done* | *-* |
+| *15-09-2026* | *Gede Pranajayanta Suputra* | *memperbaiki bab 3.4.5: Skenarion UC05* | *1* | *Done* | *-* |
+| *15-09-2026* | *Pasaribu Fritz T.A.M.* | *Revisi Use Case Diagram* | *1* | *Done* | - | 
+| *15-09-2026* | *Bagas Anugrah Putra* | *Mengerjakan bab 3.4.6: Skenario UC06* | *1.5* | *Done* | - |
+| *15-09-2026* | *Bagas Anugrah Putra* | *Revisi skenario UC06* | *1* | *Done* | - |
+| *16-09-2026* | *Bagas Anugrah Putra* | *Mengubah format tabel skenario use case* | *0.5* | *Done* | - |
+
+### Milestone 4
+**Periode:** 17-09-2026 - 23-09-2026 
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+<<<<<<< HEAD
+| *20-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal bab 4.1* | *2* | *Done* | - |
+| *21-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Revisi 4.1* | *0.5* | *Done* | - | 
+| *22-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Memperbaiki beberapa hal 4.1 serta mengisi logbook* | *0.25* | *Done* | - | 
+| *23-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Revisi bab 4.1* | *1.5* | *Done* | - | 
+| *21-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 4.2.1: Skenarion UC03* | *1* | *Done* | *-* |
+| *21-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 4.2.2: Skenarion UC04* | *1* | *Done* | *-* |
+| *21-09-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan bab 4.2.5: Skenarion UC05* | *1* | *Done* | *-* |
+| *15-09-2026* | *Pasaribu Fritz T.A.M.* | *Revisi Use Case Diagram* | *1* | *Done* | - | 
+| *15-09-2026* | *Bagas Anugrah Putra* | *Mengerjakan bab 3.4.6: Skenario UC06* | *1.5* | *Done* | - |
+| *23-09-2026* | *Muhammad Atallah Ramadhan* | *Revisi bab 4.2.1: Skenarion UC03* | *1* | *Done* | *-* |
+| *23-09-2026* | *Muhammad Atallah Ramadhan* | *Revisi bab 4.2.2: Skenarion UC04* | *1* | *Done* | *-* |
+
+=======
+| *21-09-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan bab 4.2.3 & 4.2.4* | *1-2* | *Done* | - |
+>>>>>>> docs/m4-fritz
+
+
+
+---
+
+
+``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``

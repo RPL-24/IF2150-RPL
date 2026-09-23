@@ -4,20 +4,20 @@
 
 | Informasi | Keterangan |
 |---|---|
-| Kelas | *[Kelas]* |
-| Nomor Kelompok | *[Nomor Kelompok]* |
-| Nama Kelompok | *[Nama Kelompok]* |
-| Nama Perangkat Lunak | *[Nama P/L]* |
+| Kelas | *K-03* |
+| Nomor Kelompok | *G07* |
+| Nama Kelompok | *Siulan* |
+| Nama Perangkat Lunak | *LaporKota* |
 
 **Anggota Kelompok:**
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| *13525051* | *Rafi Pradipta Andira Sulistyo* |
+| *13525105* | *Pasaribu Fritz T.A.M.* |
+| *13525075* | *Bagas Anugrah Putra* |
+| *13525099* | *Gede Pranajayanta Suputra* |
+| *13525015* | *Muhammad Atallah Ramadhan* |
 
 ---
 
@@ -33,8 +33,11 @@
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
-| *04-05-2026* | *[Nama Mahasiswa]* | *[Jelaskan Pekerjaan secara Singkat]* | *[Durasi Pengerjaan]* | *[On Progress/Done]* | [Kendala yang dialami, jika tidak ada cukup tandai "-"] | 
-| *05-05-2026* | *John Doe* | *Mendesain diagram kelas* | *3* | *Done* | *-* | 
+| *30-08-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal bab 2* | *1-2.5* | *Done* | - | 
+| *30-08-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan draft bab 3.2* | *1* | *Done* | *Aktor belum pasti* | 
+| *31-08-2026* | *Rafi Pradipta Andira Sulistyo* | *Melakukan penyesuaian terhadap draft bab 2 serta melengkapi draft bab 2.* | *1.5* | *Done* | *-* | 
+| *01-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Menambahkan hal-hal yang dibahas pada asistensi ke bab 2* | *1* | *Done* | *-* | 
+| *01-09-2026* | *Gede Pranajayanta Suputra* | *Melakukan revisi aktor beserta aktivitas sesuai dengan masukan pada saat asistensi* | *1* | *Done* | *-* | 
 | | | | | | | |
 
 **Catatan/Evaluasi Milestone 1:**
