@@ -553,7 +553,7 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 | C15 | PenugasanPage | pilihanKategori, statusTampilan | tampilkanForm(), pindahPage() |
 | C16 | HasilPerbaikanForm | statusTampilan, inputDeskripsi, berkasFoto, berkasVideo | tampilkanForm(), renderBerkas(), getInputUser() |
 | C21 | PenugasanController |  | doFilter(), doSorting() |
-| C22 | PerbaikanController |  | doFilter(), doSorting() |
+| C22 | PerbaikanController | idLaporan | validasiForm() |
 
 ### 4.2.5 Use Case UC05
 
@@ -574,7 +574,7 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 #### Diagram Kelas
 
 <p align="center">
-<img alt="Class Diagram UC01" src="./assets/diagram/4.3.5.png" width="70%">
+<img alt="Class Diagram UC01" src="./assets/diagram/4.3.5.jpg" width="70%">
 </p>
 <p align="center">
 <i>Gambar 2. Diagram Kelas Use Case UC05</i>
