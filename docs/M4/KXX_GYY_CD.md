@@ -32,7 +32,7 @@ Dipersiapkan oleh:
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
+| *A* | *Ditambahkan US-24, A15, R25, dan KF18, UC13 untuk merealisasikan fitur melihat feedback sebagai Mentor.* |
 | *B* |  |
 | *C* |  |
 | ... |  |
@@ -72,20 +72,20 @@ Tabel 2.1. Daftar Kebutuhan Fungsional
 | *KF02* | *R03, R05* | *Ketika pengguna memasukkan kredensial yang sesuai dengan database sistem untuk login ke perangkat lunak, sistem harus memberikan hak akses akun pengguna dan mengarahkan pengguna ke beranda.* |
 | *KF03* | *R17* | *Sistem harus merekam dan memodifikasi tag preferensi materi pelajaran pada profil pengguna (Mentor dan Mentee).* |
 | *KF04* | *R18* | *Sistem harus menyimpan data ketersediaan waktu yang dipilih pengguna ke dalam kalender internal sistem.* |
-| *KF05* | *R06* | *Ketika Tutor menekan tombol simpan sesi baru, sistem harus merekam detail sesi: topik, jadwal, format (daring/luring), dan batas peserta.* |
-| *KF06* | *R07* | *Jika Tutor mengatur waktu sesi yang saling bertabrakan, maka sistem harus menolak masukan dan menampilkan peringatan.* |
+| *KF05* | *R06* | *Ketika Mentor menekan tombol simpan sesi baru, sistem harus merekam detail sesi: topik, jadwal, format (daring/luring), dan batas peserta.* |
+| *KF06* | *R07* | *Jika Mentor mengatur waktu sesi yang saling bertabrakan, maka sistem harus menolak masukan dan menampilkan peringatan.* |
 | *KF07* | *R19* | *Sistem harus menampilkan hasil matchmaking jadwal dan materi pengguna dalam bentuk daftar rekomendasi.* |
 | *KF08* | *R08, R20* | *Ketika Mentee memilih untuk mengikuti sebuah sesi, sistem harus mendaftarkannya sebagai anggota dan memunculkan informasi detail sesi tersebut.* |
 | *KF09* | *R09* | *Ketika waktu menunjukkan 15 menit sebelum sesi dimulai, sistem harus mengirimkan notifikasi pengingat kepada seluruh partisipan sesi tersebut.* |
 | *KF10* | *R11, R12, R14* | *Ketika sebuah sesi telah selesai ataupun melewati batas waktu pelaksanaannya, sistem harus menampilkan formulir konfirmasi otomatis dan formulir penilaian.* |
 | *KF11* | *R13* | *Sistem harus menampilkan daftar riwayat sesi yang pernah diikuti atau dibuat pada halaman profil pengguna.* |
 | *KF12* | *R15, R16* | *Ketika sebuah sesi berhasil dibentuk dan disetujui, sistem harus secara otomatis membuat group chat sementara bagi pesertanya.* |
-| *KF13* | *R21* | *Jika jumlah partisipan sesi telah mencapai batas kapasitas maksimum yang ditetapkan Tutor, sistem harus menolak permintaan bergabung dari Mentee selanjutnya dan menampilkan notifikasi sesi penuh.* |
-| *KF14* | *R22* | *Jika Tutor memasukkan jumlah partisipan yang tidak valid saat pembuatan sesi (minimum 1 partisipan dan maksimum 20 partisipan), sistem harus menolak masukan dan menampilkan peringatan.* |
+| *KF13* | *R21* | *Jika jumlah partisipan sesi telah mencapai batas kapasitas maksimum yang ditetapkan Mentor, sistem harus menolak permintaan bergabung dari Mentee selanjutnya dan menampilkan notifikasi sesi penuh.* |
+| *KF14* | *R22* | *Jika Mentor memasukkan jumlah partisipan yang tidak valid saat pembuatan sesi (minimum 1 partisipan dan maksimum 20 partisipan), sistem harus menolak masukan dan menampilkan peringatan.* |
 | *KF15* | *R23* | *Ketika Mentee mengonfirmasi pembatalan keikutsertaan pada suatu sesi, maka sistem harus menghapus data Mentee tersebut dari basis data pendaftar sesi.* |
 | *KF16* | *R23* | *Ketika Mentor mengonfirmasi penghapusan sesi buatannya, sistem harus menghapus sesi tersebut dan memperbarui basis data agar tidak lagi ditampilkan.* |
 | *KF17* | *R24* | *Ketika Mentor menyimpan pembaruan data sesi, sistem harus merekam revisi tersebut ke dalam basis data agar rincian terbaru segera ditampilkan.* |
-
+| *KF18* | *R24* | *Ketika Mentor mengakses riwayat sesi yang telah selesai, sistem harus menampilkan riwayat penilaian yang diberikan oleh Mentee.* |
 ---
 
 # BAB 3: Model Use Case
@@ -121,6 +121,7 @@ Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 | *UC10* | *Membatalkan Keikutsertaan Sesi* | *Mentee dapat membatalkan pengikutsertaan sesi yang sudah didaftarkan sebelumnya* | *Mentee* | *KF15* |
 | *UC11* | *Menghapus Sesi* | *Mentor dapat menghapus sesi yang sudah dibuat sebelumnya* | *Mentor* | *KF16* |
 | *UC12* | *Mengedit Sesi* | *Mentor dapat mengedit sesi yang sudah dibuat sebelumnya untuk mengganti jadwal atau rincian sesi* | *Mentor* | *KF17, KF06, KF14* |
+| *UC13* | *Melihat Feedback Sesi* | *Mentor dapat mengakses dan membaca feedback yang dirancang oleh Mentee pada sesi yang telah selesai.* | *Mentor* | *KF18* |
 
 ## 3.3 Use Case Diagram
 Buatlah diagram use case keseluruhan berdasarkan identifikasi use case beserta aktor yang melakukan use case tersebut. Perhatikan garis `<<extend>>` dan `<<include>>`.
@@ -288,7 +289,7 @@ Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 | :--- | :--- | :--- |
 | 1 | *Pengguna memilih menu "Riwayat"* | *Sistem mengambil seluruh data sesi milik Pengguna dari database* |
 | 2 | *Pengguna menunggu data* | *Sistem menampilkan daftar sesi yang dikelompokkan berdasarkan status: Berlangsung, Terlaksana, dan Tidak Terlaksana* |
-| 3 | *Pengguna memilih salah satu sesi pada daftar* | *Sistem menampilkan detail sesi tersebut, termasuk peran Pengguna (Tutor/Mentee), materi, jadwal, dan status* |
+| 3 | *Pengguna memilih salah satu sesi pada daftar* | *Sistem menampilkan detail sesi tersebut, termasuk peran Pengguna (Mentor/Mentee), materi, jadwal, dan status* |
  
 <br>
 
@@ -431,6 +432,21 @@ Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 | 3 | *Mentor melakukan pengeditan terhadap batas maksimum peserta menjadi lebih sedikit dari batas minimum yang diperbolehkan dan mengonfirmasi perubahan tersebut* | *Sistem mendeteksi bahwa jumlah partisipan yang dimasukkan mentor lebih sedikit dari yang diperbolehkan, lalu menampilkan pesan peringatan jumlah partisipan terlalu sedikit* |
 | 4 | *Mentor menyesuaikan kembali batas pesertanya, lalu mengonfirmasi perubahan* | *Sistem memperbarui database dengan data yang telah direvisi agar tampilan sesuai, lalu memunculkan pesan "Data sesi berhasil diperbarui"* |
 
+### 3.4.13 Skenario UC13
+
+**Nama Use Case:** *Melihat Feedback Sesi*
+
+**Skenario Normal**
+ 
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Mentor membuka detail sesi yang telah selesai pada riwayat sesi* | *Sistem menampilkan detail informasi sesi tersebut beserta tombol "Lihat Feedback"* |
+| 2 | *Mentor menekan tombol "Lihat Feedback"* | *Sistem menampilkan semua feedback yang dibuat Mentee pada sesi tersebut (ditarik dari database Feedback)* |
+
+<br>
+
+(Catatan: UC13 tidak memiliki skenario alternatif).
+
 ---
 
 # BAB 4: Diagram Kelas
@@ -454,6 +470,7 @@ Identifikasi seluruh kelas yang diperlukan berdasarkan use case dan skenarionya.
 | *C11* | *Dashboard* | *Kelas antarmuka utama yang menampilkan rangkuman jadwal sesi terdekat, notifikasi, dan rekomendasi matchmaking untuk Mentee.* | *UC01, UC04, UC06, UC09* |
 | *C12* | *UserDatabase* | *Kelas pengontrol yang bertanggung jawab memvalidasi email universitas, mengelola autentikasi login, serta menyimpan data akun ke dalam sistem.* | *UC01, UC02* |
 | *C13* | *SessionDatabase* | *Kelas pengontrol yang bertanggung jawab menyimpan, memperbarui, memvalidasi tabrakan jadwal, serta mengambil data Session, Feedback, dan SessionHistory dari sistem.* | *UC03, UC04, UC05, UC06, UC10, UC11, UC12* |
+| *C14* | *FeedbackDatabase* | *Kelas pengontrol yang bertanggung jawab menyimpan dan memperbarui penilaian yang dibuat oleh Mentee terhadap sesi yang diikuti.* | *UC13, UC07* |
 
 Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan untuk merealisasikan fungsi yang dimodelkan. Hindari kelas yang tidak memiliki keterkaitan dengan KF atau use case manapun.
 
@@ -462,21 +479,23 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 
 ### 4.2.1 Use Case UC01
 
-**Nama Use Case:** *Memesan Produk*
+**Nama Use Case:** *Mendaftarkan Akun dan Autentikasi*
 
 #### Identifikasi Kelas
 
 | ID Kelas | Nama Kelas | Deskripsi Kelas |
 | :--- | :--- | :--- |
-| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* |
-| *C02* | *Pesanan* | *Menyimpan data pesanan yang dibuat dari isi keranjang.* |
-| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* |
-| *...* | *...* | *...* |
+| *C01* | *User* | *Kelas parent yang merepresentasikan pengguna aplikasi (Mentor, Mentee) yang menyimpan informasi akun dasar seperti email universitas dan kata sandi.* |
+| *C02* | *Mentor* | *Kelas turunan dari User yang merepresentasikan tutor sebaya.* |
+| *C03* | *Mentee* | *Kelas turunan dari User yang merepresentasikan siswa.* |
+| *C10* | *Profile* | *Kelas yang merepresentasikan data identitas pengguna (nama, universitas, program studi, bio) yang dihubungkan dengan akun User.* |
+| *C11* | *Dashboard* | *Kelas antarmuka utama yang menampilkan rangkuman jadwal sesi terdekat dan notifikasi setelah pengguna masuk.* |
+| *C12* | *UserDatabase* | *Kelas pengontrol yang bertanggung jawab memvalidasi email universitas, mengelola autentikasi login, serta menyimpan data akun ke dalam sistem.* |
 
 #### Diagram Kelas
 
 <p align="center">
-<img alt="Class Diagram UC01" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+<img alt="Class Diagram UC01" src="./assets/diagram/diagram-uc01.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 2. Diagram Kelas Use Case UC01</i>
@@ -487,9 +506,143 @@ Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi 
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
-| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
-| *...* | *...* | *...* | *...* |
+| *C01* | *User* | *idUser, email, passwordHash* | *register(), login(), logout()* |
+| *C02* | *Mentor* | *daftarSesiDibuat* | *inherit dari User* |
+| *C03* | *Mentee* | *daftarSesiDiikuti* | *Inherit dari User* |
+| *C10* | *Profile* | *nama, universitas, programStudi, bio* | *updateProfile()* |
+| *C11* | *Dashboard* | *jadwalUser, notifikasi* | *showDashboard()* |
+| *C12* | *UserDatabase* | *daftarAkun* | *emailValidation(), loginAuth(), saveAccount()* |
+
+### 4.2.2 Use Case UC02
+ 
+**Nama Use Case:** *Mengelola Preferensi Profil*
+ 
+#### Identifikasi Kelas
+ 
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C01* | *User* | *Kelas parent yang merepresentasikan pengguna aplikasi, menyimpan referensi terhadap Profile dan Preference miliknya.* |
+| *C02* | *Mentor* | *Kelas turunan dari User yang merepresentasikan tutor sebaya.* |
+| *C03* | *Mentee* | *Kelas turunan dari User yang merepresentasikan siswa.* |
+| *C09* | *Preference* | *Kelas yang menyimpan pengaturan pengguna, seperti tag mata pelajaran, ketersediaan jadwal, dan preferensi metode belajar (luring/daring) agar digunakan oleh algoritma matchmaking.* |
+| *C10* | *Profile* | *Kelas yang merepresentasikan data identitas pengguna (nama, universitas, program studi, bio) yang dihubungkan dengan akun User.* |
+| *C12* | *UserDatabase* | *Kelas pengontrol yang menyimpan data Profile dan Preference ke dalam sistem.* |
+ 
+#### Diagram Kelas
+ 
+<p align="center">
+<img alt="Class Diagram UC02" src="./assets/diagram/diagram-uc02.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3. Diagram Kelas Use Case UC02</i>
+</p>
+<br>
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+ 
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C01* | *User* | *idUser, email, passwordHash* | *showPreference()* |
+| *C02* | *Mentor* | *daftarSesiDibuat* | *inherit dari User* |
+| *C03* | *Mentee* | *daftarSesiDiikuti* | *inherit dari User* |
+| *C09* | *Preference* | *tagMateri, ketersediaanJadwal, preferensiFormatSesi* | *updatePreference()* |
+| *C10* | *Profile* | *nama, universitas, programStudi, bio* | *updateProfile()* |
+| *C12* | *UserDatabase* | *daftarAkun* | *saveProfile(), savePreference()* |
+
+ 
+### 4.2.3 Use Case UC03
+ 
+**Nama Use Case:** *Membuat Sesi Belajar*
+ 
+#### Identifikasi Kelas
+ 
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C02* | *Mentor* | *Kelas turunan dari User yang memiliki hak untuk membuat sesi baru, mengedit sesi, dan menghapus sesi.* |
+| *C04* | *Session* | *Kelas yang merepresentasikan sesi belajar yang menyimpan atribut seperti topik materi, jadwal, kapasitas, daftar peserta, dan status sesi.* |
+| *C13* | *SessionDatabase* | *Kelas pengontrol yang bertanggung jawab menyimpan, memperbarui, dan memvalidasi tabrakan jadwal Session.* |
+ 
+#### Diagram Kelas
+ 
+<p align="center">
+<img alt="Class Diagram UC03" src="./assets/diagram/diagram-uc03.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 4. Diagram Kelas Use Case UC03</i>
+</p>
+<br>
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+ 
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Mentor* | *daftarSesiDibuat* | *createSession()* |
+| *C04* | *Session* | *idSesi, topik, jadwal, format, kapasitas, daftarPeserta, status* | *createSession(), setCapacity()* |
+| *C13* | *SessionDatabase* | *daftarSesi* | *saveSession(), validateScheduleConflict()* |
+
+ 
+### 4.2.4 Use Case UC04
+ 
+**Nama Use Case:** *Mencari dan Bergabung ke Sesi*
+ 
+#### Identifikasi Kelas
+ 
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C03* | *Mentee* | *Kelas turunan dari User yang memiliki hak untuk mencari rekomendasi sesi, mendaftarkan diri ke sesi, serta membatalkan keikutsertaan sesi.* |
+| *C04* | *Session* | *Kelas yang merepresentasikan sesi belajar yang menyimpan atribut seperti topik materi, jadwal, kapasitas, daftar peserta, dan status sesi.* |
+| *C09* | *Preference* | *Kelas yang menyimpan tag mata pelajaran dan ketersediaan jadwal Mentee, digunakan sebagai dasar algoritma rekomendasi.* |
+| *C11* | *Dashboard* | *Kelas antarmuka yang menampilkan rekomendasi matchmaking untuk Mentee.* |
+| *C13* | *SessionDatabase* | *Kelas pengontrol yang mengambil data Session dan mencocokkannya dengan Preference untuk menghasilkan rekomendasi.* |
+ 
+#### Diagram Kelas
+ 
+<p align="center">
+<img alt="Class Diagram UC04" src="./assets/diagram/diagram-uc04.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 5. Diagram Kelas Use Case UC04</i>
+</p>
+<br>
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+ 
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C03* | *Mentee* | *daftarSesiDiikuti* | *joinSession(), cancelSession()* |
+| *C04* | *Session* | *idSesi, topik, jadwal, format, kapasitas, daftarPeserta, status* | *addParticipant(), checkCapacity()* |
+| *C09* | *Preference* | *tagMateri, ketersediaanJadwal, preferensiFormatSesi* | *showPreference()* |
+| *C11* | *Dashboard* | *rekomendasiSesi* | *showRecommendation()* |
+| *C13* | *SessionDatabase* | *daftarSesi* | *findRecommendation(), saveSession()* |
+
+### 4.2.7 Use Case UC07
+ 
+**Nama Use Case:** *Memberikan Penilaian Sehabis Sesi*
+ 
+#### Identifikasi Kelas
+ 
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| *C02* | *Mentor* | *Kelas turunan dari User yang merepresentasikan tutor sebaya. Kelas ini memiliki hak untuk membaut sesi baru, mengedit sesi, dan menghapus sesi.* |
+| *C03* | *Mentee* | *Kelas turunan dari User yang merepresentasikan siswa. Memiliki hak untuk mencari rekomendasi sesi, mendaftarkan ke sesi, serta membatalkan ikutsertaan sesi* |
+| *C06* | *Feedback* | *Kelas yang merepresentasikan rating dan ulasan yang diberikan oleh Mentee ataupun Mentor pada saat sebuah sesi belajar telah selesai.* |
+| *C14* | *FeedbackDatabase* | *Kelas pengontrol yang bertanggung jawab menyimpan dan memperbarui penilaian yang dibuat oleh Mentee terhadap sesi yang diikuti.* |
+ 
+#### Diagram Kelas
+ 
+<p align="center">
+<img alt="Class Diagram UC07" src="./assets/diagram/diagram-uc07.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 7. Diagram Kelas Use Case UC07</i>
+</p>
+<br>
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+ 
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| *C01* | *User* | *idUser* | *createFeedback()* |
+| *C02* | *Mentor* | *idSesi, topik, jadwal, format, kapasitas, daftarPeserta, status* | *inherit dari User* |
+| *C03* | *Mentee* | *tagMateri, ketersediaanJadwal, preferensiFormatSesi* | *inherit dari User* |
+| *C06* | *Feedback* | *idFeedback, author, target, content, score* | *showRecommendation()* |
+| *C07* | *SessionHistory* | ** | ** |
 
 > Lanjutkan pola **4.2.x** untuk setiap use case pada 3.2.
 
