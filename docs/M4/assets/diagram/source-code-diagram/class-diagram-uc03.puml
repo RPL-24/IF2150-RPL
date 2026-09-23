@@ -11,11 +11,21 @@ class EksekutorLapangan
 class ListTugas
 class Laporan
 class Foto
+class Video
+class PenugasanPage
+class PenugasanController
 
 ' 1. Asosiasi
 EksekutorLapangan "1" -- "1" ListTugas
+EksekutorLapangan --> PenugasanPage
+PenugasanPage --> PenugasanController
 
 ' 2. Agregasi 
 ListTugas "1" o-- "0..*" Laporan
 Laporan "1" *-- "1..*" Foto
+Laporan "1" *-- "0..*" Video
+
+' 3. Dependency
+PenugasanController ..> ListTugas
+
 @enduml
