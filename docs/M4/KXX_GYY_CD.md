@@ -563,18 +563,22 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 
 | ID Kelas | Nama Kelas | Deskripsi Kelas |
 | :--- | :--- | :--- |
-| *C02* | *Admin* | *Memvalidasi dan menentukan apakah hasil pekerjaan sudah dinilai selesai atau tidak.* |
-| *C04* | *Laporan* | *Mengelola perubahan statusnya pekerjaan.* |
-| *C06* | *Foto/Video* | *Menyimpan bukti hasil pekerjaan.* |
-| *C08* | *HasilPerbaikan* | *Menyimpan bukti  serta keterangan penanganan dari Eksekutor Lapangan.* |
-| *C09* | *Evaluasi* | *Menyimpan keputusan validasi ulang Tim Administrasi.* |
-| *C10* | *Notifikasi* | *Mengirimkan peasn perubahan status laporan.* |
+| *C17* | *EvaluasiPage* | *Antarmuka peninjauan hasil kerja Eksekutor Lapangan: menampilkan bukti perbaikan beserta pilihan keputusan diterima atau dikembalikan.* |
+| *C23* | *EvaluasiController* | *Menyimpan keputusan verifikasi ulang, menetapkan status laporan menjadi Berhasil, atau mengembalikan laporan ke status Dikerjakan untuk eksekusi ulang.* |
+| *C25* | *NotifikasiController* | *Menyusun dan mengirimkan notifikasi perubahan status laporan kepada Warga pelapor pada setiap peralihan status.* |
+| *C02* | *Admin* | *Menyimpan data akun anggota Tim Administrasi beserta perannya sebagai pemvalidasi laporan dan penilai hasil perbaikan.* |
+| *C04* | *Laporan* | *Menyimpan data laporan kerusakan dengan status bernilai Diterima, Ditolak, Dikerjakan, atau Berhasil.* |
+| *C06* | *Foto* | *Menyimpan berkas foto beserta format dan ukurannya.* |
+| *C08* | *HasilPerbaikan* | *Menyimpan bukti penanganan dari Eksekutor Lapangan berupa foto, catatan, dan waktu unggah.    * |
+| *C00* | *Evaluasi* | *Menyimpan keputusan verifikasi ulang Tim Administrasi atas suatu hasil perbaikan beserta catatannya.* |
+| *C10* | *Notifikasi* | *Menyimpan pesan perubahan status laporan beserta penerima dan waktu pengirimannya.* |
+| *C11* | *Video* | *Menyimpan berkas video beserta format dan ukurannya.* |
 | *...* | *...* | *...* |
 
 #### Diagram Kelas
 
 <p align="center">
-<img alt="Class Diagram UC01" src="./assets/diagram/4.3.5.png" width="70%">
+<img alt="Class Diagram UC01" src="./assets/diagram/class-diagram-uc05.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 2. Diagram Kelas Use Case UC05</i>
@@ -585,15 +589,16 @@ Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi 
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C02* | *Admin* | *idAdmin* | *validasiLaporan(), laporanSelesai(), laporanTidakSelesai(), saringAntrean* |
-| *C04* | *Laporan* | *idTiket, kategori, deskripsi, status, waktuMasuk, foto, video* | *ubahStatus()* |
-| *C06* | *Foto/Video* | *idFoto, idVideo* | *bukaVideo(), bukaFoto()* |
-| *C08* | *HasilPerbaikan* | *idHasil, idTiket, idEksekutor, catatan, waktuUnggah* | *tambahFoto(), tambahVideo(), tulisKeterangan(), simpanBukti()* |
-| *C09* | *Evaluasi* | *idHasil, keputusan, catatan* | *simpanEvaluasi, laporanTidakSelesai(), laporanSelesai()* |
-| *C010* | *Notifikasi* | *idNotifikasi, idTiket, idWarga, isiPesan, waktuKirim* | *kirimPesan()* |
-| *...* | *...* | *...* | *...* |
-
-> Lanjutkan pola **4.2.x** untuk setiap use case pada 3.2.
+| *C17* | *EvaluasiPage* | *-* | *tampilkanDetailPerbaikan(), pilihKeputusan(), submitEvaluasi()* |
+| *C23* | *EvaluasiController* | *-* | *ambilDetailPerbaikan(), updateStatusLaporan()* |
+| *C25* | *NotifikasiController* | *-* | *buatNotifikasi(), kirimNotifikasiStatus()* |
+| *C02* | *Admin* | *idAdmin, nama, peran* | *getProfilAdmin()* |
+| *C04* | *Laporan* | *idTiket, kategori, deskripsi, status, waktuMasuk, skorPrioritas* | *ubahStatus()* |
+| *C06* | *Foto* | *idFoto, path, format, ukuran* | *getFotoData()* |
+| *C08* | *HasilPerbaikan* | *idHasil, idTiket, idEksekutor, catatan, waktuUnggah* | *getCatatan(), getBukti()* |
+| *C09* | *Evaluasi* | *idEvaluasi, idHasil, idAdmin, keputusan, catatan, waktuEvaluasi* | *simpanEvaluasi()* |
+| *C10* | *Notifikasi* | *idNotifikasi, penerima, isiPesan, waktuKirim* | *kirimPesan()* |
+| *C11* | *Video* | *idVideo, path, format, ukuran* | *getVideoData()* |
 
 ### 4.2.6 Use Case UC06
 
