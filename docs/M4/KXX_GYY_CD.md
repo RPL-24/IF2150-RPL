@@ -468,9 +468,12 @@ Identifikasi seluruh kelas yang diperlukan berdasarkan use case dan skenarionya.
 | *C09* | *Preference* | *Kelas yang menyimpan pengaturan pengguna, seperti tag mata pelajaran, ketersediaan jadwal pada kalender, dan preferensi metode belajar (luring/daring) agar digunakan oleh algoritma matchmaking.* | *UC02, UC04* |
 | *C10* | *Profile* | *Kelas yang merepresentasikan data identitas pengguna (nama, universitas, program studi, bio) yang dihubungkan dengan akun User.* | *UC01, UC02* |
 | *C11* | *Dashboard* | *Kelas antarmuka utama yang menampilkan rangkuman jadwal sesi terdekat, notifikasi, dan rekomendasi matchmaking untuk Mentee.* | *UC01, UC04, UC06, UC09* |
-| *C12* | *UserDatabase* | *Kelas pengontrol yang bertanggung jawab memvalidasi email universitas, mengelola autentikasi login, serta menyimpan data akun ke dalam sistem.* | *UC01, UC02* |
-| *C13* | *SessionDatabase* | *Kelas pengontrol yang bertanggung jawab menyimpan, memperbarui, memvalidasi tabrakan jadwal, serta mengambil data Session, Feedback, dan SessionHistory dari sistem.* | *UC03, UC04, UC05, UC06, UC10, UC11, UC12* |
-| *C14* | *FeedbackDatabase* | *Kelas pengontrol yang bertanggung jawab menyimpan dan memperbarui penilaian yang dibuat oleh Mentee terhadap sesi yang diikuti.* | *UC13, UC07* |
+| *C12* | *UserDatabase* | *Kelas antarmuka sistem yang bertugas untuk menyimpan dan mengambil data user.* | *UC01, UC02* |
+| *C13* | *SessionDatabase* | *Kelas antarmuka sistem yang bertugas untuk menyimpan dan mengambil data sesi user.* | *UC03, UC04, UC05, UC06, UC10, UC11, UC12* |
+| *C14* | *FeedbackDatabase* | *Kelas antarmuka sistem yang bertugas menyimpan dan mengambil data feedback terhadap sesi.* | *UC13, UC07* |
+| *C15* | *UserControl* | *Kelas pengontrol yang mengautentikasi login, memvalidasi format email, dan pembaruan profil pengguna* | *UC01, UC02* |
+| *C16* | *SessionControl* | *Kelas pengontrol yang menangani tabrakan jadwal, menjalankan algoritma matchmaking, dan memproses pendaftaran atau pembuatan sesi.* | *UC03, UC04, UC05, UC06, UC10, UC11, UC12* |
+| *C17* | *FeedbackControl* | *Kelas pengontrol yang memvalidasi feedback dan rating untuk mentor.* | *UC13, UC07* |
 
 Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan untuk merealisasikan fungsi yang dimodelkan. Hindari kelas yang tidak memiliki keterkaitan dengan KF atau use case manapun.
 
@@ -638,7 +641,6 @@ Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi 
  
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C01* | *User* | *idUser* | *createFeedback()* |
 | *C02* | *Mentor* | *idSesi, topik, jadwal, format, kapasitas, daftarPeserta, status* | *inherit dari User* |
 | *C03* | *Mentee* | *tagMateri, ketersediaanJadwal, preferensiFormatSesi* | *inherit dari User* |
 | *C06* | *Feedback* | *idFeedback, author, target, content, score* | *showRecommendation()* |
