@@ -645,7 +645,7 @@ Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi 
 Gabungkan seluruh kelas dan hubungan antarkelas dari diagram kelas setiap use case menjadi satu diagram kelas keseluruhan. Pastikan tidak ada kelas yang terduplikasi.
 
 <p align="center">
-<img alt="Class Diagram Keseluruhan" src="./assets/diagram/class-diagram-keseluruhan.png" width="85%">
+<img alt="Class Diagram Keseluruhan" src="./assets/diagram/class-diagram-keseluruhan.png" width="95%">
 </p>
 <p align="center">
 <i>Gambar 8. Diagram Kelas Keseluruhan LaporKota</i>
@@ -654,19 +654,31 @@ Gabungkan seluruh kelas dan hubungan antarkelas dari diagram kelas setiap use ca
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| C01 | Warga | nama, nomorHP | buatLaporan(), lihatRiwayatLaporan(), lihatPetaSebaran(), pantauStatus(), berikanUpvote(), terimaNotifikasi() |
-| C02 | Admin | idAdmin, nama | lihatAntrean(), filterAntrean(), validasiLaporan(), tolakLaporan(), evaluasiHasilKerja() |
-| C03 | EksekutorLapangan | nama, nomorHP | lihatTugas(), kirimHasil() |
-| C04 | Laporan | idTiket, kategori, deskripsi, waktuMasuk, status, alasanPenolakan, jumlahUpvote, skorPrioritas | cekDuplikasi(), buatTiket(), simpanLaporan(), getRincian(), getRincianPublik(), hitungPrioritas(), ubahStatus(), simpanAlasanPenolakan() |
-| C05 | Lokasi | latitude, longitude, tipeDeteksi | kunciOtomatis(), tandaiManual(), hitungJarak(), getKoordinat() |
-| C06 | Foto | format, ukuran | isFotoValid(), bukaFoto() |
+| C01 | Warga | nama, nomorHP | - |
+| C02 | Admin | idAdmin, nama | - |
+| C03 | EksekutorLapangan | nama, nomorHP | - |
+| C04 | Laporan | idTiket, kategori, deskripsi, waktuMasuk, status, alasanPenolakan, jumlahUpvote, skorPrioritas | cekDuplikasi(), buatTiket(), simpanLaporan(), getRincian(), getRincianPublik(), tambahUpvote(), hitungPrioritas(), ubahStatus(), simpanAlasanPenolakan() |
+| C05 | Lokasi | latitude, longitude | kunciOtomatis(), hitungJarak(), getKoordinat() |
+| C06 | Foto | format, ukuran | isFotoValid() |
 | C07 | Upvote | idUpvote, waktuUpvote | catatUpvote() |
-| C08 | HasilPerbaikan | idHasil, catatan, waktuUnggah | isHasilValid(), getRincianHasil(), tambahFoto(), tambahVideo(), simpanBukti() |
-| C09 | Evaluasi | idEvaluasi, keputusan, catatan, waktuEvaluasi | simpanEvaluasi(), laporanSelesai(), laporanTidakSelesai() |
-| C10 | Notifikasi | idNotifikasi, isiPesan, waktuKirim, statusBaca | kirimNotifikasi(), tandaiDibaca() |
-| C11 | Video | format, ukuran | isVideoValid(), bukaVideo() |
-| C12 | ListTugas | jumlahLaporanAktif, daftarLaporan | urutPrioritas(), filterKategori() |
-| *...* | *...* | *...* | *...* |
+| C08 | HasilPerbaikan | idHasil, catatan, waktuUnggah | isHasilValid(), getRincianHasil() |
+| C09 | Evaluasi | idEvaluasi, keputusan, catatan, waktuEvaluasi | simpanEvaluasi(), putuskanStatus() |
+| C10 | Notifikasi | idNotifikasi, isiPesan, penerima, waktuKirim, statusBaca | buatPesan(), kirimNotifikasi(), tandaiDibaca() |
+| C11 | Video | format, ukuran | isVideoValid() |
+| C12 | ListTugas | jumlahLaporanAktif, daftarLaporan | susunTugas(), urutPrioritas(), filterKategori() |
+| C13 | LaporPage | - | tampilkanFormulir(), unggahBuktiKerusakan(), pilihLokasi(), kirim() |
+| C14 | ValidasiPage | - | tampilkanAntrean(), pilihFilterKategori(), pilihLaporan(), tekanValid(), tekanTolak(), isiAlasanPenolakan() |
+| C15 | PenugasanPage | - | tampilkanDaftarPenugasan(), pilihFilterKategori(), pilihTiketTugas() |
+| C16 | HasilPerbaikanPage | - | tampilkanFormBukti(), unggahFotoBukti(), unggahVideoBukti(), kirimHasil() |
+| C17 | EvaluasiPage | - | tampilkanDetailPekerjaan(), pilihKeputusan(), tulisCatatanEvaluasi(), kirimEvaluasi() |
+| C18 | StatusLaporanPage | - | tampilkanRiwayat(), tampilkanPetaSebaran(), tampilkanDetailTiket(), klikUpvote() |
+| C19 | LaporanController | - | validasiBerkas(), periksaLokasiPerangkat(), cekDuplikasi(), terbitkanTiket(), simpanLaporan() |
+| C20 | ValidasiController | - | susunAntrean(), saringAntrean(), ubahStatusDikerjakan(), hitungPrioritas(), tolakLaporan() |
+| C21 | PenugasanController | - | ambilLaporanDikerjakan(), buatListTugas(), filterTugas() |
+| C22 | PerbaikanController | - | validasiKelengkapanBukti(), simpanHasilPerbaikan(), tandaiSiapEvaluasi() |
+| C23 | EvaluasiController | - | simpanKeputusan(), ubahStatusBerhasil(), kembalikanKeDikerjakan() |
+| C24 | StatusController | - | ambilRiwayatWarga(), ambilLaporanPublik(), ambilDetailStatus(), prosesUpvote() |
+| C25 | NotifikasiController | - | susunPesanNotifikasi(), kirimNotifikasi(), updateStatusBaca() |
 
 ---
 
