@@ -415,17 +415,21 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 
 | ID Kelas | Nama Kelas | Deskripsi Kelas |
 | :--- | :--- | :--- |
-| *C01* | *Warga* | *Menyimpan data akun warga; membuat laporan kerusakan, memberikan dukungan (upvote) pada laporan, dan memantau status laporannya* |
-| *C04* | *Laporan* | *Menyimpan data laporan kerusakan (ID tiket, kategori, deskripsi, status, waktu masuk, alasan penolakan) dengan status bernilai Diterima, Ditolak, Dikerjakan, atau Berhasil; memutuskan apakah dirinya duplikat, menghitung skor prioritas, dan mengelola perubahan statusnya sendiri* |
-| *C05* | *Lokasi* | *Menyimpan koordinat GPS laporan dan menghitung jarak ke lokasi lain untuk pengecekan duplikat dalam radius 20 m* |
-| *C06* | *Foto* | *Menyimpan berkas foto beserta format dan ukurannya, serta memeriksa kevalidan dirinya (JPG/PNG, maksimal 10 MB)* |
-| *C10* | *Notifikasi* | *Menyimpan dan mengirimkan pesan perubahan status laporan kepada Warga pelapor* |
-| *C11* | *Video* | *Menyimpan berkas video beserta format dan ukurannya, serte memeriksa kevalidan dirinya. (MP4/MOV/.MKV)* |
+| *C01* | *Warga* | *Menyimpan data akun warga beserta perannya sebagai pelapor kerusakan.* |
+| *C04* | *Laporan* | *Menyimpan data laporan kerusakan (ID tiket, kategori, deskripsi, status, waktu masuk, alasan penolakan, skor prioritas) dengan status bernilai Diterima, Ditolak, Dikerjakan, atau Berhasil.* |
+| *C05* | *Lokasi* | *Menyimpan koordinat GPS tempat laporan kerusakan dibuat.* |
+| *C06* | *Foto* | *Menyimpan berkas foto beserta format dan ukurannya, dengan ketentuan JPG/PNG maksimal 10 MB.* |
+| *C07* | *Upvote* | *Merepresentasikan sebuah upvote yang terbentuk, ketika laporan yang diajukan warga merupakan radius 20m dengan kategori yang sama dengan laporan lainnya.* |
+| *C10* | *Notifikasi* | *Menyimpan pesan perubahan status laporan beserta penerima dan waktu pengirimannya.* |
+| *C11* | *Video* | *Menyimpan berkas video beserta format dan ukurannya, dengan ketentuan MP4/MOV/MKV maksimal 10 MB.* |
+| *C13* | *LaporPage* | *Antarmuka formulir pengiriman laporan kerusakan yang menampilkan isian kategori dan deskripsi, pratinjau foto dan video, penguncian lokasi otomatis, serta pesan validasi berkas.* |
+| *C19* | *LaporanController* | *Memvalidasi format dan ukuran foto (JPG/PNG maks. 10 MB) serta video (MP4/MOV/MKV maks. 10 MB), memeriksa ketersediaan lokasi perangkat, mengecek duplikasi dalam radius 20 m dengan kategori sama, menerbitkan ID tiket, dan menyimpan laporan berstatus Diterima.* |
+| *C25* | *NotifikasiController* | *Menyusun dan mengirimkan notifikasi perubahan status laporan kepada Warga pelapor pada setiap peralihan status.* |
 
 #### Diagram Kelas
 
 <p align="center">
-<img alt="Class Diagram UC01" src="./assets/diagram/Class_Diagram_UC01.png" width="70%">
+<img alt="Class Diagram UC01" src="./assets/diagram/class-diagram_UC01.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 2. Diagram Kelas Use Case UC01</i>
@@ -434,12 +438,16 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C01* | *Warga* | *nama, nomorHP* | *buatLaporan()* |
-| *C04* | *Laporan* | *idTiket, kategori, deskripsi, waktuMasuk, status* | *cekDuplikasi(), buatTiket(), simpanLaporan()* |
-| *C05* | *Lokasi* | *latitude, longitude, tipeDeteksi* | *kunciOtomatis(), tandaiManual(), hitungJarak()* |
-| *C06* | *Foto* | *format, ukuran* | *isFotoValid()* |
-| *C07* | *Video* | *format, ukuran* | *isVideoValid()* |
-| *C08* | *Notifikasi* | *isiPesan, waktuKirim* | *kirimNotifikasi()* |
+| *C01* | *Warga* | *nama, nomorHP* | *-* |
+| *C04* | *Laporan* | *idTiket, kategori, deskripsi, waktuMasuk, fotoBukti, videoBukti, lokasi, jumlahUpvote, status, alasanPenolakan, skorPrioritas* | *-* |
+| *C05* | *Lokasi* | *latitude, longitude* | *-* |
+| *C06* | *Foto* | *format, ukuran* | *-* |
+| *C07* | *Upvote* | *waktuUpvote* | *-* |
+| *C10* | *Notifikasi* | *isiPesan, penerima, waktuKirim* | *-* |
+| *C11* | *Video* | *format, ukuran* | *-* |
+| *C13* | *LaporPage* | *-* | *tampilkanFormulir(), unggahBuktiKerusakan(), pilihLokasi(), kirim()* |
+| *C19* | *LaporanController* | *-* | *validasiBerkas(), periksaLokasiPerangkat(), cekDuplikasi(), terbitkanTiket(), simpanLaporan()* |
+| *C25* | *NotifikasiController* | *-* | *susunPesanNotifikasi(), kirimNotifikasi()* |
 
 ### 4.2.2 Use Case UC02
 
