@@ -87,6 +87,13 @@
 | *15-09-2026* | *Bagas Anugrah Putra* | *Revisi skenario UC06* | *1* | *Done* | - |
 | *16-09-2026* | *Bagas Anugrah Putra* | *Mengubah format tabel skenario use case* | *0.5* | *Done* | - |
 
+### Milestone 4
+**Periode:** 17-09-2026 - 23-09-2026 
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *21-09-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan bab 4.2.3 & 4.2.4* | *1-2* | *Done* | - |
+
 
 
 ---
