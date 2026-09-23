@@ -394,7 +394,33 @@ Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi 
 
 ### 4.2.6 Use Case UC06
 
-**Nama Use Case:** Memperaharui materi pembelajaran pada perangkat lunak
+**Nama Use Case:** Memperbaharui materi pembelajaran pada perangkat lunak
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C02 | `MateriAksara` | *(Entity)* Menyimpan data modul, outline aksara, dan tingkat kesulitan materi. |
+| C09 | `HalamanKelolaMateri` | *(Boundary)* Antarmuka bagi Tim Materi untuk melihat daftar, mengunggah, atau menyunting modul aksara. |
+| C13 | `MateriController` | *(Controller)* Mengelola logika pengurutan, penarikan, penambahan, dan pembaruan data materi aksara di *database*. |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC06" src="./assets/diagram/UC07.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Use Case UC06</i>
+</p>
+<br>
+
+Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi milik setiap kelas dapat dituliskan pada tabel di bawah ini. Pastikan hubungan antarkelas menggunakan jenis relasi yang sesuai (asosiasi, agregasi, komposisi, generalisasi, atau dependensi).
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C09 | HalamanKelolaMateri | *daftarMateri, fileMateriInput, detailInput, pesanStatus* | *tampilkanDaftarMateri(), pilihTambahMateriBaru(), unggahFileMateri(), tampilkanPesanSukses(), tampilkanPesanError()* |
+| C13 | MateriController | *materiSedangDiproses, statusValidasi* | *ambilDaftarMateri(), tambahMateri(), validasiFormatFile(), perbaruiMateri()* |
+| C02 | MateriAksara | *idMateri, namaMateri, kategori, tingkatKesulitan, fileOutline* | *simpanMateri(), perbaruiData()* |
 
 ### 4.2.7 Use Case UC07
 
