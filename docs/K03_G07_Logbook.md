@@ -94,7 +94,8 @@
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | *20-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal bab 4.1* | *2* | *Done* | - |
 | *21-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Revisi 4.1* | *0.5* | *Done* | - | 
-| *22-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Memperbaiki beberapa hal di UC01 dan UC02 serta mengisi logbook* | *0.25* | *Done* | - | 
+| *22-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Memperbaiki beberapa hal 4.1 serta mengisi logbook* | *0.25* | *Done* | - | 
+| *23-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Revisi bab 4.1* | *1.5* | *Done* | - | 
 | *13-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 3.4.3: Skenarion UC03* | *1* | *Done* | *-* |
 | *13-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 3.4.4: Skenarion UC04* | *1* | *Done* | *-* |
 | *13-09-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan bab 3.4.5: Skenarion UC05* | *1* | *Done* | *-* |
