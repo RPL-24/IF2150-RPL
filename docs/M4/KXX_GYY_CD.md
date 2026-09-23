@@ -457,18 +457,21 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 
 | ID Kelas | Nama Kelas | Deskripsi Kelas |
 | :--- | :--- | :--- |
-| *C02* | *Admin* | *Menyimpan data akun anggota Tim Administrasi; meninjau antrean laporan yang dapat disaring per kategori, memvalidasi atau menolak laporan, serta mengevaluasi hasil perbaikan* |
-| *C04* | *Laporan* | *Menyimpan data laporan kerusakan (ID tiket, kategori, deskripsi, status, waktu masuk, alasan penolakan) dengan status bernilai Diterima, Ditolak, Dikerjakan, atau Berhasil; memutuskan apakah dirinya duplikat, menghitung skor prioritas, dan mengelola perubahan statusnya sendiri* |
-| *C05* | *Lokasi* | *Menyimpan koordinat GPS laporan dan menghitung jarak ke lokasi lain untuk pengecekan duplikat dalam radius 20 m* |
-| *C06* | *Foto* | *Menyimpan berkas foto beserta format dan ukurannya, serta memeriksa kevalidan dirinya (JPG/PNG, maksimal 10 MB)* |
-| *C07* | *Upvote* | *Merepresentasikan dukungan seorang Warga terhadap suatu laporan sebagai dasar skor prioritas* |
-| *C10* | *Notifikasi* | *Menyimpan dan mengirimkan pesan perubahan status laporan kepada Warga pelapor* |
-| *C11* | *Video* | *Menyimpan berkas video beserta format dan ukurannya, serte memeriksa kevalidan dirinya. (MP4/MOV/.MKV)* |
+| *C02* | *Admin* | *Menyimpan data akun anggota Tim Administrasi beserta perannya sebagai pemvalidasi laporan dan penilai hasil perbaikan.* |
+| *C04* | *Laporan* | *Menyimpan data laporan kerusakan (ID tiket, kategori, deskripsi, status, waktu masuk, alasan penolakan, skor prioritas) dengan status bernilai Diterima, Ditolak, Dikerjakan, atau Berhasil.* |
+| *C05* | *Lokasi* | *Menyimpan koordinat GPS tempat laporan kerusakan dibuat.* |
+| *C06* | *Foto* | *Menyimpan berkas foto beserta format dan ukurannya, dengan ketentuan JPG/PNG maksimal 10 MB.* |
+| *C07* | *Upvote* | *Merepresentasikan sebuah upvote yang terbentuk, ketika laporan yang diajukan warga merupakan radius 20m dengan kategori yang sama dengan laporan lainnya.* |
+| *C10* | *Notifikasi* | *Menyimpan pesan perubahan status laporan beserta penerima dan waktu pengirimannya.* |
+| *C11* | *Video* | *Menyimpan berkas video beserta format dan ukurannya, dengan ketentuan MP4/MOV/MKV maksimal 10 MB.* |
+| *C14* | *ValidasiPage* | *Antarmuka dasbor Tim Administrasi yang menampilkan antrean laporan berstatus Diterima yang dapat disaring per kategori, rincian tiket beserta foto, video, peta, dan jumlah upvote, serta isian alasan penolakan.* |
+| *C20* | *ValidasiController* | *Menyusun dan menyaring antrean laporan berstatus Diterima, mengubah status menjadi Dikerjakan beserta urutan prioritasnya, serta menyimpan penolakan beserta alasannya.* |
+| *C25* | *NotifikasiController* | *Menyusun dan mengirimkan notifikasi perubahan status laporan kepada Warga pelapor pada setiap peralihan status.* |
 
 #### Diagram Kelas
 
 <p align="center">
-<img alt="Class Diagram UC01" src="./assets/diagram/Class_Diagram_UC02.png" width="70%">
+<img alt="Class Diagram UC01" src="./assets/diagram/class-diagram-UC02.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 3. Diagram Kelas Use Case UC02</i>
@@ -477,13 +480,16 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C02* | *Admin* | *nama* | *lihatAntrean(), filterAntrean(), validasiLaporan(), tolakLaporan()* |
-| *C04* | *Laporan* | *idTiket, kategori, deskripsi, waktuMasuk, fotoBukti, videoBukti, lokasi, jumlahUpvote, status, skorPrioritas* | *getRincian(), hitungPrioritas(), ubahStatus(), simpanAlasanPenolakan()* |
-| *C05* | *Lokasi* | *latitude, longitude* | *(ditampilkan pada peta rincian laporan, tidak ada operasi aktif)* |
-| *C06* | *Foto* | *format, ukuran* | *(ditampilkan sebagai bukti pada rincian laporan, tidak ada operasi aktif)* |
-| *C07* | *Upvote* | *waktuUpvote* | *jumlahUpvote* |
-| *C10* | *Notifikasi* | *isiPesan, waktuKirim* | *kirimNotifikasi()* |
-| *C11* | *Video* | *format, ukuran* | *(ditampilkan sebagai bukti pada rincian laporan, tidak ada operasi aktif)* |
+| *C14* | *ValidasiPage* | *-* | *tampilkanAntrean(), pilihFilterKategori(), pilihLaporan(), tekanValid(), tekanTolak(), isiAlasanPenolakan()* |
+| *C20* | *ValidasiController* | *-* | *susunAntrean(), saringAntrean(), ubahStatusDikerjakan(), hitungPrioritas(), tolakLaporan()* |
+| *C25* | *NotifikasiController* | *-* | *susunPesanNotifikasi(), kirimNotifikasi()* |
+| *C02* | *Admin* | *nama* | *-* |
+| *C04* | *Laporan* | *idTiket, kategori, deskripsi, waktuMasuk, fotoBukti, videoBukti, lokasi, jumlahUpvote, status, alasanPenolakan, skorPrioritas* | *-* |
+| *C05* | *Lokasi* | *latitude, longitude* | *-* |
+| *C06* | *Foto* | *format, ukuran* | *-* |
+| *C11* | *Video* | *format, ukuran* | *-* |
+| *C07* | *Upvote* | *waktuUpvote* | *-* |
+| *C10* | *Notifikasi* | *isiPesan, penerima, waktuKirim* | *-* |
 
 ### 4.2.3 Use Case UC03
 
