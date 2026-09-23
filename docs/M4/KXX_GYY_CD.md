@@ -613,22 +613,27 @@ Pada diagram kelas, cukup tampilkan nama kelas saja. Atribut dan metode/operasi 
 Gabungkan seluruh kelas dan hubungan antarkelas dari diagram kelas setiap use case menjadi satu diagram kelas keseluruhan. Pastikan tidak ada kelas yang terduplikasi.
 
 <p align="center">
-<img alt="Class Diagram Keseluruhan" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+<img alt="Class Diagram Keseluruhan" src="./assets/diagram/class-diagram-keseluruhan.png" width="85%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Keseluruhan</i>
+<i>Gambar 8. Diagram Kelas Keseluruhan LaporKota</i>
 </p>
 <br>
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C01* | *Pelanggan* | *idPelanggan, nama, email* | *lihatRiwayatPesanan()* |
-| *C02* | *Pesanan* | *idPesanan, total, status* | *hitungTotal(), perbaruiStatus()* |
-| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
-| *C04* | *MetodePembayaran* | *-* | *kirimKePaymentGatewayDummy()* |
-| *C05* | *Kartu* | *nomorKartu, masaBerlaku* | *kirimKePaymentGatewayDummy()* |
-| *C06* | *EWallet* | *saldo, idAkun* | *cekSaldo(), kirimKePaymentGatewayDummy()* |
-| *C07* | *RiwayatTransaksi* | *idTransaksi, waktu, status* | *catatTransaksi(), tampilkanNotifikasi()* |
+| C01 | Warga | nama, nomorHP | buatLaporan(), lihatRiwayatLaporan(), lihatPetaSebaran(), pantauStatus(), berikanUpvote(), terimaNotifikasi() |
+| C02 | Admin | idAdmin, nama | lihatAntrean(), filterAntrean(), validasiLaporan(), tolakLaporan(), evaluasiHasilKerja() |
+| C03 | EksekutorLapangan | nama, nomorHP | lihatTugas(), kirimHasil() |
+| C04 | Laporan | idTiket, kategori, deskripsi, waktuMasuk, status, alasanPenolakan, jumlahUpvote, skorPrioritas | cekDuplikasi(), buatTiket(), simpanLaporan(), getRincian(), getRincianPublik(), hitungPrioritas(), ubahStatus(), simpanAlasanPenolakan() |
+| C05 | Lokasi | latitude, longitude, tipeDeteksi | kunciOtomatis(), tandaiManual(), hitungJarak(), getKoordinat() |
+| C06 | Foto | format, ukuran | isFotoValid(), bukaFoto() |
+| C07 | Upvote | idUpvote, waktuUpvote | catatUpvote() |
+| C08 | HasilPerbaikan | idHasil, catatan, waktuUnggah | isHasilValid(), getRincianHasil(), tambahFoto(), tambahVideo(), simpanBukti() |
+| C09 | Evaluasi | idEvaluasi, keputusan, catatan, waktuEvaluasi | simpanEvaluasi(), laporanSelesai(), laporanTidakSelesai() |
+| C10 | Notifikasi | idNotifikasi, isiPesan, waktuKirim, statusBaca | kirimNotifikasi(), tandaiDibaca() |
+| C11 | Video | format, ukuran | isVideoValid(), bukaVideo() |
+| C12 | ListTugas | jumlahLaporanAktif, daftarLaporan | urutPrioritas(), filterKategori() |
 | *...* | *...* | *...* | *...* |
 
 ---
