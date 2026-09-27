@@ -4,23 +4,23 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | *\[Hari\]* |
-| **Tanggal** | *\[DD/MM/YYYY\]* |
-| **Kelas** | *\[Kelas\]* |
-| **Nomor Kelompok** | *\[Nomor Kelompok\]*  |
-| **Nama Kelompok** | *\[Nama Kelompok\]*  |
-| **Nama Perangkat Lunak** | *\[Nama P/L\]*  |
-| **Dokumen** | *\[Nama Dokumen yang diasistensikan\]*  |
+| **Hari** | *[Hari]* |
+| **Tanggal** | *[DD/MM/YYYY]* |
+| **Kelas** | K01 |
+| **Nomor Kelompok** | G09 |
+| **Nama Kelompok** | PindahCSUI |
+| **Nama Perangkat Lunak** | PeerUP |
+| **Dokumen** | Spesifikasi Kebutuhan Perangkat Lunak (SKPL) |
 
 ### Anggota Kelompok
 
 | NIM | Nama |
 | --- | --- |
-| *\[NIM 1\]* | *\[Nama Anggota 1\]* |
-| *\[NIM 2\]* | *\[Nama Anggota 2\]* |
-| *\[NIM 3\]* | *\[Nama Anggota 3\]* |
-| *\[NIM 4\]* | *\[Nama Anggota 4\]* |
-| *\[NIM 5\]* | *\[Nama Anggota 5\]* |
+| 13525049 | Hugo Daniel Johansen Napitupulu |
+| 13525001 | Matthew Allen Reynaldo |
+| 13525010 | Fabian Amzar Susanto |
+| 13525025 | David Christian |
+| 13525028 | Markus Christiano Simanjutak |
 
 ### Catatan
 
