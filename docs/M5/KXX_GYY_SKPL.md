@@ -99,20 +99,34 @@ Diisi dengan deskripsi umum perangkat lunak untuk mendukung proses bisnis yang t
 
 *Contoh narasi:* "*[Nama P/L]* merupakan aplikasi *[deskripsi singkat]* yang berinteraksi dengan *Payment Gateway (dummy)* untuk memproses otorisasi pembayaran. Sistem menerima input dari *Pelanggan* melalui antarmuka aplikasi dan mengirimkan permintaan transaksi ke *Payment Gateway* setiap kali pelanggan melakukan checkout."
 
-## 2.3 Pengguna dan Kebutuhan Pengguna Perangkat Lunak
-Tuliskan seluruh jenis pengguna (*role*/aktor) yang terlibat dalam perangkat lunak (P/L), beserta kebutuhannya secara umum. Bagian ini dapat disalin dari 1.2 *Deskripsi Pengguna Perangkat Lunak* (dokumen Requirement Gathering) atau 3.1 *Identifikasi Aktor* (dokumen Use Case), pastikan sudah konsisten dengan aktor final yang dipakai di BAB 4.
-
-| Pengguna | Kebutuhan |
-| :--- | :--- |
-| *Pelanggan* | *Pelanggan harus dapat memesan produk, mengelola keranjang, dan menyelesaikan pembayaran melalui sistem.* |
-| *...* | *...* |
-
 ## 2.4 Batasan Perangkat Lunak
-Batasan yang harus dituliskan, di antaranya:
-1. *P/L harus memakai file data/API dari sistem lain (sebutkan, misal Payment Gateway dummy).*
-2. *P/L harus memakai format data yang sama dengan sistem lain.*
-3. *P/L harus berfungsi pada platform tertentu (misal: web browser modern, atau desktop Windows dan Linux).*
-4. *...*
+Batasan yang berlaku pada LaporKota adalah sebagai berikut.
+1. P/L berbentuk aplikasi web dan hanya dapat diakses melalui *web browser*. Tidak tersedia aplikasi *native* untuk Android maupun iOS.
+2. P/L harus menggunakan layanan Supabase sebagai *backend*, yaitu Supabase Auth untuk autentikasi akun Warga, Tim Administrasi, dan Eksekutor Lapangan, Supabase Database (PostgreSQL) untuk penyimpanan data laporan, Supabase Storage untuk penyimpanan berkas foto dan video, serta Supabase Realtime untuk penyampaian notifikasi. Ketersediaan P/L bergantung pada ketersediaan layanan tersebut.
+3. P/L di-*deploy* pada platform Vercel sehingga mengikuti batasan platform tersebut, termasuk batas ukuran *request body* sebesar 4,5 MB pada *serverless function*. Oleh karena itu, berkas foto dan video diunggah langsung dari klien ke Supabase Storage tanpa melalui *server* aplikasi.
+4. P/L hanya menerima berkas foto berformat JPG/PNG dan berkas video berformat MP4/MOV/MKV, masing-masing berukuran maksimal 10 MB.
+5. Video berformat MKV  bergantung pada dukungan *browser* pengguna. Pada *browser* yang tidak mendukung format tersebut, video tetap tersimpan tetapi tidak dapat diputar langsung di dalam aplikasi.
+6. Lokasi laporan diambil secara otomatis melalui *Geolocation API* pada *browser*. Fitur ini mensyaratkan koneksi HTTPS, izin akses lokasi dari pengguna, serta perangkat yang memiliki layanan lokasi. Akurasi koordinat bergantung pada perangkat pengguna, sehingga pemeriksaan duplikasi dalam radius 20 m dapat terpengaruh oleh akurasi tersebut.
+7. P/L menampilkan peta menggunakan *tile* dari OpenStreetMap. Penggunaannya tunduk pada kebijakan penggunaan *tile* OpenStreetMap, termasuk kewajiban mencantumkan atribusi "© OpenStreetMap contributors" pada setiap tampilan peta. Ketersediaan layanan *tile* tidak dijamin oleh penyedianya.
+8. Notifikasi perubahan status laporan hanya disampaikan di dalam aplikasi melalui Supabase Realtime. P/L tidak mengirimkan notifikasi melalui email maupun *push notification*, sehingga warga baru menerima pemberitahuan ketika membuka LaporKota.
+9. Identitas pelapor tidak ditampilkan kepada pihak selain Tim Administrasi, dan data pribadi yang dikumpulkan dibatasi pada data yang diperlukan untuk pemrosesan laporan, sesuai dengan UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi.
+10. P/L membutuhkan koneksi internet selama digunakan dan tidak menyediakan mode luring (*offline*).
+11. Antarmuka P/L menggunakan Bahasa Indonesia.
+
+## 2.5 Lingkungan Operasi Perangkat Lunak
+
+| Komponen | Spesifikasi |
+| :--- | :--- |
+| *Server/Hosting* | Vercel dengan *runtime* Node.js 24 (LTS) |
+| *Framework* | Next.js 16.3 dan React 19.3 |
+| *Backend-as-a-Service* | Supabase (Auth, Database, Storage, Realtime) |
+| *DBMS* | PostgreSQL 17 yang dikelola oleh Supabase |
+| *Penyimpanan Berkas* | Supabase Storage |
+| *Layanan Peta* | *Tile* OpenStreetMap yang ditampilkan dengan pustaka Leaflet |
+| *Client* | *Web browser* modern versi terbaru (Google Chrome, Mozilla Firefox, Safari, Microsoft Edge) yang mendukung JavaScript, WebSocket, dan *Geolocation API* |
+| *Perangkat Klien* | Warga dan Eksekutor Lapangan: *smartphone* atau laptop yang memiliki kamera dan layanan lokasi (GPS). Tim Administrasi: komputer atau laptop |
+| *OS* | *Cross platform* melalui *browser* (Android, iOS, Windows, macOS, Linux, bisa banyak OS asal terhubung dengan jaringan internet) |
+| *Jaringan* | Koneksi internet dengan protokol HTTPS |
 
 ## 2.5 Lingkungan Operasi Perangkat Lunak
 Spesifikasi *operating system* atau lingkungan yang dibutuhkan P/L untuk beroperasi. Bagian ini digunakan untuk memastikan pengguna memiliki spesifikasi yang cukup untuk menjalankan P/L. Misalnya mencakup komponen server, client, OS, DBMS, tetapi tidak menutupi kemungkinan komponen lain.
