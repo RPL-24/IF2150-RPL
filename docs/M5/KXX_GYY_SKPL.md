@@ -99,6 +99,14 @@ Diisi dengan deskripsi umum perangkat lunak untuk mendukung proses bisnis yang t
 
 *Contoh narasi:* "*[Nama P/L]* merupakan aplikasi *[deskripsi singkat]* yang berinteraksi dengan *Payment Gateway (dummy)* untuk memproses otorisasi pembayaran. Sistem menerima input dari *Pelanggan* melalui antarmuka aplikasi dan mengirimkan permintaan transaksi ke *Payment Gateway* setiap kali pelanggan melakukan checkout."
 
+## 2.3 Pengguna dan Kebutuhan Pengguna Perangkat Lunak
+Tuliskan seluruh jenis pengguna (*role*/aktor) yang terlibat dalam perangkat lunak (P/L), beserta kebutuhannya secara umum. Bagian ini dapat disalin dari 1.2 *Deskripsi Pengguna Perangkat Lunak* (dokumen Requirement Gathering) atau 3.1 *Identifikasi Aktor* (dokumen Use Case), pastikan sudah konsisten dengan aktor final yang dipakai di BAB 4.
+
+| Pengguna | Kebutuhan |
+| :--- | :--- |
+| *Pelanggan* | *Pelanggan harus dapat memesan produk, mengelola keranjang, dan menyelesaikan pembayaran melalui sistem.* |
+| *...* | *...* |
+
 ## 2.4 Batasan Perangkat Lunak
 Batasan yang berlaku pada LaporKota adalah sebagai berikut.
 1. P/L berbentuk aplikasi web dan hanya dapat diakses melalui *web browser*. Tidak tersedia aplikasi *native* untuk Android maupun iOS.
@@ -127,18 +135,6 @@ Batasan yang berlaku pada LaporKota adalah sebagai berikut.
 | *Perangkat Klien* | Warga dan Eksekutor Lapangan: *smartphone* atau laptop yang memiliki kamera dan layanan lokasi (GPS). Tim Administrasi: komputer atau laptop |
 | *OS* | *Cross platform* melalui *browser* (Android, iOS, Windows, macOS, Linux, bisa banyak OS asal terhubung dengan jaringan internet) |
 | *Jaringan* | Koneksi internet dengan protokol HTTPS |
-
-## 2.5 Lingkungan Operasi Perangkat Lunak
-Spesifikasi *operating system* atau lingkungan yang dibutuhkan P/L untuk beroperasi. Bagian ini digunakan untuk memastikan pengguna memiliki spesifikasi yang cukup untuk menjalankan P/L. Misalnya mencakup komponen server, client, OS, DBMS, tetapi tidak menutupi kemungkinan komponen lain.
-
-| Komponen | Spesifikasi |
-| :--- | :--- |
-| *Server* | *[contoh: Node.js v20, dijalankan pada layanan cloud]* |
-| *Client* | *[contoh: Web Browser modern (Chrome, Firefox terbaru)]* |
-| *DBMS* | *[contoh: PostgreSQL 15]* |
-| *OS* | *[contoh: Cross-platform (Windows/Linux/MacOS) melalui browser]* |
-| *...* | *...* |
-
 ---
 
 # BAB 3: Deskripsi Kebutuhan Perangkat Lunak
