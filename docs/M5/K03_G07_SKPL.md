@@ -40,9 +40,9 @@ Dipersiapkan oleh:
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Dokumen Spesifikasi Kebutuhan Perangkat Lunak merupakan dokumen yang memberikan deskripsi yanglengkap dan presisi mengenai apa yang harus dilakukan oleh perangkat lunak. 
+Dokumen Spesifikasi Kebutuhan Perangkat Lunak merupakan dokumen yang memberikan deskripsi yanglengkap dan presisi mengenai apa yang harus dilakukan oleh perangkat lunak. Dokumen ini dibuat sebagai landasan mengenai ruang lingkup, fungsi, dan batasan sistem untuk pengembangan Perangkat Lunak di kemudian hari. Selain itu, dokumen ini juga disusun untuk memandu alur perancangan dan implementasi arsitektur sistem dan penulisan kode program. Terakhir, dokumen ini juga disusun untuk bisa menjadi acuan dalam melakukan verifikasi apakah perangkat lunak yang diimplementasikan sudah sesuai dengan spesifikasi awal.
 
-Dokumen Spesifikasi Kebutuhan Perangkat Lunak merupakan dokumen yang memberikan deskripsi yanglengkap dan presisi mengenai apa yang harus dilakukan oleh perangkat lunak.
+Tuliskan dengan ringkas tujuan dokumen SKPL ini dibuat dan siapa saja yang akan menggunakan dokumen ini.
 
 ## 1.2 Lingkup Masalah
 Tuliskan dengan ringkas nama aplikasi dan deskripsi singkatnya. Bagian ini maksimal berisi satu paragraf, dapat diringkas dari BAB 1 *Analisis Permasalahan* pada dokumen *Topic Brainstorming*.
