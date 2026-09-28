@@ -43,7 +43,8 @@ Dipersiapkan oleh:
 Tuliskan dengan ringkas tujuan dokumen SKPL ini dibuat dan siapa saja yang akan menggunakan dokumen ini.
 
 ## 1.2 Lingkup Masalah
-Tuliskan dengan ringkas nama aplikasi dan deskripsi singkatnya. Bagian ini maksimal berisi satu paragraf, dapat diringkas dari BAB 1 *Analisis Permasalahan* pada dokumen *Topic Brainstorming*.
+Perangkat lunak yang akan dikembangkan adalah LaporKota, sebuah platform pelaporan kerusakan infrastruktur publik berbasis website yang dirancang untuk mempermudah warga dalam menyampaikan dan memantau aduannya. Sistem pelaporan ini memfasilitasi pengguna untuk melaporkan masalah fasilitas umum kapan saja dan di mana saja dengan menyertakan foto serta koordinat lokasi. Dengan adanya sistem ini diharapkan pengguna tidak lagi kesulitan mencari saluran pengaduan yang responsif dan proses perbaikan kerusakan fasilitas publik dapat berjalan dengan efisien.
+
 
 ## 1.3 Definisi, Istilah, dan Singkatan
 Semua definisi dan singkatan yang digunakan dalam dokumen ini beserta penjelasannya.
@@ -69,10 +70,12 @@ Tabel 1.4. Aturan Penomoran
 | :--- | :--- | :--- |
 | *Kebutuhan Fungsional* | *KFXX* | |
 | *Kebutuhan Non-Fungsional* | *KNFXX* | |
-| *Aktor* | *AXX* | |
+| *Aktivitas* | *AXX* | |
 | *Use Case* | *UCXX* | |
 | *Kelas* | *CXX* | |
-| *...* | *...* |
+| *Kebutuhan* | *RXX* |
+| *User Story* | *USXX* |
+
 
 ## 1.5 Referensi
 Dokumentasi P/L yang dirujuk oleh dokumen ini. Referensi dapat berupa buku, panduan, ataupun dokumentasi lain yang dipakai dalam pengembangan P/L ini.
