@@ -120,9 +120,9 @@ Batasan yang berlaku pada LaporKota adalah sebagai berikut.
 6. Lokasi laporan diambil secara otomatis melalui *Geolocation API* pada *browser*. Fitur ini mensyaratkan koneksi HTTPS, izin akses lokasi dari pengguna, serta perangkat yang memiliki layanan lokasi. Akurasi koordinat bergantung pada perangkat pengguna, sehingga pemeriksaan duplikasi dalam radius 20 m dapat terpengaruh oleh akurasi tersebut.
 7. P/L menampilkan peta menggunakan *tile* dari OpenStreetMap. Penggunaannya tunduk pada kebijakan penggunaan *tile* OpenStreetMap, termasuk kewajiban mencantumkan atribusi "© OpenStreetMap contributors" pada setiap tampilan peta. Ketersediaan layanan *tile* tidak dijamin oleh penyedianya.
 8. Notifikasi perubahan status laporan hanya disampaikan di dalam aplikasi melalui Supabase Realtime. P/L tidak mengirimkan notifikasi melalui email maupun *push notification*, sehingga warga baru menerima pemberitahuan ketika membuka LaporKota.
-9. Identitas pelapor tidak ditampilkan kepada pihak selain Tim Administrasi, dan data pribadi yang dikumpulkan dibatasi pada data yang diperlukan untuk pemrosesan laporan, sesuai dengan UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi.
+9. Identitas pelapor tidak ditampilkan kepada pihak selain Tim Administrasi, dan data pribadi yang dikumpulkan dibatasi pada data yang diperlukan untuk pemrosesan laporan.
 10. P/L membutuhkan koneksi internet selama digunakan dan tidak menyediakan mode luring (*offline*).
-11. Antarmuka P/L menggunakan Bahasa Indonesia.
+11. P/L menggunakan Bahasa Indonesia.
 
 ## 2.5 Lingkungan Operasi Perangkat Lunak
 
