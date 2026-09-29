@@ -82,9 +82,21 @@
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
 | --- | --- | --- | --- | --- | --- |
 | *16-09-2026* | *Hugo Daniel J N* | *Membuat beberapa classes* | *1* | *Done* | *-* |
+| *17-09-2026* | *Markus Christiano Simanjuntak* | *Mengikuti asistensi bersama asisten dan merangkum aturan pembagian kelas menjadi 3 layer (Boundary, Controller, Entity) beserta notasi panah UML* | *1.5* | *Done* | *-* |
 | *18-09-2026* | *David Christian* | *Membuat usecase diagram* | *1* | *Done* | *-* |
 | *23-09-2026* | *David Christian* | *Membuat usecase diagram dan merapihkan* | *2* | *Done* | *-* |
+| *19-09-2026* | *Markus Christiano Simanjuntak* | *Menambahkan kebutuhan dan skenario baru pada M2 dan M3 (US-25, US-26, A16, R26, KF19, UC14 Beranda Utama, dan UC15 Melihat Profil) serta merombak skenario UC06* | *1.5* | *Done* | *-* |
+| *20-09-2026* | *Markus Christiano Simanjuntak* | *-* | *1* | *Done* | *-* |
+| *21-09-2026* | *Markus Christiano Simanjuntak* | *Merevisi Tabel 4.1 Identifikasi Kelas (C01-C24) agar sesuai dengan arsitektur 3-layer (Boundary, Controller, Entity) dan menambahkan kelas HistoryPage (C24)* | *1* | *Done* | *Kelas pada draf awal masih tercampur antara urusan UI dan database sehingga harus dipecah ulang* |
+| *22-09-2026* | *Markus Christiano Simanjuntak* | *Merancang ulang Class Diagram dan tabel atribut/metode untuk UC05 dan UC06, serta memperbaiki kesalahan copy-paste tabel pada dokumen Bab 4.2* | *1.5* | *Done* | *-* |
+| *23-09-2026* | *Markus Christiano Simanjuntak* | *Menyusun Diagram Kelas Keseluruhan (Bab 4.3) beserta tabel rekapitulasi atribut/metode C01-C24 dan merapikan pemetaan Traceability (Bab 5)* | *2* | *Done* | *Menyatukan 24 kelas ke dalam satu diagram tanpa duplikasi cukup rumit dan ribet* |
 
+---
+### Milestone 5
+**Periode:** [23-09-2026] - [30-09-2026]
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| --- | --- | --- | --- | --- | --- |
 
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
