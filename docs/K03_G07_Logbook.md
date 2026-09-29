@@ -92,7 +92,6 @@
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
-<<<<<<< HEAD
 | *20-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal bab 4.1* | *2* | *Done* | - |
 | *21-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Revisi 4.1* | *0.5* | *Done* | - | 
 | *22-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Memperbaiki beberapa hal 4.1 serta mengisi logbook* | *0.25* | *Done* | - | 
@@ -105,9 +104,22 @@
 | *23-09-2026* | *Muhammad Atallah Ramadhan* | *Revisi bab 4.2.1: Skenarion UC03* | *1* | *Done* | *-* |
 | *23-09-2026* | *Muhammad Atallah Ramadhan* | *Revisi bab 4.2.2: Skenarion UC04* | *1* | *Done* | *-* |
 
-=======
-| *21-09-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan bab 4.2.3 & 4.2.4* | *1-2* | *Done* | - |
->>>>>>> docs/m4-fritz
+### Milestone 5
+**Periode:** 24-09-2026 - 29-09-2026 
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *27-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal bab 2.4 dan 2.5S* | *1,5* | *Done* | - |
+| *28-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Revisi 4.1* | *0.5* | *Done* | - | 
+| *22-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Memperbaiki beberapa hal 4.1 serta mengisi logbook* | *0.25* | *Done* | - | 
+| *23-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Revisi bab 4.1* | *1.5* | *Done* | - | 
+| *21-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 4.2.1: Skenarion UC03* | *1* | *Done* | *-* |
+| *21-09-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan bab 4.2.2: Skenarion UC04* | *1* | *Done* | *-* |
+| *21-09-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan bab 4.2.5: Skenarion UC05* | *1* | *Done* | *-* |
+| *15-09-2026* | *Pasaribu Fritz T.A.M.* | *Revisi Use Case Diagram* | *1* | *Done* | - | 
+| *15-09-2026* | *Bagas Anugrah Putra* | *Mengerjakan bab 3.4.6: Skenario UC06* | *1.5* | *Done* | - |
+| *23-09-2026* | *Muhammad Atallah Ramadhan* | *Revisi bab 4.2.1: Skenarion UC03* | *1* | *Done* | *-* |
+| *23-09-2026* | *Muhammad Atallah Ramadhan* | *Revisi bab 4.2.2: Skenarion UC04* | *1* | *Done* | *-* |
 
 
 
