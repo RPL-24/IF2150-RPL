@@ -1484,9 +1484,54 @@ Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan u
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C01* | *Pelanggan* | *idPelanggan, nama, email* | *lihatRiwayatPesanan()* |
-| *C02* | *Pesanan* | *idPesanan, total, status* | *hitungTotal(), perbaruiStatus()* |
-| *...* | *...* | *...* | *...* |
+| C01 | RegistrasiMasyarakatPage | tombolRegistrasi | submitRegistrasi() |
+| C02 | LoginMasyarakatPage | tombolVerifikasi | submitVerifikasi() |
+| C04 | RegistrasiMitraPage | tombolRegistrasi | submitRegistrasi() |
+| C05 | LoginMitraPage | tombolVerifikasi, inputKredensial | submitVerifikasi() |
+| C06 | StatusVerifikasiMitraPage | status | infoStatus() |
+| C07 | VerifikasiMitraPage | status | ubahStatus() |
+| C08 | EditProfilMitraPage | inputKredensial | validasiData() |
+| C09 | EditDokumenLegalitasPage | inputDokumen | validasiData() |
+| C10 | SearchLawPage | tombolCari, infoPasal | cariPasal() |
+| C11 | DaftarMitraPengacaraPage | kataKunciKasus, filterKeahlian | inputPencarian(), tampilkanDaftarMitra() |
+| C12 | PemilihanJadwalKonsultasiPage | pilihanMitra, pilihanTanggal, pilihanWaktu | pilihMitra(), pilihJadwal() |
+| C13 | KonfirmasiKonsultasiPage | pilihanKonfirmasi, catatanKonfirmasi | klikKonfirmasi(), tampilkanPermintaanJadwal() |
+| C14 | ChatKonsultasiPage | pesanInput, lampiranFile | kirimPesan(), tampilkanPesanTerkini() |
+| C15 | UlasanPage | inputRating, inputTeksUlasan | isiFormUlasan(), kirimUlasan() |
+| C16 | LaporanAkunPage / LaporanUlasanPage | kategoriPelanggaran, teksAlasan, buktiLampiran, idLaporan, idUlasan, idMitra | isiFormLaporan(), kirimLaporan(), buatFormLaporan(), submitLaporan(), buatFormLaporanUlasan(), submitLaporanUlasan(), statusUlasan() |
+| C18 | TinjauanPage | idAdmin, pilihLaporan | submitHasil(), tampilkanLaporan(), tolakLaporan() |
+| C19 | HistoryPage | listRiwayat, idMasyarakat, idMitra | lihatHistory() |
+| C20 | LiveChatMasyarakatPage | idMasyarakat, chatAktifId | showChat(), sendMessage(), endChat() |
+| C21 | LiveChatAdminPage | idAdmin, chatAktifId | showAdminChatDashboard(), markAsResolved() |
+| C22 | PembayaranPage | metodePembayaran | pilihMetodePembayaran(), submitPembayaran() |
+| C23 | PencairanDanaPage | idPencairan | submitPencairan() |
+| C24 | RegistrasiMasyarakatController | idRegistrasi, id | buatAkun() |
+| C25 | AutentikasiController | tombolVerifikasi, inputKredensial, idMitra, passwordMitra | validasiData() |
+| C26 | RegistrasiMitraController | idRegistrasi, idDokumen, status, idMitra, passwordMitra | validasiData(), buatAkunBaru() |
+| C27 | VerifikasiMitraController | status, idMitra, passwordMitra, dokumenMitra | validasiData() |
+| C29 | SearchLawController | tombolCari, infoPasal, kataKunci, idPasal | validasiData() |
+| C30 | PencarianMitraController | - | cariMitraSesuaiKasus(), terapkanFilter() |
+| C31 | PenjadwalanKonsultasiController | - | buatSesiKonsultasi(), validasiJadwal() |
+| C32 | SesiKonsultasiController | - | prosesKonfirmasiJadwal(), perbaruiStatusSesi(), kelolaPesanChat(), validasiStatusPembayaran(), akhiriSesiKonsultasi() |
+| C33 | UlasanController | - | simpanUlasanBaru(), perbaruiRatingMitra() |
+| C34 | LaporanController | - | buatLaporanBaru(), validasiBuktiLaporan(), prosesLaporan(), detailLaporan() |
+| C35 | ModerasiAkunController | - | prosesTinjauan(), prosesBlokirAkun(), updateStatusLaporan() |
+| C36 | RiwayatController | - | getRiwayatPengacara(), getRiwayatMasyarakat(), detailRiwayat() |
+| C37 | LiveChatController | - | assignAdmin(), startChat(), closeChat() |
+| C38 | PembayaranController | idPembayaran, idSesi, totalPembayaran, statusPembayaran | prosesPembayaran(), bukaSesiChat() |
+| C39 | PencairanDanaController | idPencairan, idMitra, totalPencairan, statusPencairan, rekeningTujuan | validasiSaldo(), prosesPencairan() |
+| C40 | Masyarakat | idMasyarakat, nama, nomorInduk, email, sandi, kataKunci, statusAkun, idKasus, idLaporan | inputInfo(), cekPasal(), ajukanPencarian(), ajukanJadwal(), kirimPesan(), berikanPenilaian(), ajukanLaporanPelanggaran(), getProfil(), lihatHistory(), ajukanKasus(), cariMitra(), beriUlasan(), buatLaporan() |
+| C41 | MitraPengacara | idMitra, sandiMitra, validitas, passwordMitra, dokumenMitra, nama, tagKeahlian, statusKetersediaan, rating, spesialisasi, ratingAkun, rekeningPencairan | inputInfo(), cekStatus(), verifikasiUlang(), editDokumen(), infoProfil(), cekKetersediaan(), cekKetersediaanJadwal(), terimaJadwal(), tolakJadwal(), balasPesan(), getProfil(), lihatUlasan(), lihatRiwayat(), tambahSaldo() |
+| C42 | Admin | verifikasi, idAdmin | verifikasiDokumen(), login(), balasPesan() |
+| C43 | Kasus | idKasus, kategoriMasalah, deskripsi, judulKasus, statusKasus | infoKategoriKasus(), infoDetailKasus(), detailKasus(), getIdKasus() |
+| C44 | DasarHukum | idPasal | infoPasal(), updatePasal() |
+| C45 | DokumenLegalitas | idDokumen, validitas | tambahDokumen() |
+| C46 | SesiKonsultasi | idSesi, tanggalJadwal, waktuJadwal, statusSesi, idMasyarakat, idMitra, statusPembayaran, waktuMulai, waktuSelesai, waktuStart, waktuEnd, statusKonsul, catatanKonsul | simpanJadwalBaru(), infoStatusSesi(), aturStatusSesi(), catatWaktuMulaiSelesai(), getDetailSesi(), mulaiSesi(), akhiriSesi() |
+| C47 | Ulasan / Laporan | idUlasan, skorRating, teksUlasan, tanggalUlasan, idMitra, foto, rating, jenisPelanggaran, deskripsi, statusLaporan | infoDataUlasan(), simpanDataUlasan(), ambilDataUlasan(), simpanDataLaporan(), infoStatusLaporan(), getUlasan() |
+| C48 | Laporan | idLaporan, idPelapor, idTerlapor, tanggalLaporan, statusLaporan | buatLaporan(), statusLaporan(), getDetailLaporan() |
+| C49 | Pembayaran | idPembayaran, nominal, statusPembayaran, metodeBayar, idSesi, waktuTransaksi | cekStatusLunas(), getStatus() |
+| C50 | LiveChat | idChat, waktuChatMulai, waktuChatSelesai, statusChat, historyChat | updateStatusChat(), detailChat() |
+| C51 | PencairanDana | idPencairan, totalPencairan, tanggalPengajuan, statusPencairan, rekeningTujuan | getStatus() |
 
 ---
 
