@@ -7,9 +7,9 @@ SPESIFIKASI KEBUTUHAN PERANGKAT LUNAK (SKPL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## LawHub
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Mikhael Andrian Yonatan
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
@@ -30,82 +30,134 @@ Dipersiapkan oleh:
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
-| *B* |  |
-| *C* |  |
-| ... |  |
+| - | -|
 
 <br>
 
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Tuliskan dengan ringkas tujuan dokumen SKPL ini dibuat dan siapa saja yang akan menggunakan dokumen ini.
+Dokumen Spesifikasi Kebutuhan Perangkat Lunak (SKPL) ini disusun untuk mendefinisikan secara rinci dan terstruktur kebutuhan fungsional maupun non-fungsional dari perangkat lunak LawHub, sebuah platform konsultasi hukum digital dengan dua fitur utama, yaitu HaloLaw, fitur konsultasi hukum *on-demand* dengan mitra pengacara, dan SearchLaw, fitur *search engine* untuk mencari dasar hukum yang relevan dengan kasus atau masalah yang sedang dialami pengguna. Dokumen ini bertujuan menjadi acuan dalam pengembangan sistem kedepannya, sehingga kebutuhan dan alur sistem dapat dipahami secara konsisten dan diimplementasikan sesuai harapan.
+
+Dokumen ini ditujukan bagi:
+- **Tim pengembang**, sebagai acuan teknis dalam merancang, mengimplementasikan, dan menguji sistem agar sesuai dengan kebutuhan yang telah didefinisikan.
+- **Dosen/asisten mata kuliah IF2150 Rekayasa Perangkat Lunak**, sebagai bahan evaluasi terhadap pemahaman kelompok dalam menyusun spesifikasi kebutuhan perangkat lunak.
+- **Calon pengguna P/L** (Masyarakat, Mitra Pengacara, dan Admin), sebagai gambaran umum atas fitur dan batasan sistem yang akan mereka gunakan.
 
 ## 1.2 Lingkup Masalah
-Tuliskan dengan ringkas nama aplikasi dan deskripsi singkatnya. Bagian ini maksimal berisi satu paragraf, dapat diringkas dari BAB 1 *Analisis Permasalahan* pada dokumen *Topic Brainstorming*.
+LawHub merupakan platform layanan konsultasi hukum digital yang dikembangkan untuk memperluas akses bantuan hukum bagi masyarakat Indonesia, di tengah tingginya angka sengketa dan konflik hukum yang belum terselesaikan serta terbatasnya kanal konsultasi hukum yang interaktif dan efisien. Berbeda dari laman bantuan hukum yang sudah ada dan umumnya berfokus pada forum tanya jawab terbuka, LawHub menghadirkan dua fitur utama, yaitu HaloLaw untuk konsultasi hukum on-demand secara langsung dengan mitra pengacara melalui chat, dan SearchLaw untuk membantu masyarakat menemukan dasar hukum yang relevan dengan kasus yang dihadapi, sehingga proses konsultasi hukum menjadi lebih cepat, transparan, dan mudah diakses oleh berbagai kalangan.
 
 ## 1.3 Definisi, Istilah, dan Singkatan
-Semua definisi dan singkatan yang digunakan dalam dokumen ini beserta penjelasannya.
 
 Tabel 1.3. Definisi Istilah dan Singkatan
 
 | Singkatan, Akronim, atau Istilah | Penjelasan |
 | :--- | :--- |
-| *P/L* | *Singkatan dari Perangkat Lunak, yaitu aplikasi yang memberikan perintah kepada komputer untuk menjalankan tugas tertentu.* |
-| *SKPL* | *Singkatan dari Spesifikasi Kebutuhan Perangkat Lunak, yaitu dokumen yang merangkum kriteria-kriteria yang diperlukan untuk membangun aplikasi menjalankan tugasnya.* |
-| *KF* | *Singkatan dari Kebutuhan Fungsional.* |
-| *KNF* | *Singkatan dari Kebutuhan Non-Fungsional.* |
-| *UC* | *Singkatan dari Use Case.* |
-| *EARS* | *Easy Approach to Requirements Syntax, yaitu pola penulisan kebutuhan agar konsisten dan mudah diuji.* |
-| *...* | *...* |
+| P/L | Singkatan dari Perangkat Lunak, yaitu aplikasi yang memberikan perintah kepada komputer untuk menjalankan tugas tertentu. |
+| SKPL | Singkatan dari Spesifikasi Kebutuhan Perangkat Lunak, yaitu dokumen yang merangkum kriteria-kriteria yang diperlukan untuk membangun aplikasi menjalankan tugasnya. |
+| KF | Singkatan dari Kebutuhan Fungsional. |
+| KNF | Singkatan dari Kebutuhan Non-Fungsional. |
+| UC | Singkatan dari Use Case. |
+| EARS | Easy Approach to Requirements Syntax, yaitu pola penulisan kebutuhan agar konsisten dan mudah diuji. |
 
 ## 1.4 Aturan Penomoran
-Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya, jangan membuat pola baru di dokumen ini.
 
 Tabel 1.4. Aturan Penomoran
 
-| Hal/Bagian | Penomoran | Keterangan |
-| :--- | :--- | :--- |
-| *Kebutuhan Fungsional* | *KFXX* | |
-| *Kebutuhan Non-Fungsional* | *KNFXX* | |
-| *Aktor* | *AXX* | |
-| *Use Case* | *UCXX* | |
-| *Kelas* | *CXX* | |
-| *...* | *...* |
+| Hal/Bagian | Penomoran | 
+| :--- | :--- |
+| Kebutuhan Fungsional | KFXX | 
+| Kebutuhan Non-Fungsional | KNFXX | 
+| Use Case | UCXX | 
+| Kelas | CXX | 
+| Kebutuhan | RXX | 
 
 ## 1.5 Referensi
-Dokumentasi P/L yang dirujuk oleh dokumen ini. Referensi dapat berupa buku, panduan, ataupun dokumentasi lain yang dipakai dalam pengembangan P/L ini.
+Dokumen SKPL ini disusun dengan merujuk pada sumber-sumber berikut:
+1. Dokumen M1, M2, M3, M4 IF2150-RPL-K03-G05
+3. Materi kuliah IF2150 Rekayasa Perangkat Lunak, Program Studi Teknik Informatika, Institut Teknologi Bandung.
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Tuliskan sistematika pembahasan dokumen SKPL ini secara runut (misalnya: BAB 2 membahas deskripsi umum P/L, BAB 3 membahas kebutuhan fungsional dan non-fungsional, dst).
+Dokumen SKPL ini disusun dengan sistematika sebagai berikut:
+- **BAB 1 Pendahuluan** membahas tujuan penulisan dokumen, lingkup masalah, definisi/istilah/singkatan yang digunakan, aturan penomoran, referensi yang menjadi acuan, serta ikhtisar isi dokumen secara keseluruhan.
+- **BAB 2 Deskripsi Perangkat Lunak** membahas gambaran umum sistem dan perangkat lunak LawHub, karakteristik serta kebutuhan pengguna, batasan perangkat lunak, dan lingkungan operasi tempat perangkat lunak dijalankan.
+- **BAB 3 Deskripsi Kebutuhan Perangkat Lunak** membahas kebutuhan fungsional (KF) dan kebutuhan non-fungsional (KNF) dari perangkat lunak secara rinci.
+- **BAB 4 Pemodelan Use Case** membahas identifikasi aktor dan use case, use case diagram, serta skenario dari setiap use case yang telah diidentifikasi.
+- **BAB 5 Pemodelan Kelas** membahas identifikasi kelas, diagram kelas untuk masing-masing use case, dan diagram kelas keseluruhan yang menggambarkan struktur serta relasi antar kelas dalam sistem.
+- **BAB 6 Traceability** membahas keterkaitan antara kebutuhan fungsional, use case, dan kelas yang telah didefinisikan pada bab-bab sebelumnya.
 
 ---
 
 # BAB 2: Deskripsi Perangkat Lunak
 
 ## 2.1 Deskripsi Umum Sistem
-Bagian ini dapat disalin dari BAB 1.1 *Deskripsi Umum Sistem* pada dokumen *Requirement Gathering*, disesuaikan bila ada perubahan alur bisnis. Lengkapi dengan gambaran proses bisnis dalam bentuk *Activity Diagram* (boleh disalin dan diperbarui dari 3.3 *Model Proses Bisnis* pada dokumen *Topic Brainstorming*).
+Perangkat lunak **LawHub** merupakan sebuah platform layanan konsultasi hukum digital yang dirancang untuk memberikan akses bantuan hukum yang transparan, cepat, dan dapat diakses oleh berbagai kalangan. LawHub memiliki dua fitur utama. Dua fitur tersebut adalah HaloLaw dan SearchLaw. 
+
+Pada fitur HaloLaw, pengguna dapat berkonsultasi dengan mitra praktisi hukum melalui chat dalam platform LawHub. Pertama pengguna dapat menuliskan kasus atau masalah yang dialaminya. Submisi ini berupa form yang selanjutnya LawHub akan merekomendasikan mitra praktisi hukum yang relevan dengan kasus yang dialami oleh pengguna. Selanjutnya, pengguna dapat berkonsultasi dengan mitra praktisi hukum yang dipilih melalui fitur HaloLaw. 
+
+Pada fitur SearchLaw, pengguna dapat mencari dasar hukum apa saja yang relevan dengan kasus yang dimilikinya. Sama seperti pada fitur HaloLaw, pengguna mula-mula dapat menuliskan kasus atau masalah yang dialaminya dalam sebuah form. Selanjutnya, akan muncul beberapa dasar dasar hukum yang terkait dengan kasus yang dialami pengguna. Dengan begitu, pengguna dapat membaca dasar dasar hukum tersebut sebelum menangani kasusnya lebih lanjut. 
+
+**Ekspektasi Masyarakat** : Masyarakat mengharapkan kemudahan dalam menyampaikan kasus hukum yang dihadapinya dengan bahasa yang tidak rumit, mengharapkan kecepatan dalam menemukan praktisi hukum yang sesuai, serta memahami dasar dasar hukum yang tepat dan sesuai sebelum melangkah lebih lanjut dalam menangani kasus hukumnya. 
+
+**Ekspektasi Mitra Pengacara** : Mitra pengacara mengharapkan efisiensi dalam menjangkau klien dengan kasus hukum yang sesuai dengan keahliannya, serta fleksibilitas dalam memberikan konsultasi melalui platform digital.
+
+**Ekspektasi Admin** : Admin mengharapkan efisiensi dalam memverifikasi dokumen legalitas mitra pengacara, kemudahan dalam mengelola serta meninjau bukti laporan pelanggaran, serta platform yang interaktif dan memudahkan admin dalam berinteraksi dengan pengguna lain melalui *live chat*.
+
+Dari sisi masyarakat, alur kerja LawHub dimulai ketika masyarakat memiliki suatu kasus hukum yang ingin diselesaikan. Masyarakat dapat membuka platform LawHub lalu melakukan *Sign Up/Login* terlebih dahulu. Selanjutnya, masyarakat dapat mengisi form/mengajukan submisi untuk menceritakan kasus hukum yang dialaminya. Masyarakat dapat menambahkan beberapa tag kategori yang menggambarkan kasus hukum yang dialaminya. Lalu, masyarakat dapat memilih dua fitur yang berbeda, yaitu HaloLaw dan SearchLaw. Jika masyarakat memilih HaloLaw, masyarakat akan diarahkan untuk memilih rekomendasi mitra praktisi hukum yang sesuai dengan kasus yang dialaminya. Rekomendasi ini muncul berdasarkan tag kategori yang ada pada kasus yang di submit. Selanjutnya, masyarakat dapat memilih mitra praktisi hukum dan mulai melakukan konsultasi. Jika masyarakat memilih SearchLaw, akan disajikan beberapa sumber hukum yang terkait dengan kasus hukum yang dialami masyarakat. 
+
+Dari sisi mitra pengacara, alur kerja LawHub dimulai dari pembuatan akun mitra pengacara. Selanjutnya, mitra pengacara akan diminta untuk mengunggah beberapa dokumen terkait untuk dilakukan verifikasi oleh admin. Kemudian, mitra pengacara dapat mengedit akun profilnya khususnya memilih beberapa tag kategori kasus yang menjadi keahliannya. Tag ini nantinya akan muncul dalam rekomendasi ketika ada kasus yang sesuai dengan keahliannya. Mitra pengacara juga dapat mengubah statusnya apakah ia available atau not available dalam menerima klien konsultasi. Jika telah menerima klien, mitra pengacara dapat melakukan konsultasi berdasarkan kasus yang diberikan klien dan berkomunikasi melalui fitur HaloLaw. 
+
+Dari sisi admin, alur kerja LawHub dimulai dari *login* sebagai admin. Selanjutnya admin dapat menangani pengajuan verifikasi akun mitra pengacara dengan meninjau dokumen legalitas yang relevan dan aktif seperti Ijazah, Kartu Tanda Anggota (“KTA”), Surat Izin Praktik Advokat (SIPA), Berita Acara Sumpah (BAS) Advokat, dsb. Selain itu, admin juga dapat melakukan peninjauan laporan yang diberikan oleh pengguna serta menangani keluhan pengguna melalui *live chat*.
 
 <p align="center">
-<img alt="Contoh Activity Diagram" src="./assets/diagram/diagram-act-1.avif" width="70%">
+<img alt="Gambar Diagram Pembuatan Akun" src="./assets/diagram/Diagram Pembuatan Akun.jpg" width="70%">
 </p>
 <p align="center">
-<i>Gambar 1. Contoh Activity Diagram Proses Bisnis</i>
+<i>Gambar 1. Gambar Diagram Pembuatan Akun</i>
 </p>
+
+<p align="center">
+<img alt="Gambar Diagram Fitur SearchLaw" src="./assets/diagram/Diagram SearchLaw.jpg" width="70%">
+</p>
+<p align="center">
+<i>Gambar 2. Gambar Diagram Fitur SearchLaw</i>
+</p>
+
+<p align="center">
+<img alt="Gambar Diagram Fitur HaloLaw" src="./assets/diagram/Diagram HaloLaw.jpg" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3. Gambar Diagram Fitur HaloLaw</i>
+</p>
+
+<p align="center">
+<img alt="Gambar Diagram Pengiriman Laporan" src="./assets/diagram/Diagram Pengiriman Laporan.jpg" width="70%">
+</p>
+<p align="center">
+<i>Gambar 4. Gambar Diagram Pengiriman Laporan</i>
+</p>
+
+<p align="center">
+<img alt="Gambar Diagram Live Chat" src="./assets/diagram/Diagram LiveChat.jpg" width="70%">
+</p>
+<p align="center">
+<i>Gambar 5. Gambar Diagram Live Chat</i>
+</p>
+
 
 ## 2.2 Deskripsi Umum Perangkat Lunak
-Diisi dengan deskripsi umum perangkat lunak untuk mendukung proses bisnis yang telah diuraikan pada sub-bab sebelumnya. Uraian harus menunjukkan lingkup perangkat lunak, mencakup keterkaitan perangkat lunak dengan sistem lain di luar (misalnya *Payment Gateway* atau layanan pihak ketiga lain yang dipakai).
+LawHub merupakan aplikasi layanan konsultasi hukum digital berbasis web yang menghubungkan Masyarakat dengan Mitra Pengacara melalui dua fitur utama, yaitu HaloLaw untuk konsultasi hukum on-demand secara langsung melalui chat, dan SearchLaw untuk pencarian dasar hukum yang relevan dengan kasus yang dihadapi pengguna. Sistem menerima input dari Masyarakat dan Mitra Pengacara melalui antarmuka aplikasi, mengelola proses registrasi, verifikasi akun, penjadwalan sesi konsultasi, pencarian dasar hukum dan mitra pengacara, pelaksanaan sesi konsultasi melalui chat, hingga pengelolaan ulasan dan pelaporan, dengan Admin sebagai pengguna yang memverifikasi dan mengawasi jalannya sistem.
 
-*Contoh narasi:* "*[Nama P/L]* merupakan aplikasi *[deskripsi singkat]* yang berinteraksi dengan *Payment Gateway (dummy)* untuk memproses otorisasi pembayaran. Sistem menerima input dari *Pelanggan* melalui antarmuka aplikasi dan mengirimkan permintaan transaksi ke *Payment Gateway* setiap kali pelanggan melakukan checkout."
+Untuk mendukung proses transaksi, LawHub berinteraksi dengan *Payment Gateway* pihak ketiga (dummy) untuk memproses otorisasi pembayaran setiap kali Masyarakat menyelesaikan pembayaran sesi konsultasi, serta untuk memproses pencairan dana setiap kali Mitra Pengacara mengajukan pencairan dana hasil konsultasi yang telah ditangani. Sistem mengirimkan permintaan transaksi ke *Payment Gateway* dan menerima status keberhasilan transaksi sebagai respons, yang selanjutnya digunakan untuk memperbarui status pembayaran atau pencairan dana pada sistem.
+
 
 ## 2.3 Pengguna dan Kebutuhan Pengguna Perangkat Lunak
-Tuliskan seluruh jenis pengguna (*role*/aktor) yang terlibat dalam perangkat lunak (P/L), beserta kebutuhannya secara umum. Bagian ini dapat disalin dari 1.2 *Deskripsi Pengguna Perangkat Lunak* (dokumen Requirement Gathering) atau 3.1 *Identifikasi Aktor* (dokumen Use Case), pastikan sudah konsisten dengan aktor final yang dipakai di BAB 4.
 
 | Pengguna | Kebutuhan |
 | :--- | :--- |
-| *Pelanggan* | *Pelanggan harus dapat memesan produk, mengelola keranjang, dan menyelesaikan pembayaran melalui sistem.* |
-| *...* | *...* |
+| Mitra Pengacara | Praktisi hukum yang mendaftar sebagai pengacara HaloLaw untuk menerima dan menanggapi permintaan konsultasi dari klien. |
+| Masyarakat | Pengguna umum yang secara aktif menggunakan fitur SearchLaw untuk mencari dasar hukum dan fitur HaloLaw untuk berkonsultasi langsung dengan pengacara. |
+| Admin | Mengakses sistem untuk mengelola dan melayani pengguna. |
 
 ## 2.4 Batasan Perangkat Lunak
 Batasan yang harus dituliskan, di antaranya:
@@ -140,9 +192,9 @@ Tabel 3.1. Kebutuhan Fungsional
 | KF03 | R02 | Perangkat lunak dapat menampilkan halaman login/registrasi akun mitra pengacara untuk diverifikasi. |
 | KF04 | R02 | Perangkat lunak dapat menampilkan status verifikasi registrasi akun mitra pengacara. |
 | KF05 | R03 | Perangkat lunak dapat menampilkan halaman verifikasi mitra pengacara untuk admin. |
-| KF06 | R05 | Perangkat lunak dapat mewadahi edit profil bagi mitra pengacara. |
-| KF07 | R06 | Perangkat lunak dapat menampilkan halaman edit dokumen legalitas mitra pengacara. |
-| KF08 | R08 | Perangkat lunak dapat menampilkan mitra pengacara yang sesuai oleh pengguna dengan menggunakan filter atau memasukkan kata kunci dengan menggunakan search bar. |
+| KF06 | R05 | Ketika mitra pengacara melakukan pengeditan pada halaman profil, sistem harus menyimpan dan memperbarui data profil mitra pengacara tersebut. |
+| KF07 | R06 | Ketika mitra pengacara mengakses halaman edit dokumen legalitas, sistem harus menampilkan halaman tersebut beserta dokumen legalitas yang telah diunggah sebelumnya. |
+| KF08 | R08 | Ketika pengguna memasukkan kata kunci atau menerapkan filter pada search bar, sistem harus menampilkan daftar mitra pengacara yang sesuai dengan kata kunci atau filter tersebut. |
 | KF09 | R09 | Ketika pengguna melakukan pencarian, sistem harus menampilkan daftar profil mitra pengacara untuk dipilih sesuai dengan filter yang sudah diaturs. |
 | KF10 | R10 | Ketika terdapat pengajuan konsultasi kasus dari pengguna, sistem harus menyediakan fitur bagi mitra pengacara untuk menerima atau menolaknya. |
 | KF11 | R11 | Selama sesi konsultasi berlangsung dan masih berstatus aktif, sistem harus memfasilitasi pertukaran pesan (chat) antara pengguna dan mitra pengacara. |
@@ -189,9 +241,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | KNF20 | R19 | Response Time | Layanan live chat dapat diakses selama jam operasional dengan waktu respons tidak lebih dari 5 menit |
 | KNF21 | R29 | Constraint | Dokumen yang diunggah wajib berstatus aktif atau tidak kadaluarsa |
 | KNF22 | R30 | Constraint | Hasil pencarian disalin melalui sumber data tanpa sumber tambahan lain |
-| ... | ... | ... |
 
-<sub>*Silakan pilih parameter yang relevan dengan P/L kalian (Availability, Reliability, Ergonomy, Portability, Memory, Response time, Safety, Security, dsb), tidak perlu semua parameter diisi. Lihat kembali dokumen Requirement Gathering untuk penjelasan tiap parameter.*<sub>
 
 ---
 
@@ -236,21 +286,14 @@ Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 | UC22 | Mencairkan Dana | Mitra pengacara mendapatkan pencairan dana ke rekening yang telah didaftarkan di profil akun. | Mitra pengacara | KF20 |
 
 ## 4.3 Use Case Diagram
-Buatlah **satu** use case diagram yang mencakup seluruh aktor dan use case. Sertakan relasi *include*/*extend* apabila ada use case yang saling bergantung.
 <br>
 <p align="center">
-<img alt="Contoh Activity Diagram" src="./assets/diagram/Milestone-3-RPL.jpg" width="70%">
+<img alt="Contoh Activity Diagram" src="./assets/diagram/use-case-diagram.jpg" width="70%">
 </p>
 <p align="center">
-<i>Gambar 1. Contoh Use Case Diagram</i>
+<i>Gambar 1. Use Case Diagram</i>
 </p>
 <br>
-
-Hal-hal yang perlu diperhatikan dalam pembuatan use case diagram:
-- Pastikan notasi UML use case (aktor, oval use case, garis asosiasi, *include/extend*) digambar dengan benar.
-- Seluruh aktor dan use case yang telah didefinisikan harus muncul di diagram, tidak ada yang terlewat maupun berlebih.
-- Hindari garis yang saling bersilangan tanpa alasan jelas, susun diagram agar mudah dibaca.
-- Hindari istilah solusi teknis (misalnya nama tabel database, nama endpoint API) muncul di dalam diagram use case karena use case menjelaskan *interaksi fungsional*, bukan detail implementasi.
 
 ## 4.4 Skenario Use Case
 ### 4.4.1 Skenario UC01
@@ -1434,10 +1477,9 @@ Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan u
 
 
 ## 5.3 Diagram Kelas Keseluruhan
-Gabungkan seluruh kelas dan hubungan antarkelas dari BAB 4.3 dokumen *Class Diagram* menjadi satu diagram kelas keseluruhan. Pastikan tidak ada kelas yang terduplikasi atau tertinggal.
 
 <p align="center">
-<img alt="Contoh Class Diagram Keseluruhan" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+<img alt="Class Diagram Keseluruhan" src="./assets/diagram/diagram-kelas-keseluruhan.webp" width="70%">
 </p>
 <p align="center">
 <i>Gambar 4. Contoh Diagram Kelas Keseluruhan</i>
@@ -1452,7 +1494,6 @@ Gabungkan seluruh kelas dan hubungan antarkelas dari BAB 4.3 dokumen *Class Diag
 ---
 
 # BAB 6: Traceability
-Salin ulang tabel Traceability dari BAB 5 dokumen *Class Diagram*, cocokkan setiap Kebutuhan Fungsional, Use Case, dan Kelas yang saling terkait.
 
 | ID Kelas | ID Use Case | ID KF |
 | :--- | :--- | :--- |
