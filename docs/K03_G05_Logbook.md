@@ -24,6 +24,9 @@
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
 * [Milestone 2](#milestone-2)
+* [Milestone 3](#milestone-3)
+* [Milestone 4](#milestone-4)
+* [Milestone 5](#milestone-5)
 
 
 ---
@@ -47,9 +50,6 @@
 | 02-09-2026 | Ami| Revisi 1.1 dan 1.2 | 1 jam | Done | - | 
 | | | | | | | |
 
-**Catatan/Evaluasi Milestone 1:**
-* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
-
 ---
 ### Milestone 2
 **Periode** : 02-09-2026 - 09-09-2026
@@ -63,11 +63,6 @@
 | 09-09-2026 | Cherinette | Membuat draft bab 2.5 dan menambahkan draft kedalam git | 2 | Done | - | 
 | 09-09-2026 | Raya | Menambahkan draft bab 1.1 kedalam git | 1 | Done | - | 
 
-**Catatan/Evaluasi Milestone 2:**
-* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
----
-``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
-
 ---
 ### Milestone 3
 **Periode** : 09-09-2026 - 16-09-2026
@@ -76,11 +71,31 @@
 | 13-09-2026 | Ami, Cherinette | Membuat draft UC | 2 | Done | - | 
 | 14-09-2026 | Livy | Asistensi | 1 | Done | - | 
 | 15-09-2026 | Ami | Revisi KF dan UC | 1 | Done | - | 
+| 16-09-2026 | Cathrine | Menambahkan dan mendetailkan draft UC04, UC22, serta urutan UC | 2 | Done | - |
 | 16-09-2026 | Livy | Menambah draft Skenario Use Case | 2 | Done | - | 
 | 16-09-2026 | Ami, Cherinette | Revisi Bab 2 dan 3.2 | 1 | Done | - | 
 | 16-09-2026 | Raya | Membuat diagram usecase | 1 | Done | - | 
 
-**Catatan/Evaluasi Milestone 2:**
-* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 ---
-``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
+### Milestone 4
+**Periode** : 16-10-2026 - 23-10-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 17-10-2026 | Ami, Cathrine | Perancangan dan penyusunan struktur aktivitas sistem | 3 | Done | - | 
+| 18-10-2026 | Cherinette, Raya | Pembuatan dan perbaikan spesifikasi kebutuhan perangkat lunak | 3 | Done | - | 
+| 19-10-2026 | Livy | Asistensi progres perancangan sistem | 1 | Done | - | 
+| 20-10-2026 | Ami, Cherinette | Analisis dan pemodelan alur data fungsional | 2 | Done | - | 
+| 21-10-2026 | Cathrine, Raya | Penyempurnaan dokumentasi rancangan antarmuka | 2 | Done | - | 
+| 22-10-2026 | Seluruh Anggota | Review dan integrasi dokumen Milestone 4 | 2 | Done | - | 
+
+---
+### Milestone 5
+**Periode** : 23-10-2026 - 30-10-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 24-10-2026 | Ami, Cherinette | Membuat class diagram keseluruhan | 1 | Done | - | 
+| 25-10-2026 | Cathrine, Raya | Perancangan struktur kelas dan relasi tambahan | 2 | Done | - | 
+| 26-10-2026 | Livy | Asistensi diagram kelas dan struktur sistem | 1 | Done | - | 
+| 27-10-2026 | Ami, Raya | Implementasi dan perapian detail atribut serta metode kelas | 2 | Done | - | 
+| 28-10-2026 | Cherinette, Cathrine | Finalisasi dokumentasi perancangan sistem | 2 | Done | - | 
+| 30-10-2026 | Seluruh Anggota | Final review, pengecekan traceability, dan pengumpulan tugas | 2 | Done | - |
