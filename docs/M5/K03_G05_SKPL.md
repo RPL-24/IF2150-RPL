@@ -1253,8 +1253,8 @@ Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan u
 | :--- | :--- | :--- | :--- |
 | C16 | LaporanAkunPage | idLaporan | buatFormLaporan() submitLaporan() |
 | C34 | LaporanController | - | prosesLaporan() |
-| C40 | Masyarakat | idMasyarakat, nama, email, statusAkun | getProfil() |
-| C41 | Mitra Pengacara | idMitra, spesialisasi, ratingAkun | getProfil() |
+| C40 | Masyarakat | idMasyarakat, nama, nomorInduk, email, sandi, kataKunci, statusAkun, idKasus, idLaporan | getProfil() |
+| C41 | Mitra Pengacara | idMitra, sandiMitra, validitas, passwordMitra, dokumenMitra, nama, tagKeahlian, statusKetersediaan, rating, spesialisasi, ratingAkun, rekeningPencairan | getProfil() |
 | C48 | Laporan | idLaporan, idPelapor, idTerlapor, tanggalLaporan, statusLaporan | buatLaporan() statusLaporan() |
 
 ### 5.2.16 Use Case UC16
@@ -1284,7 +1284,7 @@ Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan u
 | :--- | :--- | :--- | :--- |
 | C16 | LaporanUlasanPage | idUlasan, idMitra | buatFormLaporanUlasan() submitLaporanUlasan() statusUlasan() |
 | C34 | LaporanController | - | prosesLaporan() detailLaporan() |
-| C41 | Mitra Pengacara | idMitra, spesialisasi, ratingAkun | getProfil() lihatUlasan() |
+| C41 | Mitra Pengacara | idMitra, sandiMitra, validitas, passwordMitra, dokumenMitra, nama, tagKeahlian, statusKetersediaan, rating, spesialisasi, ratingAkun, rekeningPencairan | getProfil() lihatUlasan() |
 | C47 | Ulasan | idUlasan, idMitra, foto, rating, tanggalUlasan | getUlasan() |
 | C48 | Laporan | idLaporan, idPelapor, idTerlapor, tanggalLaporan, statusLaporan | buatLaporan() statusLaporan() |
 
@@ -1314,7 +1314,7 @@ Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan u
 | :--- | :--- | :--- | :--- |
 | C18 | TinjauanPage | idAdmin, pilihLaporan | submitHasil() tampilkanLaporan() tolakLaporan() |
 | C35 | ModerasiAkunController | - | prosesTinjauan() prosesBlokirAkun() updateStatusLaporan()|
-| C42 | Admin | idAdmin | login() |
+| C42 | Admin | verifikasi, idAdmin | login() |
 | C48 | Laporan | idLaporan, idPelapor, idTerlapor, tanggalLaporan, statusLaporan | getDetailLaporan() |
 
 ### 5.2.18 Use Case UC18
@@ -1345,8 +1345,8 @@ Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan u
 | :--- | :--- | :--- | :--- |
 | C19 | HistoryPage | listRiwayat, idMasyarakat, idMitra | lihatHistory() |
 | C36 | RiwayatController | - | getRiwayatPengacara() getRiwayatMasyarakat() detailRiwayat() |
-| C40 | Masyarakat | nama, email, idMasyarakat  | lihatHistory() |
-| C41 | MitraPengacara | idMitra, nama, spesialisasi, rating | lihatRiwayat() |
+| C40 | Masyarakat | idMasyarakat, nama, nomorInduk, email, sandi, kataKunci, statusAkun, idKasus, idLaporan | lihatHistory() |
+| C41 | MitraPengacara | idMitra, sandiMitra, validitas, passwordMitra, dokumenMitra, nama, tagKeahlian, statusKetersediaan, rating, spesialisasi, ratingAkun, rekeningPencairan | lihatRiwayat() |
 | C43 | Kasus | idKasus, judulKasus, kategoriKasus, statusKasus | detailKasus() getIdKasus() |
 | C46 | SesiKonsultasi | idSesi, waktuStart, waktuEnd, statusKonsul, catatanKonsul | getDetailSesi()|
 
@@ -1377,8 +1377,8 @@ Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan u
 | :--- | :--- | :--- | :--- |
 | C20 | LiveChatMasyarakatPage | idMasyarakat, chatAktifId | showChat() sendMessage() endChat() |
 | C37 | LiveChatController | - | assignAdmin() startChat() closeChat() |
-| C40 | Masyarakat | nama, email, idMasyarakat | kirimPesan() |
-| C42 | Admin | idAdmin | balasPesan() |
+| C40 | Masyarakat | idMasyarakat, nama, nomorInduk, email, sandi, kataKunci, statusAkun, idKasus, idLaporan | kirimPesan() |
+| C42 | Admin | verifikasi, idAdmin | balasPesan() |
 | C50 | LiveChat | idChat, waktuChatMulai, waktuChatSelesai, statusChat, historyChat | updateStatusChat() detailChat() |
 ### 5.2.20 Use Case UC20
 **Nama Use Case:** Menjawab Pertanyaan
@@ -1406,7 +1406,7 @@ Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan u
 | :--- | :--- | :--- | :--- |
 | C21 | LiveChatAdminPage | idAdmin, chatAktifId | showAdminChatDashboard() markAsResolved() | 
 | C37 | LiveChatController | - | assignAdmin() startChat() closeChat() |
-| C42 | Admin | idAdmin | balasPesan() |
+| C42 | Admin | verifikasi, idAdmin | balasPesan() |
 | C50 | LiveChat | idChat, waktuChatMulai, waktuChatSelesai, statusChat, historyChat | updateStatusChat() detailChat() |
 
 ### 5.2.21 Use Case UC21

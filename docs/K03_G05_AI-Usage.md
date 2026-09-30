@@ -54,9 +54,9 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 ### Milestone 4
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
-| | | | | |
+| Gemini | Mengonfirmasi hubungan antar kelas pada diagram UC 15 - 20 sudah sesuai | Pada Use case berikut [menyertakan deskripsi use case secara singkat] apakah hubungan antar kelas berikut sudah sesuai [menyertakan foto diagram kelas yang telah dibuat] | - |
 
-### Milestone 4
+### Milestone 5
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
 | Gemini | Menggabungkan atribut antar kelas | Isilah tabel berikut dalam tipe file markdown sebagai gabungan dari tabel-tabel berikut | - |
