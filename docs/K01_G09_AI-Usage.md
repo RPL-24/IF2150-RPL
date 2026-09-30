@@ -17,7 +17,7 @@
 | _13525001_ | _Matthew Allen Reynaldo_          |
 | _13525010_ | _Fabian Amzar Susanto_            |
 | _13525025_ | _David Christian_                 |
-| _13525028_ | _Markus Christiano Simanjutak_    |
+| _13525028_ | _Markus Christiano Simanjuntak_    |
 Fabian_Amzar_Susanto     
 ---
 
@@ -72,4 +72,4 @@ Kami yang bertanda tangan di bawah ini menyatakan bahwa seluruh log penggunaan A
 | <img src="./assets/ttd-Matthew_Allen_Reynaldo.png" width="100"> | **[13525001 - Matthew Allen Reynaldo]** |
 | <img src="./assets/ttd-Fabian_Amzar_Susanto.png" width="100"> | **[13525010 - Fabian Amzar Susanto]** |
 | <img src="./assets/ttd-David_Christian.png" width="100"> | **[13525025 - David Christian]** |
-| <img src="./assets/ttd-Markus_Christiano_Simanjuntak.png" width="100"> | **[13525028 - Markus Christiano Simanjutak]** |
+| <img src="./assets/ttd-Markus_Christiano_Simanjuntak.png" width="100"> | **[13525028 - Markus Christiano Simanjuntak]** |
