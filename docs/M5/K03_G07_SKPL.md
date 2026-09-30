@@ -58,11 +58,17 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | :--- | :--- |
 | *P/L* | *Singkatan dari Perangkat Lunak, yaitu aplikasi yang memberikan perintah kepada komputer untuk menjalankan tugas tertentu.* |
 | *SKPL* | *Singkatan dari Spesifikasi Kebutuhan Perangkat Lunak, yaitu dokumen yang merangkum kriteria-kriteria yang diperlukan untuk membangun aplikasi menjalankan tugasnya.* |
-| *KF* | *Singkatan dari Kebutuhan Fungsional.* |
-| *KNF* | *Singkatan dari Kebutuhan Non-Fungsional.* |
-| *UC* | *Singkatan dari Use Case.* |
+| *KF* | *Singkatan dari Kebutuhan Fungsional, yaitu fungsi atau perilaku yang dimiliki sistem.* |
+| *KNF* | *Singkatan dari Kebutuhan Non-Fungsional, yaitu kualitas sistem seperti kecepatan, keamanan, dan ketersediaan.* |
+| *UC* | *Singkatan dari Use Case, yaitu gambaran interaksi antara aktor dan sistem.* |
+| *CD* | *Singkatan dari Class Diagram, Diagram yang menggambarkan struktur kelas beserta atribut, metode, dan hubungan antarkelas di dalam sistem.* |
+| *RG* | *Singkatan dari Requirement Gathering, yaitu tahap awal pengembangan perangkat lunak untuk mengumpulkan dan menganalisis kebutuhan.* |
+| *US* | *Singkatan dari User Story, yaitu deskripsi singkat kebutuhan dari sudut pandang pengguna.* |
 | *EARS* | *Easy Approach to Requirements Syntax, yaitu pola penulisan kebutuhan agar konsisten dan mudah diuji.* |
-| *...* | *...* |
+| *GPS* | *Singkatan dari Global Positioning System, yaitu sistem navigasi berbasis satelit untuk menentukan posisi.* |
+| *API* | *Singkatan dari Application Programming Interface, yaitu antarmuka yang memungkinkan program saling terhubung.* |
+| *SOP* | *Singkatan dari Standard Operating Procedure, yaitu panduan langkah-langkah.* |
+| *Latitude / Longitude* | *Garis lintang dan garis bujur, yaitu dua nilai koordinat posisi di bumi.* |
 
 ## 1.4 Aturan Penomoran
 Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya, jangan membuat pola baru di dokumen ini.
@@ -93,7 +99,13 @@ Tabel 1.4. Aturan Penomoran
 
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Tuliskan sistematika pembahasan dokumen SKPL ini secara runut (misalnya: BAB 2 membahas deskripsi umum P/L, BAB 3 membahas kebutuhan fungsional dan non-fungsional, dst).
+Dokumen Spesifikasi Kebutuhan Perangkat Lunak (SKPL) ini disusun dengan sistematika pembahasan sebagai berikut:
+* **BAB 1: Pendahuluan**, membahas tujuan penulisan dokumen SKPL beserta target pembacanya, ruang lingkup masalah yang diselesaikan sistem LaporKota, daftar definisi, istilah, dan singkatan, aturan penomoran identifikasi elemen, daftar dokumen referensi, serta ikhtisar sistematika dokumen.
+* **BAB 2: Deskripsi Perangkat Lunak**, membahas deskripsi umum sistem dan alur proses bisnis, deskripsi umum perangkat lunak beserta keterkaitannya dengan sistem eksternal, karakteristik dan hak akses kelompok pengguna, batasan teknis dan operasional sistem, serta spesifikasi lingkungan operasinya.
+* **BAB 3: Deskripsi Kebutuhan Perangkat Lunak**, menjabarkan seluruh spesifikasi Kebutuhan Fungsional (KF) dengan pola kalimat terstruktur untuk tiap skenario sistem, serta Kebutuhan Non-Fungsional (KNF) beserta parameter kualitas yang terukur.
+* **BAB 4: Pemodelan Use Case**, menyajikan pemodelan kebutuhan fungsional sistem melalui identifikasi aktor, daftar use case, diagram use case global, serta skenario lengkap (alur normal dan alur alternatif) beserta pra-kondisi dan pasca-kondisinya.
+* **BAB 5: Pemodelan Kelas**, memodelkan struktur perangkat lunak berbasis objek yang mencakup daftar identifikasi kelas entitas, antarmuka, dan pengendali logika, diagram kelas per use case beserta spesifikasi atribut dan operasinya, serta diagram kelas keseluruhan sistem.
+* **BAB 6: Traceability**, menyajikan matriks keterlacakan dua arah yang memetakan relasi logis antara Kebutuhan Fungsional, Use Case, dan Kelas guna memastikan kelengkapan perancangan sistem.
 
 ---
 
@@ -114,9 +126,11 @@ Implementasi LaporKota diharapkan mampu mempermudah birokrasi penanganan fasilit
 </p>
 
 ## 2.2 Deskripsi Umum Perangkat Lunak
-Diisi dengan deskripsi umum perangkat lunak untuk mendukung proses bisnis yang telah diuraikan pada sub-bab sebelumnya. Uraian harus menunjukkan lingkup perangkat lunak, mencakup keterkaitan perangkat lunak dengan sistem lain di luar (misalnya *Payment Gateway* atau layanan pihak ketiga lain yang dipakai).
+LaporKota merupakan aplikasi berbasis web yang berfungsi sebagai platform terpadu untuk memfasilitasi pelaporan kerusakan fasilitas publik oleh warga, validasi dan penentuan skala prioritas oleh pengelola atau dinas terkait, serta penanganan fisik oleh petugas teknis di lapangan hingga proses evaluasi selesai. Dalam mendukung proses bisnis tersebut, perangkat lunak ini berinteraksi dengan beberapa layanan dan sistem pihak ketiga di luar aplikasi utama. Pada tahap pelaporan, sistem berinteraksi langsung dengan Geolocation API bawaan peramban (browser) pengguna untuk mendeteksi dan mengunci koordinat geospasial (latitude dan longitude) perangkat secara otomatis saat formulir dibuka. Sistem juga berinteraksi dengan layanan penyedia peta OpenStreetMap untuk menyajikan visualisasi peta digital interaktif pada antarmuka pelaporan warga, dasbor admin, dan peta sebaran publik. Selain itu, formulir pelaporan terhubung dengan sistem verifikasi keamanan pihak ketiga (anti-bot / CAPTCHA) untuk memastikan data dikirimkan oleh manusia dan mencegah pengiriman otomatis oleh bot.
 
-*Contoh narasi:* "*[Nama P/L]* merupakan aplikasi *[deskripsi singkat]* yang berinteraksi dengan *Payment Gateway (dummy)* untuk memproses otorisasi pembayaran. Sistem menerima input dari *Pelanggan* melalui antarmuka aplikasi dan mengirimkan permintaan transaksi ke *Payment Gateway* setiap kali pelanggan melakukan checkout."
+Seluruh pengelolaan komputasi backend dan data LaporKota didelegasikan dengan berinteraksi langsung ke ekosistem layanan Supabase. Sistem mengirimkan permintaan ke Supabase Auth untuk memproses autentikasi identitas akun dan membatasi otorisasi hak akses peran (Warga, Tim Administrasi, dan Eksekutor Lapangan). Seluruh berkas foto dan video bukti kerusakan maupun hasil perbaikan diunggah langsung dari peramban klien ke Supabase Storage, sementara seluruh data tiket laporan, lokasi koordinat, riwayat status, dan akumulasi dukungan (upvote) dicatat serta dikelola dalam Supabase Database (PostgreSQL).
+
+Secara operasional, sistem menerima input laporan dari Warga melalui formulir web, memvalidasi ambang batas toleransi radius duplikasi (20 meter) terhadap laporan aktif sejenis, lalu menerbitkan tiket unik berstatus "Diterima" ke basis data. Tim Administrasi mengakses antrean tiket melalui dasbor untuk mengevaluasi validitas laporan dan menentukan urutan prioritas penanganan. Ketika laporan dinyatakan valid dan statusnya diperbarui menjadi "Dikerjakan", laporan tersebut masuk ke antrean tugas Eksekutor Lapangan. Sistem mengintegrasikan titik koordinat kerusakan ke aplikasi navigasi eksternal (Google Maps) guna memandu rute perjalanan petugas menuju lokasi fisik fasilitas yang dilaporkan. Setelah penanganan selesai, Eksekutor Lapangan mengunggah foto bukti penyelesaian dan catatan hasil kerja untuk dievaluasi oleh Tim Administrasi hingga status laporan dinyatakan "Berhasil". Setiap peralihan status laporan dikirimkan secara langsung ke Fantarmuka pengguna melalui kanal WebSocket Supabase Realtime (in-app notification), sekaligus memperbarui linimasa pelacakan warga dan peta sebaran laporan publik secara real-time.
 
 ## 2.3 Pengguna dan Kebutuhan Pengguna Perangkat Lunak
 
@@ -720,7 +734,7 @@ Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diag
 #### Diagram Kelas
 
 <p align="center">
-<img alt="Class Diagram UC01" src="./assets/diagram/class-diagram-uc05.jpg" width="70%">
+<img alt="Class Diagram UC01" src="./assets/diagram/class-diagram-uc05.webp" width="70%">
 </p>
 <p align="center">
 <i>Gambar 2. Diagram Kelas Use Case UC05</i>

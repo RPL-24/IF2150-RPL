@@ -114,6 +114,7 @@
 | *28-09-2026* | *Pasaribu Fritz T.A.M.* | *Pengerjaan Bab 1.1* | *0.5* | *Done* | - | 
 | *29-09-2026* | *Pasaribu Fritz T.A.M.* | *Revisi Class Diagram UC03 & UC04* | *0.5* | *Done* | - | 
 | *30-09-2026* | *Pasaribu Fritz T.A.M.* | *Pengerjaan Bab 1.5* | *0.5* | *Done* | - | 
+| *30-09-2026* | *Muhammad Atallah Ramadhan* | *Pengerjaan Bab 1.3* | *0.5* | *Done* | - | 
 
 
 ---
