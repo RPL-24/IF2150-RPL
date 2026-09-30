@@ -107,7 +107,7 @@ Secara alur kerja, sistem ini dimulai dengan Tahap Pelaporan yang dilakukan oleh
 Implementasi LaporKota diharapkan mampu mempermudah birokrasi penanganan fasilitas publik, meminimalkan waktu respon, dan memberikan transparansi serta kepastian layanan bagi masyarakat melalui pelacakan status penanganan secara real-time. Bagi pihak mengelola infrastruktur, sistem ini menyediakan basis data kerusakan yang akurat untuk mendukung pengambilan keputusan dalam pemeliharaan fasilitas publik yang lebih tepat sasaran dan andal.
 
 <p align="center">
-<img alt="Contoh Activity Diagram" src="./M1/assets/diagram/ModelProsesBisnisLaporKota.avif" width="70%">
+<img alt="Contoh Activity Diagram" src="./assets/diagram/ModelProsesBisnisLaporKota (3).avif" width="70%">
 </p>
 <p align="center">
 <i>Gambar 1. Activity Diagram Proses Bisnis</i>
@@ -238,7 +238,7 @@ Salin ulang daftar Use Case versi terbaru dari BAB 3.2 dokumen *Class Diagram*, 
 Salin ulang Use Case Diagram dari BAB 3.3 dokumen *Use Case & Scenario Use Case* atau *Class Diagram* (gunakan versi paling akhir/terbaru apabila terdapat perubahan).
 
 <p align="center">
-<img alt="Contoh Use Case Diagram" src="./M3/assets/diagram/uc-diagram.png" width="70%">
+<img alt="Contoh Use Case Diagram" src="./assets/diagram/uc-diagram.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 2. Use Case Diagram</i>
