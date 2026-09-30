@@ -60,6 +60,7 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
 | Gemini | Menggabungkan atribut antar kelas | Isilah tabel berikut dalam tipe file markdown sebagai gabungan dari tabel-tabel berikut | - |
+| Gemini | Menulis Logbook | Menulis Logbook berdasarkan kegiatan dan commit tiap anggota | - |
 
 ---
 ### Pernyataan Integritas dan Persetujuan
