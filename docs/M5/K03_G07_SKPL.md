@@ -30,7 +30,7 @@ Dipersiapkan oleh:
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
+| *A* | *Perubahan identifikasi kelas, dimana kelas Warga, Eksekutor, dan Admin digeneralisasi menjadi kelas User. Sehingga Class Diagram juga berubah.* |
 | *B* |  |
 | *C* |  |
 | ... |  |
@@ -40,7 +40,9 @@ Dipersiapkan oleh:
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Dokumen Spesifikasi Kebutuhan Perangkat Lunak merupakan dokumen yang memberikan deskripsi yanglengkap dan presisi mengenai apa yang harus dilakukan oleh perangkat lunak. Dokumen ini dibuat sebagai landasan mengenai ruang lingkup, fungsi, dan batasan sistem untuk pengembangan Perangkat Lunak di kemudian hari. Selain itu, dokumen ini juga disusun untuk memandu alur perancangan dan implementasi arsitektur sistem dan penulisan kode program. Terakhir, dokumen ini juga disusun untuk bisa menjadi acuan dalam melakukan verifikasi apakah perangkat lunak yang diimplementasikan sudah sesuai dengan spesifikasi awal.
+Dokumen Spesifikasi Kebutuhan Perangkat Lunak merupakan dokumen yang memberikan deskripsi yanglengkap dan presisi mengenai apa yang harus dilakukan oleh perangkat lunak. Dokumen ini dibuat sebagai landasan mengenai ruang lingkup, fungsi, dan batasan sistem untuk pengembangan Perangkat Lunak di kemudian hari. Selain itu, dokumen ini juga disusun untuk memandu alur perancangan dan implementasi arsitektur sistem dan penulisan kode program. Terakhir, dokumen ini juga disusun untuk bisa menjadi acuan dalam melakukan verifikasi apakah perangkat lunak yang diimplementasikan sudah sesuai dengan spesifikasi awal. 
+
+Pihak-pihak yang akan menggunakan dokumen ini mencakup Tim Developer (kelompok) dan Tim Penilai (Asisten). Tim Developer menggunakan dokumen ini sebagai acuan dalam pengembangan perangkat lunak. Tim Penilai menggunakan dokumen ini untuk validasi apakah perangkat lunak yang telah dibuat telah sesuai dengan spesifikasi yang dirancang di awal.
 
 Tuliskan dengan ringkas tujuan dokumen SKPL ini dibuat dan siapa saja yang akan menggunakan dokumen ini.
 
@@ -78,7 +80,17 @@ Tabel 1.4. Aturan Penomoran
 | *User Story* | *USXX* |
 
 ## 1.5 Referensi
-Dokumentasi P/L yang dirujuk oleh dokumen ini. Referensi dapat berupa buku, panduan, ataupun dokumentasi lain yang dipakai dalam pengembangan P/L ini.
+
+| Nomor | Judul Referensi | Sumber |
+| :--- | :--- | :--- |
+| 1 | Dokumen Topic Brainstorming LaporKota | Repository IF2150-RPL-K03-G07/docs/M1/K03_G07_TB.md |
+| 2 | Dokumen Requirement Gathering LaporKota | Repository IF2150-RPL-K03-G07/docs/M2/K03_G07_RG.md |
+| 3 | Dokumen Use Case & Scenario LaporKota | Repository IF2150-RPL-K03-G07/docs/M3/K03_G07_UC.md |
+| 4 | Dokumen Class Diagram LaporKota | Repository IF2150-RPL-K03-G07/docs/M4/K03_G07_CD.md |
+| 5 | Undang-Undang (UU) Nomor 14 Tahun 2008: Keterbukaan Informasi Publik | https://peraturan.bpk.go.id/Details/39047/uu-no-14-tahun-2008 |
+| 6 | Undang-Undang (UU) Nomor 27 Tahun 2022: Pelindungan Data Pribadi | https://peraturan.bpk.go.id/Details/229798/uu-no-27-tahun-2022 |
+| 7 | 17 Tujuan Pembangunan Berkelanjutan | https://sdgs.bappenas.go.id/17-goals |
+
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
 Tuliskan sistematika pembahasan dokumen SKPL ini secara runut (misalnya: BAB 2 membahas deskripsi umum P/L, BAB 3 membahas kebutuhan fungsional dan non-fungsional, dst).
