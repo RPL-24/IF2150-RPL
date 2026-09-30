@@ -90,6 +90,9 @@
 | *21-09-2026* | *Markus Christiano Simanjuntak* | *Merevisi Tabel 4.1 Identifikasi Kelas (C01-C24) agar sesuai dengan arsitektur 3-layer (Boundary, Controller, Entity) dan menambahkan kelas HistoryPage (C24)* | *1* | *Done* | *Kelas pada draf awal masih tercampur antara urusan UI dan database sehingga harus dipecah ulang* |
 | *22-09-2026* | *Markus Christiano Simanjuntak* | *Merancang ulang Class Diagram dan tabel atribut/metode untuk UC05 dan UC06, serta memperbaiki kesalahan copy-paste tabel pada dokumen Bab 4.2* | *1.5* | *Done* | *-* |
 | *23-09-2026* | *Markus Christiano Simanjuntak* | *Menyusun Diagram Kelas Keseluruhan (Bab 4.3) beserta tabel rekapitulasi atribut/metode C01-C24 dan merapikan pemetaan Traceability (Bab 5)* | *2* | *Done* | *Menyatukan 24 kelas ke dalam satu diagram tanpa duplikasi cukup rumit dan ribet* |
+| *22-09-2026* | *Matthew Allen Reynaldo* | *Menyusun diagram kelas serta atribut dan metode kelas pada UC08 hingga UC12 (Bab 4.2)* | *2* | *Done* | *Diagram UC9 sulit dipahami karena kelas notifikasi masih sangat abstrak* |
+| *23-09-2026* | *Matthew Allen Reynaldo* | *Merevisi ulang diagram kelas beserta atribut dan metode kelas pada UC08 hingga UC12 (Bab 4.2)* | *2* | *Done* | *Terjadi perubahan pada kelas yang ingin diadakan* |
+| *23-09-2026* | *Matthew Allen Reynaldo* | *Menyusun diagram kelas keseluruhan (Bab 4.3)* | *2* | *Done* | *Penggabungan diagram sulit karena banyak koneksi yang bertabrakan antar kelas* |
 
 ---
 ### Milestone 5
