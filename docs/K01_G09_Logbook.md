@@ -17,7 +17,7 @@
 | _13525001_ | _Matthew Allen Reynaldo_          |
 | _13525010_ | _Fabian Amzar Susanto_            |
 | _13525025_ | _David Christian_                 |
-| _13525028_ | _Markus Christiano Simanjutak_    |
+| _13525028_ | _Markus Christiano Simanjuntak_    |
 
 ---
 
@@ -96,6 +96,10 @@
 **Periode:** [23-09-2026] - [30-09-2026]
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
-| *30-09-2026* | *Markus Christiano Simanjuntak* | *Menyusun tech stack untuk bab 2.5* | *1 * | *Done* | ** |
+| *30-09-2026* | *Markus Christiano Simanjuntak* | *Menyusun tech stack untuk bab 2.5* | *0.5* | *Done* | ** |
+| *30-09-2026* | *Markus Christiano Simanjuntak* | *Menyusun dan melengkapi bagian kosong pada template SKPL (Daftar Perubahan, Bab 1, dan Bab 2.2 Komponen Eksternal)* | *0.5* | *Done* | *-* |
+| *30-09-2026* | *Markus Christiano Simanjuntak* | *Melakukan inspeksi konsistensi dokumen lintas tugas (M2 hingga M5), menemukan dan memperbaiki aktor yang terbalik pada US-21 dan US-22* | *0.5* | *Done* | *-* |
+| *30-09-2026* | *Markus Christiano Simanjuntak* | *Menyeragamkan aturan bisnis batas waktu group chat (menjadi 48 jam) dan pesan peringatan kapasitas sesi (maksimal 20 peserta) di seluruh dokumen* | *0.5* | *Done* | *-* |
+| *30-09-2026* | *Markus Christiano Simanjuntak* | *Merapikan urutan subbab pada dokumen Class Diagram dan merevisi penuh tabel Traceability agar seluruh Kebutuhan Fungsional terpetakan tanpa ada yang terlewat* | *0.5* | *Done* | *-* |
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
