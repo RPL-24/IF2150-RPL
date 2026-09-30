@@ -184,11 +184,11 @@ Tabel 3.1. Kebutuhan Fungsional
 
 | ID KF | ID Kebutuhan | Penjelasan |
 | :--- | :--- | :--- |
-| KF01 | R01 | Perangkat lunak dapat menampilkan halaman login/registrasi akun bagi masyarakat. |
-| KF02 | R01 | Perangkat lunak dapat menampilkan pilihan antarmuka SearchLaw dan HaloLaw setelah pengguna melakukan login. |
-| KF03 | R02 | Perangkat lunak dapat menampilkan halaman login/registrasi akun mitra pengacara untuk diverifikasi. |
-| KF04 | R02 | Perangkat lunak dapat menampilkan status verifikasi registrasi akun mitra pengacara. |
-| KF05 | R03 | Perangkat lunak dapat menampilkan halaman verifikasi mitra pengacara untuk admin. |
+| KF01 | R01 | Ketika pengguna mengakses halaman awal perangkat lunak, sistem harus dapat menampilkan halaman login/registrasi akun. |
+| KF02 | R01 | Ketika pengguna berhasil login, sistem harus menampilkan pilihan antarmuka SearchLaw dan HaloLaw. |
+| KF03 | R02 | Ketika calon mitra pengacara mengakses halaman awal, sistem harus menampilkan halaman login/registrasi akun mitra pengacara untuk diverifikasi. |
+| KF04 | R02 | Ketika calon mitra pengacara sudah mengisi registrasi dan mengakses status akunnya, sistem harus menampilkan status verifikasi registrasi akun. |
+| KF05 | R03 | Ketika admin mengakses menu kelola verifikasi, sistem harus menampilkan halaman verifikasi mitra pengacara. |
 | KF06 | R05 | Ketika mitra pengacara melakukan pengeditan pada halaman profil, sistem harus menyimpan dan memperbarui data profil mitra pengacara tersebut. |
 | KF07 | R06 | Ketika mitra pengacara mengakses halaman edit dokumen legalitas, sistem harus menampilkan halaman tersebut beserta dokumen legalitas yang telah diunggah sebelumnya. |
 | KF08 | R08 | Ketika pengguna memasukkan kata kunci atau menerapkan filter pada search bar, sistem harus menampilkan daftar mitra pengacara yang sesuai dengan kata kunci atau filter tersebut. |
