@@ -151,10 +151,10 @@ Tabel 3.1. Kebutuhan Fungsional
 | KF14 | R15 | Perangkat lunak dapat mewadahi pelaporan ulasan bagi pengguna dan/atau profil mitra pengacara secara umum. |
 | KF15 | R16 | Perangkat lunak dapat mewadahi verifikasi pelaporan akun untuk admin. |
 | KF16 | R17 | Perangkat lunak dapat mewadahi admin untuk melakukan ban terhadap akun yang telah melanggar kebijakan sistem. |
-| KF17 | R18 | Perangkat lunak dapat menampilkan riwayat kasus yang dilakukan mitra pengacara dan masyarakat secara keseluruhan. |
-| KF18 | R019 | Perangkat lunak dapat mewadahi live chat antara admin dan pengguna untuk membantu penanganan kendala. |
-| KF19 | R031 | Perangkat lunak dapat memproses pembayaran melalui payment gateway pihak ketiga. |
-| KF20 | R032 | Perangkat lunak memproses pencairan dana mitra pengacara. |
+| KF17 | R18 | Ketika mitra pengacara mengakses riwayat konsultasi, sistem harus menampilkan seluruh riwayat kasus yang pernah ditangani oleh mitra tersebut. |
+| KF18 | R019 | Ketika pengguna memulai sesi live chat, sistem harus mewadahi live chat antara admin dan pengguna untuk membantu penanganan kendala. | 
+| KF19 | R031 | Ketika pengguna mengonfirmasi pembayaran, sistem harus memproses pembayaran melalui payment gateway pihak ketiga. |
+| KF20 | R032 | Ketika mitra pengacara mengajukan pencairan dana, sistem harus memproses pencairan dana mitra pengacara tersebut. | 
 
 <sub> ***Catatan***: *Kebutuhan ditulis mengikuti pola EARS. Pada contoh di bawah, sebagian besar KF dipicu oleh satu aksi pelanggan, sehingga memakai pola event-driven "Ketika ⟨pemicu⟩, sistem harus ⟨respons⟩".*
 <sub>
