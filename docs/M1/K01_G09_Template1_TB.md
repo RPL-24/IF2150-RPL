@@ -23,7 +23,7 @@ Dipersiapkan oleh:
 | _13525001_ | _Matthew Allen Reynaldo_          |
 | _13525010_ | _Fabian Amzar Susanto_            |
 | _13525025_ | _David Christian_                 |
-| _13525028_ | _Markus Christiano Simanjutak_    |
+| _13525028_ | _Markus Christiano Simanjuntak_    |
 
 ---
 
