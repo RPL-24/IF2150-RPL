@@ -30,23 +30,26 @@ Dipersiapkan oleh:
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
-| *B* |  |
-| *C* |  |
-| ... |  |
-
+| *A* | *Memperbaiki penempatan aktor pada Kebutuhan Pengguna Awal (US-21 dan US-22) di mana Mentee melakukan pembatalan sesi dan Mentor melakukan penghapusan sesi.* |
+| *B* | *Menyeragamkan aturan batas waktu penonaktifan dan penghapusan Group Chat menjadi 48 jam setelah sesi berakhir di seluruh skenario dan batasan perangkat lunak.* |
+| *C* | *Menyelaraskan pesan peringatan pada skenario alternatif pembatasan kapasitas peserta sesi belajar agar konsisten dengan aturan bisnis (maksimal 20 peserta).* |
+| *D* | *Mengoreksi urutan subbab pada pemodelan Use Case dan merapikan pemetaan Kebutuhan Fungsional (Traceability) agar seluruh KF (terutama KF02, KF04, KF06, KF08, KF13, KF14) terpetakan dengan kelas yang mengimplementasikannya.* |
+| *E* | *Melengkapi Subbab 2.2 dengan daftar komponen eksternal (Supabase dan Vercel) yang berinteraksi dengan perangkat lunak.* |
 <br>
 
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Tuliskan dengan ringkas tujuan dokumen SKPL ini dibuat dan siapa saja yang akan menggunakan dokumen ini.
+Dokumen Spesifikasi Kebutuhan Perangkat Lunak (SKPL) ini ditulis untuk mendefinisikan secara lengkap, rinci, dan terstruktur seluruh kebutuhan fungsional, kebutuhan non-fungsional, batasan sistem, pemodelan *use case*, serta pemodelan kelas dari perangkat lunak **PeerUP**. Dokumen ini ditujukan bagi:
+1. **Tim Pengembang (Developer):** Sebagai acuan teknis utama dalam mengimplementasikan kode program, merancang basis data, dan mengintegrasikan antarmuka perangkat lunak.
+2. **Penguji Perangkat Lunak (Tester / QA):** Sebagai dasar pengujian untuk memvalidasi apakah seluruh fitur dan skenario telah berjalan sesuai spesifikasi.
+3. **Dosen dan/atau Asisten Pengampu IF2150:** Sebagai dokumen evaluasi akademik terhadap perancangan rekayasa perangkat lunak yang dilakukan oleh Kelompok ini.
 
 ## 1.2 Lingkup Masalah
-Tuliskan dengan ringkas nama aplikasi dan deskripsi singkatnya. Bagian ini maksimal berisi satu paragraf, dapat diringkas dari BAB 1 *Analisis Permasalahan* pada dokumen *Topic Brainstorming*.
+**PeerUP** adalah platform web pembelajaran kolaboratif (*peer-to-peer tutoring*) yang dirancang untuk mengatasi ketimpangan akses bimbingan belajar berbiaya mahal serta isolasi sosial di kalangan pelajar dan mahasiswa. Di tengah maraknya platform *EdTech* berlangganan yang bersifat satu arah dan pencarian teman belajar manual yang tidak terstruktur, PeerUP hadir sebagai fasilitator otomatis yang mempertemukan *Mentee* (pelajar yang membutuhkan bimbingan) dengan *Mentor* (tutor sebaya) berdasarkan kecocokan materi, ketersediaan jadwal, dan format belajar (daring/luring), dilengkapi dengan fitur ruang obrolan grup sementara (*temporary group chat*), pengingat jadwal otomatis, serta sistem *feedback*.
 
 ## 1.3 Definisi, Istilah, dan Singkatan
-Semua definisi dan singkatan yang digunakan dalam dokumen ini beserta penjelasannya.
+Semua definisi dan singkatan yang digunakan dalam dokumen ini beserta penjelasannya disajikan pada Tabel 1.3.
 
 Tabel 1.3. Definisi Istilah dan Singkatan
 
@@ -58,7 +61,10 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *KNF* | *Singkatan dari Kebutuhan Non-Fungsional.* |
 | *UC* | *Singkatan dari Use Case.* |
 | *EARS* | *Easy Approach to Requirements Syntax, yaitu pola penulisan kebutuhan agar konsisten dan mudah diuji.* |
-| *...* | *...* |
+| *Mentor / Tutor* | *Pengguna sebaya yang memiliki penguasaan materi lebih baik dan membuka sesi belajar untuk membimbing pengguna lain.* |
+| *Mentee* | *Pengguna (siswa/mahasiswa) yang mencari bantuan pemahaman materi dan bergabung ke dalam sesi belajar.* |
+| *Matchmaking* | *Proses pencocokan otomatis antara preferensi materi serta jadwal kosong Mentee dengan sesi belajar yang tersedia.* | 
+| *BaaS* | *Backend-as-a-Service, layanan cloud yang menyediakan infrastruktur backend siap pakai seperti basis data, autentikasi, dan komunikasi real-time.* |
 
 ## 1.4 Aturan Penomoran
 Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya, jangan membuat pola baru di dokumen ini.
@@ -67,18 +73,30 @@ Tabel 1.4. Aturan Penomoran
 
 | Hal/Bagian | Penomoran | Keterangan |
 | :--- | :--- | :--- |
-| *Kebutuhan Fungsional* | *KFXX* | |
-| *Kebutuhan Non-Fungsional* | *KNFXX* | |
-| *Aktor* | *AXX* | |
-| *Use Case* | *UCXX* | |
-| *Kelas* | *CXX* | |
-| *...* | *...* |
+| *User Story* | *US-XX* | *XX menyatakan dua digit nomor urut kebutuhan pengguna awal (contoh: US-01).* |
+| *Aktivitas* | *AXX* | *XX menyatakan dua digit nomor urut aktivitas proses bisnis (contoh: A01).* |
+| *Kebutuhan* | *RXX* | *XX menyatakan dua digit nomor urut pemetaan kebutuhan (contoh: R01).* |
+| *Kebutuhan Fungsional* | *KFXX* | *XX menyatakan dua digit nomor urut kebutuhan fungsional (contoh: KF01).* |
+| *Kebutuhan Non-Fungsional* | *KNFXX* | *XX menyatakan dua digit nomor urut kebutuhan non-fungsional (contoh: KNF01).* |
+| *Aktor* | *AXX* | *XX menyatakan dua digit nomor urut aktor pada pemodelan use case (contoh: A01).* |
+| *Use Case* | *UCXX* | *XX menyatakan dua digit nomor urut use case (contoh: UC01).* |
+| *Kelas* | *CXX* | *XX menyatakan dua digit nomor urut kelas pada diagram kelas (contoh: C01).* |
 
 ## 1.5 Referensi
-Dokumentasi P/L yang dirujuk oleh dokumen ini. Referensi dapat berupa buku, panduan, ataupun dokumentasi lain yang dipakai dalam pengembangan P/L ini.
+1. Dokumentasi Perangkat Lunak *Topic Brainstorming* (Tugas 1), *Requirement Gathering* (Tugas 2), *Use Case & Scenario Use Case* (Tugas 3), dan *Class Diagram* (Tugas 4) Kelompok G09 IF2150 Rekayasa Perangkat Lunak.
+2. Mavin, A., Wilkinson, P., Harwood, A., & Novak, M. (2009). *Easy Approach to Requirements Syntax (EARS)*. 17th IEEE International Requirements Engineering Conference.
+3. Undang-Undang Republik Indonesia Nomor 27 Tahun 2022 tentang Perlindungan Data Pribadi (UU PDP).
+4. Undang-Undang Republik Indonesia Nomor 1 Tahun 2024 tentang Perubahan Kedua atas UU ITE.
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Tuliskan sistematika pembahasan dokumen SKPL ini secara runut (misalnya: BAB 2 membahas deskripsi umum P/L, BAB 3 membahas kebutuhan fungsional dan non-fungsional, dst).
+Dokumen SKPL ini dibagi menjadi enam bab utama:
+- **BAB 1: Pendahuluan**, menjelaskan tujuan penulisan dokumen, lingkup masalah, definisi dan singkatan, aturan penomoran, referensi, serta ikhtisar dokumen.
+- **BAB 2: Deskripsi Perangkat Lunak**, menguraikan deskripsi umum sistem beserta *Activity Diagram* proses bisnis, deskripsi umum perangkat lunak dan komponen eksternal, karakteristik pengguna, batasan perangkat lunak, serta lingkungan operasi perangkat lunak.
+- **BAB 3: Deskripsi Kebutuhan Perangkat Lunak**, merinci seluruh Kebutuhan Fungsional (KF) dan Kebutuhan Non-Fungsional (KNF).
+- **BAB 4: Pemodelan Use Case**, memuat identifikasi aktor, identifikasi *use case*, *Use Case Diagram*, serta skenario normal dan alternatif untuk masing-masing *use case*.
+- **BAB 5: Pemodelan Kelas**, menyajikan identifikasi kelas (arsitektur *Boundary, Controller, Entity*), diagram kelas per *use case*, serta diagram kelas keseluruhan beserta atribut dan operasinya.
+- **BAB 6: Traceability**, memetakan keterlacakan antara ID Kelas, ID Use Case, dan ID Kebutuhan Fungsional.
+
 ---
 
 # BAB 2: Deskripsi Perangkat Lunak
@@ -131,7 +149,10 @@ Berikut adalah gambaran proses bisnis utama perangkat lunak PeerUP dalam bentuk 
 PeerUP merupakan aplikasi web interaktif yang mendukung seluruh aktivitas pembelajaran kolaboratif sebaya. Perangkat lunak mencakup manajemen akun pengguna berbasis email universitas, manajemen profil dan preferensi materi/waktu, pembuatan dan pengelolaan sesi bimbingan oleh Mentor, pencarian serta pencocokan sesi secara cerdas (*matchmaking algorithm*) untuk Mentee, komunikasi obrolan real-time berbasis sesi (*group chat* sementara), notifikasi pengingat otomatis, konfirmasi keterlaksanaan sesi, serta sistem evaluasi dan ulasan (*feedback*).
 
 Perangkat lunak berinteraksi dengan komponen eksternal berikut:
-(to be filled)
+1. **Supabase Auth:** Layanan manajemen autentikasi untuk menangani registrasi pengguna, sesi *login*, serta pengelolaan kata sandi secara aman.
+2. **Supabase PostgreSQL & Cron:** Layanan basis data relasional berbasis *cloud* untuk menyimpan data aplikasi serta menjalankan pemeriksaan jadwal sesi otomatis, pemrosesan pengingat (*reminder*), dan pembersihan data *group chat* yang telah melewati batas waktu penyimpanan (48 jam).
+3. **Supabase Realtime:** Layanan komunikasi berbasis *WebSocket* untuk mendukung pengiriman dan penerimaan pesan pada fitur *group chat* sementara secara *real-time*.
+4. **Vercel:** Layanan *cloud hosting* dan *deployment* untuk menjalankan aplikasi web Next.js.
 
 ## 2.3 Pengguna dan Kebutuhan Pengguna Perangkat Lunak
 
@@ -156,12 +177,12 @@ Perangkat lunak berinteraksi dengan komponen eksternal berikut:
 | *Frontend* | *Next.js dengan TypeScript dan Tailwind CSS.* |
 | *Backend* | *Next.js Server-Side menggunakan Server Actions / API Routes yang terintegrasi dengan Supabase Client SDK.* |
 | *DBMS* | *PostgreSQL yang dikelola melalui layanan Supabase.* |
-| *Server & Hosting* | *Vercel sebagai layanan hosting dan deployment aplikasi Next.js.* |
+| *Server & Hosting* | *Lingkungan lokal (Node.js) untuk pengembangan/pengujian serta Vercel sebagai layanan cloud hosting aplikasi Next.js jika diperlukan* |
 | *Authentication* | *Supabase Auth untuk registrasi dan autentikasi pengguna serta pengelolaan password secara aman. Validasi domain email institusi universitas dilakukan pada sisi aplikasi.* |
 | *Real-time Communication* | *Supabase Realtime berbasis WebSocket untuk mendukung komunikasi group chat sementara secara real-time.* |
 | *Scheduled Task* | *Supabase Cron untuk menjalankan pemeriksaan jadwal sesi, memproses pengingat sesi, dan melakukan pembersihan data group chat yang telah melewati batas waktu penyimpanan.* |
 | *OS* | *Cross-platform, yaitu Windows, Linux, macOS, Android, dan iOS selama perangkat memiliki web browser modern dan koneksi internet aktif.* |
-| *Deployment* | *Aplikasi di-deploy melalui Vercel, sedangkan basis data, autentikasi, komunikasi real-time, dan scheduled task dikelola melalui Supabase.* |
+| *Deployment* | *Aplikasi di-deploy melalui local (dapat di-deploy dari vercel jika diperlukan), sedangkan basis data, autentikasi, komunikasi real-time, dan scheduled task dikelola melalui Supabase.* |
 
 ---
 
@@ -308,7 +329,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | :--- | :--- | :--- |
 | 1 | *Mentor memilih menu "Buat Sesi Baru"* | *Sistem menampilkan formulir pembuatan sesi (topik, jadwal, format daring/luring, dan batas peserta)* |
 | 2 | *Mentor mengisi form namun memasukkan batas peserta sebanyak 135 orang, lalu menekan "Simpan"* | *Sistem memvalidasi masukan formulir dan mendeteksi pelanggaran batas aturan bisnis (maksimal 20)* |
-| 3 | *Mentor melihat peringatan* | *Sistem menolak masukan, tidak menyimpan data, dan menampilkan pesan kesalahan "Kapasitas maksimal adalah 6 orang"* |
+| 3 | *Mentor melihat peringatan* | *Sistem menolak masukan, tidak menyimpan data, dan menampilkan pesan kesalahan "Kapasitas maksimal adalah 20 orang"* |
 | 4 | *Mentor memperbaiki angka menjadi 9 orang dan menekan "Simpan"* | *Sistem kembali ke langkah 3 pada Skenario Normal* |
 
 <br>
@@ -848,7 +869,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | :--- | :--- | :--- |
 | *C01* | *User* | *Kelas parent yang merepresentasikan pengguna aplikasi (Mentor, Mentee) yang menyimpan informasi akun dasar seperti profil, email university, kata sandi, preferensi materi, dan schedule.* |
 | *C02* | *Mentor* | *Kelas turunan dari User yang merepresentasikan tutor sebaya. Kelas ini menjadi pihak yang menerima penilaian dan ulasan dari Mentee setelah sesi selesai.* |
-| *C03* | **Mentee* | *Kelas turunan dari User yang merepresentasikan siswa. Memiliki hak untuk memberikan rating dan ulasan terhadap Mentor setelah mengikuti sesi belajar.* |
+| *C03* | *Mentee* | *Kelas turunan dari User yang merepresentasikan siswa. Memiliki hak untuk memberikan rating dan ulasan terhadap Mentor setelah mengikuti sesi belajar.* |
 | *C04* | *Session* | *Kelas yang merepresentasikan sesi belajar yang menyimpan atribut seperti topic materi, schedule, capacity, daftar peserta, dan status sesi.* |
 | *C06* | *Feedback* | *Kelas yang merepresentasikan rating dan ulasan yang diberikan oleh Mentee terhadap Mentor setelah sebuah sesi belajar selesai.* |
 | *C07* | *SessionHistory* | *Kelas yang menyimpan kumpulan riwayat sesi milik seorang pengguna dengan mengelompokkannya berdasarkan status (Berlangsung, Terlaksana, Tidak Terlaksana).* |
@@ -870,7 +891,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | *C02* | *Mentor* | *feedbackList* | *receiveFeedback()* |
 | *C03* | *Mentee* | *attendedSessions* | *giveFeedback(), checkCompletedSession()* |
 | *C04* | *Session* | *sessionID, topic, schedule, format, capacity, userList, status* | *getSessionStatus(), isCompleted()* |
-| *C06* | *Feedback* | *feedbackID, rating, comment, date* | *setRating(), setComment(), getRating(), getComment* |
+| *C06* | *Feedback* | *feedbackID, rating, comment, date* | *setRating(), setComment(), getRating(), getComment()* |
 | *C07* | *SessionHistory* | *historyList* | *getCompletedSessions()* |
 | *C14* | *FeedbackControl* | *feedbackList* | *validateFeedback(), submitFeedback(), saveFeedback()* |
 | *C20* | *FeedbackForm* | *rating, comment* | *showForm(), submitFeedback()* |
@@ -1186,37 +1207,35 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | *C23* | *PopUpNotification* | *-* | *markAsRead(), showContent(), getTime(), openApp()* |
 | *C24* | *HistoryPage* | *historyList* | *displayHistoryList(), showEmptyState()* |
 
----
-
-# BAB 6: Traceability
+---# BAB 6: Traceability
 Matriks keterlacakan berikut mencocokkan setiap Kebutuhan Fungsional (KF), Use Case (UC), dan Kelas yang saling berkaitan dan mengimplementasikan kebutuhan tersebut.
 
 | ID Kelas | ID Use Case | ID KF |
 | :--- | :--- | :--- |
-| *C01* | *UC01, UC02, UC05, UC06, UC07, UC08, UC09, UC14, UC15* | *KF01, KF03, KF10, KF11, KF12, KF09, KF07, KF19* |
-| *C02* | *UC01, UC02, UC03, UC05, UC06, UC07, UC08, UC09, UC11, UC12, UC13, UC14, UC15* | *KF01, KF03, KF05, KF10, KF11, KF12, KF09, KF16, KF17, KF18, KF07, KF19* |
-| *C03* | *UC01, UC02, UC04, UC05, UC06, UC07, UC08, UC09, UC10, UC14, UC15* | *KF01, KF03, KF07, KF10, KF11, KF12, KF09, KF15, KF19* |
-| *C04* | *UC03, UC04, UC05, UC06, UC07, UC08, UC09, UC10, UC11, UC12, UC13, UC14* | *KF05, KF07, KF10, KF11, KF12, KF09, KF15, KF16, KF17, KF18* |
+| *C01* | *UC01, UC02, UC05, UC06, UC07, UC08, UC09, UC14, UC15* | *KF01, KF02, KF03, KF04, KF10, KF11, KF18, KF12, KF09, KF07, KF19* |
+| *C02* | *UC01, UC02, UC03, UC05, UC06, UC07, UC08, UC09, UC11, UC12, UC13, UC14, UC15* | *KF01, KF02, KF03, KF04, KF05, KF06, KF14, KF10, KF11, KF18, KF12, KF09, KF16, KF17, KF07, KF19* |
+| *C03* | *UC01, UC02, UC04, UC05, UC06, UC07, UC08, UC09, UC10, UC14, UC15* | *KF01, KF02, KF03, KF04, KF07, KF08, KF13, KF10, KF11, KF18, KF12, KF09, KF15, KF19* |
+| *C04* | *UC03, UC04, UC05, UC06, UC07, UC08, UC09, UC10, UC11, UC12, UC13, UC14* | *KF05, KF06, KF14, KF07, KF08, KF13, KF10, KF11, KF18, KF12, KF09, KF15, KF16, KF17* |
 | *C05* | *UC08* | *KF12* |
 | *C06* | *UC07, UC13* | *KF10, KF18* |
-| *C07* | *UC05, UC06, UC10, UC11, UC12, UC13* | *KF10, KF11, KF15, KF16, KF17, KF18* |
+| *C07* | *UC05, UC06, UC10, UC11, UC12, UC13* | *KF10, KF11, KF18, KF15, KF16, KF17, KF06, KF14* |
 | *C08* | *UC08* | *KF12* |
-| *C09* | *UC02, UC04, UC14* | *KF03, KF07* |
-| *C10* | *UC01, UC02, UC15* | *KF01, KF03, KF19* |
-| *C11* | *UC01, UC04, UC06, UC09, UC14* | *KF01, KF07, KF11, KF09* |
-| *C12* | *UC01, UC02* | *KF01, KF03* |
-| *C13* | *UC03, UC04, UC05, UC06, UC10, UC11, UC12, UC14* | *KF05, KF07, KF10, KF11, KF15, KF16, KF17* |
+| *C09* | *UC02, UC04, UC14, UC15* | *KF03, KF04, KF07, KF08, KF13, KF19* |
+| *C10* | *UC01, UC02, UC15* | *KF01, KF02, KF03, KF04, KF19* |
+| *C11* | *UC01, UC04, UC06, UC09, UC14* | *KF01, KF02, KF07, KF08, KF13, KF11, KF18, KF09* |
+| *C12* | *UC01, UC02, UC15* | *KF01, KF02, KF03, KF04, KF19* |
+| *C13* | *UC03, UC04, UC05, UC06, UC10, UC11, UC12, UC14* | *KF05, KF06, KF14, KF07, KF08, KF13, KF10, KF11, KF18, KF15, KF16, KF17* |
 | *C14* | *UC07, UC13* | *KF10, KF18* |
-| *C15* | *UC01* | *KF01* |
-| *C16* | *UC02, UC15* | *KF03, KF19* |
-| *C17* | *UC03, UC04, UC05, UC10, UC11, UC12* | *KF05, KF07, KF10, KF15, KF16, KF17* |
-| *C18* | *UC03, UC05, UC11, UC12, UC13* | *KF05, KF10, KF16, KF17, KF18* |
-| *C19* | *UC04, UC05, UC10* | *KF07, KF10, KF15* |
+| *C15* | *UC01* | *KF01, KF02* |
+| *C16* | *UC02, UC15* | *KF03, KF04, KF19* |
+| *C17* | *UC03, UC04, UC05, UC10, UC11, UC12* | *KF05, KF06, KF14, KF07, KF08, KF13, KF10, KF15, KF16, KF17* |
+| *C18* | *UC03, UC05, UC11, UC12, UC13* | *KF05, KF06, KF14, KF10, KF16, KF17, KF18* |
+| *C19* | *UC04, UC05, UC10* | *KF07, KF08, KF13, KF10, KF15* |
 | *C20* | *UC07, UC13* | *KF10, KF18* |
 | *C21* | *UC08* | *KF12* |
 | *C22* | *UC09* | *KF09* |
 | *C23* | *UC09* | *KF09* |
-| *C24* | *UC06* | *KF11* |
+| *C24* | *UC06* | *KF11, KF18* |
 
 ---
 
