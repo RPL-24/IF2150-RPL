@@ -7,9 +7,9 @@ SPESIFIKASI KEBUTUHAN PERANGKAT LUNAK (SKPL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## LawHub
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Mikhael Andrian Yonatan
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
@@ -58,7 +58,8 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *KNF* | *Singkatan dari Kebutuhan Non-Fungsional.* |
 | *UC* | *Singkatan dari Use Case.* |
 | *EARS* | *Easy Approach to Requirements Syntax, yaitu pola penulisan kebutuhan agar konsisten dan mudah diuji.* |
-| *...* | *...* |
+| *LawHub* | *Nama Perangkat Lunak.* |
+
 
 ## 1.4 Aturan Penomoran
 Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya, jangan membuat pola baru di dokumen ini.
@@ -108,22 +109,19 @@ Tuliskan seluruh jenis pengguna (*role*/aktor) yang terlibat dalam perangkat lun
 | *...* | *...* |
 
 ## 2.4 Batasan Perangkat Lunak
-Batasan yang harus dituliskan, di antaranya:
-1. *P/L harus memakai file data/API dari sistem lain (sebutkan, misal Payment Gateway dummy).*
-2. *P/L harus memakai format data yang sama dengan sistem lain.*
-3. *P/L harus berfungsi pada platform tertentu (misal: web browser modern, atau desktop Windows dan Linux).*
-4. *...*
+1. P/L hanya berperan sebagai media pengaduan, penyedia informasi, konsultasi awal, serta penghubung antara masyarakat dengan mitra pengacara. 
+2. Informasi hukum yang dihasilkan atau disediakan oleh P/L tidak menggantikan nasihat, opini, atau pendampingan hukum resmi secara menyeluruh dari advokat/konsultan hukum.
+3. P/L tidak menentukan hasil perkara, menjamin kasus akan ditangani oleh mitra pengacara, maupun menjamin keberhasilan kasus. 
+4. Penggunaan P/L dibatasi oleh regulasi yang berlaku termasuk ketentuan terkait praktik hukum dan perlindungan data pribadi.
+5. P/L dikembangkan berbasis *web* sehingga pengguna harus memiliki perangkat serta akses internet.
 
 ## 2.5 Lingkungan Operasi Perangkat Lunak
-Spesifikasi *operating system* atau lingkungan yang dibutuhkan P/L untuk beroperasi. Bagian ini digunakan untuk memastikan pengguna memiliki spesifikasi yang cukup untuk menjalankan P/L. Misalnya mencakup komponen server, client, OS, DBMS, tetapi tidak menutupi kemungkinan komponen lain.
-
 | Komponen | Spesifikasi |
 | :--- | :--- |
-| *Server* | *[contoh: Node.js v20, dijalankan pada layanan cloud]* |
-| *Client* | *[contoh: Web Browser modern (Chrome, Firefox terbaru)]* |
-| *DBMS* | *[contoh: PostgreSQL 15]* |
-| *OS* | *[contoh: Cross-platform (Windows/Linux/MacOS) melalui browser]* |
-| *...* | *...* |
+| *Server* | Local |
+| *Client* | Chromium Based Browser |
+| *DBMS* | PostgreSQL  |
+| *OS* | Cross-platform (Windows/Linux/MacOS) melalui browser |
 
 ---
 
@@ -147,10 +145,10 @@ Tabel 3.1. Kebutuhan Fungsional
 | KF10 | R10 | Ketika terdapat pengajuan konsultasi kasus dari pengguna, sistem harus menyediakan fitur bagi mitra pengacara untuk menerima atau menolaknya. |
 | KF11 | R11 | Selama sesi konsultasi berlangsung dan masih berstatus aktif, sistem harus memfasilitasi pertukaran pesan (chat) antara pengguna dan mitra pengacara. |
 | KF12 | R12 dan R13 | Setelah sesi kondultasi berakhir, sistem harus menyimpan ulasan, feedback, dan rating yang diberikan oleh pengguna kepada mitra pengacara. |
-| KF13 | R14 | Perangkat lunak dapat mewadahi pelaporan akun bagi pengguna ataupun mitra pengacara yang melakukan pelanggaran saat/setelah sesi konsultasi berlangsung. |
-| KF14 | R15 | Perangkat lunak dapat mewadahi pelaporan ulasan bagi pengguna dan/atau profil mitra pengacara secara umum. |
-| KF15 | R16 | Perangkat lunak dapat mewadahi verifikasi pelaporan akun untuk admin. |
-| KF16 | R17 | Perangkat lunak dapat mewadahi admin untuk melakukan ban terhadap akun yang telah melanggar kebijakan sistem. |
+| KF13 | R14 | Ketika pengguna, mitra pengacara atau masyarakat, menemukan pelanggaran saat/setelah sesi konsultasi berlangsung, sistem harus menyediakan fitur untuk melaporkan akun yang melakukan pelanggaran. |
+| KF14 | R15 | Ketika pengguna mengajukan laporan terhadap ulasan atau profil mitra pengacara secara umum, sistem harus memproses pelaporan ulasan/profil tersebut.P erangkat lunak dapat mewadahi pelaporan ulasan bagi pengguna dan/atau profil mitra pengacara secara umum. |
+| KF15 | R16 | Ketika admin mengakses daftar pelaporan akun, sistem harus menyediakan fitur untuk melakukan verifikasi pelaporan tersebut. |
+| KF16 | R17 | Ketika admin mengonfirmasi tindakan pemblokiran terhadap akun yang melanggar kebijakan, sistem harus memblokir akun tersebut dari segala akses sistem. |
 | KF17 | R18 | Ketika mitra pengacara mengakses riwayat konsultasi, sistem harus menampilkan seluruh riwayat kasus yang pernah ditangani oleh mitra tersebut. |
 | KF18 | R019 | Ketika pengguna memulai sesi live chat, sistem harus mewadahi live chat antara admin dan pengguna untuk membantu penanganan kendala. | 
 | KF19 | R031 | Ketika pengguna mengonfirmasi pembayaran, sistem harus memproses pembayaran melalui payment gateway pihak ketiga. |
