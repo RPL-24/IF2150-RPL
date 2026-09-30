@@ -30,7 +30,7 @@ Dipersiapkan oleh:
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
+| *A* | *Perubahan identifikasi kelas, dimana kelas Warga, Eksekutor, dan Admin digeneralisasi menjadi kelas User. Sehingga Class Diagram juga berubah.* |
 | *B* |  |
 | *C* |  |
 | ... |  |
