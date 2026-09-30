@@ -1456,10 +1456,57 @@ Salin ulang tabel Traceability dari BAB 5 dokumen *Class Diagram*, cocokkan seti
 
 | ID Kelas | ID Use Case | ID KF |
 | :--- | :--- | :--- |
-| *C01* | *UC01, UC05* | *KF01, KF06* |
-| *C02* | *UC01, UC03, UC05* | *KF01, KF02, KF05, KF06* |
-| *C03* | *UC01, UC02* | *KF01, KF02* |
-| *...* | *...* | *...* |
+| C01 | UC01 | KF01 | 
+| C02 | UC02 | KF01, KF02 |
+| C03 | UC02 |  KF01, KF02 |
+| C04 | UC03 | KF03 |
+| C05 | UC04 | KF03 |
+| C06 | UC05 | KF04 |
+| C07 | UC06 | KF05 |
+| C08 | UC07 | KF06, KF07 |
+| C09 | UC07 | KF06, KF07 |
+| C10 | UC08 | KF08 |
+| C11 | UC09 | KF09 |
+| C12 | UC10 | KF09 |
+| C13 | UC11 | KF10 |
+| C14 | UC12 | KF11 |
+| C15 | UC13 | KF12 |
+| C16 | UC14, UC15 | KF13 |
+| C17 | UC16 | KF14 |
+| C18 | UC17 | KF15, KF16 |
+| C19 | UC18 | KF17 |
+| C20 | UC19 | KF18 |
+| C21 | UC20 | KF18 |
+| C22 | UC21 | KF19 |
+| C23 | UC22 | KF20 |
+| C24 | UC01 | KF01 |
+| C25 | UC02, UC04 | KF01, KF02, KF03 |
+| C26 | UC03 | KF03 |
+| C27 | UC05, UC06 | KF04, KF05 |
+| C28 | UC07 | KF06, KF07 |
+| C29 | UC08 | KF08 |
+| C30 | UC09 | KF09 |
+| C31 | UC10 | KF09 |  
+| C32 | UC11, UC12 | KF10, KF11 |
+| C33 | UC13 | KF12 |
+| C34 | UC14, UC15, UC16 | KF13, KF14 | 
+| C35 | UC17 | KF15, KF16 |
+| C36 | UC18 | KF17 |
+| C37 | UC19, UC20 | KF18 |
+| C38 | UC21 | KF19 |
+| C39 | UC22 | KF20 |
+| C40 | UC01, UC02, UC08, UC09, UC10, UC12, UC13, UC14, UC18, UC19, UC21 | KF01, KF02, KF08, KF09, KF11, KF12, KF13, KF17, KF18, KF19 |
+| C41 | UC03, UC04, UC05, UC06, UC07, UC09, UC11, UC12, UC15, UC16, UC18, UC22 | KF03, KF04, KF05, KF06, KF07, KF09, KF10, KF11, KF13, KF14, KF17, KF20 |
+| C42 | UC06, UC17, UC19, UC20 | KF05, KF15, KF16, KF18 |
+| C43 | UC10, UC12, UC18 | KF09, KF11, KF17 |
+| C44 | UC08 | KF08 |
+| C45 | UC03, UC05, UC06, UC07 | KF03, KF04, KF05, KF06, KF07 |
+| C46 | UC10, UC11, UC12, UC18, UC21 | KF09, KF10, KF11, KF17, KF19 |
+| C47 | UC09, UC13, UC16 | KF09, KF12, KF14 |
+| C48 | UC14, UC15, UC16, UC17 | KF13, KF14, KF15, KF16 |
+| C49 | UC12, UC21 | KF11, KF19 |
+| C50 | UC19, UC20 | KF18 |
+| C51 | UC22 | KF20 |
 
 ---
 
