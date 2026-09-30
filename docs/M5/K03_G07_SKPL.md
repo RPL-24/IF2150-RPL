@@ -734,7 +734,7 @@ Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diag
 #### Diagram Kelas
 
 <p align="center">
-<img alt="Class Diagram UC01" src="./assets/diagram/class-diagram-uc05.jpg" width="70%">
+<img alt="Class Diagram UC01" src="./assets/diagram/class-diagram-uc05.webp" width="70%">
 </p>
 <p align="center">
 <i>Gambar 2. Diagram Kelas Use Case UC05</i>
