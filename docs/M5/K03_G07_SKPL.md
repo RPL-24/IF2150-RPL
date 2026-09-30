@@ -847,7 +847,7 @@ Gabungkan seluruh kelas dan hubungan antarkelas dari diagram kelas setiap use ca
 Gabungkan seluruh kelas dan hubungan antarkelas dari BAB 4.3 dokumen *Class Diagram* menjadi satu diagram kelas keseluruhan. Pastikan tidak ada kelas yang terduplikasi atau tertinggal.
 
 <p align="center">
-<img alt="Contoh Class Diagram Keseluruhan" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+<img alt="Contoh Class Diagram Keseluruhan" src="./assets/diagram/class-diagram-keseluruhan.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 4. Contoh Diagram Kelas Keseluruhan</i>
