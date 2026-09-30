@@ -5,11 +5,11 @@
 | Informasi | Keterangan |
 | --- | --- |
 | **Hari** | *Senin* |
-| **Tanggal** | *\31/08/2026* |
+| **Tanggal** | *31/08/2026* |
 | **Kelas** | *K-03* |
 | **Nomor Kelompok** | *G07*  |
 | **Nama Kelompok** | *Siulan*  |
-| **Nama Perangkat Lunak** | *\LaporKota*  |
+| **Nama Perangkat Lunak** | *LaporKota*  |
 | **Dokumen** | *K03-G07_Template1_TB*  |
 
 ### Anggota Kelompok
