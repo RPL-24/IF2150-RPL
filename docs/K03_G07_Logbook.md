@@ -110,13 +110,15 @@
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
-| *27-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal bab 2.4 dan 2.5* | *1.5* | *Done* | - |
+| *27-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft awal bab 2.4 dan 2.5* | *1.5* | *Done* | - | 
 | *28-09-2026* | *Rafi Pradipta Andira Sulistyo* | *Revisi 4.1* | *0.5* | *Done* | - | 
 | *28-09-2026* | *Pasaribu Fritz T.A.M.* | *Pengerjaan Bab 1.1* | *0.5* | *Done* | - | 
+| *28-09-2026* | *Gede Pranajayanta Suputra* | *Mengisi lingkup masalah dan aturan penomoran dokumen* | *1* | *Done* | - | 
 | *29-09-2026* | *Pasaribu Fritz T.A.M.* | *Revisi Class Diagram UC03 & UC04* | *0.5* | *Done* | - | 
 | *30-09-2026* | *Pasaribu Fritz T.A.M.* | *Pengerjaan Bab 1.5* | *0.5* | *Done* | - | 
 | *30-09-2026* | *Muhammad Atallah Ramadhan* | *Pengerjaan Bab 1.3* | *0.5* | *Done* | - | 
-| *30-09-2026* | *Bagas Anugrah Putra* | *Pengerjaan SKPL Bab 1.6 (Gambaran Umum Dokumen) dan Bab 2.2 (Deskripsi Perangkat Lunak)* | *1.5* | *Done* | - |
+| *30-09-2026* | *Gede Pranajayanta Suputra* | *Pembuatan dan penambahan Class Diagram UC05 (Bab 4.2.5)* | *1* | *Done* | - | 
+| *30-09-2026* | *Bagas Anugrah Putra* | *Pengerjaan SKPL Bab 1.6 (Gambaran Umum Dokumen) dan Bab 2.2 (Deskripsi Perangkat Lunak)* | *1.5* | *Done* | - | 
 | *30-09-2026* | *Bagas Anugrah Putra* | *Revisi Diagram Kelas Keseluruhan Bab 4.3 berdasarkan hasil asistensi (agregasi ListTugas, video pengerjaan, dan HasilPerbaikanForm)* | *2* | *Done* | - |
 
 
