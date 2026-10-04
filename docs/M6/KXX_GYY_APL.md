@@ -7,25 +7,24 @@ ARSITEKTUR PERANGKAT LUNAK (APL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## PeerUP
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Mikhael Andrian Yonatan
 
 Dipersiapkan oleh:
 
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
-| Nama Kelompok | *\[Nama Kelompok\]*  |
+| Kelas | *K01* |
+| Kelompok | *G09* |
 
-| NIM       | Nama               |
-| --------- | ------------------ |
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| NIM | Nama |
+|---|---|
+| *13525049* | *Hugo Daniel Johansen Napitupulu* |
+| *13525001* | *Matthew Allen Reynaldo* |
+| *13525010* | *Fabian Amzar Susanto* |
+| *13525025* | *David Christian* |
+| *13525028* | *Markus Christiano Simanjutak* |
 
 ---
 
@@ -34,7 +33,23 @@ Dipersiapkan oleh:
 
 # BAB 1: Style/Pattern Arsitektur Acuan
 
-Pada bagian ini, tentukan *architectural style* atau *pattern* yang menjadi acuan untuk aplikasi yang Anda kembangkan. Misalnya *layered architecture*, *client-server*, *repository*, *pipe and filter architecture*, atau MVC (*Model-View-Controller*).
+## 1.1 Pattern Stye Yang Dipilih
+Kelompok kami memutuskan untuk memilih Model-View-Controler (MVC) dengan rincian sebagai berikut:
+1. **View:**
+* Bertanggug jawab dengan hal-hal yang berkaitan dengan *user interface*, baik menampilkan informasi data atau menerima input dari pengguna.
+* Pada PeerUP, komponen *View* mencakup `LoginPage`, `ProfilePage`, `SessionPage`, `HostSessionPage`, `ParticipantSessionPage`, `FeedbackForm`, `GroupChatPage`, `Dashboard`, dan `HistoryPage`.
+
+2. **Controller:**
+* Bertanggung jawab sebagai jembatan antara *View* dengan *Model* yang mengeksekusi logika bisnis.
+* Pada PeerUP, komponen *Controller* mencakup komponen seperti `UserControl`, `SessionControl`, dan `FeedbackControl`.
+
+3. **Model:**
+* Bertanggung jawab sebagai entitas struktur data dengan atribut dan logika khusus *Model* sendiri
+* Pada PeerUP, komponen *Model* mencakup komponen `User`, `Mentor`, `Mentee`, `Session`, `GroupChat`, `Feedback`, `SessionHistory`, `ChatMessage`, `Preference`, `Profile`, dan `Notification`.
+
+Alasan pemutusan arsitektur ini adalah:
+1. Penyesuaian dengan pemodelan kelas pada SKPL dengan BCE design pattern.
+2. MVC memisahkan logika antarmuka dengan logika pemrosesan sehingga perubahan pada komponen pada suatu domain tidak mengaruhi komponen domain lain.
 
 <p align="center">
 <img alt="Contoh Arsitektur MVC" src="./assets/diagram/contoh-arsitektur-mvc.webp" width="70%">
@@ -43,24 +58,45 @@ Pada bagian ini, tentukan *architectural style* atau *pattern* yang menjadi acua
 <i>Gambar 1. Contoh Arsitektur MVC</i>
 </p>
 
-Isi bab ini dengan hal-hal berikut:
-1. **Style/pattern yang dipilih** beserta penjelasan singkat peran setiap bagiannya. Untuk MVC, jelaskan peran *Model*, *View*, dan *Controller*.
-2. **Alasan pemilihan** berdasarkan karakteristik P/L Anda, misalnya jenis pengguna, alur proses bisnis, serta KF dan KNF pada dokumen SKPL.
-3. **Gambar style/pattern yang diterapkan pada P/L Anda.** Jangan hanya menyalin Gambar 1. Isi setiap bagian pattern dengan komponen milik P/L Anda. Misalnya, kotak *Controller* berisi daftar *controller* yang ada di aplikasi dan kotak *Model* berisi daftar *model* yang ada di aplikasi.
+## 1.3 Penerapan Pattern MVC pada Perangkat Lunak PeerUP
 
-Selain *style/pattern*, tuliskan juga lingkungan operasi P/L. Tabel berikut **disalin dari subbab 2.5 *Lingkungan Operasi Perangkat Lunak* pada dokumen SKPL** tanpa perubahan. Setelah tabel, jelaskan kaitan teknologi yang dipakai dengan *style/pattern* yang dipilih. Contohnya, Django (Python) secara bawaan mengikuti pola MVT (*Model-View-Template*), yaitu varian dari MVC.
+<p align="center">
+<img alt="Contoh Arsitektur MVC" src="./assets/diagram/MVC-model.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 2. Arsitektur MVC pada PeerUP</i>
+</p>
 
-Tabel 1.1. Lingkungan Operasi Perangkat Lunak
+## 1.4 Lingkungan Operasi Perangkat Lunak
 
 | Komponen | Spesifikasi |
 | :--- | :--- |
-| *Server* | *[contoh: Node.js v20 dengan Next.js, dijalankan secara lokal (localhost)]* |
-| *Client* | *[contoh: Web Browser modern (Chrome, Firefox terbaru)]* |
-| *DBMS* | *[contoh: PostgreSQL 15 pada Supabase sebagai basis data terpusat]* |
-| *OS* | *[contoh: Cross-platform (Windows/Linux/MacOS) melalui browser]* |
-| *...* | *...* |
+| *Client* | *Web browser modern seperti Google Chrome, Mozilla Firefox, Microsoft Edge, atau Safari yang mendukung JavaScript dan koneksi WebSocket.* |
+| *Frontend* | *Next.js dengan TypeScript dan Tailwind CSS.* |
+| *Backend* | *Next.js Server-Side menggunakan Server Actions / API Routes yang terintegrasi dengan Supabase Client SDK.* |
+| *DBMS* | *PostgreSQL yang dikelola melalui layanan Supabase.* |
+| *Server & Hosting* | *Lingkungan lokal (Node.js) untuk pengembangan/pengujian serta Vercel sebagai layanan cloud hosting aplikasi Next.js jika diperlukan* |
+| *Authentication* | *Supabase Auth untuk registrasi dan autentikasi pengguna serta pengelolaan password secara aman. Validasi domain email institusi universitas dilakukan pada sisi aplikasi.* |
+| *Real-time Communication* | *Supabase Realtime berbasis WebSocket untuk mendukung komunikasi group chat sementara secara real-time.* |
+| *Scheduled Task* | *Supabase Cron untuk menjalankan pemeriksaan jadwal sesi, memproses pengingat sesi, dan melakukan pembersihan data group chat yang telah melewati batas waktu penyimpanan.* |
+| *OS* | *Cross-platform, yaitu Windows, Linux, macOS, Android, dan iOS selama perangkat memiliki web browser modern dan koneksi internet aktif.* |
+| *Deployment* | *Aplikasi di-deploy melalui local (dapat di-deploy dari vercel jika diperlukan), sedangkan basis data, autentikasi, komunikasi real-time, dan scheduled task dikelola melalui Supabase.* |
 
-<sub><b><i>Catatan</i></b>: <i>Style/pattern yang dipilih di bab ini menjadi acuan untuk BAB 2 (pengelompokan komponen) dan BAB 3 (model arsitektur). Contoh pada dokumen ini memakai MVC secara konsisten dari BAB 1 sampai BAB 3. Kelompok boleh memakai pattern lain selama alasannya dijelaskan dan BAB 2 serta BAB 3 disesuaikan. Tabel 1.1 harus sama persis dengan subbab 2.5 dokumen SKPL; jangan menambah atau mengubah isinya karena SKPL sudah final.</i></sub>
+## 1.5 Kaitan Teknologi Lingkungan Operasi dengan MVC
+1. **Frontend (Next.js client components & Tailwind CSS):**
+Komponen antarmuka yang berjalan di sisi Client (Web Browser) dan mengimplementasikan seluruh kelas Boundary/View. Menangani tampilan visual, pengisian formulir, dan penangkapan aksi input pengguna.
+
+2. **Backend (Next.js Server Actions & API Route):**
+Server Actions dan API Routes pada Next.js bertindak sebagai Controller. Fungsi-fungsi logika bisnis dieksekusi di sisi server untuk menangani pemeriksaan tabrakan jadwal, kalkulasi skor matchmaking, validasi batas peserta 1–20 orang, dan verifikasi email institusi sebelum data diteruskan ke basis data.
+
+3. **DBMS (Supabase PostgreSQL):**
+Layanan PostgreSQL pada Supabase menjadi tempat penyimpanan persisten untuk seluruh entitas Model (User, Session, GroupChat, Feedback, dll.). Aturan integritas relasional dan struktur tabel mewakili keadaan (state) dari data model.
+
+4. **Integrasi Eksternal:**
+* Supabase Auth: Terhubung dengan UserControl untuk memvalidasi token dan sesi login pengguna.
+* Supabase Realtime: Terhubung dengan GroupChatPage dan ChatMessage via WebSocket untuk memfasilitasi pesan obrolan grup secara instan.
+* Supabase Cron: Menjalankan pembersihan data GroupChat yang melewati batas simpan 48 jam dan memicu pengiriman Notification pengingat 15 menit sebelum sesi dimulai.
+* Vercel: Berperan sebagai infrastruktur pengoperasian (hosting platform) untuk mendistribusikan aplikasi Next.js.
 
 ---
 
