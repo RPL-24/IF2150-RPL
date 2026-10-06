@@ -39,10 +39,10 @@ LaporKota menggunakan pola arsitektur *client-server*. Pemilihan pola arsitektur
 
 
 <p align="center">
-<img alt="Contoh Arsitektur MVC" src="./assets/diagram/contoh-arsitektur-mvc.webp" width="70%">
+<img alt="Contoh Arsitektur MVC" src="./assets/diagram/arsitektur-client-server.jpg" width="70%">
 </p>
 <p align="center">
-<i>Gambar 1. Contoh Arsitektur MVC</i>
+<i>Gambar 1. Arsitektur client-server</i>
 </p>
 
 ## Style Arsitektur yang Dipilih
