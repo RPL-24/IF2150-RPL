@@ -37,15 +37,15 @@ Dipersiapkan oleh:
 Kelompok kami memutuskan untuk memilih Model-View-Controler (MVC) dengan rincian sebagai berikut:
 1. **View:**
 * Bertanggug jawab dengan hal-hal yang berkaitan dengan *user interface*, baik menampilkan informasi data atau menerima input dari pengguna.
-* Pada PeerUP, komponen *View* mencakup `LoginPage`, `ProfilePage`, `SessionPage`, `HostSessionPage`, `ParticipantSessionPage`, `FeedbackForm`, `GroupChatPage`, `Dashboard`, dan `HistoryPage`.
+* Pada PeerUP, komponen *View* mencakup `LoginView`, `ProfileView`, `DashboardView`, `SessionView`, `FeedbackView`, `GroupChatView`, `HistoryView`, dan `NotificationView`.
 
 2. **Controller:**
 * Bertanggung jawab sebagai jembatan antara *View* dengan *Model* yang mengeksekusi logika bisnis.
-* Pada PeerUP, komponen *Controller* mencakup komponen seperti `UserControl`, `SessionControl`, dan `FeedbackControl`.
+* Pada PeerUP, komponen *Controller* mencakup `UserController`, `SessionController`, `FeedbackController`, `ChatController`, dan `NotificationController`.
 
 3. **Model:**
 * Bertanggung jawab sebagai entitas struktur data dengan atribut dan logika khusus *Model* sendiri
-* Pada PeerUP, komponen *Model* mencakup komponen `User`, `Mentor`, `Mentee`, `Session`, `GroupChat`, `Feedback`, `SessionHistory`, `ChatMessage`, `Preference`, `Profile`, dan `Notification`.
+* Pada PeerUP, komponen *Model* mencakup `User`, `Profile`, `Preference`, `Session`, `SessionHistory`, `GroupChat`, `Feedback`, dan `Notification`. Peran Mentor dan Mentee dimodelkan sebagai subkelas dari `User`, sedangkan pesan obrolan dimodelkan sebagai bagian dari `GroupChat`.
 
 Alasan pemutusan arsitektur ini adalah:
 1. Penyesuaian dengan pemodelan kelas pada SKPL dengan BCE design pattern.
@@ -84,19 +84,16 @@ Alasan pemutusan arsitektur ini adalah:
 
 ## 1.5 Kaitan Teknologi Lingkungan Operasi dengan MVC
 1. **Frontend (Next.js client components & Tailwind CSS):**
-Komponen antarmuka yang berjalan di sisi Client (Web Browser) dan mengimplementasikan seluruh kelas Boundary/View. Menangani tampilan visual, pengisian formulir, dan penangkapan aksi input pengguna.
-
-2. **Backend (Next.js Server Actions & API Route):**
-Server Actions dan API Routes pada Next.js bertindak sebagai Controller. Fungsi-fungsi logika bisnis dieksekusi di sisi server untuk menangani pemeriksaan tabrakan jadwal, kalkulasi skor matchmaking, validasi batas peserta 1–20 orang, dan verifikasi email institusi sebelum data diteruskan ke basis data.
-
+   Komponen antarmuka yang berjalan di sisi *Client* (*web browser*) dan mengimplementasikan seluruh komponen *View*, yaitu `LoginView`, `ProfileView`, `DashboardView`, `SessionView`, `FeedbackView`, `GroupChatView`, `HistoryView`, dan `NotificationView`. Frontend menangani tampilan visual, pengisian formulir, dan penangkapan aksi input pengguna.
+2. **Backend (Next.js Server Actions & API Routes):**
+   Server Actions dan API Routes pada Next.js bertindak sebagai *Controller* (`UserController`, `SessionController`, `FeedbackController`, `ChatController`, dan `NotificationController`). Logika bisnis dieksekusi di sisi server untuk menangani pemeriksaan tabrakan jadwal, *matchmaking* rekomendasi sesi, validasi batas peserta 1–20 orang, dan verifikasi email institusi sebelum data diteruskan ke basis data.
 3. **DBMS (Supabase PostgreSQL):**
-Layanan PostgreSQL pada Supabase menjadi tempat penyimpanan persisten untuk seluruh entitas Model (User, Session, GroupChat, Feedback, dll.). Aturan integritas relasional dan struktur tabel mewakili keadaan (state) dari data model.
-
+   Layanan PostgreSQL pada Supabase menjadi tempat penyimpanan persisten untuk seluruh entitas *Model* (`User`, `Profile`, `Preference`, `Session`, `SessionHistory`, `GroupChat`, `Feedback`, dan `Notification`) melalui komponen `Database`. Aturan integritas relasional dan struktur tabel mewakili keadaan (*state*) dari data *Model*.
 4. **Integrasi Eksternal:**
-* Supabase Auth: Terhubung dengan UserControl untuk memvalidasi token dan sesi login pengguna.
-* Supabase Realtime: Terhubung dengan GroupChatPage dan ChatMessage via WebSocket untuk memfasilitasi pesan obrolan grup secara instan.
-* Supabase Cron: Menjalankan pembersihan data GroupChat yang melewati batas simpan 48 jam dan memicu pengiriman Notification pengingat 15 menit sebelum sesi dimulai.
-* Vercel: Berperan sebagai infrastruktur pengoperasian (hosting platform) untuk mendistribusikan aplikasi Next.js.
+   * **Supabase Auth:** Terhubung dengan `UserController` melalui `AuthAdapter` untuk registrasi, *login*, serta validasi token dan sesi pengguna.
+   * **Supabase Realtime:** Terhubung dengan `ChatController` melalui `RealtimeAdapter` via WebSocket, sehingga pesan di `GroupChatView` tampil secara instan.
+   * **Supabase Cron:** Terhubung melalui `CronAdapter`. Menonaktifkan `GroupChat` yang melewati batas simpan 48 jam dan memicu `NotificationController` untuk membuat `Notification` pengingat 15 menit sebelum sesi dimulai.
+   * **Vercel:** Berperan sebagai infrastruktur pengoperasian (*hosting platform*) untuk mendistribusikan aplikasi Next.js.
 
 ---
 
