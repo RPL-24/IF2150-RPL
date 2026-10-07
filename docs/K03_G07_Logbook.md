@@ -129,14 +129,10 @@
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | *4-10-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft bab 1* | *0.5* | *Done* | - | 
 | *5-10-2026* | *Rafi Pradipta Andira Sulistyo* | *Melanjutkan pengerjaan penjelasan bab 1* | *1.5* | *Done* | - | 
-| *28-09-2026* | *Pasaribu Fritz T.A.M.* | *Pengerjaan Bab 1.1* | *0.5* | *Done* | - | 
-| *28-09-2026* | *Gede Pranajayanta Suputra* | *Mengisi lingkup masalah dan aturan penomoran dokumen* | *1* | *Done* | - | 
-| *29-09-2026* | *Pasaribu Fritz T.A.M.* | *Revisi Class Diagram UC03 & UC04* | *0.5* | *Done* | - | 
-| *30-09-2026* | *Pasaribu Fritz T.A.M.* | *Pengerjaan Bab 1.5* | *0.5* | *Done* | - | 
-| *30-09-2026* | *Muhammad Atallah Ramadhan* | *Pengerjaan Bab 1.3* | *0.5* | *Done* | - | 
-| *30-09-2026* | *Gede Pranajayanta Suputra* | *Pembuatan dan penambahan Class Diagram UC05 (Bab 4.2.5)* | *1* | *Done* | - | 
-| *30-09-2026* | *Bagas Anugrah Putra* | *Pengerjaan SKPL Bab 1.6 (Gambaran Umum Dokumen) dan Bab 2.2 (Deskripsi Perangkat Lunak)* | *1.5* | *Done* | - | 
-| *30-09-2026* | *Bagas Anugrah Putra* | *Revisi Diagram Kelas Keseluruhan Bab 4.3 berdasarkan hasil asistensi (agregasi ListTugas, video pengerjaan, dan HasilPerbaikanForm)* | *2* | *Done* | - |
+| *5-10-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan penjelasan bab 3.1* | *1.0* | *Done* | - |
+| *6-10-2026* | *Gede Pranajayanta Suputra* | *Membuat diagram Architecture bab 1** | *1.0* | *Done* | - |
+| *7-10-2026* | *Bagas Anugrah Putra* | *Mengerjakan dan menyelesaikan tabel identifikasi komponen bab 2** | *2.5* | *Done* | - |
+| *7-10-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan block diagram logical view bab 3.1** | *1.5* | *Done* | - |
 
 
 ---
