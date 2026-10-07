@@ -108,24 +108,34 @@ Setiap komponen memiliki tanggung jawab tertentu dalam mendukung fungsionalitas 
 
 Tabel 2.1. Identifikasi Komponen/Modul/Subsistem
 
-| Nama Komponen/Modul/Subsistem | Jenis                 | Penjelasan                                                                                                           |
-| :---------------------------- | :-------------------- | :------------------------------------------------------------------------------------------------------------------- |
-| *KatalogView*                 | *View*                | *Menampilkan daftar produk dan meneruskan aksi pelanggan (misalnya "Tambah ke Keranjang") ke KatalogController.*     |
-| *KeranjangView*               | *View*                | *Menampilkan isi keranjang pelanggan beserta tombol checkout.*                                                       |
-| *CheckoutView*                | *View*                | *Menampilkan ringkasan pesanan dan pilihan metode pembayaran kepada pelanggan.*                                      |
-| *RiwayatPesananView*          | *View*                | *Menampilkan daftar pesanan yang pernah dibuat pelanggan beserta statusnya.*                                         |
-| *KatalogController*           | *Controller*          | *Memproses permintaan daftar produk dan penambahan produk ke keranjang.*                                             |
-| *KeranjangController*         | *Controller*          | *Memproses perubahan isi keranjang dan membuat pesanan baru saat checkout.*                                          |
-| *PembayaranController*        | *Controller*          | *Memproses pemilihan metode pembayaran dan meneruskan permintaan otorisasi ke PaymentGatewayAdapter.*                |
-| *PesananController*           | *Controller*          | *Memproses permintaan riwayat pesanan milik pelanggan.*                                                              |
-| *Produk*                      | *Model*               | *Merepresentasikan data produk beserta stoknya serta metode untuk mengakses dan mengubahnya.*                        |
-| *Keranjang*                   | *Model*               | *Merepresentasikan item yang dipilih pelanggan sebelum checkout serta metode untuk mengakses dan mengubahnya.*       |
-| *Pesanan*                     | *Model*               | *Merepresentasikan data pesanan beserta status pembayarannya serta metode untuk mengakses dan mengubahnya.*          |
-| *Pelanggan*                   | *Model*               | *Merepresentasikan data akun pelanggan serta metode untuk mengakses dan mengubahnya.*                                |
-| *Validasi*                    | *Pendukung*           | *Memvalidasi input pelanggan sebelum diproses oleh controller.*                                                      |
-| *PaymentGatewayAdapter*       | *Integrasi Eksternal* | *Mengirim permintaan otorisasi ke payment gateway (dummy) dan meneruskan status pembayaran ke PembayaranController.* |
-| *Database*                    | *Penyimpanan Data*    | *Menyimpan seluruh data model secara persisten, baik lokal (misalnya SQLite) maupun terpusat (misalnya Supabase).*   |
-| *...*                         | *...*                 | *...*                                                                                                                |
+| Nama Komponen/Modul/Subsistem | Jenis | Penjelasan |
+| :--- | :--- | :--- |
+| LoginView | View | Menampilkan formulir registrasi dan login, lalu meneruskan input ke UserController (UC01). |
+| ProfileView | View | Menampilkan profil pengguna (milik sendiri atau orang lain) serta formulir edit tag materi, ketersediaan waktu, dan preferensi format sesi, lalu meneruskan aksi ke UserController (UC02, UC15). |
+| DashboardView | View | Menampilkan Beranda berisi sesi aktif terdekat dan rekomendasi matchmaking, serta halaman Cari Sesi; meneruskan permintaan bergabung ke SessionController (UC04, UC14). |
+| SessionView | View | Menampilkan detail sesi sesuai peran: tampilan Host (buat, edit, hapus, lihat feedback) dan tampilan Participant (gabung, batalkan), beserta tombol konfirmasi keterlaksanaan. Meneruskan aksi ke SessionController dan FeedbackController (UC03, UC04, UC05, UC10, UC11, UC12, UC13). |
+| FeedbackView | View | Menampilkan formulir rating dan ulasan setelah sesi selesai beserta opsi Skip, lalu meneruskannya ke FeedbackController (UC07). |
+| GroupChatView | View | Menampilkan kotak pesan dan riwayat obrolan grup sesi, lalu meneruskan pesan baru ke ChatController (UC08). |
+| HistoryView | View | Menampilkan daftar riwayat sesi berstatus Selesai, Tidak Terlaksana, atau Dibatalkan, serta pesan "Belum ada sesi" jika kosong (UC06). |
+| NotificationView | View | Menampilkan notifikasi pop-up pengingat sesi dan mengarahkan pengguna ke detail sesi saat ditekan (UC09). |
+| UserController | Controller | Memproses registrasi, login, pembaruan profil dan preferensi, serta pengambilan data profil. Memakai Validator dan AuthAdapter. |
+| SessionController | Controller | Memproses pembuatan, pengeditan, dan penghapusan sesi; pengecekan tabrakan jadwal dan kapasitas; matchmaking rekomendasi; pendaftaran dan pembatalan keikutsertaan; konfirmasi keterlaksanaan; serta pengambilan sesi terdekat dan riwayat. |
+| FeedbackController | Controller | Memvalidasi dan menyimpan feedback, serta mengambil daftar feedback per sesi untuk Mentor. |
+| ChatController | Controller | Memproses pengiriman pesan grup sesi, memastikan pengirim adalah peserta sesi dan grup masih aktif, serta membuat dan menonaktifkan GroupChat bersama RealtimeAdapter. |
+| NotificationController | Controller | Membuat Notification pengingat 15 menit sebelum sesi dan meneruskannya ke NotificationView. Dipicu oleh CronAdapter. |
+| User | Model | Merepresentasikan akun pengguna beserta subkelas Mentor dan Mentee dan hak masing-masing, serta metode untuk mengakses dan mengubah data akun. |
+| Profile | Model | Merepresentasikan data identitas pengguna (nama, universitas, program studi, bio) serta metode untuk mengakses dan mengubahnya. |
+| Preference | Model | Menyimpan tag materi, ketersediaan waktu, dan preferensi format sesi pengguna sebagai dasar matchmaking. |
+| Session | Model | Merepresentasikan sesi belajar (topik, jadwal, format, kapasitas, daftar peserta, status) serta metode untuk mengakses dan mengubahnya. |
+| SessionHistory | Model | Menyimpan arsip sesi milik pengguna yang dikelompokkan menurut status. |
+| GroupChat | Model | Merepresentasikan ruang obrolan sementara beserta kumpulan pesan di dalamnya (ChatMessage). |
+| Feedback | Model | Merepresentasikan rating dan ulasan yang diberikan pengguna terhadap sebuah sesi. |
+| Notification | Model | Merepresentasikan pesan pengingat beserta isi, waktu, dan status terbaca. |
+| Validator | Pendukung | Memvalidasi input sebelum diproses controller: domain email universitas, kelengkapan preferensi, kapasitas sesi 1–20 peserta, tabrakan jadwal, dan kelengkapan feedback. |
+| AuthAdapter | Integrasi Eksternal | Menghubungkan UserController dengan Supabase Auth untuk registrasi, login, dan hashing kata sandi. |
+| RealtimeAdapter | Integrasi Eksternal | Menghubungkan ChatController dengan Supabase Realtime (WebSocket) untuk menyalurkan pesan secara real-time. |
+| CronAdapter | Integrasi Eksternal | Menerima pemicu terjadwal dari Supabase Cron, lalu meneruskannya ke NotificationController (pengingat 15 menit) dan ChatController (penonaktifan chat 48 jam setelah sesi berakhir). |
+| Database | Penyimpanan Data | Menyimpan seluruh data Model secara persisten pada PostgreSQL yang dikelola Supabase. |
 
 Ketentuan pengisian Tabel 2.1:
 1. Kolom **Jenis** mengikuti pengelompokan pada *style/pattern* di BAB 1. Untuk MVC, jenisnya adalah *Model*, *View*, dan *Controller*. Jenis lain boleh ditambahkan, misalnya *Pendukung* untuk komponen bantu yang dipakai bersama, atau *Integrasi Eksternal* untuk penghubung ke sistem di luar P/L yang disebutkan pada subbab 2.2 dokumen SKPL. Kolom ini juga boleh diisi dengan *Subsistem*, *Modul*, atau *Komponen* apabila komponen dikelompokkan berdasarkan fungsinya. Tuliskan subsistem terlebih dahulu, lalu komponen penyusunnya di baris-baris berikutnya.
