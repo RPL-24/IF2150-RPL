@@ -4,20 +4,20 @@
 
 | Informasi | Keterangan |
 |---|---|
-| Kelas | *[Kelas]* |
-| Nomor Kelompok | *[Nomor Kelompok]* |
-| Nama Kelompok | *[Nama Kelompok]* |
-| Nama Perangkat Lunak | *[Nama P/L]* |
+| Kelas | *K-03* |
+| Nomor Kelompok | *G07* |
+| Nama Kelompok | *Siulan* |
+| Nama Perangkat Lunak | *LaporKota* |
 
 **Anggota Kelompok:**
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| *13525051* | *Rafi Pradipta Andira Sulistyo* |
+| *13525105* | *Pasaribu Fritz T.A.M.* |
+| *13525075* | *Bagas Anugrah Putra* |
+| *13525099* | *Gede Pranajayanta Suputra* |
+| *13525015* | *Muhammad Atallah Ramadhan* |
 
 ---
 
@@ -35,7 +35,7 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 ### Milestone 1
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
-| *[Nama AI]* | *[Sertakan Tujuan Penggunaan]* | *[Tuliskan Prompt Utama]* | *[Tuliskan Keputusan Hasil Validasi]* |
+| *Claude* | *Mencari Referensi UU yang Relevan* | *Berikan saya ide UU yang terkait pada pengembangan perangkat lunak ini (disertakan konteks berupa deskripsi singkat perangkat lunak yang kami kembangkan)* | *Beberapa UU yang relevan kami gunakan sebagai bahan pada pengerjaan milestone ini. Sebelum kami masukkan, kami validasi lagi dengan memastikan bahwa UU yang disebutkan valid berdasarkan sumber yang kredibel. Adapun, beberapa saran UU yang diberikan oleh Claude dianggap diluar konteks atau _scope_ pengerjaan proyek perangkat lunak kami.* |
 | *Gemini* | *Mengecek relasi antar class* | *"Apakah relasi antara class User dan Order dalam UML ini seharusnya composition atau aggregation?"* | *AI menyarankan composition, tapi setelah dicek kembali ke requirement, kami menggunakan aggregation karena Order masih bisa eksis di history.* |
 | | | | | |
 
@@ -52,8 +52,8 @@ Kami yang bertanda tangan di bawah ini menyatakan bahwa seluruh log penggunaan A
 
 | Tanda Tangan | Nama Anggota |
 | :---: | :--- |
-| <img src="./assets/ttd-anggota1.png" width="100"> | **[NIM - Nama Anggota 1]** |
-| <img src="./assets/ttd-anggota2.png" width="100"> | **[NIM - Nama Anggota 2]** |
-| <img src="./assets/ttd-anggota3.png" width="100"> | **[NIM - Nama Anggota 3]** |
-| <img src="./assets/ttd-anggota4.png" width="100"> | **[NIM - Nama Anggota 4]** |
-| <img src="./assets/ttd-anggota5.png" width="100"> | **[NIM - Nama Anggota 5]** |
+| <img src="./assets/ttd-anggota1.png" width="100"> | **13525051 - Rafi Pradipta Andira Sulistyo** |
+| <img src="./assets/ttd-anggota2.png" width="100"> | **13525105 - Pasaribu Fritz T.A.M.** |
+| <img src="./assets/ttd-anggota3.png" width="100"> | **13525075 - Bagas Anugrah Putra** |
+| <img src="./assets/ttd-anggota4.png" width="100"> | **13525099 - Gede Pranajayanta Suputra** |
+| <img src="./assets/ttd-anggota5.png" width="100"> | **13525015 - Muhammad Atallah Ramadhan** |
