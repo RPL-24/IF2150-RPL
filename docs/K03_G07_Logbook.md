@@ -129,7 +129,10 @@
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | *4-10-2026* | *Rafi Pradipta Andira Sulistyo* | *Mengerjakan draft bab 1* | *0.5* | *Done* | - | 
 | *5-10-2026* | *Rafi Pradipta Andira Sulistyo* | *Melanjutkan pengerjaan penjelasan bab 1* | *1.5* | *Done* | - | 
-| *5-10-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan penjelasan bab 3.1* | *1.0* | *Done* | - | 
+| *5-10-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan penjelasan bab 3.1* | *1.0* | *Done* | - |
+| *6-10-2026* | *Gede Pranajayanta Suputra* | *Membuat diagram Architecture bab 1** | *1.0* | *Done* | - |
+| *7-10-2026* | *Bagas Anugrah Putra* | *Mengerjakan dan menyelesaikan tabel identifikasi komponen bab 2** | *2.5* | *Done* | - |
+| *7-10-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan block diagram logical view bab 3.1** | *1.5* | *Done* | - |
 
 
 ---
