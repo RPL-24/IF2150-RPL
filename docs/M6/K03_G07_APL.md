@@ -158,7 +158,7 @@ Ketentuan pengisian BAB 3:
 ## 3.1 Logical View
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-logical-view.webp" width="100%">
+<img alt="Logical View LaporKota" src="./assets/diagram/logical-view-diagram-LaporKota.jpg" width="100%">
 </p>
 <p align="center">
 <i>Gambar 2. Logical View pada LaporKota</i>
