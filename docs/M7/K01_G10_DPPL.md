@@ -598,6 +598,45 @@ Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *...* | *...* |
+| *C01 - Pelanggan* | *UC01 - Mencari dan filter resto<br>UC02 - Melakukan pemesanan dan pembayaran digital<br>UC03 - Menampilkan Status Antrean<br>UC06 - Mengelola Antrian<br>UC10 - Registrasi Akun<br>UC13 - Penyampaian Keluhan Pelanggan* |
+| *C02 - Restoran* | *UC01 - Mencari dan filter resto<br>UC04 - Pendaftaran Mitra Restoran Baru<br>UC06 - Mengelola Antrian<br>UC07 - Mengatur Kuota Antrean & Meja<br>UC08 - Mengelola Stok dan Menu Makanan<br>UC09 - Menampilkan Dashboard Antrean Restoran<br>UC10 - Registrasi Akun<br>UC15 - Penghapusan Restoran* |
+| *C03 - Menu* | *UC01 - Mencari dan filter resto<br>UC02 - Melakukan pemesanan dan pembayaran digital<br>UC04 - Pendaftaran Mitra Restoran Baru<br>UC08 - Mengelola Stok dan Menu Makanan* |
+| *C04 - Antrean* | *UC01 - Mencari dan filter resto<br>UC03 - Menampilkan Status Antrean<br>UC06 - Mengelola Antrian<br>UC09 - Menampilkan Dashboard Antrean Restoran* |
+| *C05 - Keranjang* | *UC02 - Melakukan pemesanan dan pembayaran digital* |
+| *C06 - Pesanan* | *UC02 - Melakukan pemesanan dan pembayaran digital<br>UC03 - Menampilkan Status Antrean<br>UC06 - Mengelola Antrian<br>UC09 - Menampilkan Dashboard Antrean Restoran* |
+| *C07 - MetodePembayaranController* | *UC02 - Melakukan pemesanan dan pembayaran digital* |
+| *C08 - RiwayatTransaksi* | *UC02 - Melakukan pemesanan dan pembayaran digital* |
+| *C09 - TiketAntrean* | *UC02 - Melakukan pemesanan dan pembayaran digital<br>UC03 - Menampilkan Status Antrean<br>UC06 - Mengelola Antrian* |
+| *C10 - PemantauAntreanController* | *UC03 - Menampilkan Status Antrean* |
+| *C11 - HalamanStatusAntrean* | *UC03 - Menampilkan Status Antrean* |
+| *C12 - PengajuanMitraController* | *UC04 - Pendaftaran Mitra Restoran Baru<br>UC05 - Memverifikasi Pendaftaran Restoran* |
+| *C13 - DokumenVerifikasi* | *UC04 - Pendaftaran Mitra Restoran Baru* |
+| *C14 - Admin* | *UC05 - Memverifikasi Pendaftaran Restoran<br>UC10 - Registrasi Akun<br>UC14 - Penanggapan Keluhan Pelanggan<br>UC15 - Penghapusan Restoran* |
+| *C15 - NotifikasiEmail* | *UC05 - Memverifikasi Pendaftaran Restoran* |
+| *C16 - KelolaAntreanController* | *UC06 - Mengelola Antrian* |
+| *C17 - KonfirmasiDequeuePage* | *UC06 - Mengelola Antrian* |
+| *C18 - KelolaAntreanPage* | *UC06 - Mengelola Antrian* |
+| *C19 - DashboardAntreanPage* | *UC09 - Menampilkan Dashboard Antrean Restoran* |
+| *C20 - Kuota* | *UC07 - Mengatur Kuota Antrean & Meja* |
+| *C21 - PengaturanKuotaController* | *UC07 - Mengatur Kuota Antrean & Meja* |
+| *C22 - PengaturanKuotaPage* | *UC07 - Mengatur Kuota Antrean & Meja* |
+| *C23 - PengaturanMenuPage* | *UC08 - Mengelola Stok dan Menu Makanan* |
+| *C24 - KelolaMenuController* | *UC08 - Mengelola Stok dan Menu Makanan* |
+| *C25 - Pengguna* | *UC10 - Registrasi Akun<br>UC11 - Login Akun<br>UC12 - Keluar Akun* |
+| *C26 - HalamanProfilPage* | *UC12 - Keluar Akun* |
+| *C27 - KonfirmasiLogoutPage* | *UC12 - Keluar Akun* |
+| *C28 - AutentikasiController* | *UC12 - Keluar Akun* |
+| *C29 - SesiPengguna* | *UC12 - Keluar Akun* |
+| *C30 - Keluhan* | *UC13 - Penyampaian Keluhan Pelanggan<br>UC14 - Penanggapan Keluhan Pelanggan* |
+| *C31 - DashboardKelolaRestoranPage* | *UC15 - Penghapusan Restoran* |
+| *C32 - KonfirmasiHapusRestoranPage* | *UC15 - Penghapusan Restoran* |
+| *C33 - KelolaDataRestoranController* | *UC15 - Penghapusan Restoran* |
+| *C34 - PencarianRestoPage* | *UC01 - Mencari dan filter resto* |
+| *C35 - PencarianController* | *UC01 - Mencari dan filter resto* |
+| *C36 - VerifikasiRestoranPage* | *UC05 - Memverifikasi Pendaftaran Restoran* |
+| *C37 - RegistrasiRestoPage* | *UC04 - Pendaftaran Mitra Restoran Baru* |
+| *C38 - RegistrasiPage* | *UC10 - Registrasi Akun* |
+| *C39 - LoginPage* | *UC11 - Login Akun* |
+| *C40 - KeluhanFormPage* | *UC13 - Penyampaian Keluhan Pelanggan* |
+| *C41 - KeluhanController* | *UC13 - Penyampaian Keluhan Pelanggan<br>UC14 - Penanggapan Keluhan Pelanggan* |
+| *C42 - KeluhanDashboardPage* | *UC14 - Penanggapan Keluhan Pelanggan* |
