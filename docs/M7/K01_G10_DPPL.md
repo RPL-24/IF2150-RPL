@@ -737,7 +737,52 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 
 <br>
 
-## 3.12 Use Case 15
+## 3.13 Use Case 13
+
+**ID Use Case:** *UC13*  
+**Nama Use Case:** *Penyampaian Keluhan Pelanggan*
+
+### 3.13.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.13. Identifikasi Kelas Use Case [UC13]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *KeluhanView* | *KeluhanFormPage* |
+| 2 | *KeluhanController* | *KeluhanController* |
+| 3 | *ModelKeluhan* | *Keluhan* |
+| 4 | *ModelAkun* | *Pelanggan* |
+
+### 3.13.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC13" src="./assets/diagram/UC13 Sequence Diagram Normal.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC13</i>
+</p>
+
+### 3.13.3 Diagram Kelas
+
+Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+
+<p align="center">
+<img alt="Diagram Kelas UC13" src="./assets/diagram/UC13 Class Diagram.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas UC13</i>
+</p>
+
+<br>
+
+
+## 3.15 Use Case 15
 
 **ID Use Case:** *UC15*  
 **Nama Use Case:** *Penghapusan Restoran*
