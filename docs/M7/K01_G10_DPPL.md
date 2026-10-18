@@ -314,6 +314,53 @@ Pada diagram, pastikan:
 
 <br>
 
+## 3.3 Use Case 3
+
+**ID Use Case:** *UC03*  
+**Nama Use Case:** *Menampilkan Status Antrean*
+
+### 3.3.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.3. Identifikasi Kelas Use Case [UC03]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *StatusAntreanView* | *HalamanStatusAntrean* |
+| 2 | *PemantauAntreanController* | *PemantauAntreanController* |
+| 3 | *ModelAntrean* | *TiketAntrean* |
+| 4 | *ModelAntrean* | *Antrean* |
+| 5 | *ModelPesanan* | *Pesanan* |
+| 6 | *ModelAkun* | *Pelanggan* |
+| ... | *...* | *...* |
+
+### 3.3.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS06-N.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC06</i>
+</p>
+
+### 3.3.3 Diagram Kelas
+
+Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/CD-06.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas UC06</i>
+</p>
+
+<br>
+
 ## 3.6 Use Case 6
 
 **ID Use Case:** *UC06*  
@@ -520,6 +567,118 @@ Pada diagram, pastikan:
 - Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
 
 Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 3.1
+
+<br>
+
+## 3.12 Use Case 12
+
+**ID Use Case:** *UC12*  
+**Nama Use Case:** *Keluar Akun*
+
+### 3.12.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.12. Identifikasi Kelas Use Case [UC12]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *AkunView* | *HalamanProfilePage* |
+| 2 | *AkunView* | *KonfirmasiLogoutPage* |
+| 3 | *AkunView* | *LoginPage* |
+| 4 | *AutentikasiController* | *AutentikasiController* |
+| 5 | *ModelAkun* | *Pengguna* |
+| 6 | *ModelAkun* | *SesiPengguna* |
+| ... | *...* | *...* |
+
+### 3.12.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS06-N.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC06</i>
+</p>
+
+- **Skenario Alternatif 1: Aktor Membatalkan Keluar Akun**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS06-ALT1.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC06 - Restoran membatalkan dequeue</i>
+</p>
+
+### 3.12.3 Diagram Kelas
+
+Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/CD-06.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas UC06</i>
+</p>
+
+<br>
+
+## 3.12 Use Case 15
+
+**ID Use Case:** *UC15*  
+**Nama Use Case:** *Penghapusan Restoran*
+
+### 3.15.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.15. Identifikasi Kelas Use Case [UC15]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *KelolaRestoranView* | *DashboardKelolaRestoranPage* |
+| 2 | *KelolaRestoranView* | *KonfirmasiHapusRestoranPage* |
+| 3 | *KelolaDataRestoranController* | *KelolaDataRestoranController* |
+| 4 | *ModelRestoran* | *Restoran* |
+| 5 | *ModelAkun* | *Admin* |
+| 6 | *ModelAkun* | *SesiPengguna* |
+| ... | *...* | *...* |
+
+### 3.15.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS06-N.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC06</i>
+</p>
+
+- **Skenario Alternatif 1: Admin Membatalkan Proses Penghapusan Restoran**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS06-ALT1.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC06 - Restoran membatalkan dequeue</i>
+</p>
+
+### 3.15.3 Diagram Kelas
+
+Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/CD-06.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas UC06</i>
+</p>
 
 <br>
 
