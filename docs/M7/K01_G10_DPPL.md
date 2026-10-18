@@ -415,6 +415,62 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 
 <br>
 
+## 3.5 Use Case 5
+
+**ID Use Case:** *UC05*  
+**Nama Use Case:** *Memverifikasi Pendaftaran Restoran*
+
+### 3.5.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.5. Identifikasi Kelas Use Case [UC05]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *MitraView* | *VerifikasiRestoranPage* |
+| 2 | *PengajuanMitraController* | *PengajuanMitraController* |
+| 3 | *ModelRestoran* | *Restoran* |
+| 4 | *ModelRestoran* | *DokumenVerifikasi* |
+| 5 | *ModelRestoran* | *Menu* |
+| 6 | *ModelAkun* | *Admin* |
+| 7 | *NotifikasiEmail* | *NotifikasiEmail* |
+
+### 3.5.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC05" src="./assets/diagram/UC05 Sequence Diagram Normal.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC05</i>
+</p>
+
+- **Skenario Alternatif 1: Pengajuan Pendaftaran Ditolak**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 - Pengajuan Pendaftaran Ditolak" src="./assets/diagram/UC05 Sequence Diagram Alt 1.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC05 - Pengajuan Pendaftaran Ditolak</i>
+</p>
+
+### 3.5.3 Diagram Kelas
+
+Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+
+<p align="center">
+<img alt="Diagram Kelas UC05" src="./assets/diagram/UC05 Class Diagram.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas UC05</i>
+</p>
+
+<br>
+
 
 ## 3.6 Use Case 6
 
