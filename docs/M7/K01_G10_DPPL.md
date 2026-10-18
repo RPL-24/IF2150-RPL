@@ -361,6 +361,61 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 
 <br>
 
+## 3.4 Use Case 4
+
+**ID Use Case:** *UC04*  
+**Nama Use Case:** *Pendaftaran Mitra Restoran Baru*
+
+### 3.4.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.4. Identifikasi Kelas Use Case [UC04]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *MitraView* | *RegistrasiRestoPage* |
+| 2 | *PengajuanMitraController* | *PengajuanMitraController* |
+| 3 | *ModelRestoran* | *Restoran* |
+| 4 | *ModelRestoran* | *DokumenVerifikasi* |
+| 5 | *ModelRestoran* | *Menu* |
+
+### 3.4.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC04" src="./assets/diagram/UC04 Sequence Diagram Normal.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC04</i>
+</p>
+
+- **Skenario Alternatif 1: Data Form Tidak Lengkap atau Format Tidak Sesuai**
+
+<p align="center">
+<img alt="Sequence Diagram UC04 - Data Form Tidak Lengkap atau Format Tidak Sesuai" src="./assets/diagram/UC04 Sequence Diagram Alt 1.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC04 - Data Form Tidak Lengkap atau Format Tidak Sesuai</i>
+</p>
+
+### 3.4.3 Diagram Kelas
+
+Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+
+<p align="center">
+<img alt="Diagram Kelas UC04" src="./assets/diagram/UC04 Class Diagram.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas UC04</i>
+</p>
+
+<br>
+
+
 ## 3.6 Use Case 6
 
 **ID Use Case:** *UC06*  
