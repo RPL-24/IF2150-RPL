@@ -246,10 +246,10 @@ Komponen pada Tabel 2.1 berjalan di dalam proses berikut:
 
 # BAB 3: Realisasi Use Case
 
-## 3.1 Use Case [Nama Use Case 1]
+## 3.1 Use Case 1
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** *UC01*  
+**Nama Use Case:** *Mencari dan filter resto*
 
 ### 3.1.1 Identifikasi Kelas
 
@@ -261,45 +261,34 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 |:--- | :--- | :--- |
 | 1 | *ModelAkun* | *Pelanggan* |
 | 2 | *ModelRestoran* | *Restoran* |
-| 3 | *ModelAntrean* | *Antrean* |
-| 4 | *ModelPesanan* | *Pesanan* |
-| 5 | *ModelAntrean* | *TiketAntrean* |
-| 6 | *KelolaAntreanController* | *KelolaAntreanController* |
-| 7 | *KelolaAntreanView* | *KonfirmasiDequeuePage* |
-| 8 | *KelolaAntreanView* | *KelolaAntreanPage* |
-| ... | *...* | *...* |
+| 3 | *ModelRestoran* | *Menu* |
+| 4 | *ModelAntrean* | *Antrean* |
+| 5 | *PencarianView* | *PencarianRestoPage* |
+| 6 | *PencarianController* | *PencarianController* |
 
 ### 3.1.2 Sequence Diagram
 
 Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
 
-- **Skenario Normal**
+- **Skenario Normal Serta Alternatifnya**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/SD_UC01.drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01]</i>
+<i>Gambar 4. Sequence Diagram UC01</i>
 </p>
 
-- **Skenario Alternatif [Nomor]: [Nama Skenario]**
-
-<p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
-</p>
-<p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
-</p>
 
 ### 3.1.3 Diagram Kelas
 
 Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/CD_UC01.drawio.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar 5. Diagram Kelas UC01</i>
 </p>
 
 Pada diagram, pastikan:
