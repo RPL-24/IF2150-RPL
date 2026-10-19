@@ -28,6 +28,7 @@
 * [Milestone 4](#milestone-4)
 * [Milestone 5](#milestone-5)
 * [Milestone 6](#milestone-6)
+* [Milestone 7](#milestone-7)
 
 
 ---
@@ -168,6 +169,18 @@
 
 
 **Catatan/Evaluasi Milestone 6:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+### Milestone 7
+**Periode:** 7-10-2026 - 21-10-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *14-10-2026* | *Bayu Palamarta Wirawan* | *Melakukan inisialisasi Milestone 7* | *1* | *Done* | *-* |
+| *18-10-2026* | *Bayu Palamarta Wirawan* | *Mengerjakan Bab 3 bagian UC06 - UC08, Bab 4, dan Bab 5* | *3* | *Done* | *Awalnya kesulitan bagaimana memulai membuat* |
+| *19-10-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki diagram pada Bab 3 bagian UC06 - UC08* | *1* | *Done* | *-* |
+
+
+**Catatan/Evaluasi Milestone 7:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 
 
