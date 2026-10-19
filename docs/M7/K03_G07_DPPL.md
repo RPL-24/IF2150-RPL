@@ -242,6 +242,274 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 
 ### 3.1.3 Diagram Kelas
 
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+</p>
+
+## 3.2 Use Case [Nama Use Case 2]
+
+**ID Use Case:** *[UC01 sesuai SKPL]*  
+**Nama Use Case:** *[Nama use case sesuai SKPL]*
+
+### 3.2.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.2. Identifikasi Kelas Use Case [UC01]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
+| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
+| ... | *...* | *...* |
+
+### 3.2.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC01]</i>
+</p>
+
+- **Skenario Alternatif [Nomor]: [Nama Skenario]**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+</p>
+
+### 3.2.3 Diagram Kelas
+
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+</p>
+
+## 3.3 Use Case Melihat Penugasan Lapangan
+
+**ID Use Case:** *UC03*  
+**Nama Use Case:** *Melihat Penugasan Lapangan*
+
+### 3.3.1 Identifikasi Kelas
+
+Tabel 3.3. Identifikasi Kelas Use Case UC03
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *PenugasanPage* | *PenugasanPage* |
+| 2 | *PenugasanController* | *PenugasanController* |
+| 3 | *ListTugas* | *ListTugas* |
+| 4 | *Laporan* | *Laporan* |
+| 5 | *User* | *User* |
+| 6 | *Foto* | *Foto* |
+| 7 | *Video* | *Video* |
+
+### 3.3.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-SD-Normal.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC03</i>
+</p>
+
+- **Skenario Alternatif [1]: Menyaring Daftar Penugasan Berdasarkan Kategori**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-SD-Alt1.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC03 - Menyaring Daftar Penugasan Berdasarkan Kategori</i>
+</p>
+
+- **Skenario Alternatif [2]: Belum Ada Penugasan yang Tersedia**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-SD-Alt2.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC03 - Belum Ada Penugasan yang Tersedia</i>
+</p>
+
+### 3.3.3 Diagram Kelas
+
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-CD.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Melihat Penugasan Lapangan</i>
+</p>
+
+## 3.4 Use Case Melaporkan Hasil Penugasan
+
+**ID Use Case:** *UC04*  
+**Nama Use Case:** *Melaporkan Hasil Penugasan*
+
+### 3.4.1 Identifikasi Kelas
+
+
+Tabel 3.4. Identifikasi Kelas Use Case UC04
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *PenugasanPage* | *PenugasanPage* |
+| 2 | *PenugasanController* | *PenugasanController* |
+| 3 | *HasilPerbaikanForm* | *HasilPerbaikanForm* |
+| 4 | *PerbaikanController* | *PerbaikanController* |
+| 5 | *ListTugas* | *ListTugas* |
+| 6 | *Laporan* | *Laporan* |
+| 7 | *HasilPerbaikan* | *HasilPerbaikan* |
+| 8 | *User* | *User* |
+| 9 | *Foto* | *Foto* |
+| 10 | *Video* | *Video* |
+
+### 3.4.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-04-SD-Normal.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC04</i>
+</p>
+
+- **Skenario Alternatif 1: Data Laporan Belum Lengkap**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-04-SD-Alt1.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC04 - Data Laporan Belum Lengkap</i>
+</p>
+
+### 3.4.3 Diagram Kelas
+
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-04-CD.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Melaporkan Hasil Penugasan</i>
+</p>
+
+## 3.5 Use Case [Nama Use Case 5]
+
+**ID Use Case:** *[UC01 sesuai SKPL]*  
+**Nama Use Case:** *[Nama use case sesuai SKPL]*
+
+### 3.5.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.5. Identifikasi Kelas Use Case [UC01]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
+| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
+| ... | *...* | *...* |
+
+### 3.5.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC01]</i>
+</p>
+
+- **Skenario Alternatif [Nomor]: [Nama Skenario]**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+</p>
+
+### 3.5.3 Diagram Kelas
+
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+</p>
+
+## 3.6 Use Case [Nama Use Case 6]
+
+**ID Use Case:** *[UC01 sesuai SKPL]*  
+**Nama Use Case:** *[Nama use case sesuai SKPL]*
+
+### 3.6.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.6. Identifikasi Kelas Use Case [UC01]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
+| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
+| ... | *...* | *...* |
+
+### 3.6.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC01]</i>
+</p>
+
+- **Skenario Alternatif [Nomor]: [Nama Skenario]**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+</p>
+
+### 3.6.3 Diagram Kelas
+
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+</p>
+
+## 3.X Use Case XX
+
 Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
 
 <p align="center">
@@ -257,11 +525,6 @@ Pada diagram, pastikan:
 - Relasi antarkelas (asosiasi, agregasi, komposisi, generalisasi, dan dependensi) digambarkan lengkap dengan multiplisitas.
 - Semua operasi yang dipanggil pada sequence diagram 3.1.2 (skenario normal dan alternatif) ada pada kelas yang bersangkutan.
 - Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
-
-## 3.2 Use Case XX
-
-Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 3.1
-
 <br>
 
 ---
