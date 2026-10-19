@@ -201,53 +201,69 @@ Model Logical View ini dipilih karena *LaporKota* memiliki tiga peran dengan hak
 
 # BAB 3: Realisasi Use Case
 
-## 3.1 Use Case [Nama Use Case 1]
+## 3.1 Use Case Mengirim Laporan Kerusakan
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** UC01  
+**Nama Use Case:** Mengirim Laporan Kerusakan
 
 ### 3.1.1 Identifikasi Kelas
 
-Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+Tabel 3.1 memetakan kelas perancangan yang terlibat dalam realisasi UC01 ke kelas analisis pada SKPL. Kelas analisis Warga direalisasikan sebagai kelas perancangan User dengan atribut role bernilai "Warga", karena akun ketiga aktor dikelola oleh satu kelas yang sama.
 
-Tabel 3.1. Identifikasi Kelas Use Case [UC01]
+Tabel 3.1. Identifikasi Kelas Use Case UC01
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| ... | *...* | *...* |
+| 1 | LaporPage | C13 - LaporPage |
+| 2 | LaporanController | C19 - LaporanController |
+| 3 | NotifikasiController | C25 - NotifikasiController |
+| 4 | User | C01 - Warga |
+| 5 | Laporan | C04 - Laporan |
+| 6 | Lokasi | C05 - Lokasi |
+| 7 | Foto | C06 - Foto |
+| 8 | Video | C11 - Video |
+| 9 | Notifikasi | C10 - Notifikasi |
 
 ### 3.1.2 Sequence Diagram
-
-Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
 
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram UC01 Skenario Normal" src="./assets/diagram/uc01-sd-normal.png" width="100%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01]</i>
+<i>Gambar 3. Sequence Diagram UC01 Mengirim Laporan Kerusakan</i>
 </p>
 
-- **Skenario Alternatif [Nomor]: [Nama Skenario]**
+
+- **Skenario Alternatif 1: Foto/Video Tidak Valid**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram UC01 Alternatif 1" src="./assets/diagram/uc01-sd-alt1.png" width="90%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 4. Sequence Diagram UC01 - Foto/Video Tidak Valid</i>
 </p>
+
+
+
+- **Skenario Alternatif 2: Lokasi di Luar Daerah Penanganan**
+
+<p align="center">
+<img alt="Sequence Diagram UC01 Alternatif 2" src="./assets/diagram/uc01-sd-alt2.png" width="90%">
+</p>
+<p align="center">
+<i>Gambar 5. Sequence Diagram UC01 - Lokasi di Luar Daerah Penanganan</i>
+</p>
+
 
 ### 3.1.3 Diagram Kelas
 
-
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+<img alt="Diagram Kelas UC01" src="./assets/diagram/uc01-class.png" width="100%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar 6. Diagram Kelas Mengirim Laporan Kerusakan</i>
 </p>
 
 ## 3.2 Use Case [Nama Use Case 2]
