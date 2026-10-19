@@ -114,6 +114,19 @@ Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut, dengan mak
 
 Sebutkan *operating system*, DBMS, *development tools*, *filing system*, dan bahasa pemrograman yang digunakan.
 
+| Komponen | Spesifikasi |
+| :--- | :--- |
+| *Server* | *Lokal (localhost)* |
+| *Client* | *Google Chrome* |
+| *DBMS* | *PostgreSQL 15+* |
+| *OS* | *Windows 11* |
+| *Bahasa Pemrograman* | *Typescript* |
+| *API* | *REST API* |
+| *filing system* | *NTFS* |
+| *Code Editor / IDE* | *Visual Studio Code* |
+| *Package Manager* | *npm* |
+| *Version Control* | *Git* |
+
 ## 2.2 Style/Pattern Arsitektur Acuan
 
 Tentukan *architectural style* atau *pattern* yang menjadi acuan aplikasi, misalnya *layered architecture*, *client-server*, *repository*, *pipe and filter*, atau MVC (*Model-View-Controller*).
