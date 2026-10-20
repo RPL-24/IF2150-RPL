@@ -475,53 +475,68 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
 </p>
 
-## 3.6 Use Case [Nama Use Case 6]
+## 3.6 Use Case Memantau Status Laporan
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** *UC06*  
+**Nama Use Case:** *Memantau Status Laporan*
 
 ### 3.6.1 Identifikasi Kelas
 
 Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
 
-Tabel 3.6. Identifikasi Kelas Use Case [UC01]
+Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| ... | *...* | *...* |
+| 1 | StatusLaporanPage | C18 - StatusLaporanPage |
+| 2 | StatusController | C24 - StatusController |
+| 3 | NotifikasiController | C25 - NotifikasiController |
+| 4 | User | C01 - Warga |
+| 5 | Laporan | C04 - Laporan |
+| 6 | Lokasi | C05 - Lokasi |
+| 7 | Foto | C06 - Foto |
+| 8 | Video | C11 - Video |
+| 9 | Upvote | C07 - Upvote |
+| 10 | HasilPerbaikan | C08 - HasilPerbaikan |
+| 11 | Notifikasi | C10 - Notifikasi |
 
 ### 3.6.2 Sequence Diagram
-
-Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
 
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram UC06" src="./assets/diagram/UC-06-CD.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01]</i>
+<i>Gambar X. Sequence Diagram UC06</i>
 </p>
 
-- **Skenario Alternatif [Nomor]: [Nama Skenario]**
+- **Skenario Alternatif 1: Memantau Laporan Publik via Peta Sebaran dan Memberikan Dukungan (Upvote)**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram UC06-Alt1" src="./assets/diagram/UC-06-CD-Alt1.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar X. Sequence Diagram UC06 - Memantau Laporan Publik via Peta Sebaran dan Memberikan Dukungan (Upvote)</i>
+</p>
+
+- **Skenario Alternatif 2: Memantau Laporan yang Berstatus "Ditolak"**
+
+<p align="center">
+<img alt="Sequence Diagram UC06-Alt2" src="./assets/diagram/UC-06-CD-Alt2.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC06 - Laporan Berstatus "Ditolak"</i>
 </p>
 
 ### 3.6.3 Diagram Kelas
 
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+<img alt="Diagram Kelas Memantau Status Laporan" src="./assets/diagram/UC-06-CD.webp" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar X. Diagram Kelas Memantau Status Laporan</i>
 </p>
 
 ## 3.X Use Case XX
