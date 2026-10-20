@@ -149,6 +149,9 @@
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | *18-10-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan realisasi UC04* | *2* | *Done* | Masih sedikit bingung dengan pembuatan Sequence Diagram & Perlu penyesuaian lagi untuk tipe data & parameter operasi kelas karena belum ditentukan sebelumnya | 
 | *19-10-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan realisasi UC03* | *1 | *Done* | - |
+| *20-10-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan Logo* | *2 | *Done* | - |
+| *21-10-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan realisasi UC05* | *2 | *Done* | - |
+
 
 ---
 
