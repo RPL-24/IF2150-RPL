@@ -23,6 +23,12 @@
 
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
+* [Milestone 2](#milestone-2)
+* [Milestone 3](#milestone-3)
+* [Milestone 4](#milestone-4)
+* [Milestone 5](#milestone-5)
+* [Milestone 6](#milestone-6)
+* [Milestone 7](#milestone-7)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -123,7 +129,7 @@
 
 
 ### Milestone 6
-**Periode:** 2-10-2026 - 7-10-2026 
+**Periode:** 7-10-2026 - 21-10-2026 
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
@@ -135,7 +141,21 @@
 | *7-10-2026* | *Muhammad Atallah Ramadhan* | *Mengerjakan block diagram logical view bab 3.1** | *1.5* | *Done* | - |
 
 
+
+### Milestone 7
+**Periode:** 7-10-2026 - 7-10-2026 
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *18-10-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan realisasi UC04* | *2* | *Done* | Masih sedikit bingung dengan pembuatan Sequence Diagram & Perlu penyesuaian lagi untuk tipe data & parameter operasi kelas karena belum ditentukan sebelumnya | 
+| *19-10-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan realisasi UC03* | *1 | *Done* | - |
+
 ---
+
+
+
+
+
 
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``

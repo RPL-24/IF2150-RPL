@@ -4,32 +4,31 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | *\[Hari\]* |
-| **Tanggal** | *\[DD/MM/YYYY\]* |
-| **Kelas** | *\[Kelas\]* |
-| **Nomor Kelompok** | *\[Nomor Kelompok\]*  |
-| **Nama Kelompok** | *\[Nama Kelompok\]*  |
-| **Nama Perangkat Lunak** | *\[Nama P/L\]*  |
-| **Dokumen** | *\[Nama Dokumen yang diasistensikan\]*  |
+| **Hari** | *Jumat* |
+| **Tanggal** | *02/10/2026* |
+| **Kelas** | *K03* |
+| **Nomor Kelompok** | *G07*  |
+| **Nama Kelompok** | *Siulan*  |
+| **Nama Perangkat Lunak** | *LaporKota*  |
+| **Dokumen** | *K03_G07_APL: Arsitektur Perangkat Lunak*  |
 
 ### Anggota Kelompok
 
 | NIM | Nama |
 | --- | --- |
-| *\[NIM 1\]* | *\[Nama Anggota 1\]* |
-| *\[NIM 2\]* | *\[Nama Anggota 2\]* |
-| *\[NIM 3\]* | *\[Nama Anggota 3\]* |
-| *\[NIM 4\]* | *\[Nama Anggota 4\]* |
-| *\[NIM 5\]* | *\[Nama Anggota 5\]* |
+| *13525051* | *Rafi Pradipta Andira Sulistyo* |
+| *13525105* | *Pasaribu Fritz T.A.M.* |
+| *13525075* | *Bagas Anugrah Putra* |
+| *13525099* | *Gede Pranajayanta Suputra* |
+| *13525015* | *Muhammad Atallah Ramadhan* |
 
 ### Catatan
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. *Arsitektur & model view ga harus cuma pilih 1, tapi bisa hybrid juga*  |
+| 2. *Pilihan gaya/model ga ada yang mutlak salah asal kalian punya alasannya & sadar trade off nya* |
+
 
 **Notes for this section:**  
 *Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
@@ -38,7 +37,7 @@
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/foto-asistensi.jpg" width="100%">
+  <img src="./assets/foto-asistensi-m6.png" width="100%">
 </p>
 
 <p align="center">

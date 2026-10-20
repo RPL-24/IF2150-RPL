@@ -577,10 +577,30 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *[C01]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *[C02]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *[C03]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *...* | *...* | *...* | *...* |
+| *C01* | *User* | *Atribut* | *Metode* |
+| *C02* | *Laporan* | *Atribut* | *Metode* |
+| *C03* | *Lokasi* | *Atribut* | *Metode* |
+| *C04* | *Foto* | *Atribut* | *Metode* |
+| *C05* | *Video* | *Atribut* | *Metode* |
+| *C06* | *Upvote* | *Atribut* | *Metode* |
+| *C07* | *ListTugas* | *Atribut* | *Metode* |
+| *C08* | *HasilPerbaikan* | *Atribut* | *Metode* |
+| *C09* | *Evaluasi* | *Atribut* | *Metode* |
+| *C10* | *Notifikasi* | *Atribut* | *Metode* |
+| *C11* | *LaporPage* | *Atribut* | *Metode* |
+| *C12* | *ValidasiPage* | *Atribut* | *Metode* |
+| *C13* | *PenugasanPage* | *Atribut* | *Metode* |
+| *C14* | *HasilPerbaikanForm* | *Atribut* | *Metode* |
+| *C15* | *EvaluasiPage* | *Atribut* | *Metode* |
+| *C16* | *StatusLaporanPage* | *Atribut* | *Metode* |
+| *C17* | *LaporanController* | *Atribut* | *Metode* |
+| *C18* | *ValidasiController* | *Atribut* | *Metode* |
+| *C19* | *PenugasanController* | *Atribut* | *Metode* |
+| *C20* | *PerbaikanController* | *Atribut* | *Metode* |
+| *C21* | *EvaluasiController* | *Atribut* | *Metode* |
+| *C22* | *StatusController* | *Atribut* | *Metode* |
+| *C23* | *NotifikasiController* | *Atribut* | *Metode* |
+
 
 <br>
 
@@ -594,6 +614,26 @@ Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *...* | *...* |
+| *[C01 - User]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C02 - Laporan]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C03 - Lokasi]* | *[UC01 - Mengirim Laporan Kerusakan], [UC06 - Memantau Status Laporan]* |
+| *[C04 - Foto]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C05 - Video]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C06 - Upvote]* | *[UC06 - Memantau Status Laporan]* |
+| *[C07 - ListTugas]* | *[UCXX - Nama]* |
+| *[C08 - HasilPerbaikan]* | *[UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C09 - Evaluasi]* | *[UCXX - Nama]* |
+| *[C10 - Notifikasi]* | *[UC01 - Mengirim Laporan Kerusakan]* |
+| *[C11 - LaporPage]* | *[UC01 - Mengirim Laporan Kerusakan]* |
+| *[C12 - ValidasiPage]* | *[UCXX - Nama]* |
+| *[C13 - PenugasanPage]* | *[UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan]* |
+| *[C14 - HasilPerbaikanForm]* | *[UC04 - Melaporkan Hasil Penugasan]* |
+| *[C15 - EvaluasiPage]* | *[UCXX - Nama]* |
+| *[C16 - StatusLaporanPage]* | *[UC06 - Memantau Status Laporan]* |
+| *[C17 - LaporanController]* | *[UC01 - Mengirim Laporan Kerusakan]* |
+| *[C18 - ValidasiController]* | *[UCXX - Nama]* |
+| *[C19 - PenugasanController]* | *[UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan]* |
+| *[C20 - PerbaikanController]* | *[UC04 - Melaporkan Hasil Penugasan]* |
+| *[C21 - EvaluasiController]* | *[UCXX - Nama]* |
+| *[C22 - StatusController]* | *[UC06 - Memantau Status Laporan]* |
+| *[C23 - NotifikasiController]* | *[UCXX - Nama]* |
