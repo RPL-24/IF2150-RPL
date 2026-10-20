@@ -26,10 +26,9 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. *Untuk Class Diagram, ikutin ketentuan di PPT Asistensi Akbar aja yaitu ada tipe data & parameternya. Contoh diagram  di template cuma ilustrasi bentuk umum*  |
+| 2. (Opsional) tipe data & nama method bisa menyesuaikan bahasa pemrograman yang akan dipakai nantinya |
+| 3. Message di Sequence Diagram pastikan konsisten dengan Diagram Kelas |
 
 **Notes for this section:**  
 *Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
@@ -38,7 +37,7 @@
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/foto-asistensi.jpg" width="100%">
+  <img src="./assets/foto-asistensi-m7.png" width="100%">
 </p>
 
 <p align="center">
