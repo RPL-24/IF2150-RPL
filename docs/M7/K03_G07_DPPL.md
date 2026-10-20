@@ -577,10 +577,30 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *[C01]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *[C02]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *[C03]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *...* | *...* | *...* | *...* |
+| *C01* | *User* | *Atribut* | *Metode* |
+| *C02* | *Laporan* | *Atribut* | *Metode* |
+| *C03* | *Lokasi* | *Atribut* | *Metode* |
+| *C04* | *Foto* | *Atribut* | *Metode* |
+| *C05* | *Video* | *Atribut* | *Metode* |
+| *C06* | *Upvote* | *Atribut* | *Metode* |
+| *C07* | *ListTugas* | *Atribut* | *Metode* |
+| *C08* | *HasilPerbaikan* | *Atribut* | *Metode* |
+| *C09* | *Evaluasi* | *Atribut* | *Metode* |
+| *C10* | *Notifikasi* | *Atribut* | *Metode* |
+| *C11* | *LaporPage* | *Atribut* | *Metode* |
+| *C12* | *ValidasiPage* | *Atribut* | *Metode* |
+| *C13* | *PenugasanPage* | *Atribut* | *Metode* |
+| *C14* | *HasilPerbaikanForm* | *Atribut* | *Metode* |
+| *C15* | *EvaluasiPage* | *Atribut* | *Metode* |
+| *C16* | *StatusLaporanPage* | *Atribut* | *Metode* |
+| *C17* | *LaporanController* | *Atribut* | *Metode* |
+| *C18* | *ValidasiController* | *Atribut* | *Metode* |
+| *C19* | *PenugasanController* | *Atribut* | *Metode* |
+| *C20* | *PerbaikanController* | *Atribut* | *Metode* |
+| *C21* | *EvaluasiController* | *Atribut* | *Metode* |
+| *C22* | *StatusController* | *Atribut* | *Metode* |
+| *C23* | *NotifikasiController* | *Atribut* | *Metode* |
+
 
 <br>
 
