@@ -68,8 +68,6 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *BaaS* | *Backend-as-a-Service, layanan cloud yang menyediakan infrastruktur backend siap pakai seperti basis data, autentikasi, dan komunikasi real-time.* |
 
 ## 1.4 Aturan Penomoran
-Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya, jangan membuat pola baru di dokumen ini.
-
 Tabel 1.4. Aturan Penomoran
 
 | Hal/Bagian | Penomoran | Keterangan |
@@ -166,7 +164,7 @@ Perangkat lunak berinteraksi dengan komponen eksternal berikut:
 1. *Registrasi akun hanya dapat dilakukan menggunakan email yang berdomain institusi universitas yang valid.*
 2. *Kapasitas peserta dalam setiap sesi belajar dibatasi minimal satu partisipan dan maksimal dua puluh orang partisipan.*
 3. *Sistem mencegah Tutor untuk membuat dua sesi pada rentang waktu yang saling bertabrakan (overlapping).*
-4. *Ruang obrolan grup (group chat) bersifat sementara dan datanya otomatis dinonaktifkan serta dibersihkan dari sistem 24–48 jam setelah sesi belajar berakhir.*
+4. *Ruang obrolan grup (group chat) bersifat sementara dan datanya otomatis dinonaktifkan serta dibersihkan dari sistem 48 jam setelah sesi belajar berakhir.*
 5. *Perangkat lunak beroperasi pada peramban web browser dan memerlukan koneksi internet aktif.*
 6. *Kata sandi pengguna wajib dienkripsi menggunakan fungsi hashing kriptografi yang aman (seperti bcrypt atau Argon2) sebelum disimpan dalam basis data, dan tidak disimpan dalam bentuk plain-text.*
 7. *Pengelolaan data pribadi pengguna harus sesuai dengan UU No. 27 Tahun 2022 tentang Perlindungan Data Pribadi (UU PDP) dan UU No. 1 Tahun 2024 (UU ITE).*
@@ -831,8 +829,8 @@ Tabel 3.2. Kebutuhan Non-Fungsional
  
 #### Identifikasi Kelas
  
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| :--- | :--- | :--- | :--- |
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
 | *C02* | *Mentor* | *Kelas turunan dari User (Entity) yang memiliki daftar riwayat sesi.* |
 | *C03* | *Mentee* | *Kelas turunan dari User (Entity) yang memiliki daftar riwayat sesi.* |
 | *C04* | *Session* | *Kelas entitas tunggal (Entity) yang rinciannya ditampilkan di dalam riwayat.* | 
@@ -974,7 +972,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | *C19* | *ParticipantSessionPage* | *Kelas turunan dari SessionPage tempat Mentee dapat membatalkan untuk mengikuti sesi* |
 | *C07* | *SessionHistory* | *Kelas yang menyimpan kumpulan riwayat sesi milik seorang pengguna dengan mengelompokkannya berdasarkan status (Berlangsung, Terlaksana, Tidak Terlaksana).* |
 | *C13* | *SessionControl* | *Kelas pengontrol yang menangani tabrakan jadwal, menjalankan algoritma matchmaking, dan memproses pendaftaran atau pembuatan sesi.* |
-| *C01* | *Mentee* | *Kelas turunan dari User yang merepresentasikan siswa. Memiliki hak untuk mencari rekomendasi sesi, mendaftarkan ke sesi, serta membatalkan ikutsertaan sesi* |
+| *C03* | *Mentee* | *Kelas turunan dari User yang merepresentasikan siswa. Memiliki hak untuk mencari rekomendasi sesi, mendaftarkan ke sesi, serta membatalkan ikutsertaan sesi* |
  
 #### Diagram Kelas
  
@@ -1128,7 +1126,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
  
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C01* | **User* | *userID, email, password* | *isActive()* |
+| *C01* | *User* | *userID, email, password* | *isActive()* |
 | *C02* | *Mentor* | *attendedSessions* | *inherit dari user* |
 | *C03* | *Mentee* | *attendedSessions* | *inherit dari user* |
 | *C04* | *Session* | *sessionID, topic, schedule, format, capacity, userList, status* | *getSessionDetails()* |
@@ -1208,7 +1206,8 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | *C23* | *PopUpNotification* | *-* | *markAsRead(), showContent(), getTime(), openApp()* |
 | *C24* | *HistoryPage* | *historyList* | *displayHistoryList(), showEmptyState()* |
 
----# BAB 6: Traceability
+---
+# BAB 6: Traceability
 Matriks keterlacakan berikut mencocokkan setiap Kebutuhan Fungsional (KF), Use Case (UC), dan Kelas yang saling berkaitan dan mengimplementasikan kebutuhan tersebut.
 
 | ID Kelas | ID Use Case | ID KF |
@@ -1239,6 +1238,3 @@ Matriks keterlacakan berikut mencocokkan setiap Kebutuhan Fungsional (KF), Use C
 | *C24* | *UC06* | *KF11, KF18* |
 
 ---
-
-# Referensi
-(TO BE FILLED)
