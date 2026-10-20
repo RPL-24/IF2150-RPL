@@ -794,7 +794,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | *C04* | *Antrean* | *antreanId, restoranId, status* | *getFrontCustomer(), dequeueCustomer(), getStatus(), updateStatus()* |
 | *C06* | *Pesanan* | *pesananId, daftarItem, isPreOrder* | *getDetailPesanan()* |
 | *C09* | *TiketAntrean* | *idTiket, nomorUrut, tipeAntrean, waktuTerbit, statusAntrean, estimasiWaktuTunggu* | *generateNomorAntrean(), cetakRincianTiket(), getDetailTiket(), updateStatusTiket()* |
-| *C16* | *KelolaAntreanController* | *timer* | *getAntrean()* |
+| *C16* | *KelolaAntreanController* | *timer* | *getAntrean(), processDequeue(), mulaiTimer()* |
 | *C17* | *KonfirmasiDequeuePage* | *message* | *showConfirmationModal(), hideModal(), onConfirm(), onCancel()* |
 | *C18* | *KelolaAntreanPage* | *queueListUI* | *displayDashboard(antrean: Antrean), dequeue()* |
 
@@ -817,7 +817,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | *C02* | *Restoran* | *restoranId, namaRestoran* | *getPengaturan()* |
 | *C20* | *Kuota* | *kuotaMaksimum, kapasitasMeja, statusAntrean* | *updateKapasitas(), isAntreanTutup()* |
 | *C21* | *PengaturanKuotaController* | *kuotaInput, mejaInput* | *displaySettings(), onSaveSettings(), showErrorPeringatan()* |
-| *C22* | *PengaturanKuotaPage* | *-* | *handleViewSettings(), handleSaveSettings(), validateInput()* |
+| *C22* | *PengaturanKuotaPage* | *inputKuota, inputMeja* | *handleViewSettings(), handleSaveSettings(), validateInput()* |
 
 ### 5.2.8 Use Case UC08
 
@@ -836,9 +836,9 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
 | *C02* | *Restoran* | *restoranId, namaRestoran* | *getDaftarMenu()* |
-| *C03* | *Menu* | *menuId, namaMenu, harga, stok* | *updateStok(), updateInfoMenu(), isTersedia()* |
+| *C03* | *Menu* | *menuId, namaMenu, harga, stok* | *updateStok(), updateInfoMenu(), isTersedia(), hapusMenu()* |
 | *C23* | *PengaturanMenu* | *menuInput, stokInput, hargaInput* | *displayDaftarMenu(), showFormTambahMenu(), onSaveMenu(), onDeleteMenu()* |
-| *C24* | *KelolaMenuController* | *...* | *handleFetchMenu(), handleAddMenu(), handleUpdateMenu(), handleDeleteMenu()* |
+| *C24* | *KelolaMenuController* | *...* | *handleFetchMenu(), handleFetchMenuDetail(), handleAddMenu(), handleUpdateMenu(), handleDeleteMenu()* |
 
 ### 5.2.9 Use Case UC09
 
@@ -999,7 +999,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | :--- | :--- | :--- | :--- |
 | *C01* | *Pelanggan* | *pelangganId, nama, nomorAntrean, noHp, idAkun, email* | *getDetails(), cariRestoran(), pilihMenu(), pilihMetodeBayar(), konfirmasiPembayaran(), lihatStatusAntrean(), accountRegister(), kirimKeluhan()* |
 | *C02* | *Restoran* | *restoranId, namaRestoran, kategori, ratingRerata, daftarUlasan, emailKontak, statusAktif* | *getDetailRestoran(), getMenu(), getAntrean(), ajukanPendaftaran(), getPengaturan(), getDaftarMenu(), showDashboard(), accountRegister(), setSoftDelete(), purgeData()* |
-| *C03* | *Menu* | *menuId, namaMenu, harga, deskripsiMenu, stok* | *getInfoMenu(), cekStok(), kurangiStok(), tambahMenu(), updateStok(), updateInfoMenu(), isTersedia()* |
+| *C03* | *Menu* | *menuId, namaMenu, harga, deskripsiMenu, stok* | *getInfoMenu(), cekStok(), kurangiStok(), tambahMenu(), updateStok(), updateInfoMenu(), isTersedia(), hapusMenu()* |
 | *C04* | *Antrean* | *antreanId, restoranId, nomorDilayani, totalAntrean, estimasiWaktuTunggu, statusAntrean* | *getFrontCustomer(), getEstimasiWaktu(), getDetailAntrean(), updateStatus(), dequeueCustomer(), getPesananPreOrder(), getQueueStatus(), updateMenu()* |
 | *C05* | *Keranjang* | *idKeranjang, daftarMenu, totalEstimasiHarga* | *tambahItem(), hapusItem(), hitungTotal(), kosongkanKeranjang()* |
 | *C06* | *Pesanan* | *pesananId, modePemesanan, jumlahRombongan, tanggalBooking, slotWaktuBooking, totalHarga, statusPemesanan* | *validasiBooking(), buatTagihan(), batalkanPesanan(), updateStatus(), getDetailPesanan(), showOrderDetails()* |
@@ -1012,7 +1012,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | *C13* | *DokumenVerifikasi* | *idDokumen, jenisDokumen* | *unggahDokumen(), validasiFormat()* |
 | *C14* | *Admin* | *idAdmin, nama, emailAdmin* | 8tinjauPengajuan(), accountRegister(), lihatKeluhan(), konfirmasiPenghapusan()* |
 | *C15* | *NotifikasiEmail* | *penerima, isiPesan, jenis* | *kirimEmail()* |
-| *C16* | *KelolaAntreanController* | *timer* | *getAntrean(), processDequeue()* |
+| *C16* | *KelolaAntreanController* | *timer* | *getAntrean(), processDequeue(),  mulaiTimer()* |
 | *C17* | *KonfirmasiDequeuePage* | *message* | *showConfirmationModal(), hideModal(), onConfirm(), onCancel()* |
 | *C18* | *KelolaAntreanPage* | *queueListUI* | *displayDashboard(antrean: Antrean), dequeue()* |
 | *C19* | *DashboardAntreanPage* | *daftarAntrean, statusAntrean* | *displayQueue(), updateQueueStatus()* |
@@ -1020,7 +1020,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | *C21* | *PengaturanKuotaController* | *kuotaInput, mejaInput* | *displaySettings(), onSaveSettings(), showErrorPeringatan()* |
 | *C22* | *PengaturanKuotaPage* | *inputKuota, inputMeja* | *handleViewSettings(), handleSaveSettings(), validateInput()* |
 | *C23* | *PengaturanMenuPage* | *menuInput, stokInput, hargaInput* | *displayDaftarMenu(), showFormTambahMenu(), onSaveMenu(), onDeleteMenu()* |
-| *C24* | *KelolaMenuController* | *menuData* | *handleFetchMenu(), handleAddMenu(), handleUpdateMenu(), handleDeleteMenu()* |
+| *C24* | *KelolaMenuController* | *menuData* | *handleFetchMenu(), handleFetchMenuDetail(), handleAddMenu(), handleUpdateMenu(), handleDeleteMenu()* |
 | *C25* | *Pengguna* | *username, password, idPengguna, email, role* | *validateAccount(), logout(), getUserInfo(), saveCredentials()* |
 | *C26* | *HalamanProfilPage* | *idPengguna, namaUser* | *tekanTombolLogout()* |
 | *C27* | *KonfirmasiLogoutPage* | *pesanKonfirmasi* | *konfirmasiYa(), konfirmasiBatal()* |
