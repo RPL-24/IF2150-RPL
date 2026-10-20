@@ -533,7 +533,7 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 
 
 <p align="center">
-<img alt="Diagram Kelas Memantau Status Laporan" src="./assets/diagram/UC-06-CD.webp" width="35%">
+<img alt="Diagram Kelas Memantau Status Laporan" src="./assets/diagram/UC-06-CD.webp" width="70%">
 </p>
 <p align="center">
 <i>Gambar X. Diagram Kelas Memantau Status Laporan</i>
