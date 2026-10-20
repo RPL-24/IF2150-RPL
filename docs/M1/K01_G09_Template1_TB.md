@@ -102,10 +102,8 @@ Ketentuan Hukum:
 
 ## 3.1 Identifikasi Aktor
 
-Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan sistem solusi yang kalian kembangkan. Berikan penjelasan singkat mengenai peran dan karakteristik dari masing-masing aktor tersebut.
-
-| Aktor  | Deskripsi                                                                                                                                                                                                                       |
-| :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Aktor  | Deskripsi|
+| :----- | :------- |
 | Tutor  | _User yang mendaftarkan materi, Menentukan ketersediaan waktu dan kapasitas peserta per sesi, lalu memberi materi pada sesi yang terbentuk. Satu orang dapat berperan sebagai Tutor sekaligus Mentee untuk materi yang berbeda_ |
 | Mentee | _User yang mendaftarkan materi yang ingin dipelajarinya beserta ketersediaan waktunya, lalu mengikuti sesi belajar bersama Tutor atau sesama Mentee_                                                                            |
 | Sistem | _Menjalankan pencocokan tutor dan mentee secara terjadwal berdasarkan materi dan waktu, serta mencatat keterlaksanaan sesi_                                                                                                     |
