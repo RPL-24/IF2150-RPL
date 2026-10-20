@@ -594,6 +594,26 @@ Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *...* | *...* |
+| *[C01 - User]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C02 - Laporan]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C03 - Lokasi]* | *[UC01 - Mengirim Laporan Kerusakan], [UC06 - Memantau Status Laporan]* |
+| *[C04 - Foto]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C05 - Video]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C06 - Upvote]* | *[UC06 - Memantau Status Laporan]* |
+| *[C07 - ListTugas]* | *[UCXX - Nama]* |
+| *[C08 - HasilPerbaikan]* | *[UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C09 - Evaluasi]* | *[UCXX - Nama]* |
+| *[C10 - Notifikasi]* | *[UC01 - Mengirim Laporan Kerusakan]* |
+| *[C11 - LaporPage]* | *[UC01 - Mengirim Laporan Kerusakan]* |
+| *[C12 - ValidasiPage]* | *[UCXX - Nama]* |
+| *[C13 - PenugasanPage]* | *[UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan]* |
+| *[C14 - HasilPerbaikanForm]* | *[UC04 - Melaporkan Hasil Penugasan]* |
+| *[C15 - EvaluasiPage]* | *[UCXX - Nama]* |
+| *[C16 - StatusLaporanPage]* | *[UC06 - Memantau Status Laporan]* |
+| *[C17 - LaporanController]* | *[UC01 - Mengirim Laporan Kerusakan]* |
+| *[C18 - ValidasiController]* | *[UCXX - Nama]* |
+| *[C19 - PenugasanController]* | *[UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan]* |
+| *[C20 - PerbaikanController]* | *[UC04 - Melaporkan Hasil Penugasan]* |
+| *[C21 - EvaluasiController]* | *[UCXX - Nama]* |
+| *[C22 - StatusController]* | *[UC06 - Memantau Status Laporan]* |
+| *[C23 - NotifikasiController]* | *[UCXX - Nama]* |
