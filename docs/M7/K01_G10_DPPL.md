@@ -8,7 +8,10 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 <br>
 
 ## *antri.in*
-### *[Logo Perangkat Lunak]*
+<p align="center">
+<img alt="Contoh Arsitektur MVC" src="./assets/Logo_Antri_in.png" width="70%"><br>
+</p>
+
 
 ### Untuk: *Angel*
 
