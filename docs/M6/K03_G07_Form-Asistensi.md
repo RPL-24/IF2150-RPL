@@ -10,7 +10,7 @@
 | **Nomor Kelompok** | *G07*  |
 | **Nama Kelompok** | *Siulan*  |
 | **Nama Perangkat Lunak** | *LaporKota*  |
-| **Dokumen** | *K03_G07_DPPL: Desain Perancangan Perangkat Lunak*  |
+| **Dokumen** | *K03_G07_APL: Arsitektur Perangkat Lunak*  |
 
 ### Anggota Kelompok
 
