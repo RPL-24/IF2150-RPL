@@ -505,7 +505,7 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Sequence Diagram UC06" src="./assets/diagram/UC-06-CD.webp" width="50%">
+<img alt="Sequence Diagram UC06" src="./assets/diagram/UC-06-SD.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar X. Sequence Diagram UC06</i>
@@ -514,7 +514,7 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 - **Skenario Alternatif 1: Memantau Laporan Publik via Peta Sebaran dan Memberikan Dukungan (Upvote)**
 
 <p align="center">
-<img alt="Sequence Diagram UC06-Alt1" src="./assets/diagram/UC-06-CD-Alt1.webp" width="50%">
+<img alt="Sequence Diagram UC06-Alt1" src="./assets/diagram/UC-06-SD-Alt1.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar X. Sequence Diagram UC06 - Memantau Laporan Publik via Peta Sebaran dan Memberikan Dukungan (Upvote)</i>
@@ -523,7 +523,7 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 - **Skenario Alternatif 2: Memantau Laporan yang Berstatus "Ditolak"**
 
 <p align="center">
-<img alt="Sequence Diagram UC06-Alt2" src="./assets/diagram/UC-06-CD-Alt2.webp" width="50%">
+<img alt="Sequence Diagram UC06-Alt2" src="./assets/diagram/UC-06-SD-Alt2.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar X. Sequence Diagram UC06 - Laporan Berstatus "Ditolak"</i>
