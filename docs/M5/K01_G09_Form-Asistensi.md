@@ -14,13 +14,13 @@
 
 ### Anggota Kelompok
 
-| NIM | Nama |
-| --- | --- |
+| NIM      | Nama                            |
+| -------- | ------------------------------- |
 | 13525049 | Hugo Daniel Johansen Napitupulu |
-| 13525001 | Matthew Allen Reynaldo |
-| 13525010 | Fabian Amzar Susanto |
-| 13525025 | David Christian |
-| 13525028 | Markus Christiano Simanjutak |
+| 13525001 | Matthew Allen Reynaldo          |
+| 13525010 | Fabian Amzar Susanto            |
+| 13525025 | David Christian                 |
+| 13525028 | Markus Christiano Simanjuntak   |
 
 ### Catatan
 

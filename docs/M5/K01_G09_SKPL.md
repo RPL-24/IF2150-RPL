@@ -16,6 +16,7 @@ Dipersiapkan oleh:
 | --- | --- |
 | Kelas | *K01* |
 | Kelompok | *G09* |
+| Nama Kelompok | *PindahCSUI*|
 
 | NIM | Nama |
 |---|---|
@@ -23,7 +24,7 @@ Dipersiapkan oleh:
 | *13525001* | *Matthew Allen Reynaldo* |
 | *13525010* | *Fabian Amzar Susanto* |
 | *13525025* | *David Christian* |
-| *13525028* | *Markus Christiano Simanjutak* |
+| *13525028* | *Markus Christiano Simanjuntak* |
 ---
 
 ## Daftar Perubahan
