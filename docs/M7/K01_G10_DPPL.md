@@ -129,6 +129,8 @@ Sebutkan *operating system*, DBMS, *development tools*, *filing system*, dan bah
 | *Code Editor / IDE* | *Visual Studio Code* |
 | *Package Manager* | *npm* |
 | *Version Control* | *Git* |
+| *API Testing Tool* | *Postman* |
+| *Database Management Tool* | *pgAdmin* |
 
 ## 2.2 Style/Pattern Arsitektur Acuan
 
