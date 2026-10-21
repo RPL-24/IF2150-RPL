@@ -190,7 +190,6 @@ Diagram dibagi menjadi tiga jalur utama, yaitu View, Controller, dan Model, sesu
 
 ---
 
-
 # BAB 3: Realisasi Use Case
 
 ## 3.1 Use Case UC01
@@ -199,8 +198,6 @@ Diagram dibagi menjadi tiga jalur utama, yaitu View, Controller, dan Model, sesu
 **Nama Use Case:** *Daftar Akun bagi Masyarakat*
 
 ### 3.1.1 Identifikasi Kelas
-
-Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
 
 Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 
@@ -213,12 +210,10 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 
 ### 3.1.2 Sequence Diagram
 
-Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
-
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-01.webp" width="50%">
+<img alt="sequence Diagram UC01" src="./assets/diagram/seqeuence-diagram-01.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 1. Sequence Diagram UC01</i>
@@ -227,84 +222,203 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 - **Skenario Alternatif 1 : Registrasi Gagal saat email sudah terdaftar atau password lemah**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-01.webp" width="50%">
+<img alt="Sequence Diagram Alternatif UC01" src="./assets/diagram/seqeuence-diagram-alt-01.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar 2. Sequence Diagram UC01 - email sudah terdaftar atau password lemah</i>
+<i>Gambar 2. Sequence Diagram Alternatif UC01 - email sudah terdaftar atau password lemah</i>
 </p>
 
 ### 3.1.3 Diagram Kelas
 
-Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
-
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-01.webp" width="35%">
+<img alt="Diagram Kelas UC01" src="./assets/diagram/diagram-kelas-01.webp" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar 3. Diagram Kelas Registrasi Akun Masyarakat</i>
 </p>
-
-Pada diagram, pastikan:
-- Atribut dituliskan beserta visibilitas dan tipe datanya, misalnya `- email: String`.
-- Operasi dituliskan beserta visibilitas, parameter, dan tipe kembaliannya, misalnya `+ login(email: String, password: String): Boolean`.
-- Relasi antarkelas (asosiasi, agregasi, komposisi, generalisasi, dan dependensi) digambarkan lengkap dengan multiplisitas.
-- Semua operasi yang dipanggil pada sequence diagram 3.1.2 (skenario normal dan alternatif) ada pada kelas yang bersangkutan.
-- Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
 
 ## 3.2 Use Case 02
 
 **ID Use Case:** UC02
-**Nama Use Case:** Melakukan Login bagi Masyarakat
+**Nama Use Case:** Login Akun bagi Masyarakat
 
-### 3.1.1 Identifikasi Kelas
+### 3.2.1 Identifikasi Kelas
 
-Tabel 3.2. Identifikasi Kelas Use Case [UC02]
+Tabel 3.2. Identifikasi Kelas Use Case UC02
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
+| 1 | *AutentikasiView* | *LoginMasyarakatPage* |
+| 2 | *AutentikasiController* | *LoginMasyarakatController* |
+| 3 | *Masyarakat* | *Masyarakat*|
 | ... | *...* | *...* |
 
-### 3.1.2 Sequence Diagram
-
-Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+### 3.2.2 Sequence Diagram
 
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram UC02" src="./assets/diagram/seqeuence-diagram-02.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01]</i>
+<i>Gambar 4. Sequence Diagram UC02</i>
 </p>
 
-- **Skenario Alternatif [Nomor]: [Nama Skenario]**
+- **Skenario Alternatif 1: Kesalahan Kredensial atau Akun Tidak Terdaftar**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram Alternatif" src="./assets/diagram/seqeuence-diagram-alt-02.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 5. Sequence Diagram Alternatif UC02 - Login Akun bagi Masyarakat</i>
 </p>
 
-### 3.1.3 Diagram Kelas
-
-Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+### 3.2.3 Diagram Kelas
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-02.webp" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar 6. Diagram Kelas Login Akun bagi Masyarakat</i>
 </p>
 
-Pada diagram, pastikan:
-- Atribut dituliskan beserta visibilitas dan tipe datanya, misalnya `- email: String`.
-- Operasi dituliskan beserta visibilitas, parameter, dan tipe kembaliannya, misalnya `+ login(email: String, password: String): Boolean`.
-- Relasi antarkelas (asosiasi, agregasi, komposisi, generalisasi, dan dependensi) digambarkan lengkap dengan multiplisitas.
-- Semua operasi yang dipanggil pada sequence diagram 3.1.2 (skenario normal dan alternatif) ada pada kelas yang bersangkutan.
-- Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
+## 3.3 Use Case UC03
+
+**ID Use Case:** *UC03*  
+**Nama Use Case:** *Registrasi Akun bagi Mitra Pengacara*
+
+### 3.3.1 Identifikasi Kelas
+
+Tabel 3.3. Identifikasi Kelas Use Case UC03
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *RegistrasiView* | *RegistrasiMItraPage* |
+| 2 | *RegistrasiController* | *RegistrasiMitraController* |
+| 3 | *MitraPengacara* | *MitraPengacara* |
+| 4 | *DokumenLegalitas* | *DokumenLegalitas* |
+| ... | *...* | *...* |
+
+### 3.3.2 Sequence Diagram
+
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="sequence Diagram UC03" src="./assets/diagram/seqeuence-diagram-03.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 7. Sequence Diagram UC03</i>
+</p>
+
+- **Skenario Alternatif 1 : Registrasi Gagal saat email sudah terdaftar atau password lemah**
+
+<p align="center">
+<img alt="Sequence Diagram Alternatif UC03" src="./assets/diagram/seqeuence-diagram-alt-03.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 8. Sequence Diagram Alternatif UC03 - email sudah terdaftar atau password lemah</i>
+</p>
+
+### 3.3.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC03" src="./assets/diagram/diagram-kelas-03.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 8. Diagram Kelas Registrasi Akun Masyarakat</i>
+</p>
+
+## 3.4 Use Case 04
+
+**ID Use Case:** UC04
+**Nama Use Case:** Login Akun bagi Mitra Pengacara
+
+### 3.4.1 Identifikasi Kelas
+
+Tabel 3.4. Identifikasi Kelas Use Case UC04
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *AutentikasiView* | *LoginMitraPage* |
+| 2 | *AutentikasiController* | *LoginMitraController* |
+| 3 | *MitraPengacara* | *MitraPengacara*|
+| ... | *...* | *...* |
+
+### 3.4.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC04" src="./assets/diagram/seqeuence-diagram-04.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 9. Sequence Diagram UC04</i>
+</p>
+
+- **Skenario Alternatif 1: Akun belum terverifikasi atau Kredensial Salah**
+
+<p align="center">
+<img alt="Sequence Diagram Alternatif UC04" src="./assets/diagram/seqeuence-diagram-alt-04.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 10. Sequence Diagram Alternatif UC04 - Login Akun bagi Mitra Pengacara</i>
+</p>
+
+### 3.4.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas Login sebagai Mitra Pengacara" src="./assets/diagram/diagram-kelas-04.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 11. Diagram Kelas Login Akun bagi Mitra Pengacara</i>
+</p>
+
+
+## 3.5 Use Case 05
+
+**ID Use Case:** UC05
+**Nama Use Case:** Status Registrasi Akun Mitra Pengacara
+
+### 3.5.1 Identifikasi Kelas
+
+Tabel 3.5. Identifikasi Kelas Use Case UC05
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *StatusVerifikasiMitraView* | *StatusVerifikasiMitraPage* |
+| 2 | *VerifikasiMitraViewController* | *VerifikasiMitraViewController* |
+| 3 | *MitraPengacara* | *Mitra Pengacara*|
+| ... | *...* | *...* |
+
+### 3.5.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC05" src="./assets/diagram/seqeuence-diagram-05.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 12. Sequence Diagram UC05</i>
+</p>
+
+- **Skenario Alternatif 1: Belum Pernah Mengajukan pendaftar**
+
+<p align="center">
+<img alt="Sequence Diagram Alternatif" src="./assets/diagram/seqeuence-diagram-alt-05.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 13. Sequence Diagram Alternatif UC05 - Belum Pernah Mengajukan Pendaftaran</i>
+</p>
+
+### 3.5.3 Diagram Kelas
+
+<p align="center">
+<img alt="Status Registrasi" src="./assets/diagram/diagram-kelas-05.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 14. Diagram Kelas Status Registrasi Mitra</i>
+</p>
 
 ## 3.6 Use Case UC06
 
