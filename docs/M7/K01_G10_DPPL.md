@@ -337,7 +337,7 @@ Tabel 3.2. Identifikasi Kelas Use Case [UC02]
 | 7 | *ModelAntrean* | *TiketAntrean* |
 | ... | *...* | *...* |
 
-### 3.3.2 Sequence Diagram
+### 3.2.2 Sequence Diagram
 
 Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
 
@@ -347,15 +347,33 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/SD_UC02_Normal.drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar 6. Sequence Diagram UC03</i>
+<i>Gambar 6. Sequence Diagram UC03 - Skenario Normal</i>
 </p>
 
-### 3.3.3 Diagram Kelas
+- **Skenario Alternatif 1: Pre-Order Takeaway**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/SD_UC02_Alt1.drawio.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 7. Sequence Diagram UC03 - Pre-Order Takeaway</i>
+</p>
+
+- **Skenario Alternatif 2: Booking Tempat**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/" width="50%">
+</p>
+<p align="center">
+<i>Gambar 8. Sequence Diagram UC03 - Booking Tempat</i>
+</p>
+
+### 3.2.3 Diagram Kelas
 
 Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC03 Class Diagram.png" width="35%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/" width="35%">
 </p>
 <p align="center">
 <i>Gambar X. Diagram Kelas UC03</i>
