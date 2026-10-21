@@ -8,7 +8,9 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 <br>
 
 ## LawHub
-### *[Logo Perangkat Lunak]*
+### <p align="center">
+<img alt="Logo_LawHub" src="./assets/Logo_LawHub.png" width="70%">
+</p>
 
 ### Untuk: Mikhael Andrian Yonatan
 
