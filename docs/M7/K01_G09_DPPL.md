@@ -341,6 +341,170 @@ Pada diagram, pastikan:
 
 Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 3.1
 
+## 3.5 Use Case Mengonfirmasi Keterlaksanaan Sesi
+
+**ID Use Case:** *UC05*  
+**Nama Use Case:** *Mengonfirmasi Keterlaksanaan Sesi*
+
+### 3.5.1 Identifikasi Kelas
+
+Kelas *SessionPage* pada SKPL direalisasikan sebagai komponen *SessionView* sesuai Tabel 2.3. Operasi `processSessionConfirmation()` dan `updateSessionStatus()` pada *SessionControl* digabung menjadi satu operasi `processSessionConfirmation()` pada *SessionController*, yang menerima status keterlaksanaan beserta alasan opsional. Konfirmasi dapat dilakukan oleh Mentor maupun Mentee yang terlibat dalam sesi, sehingga pemeriksaan hak akses menggunakan `involves()` pada *Session*.
+
+Tabel 3.5. Identifikasi Kelas Use Case UC05
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *SessionView* | *C17 (SessionPage)* |
+| 2 | *SessionController* | *C13 (SessionControl)* |
+| 3 | *Session* | *C04 (Session)* |
+| 4 | *User* | *C01 (User)* |
+| 5 | *Mentor* | *C02 (Mentor)* |
+| 6 | *Mentee* | *C03 (Mentee)* |
+
+### 3.5.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 Skenario Normal" src="./assets/diagram/seq-uc05-normal.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.5.1. Sequence Diagram UC05 - Skenario Normal</i>
+</p>
+
+Pengguna membuka sesi yang waktunya telah berakhir, lalu *SessionView* menampilkan detail sesi beserta tombol "Terlaksana" dan "Tidak Terlaksana" karena status sesi belum dikonfirmasi. Saat pengguna memilih "Terlaksana", *SessionController* memastikan pengguna terlibat dalam sesi dan sesi memang menunggu konfirmasi, lalu mengubah status *Session* menjadi Selesai beserta waktu konfirmasi. *SessionView* kemudian menampilkan pesan "Status sesi berhasil diperbarui". Sesi berstatus Selesai dapat dilanjutkan dengan pengisian feedback pada UC07.
+
+- **Skenario Alternatif 1: Sesi Ditandai Tidak Terlaksana**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 Skenario Alternatif 1" src="./assets/diagram/seq-uc05-alt1.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.5.2. Sequence Diagram UC05 - Sesi Ditandai Tidak Terlaksana</i>
+</p>
+
+Saat pengguna memilih "Tidak Terlaksana", *SessionView* menampilkan kolom alasan yang bersifat opsional. Setelah pengguna menekan "Kirim", *SessionController* menjalankan pemeriksaan yang sama dengan skenario normal, lalu mengubah status *Session* menjadi Tidak Terlaksana beserta alasan (jika diisi) dan waktu konfirmasi.
+
+### 3.5.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC05" src="./assets/diagram/diagram-uc05.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3.5.3. Diagram Kelas Mengonfirmasi Keterlaksanaan Sesi</i>
+</p>
+
+## 3.6 Use Case Melihat Riwayat Sesi
+
+**ID Use Case:** *UC06*  
+**Nama Use Case:** *Melihat Riwayat Sesi*
+
+### 3.6.1 Identifikasi Kelas
+
+Kelas *HistoryPage* pada SKPL direalisasikan sebagai *HistoryView*. Pada tahap perancangan, *SessionHistory* tidak disimpan sebagai tabel tersendiri, melainkan dibentuk oleh *SessionController* dari daftar *Session* milik atau yang diikuti pengguna dengan status akhir Selesai, Tidak Terlaksana, atau Dibatalkan. *SessionHistory* kemudian mengelompokkan sesi tersebut berdasarkan statusnya untuk ditampilkan.
+
+Tabel 3.6. Identifikasi Kelas Use Case UC06
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *HistoryView* | *C24 (HistoryPage)* |
+| 2 | *SessionView* | *C17 (SessionPage)* |
+| 3 | *SessionController* | *C13 (SessionControl)* |
+| 4 | *Session* | *C04 (Session)* |
+| 5 | *SessionHistory* | *C07 (SessionHistory)* |
+| 6 | *User* | *C01 (User)* |
+| 7 | *Mentor* | *C02 (Mentor)* |
+| 8 | *Mentee* | *C03 (Mentee)* |
+
+### 3.6.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC06 Skenario Normal" src="./assets/diagram/seq-uc06-normal.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.6.1. Sequence Diagram UC06 - Skenario Normal</i>
+</p>
+
+Pengguna menekan "Riwayat", lalu *HistoryView* meminta riwayat ke *SessionController*. *SessionController* mengambil seluruh *Session* milik atau yang diikuti pengguna dengan status akhir Selesai, Tidak Terlaksana, atau Dibatalkan, lalu membentuk objek *SessionHistory* dari daftar tersebut. *HistoryView* menampilkan sesi yang dikelompokkan berdasarkan status melalui `getGroupedByStatus()`. Proses pemuatan dirancang selesai dalam waktu kurang dari 3 detik sesuai KNF05. Saat pengguna memilih salah satu sesi, *SessionView* menampilkan detail sesi tersebut, termasuk peran pengguna, materi, jadwal, dan status.
+
+- **Skenario Alternatif 1: Riwayat Kosong**
+
+<p align="center">
+<img alt="Sequence Diagram UC06 Skenario Alternatif 1" src="./assets/diagram/seq-uc06-alt1.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3.6.2. Sequence Diagram UC06 - Riwayat Kosong</i>
+</p>
+
+Apabila pengguna belum memiliki sesi dengan status akhir, *SessionHistory* yang dibentuk bernilai kosong sehingga `isEmpty()` mengembalikan `true`. *HistoryView* menampilkan pesan "Belum ada sesi".
+
+### 3.6.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC06" src="./assets/diagram/diagram-uc06.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3.6.3. Diagram Kelas Melihat Riwayat Sesi</i>
+</p>
+
+## 3.7 Use Case Memberikan Penilaian Sehabis Sesi
+
+**ID Use Case:** *UC07*  
+**Nama Use Case:** *Memberikan Penilaian Sehabis Sesi*
+
+### 3.7.1 Identifikasi Kelas
+
+Kelas *FeedbackForm* pada SKPL direalisasikan sebagai *FeedbackView*, sedangkan validasi isi feedback dipindahkan dari *FeedbackControl* ke kelas pendukung *Validator*. Sesuai deskripsi kelas pada SKPL dan UC13, feedback diberikan oleh Mentee terhadap sesi yang telah diikutinya. *FeedbackController* memastikan sesi telah selesai, Mentee terdaftar sebagai peserta, dan Mentee belum pernah memberikan feedback untuk sesi tersebut.
+
+Tabel 3.7. Identifikasi Kelas Use Case UC07
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *SessionView* | *C17 (SessionPage)* |
+| 2 | *FeedbackView* | *C20 (FeedbackForm)* |
+| 3 | *FeedbackController* | *C14 (FeedbackControl)* |
+| 4 | *Validator* | *C14 (FeedbackControl), khusus validasi feedback* |
+| 5 | *Session* | *C04 (Session), C07 (SessionHistory)* |
+| 6 | *Feedback* | *C06 (Feedback)* |
+| 7 | *User* | *C01 (User)* |
+| 8 | *Mentor* | *C02 (Mentor)* |
+| 9 | *Mentee* | *C03 (Mentee)* |
+
+### 3.7.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC07 Skenario Normal" src="./assets/diagram/seq-uc07-normal.png" width="90%">
+</p>
+<p align="center">
+<i>Gambar 3.7.1. Sequence Diagram UC07 - Skenario Normal</i>
+</p>
+
+Mentee membuka sesi berstatus Selesai. *SessionView* meminta *FeedbackController* memeriksa kelayakan pemberian feedback, yaitu sesi telah selesai, Mentee terdaftar sebagai peserta, dan Mentee belum pernah memberikan feedback untuk sesi tersebut. Jika layak, *FeedbackView* menampilkan formulir rating dan catatan opsional. Saat Mentee menekan "Kirim", *FeedbackController* mengulang pemeriksaan kelayakan, meminta *Validator* memastikan rating telah diisi, lalu menyimpan *Feedback* baru ke basis data. *FeedbackView* menutup formulir dan menampilkan pesan "Terima kasih atas feedback Anda".
+
+- **Skenario Alternatif 1: Pengguna Tidak Mengisi Form Feedback**
+
+<p align="center">
+<img alt="Sequence Diagram UC07 Skenario Alternatif 1" src="./assets/diagram/seq-uc07-alt1.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.7.2. Sequence Diagram UC07 - Pengguna Tidak Mengisi Form Feedback</i>
+</p>
+
+Mentee menekan "Skip" tanpa mengisi formulir. *FeedbackView* hanya menutup formulir tanpa mengirim permintaan ke *FeedbackController*, sehingga feedback tidak disimpan dan status sesi tetap Selesai.
+
+### 3.7.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC07" src="./assets/diagram/diagram-uc07.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3.7.3. Diagram Kelas Memberikan Penilaian Sehabis Sesi</i>
+</p>
+
 ## 3.8 Use Case Berkomunikasi Menggunakan Grup Obrolan Sementara
 
 **ID Use Case:** *UC08*  
@@ -763,7 +927,7 @@ Apabila `findById()` tidak menemukan pengguna karena ID tidak valid atau akun te
 <i>Gambar 3.15.3. Diagram Kelas Melihat Profil</i>
 </p>
 
-Sumber PlantUML untuk seluruh sequence diagram pada subbab 3.8–3.15 tersedia di folder `assets/diagram/src/`.
+Sumber PlantUML untuk seluruh sequence diagram pada subbab 3.5–3.15 tersedia di folder `assets/diagram/src/`.
 
 <br>
 
@@ -806,13 +970,13 @@ Tabel 5.1. Matriks Kerunutan Kelas terhadap Use Case
 | *C15 - LoginView* | *UC01 - Mendaftarkan Akun dan Autentikasi* |
 | *C16 - ProfileView* | *UC02 - Mengelola Preferensi Profil<br>UC15 - Melihat Profil* |
 | *C11 - DashboardView* | *UC04 - Mencari dan Bergabung ke Sesi<br>UC14 - Membuka Beranda Utama* |
-| *C17, C18, C19 - SessionView* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi* |
+| *C17, C18, C19 - SessionView* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi* |
 | *C20 - FeedbackView* | *UC07 - Memberikan Penilaian Sehabis Sesi* |
 | *C21 - GroupChatView* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara* |
 | *C24 - HistoryView* | *UC06 - Melihat Riwayat Sesi<br>UC13 - Melihat Feedback Sesi* |
 | *C23 - NotificationView* | *UC09 - Menerima Notifikasi Sesi* |
 | *C12 - UserController* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC14 - Membuka Beranda Utama<br>UC15 - Melihat Profil* |
-| *C13 - SessionController* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama* |
+| *C13 - SessionController* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama* |
 | *C14 - FeedbackController* | *UC07 - Memberikan Penilaian Sehabis Sesi<br>UC13 - Melihat Feedback Sesi* |
 | *— - ChatController* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara* |
 | *— - NotificationController* | *UC09 - Menerima Notifikasi Sesi* |
@@ -822,7 +986,7 @@ Tabel 5.1. Matriks Kerunutan Kelas terhadap Use Case
 | *C10 - Profile* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC15 - Melihat Profil* |
 | *C09 - Preference* | *UC02 - Mengelola Preferensi Profil<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC14 - Membuka Beranda Utama<br>UC15 - Melihat Profil* |
 | *C04 - Session* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama* |
-| *C07 - SessionHistory* | *UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi* |
+| *C07 - SessionHistory* | *UC06 - Melihat Riwayat Sesi* |
 | *C05, C08 - GroupChat* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara* |
 | *C06 - Feedback* | *UC07 - Memberikan Penilaian Sehabis Sesi<br>UC13 - Melihat Feedback Sesi* |
 | *C22 - Notification* | *UC09 - Menerima Notifikasi Sesi* |
