@@ -686,6 +686,244 @@ Tabel 3.10.1 Identifikasi Kelas Use Case [UC01]
 <i>Gambar 10. Diagram Kelas UC10</i>
 </p>
 
+## 3.11 Use Case UC11
+
+**ID Use Case:** UC11  
+**Nama Use Case:** Menanggapi Sesi Konsultasi 
+
+### 3.11.1 Identifikasi Kelas
+
+Tabel 3.11.1 Identifikasi Kelas Use Case [UC11]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | KonfirmasiKonsultasiPage | KonfirmasiKonsultasiPage |
+| 2 | SesiKonsultasiController | SesiKonsultasiController |
+| 3 | MitraPengacara | MitraPengacara |
+| 4 | SesiKonsultasi | SesiKonsultasi |
+
+### 3.11.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 11" src="./assets/diagram/sequence-diagram-11.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 35. Sequence Diagram [UC11]</i>
+</p>
+
+- **Skenario Alternatif 1: Mitra menolak permintaan konsultasi**
+
+<p align="center">
+<img alt="SD 11 alt 1" src="./assets/diagram/sequence-diagram-11-alt-1.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 36. Sequence Diagram [UC11] - Mitra menolak permintaan konsultasi</i>
+</p>
+
+- **Skenario Alternatif 2: Mitra tidak merespon dalam waktu tertentu**
+
+<p align="center">
+<img alt="SD 11 alt 2" src="./assets/diagram/sequence-diagram-11-alt-2.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 37. Sequence Diagram [UC11] - Mitra tidak merespon dalam waktu tertentu</i>
+</p>
+
+### 3.11.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 11" src="./assets/diagram/diagram-kelas-11.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 38. Diagram Kelas Menanggapi Sesi Konsultasi</i>
+</p>
+
+## 3.12 Use Case UC12
+
+**ID Use Case:** UC12
+**Nama Use Case:** Melakukan Sesi Konsultasi 
+
+### 3.12.1 Identifikasi Kelas
+
+Tabel 3.12.1 Identifikasi Kelas Use Case [UC12]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | ChatKonsultasiPage | ChatKonsultasiPage |
+| 2 | SesiKonsultasiController | SesiKonsultasiController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | MitraPengacara | MitraPengacara |
+| 5 | Kasus | Kasus |
+| 6 | SesiKonsultasi | SesiKonsultasi |
+| 7 | Pembayaran | Pembayaran |
+
+### 3.12.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 12" src="./assets/diagram/sequence-diagram-12.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 39. Sequence Diagram [UC12]</i>
+</p>
+
+- **Skenario Alternatif 1: Sesi terputus/salah satu pihak tidak merespon**
+
+<p align="center">
+<img alt="SD 12 alt 1" src="./assets/diagram/sequence-diagram-12-alt.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 40. Sequence Diagram [UC12] - Sesi terputus/salah satu pihak tidak merespon</i>
+</p>
+
+### 3.12.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 12" src="./assets/diagram/diagram-kelas-12.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 41. Diagram Kelas Melakukan Sesi Konsultasi</i>
+</p>
+
+## 3.13 Use Case UC13
+
+**ID Use Case:** UC13
+**Nama Use Case:** Memberi Ulasan, Feedback, dan/atau Rating 
+
+### 3.13.1 Identifikasi Kelas
+
+Tabel 3.13.1 Identifikasi Kelas Use Case [UC13]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | UlasanPage | UlasanPage |
+| 2 | UlasanController | UlasanController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | Ulasan | Ulasan |
+
+### 3.13.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 13" src="./assets/diagram/sequence-diagram-13.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 42. Sequence Diagram [UC13]</i>
+</p>
+
+- **Skenario Alternatif 1: Gagal mengirim ulasan**
+
+<p align="center">
+<img alt="SD 13 alt 1" src="./assets/diagram/sequence-diagram-13-alt.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 43. Sequence Diagram [UC13] - Gagal mengirim ulasan</i>
+</p>
+
+### 3.13.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 13" src="./assets/diagram/diagram-kelas-13.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 44. Diagram Kelas Memberi Ulasan, Feedback, dan/atau Rating</i>
+</p>
+
+## 3.14 Use Case UC14 
+
+**ID Use Case:** UC14
+**Nama Use Case:** Melaporkan Pelanggaran Akun 
+
+### 3.14.1 Identifikasi Kelas
+
+Tabel 3.14.1 Identifikasi Kelas Use Case [UC14]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | LaporanAkunPage | LaporanAkunPage |
+| 2 | LaporanController | LaporanController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | Laporan | Laporan |
+
+### 3.14.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 14" src="./assets/diagram/sequence-diagram-14.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 45. Sequence Diagram [UC14]</i>
+</p>
+
+- **Skenario Alternatif 1: Formulir laporan tidak lengkap**
+
+<p align="center">
+<img alt="SD 14 alt 1" src="./assets/diagram/sequence-diagram-14-alt.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 46. Sequence Diagram [UC14] - Formulir laporan tidak lengkap</i>
+</p>
+
+### 3.14.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 14" src="./assets/diagram/diagram-kelas-14.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 47. Diagram Kelas Melaporkan Pelanggaran Akun</i>
+</p>
+
+## 3.15 Use Case UC15
+
+**ID Use Case:** UC15
+**Nama Use Case:** Melaporkan Pelanggaran
+
+### 3.15.1 Identifikasi Kelas
+
+Tabel 3.15.1 Identifikasi Kelas Use Case [UC15]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | LaporanAkunPage | LaporanAkunPage |
+| 2 | LaporanController | LaporanController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | Laporan | Laporan |
+| 5 | Mitra Pengacara | Mitra Pengacara |
+
+### 3.15.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 15" src="./assets/diagram/sequence-diagram-15.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 48. Sequence Diagram [UC15]</i>
+</p>
+
+- **Skenario Alternatif 1: Formulir laporan tidak lengkap**
+
+<p align="center">
+<img alt="SD 15 alt 1" src="./assets/diagram/sequence-diagram-15-alt.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 49. Sequence Diagram [UC15] - Formulir laporan tidak lengkap</i>
+</p>
+
+### 3.15.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 15" src="./assets/diagram/diagram-kelas-15.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 50. Diagram Kelas Melaporkan Pelanggara</i>
+</p>
+
 ## 3.21 Use Case UC21
 
 **ID Use Case:** UC21
