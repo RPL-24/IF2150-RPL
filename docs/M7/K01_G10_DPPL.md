@@ -347,7 +347,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/SD_UC02_Normal.drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar 6. Sequence Diagram UC03 - Skenario Normal</i>
+<i>Gambar 6. Sequence Diagram UC02 - Skenario Normal</i>
 </p>
 
 - **Skenario Alternatif 1: Pre-Order Takeaway**
@@ -356,7 +356,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/SD_UC02_Alt1.drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar 7. Sequence Diagram UC03 - Pre-Order Takeaway</i>
+<i>Gambar 7. Sequence Diagram UC02 - Pre-Order Takeaway</i>
 </p>
 
 - **Skenario Alternatif 2: Booking Tempat**
@@ -365,7 +365,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/SD_UC02_Normal.drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar 8. Sequence Diagram UC03 - Booking Tempat</i>
+<i>Gambar 8. Sequence Diagram UC02 - Booking Tempat</i>
 </p> <!-- SAMA DENGAN SKENARIO NORMAL!!! -->
 
 ### 3.2.3 Diagram Kelas
@@ -376,7 +376,7 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas UC03</i>
+<i>Gambar 9. Diagram Kelas UC02</i>
 </p>
 
 <br>
@@ -412,7 +412,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC03 Sequence Diagram.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC03</i>
+<i>Gambar 10. Sequence Diagram UC03</i>
 </p>
 
 ### 3.3.3 Diagram Kelas
@@ -423,7 +423,7 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC03 Class Diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas UC03</i>
+<i>Gambar 11. Diagram Kelas UC03</i>
 </p>
 
 <br>
@@ -457,7 +457,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Sequence Diagram UC04" src="./assets/diagram/UC04 Sequence Diagram Normal.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC04</i>
+<i>Gambar 12. Sequence Diagram UC04</i>
 </p>
 
 - **Skenario Alternatif 1: Data Form Tidak Lengkap atau Format Tidak Sesuai**
@@ -466,7 +466,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Sequence Diagram UC04 - Data Form Tidak Lengkap atau Format Tidak Sesuai" src="./assets/diagram/UC04 Sequence Diagram Alt 1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC04 - Data Form Tidak Lengkap atau Format Tidak Sesuai</i>
+<i>Gambar 13. Sequence Diagram UC04 - Data Form Tidak Lengkap atau Format Tidak Sesuai</i>
 </p>
 
 ### 3.4.3 Diagram Kelas
@@ -477,7 +477,7 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 <img alt="Diagram Kelas UC04" src="./assets/diagram/UC04 Class Diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas UC04</i>
+<i>Gambar 14. Diagram Kelas UC04</i>
 </p>
 
 <br>
@@ -513,7 +513,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Sequence Diagram UC05" src="./assets/diagram/UC05 Sequence Diagram Normal.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC05</i>
+<i>Gambar 15. Sequence Diagram UC05</i>
 </p>
 
 - **Skenario Alternatif 1: Pengajuan Pendaftaran Ditolak**
@@ -522,7 +522,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Sequence Diagram UC05 - Pengajuan Pendaftaran Ditolak" src="./assets/diagram/UC05 Sequence Diagram Alt 1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC05 - Pengajuan Pendaftaran Ditolak</i>
+<i>Gambar 16. Sequence Diagram UC05 - Pengajuan Pendaftaran Ditolak</i>
 </p>
 
 ### 3.5.3 Diagram Kelas
@@ -533,7 +533,7 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 <img alt="Diagram Kelas UC05" src="./assets/diagram/UC05 Class Diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas UC05</i>
+<i>Gambar 17. Diagram Kelas UC05</i>
 </p>
 
 <br>
@@ -572,7 +572,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS06-N.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC06</i>
+<i>Gambar 18. Sequence Diagram UC06</i>
 </p>
 
 - **Skenario Alternatif 1: Restoran membatalkan dequeue**
@@ -581,7 +581,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS06-ALT1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC06 - Restoran membatalkan dequeue</i>
+<i>Gambar 19. Sequence Diagram UC06 - Restoran membatalkan dequeue</i>
 </p>
 
 - **Skenario Alternatif 2: Pelanggan tidak hadir**
@@ -590,7 +590,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS06-ALT2.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC06 - Pelanggan tidak hadir</i>
+<i>Gambar 20. Sequence Diagram UC06 - Pelanggan tidak hadir</i>
 </p>
 
 ### 3.6.3 Diagram Kelas
@@ -601,7 +601,7 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/CD-06.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas UC06</i>
+<i>Gambar 21. Diagram Kelas UC06</i>
 </p>
 
 <br>
@@ -634,7 +634,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS07-N.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC07</i>
+<i>Gambar 22. Sequence Diagram UC07</i>
 </p>
 
 - **Skenario Alternatif 1: Input Tidak Valid**
@@ -643,7 +643,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS07-ALT1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC07 - Input Tidak Valid</i>
+<i>Gambar 23. Sequence Diagram UC07 - Input Tidak Valid</i>
 </p>
 
 - **Skenario Alternatif 2: Restoran Menutup Antrean Sementara**
@@ -652,7 +652,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS07-ALT2.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC07 - Restoran Menutup Antrean Sementara</i>
+<i>Gambar 24. Sequence Diagram UC07 - Restoran Menutup Antrean Sementara</i>
 </p>
 
 ### 3.7.3 Diagram Kelas
@@ -663,7 +663,7 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/CD-07.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas UC07</i>
+<i>Gambar 25. Diagram Kelas UC07</i>
 </p>
 
 <br>
@@ -696,7 +696,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS08-N.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC08</i>
+<i>Gambar 26. Sequence Diagram UC08</i>
 </p>
 
 - **Skenario Alternatif 1: Restoran menambahkan menu baru**
@@ -705,7 +705,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS08-ALT1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC08 - Restoran menambahkan menu baru</i>
+<i>Gambar 27. Sequence Diagram UC08 - Restoran menambahkan menu baru</i>
 </p>
 
 - **Skenario Alternatif 2: Restoran menghapus salah satu menu**
@@ -714,7 +714,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS08-ALT2.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC08 - Restoran menghapus salah satu menu</i>
+<i>Gambar 28. Sequence Diagram UC08 - Restoran menghapus salah satu menu</i>
 </p>
 
 - **Skenario Alternatif 3: Stok makanan tidak cukup**
@@ -723,7 +723,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/DS08-ALT3.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC08 - Stok makanan tidak cukup</i>
+<i>Gambar 29. Sequence Diagram UC08 - Stok makanan tidak cukup</i>
 </p>
 
 ### 3.8.3 Diagram Kelas
@@ -734,7 +734,7 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/CD-08.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas UC08</i>
+<i>Gambar 30. Diagram Kelas UC08</i>
 </p>
 
 Pada diagram, pastikan:
@@ -745,6 +745,149 @@ Pada diagram, pastikan:
 - Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
 
 Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 3.1
+
+<br>
+
+## 3.09 Use Case 09
+
+**ID Use Case:** *UC09*  
+**Nama Use Case:** *Menampilkan Dashboard Antrean Restoran*
+
+### 3.09.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.09. Identifikasi Kelas Use Case [UC09]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+| :--- | :--- | :--- |
+| 1 | *KelolaAntreanView* | *DashboardAntreanPage* |
+| 2 | *KelolaAntreanController* | *KelolaAntreanController* |
+| 3 | *ModelAntrean* | *Antrean* |
+| 4 | *ModelAntrean* | *TiketAntrean* |
+| 5 | *ModelRestoran* | *Restoran* |
+| 6 | *ModelPesanan* | *Pesanan* |
+| ... | *...* | *...* |
+
+### 3.09.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC09_Sequence.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 31. Sequence Diagram UC09</i>
+</p>
+
+
+### 3.09.3 Diagram Kelas
+
+Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC09_Class.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 32. Diagram Kelas UC09</i>
+</p>
+
+<br>
+
+## 3.10 Use Case 10
+
+**ID Use Case:** *UC10*  
+**Nama Use Case:** *Registrasi Akun*
+
+### 3.10.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.09. Identifikasi Kelas Use Case [UC10]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *AkunView* | *RegistrasiPage* |
+| 2 | *AutentikasiController* | *AutentikasiController* |
+| 3 | *ModelAkun* | *Pengguna* |
+| 4 | *ModelAkun* | *SesiPengguna* |
+| 5 | *ModelAkun* | *Pelanggan* |
+| 6 | *ModelAkun* | *Admin* |
+| 7 | *ModelRestoran* | *Restoran* |
+| ... | *...* | *...* |
+
+### 3.10.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC10_Sequence.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 33. Sequence Diagram UC10</i>
+</p>
+
+
+### 3.10.3 Diagram Kelas
+
+Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC10_Class.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 34. Diagram Kelas UC10</i>
+</p>
+
+<br>
+
+## 3.11 Use Case 11
+
+**ID Use Case:** *UC11*  
+**Nama Use Case:** *Registrasi Akun*
+
+### 3.11.1 Identifikasi Kelas
+
+Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+
+Tabel 3.09. Identifikasi Kelas Use Case [UC11]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *AkunView* | *LoginPage* |
+| 2 | *AutentikasiController* | *AutentikasiController* |
+| 3 | *ModelAkun* | *Pengguna* |
+| 4 | *ModelAkun* | *SesiPengguna* |
+| ... | *...* | *...* |
+
+### 3.11.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC11_Sequence.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 35. Sequence Diagram UC11</i>
+</p>
+
+
+### 3.10.3 Diagram Kelas
+
+Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC11_Class.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 36. Diagram Kelas UC11</i>
+</p>
 
 <br>
 
@@ -779,7 +922,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC12 Sequence Diagram Normal.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC12</i>
+<i>Gambar 37. Sequence Diagram UC12</i>
 </p>
 
 - **Skenario Alternatif 1: Aktor Membatalkan Keluar Akun**
@@ -788,7 +931,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC12 Sequence Diagram Alt 1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC12 - Aktor Membatalkan Keluar Akun</i>
+<i>Gambar 38. Sequence Diagram UC12 - Aktor Membatalkan Keluar Akun</i>
 </p>
 
 ### 3.12.3 Diagram Kelas
@@ -799,7 +942,7 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC12 Class Diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas UC06</i>
+<i>Gambar 39. Diagram Kelas UC12</i>
 </p>
 
 <br>
@@ -832,7 +975,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Sequence Diagram UC13" src="./assets/diagram/UC13 Sequence Diagram Normal.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC13</i>
+<i>Gambar 40. Sequence Diagram UC13</i>
 </p>
 
 ### 3.13.3 Diagram Kelas
@@ -843,7 +986,7 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 <img alt="Diagram Kelas UC13" src="./assets/diagram/UC13 Class Diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas UC13</i>
+<i>Gambar 41. Diagram Kelas UC13</i>
 </p>
 
 <br>
@@ -876,7 +1019,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Sequence Diagram UC14" src="./assets/diagram/UC14 Sequence Diagram Normal.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC14</i>
+<i>Gambar 42. Sequence Diagram UC14</i>
 </p>
 
 ### 3.14.3 Diagram Kelas
@@ -887,7 +1030,7 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 <img alt="Diagram Kelas UC14" src="./assets/diagram/UC14 Class Diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas UC14</i>
+<i>Gambar 43. Diagram Kelas UC14</i>
 </p>
 
 <br>
@@ -925,7 +1068,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC15 Sequence Diagram Normal.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC15</i>
+<i>Gambar 44. Sequence Diagram UC15</i>
 </p>
 
 - **Skenario Alternatif 1: Admin Membatalkan Proses Penghapusan Restoran**
@@ -934,7 +1077,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC15 Sequence Diagram Alt 1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC15 - Admin Membatalkan Proses Penghapusan Restoran</i>
+<i>Gambar 45. Sequence Diagram UC15 - Admin Membatalkan Proses Penghapusan Restoran</i>
 </p>
 
 ### 3.15.3 Diagram Kelas
@@ -945,7 +1088,7 @@ Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC15 Class Diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas UC15</i>
+<i>Gambar 46. Diagram Kelas UC15</i>
 </p>
 
 <br>
