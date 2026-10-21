@@ -362,11 +362,11 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 - **Skenario Alternatif 2: Booking Tempat**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/SD_UC02_Normal.drawio.png" width="50%">
 </p>
 <p align="center">
 <i>Gambar 8. Sequence Diagram UC03 - Booking Tempat</i>
-</p>
+</p> <!-- SAMA DENGAN SKENARIO NORMAL!!! -->
 
 ### 3.2.3 Diagram Kelas
 
