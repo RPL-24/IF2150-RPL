@@ -117,6 +117,8 @@ Dokumen DPPL antri.in ini terdiri dari lima bab yang disusun secara berurutan. B
 
 Sebutkan *operating system*, DBMS, *development tools*, *filing system*, dan bahasa pemrograman yang digunakan.
 
+Tabel 2.1 Rancangan Lingkungan Implementasi
+
 | Komponen | Spesifikasi |
 | :--- | :--- |
 | *Server* | *Lokal (localhost)* |
