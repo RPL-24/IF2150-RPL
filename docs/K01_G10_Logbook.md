@@ -178,11 +178,13 @@
 | *14-10-2026* | *Bayu Palamarta Wirawan* | *Melakukan inisialisasi Milestone 7* | *1* | *Done* | *-* |
 | *18-10-2026* | *Bayu Palamarta Wirawan* | *Mengerjakan Bab 3 bagian UC06 - UC08, Bab 4, dan Bab 5* | *3* | *Done* | *Awalnya kesulitan bagaimana memulai membuat* |
 | *18-10-2026* | *Athallah Nanda Andita* | *Mengerjakan Bab 3 bagian UC03, UC12, dan UC15* | *2.5* | *Done* | *-* |
+| *18-10-2026* | *Muhammad Fauzi Muharam* | *Membuat diagram pada Bab 3 bagian UC04, 05, 13, 14* | *3* | *Done* | *-* |
 | *19-10-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki diagram pada Bab 3 bagian UC06 - UC08* | *1* | *Done* | *-* |
 | *20-10-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki inkonsistensi M7 dengan dokumen sebelumnya* | *1* | *Done* | *-* |
 | *21-10-2026* | *Athallah Nanda Andita* | *Memperbaiki Class Diagram UC03, UC12, dan UC15 agar memperlihatkan multisiplitas* | *0.5* | *Done* | *-* |
 | *21-10-2026* | *Athallah Nanda Andita* | *Menambahkan bagian 1.6 Deskripsi Umum Dokumen* | *0.25* | *Done* | *-* |
 | *21-10-2026* | *Muhammad Nur Fikri Hariyawan* | *Menambahkan bagian 3,9 hingga 3.11 dan memperbiki penomoran pada tabel dan foto* | *3* | *Done* | *-* |
+| *21-10-2026* | *Muhammad Fauzi Muharam* | *Melengkapi isi 1.1* | *0.3* | *Done* | *-* |
 
 
 **Catatan/Evaluasi Milestone 7:**
