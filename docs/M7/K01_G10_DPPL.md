@@ -105,7 +105,7 @@ Sommerville, I., _Software Engineering_, _10th Edition_, Pearson, 2016.
 Larman, C., _Applying UML and Patterns: An Introduction to Object-Oriented Analysis and Design and Iterative Development_, _3rd Edition_, Prentice Hall, 2004.
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut, dengan maksimal 1 paragraf.
+Dokumen DPPL antri.in ini terdiri dari lima bab yang disusun secara berurutan. Bab 1 Pendahuluan memuat tujuan penulisan dokumen, lingkup masalah, definisi istilah dan singkatan, aturan penomoran, referensi, serta ikhtisar dokumen. Bab 2 Perancangan Arsitektu) menjelaskan rancangan lingkungan implementasi, pola arsitektur MVC yang menjadi acuan, identifikasi komponen, modul, dan subsistem, serta model arsitektur dalam bentuk Logical View dan Process View. Bab 3 Realisasi Use Case menguraikan realisasi setiap use case melalui identifikasi kelas perancangan, sequence diagram untuk skenario normal dan alternatif, serta diagram kelas per use case. Bab 4 Diagram Kelas Keseluruhan menyajikan diagram kelas perancangan seluruh sistem beserta daftar atribut dan metode setiap kelas. Bab 5 Matriks Kerunutan memetakan setiap kelas perancangan ke use case terkait sebagai bukti keterlacakan antara SKPL, APL, dan DPPL.
 
 <br>
 
