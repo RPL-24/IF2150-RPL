@@ -329,7 +329,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-06.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-06.png" width="50%">
 </p>
 <p align="center">
 <i>Gambar 6. Sequence Diagram UC06</i>
@@ -339,7 +339,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 - **Skenario Alternatif 2 : Dokumen tidak memenuhi syarat atau terindikasi pelanggaran**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-06.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-06.png" width="50%">
 </p>
 <p align="center">
 <i>Gambar 2. Sequence Diagram Alternatif UC06 </i>
@@ -374,7 +374,7 @@ Tabel 3.7.1 Identifikasi Kelas Use Case [UC01]
 
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-07.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-07.png" width="50%">
 </p>
 <p align="center">
 <i>Gambar 7. Sequence Diagram UC07</i>
@@ -383,7 +383,7 @@ Tabel 3.7.1 Identifikasi Kelas Use Case [UC01]
 ### 3.7.3 Diagram Kelas
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-07.webp" width="35%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-07.png" width="35%">
 </p>
 <p align="center">
 <i>Gambar 7. Diagram Kelas UC07</i>
@@ -409,7 +409,7 @@ Tabel 3.8.1 Identifikasi Kelas Use Case [UC01]
 
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-08.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-08.png" width="50%">
 </p>
 <p align="center">
 <i>Gambar 8. Sequence Diagram UC08</i>
@@ -446,7 +446,7 @@ Tabel 3.9.1 Identifikasi Kelas Use Case [UC09]
 
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-09.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-09.png" width="50%">
 </p>
 <p align="center">
 <i>Gambar 9. Sequence Diagram UC09</i>
@@ -483,7 +483,7 @@ Tabel 3.10.1 Identifikasi Kelas Use Case [UC10]
 
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-10.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-10.png" width="50%">
 </p>
 <p align="center">
 <i>Gambar 9. Sequence Diagram UC09</i>
@@ -491,7 +491,7 @@ Tabel 3.10.1 Identifikasi Kelas Use Case [UC10]
 
 - **Skenario Alternatif 1 : Semua jadwal penuh atau tidak sesuai kebutuhan masyarakat**
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-10.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-10.png" width="50%">
 </p>
 <p align="center">
 <i>Gambar 10. Sequence Diagram Alternatif UC10 </i>
