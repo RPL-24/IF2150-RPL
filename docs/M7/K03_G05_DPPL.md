@@ -200,10 +200,10 @@ Diagram dibagi menjadi tiga jalur utama, yaitu View, Controller, dan Model, sesu
 
 # BAB 3: Realisasi Use Case
 
-## 3.1 Use Case [Nama Use Case 1]
+## 3.1 Use Case UC01
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** *UC01*  
+**Nama Use Case:** *Daftar Akun bagi Masyarakat*
 
 ### 3.1.1 Identifikasi Kelas
 
@@ -213,8 +213,9 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
+| 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
+| 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
+| 3 | *Masyarakat* | *Masyarakat* |
 | ... | *...* | *...* |
 
 ### 3.1.2 Sequence Diagram
@@ -224,19 +225,19 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-01.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01]</i>
+<i>Gambar 1. Sequence Diagram UC01</i>
 </p>
 
-- **Skenario Alternatif [Nomor]: [Nama Skenario]**
+- **Skenario Alternatif 1 : Registrasi Gagal saat email sudah terdaftar atau password lemah**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-alt-01.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 2. Sequence Diagram UC01 - email sudah terdaftar atau password lemah</i>
 </p>
 
 ### 3.1.3 Diagram Kelas
@@ -244,7 +245,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-01.webp" width="35%">
 </p>
 <p align="center">
 <i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
