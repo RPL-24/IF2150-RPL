@@ -182,6 +182,7 @@
 | *20-10-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki inkonsistensi M7 dengan dokumen sebelumnya* | *1* | *Done* | *-* |
 | *21-10-2026* | *Athallah Nanda Andita* | *Memperbaiki Class Diagram UC03, UC12, dan UC15 agar memperlihatkan multisiplitas* | *0.5* | *Done* | *-* |
 | *21-10-2026* | *Athallah Nanda Andita* | *Menambahkan bagian 1.6 Deskripsi Umum Dokumen* | *0.25* | *Done* | *-* |
+| *21-10-2026* | *Muhammad Nur Fikri Hariyawan* | *Menambahkan bagian 3,9 hingga 3.11 dan memperbiki penomoran pada tabel dan foto* | *3* | *Done* | *-* |
 
 
 **Catatan/Evaluasi Milestone 7:**
