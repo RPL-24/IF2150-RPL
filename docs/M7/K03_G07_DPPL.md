@@ -214,14 +214,14 @@ Tabel 3.1. Identifikasi Kelas Use Case UC01
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | LaporPage | C13 - LaporPage |
-| 2 | LaporanController | C19 - LaporanController |
-| 3 | NotifikasiController | C25 - NotifikasiController |
+| 1 | LaporPage | C11 - LaporPage |
+| 2 | LaporanController | C17 - LaporanController |
+| 3 | NotifikasiController | C23 - NotifikasiController |
 | 4 | User | C01 - Warga |
-| 5 | Laporan | C04 - Laporan |
-| 6 | Lokasi | C05 - Lokasi |
-| 7 | Foto | C06 - Foto |
-| 8 | Video | C11 - Video |
+| 5 | Laporan | C02 - Laporan |
+| 6 | Lokasi | C03 - Lokasi |
+| 7 | Foto | C04 - Foto |
+| 8 | Video | C05 - Video |
 | 9 | Notifikasi | C10 - Notifikasi |
 
 ### 3.1.2 Sequence Diagram
@@ -273,22 +273,21 @@ Tabel 3.1. Identifikasi Kelas Use Case UC01
 
 ### 3.2.1 Identifikasi Kelas
 
-Tabel 3.2 memetakan kelas perancangan yang terlibat dalam realisasi UC02 ke kelas analisis pada SKPL Bab 5.2.2. Interaksi use case ini melibatkan kelas antarmuka pengguna (`ValidasiPage`), pengontrol logika bisnis (`ValidasiController`), pengontrol notifikasi (`NotifikasiController`), serta kelas-kelas entitas data (`User`, `Laporan`, `Lokasi`, `Foto`, `Video`, `Upvote`, dan `Notifikasi`).
 
 Tabel 3.2. Identifikasi Kelas Use Case UC02
 
-| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait | Keterangan |
-|:---|:---|:---|:---|
-| 1 | ValidasiPage | C12 - ValidasiPage | Antarmuka dasbor Tim Administrasi untuk memproses antrean laporan |
-| 2 | ValidasiController | C18 - ValidasiController | Pengendali logika validasi, penyaringan antrean, dan alur status laporan |
-| 3 | NotifikasiController | C23 - NotifikasiController | Pengendali pembentukan dan pengiriman notifikasi perubahan status tiket |
-| 4 | User | C01 - User | Entitas akun pengguna dengan hak akses peran Tim Administrasi |
-| 5 | Laporan | C02 - Laporan | Entitas data utama tiket laporan kerusakan |
-| 6 | Lokasi | C03 - Lokasi | Entitas koordinat geografis tempat kerusakan fasilitas publik |
-| 7 | Foto | C04 - Foto | Entitas berkas foto bukti kerusakan fasilitas publik |
-| 8 | Video | C09 - Video | Entitas berkas rekaman video bukti kerusakan fasilitas publik |
-| 9 | Upvote | C05 - Upvote | Entitas dukungan warga untuk penghitungan prioritas penanganan |
-| 10 | Notifikasi | C08 - Notifikasi | Entitas rekaman pesan pemberitahuan status tiket laporan |
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:---|:---|:---|
+| 1 | ValidasiPage | C12 - ValidasiPage |
+| 2 | ValidasiController | C18 - ValidasiController |
+| 3 | NotifikasiController | C23 - NotifikasiController |
+| 4 | User | C01 - User |
+| 5 | Laporan | C02 - Laporan |
+| 6 | Lokasi | C03 - Lokasi |
+| 7 | Foto | C04 - Foto |
+| 8 | Video | C05 - Video |
+| 9 | Upvote | C06 - Upvote |
+| 10 | Notifikasi | C10 - Notifikasi |
 
 ### 3.2.2 Sequence Diagram
 
@@ -339,13 +338,13 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *PenugasanPage* | *PenugasanPage* |
-| 2 | *PenugasanController* | *PenugasanController* |
-| 3 | *ListTugas* | *ListTugas* |
-| 4 | *Laporan* | *Laporan* |
-| 5 | *User* | *User* |
-| 6 | *Foto* | *Foto* |
-| 7 | *Video* | *Video* |
+| 1 | *PenugasanPage* | *C13 - PenugasanPage* |
+| 2 | *PenugasanController* | *C19 - PenugasanController* |
+| 3 | *ListTugas* | *C07 - ListTugas* |
+| 4 | *Laporan* | *C02 - Laporan* |
+| 5 | *User* | *C01 - User* |
+| 6 | *Foto* | *C04 - Foto* |
+| 7 | *Video* | *C05 - Video* |
 
 ### 3.3.2 Sequence Diagram
 
@@ -355,7 +354,7 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-SD-Normal.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC03</i>
+<i>Gambar 11. Sequence Diagram UC03</i>
 </p>
 
 - **Skenario Alternatif [1]: Menyaring Daftar Penugasan Berdasarkan Kategori**
@@ -364,7 +363,7 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-SD-Alt1.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC03 - Menyaring Daftar Penugasan Berdasarkan Kategori</i>
+<i>Gambar 12. Sequence Diagram UC03 - Menyaring Daftar Penugasan Berdasarkan Kategori</i>
 </p>
 
 - **Skenario Alternatif [2]: Belum Ada Penugasan yang Tersedia**
@@ -373,7 +372,7 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-SD-Alt2.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC03 - Belum Ada Penugasan yang Tersedia</i>
+<i>Gambar 13. Sequence Diagram UC03 - Belum Ada Penugasan yang Tersedia</i>
 </p>
 
 ### 3.3.3 Diagram Kelas
@@ -383,7 +382,7 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-CD.webp" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Melihat Penugasan Lapangan</i>
+<i>Gambar 14. Diagram Kelas Melihat Penugasan Lapangan</i>
 </p>
 
 ## 3.4 Use Case Melaporkan Hasil Penugasan
@@ -398,16 +397,16 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *PenugasanPage* | *PenugasanPage* |
-| 2 | *PenugasanController* | *PenugasanController* |
-| 3 | *HasilPerbaikanForm* | *HasilPerbaikanForm* |
-| 4 | *PerbaikanController* | *PerbaikanController* |
-| 5 | *ListTugas* | *ListTugas* |
-| 6 | *Laporan* | *Laporan* |
-| 7 | *HasilPerbaikan* | *HasilPerbaikan* |
-| 8 | *User* | *User* |
-| 9 | *Foto* | *Foto* |
-| 10 | *Video* | *Video* |
+| 1 | *PenugasanPage* | *C13 - PenugasanPage* |
+| 2 | *PenugasanController* | *C19 - PenugasanController* |
+| 3 | *HasilPerbaikanForm* | *C14 - HasilPerbaikanForm* |
+| 4 | *PerbaikanController* | *C20 - PerbaikanController* |
+| 5 | *ListTugas* | *C07 - ListTugas* |
+| 6 | *Laporan* | *C02 - Laporan* |
+| 7 | *HasilPerbaikan* | *C08 - HasilPerbaikan* |
+| 8 | *User* | *C01 - User* |
+| 9 | *Foto* | *C04 - Foto* |
+| 10 | *Video* | *C05 - Video* |
 
 ### 3.4.2 Sequence Diagram
 
@@ -417,7 +416,7 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-04-SD-Normal.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC04</i>
+<i>Gambar 15. Sequence Diagram UC04</i>
 </p>
 
 - **Skenario Alternatif 1: Data Laporan Belum Lengkap**
@@ -426,7 +425,7 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-04-SD-Alt1.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC04 - Data Laporan Belum Lengkap</i>
+<i>Gambar 16. Sequence Diagram UC04 - Data Laporan Belum Lengkap</i>
 </p>
 
 ### 3.4.3 Diagram Kelas
@@ -436,7 +435,7 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-04-CD.webp" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Melaporkan Hasil Penugasan</i>
+<i>Gambar 17. Diagram Kelas Melaporkan Hasil Penugasan</i>
 </p>
 
 ## 3.5 Use Case [Nama Use Case 5]
@@ -501,15 +500,15 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | StatusLaporanPage | C18 - StatusLaporanPage |
-| 2 | StatusController | C24 - StatusController |
-| 3 | NotifikasiController | C25 - NotifikasiController |
+| 1 | StatusLaporanPage | C16 - StatusLaporanPage |
+| 2 | StatusController | C22 - StatusController |
+| 3 | NotifikasiController | C23 - NotifikasiController |
 | 4 | User | C01 - Warga |
-| 5 | Laporan | C04 - Laporan |
-| 6 | Lokasi | C05 - Lokasi |
-| 7 | Foto | C06 - Foto |
-| 8 | Video | C11 - Video |
-| 9 | Upvote | C07 - Upvote |
+| 5 | Laporan | C02 - Laporan |
+| 6 | Lokasi | C03 - Lokasi |
+| 7 | Foto | C04 - Foto |
+| 8 | Video | C05 - Video |
+| 9 | Upvote | C06 - Upvote |
 | 10 | HasilPerbaikan | C08 - HasilPerbaikan |
 | 11 | Notifikasi | C10 - Notifikasi |
 
@@ -590,29 +589,29 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C01* | *User* | *Atribut* | *Metode* |
-| *C02* | *Laporan* | *Atribut* | *Metode* |
-| *C03* | *Lokasi* | *Atribut* | *Metode* |
-| *C04* | *Foto* | *Atribut* | *Metode* |
-| *C05* | *Video* | *Atribut* | *Metode* |
-| *C06* | *Upvote* | *Atribut* | *Metode* |
-| *C07* | *ListTugas* | *Atribut* | *Metode* |
-| *C08* | *HasilPerbaikan* | *Atribut* | *Metode* |
-| *C09* | *Evaluasi* | *Atribut* | *Metode* |
-| *C10* | *Notifikasi* | *Atribut* | *Metode* |
-| *C11* | *LaporPage* | *Atribut* | *Metode* |
-| *C12* | *ValidasiPage* | `- pilihanFilter: String`<br>`- idTiketTerpilih: String`<br>`- inputAlasanPenolakan: String` | `+ bukaDasborPenanganan(): void`<br>`+ tampilkanAntrean(): void`<br>`+ pilihFilterKategori(kategori: String): void`<br>`+ pilihLaporan(idTiket: String): void`<br>`+ onValidClicked(idTiket: String): void`<br>`+ onTolakClicked(idTiket: String): void`<br>`+ submitAlasanPenolakan(idTiket: String, alasan: String): void` |
-| *C13* | *PenugasanPage* | *Atribut* | *Metode* |
-| *C14* | *HasilPerbaikanForm* | *Atribut* | *Metode* |
-| *C15* | *EvaluasiPage* | *Atribut* | *Metode* |
-| *C16* | *StatusLaporanPage* | *Atribut* | *Metode* |
-| *C17* | *LaporanController* | *Atribut* | *Metode* |
-| *C18* | *ValidasiController* | `- idUserAktif: String` | `+ verifikasiAkses(): Boolean`<br>`+ susunAntrean(): List<Laporan>`<br>`+ saringAntrean(kategori: String): List<Laporan>`<br>`+ ambilRincianLaporan(idTiket: String): Laporan`<br>`+ setujuiLaporan(idTiket: String): Boolean`<br>`+ tolakLaporan(idTiket: String, alasan: String): Boolean` |
-| *C19* | *PenugasanController* | *Atribut* | *Metode* |
-| *C20* | *PerbaikanController* | *Atribut* | *Metode* |
-| *C21* | *EvaluasiController* | *Atribut* | *Metode* |
-| *C22* | *StatusController* | *Atribut* | *Metode* |
-| *C23* | *NotifikasiController* | *Atribut* | *Metode* |
+| *C01* | *User* | - idUser: String<br>- nama: String<br>- email: String<br>- role: String | + getRole(): String<br>+ getIdUser(): String<br>+ isAdmin(): Boolean |
+| *C02* | *Laporan* | - idTiket: String<br>- kategori: String<br>- deskripsi: String<br>- status: String<br>- waktuMasuk: DateTime<br>- jumlahUpvote: Integer<br>- skorPrioritas: Float<br>- alasanPenolakan: String | + Laporan(idTiket: String, kategori: String, deskripsi: String, foto: List[Foto], video: List[Video], lokasi: Lokasi)<br>+ simpanLaporan(): Boolean<br>+ hitungPrioritas(): Float<br>+ getRincian(): Laporan<br>+ getRincianPublik(): Laporan<br>+ tambahUpvote(upvote: Upvote): Integer<br>+ updateStatus(statusBaru: String): Boolean<br>+ setAlasanPenolakan(alasan: String): void<br>+ getByStatus(status: String): List[Laporan]<br>+ filterByKategori(kategori: String, status: String): List[Laporan] |
+| *C03* | *Lokasi* | - latitude: Double<br>- longitude: Double | + dalamWilayah(): Boolean<br>+ hitungJarak(lokasiLain: Lokasi): Double<br>+ getKoordinat(): String |
+| *C04* | *Foto* | - url: String<br>- format: String<br>- ukuran: Integer | + isFotoValid(): Boolean |
+| *C05* | *Video* | - url: String<br>- format: String<br>- ukuran: Integer | + isVideoValid(): Boolean |
+| *C06* | *Upvote* | - idUpvote: String<br>- waktuUpvote: DateTime | + catatUpvote(idUser: String): void<br>+ getJumlahUpvote(): Integer |
+| *C07* | *ListTugas* | - jumlahLaporanAktif: Integer<br>- daftarLaporan: List[Laporan] | + urutPrioritas(): List[Laporan]<br>+ filterKategori(kategori: String): List[Laporan]<br>+ getLaporanById(idTiket: String): Laporan |
+| *C08* | *HasilPerbaikan* | - idHasil: String<br>- catatan: String<br>- waktuUnggah: DateTime<br>- fotoBukti: List[Foto]<br>- videoBukti: List[Video] | + validasiBerkas(foto: List[Foto], video: List[Video]): Boolean<br>+ simpanBukti(): Boolean<br>+ getBuktiLengkap(): HasilPerbaikan |
+| *C09* | *Evaluasi* | *(menunggu realisasi UC05)* | *(menunggu realisasi UC05)* |
+| *C10* | *Notifikasi* | - idNotifikasi: String<br>- isiPesan: String<br>- waktuKirim: DateTime<br>- statusBaca: Boolean | + Notifikasi(idUser: String, pesan: String)<br>+ buatPesan(): String<br>+ tandaiDibaca(): Boolean |
+| *C11* | *LaporPage* | - kategoriDipilih: String<br>- inputDeskripsi: String<br>- berkasFoto: List[Foto]<br>- berkasVideo: List[Video]<br>- lokasiTerkunci: Lokasi | + bukaForm(): void<br>+ userInput(kategori: String, deskripsi: String, foto: List[Foto], video: List[Video]): void<br>+ kunciLokasi(): void<br>+ tandaiLokasiManual(latitude: Double, longitude: Double): void<br>+ submitForm(): void<br>+ batalkanLaporan(): void<br>- ambilTokenAntiBot(): String<br>- hapusBerkasTidakValid(): void<br>- tampilkanPesan(pesan: String): void |
+| *C12* | *ValidasiPage* | - pilihanFilter: String<br>- idTiketTerpilih: String<br>- inputAlasanPenolakan: String | + bukaDasborPenanganan(): void<br>+ tampilkanAntrean(): void<br>+ pilihFilterKategori(kategori: String): void<br>+ pilihLaporan(idTiket: String): void<br>+ onValidClicked(idTiket: String): void<br>+ onTolakClicked(idTiket: String): void<br>+ submitAlasanPenolakan(idTiket: String, alasan: String): void |
+| *C13* | *PenugasanPage* | - pilihanKategori: String<br>- statusTampilan: String<br>- idTiketAktif: String | + tampilkanPage(): void<br>+ pindahPage(): void<br>+ renderRincianLaporan(laporan: Laporan): void<br>+ renderListTugas(daftar: List[Laporan]): void<br>+ pilihLaporan(): void<br>+ pilihKategori(): void |
+| *C14* | *HasilPerbaikanForm* | - statusTampilan: String<br>- inputDeskripsi: String<br>- berkasFoto: List[Foto]<br>- berkasVideo: List[Video] | + tampilkanForm(idTiket: String): void<br>+ renderBerkas(): void<br>+ userInput(deskripsi: String, foto: List[Foto], video: List[Video]): void<br>+ submitForm(): void |
+| *C15* | *EvaluasiPage* | *(menunggu realisasi UC05)* | *(menunggu realisasi UC05)* |
+| *C16* | *StatusLaporanPage* | - pilihanTiket: String<br>- modeTampilan: String | + pilihMenuRiwayat(): void<br>+ pilihMenuPeta(): void<br>+ bukaTautanNotifikasi(idNotifikasi: String): void<br>+ pilihTiket(idTiket: String): void<br>+ pilihMarker(idTiket: String): void<br>+ onUpvoteClicked(): void<br>+ tampilkanRiwayat(daftarLaporan: List[Laporan]): void<br>+ tampilkanPetaSebaran(daftarLaporanPublik: List[Laporan]): void<br>+ tampilkanDetailTiket(detail: Laporan): void |
+| *C17* | *LaporanController* | - idUserAktif: String | + validasiBerkas(foto: List[Foto], video: List[Video]): Boolean<br>+ validasiLokasi(lokasi: Lokasi): Boolean<br>+ kirimLaporan(kategori: String, deskripsi: String, foto: List[Foto], video: List[Video], lokasi: Lokasi, token: String): String<br>- verifikasiAkses(): Boolean<br>- verifikasiAntiBot(token: String): Boolean<br>- cekDuplikat(lokasi: Lokasi, kategori: String): Laporan<br>- terbitkanIdTiket(): String |
+| *C18* | *ValidasiController* | - idUserAktif: String | + verifikasiAkses(): Boolean<br>+ susunAntrean(): List[Laporan]<br>+ saringAntrean(kategori: String): List[Laporan]<br>+ ambilRincianLaporan(idTiket: String): Laporan<br>+ setujuiLaporan(idTiket: String): Boolean<br>+ tolakLaporan(idTiket: String, alasan: String): Boolean |
+| *C19* | *PenugasanController* | - idUserAktif: String | + doFilter(kategori: String): List[Laporan]<br>+ doSorting(): List[Laporan]<br>+ verifikasiAkses(): Boolean<br>+ bukaLaporan(idTiket: String): Laporan |
+| *C20* | *PerbaikanController* | - idLaporan: String<br>- idUserAktif: String | + validasiForm(catatan: String, foto: List[Foto], video: List[Video]): Boolean<br>+ verifikasiAkses(): Boolean<br>+ unggahHasil(idTiket: String, catatan: String, foto: List[Foto], video: List[Video]): Boolean |
+| *C21* | *EvaluasiController* | *(menunggu realisasi UC05)* | *(menunggu realisasi UC05)* |
+| *C22* | *StatusController* | - idUserAktif: String | + ambilRiwayatWarga(): List[Laporan]<br>+ ambilLaporanPublik(): List[Laporan]<br>+ ambilDetailStatus(idTiket: String): Laporan<br>+ prosesUpvote(idTiket: String): Integer |
+| *C23* | *NotifikasiController* | - idPenerima: String | + susunPesanNotifikasi(idPenerima: String, pesan: String): void<br>+ kirimNotifikasi(idPenerima: String, pesan: String): Boolean<br>+ updateStatusBaca(idNotifikasi: String): Boolean |
 
 
 <br>
@@ -633,7 +632,7 @@ Tabel 5.1. Matriks Kerunutan Kelas terhadap Use Case
 | *[C04 - Foto]* | *[UC01 - Mengirim Laporan Kerusakan], [UC02 - Memvalidasi Laporan Baru], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
 | *[C05 - Video]* | *[UC01 - Mengirim Laporan Kerusakan], [UC02 - Memvalidasi Laporan Baru], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
 | *[C06 - Upvote]* | *[UC02 - Memvalidasi Laporan Baru], [UC06 - Memantau Status Laporan]* |
-| *[C07 - ListTugas]* | *[UCXX - Nama]* |
+| *[C07 - ListTugas]* | *[UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan]* |
 | *[C08 - HasilPerbaikan]* | *[UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
 | *[C09 - Evaluasi]* | *[UCXX - Nama]* |
 | *[C10 - Notifikasi]* | *[UC01 - Mengirim Laporan Kerusakan], [UC02 - Memvalidasi Laporan Baru]* |
