@@ -501,9 +501,9 @@ Tabel 3.6.1 Identifikasi Kelas Use Case [UC01]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
-| 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
-| 3 | *Masyarakat* | *Masyarakat* |
+| 1 | *StatusVerifikasiMitraView* | *VerifikasiMitraPage* |
+| 2 | *VerifikasiMitraController* | *VerifikasiMitraController* |
+| 3 | *Admin* | *Admin* |
 | ... | *...* | *...* |
 
 ### 3.6.2 Sequence Diagram
@@ -549,9 +549,9 @@ Tabel 3.7.1 Identifikasi Kelas Use Case [UC01]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
-| 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
-| 3 | *Masyarakat* | *Masyarakat* |
+| 1 | *EditProfilMitraPage* | *EditDokumenLegalitasPage* |
+| 2 | *EditProfilMitraPage View* | *EditProfilMitraPage* |
+| 3 | *MitraPengacara* | *MitraPengacara* |
 | ... | *...* | *...* |
 
 ### 3.7.2 Sequence Diagram
@@ -584,10 +584,10 @@ Tabel 3.8.1 Identifikasi Kelas Use Case [UC01]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
-| 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
+| 1 | *searchLawController* | *searchLawController* |
+| 2 | *searchLawPage* | *searchLawPage* |
 | 3 | *Masyarakat* | *Masyarakat* |
-| ... | *...* | *...* |
+| 4 | *Dasar Hukum* | *Dasar Hukum* |
 
 ### 3.8.2 Sequence Diagram
 
@@ -615,14 +615,16 @@ Tabel 3.8.1 Identifikasi Kelas Use Case [UC01]
 
 ### 3.9.1 Identifikasi Kelas
 
-Tabel 3.9.1 Identifikasi Kelas Use Case [UC01]
+Tabel 3.9.1 Identifikasi Kelas Use Case [UC09]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
-| 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
+| 1 | *DaftarMitraPengacaraView* | *DaftarMitraPengacaraPage* |
+| 2 | *PencarianMitraController* | *PencarianMitraController* |
 | 3 | *Masyarakat* | *Masyarakat* |
-| ... | *...* | *...* |
+| 4 | *Kasus* | *Kasus* |
+| 5 | *MitraPengacara* | *MitraPengacara* |
+| 6 | *Ulasan* | *Ulasan* |
 
 ### 3.9.2 Sequence Diagram
 
@@ -650,14 +652,16 @@ Tabel 3.9.1 Identifikasi Kelas Use Case [UC01]
 
 ### 3.10.1 Identifikasi Kelas
 
-Tabel 3.10.1 Identifikasi Kelas Use Case [UC01]
+Tabel 3.10.1 Identifikasi Kelas Use Case [UC10]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
-| 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
+| 1 | *PemilihanJadwalKonsultasiView* | *PemilihanJadwalKonsultasiPage* |
+| 2 | *PenjadwalanKonsultasiController* | *PenjadwalanKonsultasiController* |
 | 3 | *Masyarakat* | *Masyarakat* |
-| ... | *...* | *...* |
+| 4 | *Kasus* | *Kasus* |
+| 5 | *MitraPengacara* | *MitraPengacara* |
+| 6 | *SesiKonsultasi* | *SesiKonsultasi* |
 
 ### 3.10.2 Sequence Diagram
 
