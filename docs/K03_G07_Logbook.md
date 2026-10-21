@@ -145,12 +145,16 @@
 ### Milestone 7
 **Periode:** 7-10-2026 - 7-10-2026 
 
-| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / Blocker | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
-| *18-10-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan realisasi UC04* | *2* | *Done* | Masih sedikit bingung dengan pembuatan Sequence Diagram & Perlu penyesuaian lagi untuk tipe data & parameter operasi kelas karena belum ditentukan sebelumnya | 
-| *19-10-2026* | *Pasaribu Fritz T.A.M.* | *Mengerjakan realisasi UC03* | *1 | *Done* | - |
-| *20-10-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan Logo* | *2 | *Done* | - |
-| *21-10-2026* | *Gede Pranajayanta Suputra* | *Mengerjakan realisasi UC05* | *2 | *Done* | - |
+| 18-10-2026 | Pasaribu Fritz T.A.M. | Mengerjakan realisasi UC04 | 2 | Done | Masih sedikit bingung dengan pembuatan Sequence Diagram & Perlu penyesuaian lagi untuk tipe data & parameter operasi kelas karena belum ditentukan sebelumnya | 
+| 19-10-2026 | Pasaribu Fritz T.A.M. | Mengerjakan realisasi UC03 | 1 | *Done | - |
+| 20-10-2026 | Rafi Pradipta Andira Sulistyo | Mengerjakan realisasi UC01 | 2 | *Done | - |
+| 20-10-2026 | Muhammad Atallah | Mengerjakan realisasi UC06 | 2 | *Done | - |
+| 20-10-2026 | Gede Pranajayanta Suputra | Mengerjakan Logo | 2 | *Done | - |
+| 20-10-2026 | Bagas Anugrah Putra | Mengerjakan realisasi UC02 | 1 | *Unfinished | - |
+| 21-10-2026 | Bagas Anugrah Putra | Mengerjakan realisasi UC02 | 1 | *Done | - |
+| 21-10-2026 | Gede Pranajayanta Suputra | Mengerjakan realisasi UC05 | 2 | *Done | - |
 
 
 ---
