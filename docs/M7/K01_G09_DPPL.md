@@ -23,13 +23,13 @@ Dipersiapkan oleh:
 | Kelompok | *G09* |
 | Nama Kelompok | *PindahCSUI*|
 
-| NIM | Nama |
-|---|---|
-| *13525049* | *Hugo Daniel Johansen Napitupulu* |
-| *13525001* | *Matthew Allen Reynaldo* |
-| *13525010* | *Fabian Amzar Susanto* |
-| *13525025* | *David Christian* |
-| *13525028* | *Markus Christiano Simanjuntak* |
+| NIM        | Nama                                 |
+|---         |---                                   |
+| *13525049* | *Hugo Daniel Johansen Napitupulu*    |
+| *13525001* | *Matthew Allen Reynaldo*             |
+| *13525010* | *Fabian Amzar Susanto*               |
+| *13525025* | *David Christian*                    |
+| *13525028* | *Markus Christiano Simanjuntak*      |
 
 ---
 
