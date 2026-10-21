@@ -9,7 +9,10 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 
 ## PeerUP
 
-### *[Logo Perangkat Lunak]*
+### 
+
+<img alt="Arsitektur MVC PeerUP" src="./assets/Logo_PeerUP.jpeg" width="30%">
+
 
 ### Untuk: Mikhael Andrian Yonatan
 
