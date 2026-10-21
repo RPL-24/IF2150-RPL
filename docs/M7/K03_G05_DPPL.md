@@ -210,7 +210,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-01.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-01.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 1. Sequence Diagram UC01</i>
@@ -219,7 +219,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 - **Skenario Alternatif 1 : Registrasi Gagal saat email sudah terdaftar atau password lemah**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-alt-01.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-01.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 2. Sequence Diagram UC01 - email sudah terdaftar atau password lemah</i>
@@ -331,7 +331,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 - **Skenario Alternatif 2 : Dokumen tidak memenuhi syarat atau terindikasi pelanggaran**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-alt-06.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-06.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 2. Sequence Diagram Alternatif UC06 </i>
@@ -483,7 +483,7 @@ Tabel 3.10.1 Identifikasi Kelas Use Case [UC10]
 
 - **Skenario Alternatif 1 : Semua jadwal penuh atau tidak sesuai kebutuhan masyarakat**
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-alt-10.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-10.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 10. Sequence Diagram Alternatif UC10 </i>
@@ -757,7 +757,7 @@ Tabel 3.16. Identifikasi Kelas Use Case [UC16]
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Sequence Diagram UC16" src="./assets/diagram/seqeuence-diagram-16.webp" width="50%">
+<img alt="Sequence Diagram UC16" src="./assets/diagram/sequence-diagram-16.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 48. Sequence Diagram UC16</i>
@@ -766,7 +766,7 @@ Tabel 3.16. Identifikasi Kelas Use Case [UC16]
 - **Skenario Alternatif 1 : Formulir Laporan Tidak Lengkap**
 
 <p align="center">
-<img alt="Sequence Diagram UC16 Alternatif" src="./assets/diagram/seqeuence-diagram-alt-16.webp" width="50%">
+<img alt="Sequence Diagram UC16 Alternatif" src="./assets/diagram/sequence-diagram-alt-16.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 49. Sequence Diagram UC16 - formulir tidak lengkap</i>
@@ -802,7 +802,7 @@ Tabel 3.17. Identifikasi Kelas Use Case [UC17]
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Sequence Diagram UC17" src="./assets/diagram/seqeuence-diagram-17.webp" width="50%">
+<img alt="Sequence Diagram UC17" src="./assets/diagram/sequence-diagram-17.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 51. Sequence Diagram UC17</i>
@@ -811,7 +811,7 @@ Tabel 3.17. Identifikasi Kelas Use Case [UC17]
 - **Skenario Alternatif 1 : Laporan Tidak Disetujui Admin**
 
 <p align="center">
-<img alt="Sequence Diagram UC17 Alternatif" src="./assets/diagram/seqeuence-diagram-alt-17.webp" width="50%">
+<img alt="Sequence Diagram UC17 Alternatif" src="./assets/diagram/sequence-diagram-alt-17.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 52. Sequence Diagram UC17 - laporan tidak disetujui admin</i>
@@ -849,7 +849,7 @@ Tabel 3.18. Identifikasi Kelas Use Case [UC18]
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Sequence Diagram UC17" src="./assets/diagram/seqeuence-diagram-18.webp" width="50%">
+<img alt="Sequence Diagram UC17" src="./assets/diagram/sequence-diagram-18.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 54. Sequence Diagram UC18</i>
@@ -858,7 +858,7 @@ Tabel 3.18. Identifikasi Kelas Use Case [UC18]
 - **Skenario Alternatif 1 : Laporan Tidak Disetujui Admin**
 
 <p align="center">
-<img alt="Sequence Diagram UC18 Alternatif" src="./assets/diagram/seqeuence-diagram-alt-18.webp" width="50%">
+<img alt="Sequence Diagram UC18 Alternatif" src="./assets/diagram/sequence-diagram-alt-18.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 55. Sequence Diagram UC18 - laporan tidak disetujui admin</i>
@@ -895,7 +895,7 @@ Tabel 3.19. Identifikasi Kelas Use Case [UC19 & UC20]
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Sequence Diagram UC19 & UC20" src="./assets/diagram/seqeuence-diagram-19-20.webp" width="50%">
+<img alt="Sequence Diagram UC19 & UC20" src="./assets/diagram/sequence-diagram-19-20.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 57. Sequence Diagram UC19 & UC20</i>
@@ -904,7 +904,7 @@ Tabel 3.19. Identifikasi Kelas Use Case [UC19 & UC20]
 - **Skenario Alternatif 1 : Tidak Ada Admin yang Tersedia
 
 <p align="center">
-<img alt="Sequence Diagram UC19 Alternatif" src="./assets/diagram/seqeuence-diagram-alt-19-20.webp" width="50%">
+<img alt="Sequence Diagram UC19 Alternatif" src="./assets/diagram/sequence-diagram-alt-19-20.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 58. Sequence Diagram UC1 & UC20 - tidak ada admin yang standby</i>
