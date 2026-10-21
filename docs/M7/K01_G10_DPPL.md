@@ -328,12 +328,13 @@ Tabel 3.2. Identifikasi Kelas Use Case [UC02]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *StatusAntreanView* | *HalamanStatusAntrean* |
-| 2 | *PemantauAntreanController* | *PemantauAntreanController* |
-| 3 | *ModelAntrean* | *TiketAntrean* |
-| 4 | *ModelAntrean* | *Antrean* |
-| 5 | *ModelPesanan* | *Pesanan* |
-| 6 | *ModelAkun* | *Pelanggan* |
+| 1 | *ModelAkun* | *Pelanggan* |
+| 2 | *ModelRestoran* | *Menu* |
+| 3 | *ModelRestoran* | *Keranjang* |
+| 4 | *ModelPesanan* | *Pesanan* |
+| 5 | *MetodePembayaranController* | *MetodePembayaranController* |
+| 6 | *ModelPesanan* | *RiwayatTransaksi* |
+| 7 | *ModelAntrean* | *TiketAntrean* |
 | ... | *...* | *...* |
 
 ### 3.3.2 Sequence Diagram
