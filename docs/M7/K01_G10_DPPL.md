@@ -889,7 +889,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 </p>
 
 
-### 3.10.3 Diagram Kelas
+### 3.11.3 Diagram Kelas
 
 Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
 
