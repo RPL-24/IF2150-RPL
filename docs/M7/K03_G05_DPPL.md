@@ -218,7 +218,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-01.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-01.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 1. Sequence Diagram UC01</i>
@@ -227,7 +227,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 - **Skenario Alternatif 1 : Registrasi Gagal saat email sudah terdaftar atau password lemah**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-alt-01.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-01.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 2. Sequence Diagram UC01 - email sudah terdaftar atau password lemah</i>
@@ -306,198 +306,6 @@ Pada diagram, pastikan:
 - Semua operasi yang dipanggil pada sequence diagram 3.1.2 (skenario normal dan alternatif) ada pada kelas yang bersangkutan.
 - Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
 
-## 3.16 Use Case UC16
-
-**ID Use Case:** UC16
-**Nama Use Case:** Melaporkan Ulasan
-
-### 3.16.1 Identifikasi Kelas
-
-Tabel 3.16. Identifikasi Kelas Use Case [UC16]
-
-| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
-|:--- | :--- | :--- |
-| 1 | LaporanUlasanPage | LaporanView |
-| 2 | LaporanController| LaporanController | 
-| 3 | Laporan | Laporan |
-| 4 | Ulasan | Alasan |
-
-### 3.16.2 Sequence Diagram
-
-- **Skenario Normal**
-
-<p align="center">
-<img alt="Sequence Diagram UC16" src="./assets/diagram/seqeuence-diagram-16.webp" width="50%">
-</p>
-<p align="center">
-<i>Gambar 48. Sequence Diagram UC16</i>
-</p>
-
-- **Skenario Alternatif 1 : Formulir Laporan Tidak Lengkap**
-
-<p align="center">
-<img alt="Sequence Diagram UC16 Alternatif" src="./assets/diagram/seqeuence-diagram-alt-16.webp" width="50%">
-</p>
-<p align="center">
-<i>Gambar 49. Sequence Diagram UC16 - formulir tidak lengkap</i>
-</p>
-
-### 3.16.3 Diagram Kelas
-
-<p align="center">
-<img alt="Diagram Kelas UC16" src="./assets/diagram/diagram-kelas-16.webp" width="35%">
-</p>
-<p align="center">
-<i>Gambar 50. Diagram Kelas Melaporkan Ulasan</i>
-</p>
-
-## 3.17 Use Case UC17
-
-**ID Use Case:** UC17
-**Nama Use Case:** Memblokir Akun
-
-### 3.17.1 Identifikasi Kelas
-
-Tabel 3.17. Identifikasi Kelas Use Case [UC17]
-
-| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
-|:--- | :--- | :--- |
-| 1 | TinjauanPage | LaporanView |
-| 2 | ModerasiAkunController| LaporanController | 
-| 3 | Admin | Admin |
-| 4 | Laporan | Laporan |
-
-### 3.17.2 Sequence Diagram
-
-- **Skenario Normal**
-
-<p align="center">
-<img alt="Sequence Diagram UC17" src="./assets/diagram/seqeuence-diagram-17.webp" width="50%">
-</p>
-<p align="center">
-<i>Gambar 51. Sequence Diagram UC17</i>
-</p>
-
-- **Skenario Alternatif 1 : Laporan Tidak Disetujui Admin**
-
-<p align="center">
-<img alt="Sequence Diagram UC17 Alternatif" src="./assets/diagram/seqeuence-diagram-alt-17.webp" width="50%">
-</p>
-<p align="center">
-<i>Gambar 52. Sequence Diagram UC17 - laporan tidak disetujui admin</i>
-</p>
-
-### 3.17.3 Diagram Kelas
-
-<p align="center">
-<img alt="Diagram Kelas UC17" src="./assets/diagram/diagram-kelas-17.webp" width="35%">
-</p>
-<p align="center">
-<i>Gambar 53. Diagram Kelas Memblokir Akun</i>
-</p>
-
-## 3.18 Use Case UC18
-
-**ID Use Case:** UC18
-**Nama Use Case:** Melihat Riwayat Penanganan
-
-### 3.18.1 Identifikasi Kelas
-
-Tabel 3.18. Identifikasi Kelas Use Case [UC18]
-
-| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
-|:--- | :--- | :--- |
-| 1 | HistoryPage | HistoryView |
-| 2 | RiwayatController | RiwayatController |
-| 3 | Masyarakat | Masyarakat | 
-| 4 | MitraPengacara | MitraPengacara |
-| 5 | Kasus | Kasus |
-| 6 | SesiKonsultasi | SesiKonsultasi |
-
-### 3.18.2 Sequence Diagram
-
-- **Skenario Normal**
-
-<p align="center">
-<img alt="Sequence Diagram UC17" src="./assets/diagram/seqeuence-diagram-18.webp" width="50%">
-</p>
-<p align="center">
-<i>Gambar 54. Sequence Diagram UC18</i>
-</p>
-
-- **Skenario Alternatif 1 : Laporan Tidak Disetujui Admin**
-
-<p align="center">
-<img alt="Sequence Diagram UC18 Alternatif" src="./assets/diagram/seqeuence-diagram-alt-18.webp" width="50%">
-</p>
-<p align="center">
-<i>Gambar 55. Sequence Diagram UC18 - laporan tidak disetujui admin</i>
-</p>
-
-### 3.18.3 Diagram Kelas
-
-<p align="center">
-<img alt="Diagram Kelas UC17" src="./assets/diagram/diagram-kelas-18.webp" width="35%">
-</p>
-<p align="center">
-<i>Gambar 56. Diagram Kelas Melihat Riwayat Penanganan</i>
-</p>
-
-## 3.19 Use Case UC19
-
-**ID Use Case:** UC19
-**Nama Use Case:** Live Chat dengan Admin
-
-### 3.19.1 Identifikasi Kelas
-
-Tabel 3.19. Identifikasi Kelas Use Case [UC19 & UC20]
-
-| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
-|:--- | :--- | :--- |
-| 1 | LiveChatMasyarakatPage | LiveChatView | 
-| 2 | LiveChatController | LiveChatController | 
-| 3 | Masyarakat | Masyarakat |
-| 4 | Admin | Admin |
-| 5 | LiveChat | LiveChat |
-
-### 3.19.2 Sequence Diagram
-
-- **Skenario Normal**
-
-<p align="center">
-<img alt="Sequence Diagram UC19 & UC20" src="./assets/diagram/seqeuence-diagram-19-20.webp" width="50%">
-</p>
-<p align="center">
-<i>Gambar 57. Sequence Diagram UC19 & UC20</i>
-</p>
-
-- **Skenario Alternatif 1 : Tidak Ada Admin yang Tersedia
-
-<p align="center">
-<img alt="Sequence Diagram UC19 Alternatif" src="./assets/diagram/seqeuence-diagram-alt-19-20.webp" width="50%">
-</p>
-<p align="center">
-<i>Gambar 58. Sequence Diagram UC1 & UC20 - tidak ada admin yang standby</i>
-</p>
-
-### 3.19.3 Diagram Kelas
-
-<p align="center">
-<img alt="Diagram Kelas UC19" src="./assets/diagram/diagram-kelas-19.webp" width="35%">
-</p>
-<p align="center">
-<i>Gambar 59. Diagram Kelas Live Chat Masyarakat</i>
-</p>
-
-<p align="center">
-<img alt="Diagram Kelas UC20" src="./assets/diagram/diagram-kelas-20.webp" width="35%">
-</p>
-<p align="center">
-<i>Gambar 60. Diagram Kelas Live Chat Admin</i>
-</p>
-
-<br>
-
 ## 3.6 Use Case UC06
 
 **ID Use Case:** *UC06*  
@@ -531,7 +339,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 - **Skenario Alternatif 2 : Dokumen tidak memenuhi syarat atau terindikasi pelanggaran**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-alt-06.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-06.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 2. Sequence Diagram Alternatif UC06 </i>
@@ -683,7 +491,7 @@ Tabel 3.10.1 Identifikasi Kelas Use Case [UC10]
 
 - **Skenario Alternatif 1 : Semua jadwal penuh atau tidak sesuai kebutuhan masyarakat**
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-alt-10.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-10.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 10. Sequence Diagram Alternatif UC10 </i>
@@ -697,6 +505,436 @@ Tabel 3.10.1 Identifikasi Kelas Use Case [UC10]
 <p align="center">
 <i>Gambar 10. Diagram Kelas UC10</i>
 </p>
+
+## 3.11 Use Case UC11
+
+**ID Use Case:** UC11  
+**Nama Use Case:** Menanggapi Sesi Konsultasi 
+
+### 3.11.1 Identifikasi Kelas
+
+Tabel 3.11.1 Identifikasi Kelas Use Case [UC11]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | KonfirmasiKonsultasiPage | KonfirmasiKonsultasiPage |
+| 2 | SesiKonsultasiController | SesiKonsultasiController |
+| 3 | MitraPengacara | MitraPengacara |
+| 4 | SesiKonsultasi | SesiKonsultasi |
+
+### 3.11.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 11" src="./assets/diagram/sequence-diagram-11.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 35. Sequence Diagram [UC11]</i>
+</p>
+
+- **Skenario Alternatif 1: Mitra menolak permintaan konsultasi**
+
+<p align="center">
+<img alt="SD 11 alt 1" src="./assets/diagram/sequence-diagram-alt-11-1.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 36. Sequence Diagram [UC11] - Mitra menolak permintaan konsultasi</i>
+</p>
+
+- **Skenario Alternatif 2: Mitra tidak merespon dalam waktu tertentu**
+
+<p align="center">
+<img alt="SD 11 alt 2" src="./assets/diagram/sequence-diagram-alt-11-2.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 37. Sequence Diagram [UC11] - Mitra tidak merespon dalam waktu tertentu</i>
+</p>
+
+### 3.11.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 11" src="./assets/diagram/diagram-kelas-11.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 38. Diagram Kelas Menanggapi Sesi Konsultasi</i>
+</p>
+
+## 3.12 Use Case UC12
+
+**ID Use Case:** UC12
+**Nama Use Case:** Melakukan Sesi Konsultasi 
+
+### 3.12.1 Identifikasi Kelas
+
+Tabel 3.12.1 Identifikasi Kelas Use Case [UC12]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | ChatKonsultasiPage | ChatKonsultasiPage |
+| 2 | SesiKonsultasiController | SesiKonsultasiController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | MitraPengacara | MitraPengacara |
+| 5 | Kasus | Kasus |
+| 6 | SesiKonsultasi | SesiKonsultasi |
+| 7 | Pembayaran | Pembayaran |
+
+### 3.12.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 12" src="./assets/diagram/sequence-diagram-12.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 39. Sequence Diagram [UC12]</i>
+</p>
+
+- **Skenario Alternatif 1: Sesi terputus/salah satu pihak tidak merespon**
+
+<p align="center">
+<img alt="SD 12 alt 1" src="./assets/diagram/sequence-diagram-alt-12.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 40. Sequence Diagram [UC12] - Sesi terputus/salah satu pihak tidak merespon</i>
+</p>
+
+### 3.12.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 12" src="./assets/diagram/diagram-kelas-12.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 41. Diagram Kelas Melakukan Sesi Konsultasi</i>
+</p>
+
+## 3.13 Use Case UC13
+
+**ID Use Case:** UC13
+**Nama Use Case:** Memberi Ulasan, Feedback, dan/atau Rating 
+
+### 3.13.1 Identifikasi Kelas
+
+Tabel 3.13.1 Identifikasi Kelas Use Case [UC13]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | UlasanPage | UlasanPage |
+| 2 | UlasanController | UlasanController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | Ulasan | Ulasan |
+
+### 3.13.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 13" src="./assets/diagram/sequence-diagram-13.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 42. Sequence Diagram [UC13]</i>
+</p>
+
+- **Skenario Alternatif 1: Gagal mengirim ulasan**
+
+<p align="center">
+<img alt="SD 13 alt 1" src="./assets/diagram/sequence-diagram-alt-13.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 43. Sequence Diagram [UC13] - Gagal mengirim ulasan</i>
+</p>
+
+### 3.13.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 13" src="./assets/diagram/diagram-kelas-13.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 44. Diagram Kelas Memberi Ulasan, Feedback, dan/atau Rating</i>
+</p>
+
+## 3.14 Use Case UC14 
+
+**ID Use Case:** UC14
+**Nama Use Case:** Melaporkan Pelanggaran Akun 
+
+### 3.14.1 Identifikasi Kelas
+
+Tabel 3.14.1 Identifikasi Kelas Use Case [UC14]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | LaporanAkunPage | LaporanAkunPage |
+| 2 | LaporanController | LaporanController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | Laporan | Laporan |
+
+### 3.14.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 14" src="./assets/diagram/sequence-diagram-14.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 45. Sequence Diagram [UC14]</i>
+</p>
+
+- **Skenario Alternatif 1: Formulir laporan tidak lengkap**
+
+<p align="center">
+<img alt="SD 14 alt 1" src="./assets/diagram/sequence-diagram-alt-14.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 46. Sequence Diagram [UC14] - Formulir laporan tidak lengkap</i>
+</p>
+
+### 3.14.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 14" src="./assets/diagram/diagram-kelas-14.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 47. Diagram Kelas Melaporkan Pelanggaran Akun</i>
+</p>
+
+## 3.15 Use Case UC15
+
+**ID Use Case:** UC15
+**Nama Use Case:** Melaporkan Pelanggaran
+
+### 3.15.1 Identifikasi Kelas
+
+Tabel 3.15.1 Identifikasi Kelas Use Case [UC15]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | LaporanAkunPage | LaporanAkunPage |
+| 2 | LaporanController | LaporanController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | Laporan | Laporan |
+| 5 | Mitra Pengacara | Mitra Pengacara |
+
+### 3.15.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 15" src="./assets/diagram/sequence-diagram-15.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 48. Sequence Diagram [UC15]</i>
+</p>
+
+- **Skenario Alternatif 1: Formulir laporan tidak lengkap**
+
+<p align="center">
+<img alt="SD 15 alt 1" src="./assets/diagram/sequence-diagram-alt-15.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 49. Sequence Diagram [UC15] - Formulir laporan tidak lengkap</i>
+</p>
+
+### 3.15.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 15" src="./assets/diagram/diagram-kelas-15.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 50. Diagram Kelas Melaporkan Pelanggara</i>
+</p>
+
+## 3.16 Use Case UC16
+
+**ID Use Case:** UC16
+**Nama Use Case:** Melaporkan Ulasan
+
+### 3.16.1 Identifikasi Kelas
+
+Tabel 3.16. Identifikasi Kelas Use Case [UC16]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | LaporanUlasanPage | LaporanView |
+| 2 | LaporanController| LaporanController | 
+| 3 | Laporan | Laporan |
+| 4 | Ulasan | Alasan |
+
+### 3.16.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC16" src="./assets/diagram/sequence-diagram-16.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 48. Sequence Diagram UC16</i>
+</p>
+
+- **Skenario Alternatif 1 : Formulir Laporan Tidak Lengkap**
+
+<p align="center">
+<img alt="Sequence Diagram UC16 Alternatif" src="./assets/diagram/sequence-diagram-alt-16.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 49. Sequence Diagram UC16 - formulir tidak lengkap</i>
+</p>
+
+### 3.16.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC16" src="./assets/diagram/diagram-kelas-16.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 50. Diagram Kelas Melaporkan Ulasan</i>
+</p>
+
+## 3.17 Use Case UC17
+
+**ID Use Case:** UC17
+**Nama Use Case:** Memblokir Akun
+
+### 3.17.1 Identifikasi Kelas
+
+Tabel 3.17. Identifikasi Kelas Use Case [UC17]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | TinjauanPage | LaporanView |
+| 2 | ModerasiAkunController| LaporanController | 
+| 3 | Admin | Admin |
+| 4 | Laporan | Laporan |
+
+### 3.17.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC17" src="./assets/diagram/sequence-diagram-17.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 51. Sequence Diagram UC17</i>
+</p>
+
+- **Skenario Alternatif 1 : Laporan Tidak Disetujui Admin**
+
+<p align="center">
+<img alt="Sequence Diagram UC17 Alternatif" src="./assets/diagram/sequence-diagram-alt-17.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 52. Sequence Diagram UC17 - laporan tidak disetujui admin</i>
+</p>
+
+### 3.17.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC17" src="./assets/diagram/diagram-kelas-17.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 53. Diagram Kelas Memblokir Akun</i>
+</p>
+
+## 3.18 Use Case UC18
+
+**ID Use Case:** UC18
+**Nama Use Case:** Melihat Riwayat Penanganan
+
+### 3.18.1 Identifikasi Kelas
+
+Tabel 3.18. Identifikasi Kelas Use Case [UC18]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | HistoryPage | HistoryView |
+| 2 | RiwayatController | RiwayatController |
+| 3 | Masyarakat | Masyarakat | 
+| 4 | MitraPengacara | MitraPengacara |
+| 5 | Kasus | Kasus |
+| 6 | SesiKonsultasi | SesiKonsultasi |
+
+### 3.18.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC17" src="./assets/diagram/sequence-diagram-18.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 54. Sequence Diagram UC18</i>
+</p>
+
+- **Skenario Alternatif 1 : Laporan Tidak Disetujui Admin**
+
+<p align="center">
+<img alt="Sequence Diagram UC18 Alternatif" src="./assets/diagram/sequence-diagram-alt-18.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 55. Sequence Diagram UC18 - laporan tidak disetujui admin</i>
+</p>
+
+### 3.18.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC17" src="./assets/diagram/diagram-kelas-18.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 56. Diagram Kelas Melihat Riwayat Penanganan</i>
+</p>
+
+## 3.19 Use Case UC19
+
+**ID Use Case:** UC19
+**Nama Use Case:** Live Chat dengan Admin
+
+### 3.19.1 Identifikasi Kelas
+
+Tabel 3.19. Identifikasi Kelas Use Case [UC19 & UC20]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | LiveChatMasyarakatPage | LiveChatView | 
+| 2 | LiveChatController | LiveChatController | 
+| 3 | Masyarakat | Masyarakat |
+| 4 | Admin | Admin |
+| 5 | LiveChat | LiveChat |
+
+### 3.19.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC19 & UC20" src="./assets/diagram/sequence-diagram-19-20.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 57. Sequence Diagram UC19 & UC20</i>
+</p>
+
+- **Skenario Alternatif 1 : Tidak Ada Admin yang Tersedia
+
+<p align="center">
+<img alt="Sequence Diagram UC19 Alternatif" src="./assets/diagram/sequence-diagram-alt-19-20.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 58. Sequence Diagram UC1 & UC20 - tidak ada admin yang standby</i>
+</p>
+
+### 3.19.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC19" src="./assets/diagram/diagram-kelas-19.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 59. Diagram Kelas Live Chat Masyarakat</i>
+</p>
+
+<p align="center">
+<img alt="Diagram Kelas UC20" src="./assets/diagram/diagram-kelas-20.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 60. Diagram Kelas Live Chat Admin</i>
+</p>
+
+<br>
 
 ## 3.21 Use Case UC21
 
