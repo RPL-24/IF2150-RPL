@@ -214,14 +214,14 @@ Tabel 3.1. Identifikasi Kelas Use Case UC01
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | LaporPage | C13 - LaporPage |
-| 2 | LaporanController | C19 - LaporanController |
-| 3 | NotifikasiController | C25 - NotifikasiController |
+| 1 | LaporPage | C11 - LaporPage |
+| 2 | LaporanController | C17 - LaporanController |
+| 3 | NotifikasiController | C23 - NotifikasiController |
 | 4 | User | C01 - Warga |
-| 5 | Laporan | C04 - Laporan |
-| 6 | Lokasi | C05 - Lokasi |
-| 7 | Foto | C06 - Foto |
-| 8 | Video | C11 - Video |
+| 5 | Laporan | C02 - Laporan |
+| 6 | Lokasi | C03 - Lokasi |
+| 7 | Foto | C04 - Foto |
+| 8 | Video | C05 - Video |
 | 9 | Notifikasi | C10 - Notifikasi |
 
 ### 3.1.2 Sequence Diagram
@@ -285,9 +285,9 @@ Tabel 3.2. Identifikasi Kelas Use Case UC02
 | 5 | Laporan | C02 - Laporan |
 | 6 | Lokasi | C03 - Lokasi |
 | 7 | Foto | C04 - Foto |
-| 8 | Video | C09 - Video |
-| 9 | Upvote | C05 - Upvote |
-| 10 | Notifikasi | C08 - Notifikasi |
+| 8 | Video | C05 - Video |
+| 9 | Upvote | C06 - Upvote |
+| 10 | Notifikasi | C10 - Notifikasi |
 
 ### 3.2.2 Sequence Diagram
 
@@ -338,13 +338,13 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *PenugasanPage* | *PenugasanPage* |
-| 2 | *PenugasanController* | *PenugasanController* |
-| 3 | *ListTugas* | *ListTugas* |
-| 4 | *Laporan* | *Laporan* |
-| 5 | *User* | *User* |
-| 6 | *Foto* | *Foto* |
-| 7 | *Video* | *Video* |
+| 1 | *PenugasanPage* | *C13 - PenugasanPage* |
+| 2 | *PenugasanController* | *C19 - PenugasanController* |
+| 3 | *ListTugas* | *C07 - ListTugas* |
+| 4 | *Laporan* | *C02 - Laporan* |
+| 5 | *User* | *C01 - User* |
+| 6 | *Foto* | *C04 - Foto* |
+| 7 | *Video* | *C05 - Video* |
 
 ### 3.3.2 Sequence Diagram
 
@@ -397,16 +397,16 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *PenugasanPage* | *PenugasanPage* |
-| 2 | *PenugasanController* | *PenugasanController* |
-| 3 | *HasilPerbaikanForm* | *HasilPerbaikanForm* |
-| 4 | *PerbaikanController* | *PerbaikanController* |
-| 5 | *ListTugas* | *ListTugas* |
-| 6 | *Laporan* | *Laporan* |
-| 7 | *HasilPerbaikan* | *HasilPerbaikan* |
-| 8 | *User* | *User* |
-| 9 | *Foto* | *Foto* |
-| 10 | *Video* | *Video* |
+| 1 | *PenugasanPage* | *C13 - PenugasanPage* |
+| 2 | *PenugasanController* | *C19 - PenugasanController* |
+| 3 | *HasilPerbaikanForm* | *C14 - HasilPerbaikanForm* |
+| 4 | *PerbaikanController* | *C20 - PerbaikanController* |
+| 5 | *ListTugas* | *C07 - ListTugas* |
+| 6 | *Laporan* | *C02 - Laporan* |
+| 7 | *HasilPerbaikan* | *C08 - HasilPerbaikan* |
+| 8 | *User* | *C01 - User* |
+| 9 | *Foto* | *C04 - Foto* |
+| 10 | *Video* | *C05 - Video* |
 
 ### 3.4.2 Sequence Diagram
 
@@ -500,15 +500,15 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | StatusLaporanPage | C18 - StatusLaporanPage |
-| 2 | StatusController | C24 - StatusController |
-| 3 | NotifikasiController | C25 - NotifikasiController |
+| 1 | StatusLaporanPage | C16 - StatusLaporanPage |
+| 2 | StatusController | C22 - StatusController |
+| 3 | NotifikasiController | C23 - NotifikasiController |
 | 4 | User | C01 - Warga |
-| 5 | Laporan | C04 - Laporan |
-| 6 | Lokasi | C05 - Lokasi |
-| 7 | Foto | C06 - Foto |
-| 8 | Video | C11 - Video |
-| 9 | Upvote | C07 - Upvote |
+| 5 | Laporan | C02 - Laporan |
+| 6 | Lokasi | C03 - Lokasi |
+| 7 | Foto | C04 - Foto |
+| 8 | Video | C05 - Video |
+| 9 | Upvote | C06 - Upvote |
 | 10 | HasilPerbaikan | C08 - HasilPerbaikan |
 | 11 | Notifikasi | C10 - Notifikasi |
 
