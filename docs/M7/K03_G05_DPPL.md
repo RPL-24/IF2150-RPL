@@ -686,8 +686,100 @@ Tabel 3.10.1 Identifikasi Kelas Use Case [UC01]
 <i>Gambar 10. Diagram Kelas UC10</i>
 </p>
 
+## 3.21 Use Case UC21
 
+**ID Use Case:** UC21
+**Nama Use Case:** Membayar Biaya Sesi Konsultasi
 
+### 3.21.1 Identifikasi Kelas
+
+Tabel 3.21. Identifikasi Kelas Use Case [UC21]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- | 
+| 1 | PembayaranPage | PembayaranPage |
+| 2 | PembayaranController | PembayaranController |
+| 3 | Masyarakat  | Masyarakat |
+| 4 | SesiKonsultasi | SesiKonsultasi |
+| 5 | Pembayaran | Pembayaran |
+
+### 3.21.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC21" src="./assets/diagram/sequence-diagram-21.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC21</i>
+</p>
+
+-**Skenario Alternatif 1: Pembayaran ditolak**
+
+<p align="center">
+<img alt="Sequence Diagram UC21 - Pembayaran ditolak" src="./assets/diagram/sequence-diagram-alt-21.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC21 - Pembayaran ditolak</i>
+</p>
+
+### 3.21.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas Membayar Biaya Sesi Konsultasi" src="./assets/diagram/diagram-kelas-21.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Membayar Biaya Sesi Konsultasi</i>
+</p>
+
+<br>
+
+## 3.22 Use Case UC22
+
+**ID Use Case:** UC22
+**Nama Use Case:** Mencairkan Dana
+
+### 3.22.1 Identifikasi Kelas
+
+Tabel 3.22. Identifikasi Kelas Use Case [UC22]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- | 
+| 1 | PencairanDanaPage | PencairanDanaPage |
+| 2 | PencairanDanaController | PencairanDanaController |
+| 3 | MitraPengacara | MitraPengacara |
+| 4 | PencairanDana | PencairanDana |
+
+### 3.22.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-22.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC22</i>
+</p>
+
+-**Skenario Alternatif 1: Pencairan ditolak**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-22.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC22 - Pencairan ditolak</i>
+</p>
+
+### 3.22.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-22.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Mencairkan Dana</i>
+</p>
+
+<br>
 ---
 
 # BAB 4: Diagram Kelas Keseluruhan
