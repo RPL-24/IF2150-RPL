@@ -55,7 +55,7 @@ Dipersiapkan oleh:
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Tuliskan dengan ringkas tujuan dokumen DPPL ini dibuat dan siapa saja yang akan menggunakan dokumen ini.
+Dokumen ini bertujuan untuk menjabarkan rancangan perangkat lunak antri.in yang mencakup pendahuluan, perancangan arsitektur, realisasi setiap use case melalui sequence diagram dan diagram kelas, serta keterkaitan kelas perancangan dengan use case. Dokumen ini akan digunakan oleh kelompok Ducklings sebagai acuan dalam pengembangan, serta asisten dosen dan dosen sebagai acuan dalam penilaian.
 
 ## 1.2 Lingkup Masalah
 Fenomena makanan viral memicu antrean panjang berjam-jam yang membebani pelanggan, karena mereka harus datang lebih awal, menunggu di lokasi, dan mengantre tanpa informasi stok menu maupun estimasi waktu tunggu, ditambah proses pemesanan dan pembayaran di kasir yang memakan waktu 2-5 menit per transaksi. Aplikasi pesan-antar seperti GoFood, GrabFood, dan ShopeeFood pun hanya berfokus pada pengantaran dan tidak membatasi kuota transaksi per rentang waktu, sehingga restoran kewalahan saat pesanan online dan pelanggan fisik datang bersamaan. Celah utamanya adalah belum adanya integrasi antara pemantauan antrean real-time, pengaturan slot waktu, serta pemesanan dan pembayaran awal, sehingga antri.in hadir untuk menghapus waktu berpikir di kasir, meratakan kedatangan pelanggan berbasis kuota jam, dan memberi kebebasan bagi konsumen selama menunggu. Dari fenomena tersebut perangkat lunak bernama antri.in yang akan kami kembangkan merupakan sistem pemesanan makanan viral dengan antrean digital berbasis web yang bertujuan agar pengguna tidak perlu mengantri secara langsung pada restoran. Sistem ini memungkinkan pengguna untuk mencari restoran makanan viral, melihat informasi makanan dan restoran, melakukan pemesanan, memantau antrean dan estimasi pesanan akan selesai, serta fitur booking tempat jika pengguna memutuskan untuk dine-in. Cara kerja dari aplikasi berbasis web ini adalah pertama pengguna memilih restoran yang tersedia, kemudian pengguna dapat membaca informasi mengenai makanan yang terdapat di restoran tersebut. Jika sudah, pengguna dapat memilih makanan yang akan dibeli dan lanjut ke proses pembayaran. Ketika pengguna sudah membayar, barulah akan mendapatkan nomor antrian dan estimasi pesanan selesai sehingga pengguna dapat memperkirakan waktu kedatangan.
@@ -129,6 +129,8 @@ Sebutkan *operating system*, DBMS, *development tools*, *filing system*, dan bah
 | *Code Editor / IDE* | *Visual Studio Code* |
 | *Package Manager* | *npm* |
 | *Version Control* | *Git* |
+| *API Testing Tool* | *Postman* |
+| *Database Management Tool* | *pgAdmin* |
 
 ## 2.2 Style/Pattern Arsitektur Acuan
 
@@ -896,7 +898,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 </p>
 
 
-### 3.10.3 Diagram Kelas
+### 3.11.3 Diagram Kelas
 
 Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
 
