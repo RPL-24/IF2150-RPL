@@ -398,5 +398,54 @@ Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 | Kelas | Use Case Terkait |
 | :--- | :--- |
 | *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *...* | *...* |
+| C01 - RegistrasiMasyarakatPage | UC01 - Melakukan Registrasi Akun bagi Masyarakat |
+| C02 - LoginMasyarakatPage | UC02 - Melakukan Login bagi Masyarakat |
+| C03 - BerandaPage | UC02 - Melakukan Login bagi Masyarakat |
+| C04 - RegistrasiMitraPage | UC03 - Melakukan Registrasi Akun bagi Mitra Pengacara |
+| C05 - LoginMitraPage | UC04 - Melakukan Login bagi Mitra Pengacara |
+| C06 - StatusVerifikasiMitraPage | UC05 - Melihat Status Registrasi Akun Mitra Pengacara |
+| C07 - VerifikasiMitraPage | UC06 - Memverifikasi Pendaftar Mitra Pengacara |
+| C08 - EditProfilMitraPage | UC07 - Verifikasi Akun Pengacara |
+| C09 - EditDokumenLegalitasPage | UC07 - Verifikasi Akun Pengacara |
+| C10 - SearchLawPage | UC08 - Melakukan Pencarian Pasal |
+| C11 - DaftarMitraPengacaraPage | UC09 - Melihat Daftar Pengacara |
+| C12 - PemilihanJadwalKonsultasiPage | UC10 - Memilih Mitra Pengacara untuk Sesi Konsultasi |
+| C13 - KonfirmasiKonsultasiPage | UC11 - Menanggapi Sesi Konsultasi |
+| C14 - ChatKonsultasiPage | UC12 - Melakukan Sesi Konsultasi |
+| C15 - UlasanPage | UC13 - Memberi Ulasan, Feedback, dan/atau Rating |
+| C16 - LaporanAkunPage / LaporanUlasanPage | UC14 - Melaporkan Pelanggaran, UC15 - Melaporkan Pelanggaran |
+| C17 - LaporanUlasanPage | UC16 - Melaporkan Ulasan |
+| C18 - TinjauanPage | UC17 - Memblokir Akun |
+| C19 - HistoryPage | UC18 - Melihat Riwayat Penanganan |
+| C20 - LiveChatMasyarakatPage | UC19 - Menanyakan Masalah Teknis |
+| C21 - LiveChatAdminPage | UC20 - Menjawab Pertanyaan |
+| C22 - PembayaranPage | UC21 - Membayar Biaya Sesi Konsultasi |
+| C23 - PencairanDanaPage | UC22 - Mencairkan Dana |
+| C24 - RegistrasiMasyarakatController | UC01 - Melakukan Registrasi Akun bagi Masyarakat |
+| C25 - AutentikasiController | UC02 - Melakukan Login bagi Masyarakat, UC04 - Melakukan Login bagi Mitra Pengacara |
+| C26 - RegistrasiMitraController | UC03 - Melakukan Registrasi Akun bagi Mitra Pengacara |
+| C27 - VerifikasiMitraController | UC05 - Melihat Status Registrasi Akun Mitra Pengacara, UC06 - Memverifikasi Pendaftar Mitra Pengacara |
+| C28 - ProfilMitraController | UC07 - Verifikasi Akun Pengacara |
+| C29 - SearchLawController | UC08 - Melakukan Pencarian Pasal |
+| C30 - PencarianMitraController | UC09 - Melihat Daftar Pengacara |
+| C31 - PenjadwalanKonsultasiController | UC10 - Memilih Mitra Pengacara untuk Sesi Konsultasi |
+| C32 - SesiKonsultasiController | UC11 - Menanggapi Sesi Konsultasi, UC12 - Melakukan Sesi Konsultasi |
+| C33 - UlasanController | UC13 - Memberi Ulasan, Feedback, dan/atau Rating |
+| C34 - LaporanController | UC14 - Melaporkan Pelanggaran, UC15 - Melaporkan Pelanggaran, UC16 - Melaporkan Ulasan |
+| C35 - ModerasiAkunController | UC17 - Memblokir Akun |
+| C36 - RiwayatController | UC18 - Melihat Riwayat Penanganan |
+| C37 - LiveChatController | UC19 - Menanyakan Masalah Teknis, UC20 - Menjawab Pertanyaan |
+| C38 - PembayaranController | UC21 - Membayar Biaya Sesi Konsultasi |
+| C39 - PencairanDanaController | UC22 - Mencairkan Dana |
+| C40 - Masyarakat | UC01 - Melakukan Registrasi Akun bagi Masyarakat, UC02 - Melakukan Login bagi Masyarakat, UC08 - Melakukan Pencarian Pasal, UC09 - Melihat Daftar Pengacara, UC10 - Memilih Mitra Pengacara untuk Sesi Konsultasi, UC12 - Melakukan Sesi Konsultasi, UC13 - Memberi Ulasan, Feedback, dan/atau Rating, UC14 - Melaporkan Pelanggaran, UC18 - Melihat Riwayat Penanganan, UC19 - Menanyakan Masalah Teknis, UC21 - Membayar Biaya Sesi Konsultasi |
+| C41 - MitraPengacara | UC03 - Melakukan Registrasi Akun bagi Mitra Pengacara, UC04 - Melakukan Login bagi Mitra Pengacara, UC05 - Melihat Status Registrasi Akun Mitra Pengacara, UC06 - Memverifikasi Pendaftar Mitra Pengacara, UC07 - Verifikasi Akun Pengacara, UC09 - Melihat Daftar Pengacara, UC11 - Menanggapi Sesi Konsultasi, UC12 - Melakukan Sesi Konsultasi, UC15 - Melaporkan Pelanggaran, UC16 - Melaporkan Ulasan, UC18 - Melihat Riwayat Penanganan, UC22 - Mencairkan Dana |
+| C42 - Admin | UC06 - Memverifikasi Pendaftar Mitra Pengacara, UC17 - Memblokir Akun, UC19 - Menanyakan Masalah Teknis, UC20 - Menjawab Pertanyaan |
+| C43 - Kasus | UC10 - Memilih Mitra Pengacara untuk Sesi Konsultasi, UC12 - Melakukan Sesi Konsultasi, UC18 - Melihat Riwayat Penanganan |
+| C44 - DasarHukum | UC08 - Melakukan Pencarian Pasal |
+| C45 - DokumenLegalitas | UC03 - Melakukan Registrasi Akun bagi Mitra Pengacara, UC05 - Melihat Status Registrasi Akun Mitra Pengacara, UC06 - Memverifikasi Pendaftar Mitra Pengacara, UC07 - Verifikasi Akun Pengacara |
+| C46 - SesiKonsultasi | UC10 - Memilih Mitra Pengacara untuk Sesi Konsultasi, UC11 - Menanggapi Sesi Konsultasi, UC12 - Melakukan Sesi Konsultasi, UC18 - Melihat Riwayat Penanganan, UC21 - Membayar Biaya Sesi Konsultasi |
+| C47 - Ulasan / Laporan | UC09 - Melihat Daftar Pengacara, UC13 - Memberi Ulasan, Feedback, dan/atau Rating, UC16 - Melaporkan Ulasan |
+| C48 - Laporan |  UC14 - Melaporkan Pelanggaran, UC15 - Melaporkan Pelanggaran, UC16 - Melaporkan Ulasan, UC17 - Memblokir Akun |
+| C49 - Pembayaran | UC12 - Melakukan Sesi Konsultasi, UC21 - Membayar Biaya Sesi Konsultasi |
+| C50 - LiveChat | UC19 - Menanyakan Masalah Teknis, UC20 - Menjawab Pertanyaan |
+| C51 - PencairanDana | UC22 - Mencairkan Dana |
