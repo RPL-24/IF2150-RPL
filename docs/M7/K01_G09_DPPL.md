@@ -773,23 +773,41 @@ Sumber PlantUML untuk seluruh sequence diagram pada subbab 3.8–3.15 tersedia d
 
 ## 4.1 Diagram Kelas
 
-**Bagian ini diisi dengan diagram kelas keseluruhan.**
-
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-class_diargam.png" width="35%">
+<img alt="Class Diagram Keseluruhan" src="./assets/diagram/diagram-ucXX-Diagram Kelas Keseluruhan.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 4.1. Diagram Kelas Perancangan Keseluruhan [Nama P/L]</i>
+<i>Gambar 4.1. Diagram Kelas Perancangan Keseluruhan PeerUP</i>
 </p>
 
 Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *[C01]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *[C02]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *[C03]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *...* | *...* | *...* | *...* |
+| *C01* | *User* | *idUser, username, email, passwordHash* | *register(), login(), logout(), saveAccount(), getProfile(), openDashboard(), openSessionDashboard(), checkSchedule(), getUserID(), isActive(), createMessage(), sendMessage()* |
+| *C02* | *Mentor* | *listSessionsMade, feedbackList* | *receiveFeedback(), viewFeedback()* |
+| *C03* | *Mentee* | *attendedSessions, listSessionsJoined* | *giveFeedback(), checkCompletedSession()* |
+| *C04* | *Session* | *idSession, topic, schedule, scheduledTime, format, capacity, userList, status, reasonNotConducted, groupChat* | *saveSession(), addParticipant(), checkCapacity(), getSessionDetails(), getSessionStatus(), setStatus(), getStatus(), isCompleted(), openGroupChat(), pushNotification(), getSessionID(), editTitle(), editDescription(), editPreference(), editSchedule()* |
+| *C05* | *GroupChat* | *listChatMessage, listMentee, mentor* | *searchMessage(), displayMessage(), editMessage(), deleteMessage()* |
+| *C06* | *Feedback* | *idFeedback, rating, comment, date* | *setRating(), setComment(), getRating(), getComment(), getDate()* |
+| *C07* | *SessionHistory* | *historyList, completedSessions, cancelledSessions, oncomingSession* | *getArchivedSessions(), getCompletedSessions(), addSessionToHistory(), updateOncomingSession()* |
+| *C08* | *ChatMessage* | *sender, timeStamp, text* | *getSender(), getTime(), getText()* |
+| *C09* | *Preference* | *materialTag, availability, sessionFormatPreference* | *getPreference(), getPreferenceDetails(), updatePreference()* |
+| *C10* | *Profile* | *name, university, studyProgram, bio* | *getProfileData(), updateProfile()* |
+| *C11* | *Dashboard* | *upcomingSessions, sessionRecommendation, listSessions* | *showSession(), matchMakeSession(), searchSession(), showRecommendation(), checkSchedule()* |
+| *C12* | *UserControl* | *-* | *authLogin(), validateEmail(), processRegistration(), saveProfile(), savePreference(), fetchUserProfile()* |
+| *C13* | *SessionControl* | *sessionList, sessionHistory, session* | *processSessionCreation(), validateScheduleConflict(), validateCapacity(), processRegistration(), processSessionConfirmation(), updateSessionStatus(), fetchUserHistory(), getUpcomingSessions(), findRecommendation(), matchSession(), editSession(), cancelSession(), deleteSession()* |
+| *C14* | *FeedbackControl* | *feedbackList* | *validateFeedback(), submitFeedback(), saveFeedback(), retrieveFeedbackBySession()* |
+| *C15* | *LoginPage* | *-* | *showForm(), submitForm()* |
+| *C16* | *ProfilePage* | *-* | *displayProfileData(), displayPreferenceData(), submitUpdate()* |
+| *C17* | *SessionPage* | *confirmationPrompt* | *showSessionDetails(), showConfirmationPrompt(), submitConfirmation()* |
+| *C18* | *HostSessionPage* | *-* | *showCreateForm(), submitSessionData(), showFeedbackList()* |
+| *C19* | *ParticipantSessionPage* | *-* | *showSessionDetails(), submitJoinRequest()* |
+| *C20* | *FeedbackForm* | *rating, comment* | *showForm(), submitFeedback()* |
+| *C21* | *GroupChatPage* | *-* | *displayMessage()* |
+| *C22* | *Notification* | *notificationId, title, content, timestamp, isRead* | *markAsRead(), showContent(), getTime(), openApp()* |
+| *C23* | *PopUpNotification* | *-* | *markAsRead(), showContent(), getTime(), openApp()* |
+| *C24* | *HistoryPage* | *historyList* | *displayHistoryList(), showEmptyState()* |
 
 <br>
 
@@ -797,37 +815,33 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 # BAB 5: Matriks Kerunutan
 
-Matriks kerunutan berikut memetakan setiap kelas perancangan dengan use case yang direalisasikannya. Pemetaan disusun berdasarkan BAB 6 Traceability pada dokumen SKPL, lalu disesuaikan dengan komponen pada Tabel 2.3 dan realisasi use case pada BAB 3. Kelas perancangan yang merupakan turunan dari kelas analisis mencantumkan ID kelas SKPL terkait, sedangkan kelas tambahan pada tahap perancangan ditandai dengan "—".
+Matriks kerunutan berikut memetakan keterkaitan antara setiap kelas perancangan dengan *use case* yang diimplementasikannya pada perangkat lunak **PeerUP**.
 
 Tabel 5.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
-| *C15 - LoginView* | *UC01 - Mendaftarkan Akun dan Autentikasi* |
-| *C16 - ProfileView* | *UC02 - Mengelola Preferensi Profil<br>UC15 - Melihat Profil* |
-| *C11 - DashboardView* | *UC04 - Mencari dan Bergabung ke Sesi<br>UC14 - Membuka Beranda Utama* |
-| *C17, C18, C19 - SessionView* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi* |
-| *C20 - FeedbackView* | *UC07 - Memberikan Penilaian Sehabis Sesi* |
-| *C21 - GroupChatView* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara* |
-| *C24 - HistoryView* | *UC06 - Melihat Riwayat Sesi<br>UC13 - Melihat Feedback Sesi* |
-| *C23 - NotificationView* | *UC09 - Menerima Notifikasi Sesi* |
-| *C12 - UserController* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC14 - Membuka Beranda Utama<br>UC15 - Melihat Profil* |
-| *C13 - SessionController* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama* |
-| *C14 - FeedbackController* | *UC07 - Memberikan Penilaian Sehabis Sesi<br>UC13 - Melihat Feedback Sesi* |
-| *— - ChatController* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara* |
-| *— - NotificationController* | *UC09 - Menerima Notifikasi Sesi* |
-| *C01 - User* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara<br>UC09 - Menerima Notifikasi Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama<br>UC15 - Melihat Profil* |
-| *C02 - Mentor* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC03 - Membuat Sesi Belajar<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara<br>UC09 - Menerima Notifikasi Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama<br>UC15 - Melihat Profil* |
-| *C03 - Mentee* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama<br>UC15 - Melihat Profil* |
-| *C10 - Profile* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC15 - Melihat Profil* |
-| *C09 - Preference* | *UC02 - Mengelola Preferensi Profil<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC14 - Membuka Beranda Utama<br>UC15 - Melihat Profil* |
-| *C04 - Session* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama* |
-| *C07 - SessionHistory* | *UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi* |
-| *C05, C08 - GroupChat* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara* |
-| *C06 - Feedback* | *UC07 - Memberikan Penilaian Sehabis Sesi<br>UC13 - Melihat Feedback Sesi* |
-| *C22 - Notification* | *UC09 - Menerima Notifikasi Sesi* |
-| *— - SessionData* | *UC12 - Mengedit Sesi* |
-| *— - Validator* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC03 - Membuat Sesi Belajar<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC12 - Mengedit Sesi* |
-| *— - AuthAdapter* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC14 - Membuka Beranda Utama* |
-| *— - RealtimeAdapter* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara<br>UC09 - Menerima Notifikasi Sesi* |
-| *— - CronAdapter* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara<br>UC09 - Menerima Notifikasi Sesi* |
+| *C01 - User* | *UC01, UC02, UC05, UC06, UC07, UC08, UC09, UC14, UC15* |
+| *C02 - Mentor* | *UC01, UC02, UC03, UC05, UC06, UC07, UC08, UC09, UC11, UC12, UC13, UC14, UC15* |
+| *C03 - Mentee* | *UC01, UC02, UC04, UC05, UC06, UC07, UC08, UC09, UC10, UC14, UC15* |
+| *C04 - Session* | *UC03, UC04, UC05, UC06, UC07, UC08, UC09, UC10, UC11, UC12, UC13, UC14* |
+| *C05 - GroupChat* | *UC08* |
+| *C06 - Feedback* | *UC07, UC13* |
+| *C07 - SessionHistory* | *UC05, UC06, UC10, UC11, UC12, UC13* |
+| *C08 - ChatMessage* | *UC08* |
+| *C09 - Preference* | *UC02, UC04, UC14, UC15* |
+| *C10 - Profile* | *UC01, UC02, UC15* |
+| *C11 - Dashboard* | *UC01, UC04, UC06, UC09, UC14* |
+| *C12 - UserControl* | *UC01, UC02, UC15* |
+| *C13 - SessionControl* | *UC03, UC04, UC05, UC06, UC10, UC11, UC12, UC14* |
+| *C14 - FeedbackControl* | *UC07, UC13* |
+| *C15 - LoginPage* | *UC01* |
+| *C16 - ProfilePage* | *UC02, UC15* |
+| *C17 - SessionPage* | *UC03, UC04, UC05, UC10, UC11, UC12* |
+| *C18 - HostSessionPage* | *UC03, UC05, UC11, UC12, UC13* |
+| *C19 - ParticipantSessionPage* | *UC04, UC05, UC10* |
+| *C20 - FeedbackForm* | *UC07, UC13* |
+| *C21 - GroupChatPage* | *UC08* |
+| *C22 - Notification* | *UC09* |
+| *C23 - PopUpNotification* | *UC09* |
+| *C24 - HistoryPage* | *UC06* |
