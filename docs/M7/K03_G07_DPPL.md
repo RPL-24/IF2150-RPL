@@ -43,7 +43,7 @@ Dipersiapkan oleh:
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-[[[Tuliskan dengan ringkas tujuan dokumen DPPL ini dibuat dan siapa saja yang akan menggunakan dokumen ini.]]]
+Dokumen Deskripsi Perancangan Perangkat Lunak (DPPL) ini disusun untuk memberikan panduan teknis, struktural, dan prosedural yang presisi bagi tim pengembang dalam mengimplementasikan platform LaporKota ke dalam bentuk kode program. Dokumen ini menjabarkan pemodelan arsitektur sistem, realisasi detail use case ke dalam sequence diagram dan class diagram, perancangan antarmuka pengguna, serta pemetaan keterlacakan kelas terhadap kebutuhan fungsional perangkat lunak. Dokumen ini ditujukan bagi Tim Pengembang (*software developer*) sebagai acuan implementasi kode, Tim Penguji (*quality assurance*) sebagai acuan pengujian integrasi struktural, serta Asisten dan Dosen Pengampu mata kuliah IF2150 Rekayasa Perangkat Lunak untuk mengevaluasi kesesuaian hasil rancangan dengan spesifikasi kebutuhan yang telah ditetapkan pada SKPL.
 
 ## 1.2 Lingkup Masalah
 Perangkat lunak yang akan dikembangkan adalah LaporKota, sebuah platform pelaporan kerusakan infrastruktur publik berbasis website yang dirancang untuk mempermudah warga dalam menyampaikan dan memantau laporannya. Sistem pelaporan ini memfasilitasi pengguna untuk melaporkan masalah fasilitas umum dalam lingkup satu kota, kapan saja dan di mana saja dengan menyertakan foto serta koordinat lokasi. Dengan adanya sistem ini diharapkan pengguna tidak lagi kesulitan mencari saluran pengaduan yang responsif dan proses perbaikan kerusakan fasilitas publik dapat berjalan dengan efisien.
@@ -266,53 +266,66 @@ Tabel 3.1. Identifikasi Kelas Use Case UC01
 <i>Gambar 6. Diagram Kelas Mengirim Laporan Kerusakan</i>
 </p>
 
-## 3.2 Use Case [Nama Use Case 2]
+## 3.2 Use Case Memvalidasi Laporan Baru
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** UC02  
+**Nama Use Case:** Memvalidasi Laporan Baru
 
 ### 3.2.1 Identifikasi Kelas
 
-Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+Tabel 3.2 memetakan kelas perancangan yang terlibat dalam realisasi UC02 ke kelas analisis pada SKPL Bab 5.2.2. Interaksi use case ini melibatkan kelas antarmuka pengguna (`ValidasiPage`), pengontrol logika bisnis (`ValidasiController`), pengontrol notifikasi (`NotifikasiController`), serta kelas-kelas entitas data (`User`, `Laporan`, `Lokasi`, `Foto`, `Video`, `Upvote`, dan `Notifikasi`).
 
-Tabel 3.2. Identifikasi Kelas Use Case [UC01]
+Tabel 3.2. Identifikasi Kelas Use Case UC02
 
-| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
-|:--- | :--- | :--- |
-| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| ... | *...* | *...* |
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait | Keterangan |
+|:---|:---|:---|:---|
+| 1 | ValidasiPage | C12 - ValidasiPage | Antarmuka dasbor Tim Administrasi untuk memproses antrean laporan |
+| 2 | ValidasiController | C18 - ValidasiController | Pengendali logika validasi, penyaringan antrean, dan alur status laporan |
+| 3 | NotifikasiController | C23 - NotifikasiController | Pengendali pembentukan dan pengiriman notifikasi perubahan status tiket |
+| 4 | User | C01 - User | Entitas akun pengguna dengan hak akses peran Tim Administrasi |
+| 5 | Laporan | C02 - Laporan | Entitas data utama tiket laporan kerusakan |
+| 6 | Lokasi | C03 - Lokasi | Entitas koordinat geografis tempat kerusakan fasilitas publik |
+| 7 | Foto | C04 - Foto | Entitas berkas foto bukti kerusakan fasilitas publik |
+| 8 | Video | C09 - Video | Entitas berkas rekaman video bukti kerusakan fasilitas publik |
+| 9 | Upvote | C05 - Upvote | Entitas dukungan warga untuk penghitungan prioritas penanganan |
+| 10 | Notifikasi | C08 - Notifikasi | Entitas rekaman pesan pemberitahuan status tiket laporan |
 
 ### 3.2.2 Sequence Diagram
 
-Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
-
-- **Skenario Normal**
+- **Skenario Normal: Menyetujui Laporan Kerusakan (Status: "Dikerjakan")**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram UC02 Skenario Normal" src="./assets/diagram/uc02-sd-normal.png" width="95%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01]</i>
+<i>Gambar 7. Sequence Diagram UC02 - Skenario Normal</i>
 </p>
 
-- **Skenario Alternatif [Nomor]: [Nama Skenario]**
+- **Skenario Alternatif 1: Menyaring Antrean Sebelum Meninjau**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram UC02 Alternatif 1" src="./assets/diagram/uc02-sd-alt1.png" width="85%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 8. Sequence Diagram UC02 - Menyaring Antrean Sebelum Meninjau</i>
+</p>
+
+- **Skenario Alternatif 2: Laporan Dinyatakan Tidak Valid (Status: "Ditolak")**
+
+<p align="center">
+<img alt="Sequence Diagram UC02 Alternatif 2" src="./assets/diagram/uc02-sd-alt2.png" width="95%">
+</p>
+<p align="center">
+<i>Gambar 9. Sequence Diagram UC02 - Laporan Dinyatakan Tidak Valid</i>
 </p>
 
 ### 3.2.3 Diagram Kelas
 
-
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+<img alt="Diagram Kelas UC02 Memvalidasi Laporan Baru" src="./assets/diagram/uc02-cd.png" width="85%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar 10. Diagram Kelas Memvalidasi Laporan Baru</i>
 </p>
 
 ## 3.3 Use Case Melihat Penugasan Lapangan
@@ -588,13 +601,13 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 | *C09* | *Evaluasi* | *Atribut* | *Metode* |
 | *C10* | *Notifikasi* | *Atribut* | *Metode* |
 | *C11* | *LaporPage* | *Atribut* | *Metode* |
-| *C12* | *ValidasiPage* | *Atribut* | *Metode* |
+| *C12* | *ValidasiPage* | `- pilihanFilter: String`<br>`- idTiketTerpilih: String`<br>`- inputAlasanPenolakan: String` | `+ bukaDasborPenanganan(): void`<br>`+ tampilkanAntrean(): void`<br>`+ pilihFilterKategori(kategori: String): void`<br>`+ pilihLaporan(idTiket: String): void`<br>`+ onValidClicked(idTiket: String): void`<br>`+ onTolakClicked(idTiket: String): void`<br>`+ submitAlasanPenolakan(idTiket: String, alasan: String): void` |
 | *C13* | *PenugasanPage* | *Atribut* | *Metode* |
 | *C14* | *HasilPerbaikanForm* | *Atribut* | *Metode* |
 | *C15* | *EvaluasiPage* | *Atribut* | *Metode* |
 | *C16* | *StatusLaporanPage* | *Atribut* | *Metode* |
 | *C17* | *LaporanController* | *Atribut* | *Metode* |
-| *C18* | *ValidasiController* | *Atribut* | *Metode* |
+| *C18* | *ValidasiController* | `- idUserAktif: String` | `+ verifikasiAkses(): Boolean`<br>`+ susunAntrean(): List<Laporan>`<br>`+ saringAntrean(kategori: String): List<Laporan>`<br>`+ ambilRincianLaporan(idTiket: String): Laporan`<br>`+ setujuiLaporan(idTiket: String): Boolean`<br>`+ tolakLaporan(idTiket: String, alasan: String): Boolean` |
 | *C19* | *PenugasanController* | *Atribut* | *Metode* |
 | *C20* | *PerbaikanController* | *Atribut* | *Metode* |
 | *C21* | *EvaluasiController* | *Atribut* | *Metode* |
@@ -610,30 +623,30 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 Petakan kelas perancangan dengan use case yang terkait. Gunakan **BAB 6 Traceability pada dokumen SKPL** sebagai acuan keterkaitan kelas analisis dan use case, lalu sesuaikan dengan realisasi use case dan kelas perancangan pada BAB 3–BAB 5 DPPL.
 
-Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
+Tabel 5.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
-| *[C01 - User]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
-| *[C02 - Laporan]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
-| *[C03 - Lokasi]* | *[UC01 - Mengirim Laporan Kerusakan], [UC06 - Memantau Status Laporan]* |
-| *[C04 - Foto]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
-| *[C05 - Video]* | *[UC01 - Mengirim Laporan Kerusakan], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
-| *[C06 - Upvote]* | *[UC06 - Memantau Status Laporan]* |
+| *[C01 - User]* | *[UC01 - Mengirim Laporan Kerusakan], [UC02 - Memvalidasi Laporan Baru], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C02 - Laporan]* | *[UC01 - Mengirim Laporan Kerusakan], [UC02 - Memvalidasi Laporan Baru], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C03 - Lokasi]* | *[UC01 - Mengirim Laporan Kerusakan], [UC02 - Memvalidasi Laporan Baru], [UC06 - Memantau Status Laporan]* |
+| *[C04 - Foto]* | *[UC01 - Mengirim Laporan Kerusakan], [UC02 - Memvalidasi Laporan Baru], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C05 - Video]* | *[UC01 - Mengirim Laporan Kerusakan], [UC02 - Memvalidasi Laporan Baru], [UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
+| *[C06 - Upvote]* | *[UC02 - Memvalidasi Laporan Baru], [UC06 - Memantau Status Laporan]* |
 | *[C07 - ListTugas]* | *[UCXX - Nama]* |
 | *[C08 - HasilPerbaikan]* | *[UC04 - Melaporkan Hasil Penugasan], [UC06 - Memantau Status Laporan]* |
 | *[C09 - Evaluasi]* | *[UCXX - Nama]* |
-| *[C10 - Notifikasi]* | *[UC01 - Mengirim Laporan Kerusakan]* |
+| *[C10 - Notifikasi]* | *[UC01 - Mengirim Laporan Kerusakan], [UC02 - Memvalidasi Laporan Baru]* |
 | *[C11 - LaporPage]* | *[UC01 - Mengirim Laporan Kerusakan]* |
-| *[C12 - ValidasiPage]* | *[UCXX - Nama]* |
+| *[C12 - ValidasiPage]* | *[UC02 - Memvalidasi Laporan Baru]* |
 | *[C13 - PenugasanPage]* | *[UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan]* |
 | *[C14 - HasilPerbaikanForm]* | *[UC04 - Melaporkan Hasil Penugasan]* |
 | *[C15 - EvaluasiPage]* | *[UCXX - Nama]* |
 | *[C16 - StatusLaporanPage]* | *[UC06 - Memantau Status Laporan]* |
 | *[C17 - LaporanController]* | *[UC01 - Mengirim Laporan Kerusakan]* |
-| *[C18 - ValidasiController]* | *[UCXX - Nama]* |
+| *[C18 - ValidasiController]* | *[UC02 - Memvalidasi Laporan Baru]* |
 | *[C19 - PenugasanController]* | *[UC03 - Melihat Penugasan Lapangan], [UC04 - Melaporkan Hasil Penugasan]* |
 | *[C20 - PerbaikanController]* | *[UC04 - Melaporkan Hasil Penugasan]* |
 | *[C21 - EvaluasiController]* | *[UCXX - Nama]* |
 | *[C22 - StatusController]* | *[UC06 - Memantau Status Laporan]* |
-| *[C23 - NotifikasiController]* | *[UCXX - Nama]* |
+| *[C23 - NotifikasiController]* | *[UC01 - Mengirim Laporan Kerusakan], [UC02 - Memvalidasi Laporan Baru]* |
