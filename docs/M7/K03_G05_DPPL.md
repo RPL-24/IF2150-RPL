@@ -316,6 +316,204 @@ Pada diagram, pastikan:
 
 <br>
 
+## 3.6 Use Case UC06
+
+**ID Use Case:** *UC06*  
+**Nama Use Case:** *Memverifikasi Pendaftar Mitra Pengacara*
+
+### 3.6.1 Identifikasi Kelas
+
+Tabel 3.6.1 Identifikasi Kelas Use Case [UC01]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
+| 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
+| 3 | *Masyarakat* | *Masyarakat* |
+| ... | *...* | *...* |
+
+### 3.6.2 Sequence Diagram
+
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-06.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6. Sequence Diagram UC06</i>
+</p>
+
+- **Skenario Alternatif 1 : Admin meminta penambahan/revisi dokumen**
+- **Skenario Alternatif 2 : Dokumen tidak memenuhi syarat atau terindikasi pelanggaran**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-alt-06.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 2. Sequence Diagram Alternatif UC06 </i>
+</p>
+
+### 3.6.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-06.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 6. Diagram Kelas UC06</i>
+</p>
+
+## 3.7 Use Case UC07
+
+**ID Use Case:** *UC07*  
+**Nama Use Case:** *Verifikasi Akun Pengacara (Edit Profil)*
+
+### 3.7.1 Identifikasi Kelas
+
+Tabel 3.7.1 Identifikasi Kelas Use Case [UC01]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
+| 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
+| 3 | *Masyarakat* | *Masyarakat* |
+| ... | *...* | *...* |
+
+### 3.7.2 Sequence Diagram
+
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-07.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 7. Sequence Diagram UC07</i>
+</p>
+
+### 3.7.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-07.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 7. Diagram Kelas UC07</i>
+</p>
+
+## 3.8 Use Case UC08
+
+**ID Use Case:** *UC08*  
+**Nama Use Case:** *Melakukan Pencarian Pasal*
+
+### 3.8.1 Identifikasi Kelas
+
+Tabel 3.8.1 Identifikasi Kelas Use Case [UC01]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
+| 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
+| 3 | *Masyarakat* | *Masyarakat* |
+| ... | *...* | *...* |
+
+### 3.8.2 Sequence Diagram
+
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-08.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 8. Sequence Diagram UC08</i>
+</p>
+
+### 3.8.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-08.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 8. Diagram Kelas UC08</i>
+</p>
+
+## 3.9 Use Case UC09
+
+**ID Use Case:** *UC09*  
+**Nama Use Case:** *Mencari Mitra Pengacara*
+
+### 3.9.1 Identifikasi Kelas
+
+Tabel 3.9.1 Identifikasi Kelas Use Case [UC01]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
+| 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
+| 3 | *Masyarakat* | *Masyarakat* |
+| ... | *...* | *...* |
+
+### 3.9.2 Sequence Diagram
+
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-09.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 9. Sequence Diagram UC09</i>
+</p>
+
+### 3.9.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-09.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 9. Diagram Kelas UC09</i>
+</p>
+
+## 3.10 Use Case UC10
+
+**ID Use Case:** *UC10*  
+**Nama Use Case:** *Memilih Mitra Pengacara untuk Sesi Konsultasi*
+
+### 3.10.1 Identifikasi Kelas
+
+Tabel 3.10.1 Identifikasi Kelas Use Case [UC01]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
+| 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
+| 3 | *Masyarakat* | *Masyarakat* |
+| ... | *...* | *...* |
+
+### 3.10.2 Sequence Diagram
+
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-10.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 9. Sequence Diagram UC09</i>
+</p>
+
+- **Skenario Alternatif 1 : Semua jadwal penuh atau tidak sesuai kebutuhan masyarakat**
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/seqeuence-diagram-alt-10.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 10. Sequence Diagram Alternatif UC10 </i>
+</p>
+
+### 3.9.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-10.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 10. Diagram Kelas UC10</i>
+</p>
+
+
+
 ---
 
 # BAB 4: Diagram Kelas Keseluruhan
