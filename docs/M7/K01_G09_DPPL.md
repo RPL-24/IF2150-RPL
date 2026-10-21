@@ -341,6 +341,156 @@ Pada diagram, pastikan:
 
 Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 3.1
 
+## 3.8 Use Case Berkomunikasi Menggunakan Grup Obrolan Sementara
+
+**ID Use Case:** *UC08*  
+**Nama Use Case:** *Berkomunikasi Menggunakan Grup Obrolan Sementara*
+
+### 3.8.1 Identifikasi Kelas
+
+Pada tahap perancangan, logika obrolan yang pada SKPL tersebar di kelas *User* (`createMessage()`, `sendMessage()`) dan *Session* (`openGroupChat()`) dipusatkan pada *ChatController*. Pengiriman pesan secara *real-time* ke anggota lain ditangani oleh *RealtimeAdapter* yang terhubung dengan Supabase Realtime melalui WebSocket. Masa aktif grup obrolan (48 jam setelah sesi selesai) dikelola oleh *CronAdapter*, yang memicu *ChatController* untuk menghapus pesan dan menandai grup obrolan berakhir.
+
+Tabel 3.8. Identifikasi Kelas Use Case UC08
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *GroupChatView* | *C21 (GroupChatPage)* |
+| 2 | *ChatController* | *— (komponen tambahan M6), menggantikan createMessage() dan sendMessage() pada C01 (User) serta openGroupChat() pada C04 (Session)* |
+| 3 | *GroupChat* | *C05 (GroupChat)* |
+| 4 | *ChatMessage* | *C08 (ChatMessage)* |
+| 5 | *RealtimeAdapter* | *— (komponen integrasi eksternal, Tabel 2.3)* |
+| 6 | *CronAdapter* | *— (komponen integrasi eksternal, Tabel 2.3)* |
+
+### 3.8.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC08 Skenario Normal" src="./assets/diagram/seq-uc08-normal.png" width="90%">
+</p>
+<p align="center">
+<i>Gambar 3.8.1. Sequence Diagram UC08 - Skenario Normal</i>
+</p>
+
+Pengguna membuka grup obrolan sebuah sesi melalui *GroupChatView*. *ChatController* mengambil *GroupChat* milik sesi tersebut, memastikan grup obrolan masih aktif dan pengguna adalah anggotanya, lalu memuat riwayat pesan dan mendaftarkan pengguna ke kanal *real-time* melalui *RealtimeAdapter*. Saat pengguna mengirim pesan, *ChatController* memeriksa ulang hak akses, menyimpan *ChatMessage* baru ke basis data, lalu menyiarkannya melalui *RealtimeAdapter* sehingga pesan langsung tampil di layar seluruh anggota grup.
+
+- **Skenario Alternatif 1: Grup Obrolannya Sudah Berakhir**
+
+<p align="center">
+<img alt="Sequence Diagram UC08 Skenario Alternatif 1" src="./assets/diagram/seq-uc08-alt1.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.8.2. Sequence Diagram UC08 - Grup Obrolan Sudah Berakhir</i>
+</p>
+
+Grup obrolan yang sesinya telah selesai lebih dari 48 jam sudah dibersihkan oleh pekerjaan terjadwal: pesannya dihapus dan statusnya ditandai berakhir. Ketika pengguna mencoba membukanya, `isActive()` bernilai `false` sehingga *ChatController* mengembalikan galat `CHAT_EXPIRED`. *GroupChatView* menampilkan pesan "Group chat untuk sesi ini telah berakhir" dan menonaktifkan kolom pengiriman pesan.
+
+### 3.8.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC08" src="./assets/diagram/diagram-uc08.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3.8.3. Diagram Kelas Berkomunikasi Menggunakan Grup Obrolan Sementara</i>
+</p>
+
+## 3.9 Use Case Menerima Notifikasi Sesi
+
+**ID Use Case:** *UC09*  
+**Nama Use Case:** *Menerima Notifikasi Sesi*
+
+### 3.9.1 Identifikasi Kelas
+
+Pemicu waktu pengingat yang pada SKPL berada di `Session.pushNotification()` direalisasikan sebagai pekerjaan terjadwal Supabase Cron yang diterima *CronAdapter* dan diteruskan ke *NotificationController*. Notifikasi disimpan sebagai *Notification* di basis data, lalu dikirim ke perangkat pengguna melalui *RealtimeAdapter* agar pop-up dapat langsung tampil. *Dashboard* dan *PopUpNotification* pada SKPL direalisasikan sebagai *NotificationView*, sedangkan navigasi ke detail sesi ditangani *SessionView*.
+
+Tabel 3.9. Identifikasi Kelas Use Case UC09
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *NotificationView* | *C23 (PopUpNotification), C11 (Dashboard)* |
+| 2 | *SessionView* | *C17 (SessionPage)* |
+| 3 | *CronAdapter* | *— (komponen integrasi eksternal, Tabel 2.3), menggantikan pemicu pushNotification() pada C04 (Session)* |
+| 4 | *NotificationController* | *— (komponen tambahan M6)* |
+| 5 | *Session* | *C04 (Session)* |
+| 6 | *Notification* | *C22 (Notification)* |
+| 7 | *RealtimeAdapter* | *— (komponen integrasi eksternal, Tabel 2.3)* |
+
+### 3.9.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC09 Skenario Normal" src="./assets/diagram/seq-uc09-normal.png" width="90%">
+</p>
+<p align="center">
+<i>Gambar 3.9.1. Sequence Diagram UC09 - Skenario Normal</i>
+</p>
+
+Supabase Cron memanggil endpoint internal setiap menit. *CronAdapter* memverifikasi bahwa permintaan berasal dari Cron, lalu meminta *NotificationController* mengirim pengingat. *NotificationController* mengambil sesi yang akan dimulai dalam 15 menit dan belum diingatkan, membuat *Notification* untuk setiap partisipan (Mentor dan Mentee), lalu mengirimkannya melalui *RealtimeAdapter* sehingga *NotificationView* menampilkan pop-up. Setelah semua partisipan sebuah sesi diberi notifikasi, sesi ditandai sudah diingatkan agar tidak terjadi notifikasi ganda dan sesi yang gagal dapat diproses ulang pada pemicu berikutnya (KNF03). Saat pengguna menekan notifikasi, notifikasi ditandai terbaca dan pengguna diarahkan ke halaman detail sesi.
+
+SKPL tidak mendefinisikan skenario alternatif untuk UC09, sehingga hanya skenario normal yang dimodelkan.
+
+### 3.9.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC09" src="./assets/diagram/diagram-uc09.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3.9.2. Diagram Kelas Menerima Notifikasi Sesi</i>
+</p>
+
+## 3.10 Use Case Membatalkan Keikutsertaan Sesi
+
+**ID Use Case:** *UC10*  
+**Nama Use Case:** *Membatalkan Keikutsertaan Sesi*
+
+### 3.10.1 Identifikasi Kelas
+
+Kelas *ParticipantSessionPage* dan *SessionPage* direalisasikan dalam komponen *SessionView* sesuai Tabel 2.3. Pembatalan dilakukan dengan menghapus Mentee dari daftar pendaftar *Session* melalui `removeParticipant()`. Kelas *SessionHistory* tidak diperbarui secara eksplisit karena daftar sesi mendatang Mentee diturunkan langsung dari data pendaftar sesi.
+
+Tabel 3.10. Identifikasi Kelas Use Case UC10
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *SessionView* | *C17 (SessionPage), C19 (ParticipantSessionPage)* |
+| 2 | *SessionController* | *C13 (SessionControl)* |
+| 3 | *Session* | *C04 (Session), C07 (SessionHistory)* |
+| 4 | *User* | *C01 (User)* |
+| 5 | *Mentee* | *C03 (Mentee)* |
+
+### 3.10.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC10 Skenario Normal" src="./assets/diagram/seq-uc10-normal.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.10.1. Sequence Diagram UC10 - Skenario Normal</i>
+</p>
+
+Mentee membuka detail sesi yang telah didaftarinya, lalu *SessionView* menampilkan tombol "Batalkan Keikutsertaan" karena Mentee terdaftar dan sesi belum dimulai. Setelah Mentee mengonfirmasi dengan menekan "Ya, Batalkan", *SessionController* memastikan Mentee memang terdaftar dan sesi belum dimulai, lalu menghapus Mentee dari daftar pendaftar sesi di basis data. Karena keanggotaan grup obrolan mengikuti daftar peserta, akses Mentee ke grup obrolan sesi tersebut ikut tercabut. *SessionView* kemudian menampilkan pesan "Berhasil Membatalkan Keikutsertaan".
+
+- **Skenario Alternatif 1: Mentee Tidak Jadi Membatalkan Sesi**
+
+<p align="center">
+<img alt="Sequence Diagram UC10 Skenario Alternatif 1" src="./assets/diagram/seq-uc10-alt1.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3.10.2. Sequence Diagram UC10 - Mentee Tidak Jadi Membatalkan Sesi</i>
+</p>
+
+Setelah pesan konfirmasi tampil, Mentee menekan "Kembali". *SessionView* hanya menutup pesan konfirmasi tanpa mengirim permintaan ke *SessionController*, sehingga Mentee tetap terdaftar pada sesi.
+
+### 3.10.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC10" src="./assets/diagram/diagram-uc10.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3.10.3. Diagram Kelas Membatalkan Keikutsertaan Sesi</i>
+</p>
+
 ## 3.11 Use Case Menghapus Sesi
 
 **ID Use Case:** *UC11*  
@@ -613,7 +763,7 @@ Apabila `findById()` tidak menemukan pengguna karena ID tidak valid atau akun te
 <i>Gambar 3.15.3. Diagram Kelas Melihat Profil</i>
 </p>
 
-Sumber PlantUML untuk seluruh sequence diagram pada subbab 3.11–3.15 tersedia di folder `assets/diagram/src/`.
+Sumber PlantUML untuk seluruh sequence diagram pada subbab 3.8–3.15 tersedia di folder `assets/diagram/src/`.
 
 <br>
 
@@ -656,13 +806,13 @@ Tabel 5.1. Matriks Kerunutan Kelas terhadap Use Case
 | *C15 - LoginView* | *UC01 - Mendaftarkan Akun dan Autentikasi* |
 | *C16 - ProfileView* | *UC02 - Mengelola Preferensi Profil<br>UC15 - Melihat Profil* |
 | *C11 - DashboardView* | *UC04 - Mencari dan Bergabung ke Sesi<br>UC14 - Membuka Beranda Utama* |
-| *C17, C18, C19 - SessionView* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi* |
+| *C17, C18, C19 - SessionView* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi* |
 | *C20 - FeedbackView* | *UC07 - Memberikan Penilaian Sehabis Sesi* |
 | *C21 - GroupChatView* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara* |
 | *C24 - HistoryView* | *UC06 - Melihat Riwayat Sesi<br>UC13 - Melihat Feedback Sesi* |
 | *C23 - NotificationView* | *UC09 - Menerima Notifikasi Sesi* |
 | *C12 - UserController* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC14 - Membuka Beranda Utama<br>UC15 - Melihat Profil* |
-| *C13 - SessionController* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama* |
+| *C13 - SessionController* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama* |
 | *C14 - FeedbackController* | *UC07 - Memberikan Penilaian Sehabis Sesi<br>UC13 - Melihat Feedback Sesi* |
 | *— - ChatController* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara* |
 | *— - NotificationController* | *UC09 - Menerima Notifikasi Sesi* |
@@ -671,13 +821,13 @@ Tabel 5.1. Matriks Kerunutan Kelas terhadap Use Case
 | *C03 - Mentee* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama<br>UC15 - Melihat Profil* |
 | *C10 - Profile* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC15 - Melihat Profil* |
 | *C09 - Preference* | *UC02 - Mengelola Preferensi Profil<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC14 - Membuka Beranda Utama<br>UC15 - Melihat Profil* |
-| *C04 - Session* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama* |
-| *C07 - SessionHistory* | *UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi* |
+| *C04 - Session* | *UC03 - Membuat Sesi Belajar<br>UC04 - Mencari dan Bergabung ke Sesi<br>UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC09 - Menerima Notifikasi Sesi<br>UC10 - Membatalkan Keikutsertaan Sesi<br>UC11 - Menghapus Sesi<br>UC12 - Mengedit Sesi<br>UC13 - Melihat Feedback Sesi<br>UC14 - Membuka Beranda Utama* |
+| *C07 - SessionHistory* | *UC05 - Mengonfirmasi Keterlaksanaan Sesi<br>UC06 - Melihat Riwayat Sesi* |
 | *C05, C08 - GroupChat* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara* |
 | *C06 - Feedback* | *UC07 - Memberikan Penilaian Sehabis Sesi<br>UC13 - Melihat Feedback Sesi* |
 | *C22 - Notification* | *UC09 - Menerima Notifikasi Sesi* |
 | *— - SessionData* | *UC12 - Mengedit Sesi* |
 | *— - Validator* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC02 - Mengelola Preferensi Profil<br>UC03 - Membuat Sesi Belajar<br>UC07 - Memberikan Penilaian Sehabis Sesi<br>UC12 - Mengedit Sesi* |
 | *— - AuthAdapter* | *UC01 - Mendaftarkan Akun dan Autentikasi<br>UC14 - Membuka Beranda Utama* |
-| *— - RealtimeAdapter* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara* |
+| *— - RealtimeAdapter* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara<br>UC09 - Menerima Notifikasi Sesi* |
 | *— - CronAdapter* | *UC08 - Berkomunikasi Menggunakan Grup Obrolan Sementara<br>UC09 - Menerima Notifikasi Sesi* |
