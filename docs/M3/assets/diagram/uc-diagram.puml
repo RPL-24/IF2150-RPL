@@ -1,0 +1,26 @@
+@startuml UC-diagram
+title [draft] Use Case Diagram - LaporKota
+left to right direction
+
+actor "Warga" as warga
+actor "Tim Administrasi" as admin
+actor "Eksekutor Lapangan" as eksekutor
+
+rectangle "Sistem LaporKota" {
+  usecase "Mengirim Laporan Kerusakan" as UC1
+  usecase "Memvalidasi Laporan Baru" as UC2
+  usecase "Melihat Penugasan Lapangan" as UC3
+  usecase "Melaporkan Hasil Perbaikan" as UC4
+  usecase "Mengevaluasi Hasil Kerja" as UC5
+  usecase "Memantau Status Laporan" as UC6
+}
+
+warga -- UC1
+admin -- UC2
+eksekutor -- UC3
+eksekutor -- UC4
+admin -- UC5
+warga -- UC6
+
+
+@enduml
