@@ -2119,18 +2119,18 @@ END PROCEDURE
 
 # BAB 6: Perancangan Antarmuka
 
-## 6.1 Rancangan Antarmuka [ID Layar 1]
+## 6.1 Rancangan Antarmuka I-01
 
 Masukkan versi awal prototipe antarmuka, dimana untuk setiap antarmuka/layar, tuliskan spesifikasi rinci objek yang ditampilkan dan reaksi sistem terhadap interaksi pengguna.
 
-**Antarmuka:** *[ID layar]*  
-**Nama Layar:** *[Nama layar]*
+**Antarmuka:** *I-01*  
+**Nama Layar:** *PencarianRestoPage*
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-design.png" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/PencarianRestoPage.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar 6.1. Rancangan Antarmuka [ID Layar] - [Nama Layar]</i>
+<i>Gambar 6.1. Rancangan Antarmuka I-01 - PencarianRestoPage</i>
 </p>
 
 Tabel 6.1. Spesifikasi Objek Antarmuka [ID Layar]
