@@ -7,24 +7,26 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
-### *[Logo Perangkat Lunak]*
+## LawHub
+### <p align="center">
+<img alt="Logo_LawHub" src="./assets/Logo_LawHub.png" width="70%">
+</p>
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Mikhael Andrian Yonatan
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | K03 |
+| Kelompok | G05 |
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| 13525057 | Raya Medina Farrelin |
+| 13525003 | Cherinette Corsane Khassyah Purceria |
+| 13525108 | Khasya Nurul Amini |
+| 13525150 | Livy Chandra |
+| 13525138 | Cathrine Angel Siburian |
 ---
 
 ## Daftar Perubahan
@@ -52,10 +54,13 @@ Dipersiapkan oleh:
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Tuliskan dengan ringkas tujuan dokumen DPPL ini dibuat dan siapa saja yang akan menggunakan dokumen ini.
+
+Dokumen Deskripsi Perancangan Perangkat Lunak (DPPL) ini disusun untuk menjabarkan rancangan perangkat lunak LawHub, yaitu platform layanan konsultasi hukum digital yang menghadirkan fitur HaloLaw dan SearchLaw. Dokumen ini menerjemahkan kebutuhan yang telah ditetapkan pada Spesifikasi Kebutuhan Perangkat Lunak (SKPL) dan Arsitektur Perangkat Lunak (APL) menjadi rancangan yang siap diimplementasikan, mencakup rancangan arsitektur berbasis Model-View-Controller (MVC), identifikasi komponen, realisasi setiap use case melalui sequence diagram dan diagram kelas, diagram kelas keseluruhan, serta matriks kerunutan antara kelas perancangan dan use case.
+
+Dokumen ini ditujukan bagi tim pengembang LawHub sebagai acuan dalam tahap implementasi dan pengujian, serta bagi dosen dan asisten mata kuliah IF2150 Rekayasa Perangkat Lunak sebagai bahan penilaian kesesuaian rancangan dengan kebutuhan yang telah ditetapkan.
 
 ## 1.2 Lingkup Masalah
-Tuliskan dengan ringkas nama aplikasi dan deskripsi singkatnya. Bagian ini maksimal berisi satu paragraf, dapat diambil dari SKPL.
+LawHub merupakan platform layanan konsultasi hukum digital yang dikembangkan untuk memperluas akses bantuan hukum bagi masyarakat Indonesia, di tengah tingginya angka sengketa dan konflik hukum yang belum terselesaikan serta terbatasnya kanal konsultasi hukum yang interaktif dan efisien. Berbeda dari laman bantuan hukum yang sudah ada dan umumnya berfokus pada forum tanya jawab terbuka, LawHub menghadirkan dua fitur utama, yaitu HaloLaw untuk konsultasi hukum on-demand secara langsung dengan mitra pengacara melalui chat, dan SearchLaw untuk membantu masyarakat menemukan dasar hukum yang relevan dengan kasus yang dihadapi, sehingga proses konsultasi hukum menjadi lebih cepat, transparan, dan mudah diakses oleh berbagai kalangan.
 
 ## 1.3 Definisi, Istilah, dan Singkatan
 Semua definisi dan singkatan yang digunakan dalam dokumen ini beserta penjelasannya.
@@ -128,7 +133,7 @@ Tabel 2.3. Identifikasi Komponen/Modul/Subsistem
 
 Buat model arsitektur dalam bentuk satu atau lebih *view* yang memperlihatkan interaksi dan kolaborasi komponen, modul, serta subsistem dalam menjalankan fungsi sistem. Pilih notasi yang sesuai. Contoh *view*: *Logical View*, *Process View*, *Development View*, dan *Physical View*.
 
-Gunakan hasil **BAB 3 Model Arsitektur Perangkat Lunak pada dokumen APL**. 
+Gunakan hasil **BAB 3 Model Arsitektur Perangkat Lunak pada dokumen APL**.
 
 ### 2.4.1 View [Nama View]
 
@@ -170,7 +175,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 
 ### 3.1.2 Sequence Diagram
 
-Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL.
 
 - **Skenario Normal**
 
@@ -215,6 +220,244 @@ Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 
 <br>
 
 ---
+
+## 3.11 Use Case UC11
+
+**ID Use Case:** UC11  
+**Nama Use Case:** Menanggapi Sesi Konsultasi
+
+### 3.11.1 Identifikasi Kelas
+
+Tabel 3.11.1 Identifikasi Kelas Use Case [UC11]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | KonfirmasiKonsultasiPage | KonfirmasiKonsultasiPage |
+| 2 | SesiKonsultasiController | SesiKonsultasiController |
+| 3 | MitraPengacara | MitraPengacara |
+| 4 | SesiKonsultasi | SesiKonsultasi |
+
+### 3.11.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 11" src="./assets/diagram/sequence-diagram-11.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 35. Sequence Diagram [UC11]</i>
+</p>
+
+- **Skenario Alternatif 1: Mitra menolak permintaan konsultasi**
+
+<p align="center">
+<img alt="SD 11 alt 1" src="./assets/diagram/sequence-diagram-alt-11-1.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 36. Sequence Diagram [UC11] - Mitra menolak permintaan konsultasi</i>
+</p>
+
+- **Skenario Alternatif 2: Mitra tidak merespon dalam waktu tertentu**
+
+<p align="center">
+<img alt="SD 11 alt 2" src="./assets/diagram/sequence-diagram-alt-11-2.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 37. Sequence Diagram [UC11] - Mitra tidak merespon dalam waktu tertentu</i>
+</p>
+
+### 3.11.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 11" src="./assets/diagram/diagram-kelas-11.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 38. Diagram Kelas Menanggapi Sesi Konsultasi</i>
+</p>
+
+## 3.12 Use Case UC12
+
+**ID Use Case:** UC12
+**Nama Use Case:** Melakukan Sesi Konsultasi
+
+### 3.12.1 Identifikasi Kelas
+
+Tabel 3.12.1 Identifikasi Kelas Use Case [UC12]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | ChatKonsultasiPage | ChatKonsultasiPage |
+| 2 | SesiKonsultasiController | SesiKonsultasiController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | MitraPengacara | MitraPengacara |
+| 5 | Kasus | Kasus |
+| 6 | SesiKonsultasi | SesiKonsultasi |
+| 7 | Pembayaran | Pembayaran |
+
+### 3.12.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 12" src="./assets/diagram/sequence-diagram-12.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 39. Sequence Diagram [UC12]</i>
+</p>
+
+- **Skenario Alternatif 1: Sesi terputus/salah satu pihak tidak merespon**
+
+<p align="center">
+<img alt="SD 12 alt 1" src="./assets/diagram/sequence-diagram-alt-12.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 40. Sequence Diagram [UC12] - Sesi terputus/salah satu pihak tidak merespon</i>
+</p>
+
+### 3.12.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 12" src="./assets/diagram/diagram-kelas-12.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 41. Diagram Kelas Melakukan Sesi Konsultasi</i>
+</p>
+
+## 3.13 Use Case UC13
+
+**ID Use Case:** UC13
+**Nama Use Case:** Memberi Ulasan, Feedback, dan/atau Rating
+
+### 3.13.1 Identifikasi Kelas
+
+Tabel 3.13.1 Identifikasi Kelas Use Case [UC13]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | UlasanPage | UlasanPage |
+| 2 | UlasanController | UlasanController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | Ulasan | Ulasan |
+
+### 3.13.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 13" src="./assets/diagram/sequence-diagram-13.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 42. Sequence Diagram [UC13]</i>
+</p>
+
+- **Skenario Alternatif 1: Gagal mengirim ulasan**
+
+<p align="center">
+<img alt="SD 13 alt 1" src="./assets/diagram/sequence-diagram-alt-13.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 43. Sequence Diagram [UC13] - Gagal mengirim ulasan</i>
+</p>
+
+### 3.13.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 13" src="./assets/diagram/diagram-kelas-13.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 44. Diagram Kelas Memberi Ulasan, Feedback, dan/atau Rating</i>
+</p>
+
+## 3.14 Use Case UC14
+
+**ID Use Case:** UC14
+**Nama Use Case:** Melaporkan Pelanggaran Akun
+
+### 3.14.1 Identifikasi Kelas
+
+Tabel 3.14.1 Identifikasi Kelas Use Case [UC14]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | LaporanAkunPage | LaporanAkunPage |
+| 2 | LaporanController | LaporanController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | Laporan | Laporan |
+
+### 3.14.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 14" src="./assets/diagram/sequence-diagram-14.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 45. Sequence Diagram [UC14]</i>
+</p>
+
+- **Skenario Alternatif 1: Formulir laporan tidak lengkap**
+
+<p align="center">
+<img alt="SD 14 alt 1" src="./assets/diagram/sequence-diagram-alt-14.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 46. Sequence Diagram [UC14] - Formulir laporan tidak lengkap</i>
+</p>
+
+### 3.14.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 14" src="./assets/diagram/diagram-kelas-14.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 47. Diagram Kelas Melaporkan Pelanggaran Akun</i>
+</p>
+
+## 3.15 Use Case UC15
+
+**ID Use Case:** UC15
+**Nama Use Case:** Melaporkan Pelanggaran
+
+### 3.15.1 Identifikasi Kelas
+
+Tabel 3.15.1 Identifikasi Kelas Use Case [UC15]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | LaporanAkunPage | LaporanAkunPage |
+| 2 | LaporanController | LaporanController |
+| 3 | Masyarakat | Masyarakat |
+| 4 | Laporan | Laporan |
+| 5 | Mitra Pengacara | Mitra Pengacara |
+
+### 3.15.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="SD 15" src="./assets/diagram/sequence-diagram-15.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 48. Sequence Diagram [UC15]</i>
+</p>
+
+- **Skenario Alternatif 1: Formulir laporan tidak lengkap**
+
+<p align="center">
+<img alt="SD 15 alt 1" src="./assets/diagram/sequence-diagram-alt-15.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 49. Sequence Diagram [UC15] - Formulir laporan tidak lengkap</i>
+</p>
+
+### 3.15.3 Diagram Kelas
+
+<p align="center">
+<img alt="DK 15" src="./assets/diagram/diagram-kelas-15.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 50. Diagram Kelas Melaporkan Pelanggara</i>
+</p>
 
 # BAB 4: Diagram Kelas Keseluruhan
 
@@ -285,7 +528,7 @@ Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Al
 [Tuliskan pseudocode algoritma operasi di sini.]
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut. 
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
 Tabel 5.1.1. Query Operasi [Nama Operasi]
 
@@ -330,7 +573,6 @@ Tabel 6.1. Spesifikasi Objek Antarmuka [ID Layar]
 | *[ID objek]* | *[Jenis objek, misalnya Button, RTF Box, dll]* | *[String yang tampil pada layar]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
 | *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem atau nama file terkait beserta deskripsi ringkasnya]* |
 | *...* | *...* | *...* | *...* |
-
 
 ## 6.X Rancangan Antarmuka [ID Layar X]
 
