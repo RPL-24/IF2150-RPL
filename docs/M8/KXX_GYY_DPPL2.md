@@ -576,23 +576,6 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 <i>Gambar 25. Diagram Kelas Memantau Status Laporan</i>
 </p>
 
-## 3.X Use Case XX
-
-Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
-
-<p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
-</p>
-<p align="center">
-<i>Gambar 26. Diagram Kelas [Nama Uce Case]</i>
-</p>
-
-Pada diagram, pastikan:
-- Atribut dituliskan beserta visibilitas dan tipe datanya, misalnya `- email: String`.
-- Operasi dituliskan beserta visibilitas, parameter, dan tipe kembaliannya, misalnya `+ login(email: String, password: String): Boolean`.
-- Relasi antarkelas (asosiasi, agregasi, komposisi, generalisasi, dan dependensi) digambarkan lengkap dengan multiplisitas.
-- Semua operasi yang dipanggil pada sequence diagram 3.1.2 (skenario normal dan alternatif) ada pada kelas yang bersangkutan.
-- Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
 <br>
 
 ---
@@ -649,9 +632,29 @@ Tabel 5.1. Daftar Kelas Perancangan dan Kelas Analisis Terkait
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 | :--- | :--- | :--- |
-| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL atau -]* |
-| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL atau -]* |
-| ... | *...* | *...* |
+| 1 | *User* | *User* |
+| 2 | *Laporan* | *Laporan* |
+| 3 | *Lokasi* | *Lokasi* |
+| 4 | *Foto* | *Foto* |
+| 5 | *Video* | *Video* |
+| 6 | *Upvote* | *Upvote* |
+| 7 | *ListTugas* | *ListTugas* |
+| 8 | *HasilPerbaikan* | *HasilPerbaikan* |
+| 9 | *Evaluasi* | *Evaluasi* |
+| 10 | *Notifikasi* | *Notifikasi* |
+| 11 | *LaporPage* | *LaporPage* |
+| 12 | *ValidasiPage* | *ValidasiPage* |
+| 13 | *PenugasanPage* | *PenugasanPage* |
+| 14 | *HasilPerbaikanForm* | *HasilPerbaikanForm* |
+| 15 | *EvaluasiPage* | *EvaluasiPage* |
+| 16 | *StatusLaporanPage* | *StatusLaporanPage* |
+| 17 | *LaporanController* | *LaporanController* |
+| 18 | *ValidasiController* | *ValidasiController* |
+| 19 | *PenugasanController* | *PenugasanController* |
+| 20 | *PerbaikanController* | *PerbaikanController* |
+| 21 | *EvaluasiController* | *EvaluasiController* |
+| 22 | *StatusController* | *StatusController* |
+| 23 | *NotifikasiController* | *NotifikasiController* |
 
 Untuk **setiap kelas**, identifikasi operasi berdasarkan tanggung jawab kelas beserta *visibility*-nya, serta atribut beserta *visibility* dan tipenya. Buat subbab tersendiri untuk setiap kelas.
 
@@ -703,6 +706,61 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 ## 5.2 Kelas [Nama Kelas Berikutnya]
 
 *[Ulangi pola 5.1: nama dan ID kelas, tabel operasi, tabel atribut, serta subbab algoritma/query untuk operasi penting jika diperlukan.]*
+
+## 5.7 Kelas ListTugas
+
+## 5.8 Kelas HasilPerbaikan
+
+## 5.13 Kelas PenugasanPage
+
+## 5.14 Kelas HasilPerbaikanForm
+
+## 5.19 Kelas PenugasanController
+
+## 5.20 Kelas PerbaikanController
+
+
+## 5.X Kelas [Nama Kelas Berikutnya]
+
+*[Ulangi pola 5.1: nama dan ID kelas, tabel operasi, tabel atribut, serta subbab algoritma/query untuk operasi penting jika diperlukan.]*
+
+**Nama Kelas:** *[Nama kelas]*  
+**ID Kelas:** *[ID kelas]*
+
+Tabel 5.x.1. Operasi Kelas [Nama Kelas 1]
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *[Signature operasi, termasuk parameter dan tipe kembalian]* | *[Visibility]* | *[Tanggung jawab operasi]* |
+| *...* | *...* | *...* |
+
+Tabel 5.x.2. Atribut Kelas [Nama Kelas 1]
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *[Nama atribut]* | *[Visibility]* | *[Tipe sesuai bahasa pemrograman yang digunakan]* |
+| *...* | *...* | *...* |
+
+### 5.x.x Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *[Nama kelas]*  
+**Nama Operasi:** *[Signature operasi]*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+[Tuliskan pseudocode algoritma operasi di sini.]
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut. 
+
+Tabel 5.x.x. Query Operasi [Nama Operasi]
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *...* | *...* | *...* |
 
 <br>
 
