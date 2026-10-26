@@ -8,7 +8,9 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 <br>
 
 ## *LaporKota*
-### *[Logo Perangkat Lunak]*
+<p align="center">
+<img alt="Logo LaporKota" src="./assets/Logo.png" width="70%">
+</p>
 
 ### Untuk: *Jordhy*
 
