@@ -31,7 +31,7 @@ Dipersiapkan oleh:
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
+| *A* | *Perbaikan Kelas Perancangan.* |
 | *B* |  |
 | *C* |  |
 | ... |  |
