@@ -280,66 +280,246 @@ Dengan demikian, Development View menjelaskan organisasi dan dependensi modul, s
 
 # BAB 3: Realisasi Use Case
 
-## 3.1 Use Case [Nama Use Case 1]
+## 3.1 Use Case Mendaftarkan Akun dan Autentikasi
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** *UC01*  
+**Nama Use Case:** *Mendaftarkan Akun dan Autentikasi*
 
 ### 3.1.1 Identifikasi Kelas
 
-Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
+Kelas *LoginPage* pada SKPL direalisasikan sebagai komponen *LoginView* sesuai Tabel 2.3. Pengelolaan kredensial yang pada SKPL berada pada atribut `passwordHash` serta operasi `register()` dan `login()` di kelas *User* dipindahkan ke Supabase Auth melalui *AuthAdapter*, sehingga kata sandi tidak disimpan pada basis data aplikasi. Validasi domain email universitas yang pada SKPL berada di `UserControl.validateEmail()` dipindahkan ke kelas pendukung *Validator*. Data identitas yang diisi pada formulir registrasi (dibungkus sebagai `ProfileData`) disimpan sebagai *Profile*, sedangkan peran yang dipilih pengguna menentukan spesialisasi *Mentor* atau *Mentee*. Setelah autentikasi berhasil, pengguna diarahkan ke *DashboardView* yang pemuatan isinya dijelaskan pada UC14.
 
-Tabel 3.1. Identifikasi Kelas Use Case [UC01]
+Tabel 3.1. Identifikasi Kelas Use Case UC01
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| ... | *...* | *...* |
+| 1 | *LoginView* | *C15 (LoginPage)* |
+| 2 | *DashboardView* | *C11 (Dashboard)* |
+| 3 | *UserController* | *C12 (UserControl)* |
+| 4 | *Validator* | *C12 (UserControl), khusus validasi domain email universitas* |
+| 5 | *AuthAdapter* | *— (komponen integrasi eksternal, Tabel 2.3), menggantikan passwordHash, register(), dan login() pada C01 (User)* |
+| 6 | *User* | *C01 (User)* |
+| 7 | *Profile* | *C10 (Profile)* |
+| 8 | *Mentor* | *C02 (Mentor)* |
+| 9 | *Mentee* | *C03 (Mentee)* |
 
 ### 3.1.2 Sequence Diagram
-
-Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
 
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram UC01 Skenario Normal" src="./assets/diagram/seq-uc01-normal.png" width="90%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01]</i>
+<i>Gambar 3.1.1. Sequence Diagram UC01 - Skenario Normal</i>
 </p>
 
-- **Skenario Alternatif [Nomor]: [Nama Skenario]**
+Pengguna memilih opsi "Daftar" sehingga *LoginView* menampilkan formulir registrasi. Setelah pengguna mengisi email universitas, kata sandi, dan data profil lalu menekan "Simpan", *UserController* meminta *Validator* memastikan email menggunakan domain institusi universitas, kemudian mendaftarkan kredensial ke Supabase Auth melalui *AuthAdapter*. Identitas yang dikembalikan Supabase Auth digunakan sebagai `idUser` ketika *User* dan *Profile* disimpan ke basis data beserta rekaman persetujuan data. *LoginView* lalu mengarahkan pengguna ke halaman Login. Saat pengguna memasukkan email dan kata sandi lalu menekan "Masuk", *UserController* memverifikasi kredensial melalui *AuthAdapter*, mengambil data *User*, dan menyerahkan kendali ke *DashboardView* untuk menampilkan halaman beranda (UC14).
+
+- **Skenario Alternatif 1: Email Universitas Tidak Valid**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram UC01 Skenario Alternatif 1" src="./assets/diagram/seq-uc01-alt1.png" width="80%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 3.1.2. Sequence Diagram UC01 - Email Universitas Tidak Valid</i>
 </p>
+
+Pengguna memasukkan email publik, misalnya `@gmail.com`, sehingga `validateEmail()` pada *Validator* bernilai `false`. *UserController* mengembalikan galat `INVALID_UNIVERSITY_EMAIL` tanpa memanggil *AuthAdapter* maupun menyimpan data ke basis data. *LoginView* menampilkan notifikasi "Harap gunakan email institusi universitas yang valid" dan mempertahankan isi formulir. Setelah pengguna mengirim ulang dengan email universitas, alur berlanjut seperti skenario normal.
 
 ### 3.1.3 Diagram Kelas
 
-Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
-
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+<img alt="Diagram Kelas UC01" src="./assets/diagram/diagram-uc01.png" width="90%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar 3.1.3. Diagram Kelas Mendaftarkan Akun dan Autentikasi</i>
 </p>
 
-Pada diagram, pastikan:
-- Atribut dituliskan beserta visibilitas dan tipe datanya, misalnya `- email: String`.
-- Operasi dituliskan beserta visibilitas, parameter, dan tipe kembaliannya, misalnya `+ login(email: String, password: String): Boolean`.
-- Relasi antarkelas (asosiasi, agregasi, komposisi, generalisasi, dan dependensi) digambarkan lengkap dengan multiplisitas.
-- Semua operasi yang dipanggil pada sequence diagram 3.1.2 (skenario normal dan alternatif) ada pada kelas yang bersangkutan.
-- Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
+## 3.2 Use Case Mengelola Preferensi Profil
 
-## 3.2 Use Case XX
+**ID Use Case:** *UC02*  
+**Nama Use Case:** *Mengelola Preferensi Profil*
 
-Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 3.1
+### 3.2.1 Identifikasi Kelas
+
+Kelas *ProfilePage* pada SKPL direalisasikan sebagai komponen *ProfileView* sesuai Tabel 2.3. Pemeriksaan kelengkapan pilihan preferensi yang pada SKPL tersirat di `UserControl.savePreference()` dipindahkan ke kelas pendukung *Validator*. Tag materi, format sesi, dan kalender ketersediaan waktu disimpan pada *Preference* (masukan formulir dibungkus sebagai `PreferenceData`), sedangkan *Profile* menyediakan data identitas yang ditampilkan pada halaman Profil sesuai UC15. Preferensi yang lengkap membuat `isComplete()` bernilai `true` sehingga dapat digunakan oleh *matchmaking* pada UC04 dan UC14.
+
+Tabel 3.2. Identifikasi Kelas Use Case UC02
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *ProfileView* | *C16 (ProfilePage)* |
+| 2 | *UserController* | *C12 (UserControl)* |
+| 3 | *Validator* | *C12 (UserControl), khusus pemeriksaan kelengkapan preferensi* |
+| 4 | *Preference* | *C09 (Preference)* |
+| 5 | *Profile* | *C10 (Profile)* |
+| 6 | *User* | *C01 (User)* |
+| 7 | *Mentor* | *C02 (Mentor)* |
+| 8 | *Mentee* | *C03 (Mentee)* |
+
+### 3.2.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC02 Skenario Normal" src="./assets/diagram/seq-uc02-normal.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.2.1. Sequence Diagram UC02 - Skenario Normal</i>
+</p>
+
+Pengguna membuka halaman "Profil", yang memuat data profil dan preferensi seperti pada UC15, lalu memilih "Edit Preferensi". *ProfileView* menampilkan antarmuka pemilihan tag materi, format sesi, dan kalender ketersediaan waktu. Setelah pengguna menentukan pilihannya dan menekan "Simpan", *UserController* meminta *Validator* memastikan seluruh pilihan telah terisi, lalu memperbarui *Preference* pengguna di basis data melalui `updatePreference()`. *ProfileView* menampilkan preferensi terbaru beserta notifikasi "Preferensi berhasil disimpan".
+
+- **Skenario Alternatif 1: Menyimpan Preferensi Tanpa Memilih Preferensi**
+
+<p align="center">
+<img alt="Sequence Diagram UC02 Skenario Alternatif 1" src="./assets/diagram/seq-uc02-alt1.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.2.2. Sequence Diagram UC02 - Menyimpan Preferensi Tanpa Memilih Preferensi</i>
+</p>
+
+Pengguna mengosongkan sebagian atau seluruh pilihan preferensi lalu menekan "Simpan". *Validator* mendeteksi pilihan yang masih kosong sehingga *UserController* mengembalikan galat `INCOMPLETE_PREFERENCE` dan menunda penyimpanan tanpa mengubah basis data. *ProfileView* menampilkan notifikasi "Silahkan Isi Semua Pilihan Preferensi" dan antarmuka pemilihan tetap terbuka.
+
+### 3.2.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC02" src="./assets/diagram/diagram-uc02.png" width="90%">
+</p>
+<p align="center">
+<i>Gambar 3.2.3. Diagram Kelas Mengelola Preferensi Profil</i>
+</p>
+
+## 3.3 Use Case Membuat Sesi Belajar
+
+**ID Use Case:** *UC03*  
+**Nama Use Case:** *Membuat Sesi Belajar*
+
+### 3.3.1 Identifikasi Kelas
+
+Seperti pada UC12, kelas *SessionPage* dan *HostSessionPage* direalisasikan dalam satu komponen *SessionView* sesuai Tabel 2.3, sedangkan validasi kapasitas (1–20 peserta) dan tabrakan jadwal yang pada SKPL berada di *SessionControl* dipindahkan ke kelas pendukung *Validator*. Masukan formulir dibungkus dalam kelas *SessionData* agar parameter operasi tetap ringkas. Mentor yang mengirim formulir dicatat sebagai host sesi melalui `idMentor`, dan sesi baru berstatus Terjadwal.
+
+Tabel 3.3. Identifikasi Kelas Use Case UC03
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *SessionView* | *C17 (SessionPage), C18 (HostSessionPage)* |
+| 2 | *SessionController* | *C13 (SessionControl)* |
+| 3 | *Validator* | *C13 (SessionControl), khusus validasi kapasitas dan tabrakan jadwal* |
+| 4 | *Session* | *C04 (Session)* |
+| 5 | *SessionData* | *— (kelas data perancangan untuk masukan formulir pembuatan sesi)* |
+| 6 | *User* | *C01 (User)* |
+| 7 | *Mentor* | *C02 (Mentor)* |
+
+### 3.3.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC03 Skenario Normal" src="./assets/diagram/seq-uc03-normal.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.3.1. Sequence Diagram UC03 - Skenario Normal</i>
+</p>
+
+Mentor memilih menu "Buat Sesi Baru" sehingga *SessionView* menampilkan formulir topik, jadwal, format daring/luring, dan batas peserta. Saat Mentor menekan "Simpan", *SessionController* meminta *Validator* memeriksa kapasitas peserta, mengambil sesi Mentor pada rentang waktu yang sama, lalu meminta *Validator* memastikan tidak ada tabrakan jadwal. Setelah kedua pemeriksaan lolos, *Session* baru disimpan ke basis data dan *SessionView* menampilkan detail sesi beserta pesan "Sesi berhasil dibuat".
+
+- **Skenario Alternatif 1: Kapasitas Peserta Melebihi Batas Maksimum**
+
+<p align="center">
+<img alt="Sequence Diagram UC03 Skenario Alternatif 1" src="./assets/diagram/seq-uc03-alt1.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.3.2. Sequence Diagram UC03 - Kapasitas Peserta Melebihi Batas Maksimum</i>
+</p>
+
+Mentor memasukkan batas peserta 135 orang sehingga `validateCapacity()` bernilai `false`. *SessionController* mengembalikan galat `INVALID_CAPACITY` sebelum pemeriksaan jadwal dilakukan dan tidak menyimpan data. *SessionView* menampilkan pesan "Kapasitas maksimal adalah 20 orang". Setelah Mentor memperbaiki angka menjadi 9 orang dan menekan "Simpan", alur berlanjut seperti skenario normal.
+
+- **Skenario Alternatif 2: Kapasitas Peserta Kurang dari Batas Minimum**
+
+<p align="center">
+<img alt="Sequence Diagram UC03 Skenario Alternatif 2" src="./assets/diagram/seq-uc03-alt2.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.3.3. Sequence Diagram UC03 - Kapasitas Peserta Kurang dari Batas Minimum</i>
+</p>
+
+Mentor memasukkan batas peserta 0 orang sehingga `validateCapacity()` bernilai `false`. *SessionController* mengembalikan galat `INVALID_CAPACITY` tanpa menyimpan data, dan *SessionView* menampilkan pesan "Kapasitas minimum adalah 1 orang". Setelah Mentor memperbaiki angka menjadi 9 orang dan menekan "Simpan", alur berlanjut seperti skenario normal.
+
+- **Skenario Alternatif 3: Waktu Sesi Bertabrakan**
+
+<p align="center">
+<img alt="Sequence Diagram UC03 Skenario Alternatif 3" src="./assets/diagram/seq-uc03-alt3.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.3.4. Sequence Diagram UC03 - Waktu Sesi Bertabrakan</i>
+</p>
+
+Kapasitas lolos validasi, tetapi `hasScheduleConflict()` pada *Validator* bernilai `true` karena jadwal beririsan dengan sesi lain milik Mentor yang sama. *SessionController* mengembalikan galat `SCHEDULE_CONFLICT` tanpa menyimpan data, dan *SessionView* menampilkan pesan "Jadwal bertabrakan dengan sesi lain". Setelah Mentor mengubah jam atau tanggal dan menekan "Simpan", alur berlanjut seperti skenario normal.
+
+### 3.3.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC03" src="./assets/diagram/diagram-uc03.png" width="90%">
+</p>
+<p align="center">
+<i>Gambar 3.3.5. Diagram Kelas Membuat Sesi Belajar</i>
+</p>
+
+## 3.4 Use Case Mencari dan Bergabung ke Sesi
+
+**ID Use Case:** *UC04*  
+**Nama Use Case:** *Mencari dan Bergabung ke Sesi*
+
+### 3.4.1 Identifikasi Kelas
+
+Halaman "Cari Sesi" merupakan bagian dari *DashboardView* (realisasi *Dashboard* pada SKPL) yang menampilkan rekomendasi hasil *matchmaking*, sedangkan *ParticipantSessionPage* direalisasikan sebagai bagian dari *SessionView* sesuai Tabel 2.3. Algoritma *matchmaking* tetap berada di *SessionController* dan memakai *Preference* Mentee, sama dengan UC14. Pemeriksaan slot yang pada SKPL berada di `SessionControl.validateCapacity()` dan `Session.checkCapacity()` direalisasikan sebagai `hasAvailableSlot()` pada *Session*. *SessionHistory* tidak diperbarui secara eksplisit karena daftar sesi mendatang diturunkan langsung dari data peserta *Session*.
+
+Tabel 3.4. Identifikasi Kelas Use Case UC04
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *DashboardView* | *C11 (Dashboard)* |
+| 2 | *SessionView* | *C17 (SessionPage), C19 (ParticipantSessionPage)* |
+| 3 | *SessionController* | *C13 (SessionControl)* |
+| 4 | *Preference* | *C09 (Preference)* |
+| 5 | *Session* | *C04 (Session), C07 (SessionHistory)* |
+| 6 | *User* | *C01 (User)* |
+| 7 | *Mentee* | *C03 (Mentee)* |
+
+### 3.4.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC04 Skenario Normal" src="./assets/diagram/seq-uc04-normal.png" width="90%">
+</p>
+<p align="center">
+<i>Gambar 3.4.1. Sequence Diagram UC04 - Skenario Normal</i>
+</p>
+
+Mentee membuka halaman "Cari Sesi", lalu *DashboardView* meminta rekomendasi ke *SessionController*. *SessionController* mengambil *Preference* Mentee, memastikan preferensinya lengkap, mengambil sesi terbuka yang belum dimulai, lalu mencocokkan irisan tag materi, jadwal kosong, dan format belajar melalui `matchSession()`. *DashboardView* menampilkan daftar rekomendasi. Setelah Mentee memilih sebuah sesi, *SessionView* menampilkan detailnya. Saat Mentee menekan "Gabung Sesi", *SessionController* memvalidasi ketersediaan slot melalui `hasAvailableSlot()`, lalu menambahkan Mentee ke daftar partisipan sesi dan *SessionView* menampilkan notifikasi "Berhasil bergabung".
+
+- **Skenario Alternatif 1: Tidak Ada Rekomendasi Sesi yang Cocok**
+
+<p align="center">
+<img alt="Sequence Diagram UC04 Skenario Alternatif 1" src="./assets/diagram/seq-uc04-alt1.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 3.4.2. Sequence Diagram UC04 - Tidak Ada Rekomendasi Sesi yang Cocok</i>
+</p>
+
+`matchSession()` tidak menemukan irisan materi atau jadwal yang cocok sehingga *SessionController* mengembalikan daftar rekomendasi kosong. *DashboardView* menampilkan pesan "Belum ada sesi yang cocok dengan jadwalmu" beserta tombol "Ubah Preferensi". Saat tombol ditekan, Mentee diarahkan ke halaman pengaturan profil untuk mengubah ketersediaan waktu (UC02).
+
+### 3.4.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC04" src="./assets/diagram/diagram-uc04.png" width="90%">
+</p>
+<p align="center">
+<i>Gambar 3.4.3. Diagram Kelas Mencari dan Bergabung ke Sesi</i>
+</p>
 
 ## 3.5 Use Case Mengonfirmasi Keterlaksanaan Sesi
 
