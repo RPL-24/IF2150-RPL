@@ -1332,54 +1332,657 @@ Untuk **setiap kelas**, identifikasi operasi berdasarkan tanggung jawab kelas be
 
 ## 5.1 Kelas [Nama Kelas 1]
 
-**Nama Kelas:** *[Nama kelas]*  
-**ID Kelas:** *[ID kelas]*
+**Nama Kelas:** *Pelanggan*  
+**ID Kelas:** *C01*
 
-Tabel 5.1.1. Operasi Kelas [Nama Kelas 1]
+Tabel 5.1.1. Operasi Kelas Pelanggan
 
 | Nama Operasi | Visibility (private, public) | Keterangan |
 | :--- | :--- | :--- |
-| *[Signature operasi, termasuk parameter dan tipe kembalian]* | *[Visibility]* | *[Tanggung jawab operasi]* |
-| *...* | *...* | *...* |
+| *getDetails(pelangganId: string): Pelanggan* | *public* | Mengambil data profil pelanggan. |
+| *cariRestoran(kataKunci: string): Restoran[]* | *public* | Mencari restoran mitra berdasarkan kata kunci. |
+| *pilihMenu(menuId: string, jumlah: integer): void* | *public* | Memilih menu dan memasukkannya ke keranjang. |
+| *pilihMetodeBayar(tipePembayaran: string): void* | *public* | Memilih metode pembayaran dan membuat tagihan pesanan. |
+| *konfirmasiPembayaran(idPembayaran: string): void* | *public* | Mengonfirmasi pembayaran dan menerima tiket antrean. |
+| *lihatStatusAntrean(antreanId: string): void* | *public* | Membuka halaman status antrean. |
+| *accountRegister(data: object): boolean* | *public* | Mendaftarkan akun pelanggan baru. |
+| *kirimKeluhan(isi: string): boolean* | *public* | Mengirim keluhan ke admin. |
 
-Tabel 5.1.2. Atribut Kelas [Nama Kelas 1]
+Tabel 5.1.2. Atribut Kelas Pelanggan
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
-| *[Nama atribut]* | *[Visibility]* | *[Tipe sesuai bahasa pemrograman yang digunakan]* |
-| *...* | *...* | *...* |
+| *pelangganId* | *private* | *string* |
+| *nama* | *private* | *string* |
+| *nomorAntrean* | *private* | *integer* |
+| *noHp* | *private* | *string* |
+| *idAkun* | *private* | *string* |
+| *email* | *private* | *string* |
 
 ### 5.1.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
-**Nama Kelas:** *[Nama kelas]*  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-001]*
+**Nama Kelas:** *Pelanggan*  
+**Nama Operasi:** *getDetails(pelangganId: string): Pelanggan*  
+**ID Algoritma:** *Algo-001*
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+FUNCTION getDetails(pelangganId) RETURNS Pelanggan
+    data <- SELECT * FROM pelanggan WHERE pelanggan_id = pelangganId
+    IF data IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN data
+END FUNCTION
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut. 
-
-Tabel 5.1.1. Query Operasi [Nama Operasi]
+Tabel 5.1.1.1. Query Operasi getDetails
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
-
+| *Q-001* | `SELECT pelanggan_id, nama, no_hp, id_akun, email FROM pelanggan WHERE pelanggan_id = $1;` | Mengambil data profil pelanggan. |
 
 ### 5.1.2 Algoritma/Query
 
-*[Ulangi pola 5.1.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** *Pelanggan*  
+**Nama Operasi:** *cariRestoran(kataKunci: string): Restoran[]*  
+**ID Algoritma:** *Algo-002*
 
-## 5.2 Kelas [Nama Kelas Berikutnya]
+```text
+FUNCTION cariRestoran(kataKunci) RETURNS Restoran[]
+    IF kataKunci IS EMPTY THEN
+        kataKunci <- ""
+    END IF
+    RETURN PencarianController.cariRestoran(kataKunci)
+END FUNCTION
+```
 
-*[Ulangi pola 5.1: nama dan ID kelas, tabel operasi, tabel atribut, serta subbab algoritma/query untuk operasi penting jika diperlukan.]*
+### 5.1.3 Algoritma/Query
 
-<br>
+**Nama Kelas:** *Pelanggan*  
+**Nama Operasi:** *pilihMenu(menuId: string, jumlah: integer): void*  
+**ID Algoritma:** *Algo-003*
+
+```text
+PROCEDURE pilihMenu(menuId, jumlah)
+    IF jumlah <= 0 THEN
+        tampilkanError("Jumlah menu tidak valid")
+        RETURN
+    END IF
+    menu <- Menu(menuId).getInfoMenu()
+    IF NOT menu.isTersedia(jumlah) THEN
+        tampilkanError("Stok menu tidak mencukupi")
+        RETURN
+    END IF
+    keranjang.tambahItem(menu, jumlah)
+END PROCEDURE
+```
+
+### 5.1.4 Algoritma/Query
+
+**Nama Kelas:** *Pelanggan*  
+**Nama Operasi:** *pilihMetodeBayar(tipePembayaran: string): void*  
+**ID Algoritma:** *Algo-004*
+
+```text
+PROCEDURE pilihMetodeBayar(tipePembayaran)
+    IF keranjang.daftarMenu IS EMPTY THEN
+        tampilkanError("Keranjang masih kosong")
+        RETURN
+    END IF
+    IF pesanan.modePemesanan = BOOKING THEN
+        IF NOT pesanan.validasiBooking(restoranId) THEN
+            tampilkanError("Slot booking sudah penuh")
+            RETURN
+        END IF
+    END IF
+    tagihan <- pesanan.buatTagihan(pelangganId, restoranId, keranjang, tipePembayaran)
+    tampilkanTagihan(tagihan.kodeBayar, tagihan.totalHarga, tagihan.batasWaktuBayar)
+END PROCEDURE
+```
+
+### 5.1.5 Algoritma/Query
+
+**Nama Kelas:** *Pelanggan*  
+**Nama Operasi:** *konfirmasiPembayaran(idPembayaran: string): void*  
+**ID Algoritma:** *Algo-005*
+
+```text
+PROCEDURE konfirmasiPembayaran(idPembayaran)
+    hasil <- MetodePembayaranController.verifikasiPembayaran(idPembayaran)
+    IF hasil.sukses = false THEN
+        tampilkanError("Pembayaran belum diterima")
+        RETURN
+    END IF
+    keranjang.kosongkanKeranjang()
+    IF hasil.tiket IS NOT NULL THEN
+        nomorAntrean <- hasil.tiket.nomorUrut
+        hasil.tiket.cetakRincianTiket()
+    ELSE
+        tampilkanPesan("Pembayaran berhasil, booking Anda telah dikonfirmasi")
+    END IF
+END PROCEDURE
+```
+
+### 5.1.6 Algoritma/Query
+
+**Nama Kelas:** *Pelanggan*  
+**Nama Operasi:** *lihatStatusAntrean(antreanId: string): void*  
+**ID Algoritma:** *Algo-006*
+
+```text
+PROCEDURE lihatStatusAntrean(antreanId)
+    IF antreanId IS NULL THEN
+        tampilkanPesan("Anda belum memiliki antrean")
+        RETURN
+    END IF
+    HalamanStatusAntrean.tampilkanStatusAntrean(antreanId)
+END PROCEDURE
+```
+
+### 5.1.7 Algoritma/Query
+
+**Nama Kelas:** *Pelanggan*  
+**Nama Operasi:** *accountRegister(data: object): boolean*  
+**ID Algoritma:** *Algo-007*
+
+```text
+FUNCTION accountRegister(data) RETURNS boolean
+    data.role <- PELANGGAN
+    sukses <- AutentikasiController.createAccount(data)
+    IF NOT sukses THEN
+        RETURN false
+    END IF
+    pelangganId <- generateId()
+    idAkun <- id akun yang baru dibuat
+    INSERT INTO pelanggan VALUES (pelangganId, data.nama, data.noHp, idAkun, data.email)
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.1.7.1. Query Operasi accountRegister
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-002* | `INSERT INTO pelanggan (pelanggan_id, nama, no_hp, id_akun, email) VALUES ($1, $2, $3, $4, $5);` | Menyimpan data profil pelanggan baru. |
+
+### 5.1.8 Algoritma/Query
+
+**Nama Kelas:** *Pelanggan*  
+**Nama Operasi:** *kirimKeluhan(isi: string): boolean*  
+**ID Algoritma:** *Algo-008*
+
+```text
+FUNCTION kirimKeluhan(isi) RETURNS boolean
+    IF isi IS EMPTY THEN
+        RETURN false
+    END IF
+    RETURN KeluhanController.kirimKeluhan(isi, pelangganId)
+END FUNCTION
+```
+
+## 5.2 Kelas Restoran
+
+**Nama Kelas:** *Restoran*  
+**ID Kelas:** *C02*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *getDetailRestoran(restoranId: string): Restoran* | *public* | Mengambil detail restoran beserta ulasannya. |
+| *getMenu(restoranId: string): Menu[]* | *public* | Mengambil menu yang tersedia untuk dipesan pelanggan. |
+| *getAntrean(restoranId: string): Antrean* | *public* | Mengambil data antrean milik restoran. |
+| *ajukanPendaftaran(form: object, dokumen: File[]): string* | *public* | Mengajukan pendaftaran restoran sebagai mitra. |
+| *getPengaturan(restoranId: string): object* | *public* | Mengambil pengaturan kuota dan jumlah meja. |
+| *getDaftarMenu(restoranId: string): Menu[]* | *public* | Mengambil seluruh menu aktif untuk dikelola mitra. |
+| *showDashboard(): void* | *public* | Menampilkan dashboard restoran mitra. |
+| *accountRegister(idAkun: string): boolean* | *public* | Menautkan akun mitra ke data restoran. |
+| *setSoftDelete(): void* | *public* | Menonaktifkan restoran tanpa menghapus datanya. |
+| *purgeData(): void* | *public* | Membersihkan data operasional restoran yang dihapus. |
+
+Tabel 5.2.2. Atribut Kelas Restoran
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *restoranId* | *private* | *string* |
+| *namaRestoran* | *private* | *string* |
+| *kategori* | *private* | *string* |
+| *ratingRerata* | *private* | *number* |
+| *daftarUlasan* | *private* | *Ulasan[]* |
+| *emailKontak* | *private* | *string* |
+| *statusAktif* | *private* | *boolean* |
+
+### 5.2.1 Algoritma/Query
+
+**Nama Kelas:** *Restoran*  
+**Nama Operasi:** *getDetailRestoran(restoranId: string): Restoran*  
+**ID Algoritma:** *Algo-009*
+
+```text
+FUNCTION getDetailRestoran(restoranId) RETURNS Restoran
+    restoran <- SELECT * FROM restoran WHERE restoran_id = restoranId AND status_aktif = true
+    IF restoran IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN restoran
+END FUNCTION
+```
+
+Tabel 5.2.1.1. Query Operasi getDetailRestoran
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-003* | `SELECT * FROM restoran WHERE restoran_id = $1 AND status_aktif = true;` | Mengambil detail restoran aktif. |
+
+### 5.2.2 Algoritma/Query
+
+**Nama Kelas:** *Restoran*  
+**Nama Operasi:** *getMenu(restoranId: string): Menu[]*  
+**ID Algoritma:** *Algo-010*
+
+```text
+FUNCTION getMenu(restoranId) RETURNS Menu[]
+    RETURN SELECT * FROM menu WHERE restoran_id = restoranId
+           AND aktif = true AND stok > 0
+           ORDER BY nama_menu ASC
+END FUNCTION
+```
+
+Tabel 5.2.2.1. Query Operasi getMenu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-004* | `SELECT * FROM menu WHERE restoran_id = $1 AND aktif = true AND stok > 0 ORDER BY nama_menu ASC;` | Mengambil menu yang masih tersedia. |
+
+### 5.2.3 Algoritma/Query
+
+**Nama Kelas:** *Restoran*  
+**Nama Operasi:** *getAntrean(restoranId: string): Antrean*  
+**ID Algoritma:** *Algo-011*
+
+```text
+FUNCTION getAntrean(restoranId) RETURNS Antrean
+    antrean <- SELECT * FROM antrean WHERE restoran_id = restoranId
+    IF antrean IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN antrean
+END FUNCTION
+```
+
+Tabel 5.2.3.1. Query Operasi getAntrean
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-005* | `SELECT * FROM antrean WHERE restoran_id = $1;` | Mengambil data antrean restoran. |
+
+### 5.2.4 Algoritma/Query
+
+**Nama Kelas:** *Restoran*  
+**Nama Operasi:** *ajukanPendaftaran(form: object, dokumen: File[]): string*  
+**ID Algoritma:** *Algo-012*
+
+```text
+FUNCTION ajukanPendaftaran(form, dokumen) RETURNS string
+    IF NOT PengajuanMitraController.validasiKelengkapan(form, dokumen) THEN
+        RETURN NULL
+    END IF
+    form.dokumen <- dokumen
+    RETURN PengajuanMitraController.simpanPengajuan(form)
+END FUNCTION
+```
+
+### 5.2.5 Algoritma/Query
+
+**Nama Kelas:** *Restoran*  
+**Nama Operasi:** *getPengaturan(restoranId: string): object*  
+**ID Algoritma:** *Algo-013*
+
+```text
+FUNCTION getPengaturan(restoranId) RETURNS object
+    pengaturan <- SELECT kuota_maksimum, kapasitas_meja FROM pengaturan_kuota
+                  WHERE restoran_id = restoranId
+    IF pengaturan IS NULL THEN
+        RETURN {kuotaMaksimum: 0, kapasitasMeja: 0}
+    END IF
+    RETURN pengaturan
+END FUNCTION
+```
+
+Tabel 5.2.5.1. Query Operasi getPengaturan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-006* | `SELECT kuota_maksimum, kapasitas_meja FROM pengaturan_kuota WHERE restoran_id = $1;` | Mengambil pengaturan kuota restoran. |
+
+### 5.2.6 Algoritma/Query
+
+**Nama Kelas:** *Restoran*  
+**Nama Operasi:** *getDaftarMenu(restoranId: string): Menu[]*  
+**ID Algoritma:** *Algo-014*
+
+```text
+FUNCTION getDaftarMenu(restoranId) RETURNS Menu[]
+    RETURN SELECT * FROM menu WHERE restoran_id = restoranId AND aktif = true
+           ORDER BY nama_menu ASC
+END FUNCTION
+```
+
+Tabel 5.2.6.1. Query Operasi getDaftarMenu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-007* | `SELECT * FROM menu WHERE restoran_id = $1 AND aktif = true ORDER BY nama_menu ASC;` | Mengambil seluruh menu aktif, termasuk yang stoknya habis. |
+
+### 5.2.7 Algoritma/Query
+
+**Nama Kelas:** *Restoran*  
+**Nama Operasi:** *showDashboard(): void*  
+**ID Algoritma:** *Algo-015*
+
+```text
+PROCEDURE showDashboard()
+    restoran <- getDetailRestoran(restoranId)
+    IF restoran IS NULL THEN
+        tampilkanError("Restoran tidak ditemukan atau tidak aktif")
+        RETURN
+    END IF
+    antrean <- getAntrean(restoranId)
+    daftarMenu <- getDaftarMenu(restoranId)
+    renderTeks("Restoran", restoran.namaRestoran)
+    renderTeks("Rating", restoran.ratingRerata)
+    renderTeks("Status Antrean", antrean.statusAntrean)
+    renderTeks("Total Antrean", antrean.totalAntrean)
+    FOR EACH m IN daftarMenu DO
+        renderBaris(m.namaMenu, m.harga, m.stok)
+    END FOR
+END PROCEDURE
+```
+
+### 5.2.8 Algoritma/Query
+
+**Nama Kelas:** *Restoran*  
+**Nama Operasi:** *accountRegister(idAkun: string): boolean*  
+**ID Algoritma:** *Algo-016*
+
+```text
+FUNCTION accountRegister(idAkun) RETURNS boolean
+    IF idAkun IS NULL THEN
+        RETURN false
+    END IF
+    jumlahBaris <- UPDATE restoran SET id_akun = idAkun WHERE restoran_id = restoranId
+    IF jumlahBaris = 0 THEN
+        RETURN false
+    END IF
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.2.8.1. Query Operasi accountRegister
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-008* | `UPDATE restoran SET id_akun = $2 WHERE restoran_id = $1;` | Menautkan akun mitra ke restoran. |
+
+### 5.2.9 Algoritma/Query
+
+**Nama Kelas:** *Restoran*  
+**Nama Operasi:** *setSoftDelete(): void*  
+**ID Algoritma:** *Algo-017*
+
+```text
+PROCEDURE setSoftDelete()
+    statusAktif <- false
+    UPDATE restoran SET status_aktif = false, dihapus_pada = now()
+        WHERE restoran_id = restoranId
+END PROCEDURE
+```
+
+Tabel 5.2.9.1. Query Operasi setSoftDelete
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-009* | `UPDATE restoran SET status_aktif = false, dihapus_pada = NOW() WHERE restoran_id = $1;` | Menandai restoran sebagai terhapus. |
+
+### 5.2.10 Algoritma/Query
+
+**Nama Kelas:** *Restoran*  
+**Nama Operasi:** *purgeData(): void*  
+**ID Algoritma:** *Algo-018*
+
+```text
+PROCEDURE purgeData()
+    IF statusAktif = true THEN
+        RETURN                      // hanya untuk restoran yang sudah di-soft delete
+    END IF
+    DELETE FROM pengaturan_kuota WHERE restoran_id = restoranId
+    UPDATE antrean SET status_antrean = TUTUP, total_antrean = 0
+        WHERE restoran_id = restoranId
+END PROCEDURE
+```
+
+Tabel 5.2.10.1. Query Operasi purgeData
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-010* | `DELETE FROM pengaturan_kuota WHERE restoran_id = $1;` | Menghapus pengaturan kuota restoran. |
+| *Q-011* | `UPDATE antrean SET status_antrean = 'TUTUP', total_antrean = 0 WHERE restoran_id = $1;` | Menutup antrean restoran. |
+
+---
+
+## 5.3 Kelas Menu
+
+**Nama Kelas:** *Menu*  
+**ID Kelas:** *C03*
+
+Tabel 5.3.1. Operasi Kelas Menu
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *getInfoMenu(): Menu* | *public* | Mengambil informasi lengkap menu. |
+| *cekStok(): integer* | *public* | Mengambil jumlah stok menu saat ini. |
+| *kurangiStok(jumlah: integer): boolean* | *public* | Mengurangi stok setelah pesanan dibayar. |
+| *tambahMenu(restoranId: string, data: object): string* | *public* | Menambahkan menu baru ke restoran. |
+| *updateStok(stokBaru: integer): boolean* | *public* | Mengubah jumlah stok menu. |
+| *updateInfoMenu(data: object): boolean* | *public* | Mengubah nama, deskripsi, dan harga menu. |
+| *isTersedia(jumlah: integer): boolean* | *public* | Memeriksa apakah stok cukup untuk jumlah yang dipesan. |
+| *hapusMenu(): boolean* | *public* | Menonaktifkan menu. |
+
+Tabel 5.3.2. Atribut Kelas Menu
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *menuId* | *private* | *string* |
+| *namaMenu* | *private* | *string* |
+| *harga* | *private* | *number* |
+| *deskripsiMenu* | *private* | *string* |
+| *stok* | *private* | *integer* |
+
+### 5.3.1 Algoritma/Query
+
+**Nama Kelas:** *Menu*  
+**Nama Operasi:** *getInfoMenu(): Menu*  
+**ID Algoritma:** *Algo-019*
+
+```text
+FUNCTION getInfoMenu() RETURNS Menu
+    data <- SELECT * FROM menu WHERE menu_id = menuId AND aktif = true
+    IF data IS NULL THEN
+        RETURN NULL
+    END IF
+    namaMenu <- data.namaMenu
+    harga <- data.harga
+    deskripsiMenu <- data.deskripsiMenu
+    stok <- data.stok
+    RETURN this
+END FUNCTION
+```
+
+Tabel 5.3.1.1. Query Operasi getInfoMenu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-012* | `SELECT menu_id, nama_menu, harga, deskripsi_menu, stok FROM menu WHERE menu_id = $1 AND aktif = true;` | Mengambil informasi menu. |
+
+### 5.3.2 Algoritma/Query
+
+**Nama Kelas:** *Menu*  
+**Nama Operasi:** *cekStok(): integer*  
+**ID Algoritma:** *Algo-020*
+
+```text
+FUNCTION cekStok() RETURNS integer
+    stok <- SELECT stok FROM menu WHERE menu_id = menuId AND aktif = true
+    IF stok IS NULL THEN
+        RETURN 0
+    END IF
+    RETURN stok
+END FUNCTION
+```
+
+Tabel 5.3.2.1. Query Operasi cekStok
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-013* | `SELECT stok FROM menu WHERE menu_id = $1 AND aktif = true;` | Mengambil stok terbaru menu. |
+
+### 5.3.3 Algoritma/Query
+
+**Nama Kelas:** *Menu*  
+**Nama Operasi:** *kurangiStok(jumlah: integer): boolean*  
+**ID Algoritma:** *Algo-021*
+
+```text
+FUNCTION kurangiStok(jumlah) RETURNS boolean
+    IF jumlah <= 0 THEN
+        RETURN false
+    END IF
+    jumlahBaris <- UPDATE menu SET stok = stok - jumlah
+                   WHERE menu_id = menuId AND stok >= jumlah
+    IF jumlahBaris = 0 THEN
+        RETURN false                // stok tidak mencukupi
+    END IF
+    stok <- stok - jumlah
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.3.3.1. Query Operasi kurangiStok
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-014* | `UPDATE menu SET stok = stok - $2 WHERE menu_id = $1 AND stok >= $2;` | Mengurangi stok tanpa membuatnya negatif. |
+
+### 5.3.4 Algoritma/Query
+
+**Nama Kelas:** *Menu*  
+**Nama Operasi:** *tambahMenu(restoranId: string, data: object): string*  
+**ID Algoritma:** *Algo-022*
+
+```text
+FUNCTION tambahMenu(restoranId, data) RETURNS string
+    IF data.namaMenu IS EMPTY OR data.harga <= 0 OR data.stok < 0 THEN
+        RETURN NULL
+    END IF
+    menuId <- generateId()
+    INSERT INTO menu VALUES (menuId, restoranId, data.namaMenu, data.deskripsiMenu,
+                             data.harga, data.stok, aktif = true)
+    RETURN menuId
+END FUNCTION
+```
+
+Tabel 5.3.4.1. Query Operasi tambahMenu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-015* | `INSERT INTO menu (menu_id, restoran_id, nama_menu, deskripsi_menu, harga, stok, aktif) VALUES ($1, $2, $3, $4, $5, $6, true);` | Menyimpan menu baru. |
+
+### 5.3.5 Algoritma/Query
+
+**Nama Kelas:** *Menu*  
+**Nama Operasi:** *updateStok(stokBaru: integer): boolean*  
+**ID Algoritma:** *Algo-023*
+
+```text
+FUNCTION updateStok(stokBaru) RETURNS boolean
+    IF stokBaru < 0 THEN
+        RETURN false
+    END IF
+    UPDATE menu SET stok = stokBaru WHERE menu_id = menuId AND aktif = true
+    stok <- stokBaru
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.3.5.1. Query Operasi updateStok
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-016* | `UPDATE menu SET stok = $2 WHERE menu_id = $1 AND aktif = true;` | Mengubah jumlah stok menu. |
+
+### 5.3.6 Algoritma/Query
+
+**Nama Kelas:** *Menu*  
+**Nama Operasi:** *updateInfoMenu(data: object): boolean*  
+**ID Algoritma:** *Algo-024*
+
+```text
+FUNCTION updateInfoMenu(data) RETURNS boolean
+    IF data.namaMenu IS EMPTY OR data.harga <= 0 THEN
+        RETURN false
+    END IF
+    UPDATE menu SET nama_menu = data.namaMenu, deskripsi_menu = data.deskripsiMenu,
+        harga = data.harga WHERE menu_id = menuId AND aktif = true
+    namaMenu <- data.namaMenu
+    deskripsiMenu <- data.deskripsiMenu
+    harga <- data.harga
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.3.6.1. Query Operasi updateInfoMenu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-017* | `UPDATE menu SET nama_menu = $2, deskripsi_menu = $3, harga = $4 WHERE menu_id = $1 AND aktif = true;` | Mengubah informasi menu. |
+
+### 5.3.7 Algoritma/Query
+
+**Nama Kelas:** *Menu*  
+**Nama Operasi:** *isTersedia(jumlah: integer): boolean*  
+**ID Algoritma:** *Algo-025*
+
+```text
+FUNCTION isTersedia(jumlah) RETURNS boolean
+    IF cekStok() >= jumlah THEN
+        RETURN true
+    END IF
+    RETURN false
+END FUNCTION
+```
+
+### 5.3.8 Algoritma/Query
+
+**Nama Kelas:** *Menu*  
+**Nama Operasi:** *hapusMenu(): boolean*  
+**ID Algoritma:** *Algo-026*
+
+```text
+FUNCTION hapusMenu() RETURNS boolean
+    jumlahBaris <- UPDATE menu SET aktif = false, stok = 0 WHERE menu_id = menuId
+    IF jumlahBaris = 0 THEN
+        RETURN false
+    END IF
+    stok <- 0
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.3.8.1. Query Operasi hapusMenu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-018* | `UPDATE menu SET aktif = false, stok = 0 WHERE menu_id = $1;` | Menonaktifkan menu (soft delete). |
+
+---
 
 ## 5.31 Kelas DashboardKelolaRestoranPage
 
