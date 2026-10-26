@@ -2584,6 +2584,253 @@ Tabel 5.7.3.1. Query Operasi cekTimeout
 
 ---
 
+## 5.8 Kelas RiwayatTransaksi
+
+**Nama Kelas:** *RiwayatTransaksi*  
+**ID Kelas:** *C08*
+
+Tabel 5.8.1. Operasi Kelas RiwayatTransaksi
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *catatLogTransaksi(idPembayaran: string, jumlah: number): string* | *public* | Mencatat transaksi yang telah lunas. |
+| *getBuktiPembayaran(idTransaksi: string): object* | *public* | Mengambil bukti pembayaran suatu transaksi. |
+
+Tabel 5.8.2. Atribut Kelas RiwayatTransaksi
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idTransaksi* | *private* | *string* |
+| *tanggalTransaksi* | *private* | *DateTime* |
+| *jumlahDibayar* | *private* | *number* |
+| *statusPelunasan* | *private* | *StatusPelunasan* |
+
+### 5.8.1 Algoritma/Query
+
+**Nama Kelas:** *RiwayatTransaksi*  
+**Nama Operasi:** *catatLogTransaksi(idPembayaran: string, jumlah: number): string*  
+**ID Algoritma:** *Algo-048*
+
+```text
+FUNCTION catatLogTransaksi(idPembayaran, jumlah) RETURNS string
+    idTransaksi <- generateId()
+    tanggalTransaksi <- now()
+    jumlahDibayar <- jumlah
+    statusPelunasan <- LUNAS
+    INSERT INTO riwayat_transaksi VALUES (idTransaksi, idPembayaran, tanggalTransaksi,
+                                          jumlahDibayar, statusPelunasan)
+    RETURN idTransaksi
+END FUNCTION
+```
+
+Tabel 5.8.1.1. Query Operasi catatLogTransaksi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-035* | `INSERT INTO riwayat_transaksi (id_transaksi, id_pembayaran, tanggal_transaksi, jumlah_dibayar, status_pelunasan) VALUES ($1, $2, NOW(), $3, 'LUNAS');` | Mencatat transaksi yang lunas. |
+
+### 5.8.2 Algoritma/Query
+
+**Nama Kelas:** *RiwayatTransaksi*  
+**Nama Operasi:** *getBuktiPembayaran(idTransaksi: string): object*  
+**ID Algoritma:** *Algo-049*
+
+```text
+FUNCTION getBuktiPembayaran(idTransaksi) RETURNS object
+    bukti <- SELECT riwayat_transaksi, pembayaran FROM riwayat_transaksi
+             JOIN pembayaran WHERE riwayat_transaksi.id_transaksi = idTransaksi
+    IF bukti IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN bukti
+END FUNCTION
+```
+
+Tabel 5.8.2.1. Query Operasi getBuktiPembayaran
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-036* | `SELECT r.id_transaksi, r.tanggal_transaksi, r.jumlah_dibayar, r.status_pelunasan, p.tipe_pembayaran, p.pesanan_id FROM riwayat_transaksi r JOIN pembayaran p ON p.id_pembayaran = r.id_pembayaran WHERE r.id_transaksi = $1;` | Mengambil data bukti pembayaran. |
+
+---
+
+## 5.9 Kelas TiketAntrean
+
+**Nama Kelas:** *TiketAntrean*  
+**ID Kelas:** *C09*
+
+Tabel 5.9.1. Operasi Kelas TiketAntrean
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *generateNomorAntrean(antreanId: string, pelangganId: string, pesananId: string, tipe: string): TiketAntrean* | *public* | Menerbitkan tiket dengan nomor urut berikutnya. |
+| *cetakRincianTiket(): void* | *public* | Menampilkan rincian tiket kepada pelanggan. |
+| *getDetailTiket(idTiket: string): TiketAntrean* | *public* | Mengambil detail tiket antrean. |
+| *updateStatusTiket(status: StatusAntrean): void* | *public* | Memperbarui status tiket antrean. |
+
+Tabel 5.9.2. Atribut Kelas TiketAntrean
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idTiket* | *private* | *string* |
+| *nomorUrut* | *private* | *integer* |
+| *tipeAntrean* | *private* | *string* |
+| *waktuTerbit* | *private* | *DateTime* |
+| *statusAntrean* | *private* | *StatusAntrean* |
+| *estimasiWaktuTunggu* | *private* | *integer* |
+
+### 5.9.1 Algoritma/Query
+
+**Nama Kelas:** *TiketAntrean*  
+**Nama Operasi:** *generateNomorAntrean(antreanId: string, pelangganId: string, pesananId: string, tipe: string): TiketAntrean*  
+**ID Algoritma:** *Algo-050*
+
+```text
+FUNCTION generateNomorAntrean(antreanId, pelangganId, pesananId, tipe) RETURNS TiketAntrean
+    antrean <- Antrean.getDetailAntrean(antreanId)
+    IF antrean IS NULL OR antrean.statusAntrean = TUTUP THEN
+        RETURN NULL
+    END IF
+    nomorUrut <- SELECT COALESCE(MAX(nomor_urut), 0) + 1 FROM tiket_antrean
+                 WHERE antrean_id = antreanId AND DATE(waktu_terbit) = hariIni()
+    idTiket <- generateId()
+    tipeAntrean <- tipe
+    waktuTerbit <- now()
+    statusAntrean <- MENUNGGU
+    estimasiWaktuTunggu <- antrean.getEstimasiWaktu()
+    INSERT INTO tiket_antrean VALUES (idTiket, antreanId, pelangganId, pesananId, nomorUrut,
+        tipeAntrean, waktuTerbit, statusAntrean, estimasiWaktuTunggu)
+    Kuota.updateKapasitas(antrean.restoranId)
+    RETURN this
+END FUNCTION
+```
+
+Tabel 5.9.1.1. Query Operasi generateNomorAntrean
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-037* | `SELECT COALESCE(MAX(nomor_urut), 0) + 1 FROM tiket_antrean WHERE antrean_id = $1 AND DATE(waktu_terbit) = CURRENT_DATE;` | Menentukan nomor urut berikutnya hari ini. |
+| *Q-038* | `INSERT INTO tiket_antrean (id_tiket, antrean_id, pelanggan_id, pesanan_id, nomor_urut, tipe_antrean, waktu_terbit, status_antrean, estimasi_waktu_tunggu) VALUES ($1, $2, $3, $4, $5, $6, NOW(), 'MENUNGGU', $7);` | Menyimpan tiket antrean baru. |
+
+### 5.9.2 Algoritma/Query
+
+**Nama Kelas:** *TiketAntrean*  
+**Nama Operasi:** *cetakRincianTiket(): void*  
+**ID Algoritma:** *Algo-051*
+
+```text
+PROCEDURE cetakRincianTiket()
+    renderTeks("Nomor Antrean", nomorUrut)
+    renderTeks("Tipe Antrean", tipeAntrean)
+    renderTeks("Waktu Terbit", waktuTerbit)
+    renderTeks("Estimasi Waktu Tunggu", estimasiWaktuTunggu + " menit")
+    renderTombol("Simpan Tiket")
+END PROCEDURE
+```
+
+### 5.9.3 Algoritma/Query
+
+**Nama Kelas:** *TiketAntrean*  
+**Nama Operasi:** *getDetailTiket(idTiket: string): TiketAntrean*  
+**ID Algoritma:** *Algo-052*
+
+```text
+FUNCTION getDetailTiket(idTiket) RETURNS TiketAntrean
+    data <- SELECT * FROM tiket_antrean WHERE id_tiket = idTiket
+    IF data IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN data
+END FUNCTION
+```
+
+Tabel 5.9.3.1. Query Operasi getDetailTiket
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-039* | `SELECT * FROM tiket_antrean WHERE id_tiket = $1;` | Mengambil detail tiket antrean. |
+
+### 5.9.4 Algoritma/Query
+
+**Nama Kelas:** *TiketAntrean*  
+**Nama Operasi:** *updateStatusTiket(status: StatusAntrean): void*  
+**ID Algoritma:** *Algo-053*
+
+```text
+PROCEDURE updateStatusTiket(status)
+    IF statusAntrean IN (SELESAI, DILEWATI, DIBATALKAN) THEN
+        RETURN                      // tiket yang sudah final tidak diubah
+    END IF
+    statusAntrean <- status
+    UPDATE tiket_antrean SET status_antrean = statusAntrean WHERE id_tiket = idTiket
+END PROCEDURE
+```
+
+Tabel 5.9.4.1. Query Operasi updateStatusTiket
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-040* | `UPDATE tiket_antrean SET status_antrean = $2 WHERE id_tiket = $1;` | Memperbarui status tiket antrean. |
+
+---
+
+## 5.10 Kelas PemantauAntreanController
+
+**Nama Kelas:** *PemantauAntreanController*  
+**ID Kelas:** *C10*
+
+Tabel 5.10.1. Operasi Kelas PemantauAntreanController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *getStatusAntrean(antreanId: string): Antrean* | *public* | Mengambil status, nomor dilayani, dan estimasi antrean. |
+| *updateTampilanAntrean(): void* | *public* | Memperbarui tampilan status antrean secara berkala. |
+
+Tabel 5.10.2. Atribut Kelas PemantauAntreanController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *antreanId* | *private* | *string* |
+
+### 5.10.1 Algoritma/Query
+
+**Nama Kelas:** *PemantauAntreanController*  
+**Nama Operasi:** *getStatusAntrean(antreanId: string): Antrean*  
+**ID Algoritma:** *Algo-054*
+
+```text
+FUNCTION getStatusAntrean(antreanId) RETURNS Antrean
+    this.antreanId <- antreanId
+    data <- SELECT nomor_dilayani, total_antrean, estimasi_waktu_tunggu, status_antrean
+            FROM antrean WHERE antrean_id = antreanId
+    IF data IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN data
+END FUNCTION
+```
+
+Tabel 5.10.1.1. Query Operasi getStatusAntrean
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-041* | `SELECT nomor_dilayani, total_antrean, estimasi_waktu_tunggu, status_antrean FROM antrean WHERE antrean_id = $1;` | Mengambil status antrean terbaru. |
+
+### 5.10.2 Algoritma/Query
+
+**Nama Kelas:** *PemantauAntreanController*  
+**Nama Operasi:** *updateTampilanAntrean(): void*  
+**ID Algoritma:** *Algo-055*
+
+```text
+PROCEDURE updateTampilanAntrean()
+    WHILE halaman status antrean masih terbuka DO
+        HalamanStatusAntrean.tampilkanStatusAntrean(antreanId)
+        tunggu(10 detik)
+    END WHILE
+END PROCEDURE
+```
+
 ## 5.31 Kelas DashboardKelolaRestoranPage
 
 **Nama Kelas:** *DashboardKelolaRestoranPage*  
