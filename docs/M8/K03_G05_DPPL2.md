@@ -117,37 +117,104 @@ Gunakan hasil **BAB 1 Style/Pattern Arsitektur Acuan pada dokumen APL**, termasu
 
 ## 2.3 Identifikasi Komponen / Modul / Subsistem
 
-Identifikasi komponen, modul, atau subsistem penyusun aplikasi berdasarkan *pattern* yang telah ditetapkan. Jelaskan tanggung jawab masing-masing komponen. Pengelompokan dapat mengikuti lapisan arsitektur atau fungsi/peran komponen dalam sistem.
-
-Dapat menyalin dari dokumen DPPL sebelumnya
-
 Tabel 2.3. Identifikasi Komponen/Modul/Subsistem
 
 | Nama Komponen/Modul/Subsistem | Jenis | Penjelasan |
 | :--- | :--- | :--- |
-| *[Nama komponen/modul/subsistem]* | *[Jenis]* | *[Tanggung jawab komponen]* |
-| *[Nama komponen/modul/subsistem]* | *[Jenis]* | *[Tanggung jawab komponen]* |
-| *...* | *...* | *...* |
+RegistrasiView | View | Menampilkan formulir pendaftaran akun bagi masyarakat dan mitra pengacar, serta meneruskan input ke RegistrasiController. |
+AutentikasiView | View | Menampilkan halaman login bagi masyarakat dan mitra pengacara untuk masuk sebagai akun terdaftar |
+BerandaView | View | Menampilkan halaman utama setelah login. |
+StatusVerifikasiMitraView | View | Menampilkan status terkini verifikasi akun kepada Mitra Pengacara, serta menampilkan dokumen pendaftar bagi Admin untuk ditinjau dan diverifikasi. |
+EditProfilMitraPage | View |  Menampilkan formulir pengeditan profil/identitas firma serta pengunggahan dan pengeditan dokumen legalitas milik Mitra Pengacara. |
+SearchLawView | View | Menampilkan hasil pencarian pasal berdasarkan kata kunci yang dimasukkan pengguna pada fitur SearchLaw. |
+DaftarMitraPengacaraPage | View | Menampilkan daftar Mitra Pengacara lengkap dengan filter pencarian. |
+KonsultasiView | View |  Menampilkan pemilihan Mitra Pengacara dan jadwal konsultasi, konfirmasi penerimaan konsultasi oleh Mitra Pengacara, serta ruang chat sesi konsultasi (HaloLaw) antara Masyarakat dan Mitra Pengacara. |
+UlasanView | View | Menampilkan formulir pengisian ulasan, feedback, dan rating setelah sesi konsultasi selesai. |
+LaporanView | View | Menampilkan formulir pelaporan pelanggaran akun (oleh Masyarakat maupun Mitra Pengacara) dan pelaporan ulasan yang dianggap tidak relevan (oleh Mitra Pengacara), serta halaman tinjauan laporan bagi Admin. |
+HistoryView | View | Menampilkan riwayat kasus dan sesi konsultasi yang telah dilakukan Masyarakat maupun Mitra Pengacara. |
+LiveChatAdminView | View | Menampilkan ruang live chat bagi Masyarakat untuk bertanya dan bagi Admin untuk menjawab pertanyaan. |
+PembayaranView | View | Menampilkan pemilihan metode dan konfirmasi pembayaran sesi konsultasi. |
+PencairanDanaView | View | Menampilkan formulir pengajuan pencairan dana bagi Mitra Pengacara. |
+RegistrasiController | Controller | Mengatur alur pendaftaran akun baru, termasuk validasi data dan pembuatan akun Masyarakat, serta pendaftaran akun dan pengunggahan dokumen legalitas Mitra Pengacara untuk diverifikasi.
+AutentikasiController | Controller | Mengelola proses log in dan verifikasi kredensial, dipakai bersama oleh Masyarakat maupun Mitra Pengacara. |
+| VerifikasiMitraController | Controller | Mengelola proses verifikasi Mitra Pengacara, mencakup penampilan status bagi Mitra Pengacara maupun peninjauan dan penentuan status oleh Admin berdasarkan dokumen legalitas. |
+| ProfilMitraController | Controller | Mengelola pembaruan profil dan dokumen legalitas Mitra Pengacara. |
+| SearchLawController | Controller | Memproses permintaan pencarian pasal berdasarkan kata kunci pada basis data peraturan perundang-undangan dalam fitur SearchLaw. |
+| PencarianMitraController | Controller | Memproses pencarian dan filter daftar Mitra Pengacara berdasarkan kasus yang dimasukkan Masyarakat dalam fitur HaloLaw. |
+| KonsultasiController | Controller | Mengelola pemilihan Mitra Pengacara dan jadwal sesi konsultasi oleh Masyarakat, alur penerimaan sesi oleh Mitra Pengacara, serta berjalannya sesi konsultasi melalui chat yang baru dapat dimulai setelah pembayaran lunas. |
+| UlasanController | Controller | Mengelola pengiriman ulasan, feedback, dan rating dari Masyarakat kepada Mitra Pengacara. |
+| LaporanController | Controller | Mengatur alur pelaporan pelanggaran akun maupun ulasan (baik oleh Masyarakat maupun Mitra Pengacara), serta memproses tinjauan laporan dan eksekusi pemblokiran akun yang melanggar kebijakan oleh Admin. |
+| RiwayatController | Controller | Mengambil dan menyusun data riwayat kasus/konsultasi yang telah dilakukan Masyarakat maupun Mitra Pengacara. |
+| LiveChatController | Controller | Mengelola pengiriman dan penerimaan pesan live chat antara Masyarakat dan Admin. |
+| PembayaranController | Controller | Memproses transaksi pembayaran sesi konsultasi melalui PaymentGatewayAdapter; pembayaran harus lunas sebagai syarat sebelum sesi chat dibuka. |
+| PencairanDanaController | Controller | Memproses permintaan dan validasi pencairan dana Mitra Pengacara ke rekening terdaftar melalui PaymentGatewayAdapter, secara terpisah dan tidak otomatis setelah pembayaran diterima sistem. |
+Masyarakat | Model | Menyimpan data akun Masyarakat yang mengajukan kasus, mencari pasal dan mitra, berkonsultasi, membayar, memberi ulasan, dan melapor. |
+MitraPengacara | Model | Menyimpan data akun dan profil Mitra Pengacara, mencakup tag keahlian, status verifikasi, status ketersediaan, rating, saldo, dan rekening pencairan. |
+Admin | Model | Menyimpan data akun Admin yang memverifikasi Mitra Pengacara, meninjau laporan, memblokir akun, dan melayani live chat. |
+Kasus | Model | Menyimpan data kasus/kondisi Masyarakat yang menjadi dasar pencarian dan pemilihan Mitra Pengacara pada fitur HaloLaw, serta dikaitkan dengan sesi konsultasi dan riwayat penanganan. |
+DasarHukum | Model | Menyimpan data peraturan dan perundang-undangan (pasal) yang menjadi basis data pencarian pada fitur SearchLaw. |
+DokumenLegalitas | Model | Menyimpan berkas dan data legalitas yang diunggah Mitra Pengacara untuk keperluan verifikasi. |
+SesiKonsultasi | Model | Menyimpan data sesi konsultasi antara Masyarakat dan Mitra Pengacara beserta status dan waktu mulai/selesai. |
+Ulasan | Model | Menyimpan data ulasan berupa teks, foto, dan/atau rating yang diberikan Masyarakat setelah sesi konsultasi, dan ditampilkan pada profil Mitra Pengacara. |
+Laporan | Model | Menyimpan data laporan pelanggaran akun maupun ulasan beserta status peninjauannya oleh Admin. |
+Pembayaran | Model | Menyimpan data transaksi pembayaran sesi konsultasi, termasuk metode, jumlah, status, dan waktu transaksi. |
+LiveChat | Model | Menyimpan data percakapan live chat antara Masyarakat dan Admin. |
+| PencairanDana | Model | Menyimpan data transaksi pencairan dana Mitra Pengacara, termasuk jumlah, tanggal, status, dan rekening tujuan. |
+| PaymentGatewayAdapter | Integrasi Eksternal | Mengirim permintaan otorisasi ke Payment Gateway pihak ketiga (dummy) untuk pembayaran sesi konsultasi maupun pencairan dana Mitra Pengacara, lalu meneruskan status transaksi ke PembayaranController dan PencairanDanaController. |
+| Database | Penyimpanan Data | Menyimpan seluruh data Model secara persisten dan terpusat, diakses oleh seluruh Controller LawHub. |
 
 ## 2.4 Model Arsitektur Perangkat Lunak
 
-Buat model arsitektur dalam bentuk satu atau lebih *view* yang memperlihatkan interaksi dan kolaborasi komponen, modul, serta subsistem dalam menjalankan fungsi sistem. Pilih notasi yang sesuai. Contoh *view*: *Logical View*, *Process View*, *Development View*, dan *Physical View*.
+*Architectural View* adalah bagaimana cara kita melihat/mendeskripsikan arsitektur sebuah sistem dari sudut pandang tertentu. Dalam perancangan arsitektur aplikasi, dibutuhkan *Architectural View* yang dapat mempermudah pemahaman dari proses aplikasi yang akan dikembangkan. Tujuan dari *Architectural View* adalah menjadi bahan komunikasi, pemisahan masalah, mempermudah analisis, dan pemandu saat eksekusi pengembangan sistem tersebut.
 
-Gunakan hasil **BAB 3 Model Arsitektur Perangkat Lunak pada dokumen APL**.
+### 2.4.1 Logical View
 
-### 2.4.1 View [Nama View]
-
-Tuliskan secara singkat model arsitektur yang dipilih dan alasan model tersebut cocok untuk aplikasi.
+Logical View dipilih karena bertujuan untuk menunjukkan interaksi dan alur pemrosesan antarkomponen arsitektur tingkat tinggi yang masing-masing dapat mewadahi satu atau lebih kelas fungsional. Selain itu, logical View juga mampu memvisualisasikan pemisahan fungsi  MVC, sehingga alur pemrosesan antar-aktor (Masyarakat, Pengacara, Admin) mudah dipahami.
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-logical-view.webp" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/LogicalView.webp" width="100%">
 </p>
 <p align="center">
-<i>Gambar 2. Contoh Logical View pada P/L E-Commerce</i>
+<i>Gambar 2. Diagram Logical View LawHub</i>
 </p>
 
-### 2.4.X View [Nama View]
-*[Lakukan hal yang sama dengan bagian sebelumnya]*
+Diagram dibagi menjadi tiga jalur utama, yaitu View, Controller, dan Model, sesuai dengan penerapan pola arsitektur Model-View-Controller (MVC) yang telah ditetapkan pada BAB 1. Komponen Integrasi Eksternal (PaymentGatewayAdapter) diletakkan di luar jalur utama (sebelah kanan) karena komponen ini bertindak sebagai perantara komunikasi diluar dari sistem dan hanya dipanggil oleh Controller. Komponen Penyimpanan Data (Database) diletakkan di bagian paling bawah sebagai fondasi penyimpanan data keseluruhan.
+
+Seluruh hubungan pada Gambar 2 memiliki hubungan antar komponen sebagai berikut:
+1. **View → Controller:**
+   - `RegistrasiView` meneruskan input pendaftaran ke `RegistrasiController`.
+   - `AutentikasiView` dan `BerandaView` meneruskan permintaan login dan navigasi ke `AutentikasiController`.
+   - `StatusVerifikasiMitraView` memanggil `VerifikasiMitraController` untuk peninjauan berkas pendaftaran mitra.
+   - `EditProfilMitraPage` memanggil `ProfilMitraController` untuk pembaruan profil dan dokumen.
+   - `SearchLawView` memanggil `SearchLawController` untuk pencarian pasal perundang-undangan.
+   - `DaftarMitraPengacaraPage` memanggil `PencarianMitraController` untuk memfilter data pengacara.
+   - `KonsultasiView` memanggil `KonsultasiController` untuk pemilihan jadwal, penerimaan sesi, dan ruang *chat*.
+   - `UlasanView` memanggil `UlasanController` untuk pengiriman *feedback* dan *rating*.
+   - `LaporanView` memanggil `LaporanController` untuk pelaporan pelanggaran akun atau ulasan.
+   - `HistoryView` memanggil `RiwayatController` untuk memuat riwayat kasus dan transaksi.
+   - `LiveChatAdminView` memanggil `LiveChatController` untuk layanan *support*.
+   - `PembayaranView` memanggil `PembayaranController` untuk konfirmasi transaksi konsultasi.
+   - `PencairanDanaView` memanggil `PencairanDanaController` untuk pengajuan pencairan saldo mitra.
+
+2. **Controller → Model:**
+   - `RegistrasiController` mengelola data pada Model `Masyarakat`, `MitraPengacara`, dan `DokumenLegalitas`.
+   - `AutentikasiController` mengelola validasi kredensial pada Model `Masyarakat`, `MitraPengacara`, dan `Admin`.
+   - `VerifikasiMitraController` dan `ProfilMitraController` mengolah data pada Model `MitraPengacara` dan `DokumenLegalitas`.
+   - `SearchLawController` mengakses data pada Model `DasarHukum`.
+   - `PencarianMitraController` dan `KonsultasiController` mengolah data pada Model `MitraPengacara`, `Kasus`, dan `SesiKonsultasi`.
+   - `UlasanController` memperbarui data pada Model `Ulasan` dan `MitraPengacara`.
+   - `LaporanController` mengolah data pada Model `Laporan`, `Ulasan`, `Masyarakat`, dan `MitraPengacara`.
+   - `RiwayatController` mengambil data dari Model `SesiKonsultasi`, `Kasus`, dan `Pembayaran`.
+   - `LiveChatController` mengelola komunikasi pada Model `LiveChat`, `Admin`, dan `Masyarakat`.
+   - `PembayaranController` dan `PencairanDanaController` mengolah data transaksi pada Model `Pembayaran`, `SesiKonsultasi`, `PencairanDana`, dan `MitraPengacara`.
+
+3. **Controller → Integrasi Eksternal:**
+   - `PembayaranController` dan `PencairanDanaController` memanggil `PaymentGatewayAdapter` untuk mengirim permintaan otorisasi transaksi finansial dan meneruskan status hasilnya kembali ke sistem.
+
+4. **Penyimpanan Data (Model → Database):**
+   - Seluruh Model (`Masyarakat`, `MitraPengacara`, `Admin`, `Kasus`, `DasarHukum`, `DokumenLegalitas`, `SesiKonsultasi`, `Ulasan`, `Laporan`, `Pembayaran`, `LiveChat`, dan `PencairanDana`) akan disimpan datanya pada `Database`.
+
+Gambar 2 adalah contoh *Logical View* dalam bentuk *block diagram*. Seluruh komponen pada Tabel 2.1 digambarkan dan dikelompokkan sesuai pola MVC (*View*, *Controller*, *Model*), ditambah komponen pendukung dan basis data. Sistem di luar P/L, seperti *Payment Gateway (dummy)*, digambarkan dengan garis putus-putus dan tidak perlu dimasukkan ke Tabel 2.1. Setiap garis diberi label: "Memanggil" untuk *View* yang memanggil *Controller*, "akses" untuk *Controller* yang mengakses *Model*, serta agregasi dan komposisi untuk hubungan antar-*Model*.
 
 <br>
 
@@ -542,9 +609,200 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 
 *[Ulangi pola 5.1.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
 
+
 ## 5.2 Kelas [Nama Kelas Berikutnya]
 
 *[Ulangi pola 5.1: nama dan ID kelas, tabel operasi, tabel atribut, serta subbab algoritma/query untuk operasi penting jika diperlukan.]*
+
+## 5.9 EditDokumenLegalitasPage
+
+**Nama Kelas:** EditDokumenLegalitasPage 
+**ID Kelas:** C09
+
+Tabel 5.1.1. Operasi Kelas EditDokumenLegalitasPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *[Signature operasi, termasuk parameter dan tipe kembalian]* | *[Visibility]* | *[Tanggung jawab operasi]* |
+| validasiData(inputDokumen: String): Boolean | *...* | *...* |
+
+Tabel 5.1.2. Atribut Kelas [Nama Kelas 1]
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *[Nama atribut]* | *[Visibility]* | *[Tipe sesuai bahasa pemrograman yang digunakan]* |
+| inputDokumen | *...* | String |
+
+### 5.9.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** EditDokumenLegalitasPage
+**Nama Operasi:** validasiData(inputDokumen: String): Boolean
+**ID Algoritma:** *[Algo-009]*
+
+```text
+FUNCTION validasiData(inputDokumen: String): Boolean
+    IF inputDokumen IS NULL OR inputDokumen IS EMPTY THEN
+        tampilkan pesan "Dokumen legalitas belum dipilih"
+        RETURN false
+    END IF
+
+    IF formatFile(inputDokumen) NOT IN FORMAT_DIIZINKAN THEN
+        tampilkan pesan "Format dokumen tidak didukung"
+        RETURN false
+    END IF
+
+    IF ukuranFile(inputDokumen) > UKURAN_MAKS THEN
+        tampilkan pesan "Ukuran dokumen melebihi batas"
+        RETURN false
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.1.1. Query Operasi [Nama Operasi]
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *...* | *...* | *...* |
+
+## 5.35 ModerasiAkunController
+
+**Nama Kelas:** ModerasiAkunController
+**ID Kelas:** C35
+
+Tabel 5.35.1. Operasi Kelas ModerasiAkunController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| prosesTinjauan(idLaporan: String, hasil: String): Boolean | public | Memproses hasil tinjauan admin terhadap laporan: jika laporan disetujui, memicu pemblokiran akun terlapor; jika ditolak, memperbarui status laporan menjadi 'ditolak'. |
+| prosesBlokirAkun(idTerlapor: String): Boolean | public | Mengeksekusi pemblokiran akun terlapor yang melanggar kebijakan sistem. |
+| updateStatusLaporan(idLaporan: String, status: String): void | public | Memperbarui status laporan setelah ditinjau admin. |
+
+Tabel 5.35.2. Atribut Kelas ModerasiAkunController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| - | - | - |
+
+### 5.35.1 Algoritma/Query
+
+**Nama Kelas:** ModerasiAkunController
+**Nama Operasi:** prosesTinjauan(idLaporan: String, hasil: String): Boolean
+**ID Algoritma:** Algo-035-1
+
+```text
+FUNCTION prosesTinjauan(idLaporan: String, hasil: String): Boolean
+    laporan <- Laporan.getDetailLaporan(idLaporan)
+    IF laporan IS NULL THEN
+        RETURN false
+    END IF
+
+    IF hasil = "disetujui" THEN
+        berhasil <- prosesBlokirAkun(laporan.idTerlapor)
+        IF berhasil = false THEN
+            RETURN false
+        END IF
+        updateStatusLaporan(idLaporan, "disetujui")
+    ELSE
+        updateStatusLaporan(idLaporan, "ditolak")
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+**Nama Operasi:** prosesBlokirAkun(idTerlapor: String): Boolean
+**ID Algoritma:** Algo-035-2
+
+```text
+FUNCTION prosesBlokirAkun(idTerlapor: String): Boolean
+    ubah status akun idTerlapor menjadi "diblokir"
+    kirim notifikasi pemblokiran ke akun idTerlapor
+    RETURN true
+END FUNCTION
+```
+
+**Nama Operasi:** updateStatusLaporan(idLaporan: String, status: String): void
+**ID Algoritma:** Algo-035-3
+
+```text
+PROCEDURE updateStatusLaporan(idLaporan: String, status: String)
+    laporan <- Laporan.getDetailLaporan(idLaporan)
+    laporan.statusLaporan <- status
+    simpan laporan
+END PROCEDURE
+```
+
+Tabel 5.35.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Kelas pengendali tidak mengakses basis data langsung. Pengambilan dan penyimpanan data dilakukan lewat kelas entitas Laporan. |
+
+
+## 5.44 DasarHukum
+
+**Nama Kelas:** DasarHukum
+**ID Kelas:** C44
+
+Tabel 5.44.1. Operasi Kelas DasarHukum
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| infoPasal(idPasal: String): DasarHukum | public | Mengambil data peraturan atau pasal berdasarkan idPasal untuk ditampilkan pada fitur SearchLaw. |
+| updatePasal(idPasal: String, dataPasal: String): Boolean | public | Memperbarui data peraturan atau pasal berdasarkan idPasal. Mengembalikan true jika berhasil. |
+
+Tabel 5.44.2. Atribut Kelas DasarHukum
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| idPasal | private | String |
+
+### 5.44.1 Algoritma/Query
+
+**Nama Kelas:** DasarHukum
+**Nama Operasi:** infoPasal(idPasal: String): DasarHukum
+**ID Algoritma:** Algo-044-1
+
+```text
+FUNCTION infoPasal(idPasal: String): DasarHukum
+    hasil <- jalankan Q-001 dengan parameter idPasal
+    IF hasil IS EMPTY THEN
+        RETURN NULL
+    END IF
+    RETURN hasil
+END FUNCTION
+```
+
+**Nama Operasi:** updatePasal(idPasal: String, dataPasal: String): Boolean
+**ID Algoritma:** Algo-044-2
+
+```text
+FUNCTION updatePasal(idPasal: String, dataPasal: String): Boolean
+    IF jalankan Q-001 dengan parameter idPasal IS EMPTY THEN
+        RETURN false
+    END IF
+    jalankan Q-002 dengan parameter idPasal dan dataPasal
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.44.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-001 | `SELECT * FROM dasar_hukum WHERE idPasal = ?;` | Mengambil data peraturan/pasal berdasarkan idPasal (operasi infoPasal dan pemeriksaan di updatePasal). |
+| Q-002 | `UPDATE dasar_hukum SET isiPasal = ? WHERE idPasal = ?;` | Memperbarui isi pasal berdasarkan idPasal (operasi updatePasal). |
+
+### 5.1.2 Algoritma/Query
+
+*[Ulangi pola 5.1.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
 
 <br>
 
