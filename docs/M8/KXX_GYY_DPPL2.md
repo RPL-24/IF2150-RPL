@@ -8,7 +8,9 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 <br>
 
 ## *LaporKota*
-### *[Logo Perangkat Lunak]*
+<p align="center">
+<img alt="Logo LaporKota" src="./assets/Logo.png" width="70%">
+</p>
 
 ### Untuk: *Jordhy*
 
@@ -88,7 +90,7 @@ Tabel 1.4. Aturan Penomoran
 | 2 | Dokumen Aristektur Perangkat Lunak LaporKota | Repository IF2150-RPL-K03-G07/docs/M6/K03_G07_APL.md |
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Dokumen Deskripsi Perancangan Perangkat Lunak (DPPL) ini disusun dengan sistematika berikut. **BAB 1: Pendahuluan** memuat tujuan penulisan dokumen, lingkup masalah, daftar definisi, aturan penomoran, referensi, serta ikhtisar dokumen. **BAB 2: Perancangan Arsitektur** menjelaskan rancangan lingkungan implementasi, pola arsitektur (beserta alasan pemilihannya), identifikasi komponen (beserta tanggung jawabnya), dan model arsitektur yang mengacu pada dokumen APL. **BAB 3: Realisasi Use Case**  menguraikan perancangan setiap Use Case melalui identifikasi kelas perancangan, sequence diagram (untuk skenario normal dan alternatif), serta diagram kelas. **BAB 4: Diagram Kelas Keseluruhan** menggambungkan seluruh kelas perancangan dalam satu diagram. **BAB 5: Matriks Kerunutan** memetakan keterkaitan setiap kelas perancangan dengan use case untuk memastikan rancangan telah mendukung kebutuhan pada SKPL.
+Dokumen Deskripsi Perancangan Perangkat Lunak (DPPL) ini disusun dengan sistematika berikut. **BAB 1: Pendahuluan** memuat tujuan penulisan dokumen, lingkup masalah, daftar definisi, aturan penomoran, referensi, serta ikhtisar dokumen. **BAB 2: Perancangan Arsitektur** menjelaskan rancangan lingkungan implementasi, pola arsitektur (beserta alasan pemilihannya), identifikasi komponen (beserta tanggung jawabnya), dan model arsitektur yang mengacu pada dokumen APL. **BAB 3: Realisasi Use Case**  menguraikan perancangan setiap Use Case melalui identifikasi kelas perancangan, sequence diagram (untuk skenario normal dan alternatif), serta diagram kelas. **BAB 4: Diagram Kelas Keseluruhan** menggambungkan seluruh kelas perancangan dalam satu diagram. **BAB 5: Perancangan Rinci Kelas** merincikan setiap kelas meiliputi operasi dan atribut yang terkait dengan tiap kelas, serta implementasi algoritma/query yang penting pada kelas tersebut. **BAB 6: Perancangan Antarmuka** menggambarkan rancangan tampilan antarmuka pada perangkat lunak sebagai gambaran visual. **BAB 7: Matriks Kerunutan** memetakan keterkaitan setiap kelas perancangan dengan use case untuk memastikan rancangan telah mendukung kebutuhan pada SKPL.
 
 <br>
 
@@ -574,23 +576,6 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 <i>Gambar 25. Diagram Kelas Memantau Status Laporan</i>
 </p>
 
-## 3.X Use Case XX
-
-Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
-
-<p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
-</p>
-<p align="center">
-<i>Gambar 26. Diagram Kelas [Nama Uce Case]</i>
-</p>
-
-Pada diagram, pastikan:
-- Atribut dituliskan beserta visibilitas dan tipe datanya, misalnya `- email: String`.
-- Operasi dituliskan beserta visibilitas, parameter, dan tipe kembaliannya, misalnya `+ login(email: String, password: String): Boolean`.
-- Relasi antarkelas (asosiasi, agregasi, komposisi, generalisasi, dan dependensi) digambarkan lengkap dengan multiplisitas.
-- Semua operasi yang dipanggil pada sequence diagram 3.1.2 (skenario normal dan alternatif) ada pada kelas yang bersangkutan.
-- Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
 <br>
 
 ---
@@ -647,9 +632,29 @@ Tabel 5.1. Daftar Kelas Perancangan dan Kelas Analisis Terkait
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 | :--- | :--- | :--- |
-| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL atau -]* |
-| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL atau -]* |
-| ... | *...* | *...* |
+| 1 | *User* | *User* |
+| 2 | *Laporan* | *Laporan* |
+| 3 | *Lokasi* | *Lokasi* |
+| 4 | *Foto* | *Foto* |
+| 5 | *Video* | *Video* |
+| 6 | *Upvote* | *Upvote* |
+| 7 | *ListTugas* | *ListTugas* |
+| 8 | *HasilPerbaikan* | *HasilPerbaikan* |
+| 9 | *Evaluasi* | *Evaluasi* |
+| 10 | *Notifikasi* | *Notifikasi* |
+| 11 | *LaporPage* | *LaporPage* |
+| 12 | *ValidasiPage* | *ValidasiPage* |
+| 13 | *PenugasanPage* | *PenugasanPage* |
+| 14 | *HasilPerbaikanForm* | *HasilPerbaikanForm* |
+| 15 | *EvaluasiPage* | *EvaluasiPage* |
+| 16 | *StatusLaporanPage* | *StatusLaporanPage* |
+| 17 | *LaporanController* | *LaporanController* |
+| 18 | *ValidasiController* | *ValidasiController* |
+| 19 | *PenugasanController* | *PenugasanController* |
+| 20 | *PerbaikanController* | *PerbaikanController* |
+| 21 | *EvaluasiController* | *EvaluasiController* |
+| 22 | *StatusController* | *StatusController* |
+| 23 | *NotifikasiController* | *NotifikasiController* |
 
 Untuk **setiap kelas**, identifikasi operasi berdasarkan tanggung jawab kelas beserta *visibility*-nya, serta atribut beserta *visibility* dan tipenya. Buat subbab tersendiri untuk setiap kelas.
 
@@ -701,6 +706,149 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 ## 5.2 Kelas [Nama Kelas Berikutnya]
 
 *[Ulangi pola 5.1: nama dan ID kelas, tabel operasi, tabel atribut, serta subbab algoritma/query untuk operasi penting jika diperlukan.]*
+
+## 5.7 Kelas ListTugas
+**Nama Kelas:** *ListTugas*  
+**ID Kelas:** *C07*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *urutPrioritas(): List[Laporan]* | *public* | *Menerima permintaan untuk menghitung skor prioritas setiap laporan dalam ListTugas dan pengurutan berdasarma  skor tersebut dan meneruskannya pada PenugasanController.* |
+| *filterKategori(kategori: String): List[Laporan]* | *public* | *Menerima permintaan untuk menyaring setiap laporan dalam ListTugas yang memenuhi kategori tertentu dan meneruskannya pada PenugasanController.* |
+| *getLaporanById(idTiket: String): Laporan* | *public* | *Mencari dan mengembalikan objek Laporan dengan ID tertentu.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *jumlahLaporanAktif* | *private* | *Integer* |
+| *daftarLaporan* | *private* | *List[Laporan]* |
+
+## 5.8 Kelas HasilPerbaikan
+**Nama Kelas:** *HasilPerbaikan*  
+**ID Kelas:** *C08*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *validasiBerkas(foto: List[Foto], video: List[Video]): Boolean* | *public* | *Memeriksa format dan ukuran dari setiap berkas bukti perbaikan (foto/video)* |
+| *simpanBukti(): Boolean* | *public* | *Menyimpan deskripsi, serta berkas bukti hasil perbaikan ke basis data untuk laporan tertentu.* |
+| *getBuktiLengkap(): HasilPerbaikan* | *public* | *Mengembalikan dokumentasi hasil perbaikan beserta deskripsi dan berkas bukti.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idHasil* | *private* | *String* |
+| *catatan* | *private* | *String* |
+| *waktuUnggah* | *private* | *DateTime* |
+| *fotoBukti* | *private* | *List[Foto]* |
+| *videoBukti* | *private* | *List[Video]* |
+
+## 5.13 Kelas PenugasanPage
+**Nama Kelas:** *PenugasanPage*  
+**ID Kelas:** *C13*
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *tampilkanPage(): void* | *public* | *Membuka dashboard penugasan Eksekutor Lapangan, meminta verifikasi askes, memuat list laporan yang harus dikerjakan* |
+| *pindahPage(): void* | *public* | *Mengalihkan tampilan ke halaman lain* |
+| *renderRincianLaporan(laporan: Laporan): void* | *public* | *Menampilkan rincian dari laporan yang dipilih (foto, deskripsi, dll).* |
+| *renderListTugas(daftar: List[Laproan]): void* | *public* | *Menampilkan daftar penugasan, yaitu list Laporan berstatus "Dikerjakan" milik User. Menampilkan list kosong jika belum ada penugasan.* |
+| *pilihLaporan(): void* | *public* | *Menerima laporan yang dipilih (di-klik) User dan meneruskan idTiket nya ke PenugasanController.* |
+| *pilihKategori(): void* | *public* | *Menerima jenis kategori yang dipilih (di-klik) User dan meneruskannya ke PenugasanController.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *pilihanKategori* | *private* | *String* |
+| *statusTampilan* | *private* | *String* |
+| *idTiketAktif* | *private* | *String* |
+
+
+## 5.14 Kelas HasilPerbaikanForm
+**Nama Kelas:** *HasilPerbaikanForm*  
+**ID Kelas:** *C14*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *tampilkanForm(idTiket: String): void* | *public* | *Menampilkan formulir input hasil perbaikan untuk laporan dengan ID tertentu* |
+| *renderBerkas(): void* | *public* | *Menampilkan preview foto, video, dan deskripsi yang sudah diinput* |
+| *userInput(deskripsi: String, foto: List[Foto], video: List[Video]): void* | *public* | *Menerima deskripsi pekerjaan, serta berkas (foto dan/atau video) dari Eksekutor* |
+| *submitForm(): void* | *public* | *Mengirim isi formulir ke PerbaikanController saat aktor menekan "Kirim Laporan" dan menampilkan pesan konfirmasi terkirim.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *statusTampilan* | *private* | *String* |
+| *inputDeskripsi* | *private* | *String* |
+| *berkasFoto* | *private* | *List[Foto]* |
+| *berkasVideo* | *private* | *List[Video]* |
+
+## 5.19 Kelas PenugasanController
+**Nama Kelas:** *PenugasanController*  
+**ID Kelas:** *C19*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *doFilter(kategori: String): List[Laporan]* | *public* | *Mengembalikan list laporan yang telah disaring dari ListTugas berdasarkan input kategori.* |
+| *doSorting(): List[Laporan]* | *public* | *Mengembalikan list laporan yang telah terurut dari ListTugas berdasarkan skor prioritas dari tertinggi hingga terendah.* |
+| *verifikasiAkses(): Boolean* | *public* | *Memastikan pengguna memiliki hak akses (role Eksekutor Lapangan)* |
+| *bukaLaporan(idTiket: String): Laporan* | *public* | *Mengembalikan objek Laporan dengan ID tertentu untuk ditampilkan rinciannya* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idUserAktif* | *private* | *String* |
+
+## 5.20 Kelas PerbaikanController
+**Nama Kelas:** *PerbaikanController*  
+**ID Kelas:** *C20*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *validasiForm(catatan: String, foto: List[Foto], video: List[Video]): Boolean* | *public* | *Memeriksa kelengkapan input user (deskripsi & foto)* |
+| *verifikasiAkses(): Boolean* | *public* | *Memastikan pengguna memiliki hak akses (role Eksekutor Lapangan)* |
+| *unggahHasil(idTiket: String, catatan: String, foto: List[Foto], video: List[Video]): Boolean* | *public* | *Mengoordinasi verifikasi akses, pemeriksaan eklengkapan, dan pembuatan objek HasilPerbaikan.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idLaporan* | *private* | *String* |
+| *idUserAktif* | *private* | *String* |
+
+
+## 5.X Kelas [Nama Kelas Berikutnya]
+
+*[Ulangi pola 5.1: nama dan ID kelas, tabel operasi, tabel atribut, serta subbab algoritma/query untuk operasi penting jika diperlukan.]*
+
+**Nama Kelas:** *[Nama kelas]*  
+**ID Kelas:** *[ID kelas]*
+
+Tabel 5.x.1. Operasi Kelas [Nama Kelas 1]
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *[Signature operasi, termasuk parameter dan tipe kembalian]* | *[Visibility]* | *[Tanggung jawab operasi]* |
+| *...* | *...* | *...* |
+
+Tabel 5.x.2. Atribut Kelas [Nama Kelas 1]
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *[Nama atribut]* | *[Visibility]* | *[Tipe sesuai bahasa pemrograman yang digunakan]* |
+| *...* | *...* | *...* |
+
+### 5.x.x Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *[Nama kelas]*  
+**Nama Operasi:** *[Signature operasi]*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+[Tuliskan pseudocode algoritma operasi di sini.]
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut. 
+
+Tabel 5.x.x. Query Operasi [Nama Operasi]
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *...* | *...* | *...* |
 
 <br>
 
