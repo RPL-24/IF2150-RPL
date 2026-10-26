@@ -1243,7 +1243,7 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 | *C11* | *HalamanStatusAntrean* | *antreanId, statusAntrean, sisaAntrean* | *tampilkanStatusAntrean(), renderData()* |
 | *C12* | *PengajuanMitraController* | *idPengajuan, status, tglPengajuan, alasanPenolakan* | *validasiKelengkapan(), simpanPengajuan(), setujui(), tolak(alasan)* |
 | *C13* | *DokumenVerifikasi* | *idDokumen, jenisDokumen* | *unggahDokumen(), validasiFormat()* |
-| *C14* | *Admin* | *idAdmin, nama, emailAdmin* | 8tinjauPengajuan(), accountRegister(), lihatKeluhan(), konfirmasiPenghapusan()* |
+| *C14* | *Admin* | *idAdmin, nama, emailAdmin* | *tinjauPengajuan(), accountRegister(), lihatKeluhan(), konfirmasiPenghapusan()* |
 | *C15* | *NotifikasiEmail* | *penerima, isiPesan, jenis* | *kirimEmail()* |
 | *C16* | *KelolaAntreanController* | *timer* | *getAntrean(), processDequeue(), mulaiTimer()* |
 | *C17* | *KonfirmasiDequeuePage* | *message* | *showConfirmationModal(), hideModal(), onConfirm(), onCancel()* |
