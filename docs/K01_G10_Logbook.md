@@ -196,6 +196,18 @@
 **Catatan/Evaluasi Milestone 7:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 
+### Milestone 8
+**Periode:** 22-10-2026 - 28-10-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *23-10-2026* | *Bayu Palamarta Wirawan* | *Melakukan inisialisasi Milestone 8* | *1* | *Done* | *-* |
+| *23-10-2026* | *Bayu Palamarta Wirawan* | *Mengerjakan Bab 5 Kelas 31 - 42* | *3* | *Done* | *-* |
+| *26-10-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki kelas perancangan* | *0.5* | *Done* | *-* |
+| *26-10-2026* | *Bayu Palamarta Wirawan* | *Membuat Form Asistensi* | *0.5* | *Done* | *-* |
+
+**Catatan/Evaluasi Milestone 7:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
 
 ---
 
