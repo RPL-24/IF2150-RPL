@@ -319,11 +319,11 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *ModelAkun* | *Pelanggan* |
-| 2 | *ModelRestoran* | *Restoran* |
-| 3 | *ModelRestoran* | *Menu* |
-| 4 | *ModelAntrean* | *Antrean* |
-| 5 | *PencarianView* | *PencarianRestoPage* |
+| 1 | *Pelanggan* | *Pelanggan* |
+| 2 | *Restoran* | *Restoran* |
+| 3 | *Menu* | *Menu* |
+| 4 | *Antrean* | *Antrean* |
+| 5 | *PencarianRestoPage* | *PencarianRestoPage* |
 | 6 | *PencarianController* | *PencarianController* |
 
 ### 3.1.2 Sequence Diagram
@@ -381,13 +381,13 @@ Tabel 3.2. Identifikasi Kelas Use Case [UC02]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *ModelAkun* | *Pelanggan* |
-| 2 | *ModelRestoran* | *Menu* |
-| 3 | *ModelRestoran* | *Keranjang* |
-| 4 | *ModelPesanan* | *Pesanan* |
+| 1 | *Pelanggan* | *Pelanggan* |
+| 2 | *Menu* | *Menu* |
+| 3 | *Keranjang* | *Keranjang* |
+| 4 | *Pesanan* | *Pesanan* |
 | 5 | *MetodePembayaranController* | *MetodePembayaranController* |
-| 6 | *ModelPesanan* | *RiwayatTransaksi* |
-| 7 | *ModelAntrean* | *TiketAntrean* |
+| 6 | *RiwayatTransaksi* | *RiwayatTransaksi* |
+| 7 | *TiketAntrean* | *TiketAntrean* |
 | ... | *...* | *...* |
 
 ### 3.2.2 Sequence Diagram
@@ -474,12 +474,12 @@ Tabel 3.3. Identifikasi Kelas Use Case [UC03]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *StatusAntreanView* | *HalamanStatusAntrean* |
+| 1 | *HalamanStatusAntrean* | *HalamanStatusAntrean* |
 | 2 | *PemantauAntreanController* | *PemantauAntreanController* |
-| 3 | *ModelAntrean* | *TiketAntrean* |
-| 4 | *ModelAntrean* | *Antrean* |
-| 5 | *ModelPesanan* | *Pesanan* |
-| 6 | *ModelAkun* | *Pelanggan* |
+| 3 | *TiketAntrean* | *TiketAntrean* |
+| 4 | *Antrean* | *Antrean* |
+| 5 | *Pesanan* | *Pesanan* |
+| 6 | *Pelanggan* | *Pelanggan* |
 | ... | *...* | *...* |
 
 ### 3.3.2 Sequence Diagram
@@ -521,11 +521,11 @@ Tabel 3.4. Identifikasi Kelas Use Case [UC04]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *MitraView* | *RegistrasiRestoPage* |
+| 1 | *RegistrasiRestoPage* | *RegistrasiRestoPage* |
 | 2 | *PengajuanMitraController* | *PengajuanMitraController* |
-| 3 | *ModelRestoran* | *Restoran* |
-| 4 | *ModelRestoran* | *DokumenVerifikasi* |
-| 5 | *ModelRestoran* | *Menu* |
+| 3 | *Restoran* | *Restoran* |
+| 4 | *DokumenVerifikasi* | *DokumenVerifikasi* |
+| 5 | *Menu* | *Menu* |
 
 ### 3.4.2 Sequence Diagram
 
@@ -575,12 +575,12 @@ Tabel 3.5. Identifikasi Kelas Use Case [UC05]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *MitraView* | *VerifikasiRestoranPage* |
+| 1 | *VerifikasiRestoranPage* | *VerifikasiRestoranPage* |
 | 2 | *PengajuanMitraController* | *PengajuanMitraController* |
-| 3 | *ModelRestoran* | *Restoran* |
-| 4 | *ModelRestoran* | *DokumenVerifikasi* |
-| 5 | *ModelRestoran* | *Menu* |
-| 6 | *ModelAkun* | *Admin* |
+| 3 | *Restoran* | *Restoran* |
+| 4 | *DokumenVerifikasi* | *DokumenVerifikasi* |
+| 5 | *Menu* | *Menu* |
+| 6 | *Admin* | *Admin* |
 | 7 | *NotifikasiEmail* | *NotifikasiEmail* |
 
 ### 3.5.2 Sequence Diagram
@@ -632,14 +632,14 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *ModelAkun* | *Pelanggan* |
-| 2 | *ModelRestoran* | *Restoran* |
-| 3 | *ModelAntrean* | *Antrean* |
-| 4 | *ModelPesanan* | *Pesanan* |
-| 5 | *ModelAntrean* | *TiketAntrean* |
+| 1 | *Pelanggan* | *Pelanggan* |
+| 2 | *Restoran* | *Restoran* |
+| 3 | *Antrean* | *Antrean* |
+| 4 | *Pesanan* | *Pesanan* |
+| 5 | *TiketAntrean* | *TiketAntrean* |
 | 6 | *KelolaAntreanController* | *KelolaAntreanController* |
-| 7 | *KelolaAntreanView* | *KonfirmasiDequeuePage* |
-| 8 | *KelolaAntreanView* | *KelolaAntreanPage* |
+| 7 | *KonfirmasiDequeuePage* | *KonfirmasiDequeuePage* |
+| 8 | *KelolaAntreanPage* | *KelolaAntreanPage* |
 | ... | *...* | *...* |
 
 ### 3.6.2 Sequence Diagram
@@ -699,9 +699,10 @@ Tabel 3.7. Identifikasi Kelas Use Case [UC07]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *ModelRestoran* | *Kuota, Restoran* |
+| 1 | *Kuota* | *Kuota* |
 | 2 | *PengaturanKuotaController* | *PengaturanKuotaController* |
-| 3 | *PengaturanView* | *PengaturanKuotaPage* |
+| 3 | *PengaturanKuotaPage* | *PengaturanKuotaPage* |
+| 4 | *Restoran* | *Restoran* |
 | ... | *...* | *...* |
 
 ### 3.7.2 Sequence Diagram
@@ -761,9 +762,10 @@ Tabel 3.8. Identifikasi Kelas Use Case [UC08]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *ModelRestoran* | *Menu, Restoran* |
-| 2 | *PengaturanView* | *PengaturanMenuPage* |
+| 1 | *Menu* | *Menu* |
+| 2 | *PengaturanMenuPage* | *PengaturanMenuPage* |
 | 3 | *KelolaMenuController* | *KelolaMenuController* |
+| 4 | *Restoran* | *Restoran* |
 | ... | *...* | *...* |
 
 ### 3.8.2 Sequence Diagram
@@ -841,12 +843,12 @@ Tabel 3.09. Identifikasi Kelas Use Case [UC09]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 | :--- | :--- | :--- |
-| 1 | *KelolaAntreanView* | *DashboardAntreanPage* |
+| 1 | *DashboardAntreanPage* | *DashboardAntreanPage* |
 | 2 | *KelolaAntreanController* | *KelolaAntreanController* |
-| 3 | *ModelAntrean* | *Antrean* |
-| 4 | *ModelAntrean* | *TiketAntrean* |
-| 5 | *ModelRestoran* | *Restoran* |
-| 6 | *ModelPesanan* | *Pesanan* |
+| 3 | *Antrean* | *Antrean* |
+| 4 | *TiketAntrean* | *TiketAntrean* |
+| 5 | *Restoran* | *Restoran* |
+| 6 | *Pesanan* | *Pesanan* |
 | ... | *...* | *...* |
 
 ### 3.09.2 Sequence Diagram
@@ -898,13 +900,13 @@ Tabel 3.10. Identifikasi Kelas Use Case [UC10]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *AkunView* | *RegistrasiPage* |
+| 1 | *RegistrasiPage* | *RegistrasiPage* |
 | 2 | *AutentikasiController* | *AutentikasiController* |
-| 3 | *ModelAkun* | *Pengguna* |
-| 4 | *ModelAkun* | *SesiPengguna* |
-| 5 | *ModelAkun* | *Pelanggan* |
-| 6 | *ModelAkun* | *Admin* |
-| 7 | *ModelRestoran* | *Restoran* |
+| 3 | *Pengguna* | *Pengguna* |
+| 4 | *SesiPengguna* | *SesiPengguna* |
+| 5 | *Pelanggan* | *Pelanggan* |
+| 6 | *Admin* | *Admin* |
+| 7 | *Restoran* | *Restoran* |
 | ... | *...* | *...* |
 
 ### 3.10.2 Sequence Diagram
@@ -964,10 +966,10 @@ Tabel 3.11. Identifikasi Kelas Use Case [UC11]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *AkunView* | *LoginPage* |
+| 1 | *LoginPage* | *LoginPage* |
 | 2 | *AutentikasiController* | *AutentikasiController* |
-| 3 | *ModelAkun* | *Pengguna* |
-| 4 | *ModelAkun* | *SesiPengguna* |
+| 3 | *Pengguna* | *Pengguna* |
+| 4 | *SesiPengguna* | *SesiPengguna* |
 | ... | *...* | *...* |
 
 ### 3.11.2 Sequence Diagram
@@ -1019,12 +1021,12 @@ Tabel 3.12. Identifikasi Kelas Use Case [UC12]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *AkunView* | *HalamanProfilePage* |
-| 2 | *AkunView* | *KonfirmasiLogoutPage* |
-| 3 | *AkunView* | *LoginPage* |
+| 1 | *HalamanProfilePage* | *HalamanProfilePage* |
+| 2 | *KonfirmasiLogoutPage* | *KonfirmasiLogoutPage* |
+| 3 | *LoginPage* | *LoginPage* |
 | 4 | *AutentikasiController* | *AutentikasiController* |
-| 5 | *ModelAkun* | *Pengguna* |
-| 6 | *ModelAkun* | *SesiPengguna* |
+| 5 | *Pengguna* | *Pengguna* |
+| 6 | *SesiPengguna* | *SesiPengguna* |
 | ... | *...* | *...* |
 
 ### 3.12.2 Sequence Diagram
@@ -1075,10 +1077,10 @@ Tabel 3.13. Identifikasi Kelas Use Case [UC13]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *KeluhanView* | *KeluhanFormPage* |
+| 1 | *KeluhanFormPage* | *KeluhanFormPage* |
 | 2 | *KeluhanController* | *KeluhanController* |
-| 3 | *ModelKeluhan* | *Keluhan* |
-| 4 | *ModelAkun* | *Pelanggan* |
+| 3 | *Keluhan* | *Keluhan* |
+| 4 | *Pelanggan* | *Pelanggan* |
 
 ### 3.13.2 Sequence Diagram
 
@@ -1119,10 +1121,10 @@ Tabel 3.14. Identifikasi Kelas Use Case [UC14]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *KeluhanView* | *KeluhanDashboardPage* |
+| 1 | *KeluhanDashboardPage* | *KeluhanDashboardPage* |
 | 2 | *KeluhanController* | *KeluhanController* |
-| 3 | *ModelKeluhan* | *Keluhan* |
-| 4 | *ModelAkun* | *Admin* |
+| 3 | *Keluhan* | *Keluhan* |
+| 4 | *Admin* | *Admin* |
 
 ### 3.14.2 Sequence Diagram
 
@@ -1165,12 +1167,12 @@ Tabel 3.15. Identifikasi Kelas Use Case [UC15]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *KelolaRestoranView* | *DashboardKelolaRestoranPage* |
-| 2 | *KelolaRestoranView* | *KonfirmasiHapusRestoranPage* |
+| 1 | *DashboardKelolaRestoranPage* | *DashboardKelolaRestoranPage* |
+| 2 | *KonfirmasiHapusRestoranPage* | *KonfirmasiHapusRestoranPage* |
 | 3 | *KelolaDataRestoranController* | *KelolaDataRestoranController* |
-| 4 | *ModelRestoran* | *Restoran* |
-| 5 | *ModelRestoran* | *Menu* |
-| 6 | *ModelAkun* | *Admin* |
+| 4 | *Restoran* | *Restoran* |
+| 5 | *Menu* | *Menu* |
+| 6 | *Admin* | *Admin* |
 | ... | *...* | *...* |
 
 ### 3.15.2 Sequence Diagram
@@ -1282,48 +1284,48 @@ Tabel 5.1. Daftar Kelas Perancangan dan Kelas Analisis Terkait
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan (ModelAkun)* | *Pelanggan* |
-| 2 | *Restoran (ModelRestoran)* | *Restoran* |
-| 3 | *Menu (ModelRestoran)* | *Menu* |
-| 4 | *Antrean (ModelAntrean)* | *Antrean* |
-| 5 | *Keranjang (ModelPesanan)* | *Keranjang* |
-| 6 | *Pesanan (ModelPesanan)* | *Pesanan* |
+| 1 | *Pelanggan* | *Pelanggan* |
+| 2 | *Restoran* | *Restoran* |
+| 3 | *Menu* | *Menu* |
+| 4 | *Antrean* | *Antrean* |
+| 5 | *Keranjang* | *Keranjang* |
+| 6 | *Pesanan* | *Pesanan* |
 | 7 | *MetodePembayaranController* | *MetodePembayaranController* |
-| 8 | *RiwayatTransaksi (ModelPesanan)* | *RiwayatTransaksi* |
-| 9 | *TiketAntrean (ModelAntrean)* | *TiketAntrean* |
+| 8 | *RiwayatTransaksi* | *RiwayatTransaksi* |
+| 9 | *TiketAntrean* | *TiketAntrean* |
 | 10 | *PemantauAntreanController* | *PemantauAntreanController* |
-| 11 | *HalamanStatusAntrean (StatusAntreanView)* | *HalamanStatusAntrean* |
+| 11 | *HalamanStatusAntrean* | *HalamanStatusAntrean* |
 | 12 | *PengajuanMitraController* | *PengajuanMitraController* |
-| 13 | *DokumenVerifikasi (ModelRestoran)* | *DokumenVerifikasi* |
-| 14 | *Admin (ModelAkun)* | *Admin* |
+| 13 | *DokumenVerifikasi* | *DokumenVerifikasi* |
+| 14 | *Admin* | *Admin* |
 | 15 | *NotifikasiEmail* | *NotifikasiEmail* |
 | 16 | *KelolaAntreanController* | *KelolaAntreanController* |
-| 17 | *KonfirmasiDequeuePage (KelolaAntreanView)* | *KonfirmasiDequeuePage* |
-| 18 | *KelolaAntreanPage (KelolaAntreanView)* | *KelolaAntreanPage* |
-| 19 | *DashboardAntreanPage (KelolaAntreanView)* | *DashboardAntreanPage* |
-| 20 | *Kuota (ModelRestoran)* | *Kuota* |
+| 17 | *KonfirmasiDequeuePage* | *KonfirmasiDequeuePage* |
+| 18 | *KelolaAntreanPage* | *KelolaAntreanPage* |
+| 19 | *DashboardAntreanPage* | *DashboardAntreanPage* |
+| 20 | *Kuota* | *Kuota* |
 | 21 | *PengaturanKuotaController* | *PengaturanKuotaController* |
-| 22 | *PengaturanKuotaPage (PengaturanView)* | *PengaturanKuotaPage* |
-| 23 | *PengaturanMenuPage (PengaturanView)* | *PengaturanMenuPage* |
+| 22 | *PengaturanKuotaPage* | *PengaturanKuotaPage* |
+| 23 | *PengaturanMenuPage* | *PengaturanMenuPage* |
 | 24 | *KelolaMenuController* | *KelolaMenuController* |
-| 25 | *Pengguna (ModelAkun)* | *Pengguna* |
-| 26 | *HalamanProfilPage (AkunView)* | *HalamanProfilePage* |
-| 27 | *KonfirmasiLogoutPage (AkunView)* | *KonfirmasiLogoutPage* |
+| 25 | *Pengguna* | *Pengguna* |
+| 26 | *HalamanProfilPage* | *HalamanProfilePage* |
+| 27 | *KonfirmasiLogoutPage* | *KonfirmasiLogoutPage* |
 | 28 | *AutentikasiController* | *AutentikasiController* |
-| 29 | *SesiPengguna (ModelAkun)* | *SesiPengguna* |
-| 30 | *Keluhan (ModelKeluhan)* | *Keluhan* |
-| 31 | *DashboardKelolaRestoranPage (KelolaRestoranView)* | *DashboardKelolaRestoranPage* |
-| 32 | *KonfirmasiHapusRestoranPage (KelolaRestoranView)* | *KonfirmasiHapusRestoranPage* |
+| 29 | *SesiPengguna* | *SesiPengguna* |
+| 30 | *Keluhan* | *Keluhan* |
+| 31 | *DashboardKelolaRestoranPage* | *DashboardKelolaRestoranPage* |
+| 32 | *KonfirmasiHapusRestoranPage* | *KonfirmasiHapusRestoranPage* |
 | 33 | *KelolaDataRestoranController* | *KelolaDataRestoranController* |
-| 34 | *PencarianRestoPage (PencarianView)* | *PencarianRestoPage* |
+| 34 | *PencarianRestoPage* | *PencarianRestoPage* |
 | 35 | *PencarianController* | *PencarianController* |
-| 36 | *VerifikasiRestoranPage (MitraView)* | *VerifikasiRestoranPage* |
-| 37 | *RegistrasiRestoPage (MitraView)* | *RegistrasiRestoPage* |
-| 38 | *RegistrasiPage (AkunView)* | *RegistrasiPage* |
-| 39 | *LoginPage (AkunView)* | *LoginPage* |
-| 40 | *KeluhanFormPage (KeluhanView)* | *KeluhanFormPage* |
+| 36 | *VerifikasiRestoranPage* | *VerifikasiRestoranPage* |
+| 37 | *RegistrasiRestoPage* | *RegistrasiRestoPage* |
+| 38 | *RegistrasiPage* | *RegistrasiPage* |
+| 39 | *LoginPage* | *LoginPage* |
+| 40 | *KeluhanFormPage* | *KeluhanFormPage* |
 | 41 | *KeluhanController* | *KeluhanController* |
-| 42 | *KeluhanDashboardPage (KeluhanView)* | *KeluhanDashboardPage* |
+| 42 | *KeluhanDashboardPage* | *KeluhanDashboardPage* |
 | ... | *...* | *...* |
 
 Untuk **setiap kelas**, identifikasi operasi berdasarkan tanggung jawab kelas beserta *visibility*-nya, serta atribut beserta *visibility* dan tipenya. Buat subbab tersendiri untuk setiap kelas.
