@@ -1984,6 +1984,606 @@ Tabel 5.3.8.1. Query Operasi hapusMenu
 
 ---
 
+## 5.4 Kelas Antrean
+
+**Nama Kelas:** *Antrean*  
+**ID Kelas:** *C04*
+
+Tabel 5.4.1. Operasi Kelas Antrean
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *getFrontCustomer(): TiketAntrean* | *public* | Mengambil tiket antrean terdepan yang masih menunggu. |
+| *getEstimasiWaktu(): integer* | *public* | Menghitung estimasi waktu tunggu dalam menit. |
+| *getDetailAntrean(antreanId: string): Antrean* | *public* | Mengambil detail data antrean. |
+| *updateStatus(status: StatusAntrean, total: integer): void* | *public* | Memperbarui status dan total antrean. |
+| *dequeueCustomer(): void* | *public* | Memajukan nomor antrean yang sedang dilayani. |
+| *getPesananPreOrder(): Pesanan[]* | *public* | Mengambil pesanan pre-order milik pelanggan dalam antrean. |
+| *getQueueStatus(): StatusAntrean* | *public* | Mengambil status antrean terbaru. |
+| *updateMenu(pesananId: string, menuId: string, jumlah: integer): boolean* | *public* | Mengubah jumlah menu pre-order sebelum pelanggan dipanggil. |
+
+Tabel 5.4.2. Atribut Kelas Antrean
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *antreanId* | *private* | *string* |
+| *restoranId* | *private* | *string* |
+| *nomorDilayani* | *private* | *integer* |
+| *totalAntrean* | *private* | *integer* |
+| *estimasiWaktuTunggu* | *private* | *integer* |
+| *statusAntrean* | *private* | *StatusAntrean* |
+
+### 5.4.1 Algoritma/Query
+
+**Nama Kelas:** *Antrean*  
+**Nama Operasi:** *getFrontCustomer(): TiketAntrean*  
+**ID Algoritma:** *Algo-027*
+
+```text
+FUNCTION getFrontCustomer() RETURNS TiketAntrean
+    tiket <- SELECT * FROM tiket_antrean WHERE antrean_id = antreanId
+             AND status_antrean = MENUNGGU ORDER BY nomor_urut ASC LIMIT 1
+    IF tiket IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN tiket
+END FUNCTION
+```
+
+Tabel 5.4.1.1. Query Operasi getFrontCustomer
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-019* | `SELECT * FROM tiket_antrean WHERE antrean_id = $1 AND status_antrean = 'MENUNGGU' ORDER BY nomor_urut ASC LIMIT 1;` | Mengambil tiket antrean terdepan. |
+
+### 5.4.2 Algoritma/Query
+
+**Nama Kelas:** *Antrean*  
+**Nama Operasi:** *getEstimasiWaktu(): integer*  
+**ID Algoritma:** *Algo-028*
+
+```text
+FUNCTION getEstimasiWaktu() RETURNS integer
+    rataRataLayanan <- 10           // menit per pelanggan
+    IF totalAntrean <= 0 THEN
+        estimasiWaktuTunggu <- 0
+    ELSE
+        estimasiWaktuTunggu <- totalAntrean * rataRataLayanan
+    END IF
+    RETURN estimasiWaktuTunggu
+END FUNCTION
+```
+
+### 5.4.3 Algoritma/Query
+
+**Nama Kelas:** *Antrean*  
+**Nama Operasi:** *getDetailAntrean(antreanId: string): Antrean*  
+**ID Algoritma:** *Algo-029*
+
+```text
+FUNCTION getDetailAntrean(antreanId) RETURNS Antrean
+    data <- SELECT * FROM antrean WHERE antrean_id = antreanId
+    IF data IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN data
+END FUNCTION
+```
+
+Tabel 5.4.3.1. Query Operasi getDetailAntrean
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-020* | `SELECT * FROM antrean WHERE antrean_id = $1;` | Mengambil detail antrean. |
+
+### 5.4.4 Algoritma/Query
+
+**Nama Kelas:** *Antrean*  
+**Nama Operasi:** *updateStatus(status: StatusAntrean, total: integer): void*  
+**ID Algoritma:** *Algo-030*
+
+```text
+PROCEDURE updateStatus(status, total)
+    statusAntrean <- status
+    totalAntrean <- total
+    estimasiWaktuTunggu <- getEstimasiWaktu()
+    UPDATE antrean SET status_antrean = statusAntrean, total_antrean = totalAntrean,
+        estimasi_waktu_tunggu = estimasiWaktuTunggu WHERE antrean_id = antreanId
+END PROCEDURE
+```
+
+Tabel 5.4.4.1. Query Operasi updateStatus
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-021* | `UPDATE antrean SET status_antrean = $2, total_antrean = $3, estimasi_waktu_tunggu = $4 WHERE antrean_id = $1;` | Memperbarui status, total, dan estimasi antrean. |
+
+### 5.4.5 Algoritma/Query
+
+**Nama Kelas:** *Antrean*  
+**Nama Operasi:** *dequeueCustomer(): void*  
+**ID Algoritma:** *Algo-031*
+
+```text
+PROCEDURE dequeueCustomer()
+    nomorDilayani <- nomorDilayani + 1
+    UPDATE antrean SET nomor_dilayani = nomorDilayani WHERE antrean_id = antreanId
+END PROCEDURE
+```
+
+Tabel 5.4.5.1. Query Operasi dequeueCustomer
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-022* | `UPDATE antrean SET nomor_dilayani = nomor_dilayani + 1 WHERE antrean_id = $1;` | Memajukan nomor yang sedang dilayani. |
+
+### 5.4.6 Algoritma/Query
+
+**Nama Kelas:** *Antrean*  
+**Nama Operasi:** *getPesananPreOrder(): Pesanan[]*  
+**ID Algoritma:** *Algo-032*
+
+```text
+FUNCTION getPesananPreOrder() RETURNS Pesanan[]
+    daftar <- SELECT pesanan FROM pesanan JOIN tiket_antrean
+              WHERE tiket.antrean_id = antreanId AND pesanan.mode_pemesanan = PRE_ORDER
+              AND tiket.status_antrean IN (MENUNGGU, DIPANGGIL)
+              ORDER BY tiket.nomor_urut ASC
+    RETURN daftar
+END FUNCTION
+```
+
+Tabel 5.4.6.1. Query Operasi getPesananPreOrder
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-023* | `SELECT p.*, t.nomor_urut FROM pesanan p JOIN tiket_antrean t ON t.pesanan_id = p.pesanan_id WHERE t.antrean_id = $1 AND p.mode_pemesanan = 'PRE_ORDER' AND t.status_antrean IN ('MENUNGGU', 'DIPANGGIL') ORDER BY t.nomor_urut ASC;` | Mengambil pesanan pre-order sesuai urutan antrean. |
+
+### 5.4.7 Algoritma/Query
+
+**Nama Kelas:** *Antrean*  
+**Nama Operasi:** *getQueueStatus(): StatusAntrean*  
+**ID Algoritma:** *Algo-033*
+
+```text
+FUNCTION getQueueStatus() RETURNS StatusAntrean
+    status <- SELECT status_antrean FROM antrean WHERE antrean_id = antreanId
+    IF status IS NULL THEN
+        RETURN TERBUKA
+    END IF
+    statusAntrean <- status
+    RETURN statusAntrean
+END FUNCTION
+```
+
+Tabel 5.4.7.1. Query Operasi getQueueStatus
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-024* | `SELECT status_antrean FROM antrean WHERE antrean_id = $1;` | Mengambil status antrean terbaru. |
+
+### 5.4.8 Algoritma/Query
+
+**Nama Kelas:** *Antrean*  
+**Nama Operasi:** *updateMenu(pesananId: string, menuId: string, jumlah: integer): boolean*  
+**ID Algoritma:** *Algo-034*
+
+```text
+FUNCTION updateMenu(pesananId, menuId, jumlah) RETURNS boolean
+    IF jumlah <= 0 THEN
+        RETURN false
+    END IF
+    menu <- Menu(menuId).getInfoMenu()
+    IF NOT menu.isTersedia(jumlah) THEN
+        RETURN false
+    END IF
+    jumlahBaris <- UPDATE detail_pesanan SET jumlah = jumlah, subtotal = jumlah * menu.harga
+                   WHERE pesanan_id = pesananId AND menu_id = menuId
+    IF jumlahBaris = 0 THEN
+        RETURN false
+    END IF
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.4.8.1. Query Operasi updateMenu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-025* | `UPDATE detail_pesanan SET jumlah = $3, subtotal = $4 WHERE pesanan_id = $1 AND menu_id = $2;` | Mengubah jumlah menu pre-order. |
+
+---
+
+## 5.5 Kelas Keranjang
+
+**Nama Kelas:** *Keranjang*  
+**ID Kelas:** *C05*
+
+Tabel 5.5.1. Operasi Kelas Keranjang
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *tambahItem(menu: Menu, jumlah: integer): void* | *public* | Menambahkan menu ke keranjang. |
+| *hapusItem(menuId: string): void* | *public* | Menghapus menu dari keranjang. |
+| *hitungTotal(): number* | *public* | Menghitung total estimasi harga. |
+| *kosongkanKeranjang(): void* | *public* | Mengosongkan seluruh isi keranjang. |
+
+Tabel 5.5.2. Atribut Kelas Keranjang
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idKeranjang* | *private* | *string* |
+| *daftarMenu* | *private* | *ItemKeranjang[]* |
+| *totalEstimasiHarga* | *private* | *number* |
+
+### 5.5.1 Algoritma/Query
+
+**Nama Kelas:** *Keranjang*  
+**Nama Operasi:** *tambahItem(menu: Menu, jumlah: integer): void*  
+**ID Algoritma:** *Algo-035*
+
+```text
+PROCEDURE tambahItem(menu, jumlah)
+    item <- daftarMenu.find(menu.menuId)
+    IF item IS NULL THEN
+        daftarMenu.tambah({menu: menu, jumlah: jumlah})
+    ELSE
+        item.jumlah <- item.jumlah + jumlah
+    END IF
+    hitungTotal()
+END PROCEDURE
+```
+
+### 5.5.2 Algoritma/Query
+
+**Nama Kelas:** *Keranjang*  
+**Nama Operasi:** *hapusItem(menuId: string): void*  
+**ID Algoritma:** *Algo-036*
+
+```text
+PROCEDURE hapusItem(menuId)
+    item <- daftarMenu.find(menuId)
+    IF item IS NULL THEN
+        RETURN
+    END IF
+    daftarMenu.hapus(item)
+    hitungTotal()
+END PROCEDURE
+```
+
+### 5.5.3 Algoritma/Query
+
+**Nama Kelas:** *Keranjang*  
+**Nama Operasi:** *hitungTotal(): number*  
+**ID Algoritma:** *Algo-037*
+
+```text
+FUNCTION hitungTotal() RETURNS number
+    totalEstimasiHarga <- 0
+    FOR EACH item IN daftarMenu DO
+        totalEstimasiHarga <- totalEstimasiHarga + (item.menu.harga * item.jumlah)
+    END FOR
+    RETURN totalEstimasiHarga
+END FUNCTION
+```
+
+### 5.5.4 Algoritma/Query
+
+**Nama Kelas:** *Keranjang*  
+**Nama Operasi:** *kosongkanKeranjang(): void*  
+**ID Algoritma:** *Algo-038*
+
+```text
+PROCEDURE kosongkanKeranjang()
+    daftarMenu <- []
+    totalEstimasiHarga <- 0
+END PROCEDURE
+```
+
+---
+
+## 5.6 Kelas Pesanan
+
+**Nama Kelas:** *Pesanan*  
+**ID Kelas:** *C06*
+
+Tabel 5.6.1. Operasi Kelas Pesanan
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *validasiBooking(restoranId: string): boolean* | *public* | Memeriksa ketersediaan slot booking. |
+| *buatTagihan(pelangganId: string, restoranId: string, keranjang: Keranjang, tipePembayaran: string): object* | *public* | Menyimpan pesanan dan membuat tagihan pembayaran. |
+| *batalkanPesanan(): boolean* | *public* | Membatalkan pesanan yang belum diproses. |
+| *updateStatus(status: StatusPesanan): void* | *public* | Memperbarui status pesanan. |
+| *getDetailPesanan(pesananId: string): Pesanan* | *public* | Mengambil detail pesanan beserta item menunya. |
+| *showOrderDetails(): void* | *public* | Menampilkan rincian pesanan kepada pengguna. |
+
+Tabel 5.6.2. Atribut Kelas Pesanan
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *pesananId* | *private* | *string* |
+| *modePemesanan* | *private* | *ModePemesanan* |
+| *jumlahRombongan* | *private* | *integer* |
+| *tanggalBooking* | *private* | *Date* |
+| *slotWaktuBooking* | *private* | *string* |
+| *totalHarga* | *private* | *number* |
+| *statusPemesanan* | *private* | *StatusPesanan* |
+
+### 5.6.1 Algoritma/Query
+
+**Nama Kelas:** *Pesanan*  
+**Nama Operasi:** *validasiBooking(restoranId: string): boolean*  
+**ID Algoritma:** *Algo-039*
+
+```text
+FUNCTION validasiBooking(restoranId) RETURNS boolean
+    IF jumlahRombongan <= 0 OR tanggalBooking < hariIni() THEN
+        RETURN false
+    END IF
+    kapasitasMeja <- Restoran.getPengaturan(restoranId).kapasitasMeja
+    terpakai <- SELECT COUNT(*) FROM pesanan WHERE restoran_id = restoranId
+                AND tanggal_booking = tanggalBooking AND slot_waktu_booking = slotWaktuBooking
+                AND status_pemesanan <> DIBATALKAN
+    IF terpakai >= kapasitasMeja THEN
+        RETURN false
+    END IF
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.6.1.1. Query Operasi validasiBooking
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-026* | `SELECT COUNT(*) FROM pesanan WHERE restoran_id = $1 AND tanggal_booking = $2 AND slot_waktu_booking = $3 AND status_pemesanan <> 'DIBATALKAN';` | Menghitung booking yang sudah ada pada slot yang sama. |
+
+### 5.6.2 Algoritma/Query
+
+**Nama Kelas:** *Pesanan*  
+**Nama Operasi:** *buatTagihan(pelangganId: string, restoranId: string, keranjang: Keranjang, tipePembayaran: string): object*  
+**ID Algoritma:** *Algo-040*
+
+```text
+FUNCTION buatTagihan(pelangganId, restoranId, keranjang, tipePembayaran) RETURNS object
+    pesananId <- generateId()
+    totalHarga <- keranjang.hitungTotal()
+    statusPemesanan <- MENUNGGU_PEMBAYARAN
+    BEGIN TRANSACTION
+        INSERT INTO pesanan VALUES (pesananId, pelangganId, restoranId, modePemesanan,
+            jumlahRombongan, tanggalBooking, slotWaktuBooking, totalHarga, statusPemesanan)
+        FOR EACH item IN keranjang.daftarMenu DO
+            INSERT INTO detail_pesanan VALUES (pesananId, item.menu.menuId, item.jumlah,
+                item.menu.harga * item.jumlah)
+        END FOR
+    COMMIT
+    tagihan <- MetodePembayaranController.buatTagihan(pesananId, totalHarga, tipePembayaran)
+    RETURN tagihan
+END FUNCTION
+```
+
+Tabel 5.6.2.1. Query Operasi buatTagihan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-027* | `INSERT INTO pesanan (pesanan_id, pelanggan_id, restoran_id, mode_pemesanan, jumlah_rombongan, tanggal_booking, slot_waktu_booking, total_harga, status_pemesanan) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'MENUNGGU_PEMBAYARAN');` | Menyimpan data pesanan baru. |
+| *Q-028* | `INSERT INTO detail_pesanan (pesanan_id, menu_id, jumlah, subtotal) VALUES ($1, $2, $3, $4);` | Menyimpan setiap item menu dalam pesanan. |
+
+### 5.6.3 Algoritma/Query
+
+**Nama Kelas:** *Pesanan*  
+**Nama Operasi:** *batalkanPesanan(): boolean*  
+**ID Algoritma:** *Algo-041*
+
+```text
+FUNCTION batalkanPesanan() RETURNS boolean
+    jumlahBaris <- UPDATE pesanan SET status_pemesanan = DIBATALKAN
+                   WHERE pesanan_id = pesananId
+                   AND status_pemesanan IN (MENUNGGU_PEMBAYARAN, DIKONFIRMASI)
+    IF jumlahBaris = 0 THEN
+        RETURN false                // pesanan sudah diproses atau tidak ditemukan
+    END IF
+    statusPemesanan <- DIBATALKAN
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.6.3.1. Query Operasi batalkanPesanan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-029* | `UPDATE pesanan SET status_pemesanan = 'DIBATALKAN' WHERE pesanan_id = $1 AND status_pemesanan IN ('MENUNGGU_PEMBAYARAN', 'DIKONFIRMASI');` | Membatalkan pesanan yang belum diproses. |
+
+### 5.6.4 Algoritma/Query
+
+**Nama Kelas:** *Pesanan*  
+**Nama Operasi:** *updateStatus(status: StatusPesanan): void*  
+**ID Algoritma:** *Algo-042*
+
+```text
+PROCEDURE updateStatus(status)
+    IF statusPemesanan = DIBATALKAN THEN
+        RETURN                      // pesanan batal tidak dapat diubah
+    END IF
+    statusPemesanan <- status
+    UPDATE pesanan SET status_pemesanan = statusPemesanan WHERE pesanan_id = pesananId
+END PROCEDURE
+```
+
+Tabel 5.6.4.1. Query Operasi updateStatus
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-030* | `UPDATE pesanan SET status_pemesanan = $2 WHERE pesanan_id = $1;` | Memperbarui status pesanan. |
+
+### 5.6.5 Algoritma/Query
+
+**Nama Kelas:** *Pesanan*  
+**Nama Operasi:** *getDetailPesanan(pesananId: string): Pesanan*  
+**ID Algoritma:** *Algo-043*
+
+```text
+FUNCTION getDetailPesanan(pesananId) RETURNS Pesanan
+    data <- SELECT pesanan, detail_pesanan, menu FROM pesanan
+            JOIN detail_pesanan JOIN menu WHERE pesanan.pesanan_id = pesananId
+    IF data IS EMPTY THEN
+        RETURN NULL
+    END IF
+    RETURN data
+END FUNCTION
+```
+
+Tabel 5.6.5.1. Query Operasi getDetailPesanan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-031* | `SELECT p.*, d.menu_id, m.nama_menu, d.jumlah, d.subtotal FROM pesanan p JOIN detail_pesanan d ON d.pesanan_id = p.pesanan_id JOIN menu m ON m.menu_id = d.menu_id WHERE p.pesanan_id = $1;` | Mengambil pesanan beserta item menunya. |
+
+### 5.6.6 Algoritma/Query
+
+**Nama Kelas:** *Pesanan*  
+**Nama Operasi:** *showOrderDetails(): void*  
+**ID Algoritma:** *Algo-044*
+
+```text
+PROCEDURE showOrderDetails()
+    detail <- getDetailPesanan(pesananId)
+    IF detail IS NULL THEN
+        tampilkanError("Pesanan tidak ditemukan")
+        RETURN
+    END IF
+    renderTeks("Mode Pemesanan", detail.modePemesanan)
+    IF detail.modePemesanan = BOOKING THEN
+        renderTeks("Jadwal", detail.tanggalBooking + " " + detail.slotWaktuBooking)
+        renderTeks("Jumlah Rombongan", detail.jumlahRombongan)
+    END IF
+    FOR EACH item IN detail.daftarItem DO
+        renderBaris(item.namaMenu, item.jumlah, item.subtotal)
+    END FOR
+    renderTeks("Total", detail.totalHarga)
+    renderTeks("Status", detail.statusPemesanan)
+END PROCEDURE
+```
+
+---
+
+## 5.7 Kelas MetodePembayaranController
+
+**Nama Kelas:** *MetodePembayaranController*  
+**ID Kelas:** *C07*
+
+Tabel 5.7.1. Operasi Kelas MetodePembayaranController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *buatTagihan(pesananId: string, total: number, tipePembayaran: string): object* | *public* | Membuat tagihan pembayaran dengan batas waktu. |
+| *verifikasiPembayaran(idPembayaran: string): object* | *public* | Memverifikasi pembayaran dan memproses pesanan yang lunas. |
+| *cekTimeout(): void* | *public* | Membatalkan tagihan yang melewati batas waktu bayar. |
+
+Tabel 5.7.2. Atribut Kelas MetodePembayaranController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idPembayaran* | *private* | *string* |
+| *tipePembayaran* | *private* | *string* |
+| *batasWaktuBayar* | *private* | *DateTime* |
+| *statusPembayaran* | *private* | *StatusPembayaran* |
+
+### 5.7.1 Algoritma/Query
+
+**Nama Kelas:** *MetodePembayaranController*  
+**Nama Operasi:** *buatTagihan(pesananId: string, total: number, tipePembayaran: string): object*  
+**ID Algoritma:** *Algo-045*
+
+```text
+FUNCTION buatTagihan(pesananId, total, tipePembayaran) RETURNS object
+    IF tipePembayaran NOT IN (QRIS, TRANSFER_BANK, E_WALLET) THEN
+        RETURN NULL
+    END IF
+    idPembayaran <- generateId()
+    this.tipePembayaran <- tipePembayaran
+    batasWaktuBayar <- now() + 15 menit
+    statusPembayaran <- MENUNGGU
+    kodeBayar <- PaymentGateway.buatTagihan(idPembayaran, total, tipePembayaran)
+    INSERT INTO pembayaran VALUES (idPembayaran, pesananId, tipePembayaran, total,
+                                   kodeBayar, batasWaktuBayar, statusPembayaran)
+    RETURN {idPembayaran: idPembayaran, kodeBayar: kodeBayar,
+            totalHarga: total, batasWaktuBayar: batasWaktuBayar}
+END FUNCTION
+```
+
+Tabel 5.7.1.1. Query Operasi buatTagihan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-032* | `INSERT INTO pembayaran (id_pembayaran, pesanan_id, tipe_pembayaran, jumlah, kode_bayar, batas_waktu_bayar, status_pembayaran) VALUES ($1, $2, $3, $4, $5, NOW() + INTERVAL '15 minutes', 'MENUNGGU');` | Menyimpan tagihan pembayaran baru. |
+
+### 5.7.2 Algoritma/Query
+
+**Nama Kelas:** *MetodePembayaranController*  
+**Nama Operasi:** *verifikasiPembayaran(idPembayaran: string): object*  
+**ID Algoritma:** *Algo-046*
+
+```text
+FUNCTION verifikasiPembayaran(idPembayaran) RETURNS object
+    IF PaymentGateway.cekStatus(idPembayaran) <> LUNAS THEN
+        RETURN {sukses: false, tiket: NULL}
+    END IF
+    pembayaran <- UPDATE pembayaran SET status_pembayaran = LUNAS
+                  WHERE id_pembayaran = idPembayaran AND status_pembayaran = MENUNGGU
+                  RETURNING pesanan_id, jumlah
+    IF pembayaran IS NULL THEN
+        RETURN {sukses: false, tiket: NULL}     // sudah diproses atau kedaluwarsa
+    END IF
+    statusPembayaran <- LUNAS
+    RiwayatTransaksi.catatLogTransaksi(idPembayaran, pembayaran.jumlah)
+    pesanan <- Pesanan.getDetailPesanan(pembayaran.pesananId)
+    pesanan.updateStatus(DIBAYAR)
+    FOR EACH item IN pesanan.daftarItem DO
+        Menu(item.menuId).kurangiStok(item.jumlah)
+    END FOR
+    tiket <- NULL
+    IF pesanan.modePemesanan <> BOOKING THEN
+        antrean <- Restoran.getAntrean(pesanan.restoranId)
+        tiket <- TiketAntrean.generateNomorAntrean(antrean.antreanId, pesanan.pelangganId,
+                                                    pesanan.pesananId, pesanan.modePemesanan)
+    END IF
+    RETURN {sukses: true, tiket: tiket}
+END FUNCTION
+```
+
+Tabel 5.7.2.1. Query Operasi verifikasiPembayaran
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-033* | `UPDATE pembayaran SET status_pembayaran = 'LUNAS' WHERE id_pembayaran = $1 AND status_pembayaran = 'MENUNGGU' RETURNING pesanan_id, jumlah;` | Menandai pembayaran sebagai lunas. |
+
+### 5.7.3 Algoritma/Query
+
+**Nama Kelas:** *MetodePembayaranController*  
+**Nama Operasi:** *cekTimeout(): void*  
+**ID Algoritma:** *Algo-047*
+
+```text
+PROCEDURE cekTimeout()
+    daftarKedaluwarsa <- UPDATE pembayaran SET status_pembayaran = KEDALUWARSA
+                         WHERE status_pembayaran = MENUNGGU AND batas_waktu_bayar < now()
+                         RETURNING pesanan_id
+    FOR EACH p IN daftarKedaluwarsa DO
+        pesanan <- Pesanan.getDetailPesanan(p.pesananId)
+        pesanan.batalkanPesanan()
+    END FOR
+END PROCEDURE
+```
+
+Tabel 5.7.3.1. Query Operasi cekTimeout
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-034* | `UPDATE pembayaran SET status_pembayaran = 'KEDALUWARSA' WHERE status_pembayaran = 'MENUNGGU' AND batas_waktu_bayar < NOW() RETURNING pesanan_id;` | Menandai tagihan yang melewati batas waktu. |
+
+---
+
 ## 5.31 Kelas DashboardKelolaRestoranPage
 
 **Nama Kelas:** *DashboardKelolaRestoranPage*  
