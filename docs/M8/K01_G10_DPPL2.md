@@ -1330,7 +1330,7 @@ Tabel 5.1. Daftar Kelas Perancangan dan Kelas Analisis Terkait
 
 Untuk **setiap kelas**, identifikasi operasi berdasarkan tanggung jawab kelas beserta *visibility*-nya, serta atribut beserta *visibility* dan tipenya. Buat subbab tersendiri untuk setiap kelas.
 
-## 5.1 Kelas [Nama Kelas 1]
+## 5.1 Kelas Pelanggan
 
 **Nama Kelas:** *Pelanggan*  
 **ID Kelas:** *C01*
