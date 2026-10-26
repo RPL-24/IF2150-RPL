@@ -330,7 +330,7 @@ Pengguna memasukkan email publik, misalnya `@gmail.com`, sehingga `validateEmail
 ### 3.1.3 Diagram Kelas
 
 <p align="center">
-<img alt="Diagram Kelas UC01" src="./assets/diagram/diagram-uc01.png" width="90%">
+<img alt="Diagram Kelas UC01" src="./assets/diagram/diagram-uc01.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 3.1.3. Diagram Kelas Mendaftarkan Akun dan Autentikasi</i>
@@ -385,7 +385,7 @@ Pengguna mengosongkan sebagian atau seluruh pilihan preferensi lalu menekan "Sim
 ### 3.2.3 Diagram Kelas
 
 <p align="center">
-<img alt="Diagram Kelas UC02" src="./assets/diagram/diagram-uc02.png" width="90%">
+<img alt="Diagram Kelas UC02" src="./assets/diagram/diagram-uc02.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 3.2.3. Diagram Kelas Mengelola Preferensi Profil</i>
@@ -461,7 +461,7 @@ Kapasitas lolos validasi, tetapi `hasScheduleConflict()` pada *Validator* bernil
 ### 3.3.3 Diagram Kelas
 
 <p align="center">
-<img alt="Diagram Kelas UC03" src="./assets/diagram/diagram-uc03.png" width="90%">
+<img alt="Diagram Kelas UC03" src="./assets/diagram/diagram-uc03.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 3.3.5. Diagram Kelas Membuat Sesi Belajar</i>
@@ -515,7 +515,7 @@ Mentee membuka halaman "Cari Sesi", lalu *DashboardView* meminta rekomendasi ke 
 ### 3.4.3 Diagram Kelas
 
 <p align="center">
-<img alt="Diagram Kelas UC04" src="./assets/diagram/diagram-uc04.png" width="90%">
+<img alt="Diagram Kelas UC04" src="./assets/diagram/diagram-uc04.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 3.4.3. Diagram Kelas Mencari dan Bergabung ke Sesi</i>
