@@ -29,6 +29,8 @@
 * [Milestone 5](#milestone-5)
 * [Milestone 6](#milestone-6)
 * [Milestone 7](#milestone-7)
+* [Milestone 8](#milestone-8)
+
 
 
 ---
@@ -204,8 +206,10 @@
 | *23-10-2026* | *Bayu Palamarta Wirawan* | *Mengerjakan Bab 5 Kelas 31 - 42* | *3* | *Done* | *-* |
 | *26-10-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki kelas perancangan* | *0.5* | *Done* | *-* |
 | *26-10-2026* | *Bayu Palamarta Wirawan* | *Membuat Form Asistensi* | *0.5* | *Done* | *-* |
+| *26-10-2026* | *Chatima Anandakhorita* | *Mengerjakan Bab 5 Kelas 1-10* | *3* | *Done* | *-* |
+| *26-10-2026* | *Chatima Anandakhorita* | *Memperbaiki kesalahan penulisan pada implementasi Bab 5 Kelas 1-10* | *0.2* | *Done* | *-* |
 
-**Catatan/Evaluasi Milestone 7:**
+**Catatan/Evaluasi Milestone 8:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 
 
