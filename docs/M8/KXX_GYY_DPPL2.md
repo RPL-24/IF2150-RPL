@@ -722,6 +722,45 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 | *jumlahLaporanAktif* | *private* | *Integer* |
 | *daftarLaporan* | *private* | *List[Laporan]* |
 
+### 5.7.1 Algoritma/Query
+
+**Nama Kelas:** *ListTugas*  
+**Nama Operasi:** *urutPrioritas*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function urutPrioritas()
+    n <- jumlahLaporanAktif
+    if n = 0 then
+        return daftarLaporan
+    i traversal [0..n-1]
+        daftarLaporan[i].hitungPrioritas()
+    newDaftar <- {algoritma sorting Laporan}
+    return newDaftar
+    
+```
+
+### 5.7.2 Algoritma/Query
+
+**Nama Kelas:** *ListTugas*  
+**Nama Operasi:** *filterKategori*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function filterKategori(kategori):
+    n <- jumlahLaporanAktif
+    if n = 0 then
+        return daftarLaporan
+    hasil <- NIL
+    x <- 0
+    i traversal [0..n-1]
+        if laporan.getKategori == kategori then
+            hasil[x] <- laporan
+            x <- x+1
+    return hasil
+    
+```
+
 ## 5.8 Kelas HasilPerbaikan
 **Nama Kelas:** *HasilPerbaikan*  
 **ID Kelas:** *C08*
@@ -740,6 +779,24 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 | *fotoBukti* | *private* | *List[Foto]* |
 | *videoBukti* | *private* | *List[Video]* |
 
+### 5.x.x Algoritma/Query
+
+
+**Nama Kelas:** *[Nama kelas]*  
+**Nama Operasi:** *[Signature operasi]*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+[Tuliskan pseudocode algoritma operasi di sini.]
+```
+
+Tabel 5.x.x. Query Operasi [Nama Operasi]
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *...* | *...* | *...* |
+
 ## 5.13 Kelas PenugasanPage
 **Nama Kelas:** *PenugasanPage*  
 **ID Kelas:** *C13*
@@ -757,6 +814,24 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 | *pilihanKategori* | *private* | *String* |
 | *statusTampilan* | *private* | *String* |
 | *idTiketAktif* | *private* | *String* |
+
+### 5.x.x Algoritma/Query
+
+
+**Nama Kelas:** *[Nama kelas]*  
+**Nama Operasi:** *[Signature operasi]*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+[Tuliskan pseudocode algoritma operasi di sini.]
+```
+
+Tabel 5.x.x. Query Operasi [Nama Operasi]
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *...* | *...* | *...* |
 
 
 ## 5.14 Kelas HasilPerbaikanForm
@@ -777,6 +852,24 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 | *berkasFoto* | *private* | *List[Foto]* |
 | *berkasVideo* | *private* | *List[Video]* |
 
+### 5.x.x Algoritma/Query
+
+
+**Nama Kelas:** *[Nama kelas]*  
+**Nama Operasi:** *[Signature operasi]*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+[Tuliskan pseudocode algoritma operasi di sini.]
+```
+
+Tabel 5.x.x. Query Operasi [Nama Operasi]
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *...* | *...* | *...* |
+
 ## 5.19 Kelas PenugasanController
 **Nama Kelas:** *PenugasanController*  
 **ID Kelas:** *C19*
@@ -792,6 +885,24 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 | :--- | :--- | :--- |
 | *idUserAktif* | *private* | *String* |
 
+### 5.x.x Algoritma/Query
+
+
+**Nama Kelas:** *[Nama kelas]*  
+**Nama Operasi:** *[Signature operasi]*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+[Tuliskan pseudocode algoritma operasi di sini.]
+```
+
+Tabel 5.x.x. Query Operasi [Nama Operasi]
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *...* | *...* | *...* |
+
 ## 5.20 Kelas PerbaikanController
 **Nama Kelas:** *PerbaikanController*  
 **ID Kelas:** *C20*
@@ -806,6 +917,24 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 | :--- | :--- | :--- |
 | *idLaporan* | *private* | *String* |
 | *idUserAktif* | *private* | *String* |
+
+### 5.x.x Algoritma/Query
+
+
+**Nama Kelas:** *[Nama kelas]*  
+**Nama Operasi:** *[Signature operasi]*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+[Tuliskan pseudocode algoritma operasi di sini.]
+```
+
+Tabel 5.x.x. Query Operasi [Nama Operasi]
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *...* | *...* | *...* |
 
 
 ## 5.X Kelas [Nama Kelas Berikutnya]
@@ -831,7 +960,6 @@ Tabel 5.x.2. Atribut Kelas [Nama Kelas 1]
 
 ### 5.x.x Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *[Nama kelas]*  
 **Nama Operasi:** *[Signature operasi]*  
@@ -840,8 +968,6 @@ Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Al
 ```text
 [Tuliskan pseudocode algoritma operasi di sini.]
 ```
-
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut. 
 
 Tabel 5.x.x. Query Operasi [Nama Operasi]
 
