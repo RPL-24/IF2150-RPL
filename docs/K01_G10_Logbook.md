@@ -208,6 +208,7 @@
 | *26-10-2026* | *Bayu Palamarta Wirawan* | *Membuat Form Asistensi* | *0.5* | *Done* | *-* |
 | *26-10-2026* | *Chatima Anandakhorita* | *Mengerjakan Bab 5 Kelas 1-10* | *3* | *Done* | *-* |
 | *26-10-2026* | *Chatima Anandakhorita* | *Memperbaiki kesalahan penulisan pada implementasi Bab 5 Kelas 1-10* | *0.2* | *Done* | *-* |
+| *27-10-2026* | *Muhammad Nur Fikri Hariyawan* | *Mengerjakan Bab 5 Kelas 11-20* | *2.4* | *Done* | *-* |
 
 **Catatan/Evaluasi Milestone 8:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
