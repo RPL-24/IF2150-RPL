@@ -799,19 +799,133 @@ PROCEDURE submitVerifikasi(email: String, sandi: String)
 END PROCEDURE
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.1.1. Query Operasi [Nama Operasi]
+## 5.6 Kelas StatusVerifikasiMitraPage
 
-| No Query | Query | Keterangan |
+**Nama Kelas:** *StatusVerifikasiMitraPage*  
+**ID Kelas:** *C06*
+
+Tabel 5.6.1. Operasi Kelas StatusVerifikasiMitraPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *infoStatus(idMitra: String): void* | *public* | *Meminta dan menampilkan status verifikasi akun pendaftaran mitra terkini.* |
 | *...* | *...* | *...* |
 
+Tabel 5.6.2. Atribut Kelas StatusVerifikasiMitraPage
 
-### 5.1.2 Algoritma/Query
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *status* | *private* | *String* |
+| *...* | *...* | *...* |
 
-*[Ulangi pola 5.1.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+### 5.6.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *StatusVerifikasiMitraPage*  
+**Nama Operasi:** *infoStatus(idMitra: String): void*  
+**ID Algoritma:** *[Algo-006]*
+
+```text
+PROCEDURE infoStatus(idMitra: String)
+    statusAkun <- VerifikasiMitraController.validasiData(idMitra)
+    IF statusAkun IS NULL THEN
+        tampilkanPesanError("Data pengajuan pendaftaran tidak ditemukan.")
+    ELSE
+        tampilkanStatusPadaLayar(statusAkun)
+    END IF
+END PROCEDURE
+```
+
+
+
+## 5.7 Kelas VerifikasiMitraPage
+
+**Nama Kelas:** *VerifikasiMitraPage*  
+**ID Kelas:** *C07*
+
+Tabel 5.7.1. Operasi Kelas VerifikasiMitraPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *ubahStatus(idMitra: String, statusBaru: String, catatan: String): void* | *public* | *Mengubah status verifikasi pendaftar mitra berdasarkan keputusan peninjauan admin.* |
+| *...* | *...* | *...* |
+
+Tabel 5.7.2. Atribut Kelas VerifikasiMitraPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *status* | *private* | *String* |
+| *...* | *...* | *...* |
+
+### 5.7.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *VerifikasiMitraPage*  
+**Nama Operasi:** *ubahStatus(idMitra: String, statusBaru: String, catatan: String): void*  
+**ID Algoritma:** *[Algo-007]*
+
+```text
+PROCEDURE ubahStatus(idMitra: String, statusBaru: String, catatan: String)
+    berhasil <- VerifikasiMitraController.updateStatusVerifikasi(idMitra, statusBaru, catatan)
+    IF berhasil = true THEN
+        tampilkanNotifikasi("Status verifikasi pendaftar berhasil diperbarui.")
+        perbaruiDaftarPengajuanAdmin()
+    ELSE
+        tampilkanPesanError("Gagal memperbarui status verifikasi.")
+    END IF
+END PROCEDURE
+```
+
+
+
+## 5.8 Kelas EditProfilMitraPage
+
+**Nama Kelas:** *EditProfilMitraPage*  
+**ID Kelas:** *C08*
+
+Tabel 5.8.1. Operasi Kelas EditProfilMitraPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *validasiData(inputKredensial: String, tagKeahlian: String): Boolean* | *public* | *Memeriksa keabsahan data profil dan tag keahlian sebelum disimpan.* |
+| *...* | *...* | *...* |
+
+Tabel 5.8.2. Atribut Kelas EditProfilMitraPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *inputKredensial* | *private* | *String* |
+| *...* | *...* | *...* |
+
+### 5.8.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *EditProfilMitraPage*  
+**Nama Operasi:** *validasiData(inputKredensial: String, tagKeahlian: String): Boolean*  
+**ID Algoritma:** *[Algo-008]*
+
+```text
+FUNCTION validasiData(inputKredensial: String, tagKeahlian: String): Boolean
+    IF inputKredensial isEmpty THEN
+        tampilkanPesanError("Deskripsi profil atau identitas tidak boleh kosong.")
+        RETURN false
+    END IF
+
+    IF tagKeahlian isEmpty THEN
+        tampilkanPesanError("Pilih minimal satu tag keahlian spesialisasi.")
+        RETURN false
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+
+
 
 ## 5.9 EditDokumenLegalitasPage
 
@@ -870,6 +984,256 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 | *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
 | *...* | *...* | *...* |
 
+
+
+
+## 5.30 Kelas PencarianMitraController
+
+**Nama Kelas:** *PencarianMitraController*  
+**ID Kelas:** *C30*
+
+Tabel 5.30.1. Operasi Kelas PencarianMitraController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *cariMitraSesuaiKasus(idKasus: String, filterKeahlian: String): List<MitraPengacara>* | *public* | *Memproses pencarian dan mencocokkan mitra pengacara berdasarkan kategori kasus dan tag keahlian.* |
+| *terapkanFilter(kategori: String, ratingMin: Float): List<MitraPengacara>* | *public* | *Menyaring daftar mitra berdasarkan kriteria filter tambahan.* |
+| *...* | *...* | *...* |
+
+
+Tabel 5.30.2. Atribut Kelas PencarianMitraController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *-* | *-* | *-* |
+| *...* | *...* | *...* |
+
+### 5.30.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *PencarianMitraController*  
+**Nama Operasi:** *cariMitraSesuaiKasus(idKasus: String, filterKeahlian: String): List<MitraPengacara>*  
+**ID Algoritma:** *[Algo-030]*
+
+```text
+PROCEDURE ubahStatus(idMitra: String, statusBaru: String, catatan: String)
+    berhasil <- VerifikasiMitraController.updateStatusVerifikasi(idMitra, statusBaru, catatan)
+    IF berhasil = true THEN
+        tampilkanNotifikasi("Status verifikasi pendaftar berhasil diperbarui.")
+        perbaruiDaftarPengajuanAdmin()
+    ELSE
+        tampilkanPesanError("Gagal memperbarui status verifikasi.")
+    END IF
+END PROCEDURE
+```
+
+Tabel 5.30.1. Query Operasi -
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *-* | *-* | *Pengontrol meneruskan operasi pemanggilan data ke entitas Kasus dan MitraPengacara.* |
+| *...* | *...* | *...* |
+
+
+
+## 5.31 Kelas PenjadwalanKonsultasiController
+
+**Nama Kelas:** *PenjadwalanKonsultasiController*  
+**ID Kelas:** *C31*
+
+Tabel 5.31.1. Operasi Kelas PenjadwalanKonsultasiController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *buatSesiKonsultasi(idMasyarakat: String, idMitra: String, tanggal: String, waktu: String, idKasus: String): Boolean* | *public* | *Membuat pengajuan jadwal konsultasi baru.* |
+| *validasiJadwal(idMitra: String, tanggal: String, waktu: String): Boolean* | *public* | *Memeriksa ketersediaan jadwal mitra pada jam dan tanggal yang dipilih.* |
+| *...* | *...* | *...* |
+
+
+Tabel 5.31.2. Atribut Kelas PenjadwalanKonsultasiController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *-* | *-* | *-* |
+| *...* | *...* | *...* |
+
+### 5.31.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *PenjadwalanKonsultasiController*  
+**Nama Operasi:** *buatSesiKonsultasi(idMasyarakat: String, idMitra: String, tanggal: String, waktu: String, idKasus: String): Boolean*  
+**ID Algoritma:** *[Algo-031-1]*
+
+```text
+FUNCTION buatSesiKonsultasi(idMasyarakat: String, idMitra: String, tanggal: String, waktu: String, idKasus: String): Boolean
+    IF validasiJadwal(idMitra, tanggal, waktu) = false THEN
+        RETURN false
+    END IF
+
+    sesiBaru <- SesiKonsultasi.simpanJadwalBaru(idMasyarakat, idMitra, tanggal, waktu, idKasus, "Menunggu Konfirmasi")
+    IF sesiBaru IS NOT NULL THEN
+        RETURN true
+    END IF
+    RETURN false
+END FUNCTION
+```
+
+### 5.31.2 Algoritma/Query
+
+**Nama Kelas:** *PenjadwalanKonsultasiController*  
+**Nama Operasi:** *validasiJadwal(idMitra: String, tanggal: String, waktu: String): Boolean*  
+**ID Algoritma:** *[Algo-031-2]*
+
+```text
+FUNCTION validasiJadwal(idMitra: String, tanggal: String, waktu: String): Boolean
+    statusTersedia <- MitraPengacara.cekKetersediaanJadwal(idMitra, tanggal, waktu)
+    RETURN statusTersedia
+END FUNCTION
+```
+
+
+
+## 5.32 Kelas SesiKonsultasiController
+
+**Nama Kelas:** *SesiKonsultasiController*  
+**ID Kelas:** *C32*
+
+Tabel 5.32.1. Operasi Kelas SesiKonsultasiController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *prosesKonfirmasiJadwal(idSesi: String, statusTerima: Boolean): Boolean* | *public* | *Memproses konfirmasi penerimaan/penolakan jadwal sesi oleh mitra.* |
+| *perbaruiStatusSesi(idSesi: String, statusBaru: String): void* | *public* | *Memperbarui status siklus hidup sesi konsultasi.* |
+| *kelolaPesanChat(idSesi: String, pesan: String, senderId: String): Boolean* | *public* | *Mengelola lalu lintas pengiriman pesan ruang konsultasi real-time.* |
+| *validasiStatusPembayaran(idSesi: String): Boolean* | *public* | *Memastikan status pembayaran telah lunas sebelum membuka sesi chat.* |
+| *akhiriSesiKonsultasi(idSesi: String): Boolean* | *public* | *Menutup sesi chat konsultasi dan mencatat waktu penyelesaian.* |
+| *...* | *...* | *...* |
+
+
+Tabel 5.32.2. Atribut Kelas SesiKonsultasiController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *-* | *-* | *-* |
+| *...* | *...* | *...* |
+
+### 5.32.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *SesiKonsultasiController*  
+**Nama Operasi:** *prosesKonfirmasiJadwal(idSesi: String, statusTerima: Boolean): Boolean*  
+**ID Algoritma:** *[Algo-032]*
+
+```text
+FUNCTION prosesKonfirmasiJadwal(idSesi: String, statusTerima: Boolean): Boolean
+    sesi <- SesiKonsultasi.getDetailSesi(idSesi)
+    IF sesi IS NULL THEN
+        RETURN false
+    END IF
+
+    IF statusTerima = true THEN
+        SesiKonsultasi.aturStatusSesi(idSesi, "Terjadwal")
+    ELSE
+        SesiKonsultasi.aturStatusSesi(idSesi, "Ditolak")
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+## 5.33 Kelas UlasanController
+
+**Nama Kelas:** *UlasanController*  
+**ID Kelas:** *C33*
+
+Tabel 5.33.1. Operasi Kelas UlasanController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *simpanUlasanBaru(idSesi: String, idMasyarakat: String, idMitra: String, rating: Integer, teks: String): Boolean* | *public* | *Menyimpan data ulasan baru dan memicu kalkulasi ulang skor rating mitra pengacara.* |
+| *perbaruiRatingMitra(idMitra: String): void* | *public* | *Menghitung rerata skor rating mitra setelah ulasan baru ditambahkan.* |
+| *...* | *...* | *...* |
+
+
+Tabel 5.33.2. Atribut Kelas UlasanController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *-* | *-* | *-* |
+| *...* | *...* | *...* |
+
+### 5.33.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *UlasanController*  
+**Nama Operasi:** *simpanUlasanBaru(idSesi: String, idMasyarakat: String, idMitra: String, rating: Integer, teks: String): Boolean*  
+**ID Algoritma:** *[Algo-033]*
+
+```text
+FUNCTION simpanUlasanBaru(idSesi: String, idMasyarakat: String, idMitra: String, rating: Integer, teks: String): Boolean
+    IF rating < 1 OR rating > 5 THEN
+        RETURN false
+    END IF
+
+    statusSimpan <- Ulasan.simpanDataUlasan(idSesi, idMasyarakat, idMitra, rating, teks)
+    IF statusSimpan = true THEN
+        perbaruiRatingMitra(idMitra)
+        RETURN true
+    END IF
+    RETURN false
+END FUNCTION
+```
+
+## 5.34 Kelas LaporanController
+
+**Nama Kelas:** *LaporanController*  
+**ID Kelas:** *C34*
+
+Tabel 5.34.1. Operasi Kelas LaporanController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *buatLaporanBaru(idPelapor: String, idTerlapor: String, jenis: String, deskripsi: String, bukti: String): Boolean* | *public* | *Membuat entri laporan pelanggaran akun atau ulasan baru.* |
+| *validasiBuktiLaporan(bukti: String): Boolean* | *public* | *Memerikasa berkas bukti yang dilampirkan pelapor.* |
+| *...* | *...* | *...* |
+
+
+Tabel 5.34.2. Atribut Kelas LaporanController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *-* | *-* | *-* |
+| *...* | *...* | *...* |
+
+### 5.34.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *buatLaporanBaru(idPelapor: String, idTerlapor: String, jenis: String, deskripsi: String, bukti: String): Boolean*  
+**ID Algoritma:** *[Algo-034]*
+
+```text
+FUNCTION buatLaporanBaru(idPelapor: String, idTerlapor: String, jenis: String, deskripsi: String, bukti: String): Boolean
+    IF deskripsi IS EMPTY THEN
+        RETURN false
+    END IF
+
+    IF validasiBuktiLaporan(bukti) = false THEN
+        RETURN false
+    END IF
+
+    statusSimpan <- Laporan.simpanDataLaporan(idPelapor, idTerlapor, jenis, deskripsi, bukti, "Pending")
+    RETURN statusSimpan
+END FUNCTION
+```
+
+
+
 ## 5.35 ModerasiAkunController
 
 **Nama Kelas:** ModerasiAkunController
@@ -889,60 +1253,211 @@ Tabel 5.35.2. Atribut Kelas ModerasiAkunController
 | :--- | :--- | :--- |
 | - | - | - |
 
-### 5.35.1 Algoritma/Query
 
-**Nama Kelas:** ModerasiAkunController
-**Nama Operasi:** prosesTinjauan(idLaporan: String, hasil: String): Boolean
-**ID Algoritma:** Algo-035-1
+
+## 5.40 Kelas Masyarakat
+
+**Nama Kelas:** *Masyarakat*  
+**ID Kelas:** *C40*
+
+Tabel 5.40.1. Operasi Kelas Masyarakat
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *inputInfo(nama: String, nomorInduk: String, email: String, sandi: String): Boolean* | *public* | *Menyimpan data pendaftaran entitas akun masyarakat baru ke basis data.* |
+| *cekEmailTerdaftar(email: String): Boolean* | *public* | *Memeriksa apakah alamat email sudah tersimpan dalam basis data akun masyarakat.* |
+| *...* | *...* | *...* |
+
+
+Tabel 5.40.2. Atribut Kelas Masyarakat
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| idMasyarakat | private | String |
+| nama | private | String |
+| nomorInduk| private | String |
+| email | private | String |
+| sandi| private | String |
+| statusAkun    | private | String |
+| *...* | *...* | *...* |
+
+### 5.40.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *Masyarakat*  
+**Nama Operasi:** *cekEmailTerdaftar(email: String): Boolean*  
+**ID Algoritma:** *[Algo-040]*
 
 ```text
-FUNCTION prosesTinjauan(idLaporan: String, hasil: String): Boolean
-    laporan <- Laporan.getDetailLaporan(idLaporan)
-    IF laporan IS NULL THEN
-        RETURN false
+FUNCTION cekEmailTerdaftar(email: String): Boolean
+    hasil <- Q-401 dengan parameter email
+    IF hasil IS NOT NULL THEN
+        RETURN true
     END IF
-
-    IF hasil = "disetujui" THEN
-        berhasil <- prosesBlokirAkun(laporan.idTerlapor)
-        IF berhasil = false THEN
-            RETURN false
-        END IF
-        updateStatusLaporan(idLaporan, "disetujui")
-    ELSE
-        updateStatusLaporan(idLaporan, "ditolak")
-    END IF
-
-    RETURN true
+    RETURN false
 END FUNCTION
 ```
 
-**Nama Operasi:** prosesBlokirAkun(idTerlapor: String): Boolean
-**ID Algoritma:** Algo-035-2
 
-```text
-FUNCTION prosesBlokirAkun(idTerlapor: String): Boolean
-    ubah status akun idTerlapor menjadi "diblokir"
-    kirim notifikasi pemblokiran ke akun idTerlapor
-    RETURN true
-END FUNCTION
-```
-
-**Nama Operasi:** updateStatusLaporan(idLaporan: String, status: String): void
-**ID Algoritma:** Algo-035-3
-
-```text
-PROCEDURE updateStatusLaporan(idLaporan: String, status: String)
-    laporan <- Laporan.getDetailLaporan(idLaporan)
-    laporan.statusLaporan <- status
-    simpan laporan
-END PROCEDURE
-```
-
-Tabel 5.35.3. Query Operasi
+Tabel 5.40.3. Query Operasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| - | - | Kelas pengendali tidak mengakses basis data langsung. Pengambilan dan penyimpanan data dilakukan lewat kelas entitas Laporan. |
+| Q-401 | `SELECT idMasyarakat FROM masyarakat WHERE email = ?;` | Mengecek keberadaan email masyarakat pada sistem. |
+| Q-002 | `INSERT INTO masyarakat (idMasyarakat, nama, nomorInduk, email, sandi, statusAkun) VALUES (?, ?, ?, ?, ?, ?);` | Menambahkan baris data akun masyarakat baru. |
+
+
+
+## 5.41 Kelas MitraPengacara
+
+**Nama Kelas:** *MitraPengacara*  
+**ID Kelas:** *C41*
+
+Tabel 5.41.1. Operasi Kelas MitraPengacara
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *cekKetersediaanJadwal(idMitra: String, tanggal: String, waktu: String): Boolean* | *public* | *Memeriksa ketersediaan slot jadwal mitra pada tabel sesi konsultasi.* |
+| *infoProfil(idMitra: String): MitraPengacara* | *public* | *Mengambil detail profil dan tag keahlian mitra pengacara.* |
+| *...* | *...* | *...* |
+
+
+Tabel 5.41.2. Atribut Kelas MitraPengacara
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| idMitra | private | String |
+| nama | private | String |
+| sandiMitra | private | String |
+| tagKeahlian | private | String |
+| statusKetersediaan| private | String |
+| rating | private | Float |
+| saldo | private | Double |
+| rekeningPencairan | private | String | 
+| *...* | *...* | *...* |
+
+### 5.41.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *MitraPengacara*  
+**Nama Operasi:** *cekKetersediaanJadwal(idMitra: String, tanggal: String, waktu: String): Boolean*  
+**ID Algoritma:** *[Algo-041]*
+
+```text
+FUNCTION cekKetersediaanJadwal(idMitra: String, tanggal: String, waktu: String): Boolean
+    sesiBentrok <- Q-411 dengan parameter idMitra, tanggal, dan waktu
+    IF sesiBentrok not isEmpty THEN
+        RETURN false
+    END IF
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.41.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-411 | `SELECT idSesi FROM sesi_konsultasi WHERE idMitra = ? AND tanggalJadwal = ? AND waktuJadwal = ? AND statusSesi != 'Dibatalkan'` | Memeriksa jadwal bentrok mitra. |
+| Q-412 | `SELECT * FROM mitra_pengacara WHERE idMitra = ?;` | Memuat profil lengkap mitra pengacara. |
+
+
+
+## 5.42 Kelas Admin
+
+**Nama Kelas:** *Admin*  
+**ID Kelas:** *C42*
+
+Tabel 5.42.1. Operasi Kelas Admin
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *verifikasiDokumen(idDokumen: String, status: String): Boolean* | *public* | *Memperbarui status verifikasi dokumen legalitas mitra oleh admin.* |
+| *login(idAdmin: String, sandi: String): Boolean* | *public* | *Memverifikasi identitas kredensial akun admin.* |
+| *...* | *...* | *...* |
+
+
+Tabel 5.42.2. Atribut Kelas Admin
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| idAdmin | private | String |
+| verifikasi | private | String |
+| *...* | *...* | *...* |
+
+### 5.42.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *Admin*  
+**Nama Operasi:** *verifikasiDokumen(idDokumen: String, status: String): Boolean*  
+**ID Algoritma:** *[Algo-042]*
+
+```text
+FUNCTION verifikasiDokumen(idDokumen: String, status: String): Boolean
+    statusUpdate <- Q-42-1 dengan parameter status dan idDokumen
+    IF statusUpdate = true THEN
+        RETURN true
+    END IF
+    RETURN false
+END FUNCTION
+```
+
+Tabel 5.42.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-421 | `UPDATE dokumen_legalitas SET statusValiditas = ? WHERE idDokumen = ?;` | Mengubah status keabsahan dokumen pendaftaran mitra. |
+
+
+
+## 5.43 Kelas Kasus
+
+**Nama Kelas:** *Kasus*  
+**ID Kelas:** *C43*
+
+Tabel 5.43.1. Operasi Kelas Kasus
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *infoDetailKasus(idKasus: String): Kasus* | *public* | *Mengambil detail deskripsi dan kategori kasus masyarakat berdasarkan idKasus.* |
+| *infoKategoriKasus(idKasus: String): String* | *public* | *Mengembalikan nama tag/kategori masalah dari kasus.* |
+| *...* | *...* | *...* |
+
+
+Tabel 5.43.2. Atribut Kelas Kasus
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| idKasus | private | String |
+| kategoriMasalah | private | String |
+| dekripsi | private | String |
+| *...* | *...* | *...* |
+
+### 5.43.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *Kasus*  
+**Nama Operasi:** *infoDetailKasus(idKasus: String): Kasus*  
+**ID Algoritma:** *[Algo-043]*
+
+```text
+FUNCTION infoDetailKasus(idKasus: String): Kasus
+    dataKasus <- Q-431 dengan parameter idKasus
+    IF dataKasus IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN dataKasus
+END FUNCTION
+```
+
+Tabel 5.43.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-431 | `SELECT * FROM kasus WHERE idKasus = ?;` | Mengambil detail entitas kasus dari database. |
 
 
 ## 5.44 DasarHukum
@@ -962,6 +1477,9 @@ Tabel 5.44.2. Atribut Kelas DasarHukum
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
 | idPasal | private | String |
+
+
+
 
 ### 5.44.1 Algoritma/Query
 
