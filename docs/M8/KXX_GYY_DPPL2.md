@@ -779,22 +779,51 @@ function filterKategori(kategori):
 | *fotoBukti* | *private* | *List[Foto]* |
 | *videoBukti* | *private* | *List[Video]* |
 
-### 5.x.x Algoritma/Query
+### 5.8.1 Algoritma/Query
 
 
-**Nama Kelas:** *[Nama kelas]*  
-**Nama Operasi:** *[Signature operasi]*  
+**Nama Kelas:** *HasilPerbaikan*  
+**Nama Operasi:** *validasiBerkas*  
 **ID Algoritma:** *[Algo-00x]*
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function validasiBerkas(foto, video):
+    for f in foto do
+        if not(f.isFotoValid()) then
+            return false
+    for v in video do
+        if not(v.isVideoValid()) then
+            return false
+    return true 
 ```
 
-Tabel 5.x.x. Query Operasi [Nama Operasi]
+### 5.8.2 Algoritma/Query
+
+
+**Nama Kelas:** *HasilPerbaikan*  
+**Nama Operasi:** *simpanBukti*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function simpanBukti():
+    waktuUnggah <- time.current
+    idHsasil <- Q-001(idTiket, catatan, waktuUnggah)
+    if idHasil = NIL then
+        return false
+    for f in fotoBukti do
+        Q-002(idHasil, f.url, f.format, f.ukuran)
+    for v in videoBukti do
+        Q-003(idHasil, v.url, v.format, v.ukuran)
+```
+
+
+Tabel 5.8.1. Query Operasi [Nama Operasi]
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *Q-001* | *INSERT INTO hasil_perbaikan (id_tiket, catatan, waktu_unggah) VALUES ($1, $2, $3) RETURNING id_hasil;* | *Menyimpan data hasil perbaikan untuk suatu laporan dan mengembalikan ID untuk hasil perbaikan tersebut* |
+| *Q-002* | *INSERT INTO foto (id_hasil, url, format, ukuran) VALUES ($1, $2, $3, $4);* | *Menyimpan tautan berkas foto bukti yang diunggah ke Supabase Storage* |
+| *Q-003* | *INSERT INTO video (id_hasil, url, format, ukuran) VALUES ($1, $2, $3, $4);* | *Menyimpan tautan berkas video bukti yang diunggah ke Supabase Storage* |
 | *...* | *...* | *...* |
 
 ## 5.13 Kelas PenugasanPage
@@ -815,23 +844,37 @@ Tabel 5.x.x. Query Operasi [Nama Operasi]
 | *statusTampilan* | *private* | *String* |
 | *idTiketAktif* | *private* | *String* |
 
-### 5.x.x Algoritma/Query
+### 5.13.1 Algoritma/Query
 
 
-**Nama Kelas:** *[Nama kelas]*  
-**Nama Operasi:** *[Signature operasi]*  
+**Nama Kelas:** *PenugasanPage*  
+**Nama Operasi:** *tampilkanPage()*  
 **ID Algoritma:** *[Algo-00x]*
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure tampilkanPage():
+    if not(penugasanController.verifikasiAkses()) then
+        output("Gagal menampilkan page")
+        return
+    else
+        daftar <- penugasanController.doSorting()
+        renderListTugas(daftar)
 ```
 
-Tabel 5.x.x. Query Operasi [Nama Operasi]
+### 5.13.2 Algoritma/Query
 
-| No Query | Query | Keterangan |
-| :--- | :--- | :--- |
-| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+
+**Nama Kelas:** *PenugasanPage*  
+**Nama Operasi:** *pilihLaporan()*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+procedure pilihLaporan():
+    idTiketAktif <- {id elemen laporan yang di klik}
+    laporan <- penugasanController.bukaLaporan(idTiketAktif)
+    renderRincianLaporan(laporan)
+```
+
 
 
 ## 5.14 Kelas HasilPerbaikanForm
@@ -852,23 +895,22 @@ Tabel 5.x.x. Query Operasi [Nama Operasi]
 | *berkasFoto* | *private* | *List[Foto]* |
 | *berkasVideo* | *private* | *List[Video]* |
 
-### 5.x.x Algoritma/Query
+### 5.14.1 Algoritma/Query
 
 
-**Nama Kelas:** *[Nama kelas]*  
-**Nama Operasi:** *[Signature operasi]*  
+**Nama Kelas:** *HasilPernaikanForm*  
+**Nama Operasi:** *submitForm()*  
 **ID Algoritma:** *[Algo-00x]*
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure submitForm():
+    berhasil <- perbaikanController.unggahHasil(idTiket, inputDeskripsi, berkasFoto, berkasVideo)
+    if berhasil then
+        output("terkirim")
+    else
+        output("Gagal terkirim")
 ```
 
-Tabel 5.x.x. Query Operasi [Nama Operasi]
-
-| No Query | Query | Keterangan |
-| :--- | :--- | :--- |
-| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
 
 ## 5.19 Kelas PenugasanController
 **Nama Kelas:** *PenugasanController*  
@@ -885,22 +927,40 @@ Tabel 5.x.x. Query Operasi [Nama Operasi]
 | :--- | :--- | :--- |
 | *idUserAktif* | *private* | *String* |
 
-### 5.x.x Algoritma/Query
+### 5.19.1 Algoritma/Query
 
 
-**Nama Kelas:** *[Nama kelas]*  
-**Nama Operasi:** *[Signature operasi]*  
+**Nama Kelas:** *PenugasanController*  
+**Nama Operasi:** *verifikasiAkses()*  
 **ID Algoritma:** *[Algo-00x]*
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function verifikasiAkses():
+    role <- user.getRole()
+    return role = "EksekutorLapangan"
 ```
 
-Tabel 5.x.x. Query Operasi [Nama Operasi]
+
+### 5.19.2 Algoritma/Query
+
+
+**Nama Kelas:** *PenugasanController*  
+**Nama Operasi:** *doSorting()*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function doSorting():
+    daftarLaporan <- Q-001
+    listTugas <- {ListTugas baru}
+    return listTugas.urutPrioritas()
+
+```
+
+Tabel 5.19.1. Query Operasi [Nama Operasi]
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *[Q-001]* | *SELECT (id_ticket, kategori, deskripsi, status, waktu_masuk, jumlah_upvote, skor_prioritas) FROM laporan WHERE (status="Dikerjakan")* | *Mengambil seluruh laporan yang sudah disetujui Tim Administrasi untuk dikerjakan Eksekutor Lapangan* |
 | *...* | *...* | *...* |
 
 ## 5.20 Kelas PerbaikanController
@@ -918,15 +978,20 @@ Tabel 5.x.x. Query Operasi [Nama Operasi]
 | *idLaporan* | *private* | *String* |
 | *idUserAktif* | *private* | *String* |
 
-### 5.x.x Algoritma/Query
+### 5.20.1 Algoritma/Query
 
 
-**Nama Kelas:** *[Nama kelas]*  
-**Nama Operasi:** *[Signature operasi]*  
+**Nama Kelas:** *PerbaikanController*  
+**Nama Operasi:** *validasiForm*  
 **ID Algoritma:** *[Algo-00x]*
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function validasiForm(catatan, foto, video):
+    if catatan = NIL then
+        return false
+    if length(foto) = 0 then
+        return false
+    return true
 ```
 
 Tabel 5.x.x. Query Operasi [Nama Operasi]
@@ -936,6 +1001,32 @@ Tabel 5.x.x. Query Operasi [Nama Operasi]
 | *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
 | *...* | *...* | *...* |
 
+
+### 5.20.2 Algoritma/Query
+
+
+**Nama Kelas:** *PerbaikanController*  
+**Nama Operasi:** *unggahHasil*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function unggahHasil(idTiket, catatan, foto, video):
+    if not(verifikasiAkses()) then
+        return false
+    if not(validasiForm(catatan, foto, video)) then
+        return false
+    hasil <- {HasilPerbaikan baru}
+    if not(hasil.validasiBerkas(foto, video)) then
+        return false
+    return hasil.simpanBukti()
+```
+
+Tabel 5.x.x. Query Operasi [Nama Operasi]
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *...* | *...* | *...* |
 
 ## 5.X Kelas [Nama Kelas Berikutnya]
 
