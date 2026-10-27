@@ -2831,6 +2831,765 @@ PROCEDURE updateTampilanAntrean()
 END PROCEDURE
 ```
 
+## 5.11 Kelas HalamanStatusAntrean
+ 
+**Nama Kelas:** *HalamanStatusAntrean*  
+**ID Kelas:** *C11*
+ 
+Tabel 5.11.1. Operasi Kelas HalamanStatusAntrean
+ 
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *tampilkanStatusAntrean(antreanId: string): void* | *public* | Mengambil dan menampilkan status serta sisa antrean pelanggan. |
+| *renderData(): void* | *public* | Merender data status antrean ke tampilan. |
+ 
+Tabel 5.11.2. Atribut Kelas HalamanStatusAntrean
+ 
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *antreanId* | *private* | *string* |
+| *statusAntrean* | *private* | *StatusAntrean* |
+| *sisaAntrean* | *private* | *integer* |
+ 
+### 5.11.1 Algoritma/Query
+ 
+**Nama Kelas:** *HalamanStatusAntrean*  
+**Nama Operasi:** *tampilkanStatusAntrean(antreanId: string): void*  
+**ID Algoritma:** *Algo-056*
+ 
+```text
+PROCEDURE tampilkanStatusAntrean(antreanId)
+    this.antreanId <- antreanId
+    antrean <- PemantauAntreanController.getStatusAntrean(antreanId)
+    IF antrean IS NULL THEN
+        tampilkanError("Antrean tidak ditemukan")
+        RETURN
+    END IF
+    tiket <- TiketAntrean.getDetailTiket(idTiketPelanggan)
+    statusAntrean <- antrean.statusAntrean
+    sisaAntrean <- tiket.nomorUrut - antrean.nomorDilayani - 1
+    IF sisaAntrean < 0 THEN
+        sisaAntrean <- 0
+    END IF
+    renderData()
+END PROCEDURE
+```
+ 
+### 5.11.2 Algoritma/Query
+ 
+**Nama Kelas:** *HalamanStatusAntrean*  
+**Nama Operasi:** *renderData(): void*  
+**ID Algoritma:** *Algo-057*
+ 
+```text
+PROCEDURE renderData()
+    renderTeks("Nomor Antrean", tiket.nomorUrut)
+    renderTeks("Status", statusAntrean)
+    renderTeks("Antrean di depan Anda", sisaAntrean)
+END PROCEDURE
+```
+ 
+---
+ 
+## 5.12 Kelas PengajuanMitraController
+ 
+**Nama Kelas:** *PengajuanMitraController*  
+**ID Kelas:** *C12*
+ 
+Tabel 5.12.1. Operasi Kelas PengajuanMitraController
+ 
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *validasiKelengkapan(form: object, dokumen: File[]): boolean* | *public* | Memeriksa kelengkapan data dan format dokumen pengajuan. |
+| *simpanPengajuan(form: object): string* | *public* | Menyimpan pengajuan mitra beserta dokumennya. |
+| *setujui(idPengajuan: string): boolean* | *public* | Menyetujui pengajuan dan mendaftarkan restoran sebagai mitra. |
+| *tolak(idPengajuan: string, alasan: string): boolean* | *public* | Menolak pengajuan disertai alasan penolakan. |
+ 
+Tabel 5.12.2. Atribut Kelas PengajuanMitraController
+ 
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idPengajuan* | *private* | *string* |
+| *status* | *private* | *StatusPengajuan* |
+| *tglPengajuan* | *private* | *Date* |
+| *alasanPenolakan* | *private* | *string* |
+ 
+### 5.12.1 Algoritma/Query
+ 
+**Nama Kelas:** *PengajuanMitraController*  
+**Nama Operasi:** *validasiKelengkapan(form: object, dokumen: File[]): boolean*  
+**ID Algoritma:** *Algo-058*
+ 
+```text
+FUNCTION validasiKelengkapan(form, dokumen) RETURNS boolean
+    IF form.namaRestoran IS EMPTY OR form.kategori IS EMPTY
+       OR form.emailKontak IS EMPTY OR form.alamat IS EMPTY THEN
+        RETURN false
+    END IF
+    IF dokumen IS EMPTY THEN
+        RETURN false
+    END IF
+    FOR EACH f IN dokumen DO
+        IF NOT DokumenVerifikasi.validasiFormat(f) THEN
+            RETURN false
+        END IF
+    END FOR
+    RETURN true
+END FUNCTION
+```
+ 
+### 5.12.2 Algoritma/Query
+ 
+**Nama Kelas:** *PengajuanMitraController*  
+**Nama Operasi:** *simpanPengajuan(form: object): string*  
+**ID Algoritma:** *Algo-059*
+ 
+```text
+FUNCTION simpanPengajuan(form) RETURNS string
+    idPengajuan <- generateId()
+    status <- MENUNGGU
+    tglPengajuan <- now()
+    BEGIN TRANSACTION
+        INSERT INTO pengajuan_mitra VALUES (idPengajuan, form, status, tglPengajuan)
+        FOR EACH f IN form.dokumen DO
+            DokumenVerifikasi.unggahDokumen(idPengajuan, f)
+        END FOR
+    COMMIT
+    NotifikasiEmail.kirimEmail(form.emailKontak, "Pengajuan diterima, menunggu verifikasi", PENGAJUAN)
+    RETURN idPengajuan
+END FUNCTION
+```
+ 
+Tabel 5.12.2.1. Query Operasi simpanPengajuan
+ 
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-042* | `INSERT INTO pengajuan_mitra (id_pengajuan, nama_restoran, kategori, email_kontak, alamat, status, tgl_pengajuan) VALUES ($1, $2, $3, $4, $5, 'MENUNGGU', NOW());` | Menyimpan data pengajuan mitra baru. |
+ 
+### 5.12.3 Algoritma/Query
+ 
+**Nama Kelas:** *PengajuanMitraController*  
+**Nama Operasi:** *setujui(idPengajuan: string): boolean*  
+**ID Algoritma:** *Algo-060*
+ 
+```text
+FUNCTION setujui(idPengajuan) RETURNS boolean
+    BEGIN TRANSACTION
+        pengajuan <- UPDATE pengajuan_mitra SET status = DISETUJUI
+                     WHERE id_pengajuan = idPengajuan AND status = MENUNGGU RETURNING *
+        IF pengajuan IS NULL THEN
+            ROLLBACK
+            RETURN false
+        END IF
+        INSERT INTO restoran dari data pengajuan dengan status_aktif = true
+    COMMIT
+    NotifikasiEmail.kirimEmail(pengajuan.emailKontak, "Pengajuan mitra disetujui", PERSETUJUAN)
+    RETURN true
+END FUNCTION
+```
+ 
+Tabel 5.12.3.1. Query Operasi setujui
+ 
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-043* | `UPDATE pengajuan_mitra SET status = 'DISETUJUI' WHERE id_pengajuan = $1 AND status = 'MENUNGGU' RETURNING *;` | Mengubah status pengajuan menjadi disetujui. |
+| *Q-044* | `INSERT INTO restoran (restoran_id, nama_restoran, kategori, lokasi, email_kontak, status_aktif) VALUES ($1, $2, $3, $4, $5, true);` | Mendaftarkan restoran sebagai mitra aktif. |
+ 
+### 5.12.4 Algoritma/Query
+ 
+**Nama Kelas:** *PengajuanMitraController*  
+**Nama Operasi:** *tolak(idPengajuan: string, alasan: string): boolean*  
+**ID Algoritma:** *Algo-061*
+ 
+```text
+FUNCTION tolak(idPengajuan, alasan) RETURNS boolean
+    IF alasan IS EMPTY THEN
+        RETURN false
+    END IF
+    pengajuan <- UPDATE pengajuan_mitra SET status = DITOLAK, alasan_penolakan = alasan
+                 WHERE id_pengajuan = idPengajuan AND status = MENUNGGU RETURNING email_kontak
+    IF pengajuan IS NULL THEN
+        RETURN false
+    END IF
+    NotifikasiEmail.kirimEmail(pengajuan.emailKontak, "Pengajuan ditolak: " + alasan, PENOLAKAN)
+    RETURN true
+END FUNCTION
+```
+ 
+Tabel 5.12.4.1. Query Operasi tolak
+ 
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-045* | `UPDATE pengajuan_mitra SET status = 'DITOLAK', alasan_penolakan = $2 WHERE id_pengajuan = $1 AND status = 'MENUNGGU' RETURNING email_kontak;` | Menolak pengajuan dan menyimpan alasannya. |
+ 
+---
+ 
+## 5.13 Kelas DokumenVerifikasi
+ 
+**Nama Kelas:** *DokumenVerifikasi*  
+**ID Kelas:** *C13*
+ 
+Tabel 5.13.1. Operasi Kelas DokumenVerifikasi
+ 
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *unggahDokumen(idPengajuan: string, file: File): string* | *public* | Mengunggah dan menyimpan dokumen verifikasi pengajuan. |
+| *validasiFormat(file: File): boolean* | *public* | Memeriksa ekstensi dan ukuran dokumen. |
+ 
+Tabel 5.13.2. Atribut Kelas DokumenVerifikasi
+ 
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idDokumen* | *private* | *string* |
+| *jenisDokumen* | *private* | *string* |
+ 
+### 5.13.1 Algoritma/Query
+ 
+**Nama Kelas:** *DokumenVerifikasi*  
+**Nama Operasi:** *unggahDokumen(idPengajuan: string, file: File): string*  
+**ID Algoritma:** *Algo-062*
+ 
+```text
+FUNCTION unggahDokumen(idPengajuan, file) RETURNS string
+    IF NOT validasiFormat(file) THEN
+        RETURN NULL
+    END IF
+    idDokumen <- generateId()
+    jenisDokumen <- file.jenis
+    path <- Storage.simpan(file)
+    INSERT INTO dokumen_verifikasi VALUES (idDokumen, idPengajuan, jenisDokumen, path)
+    RETURN idDokumen
+END FUNCTION
+```
+ 
+Tabel 5.13.1.1. Query Operasi unggahDokumen
+ 
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-046* | `INSERT INTO dokumen_verifikasi (id_dokumen, id_pengajuan, jenis_dokumen, path_file) VALUES ($1, $2, $3, $4);` | Menyimpan metadata dokumen yang diunggah. |
+ 
+### 5.13.2 Algoritma/Query
+ 
+**Nama Kelas:** *DokumenVerifikasi*  
+**Nama Operasi:** *validasiFormat(file: File): boolean*  
+**ID Algoritma:** *Algo-063*
+ 
+```text
+FUNCTION validasiFormat(file) RETURNS boolean
+    IF file.ekstensi NOT IN ["pdf", "jpg", "jpeg", "png"] THEN
+        RETURN false
+    END IF
+    IF file.ukuran > 5 MB THEN
+        RETURN false
+    END IF
+    RETURN true
+END FUNCTION
+```
+ 
+---
+ 
+## 5.14 Kelas Admin
+ 
+**Nama Kelas:** *Admin*  
+**ID Kelas:** *C14*
+ 
+Tabel 5.14.1. Operasi Kelas Admin
+ 
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *tinjauPengajuan(idPengajuan: string): object* | *public* | Mengambil detail pengajuan beserta dokumennya untuk ditinjau. |
+| *accountRegister(dataAkun: object): boolean* | *public* | Mendaftarkan akun mitra restoran yang telah disetujui. |
+| *lihatKeluhan(): Keluhan[]* | *public* | Melihat daftar keluhan pelanggan. |
+| *konfirmasiPenghapusan(restoranId: string): boolean* | *public* | Mengonfirmasi penghapusan data restoran. |
+ 
+Tabel 5.14.2. Atribut Kelas Admin
+ 
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idAdmin* | *private* | *string* |
+| *nama* | *private* | *string* |
+| *emailAdmin* | *private* | *string* |
+ 
+### 5.14.1 Algoritma/Query
+ 
+**Nama Kelas:** *Admin*  
+**Nama Operasi:** *tinjauPengajuan(idPengajuan: string): object*  
+**ID Algoritma:** *Algo-064*
+ 
+```text
+FUNCTION tinjauPengajuan(idPengajuan) RETURNS object
+    pengajuan <- SELECT * FROM pengajuan_mitra WHERE id_pengajuan = idPengajuan
+    IF pengajuan IS NULL THEN
+        RETURN NULL
+    END IF
+    dokumen <- SELECT * FROM dokumen_verifikasi WHERE id_pengajuan = idPengajuan
+    RETURN {pengajuan: pengajuan, dokumen: dokumen}
+END FUNCTION
+```
+ 
+Tabel 5.14.1.1. Query Operasi tinjauPengajuan
+ 
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-047* | `SELECT * FROM pengajuan_mitra WHERE id_pengajuan = $1;` | Mengambil detail pengajuan. |
+| *Q-048* | `SELECT * FROM dokumen_verifikasi WHERE id_pengajuan = $1;` | Mengambil dokumen milik pengajuan. |
+ 
+### 5.14.2 Algoritma/Query
+ 
+**Nama Kelas:** *Admin*  
+**Nama Operasi:** *accountRegister(dataAkun: object): boolean*  
+**ID Algoritma:** *Algo-065*
+ 
+```text
+FUNCTION accountRegister(dataAkun) RETURNS boolean
+    dataAkun.role <- MITRA
+    sukses <- AutentikasiController.createAccount(dataAkun)
+    IF sukses THEN
+        NotifikasiEmail.kirimEmail(dataAkun.email, "Akun mitra telah dibuat", REGISTRASI)
+    END IF
+    RETURN sukses
+END FUNCTION
+```
+ 
+### 5.14.3 Algoritma/Query
+ 
+**Nama Kelas:** *Admin*  
+**Nama Operasi:** *lihatKeluhan(): Keluhan[]*  
+**ID Algoritma:** *Algo-066*
+ 
+```text
+FUNCTION lihatKeluhan() RETURNS Keluhan[]
+    RETURN KeluhanController.tampilkanKeluhan()
+END FUNCTION
+```
+ 
+### 5.14.4 Algoritma/Query
+ 
+**Nama Kelas:** *Admin*  
+**Nama Operasi:** *konfirmasiPenghapusan(restoranId: string): boolean*  
+**ID Algoritma:** *Algo-067*
+ 
+```text
+FUNCTION konfirmasiPenghapusan(restoranId) RETURNS boolean
+    IF restoranId IS NULL THEN
+        RETURN false
+    END IF
+    RETURN KelolaDataRestoranController.hapusDataRestoran(restoranId)
+END FUNCTION
+```
+ 
+---
+ 
+## 5.15 Kelas NotifikasiEmail
+ 
+**Nama Kelas:** *NotifikasiEmail*  
+**ID Kelas:** *C15*
+ 
+Tabel 5.15.1. Operasi Kelas NotifikasiEmail
+ 
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *kirimEmail(penerima: string, isiPesan: string, jenis: JenisNotifikasi): boolean* | *public* | Mengirim email notifikasi dan mencatat hasil pengiriman. |
+ 
+Tabel 5.15.2. Atribut Kelas NotifikasiEmail
+ 
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *penerima* | *private* | *string* |
+| *isiPesan* | *private* | *string* |
+| *jenis* | *private* | *JenisNotifikasi* |
+ 
+### 5.15.1 Algoritma/Query
+ 
+**Nama Kelas:** *NotifikasiEmail*  
+**Nama Operasi:** *kirimEmail(penerima: string, isiPesan: string, jenis: JenisNotifikasi): boolean*  
+**ID Algoritma:** *Algo-068*
+ 
+```text
+FUNCTION kirimEmail(penerima, isiPesan, jenis) RETURNS boolean
+    IF NOT formatEmailValid(penerima) THEN
+        RETURN false
+    END IF
+    subjek <- tentukanSubjek(jenis)
+    berhasil <- EmailService.send(penerima, subjek, isiPesan)
+    IF berhasil THEN
+        statusKirim <- TERKIRIM
+    ELSE
+        statusKirim <- GAGAL
+    END IF
+    INSERT INTO log_notifikasi VALUES (penerima, jenis, statusKirim, now())
+    RETURN berhasil
+END FUNCTION
+```
+ 
+Tabel 5.15.1.1. Query Operasi kirimEmail
+ 
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-049* | `INSERT INTO log_notifikasi (penerima, jenis, status, waktu_kirim) VALUES ($1, $2, $3, NOW());` | Mencatat riwayat pengiriman email. |
+ 
+---
+ 
+## 5.16 Kelas KelolaAntreanController
+ 
+**Nama Kelas:** *KelolaAntreanController*  
+**ID Kelas:** *C16*
+ 
+Tabel 5.16.1. Operasi Kelas KelolaAntreanController
+ 
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *getAntrean(restoranId: string): TiketAntrean[]* | *public* | Mengambil daftar tiket antrean yang masih menunggu. |
+| *processDequeue(restoranId: string): TiketAntrean* | *public* | Memanggil tiket antrean terdepan dan memperbarui kapasitas. |
+| *mulaiTimer(idTiket: string): void* | *public* | Menjalankan batas waktu kehadiran pelanggan yang dipanggil. |
+ 
+Tabel 5.16.2. Atribut Kelas KelolaAntreanController
+ 
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *timer* | *private* | *integer* |
+ 
+### 5.16.1 Algoritma/Query
+ 
+**Nama Kelas:** *KelolaAntreanController*  
+**Nama Operasi:** *getAntrean(restoranId: string): TiketAntrean[]*  
+**ID Algoritma:** *Algo-069*
+ 
+```text
+FUNCTION getAntrean(restoranId) RETURNS TiketAntrean[]
+    daftar <- SELECT tiket FROM tiket_antrean JOIN antrean
+              WHERE antrean.restoran_id = restoranId AND tiket.status_antrean = MENUNGGU
+              ORDER BY tiket.nomor_urut ASC
+    RETURN daftar
+END FUNCTION
+```
+ 
+Tabel 5.16.1.1. Query Operasi getAntrean
+ 
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-050* | `SELECT t.* FROM tiket_antrean t JOIN antrean a ON t.antrean_id = a.antrean_id WHERE a.restoran_id = $1 AND t.status_antrean = 'MENUNGGU' ORDER BY t.nomor_urut ASC;` | Mengambil tiket antrean menunggu sesuai urutan. |
+ 
+### 5.16.2 Algoritma/Query
+ 
+**Nama Kelas:** *KelolaAntreanController*  
+**Nama Operasi:** *processDequeue(restoranId: string): TiketAntrean*  
+**ID Algoritma:** *Algo-070*
+ 
+```text
+FUNCTION processDequeue(restoranId) RETURNS TiketAntrean
+    antrean <- Restoran.getAntrean(restoranId)
+    terdepan <- antrean.getFrontCustomer()
+    IF terdepan IS NULL THEN
+        RETURN NULL
+    END IF
+    BEGIN TRANSACTION
+        antrean.dequeueCustomer()
+        terdepan.updateStatusTiket(DIPANGGIL)
+    COMMIT
+    pelanggan <- Pelanggan.getDetails(terdepan.pelangganId)
+    NotifikasiEmail.kirimEmail(pelanggan.email, "Giliran Anda telah tiba", PANGGILAN)
+    Kuota.updateKapasitas(restoranId)
+    mulaiTimer(terdepan.idTiket)
+    RETURN terdepan
+END FUNCTION
+```
+ 
+Tabel 5.16.2.1. Query Operasi processDequeue
+ 
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-051* | `UPDATE antrean SET nomor_dilayani = $2 WHERE antrean_id = $1;` | Memajukan nomor antrean yang sedang dilayani. |
+| *Q-052* | `UPDATE tiket_antrean SET status_antrean = 'DIPANGGIL' WHERE id_tiket = $1;` | Mengubah status tiket terdepan menjadi dipanggil. |
+ 
+### 5.16.3 Algoritma/Query
+ 
+**Nama Kelas:** *KelolaAntreanController*  
+**Nama Operasi:** *mulaiTimer(idTiket: string): void*  
+**ID Algoritma:** *Algo-071*
+ 
+```text
+PROCEDURE mulaiTimer(idTiket)
+    timer <- 300                          // detik
+    WHILE timer > 0 DO
+        tunggu(1 detik)
+        timer <- timer - 1
+        IF TiketAntrean.getDetailTiket(idTiket).statusAntrean = HADIR THEN
+            RETURN
+        END IF
+    END WHILE
+    UPDATE tiket_antrean SET status_antrean = DILEWATI
+        WHERE id_tiket = idTiket AND status_antrean = DIPANGGIL
+END PROCEDURE
+```
+ 
+Tabel 5.16.3.1. Query Operasi mulaiTimer
+ 
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-053* | `UPDATE tiket_antrean SET status_antrean = 'DILEWATI' WHERE id_tiket = $1 AND status_antrean = 'DIPANGGIL';` | Melewati tiket bila pelanggan tidak hadir. |
+ 
+---
+ 
+## 5.17 Kelas KonfirmasiDequeuePage
+ 
+**Nama Kelas:** *KonfirmasiDequeuePage*  
+**ID Kelas:** *C17*
+ 
+Tabel 5.17.1. Operasi Kelas KonfirmasiDequeuePage
+ 
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *showConfirmationModal(message: string): void* | *public* | Menampilkan dialog konfirmasi pemanggilan antrean. |
+| *hideModal(): void* | *public* | Menutup dialog konfirmasi. |
+| *onConfirm(): void* | *public* | Meneruskan pemanggilan antrean ke controller. |
+| *onCancel(): void* | *public* | Membatalkan pemanggilan antrean. |
+ 
+Tabel 5.17.2. Atribut Kelas KonfirmasiDequeuePage
+ 
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *message* | *private* | *string* |
+ 
+### 5.17.1 Algoritma/Query
+ 
+**Nama Kelas:** *KonfirmasiDequeuePage*  
+**Nama Operasi:** *showConfirmationModal(message: string): void*  
+**ID Algoritma:** *Algo-072*
+ 
+```text
+PROCEDURE showConfirmationModal(message)
+    this.message <- message
+    renderDialog(message)
+    renderTombol("Ya", "Batal")
+END PROCEDURE
+```
+ 
+### 5.17.2 Algoritma/Query
+ 
+**Nama Kelas:** *KonfirmasiDequeuePage*  
+**Nama Operasi:** *hideModal(): void*  
+**ID Algoritma:** *Algo-073*
+ 
+```text
+PROCEDURE hideModal()
+    tutupDialog()
+END PROCEDURE
+```
+ 
+### 5.17.3 Algoritma/Query
+ 
+**Nama Kelas:** *KonfirmasiDequeuePage*  
+**Nama Operasi:** *onConfirm(): void*  
+**ID Algoritma:** *Algo-074*
+ 
+```text
+PROCEDURE onConfirm()
+    hideModal()
+    dipanggil <- KelolaAntreanController.processDequeue(restoranIdSesi)
+    IF dipanggil IS NULL THEN
+        tampilkanPesan("Tidak ada antrean yang menunggu")
+    ELSE
+        daftar <- KelolaAntreanController.getAntrean(restoranIdSesi)
+        KelolaAntreanPage.displayDashboard(daftar)
+    END IF
+END PROCEDURE
+```
+ 
+### 5.17.4 Algoritma/Query
+ 
+**Nama Kelas:** *KonfirmasiDequeuePage*  
+**Nama Operasi:** *onCancel(): void*  
+**ID Algoritma:** *Algo-075*
+ 
+```text
+PROCEDURE onCancel()
+    hideModal()                 // antrean tidak berubah
+END PROCEDURE
+```
+ 
+---
+ 
+## 5.18 Kelas KelolaAntreanPage
+ 
+**Nama Kelas:** *KelolaAntreanPage*  
+**ID Kelas:** *C18*
+ 
+Tabel 5.18.1. Operasi Kelas KelolaAntreanPage
+ 
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *displayDashboard(antrean: TiketAntrean[]): void* | *public* | Menampilkan daftar antrean kepada mitra restoran. |
+| *dequeue(): void* | *public* | Membuka dialog konfirmasi pemanggilan antrean. |
+ 
+Tabel 5.18.2. Atribut Kelas KelolaAntreanPage
+ 
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *queueListUI* | *private* | *TiketAntrean[]* |
+ 
+### 5.18.1 Algoritma/Query
+ 
+**Nama Kelas:** *KelolaAntreanPage*  
+**Nama Operasi:** *displayDashboard(antrean: TiketAntrean[]): void*  
+**ID Algoritma:** *Algo-076*
+ 
+```text
+PROCEDURE displayDashboard(antrean)
+    queueListUI <- antrean
+    IF antrean IS EMPTY THEN
+        tampilkanPesan("Belum ada antrean")
+        nonaktifkanTombol("Panggil")
+    ELSE
+        FOR EACH t IN antrean DO
+            renderBaris(t.nomorUrut, t.tipeAntrean, t.statusAntrean, t.estimasiWaktuTunggu)
+        END FOR
+        aktifkanTombol("Panggil")
+    END IF
+END PROCEDURE
+```
+ 
+### 5.18.2 Algoritma/Query
+ 
+**Nama Kelas:** *KelolaAntreanPage*  
+**Nama Operasi:** *dequeue(): void*  
+**ID Algoritma:** *Algo-077*
+ 
+```text
+PROCEDURE dequeue()
+    IF queueListUI IS EMPTY THEN
+        RETURN
+    END IF
+    pesan <- "Panggil antrean nomor " + queueListUI[0].nomorUrut + "?"
+    KonfirmasiDequeuePage.showConfirmationModal(pesan)
+END PROCEDURE
+```
+ 
+---
+ 
+## 5.19 Kelas DashboardAntreanPage
+ 
+**Nama Kelas:** *DashboardAntreanPage*  
+**ID Kelas:** *C19*
+ 
+Tabel 5.19.1. Operasi Kelas DashboardAntreanPage
+ 
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *displayQueue(): void* | *public* | Menampilkan daftar antrean dan nomor yang sedang dilayani. |
+| *updateQueueStatus(): void* | *public* | Memperbarui status antrean secara berkala. |
+ 
+Tabel 5.19.2. Atribut Kelas DashboardAntreanPage
+ 
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *daftarAntrean* | *private* | *TiketAntrean[]* |
+| *statusAntrean* | *private* | *StatusAntrean* |
+ 
+### 5.19.1 Algoritma/Query
+ 
+**Nama Kelas:** *DashboardAntreanPage*  
+**Nama Operasi:** *displayQueue(): void*  
+**ID Algoritma:** *Algo-078*
+ 
+```text
+PROCEDURE displayQueue()
+    antrean <- Restoran.getAntrean(restoranId)
+    daftarAntrean <- KelolaAntreanController.getAntrean(restoranId)
+    renderTeks("Sedang Dilayani", antrean.nomorDilayani)
+    renderTeks("Status Antrean", statusAntrean)
+    IF daftarAntrean IS EMPTY THEN
+        tampilkanPesan("Tidak ada antrean")
+    ELSE
+        FOR EACH t IN daftarAntrean DO
+            renderBaris(t.nomorUrut, t.statusAntrean)
+        END FOR
+    END IF
+END PROCEDURE
+```
+ 
+### 5.19.2 Algoritma/Query
+ 
+**Nama Kelas:** *DashboardAntreanPage*  
+**Nama Operasi:** *updateQueueStatus(): void*  
+**ID Algoritma:** *Algo-079*
+ 
+```text
+PROCEDURE updateQueueStatus()
+    WHILE halaman masih terbuka DO
+        statusAntrean <- Restoran.getAntrean(restoranId).getQueueStatus()
+        displayQueue()
+        tunggu(10 detik)
+    END WHILE
+END PROCEDURE
+```
+ 
+---
+ 
+## 5.20 Kelas Kuota
+ 
+**Nama Kelas:** *Kuota*  
+**ID Kelas:** *C20*
+ 
+Tabel 5.20.1. Operasi Kelas Kuota
+ 
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *updateKapasitas(restoranId: string): void* | *public* | Menghitung ulang kapasitas meja dan status antrean restoran. |
+| *isAntreanTutup(): boolean* | *public* | Memeriksa apakah kuota antrean sudah penuh. |
+ 
+Tabel 5.20.2. Atribut Kelas Kuota
+ 
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *kuotaMaksimum* | *private* | *integer* |
+| *kapasitasMeja* | *private* | *integer* |
+| *statusAntrean* | *private* | *StatusAntrean* |
+ 
+### 5.20.1 Algoritma/Query
+ 
+**Nama Kelas:** *Kuota*  
+**Nama Operasi:** *updateKapasitas(restoranId: string): void*  
+**ID Algoritma:** *Algo-080*
+ 
+```text
+PROCEDURE updateKapasitas(restoranId)
+    kuotaMaksimum <- Restoran.getPengaturan(restoranId).kuotaMaksimum
+    terisi <- SELECT COUNT(*) FROM tiket_antrean JOIN antrean
+              WHERE antrean.restoran_id = restoranId
+              AND tiket.status_antrean IN (MENUNGGU, DIPANGGIL)
+    kapasitasMeja <- kuotaMaksimum - terisi
+    IF isAntreanTutup() THEN
+        statusAntrean <- TUTUP
+    ELSE
+        statusAntrean <- TERBUKA
+    END IF
+    Restoran.getAntrean(restoranId).updateStatus(statusAntrean, terisi)
+END PROCEDURE
+```
+ 
+Tabel 5.20.1.1. Query Operasi updateKapasitas
+ 
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-054* | `SELECT COUNT(*) FROM tiket_antrean t JOIN antrean a ON t.antrean_id = a.antrean_id WHERE a.restoran_id = $1 AND t.status_antrean IN ('MENUNGGU', 'DIPANGGIL');` | Menghitung jumlah tiket antrean aktif. |
+| *Q-055* | `UPDATE antrean SET status_antrean = $2, total_antrean = $3 WHERE restoran_id = $1;` | Memperbarui status dan total antrean restoran. |
+ 
+### 5.20.2 Algoritma/Query
+ 
+**Nama Kelas:** *Kuota*  
+**Nama Operasi:** *isAntreanTutup(): boolean*  
+**ID Algoritma:** *Algo-081*
+ 
+```text
+FUNCTION isAntreanTutup() RETURNS boolean
+    IF kapasitasMeja <= 0 THEN
+        RETURN true
+    END IF
+    RETURN false
+END FUNCTION
+```
+
 ## 5.31 Kelas DashboardKelolaRestoranPage
 
 **Nama Kelas:** *DashboardKelolaRestoranPage*  
