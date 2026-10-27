@@ -577,7 +577,6 @@ Tabel 5.1.1. Operasi Kelas RegistrasiMasyarakatPage
 | *submitRegistrasi(nama: String, nomorInduk: String, email: String, sandi: String): void* | *public* | *Mengirimkan data registrasi masyarakat ke controller untuk diproses.* |
 | *tampilkanPesanSukses(): void* | *public* | *Menampilkan notifikasi bahwa registrasi akun berhasil.* |
 | *tampilkanPesanError(pesan: String): void* | *public* | *Menampilkan notifikasi kesalahan input atau kegagalan registrasi.* |
-| *...* | *...* | *...* |
 
 Tabel 5.1.2. Atribut Kelas RegistrasiMasyarakatPage
 
@@ -589,11 +588,8 @@ Tabel 5.1.2. Atribut Kelas RegistrasiMasyarakatPage
 | *inputEmail* | *private* | *String* |
 | *inputSandi* | *private* | *String* |
 
-| *...* | *...* | *...* |
 
 ### 5.1.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *RegistrasiMasyarakatPage*  
 **Nama Operasi:** *sumbitRegistrasi(nama: String, nomorInduk: String, email: String, sandi: String): void*  
@@ -629,7 +625,6 @@ Tabel 5.2.1. Operasi Kelas LoginMasyarakatPage
 | *submitVerifikasi(email: String, sandi: String): void* | *public* | *Mengirim kredensial login ke controller untuk diautentikasi.* |
 | *arahkanKeBeranda(): void* | *public* | *Mengarahkan tampilan ke halaman beranda (BerandaPage / C03) setelah login berhasil.* |
 | *tampilkanPesanError(pesan: String): void* | *public* | *Menampilkan notifikasi kegalalan login.* |
-| *...* | *...* | *...* |
 
 Tabel 5.2.2. Atribut Kelas LoginMasyarakatPage
 
@@ -637,11 +632,8 @@ Tabel 5.2.2. Atribut Kelas LoginMasyarakatPage
 | :--- | :--- | :--- |
 | *tombolLogin* | *private* | *Button* |
 | *inputKredensial* | *private* | *String* |
-| *...* | *...* | *...* |
 
 ### 5.2.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *LoginMasyarakatPage*  
 **Nama Operasi:** *sumbitVerifikasi(email: String, sandi: String): void*  
@@ -664,7 +656,6 @@ END PROCEDURE
 ```
 
 
-
 ## 5.3 Kelas BerandaPage
 
 **Nama Kelas:** *BerandaPage*  
@@ -676,18 +667,14 @@ Tabel 5.3.1. Operasi Kelas BerandaPage
 | :--- | :--- | :--- |
 | *tampilkanBeranda(): void* | *public* | *Menampilkan halaman utama dengan pilihan fitur HaloLaw dan SearchLaw..* |
 | *pilihFitur(namaFitur: String): void* | *public* | *Mengarahkan masyarakat ke modul fitur yang dipilih.* |
-| *...* | *...* | *...* |
 
 Tabel 5.3.2. Atribut Kelas BerandaPage
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
 | *pilihanFitur* | *private* | *String* |
-| *...* | *...* | *...* |
 
 ### 5.3.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *BerandaPage*  
 **Nama Operasi:** *pilihFitur(namaFitur: String): void*  
@@ -706,7 +693,6 @@ END PROCEDURE
 ```
 
 
-
 ## 5.4 Kelas RegistrasiMitraPage
 
 **Nama Kelas:** *RegistrasiMitraPage*  
@@ -718,7 +704,6 @@ Tabel 5.4.1. Operasi Kelas RegistrasiMitraPage
 | :--- | :--- | :--- |
 | *bukaFormRegistrasiMitra(): void* | *public* | *Menampilkan antarmuka pendaftaran akun dan pengunggahan berkas bagi mitra pengacara.* |
 | *submitRegistrasi(nama: String, email: String, sandi: String, dokumen: File): void* | *public* | *Mengirimkan data registrasi dan dokumen legalitas mitra ke controller.* |
-| *...* | *...* | *...* |
 
 Tabel 5.4.2. Atribut Kelas RegistrasiMitraPage
 
@@ -726,11 +711,8 @@ Tabel 5.4.2. Atribut Kelas RegistrasiMitraPage
 | :--- | :--- | :--- |
 | *tombolRegistrasi* | *private* | *Button* |
 | *inputDokumen* | *private* | *File* |
-| *...* | *...* | *...* |
 
 ### 5.4.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *RegistrasiMitraPage*  
 **Nama Operasi:** *submitRegistrasi(nama: String, email: String, sandi: String, dokumen: File): void*  
@@ -753,7 +735,6 @@ END PROCEDURE
 ```
 
 
-
 ## 5.5 Kelas LoginMitraPage
 
 **Nama Kelas:** *LoginMitraPage*  
@@ -765,7 +746,6 @@ Tabel 5.5.1. Operasi Kelas LoginMitraPage
 | :--- | :--- | :--- |
 | *submitVerifikasi(email: String, sandi: String): void* | *public* | *Mengirimkan kredensial login mitra ke controller* |
 | *tampilkanPesanError(pesan: String): void* | *public* | *Menampilkan peringatan kesalahan login atau status akun belum disetujui.* |
-| *...* | *...* | *...* |
 
 Tabel 5.5.2. Atribut Kelas LoginMitraPage
 
@@ -773,11 +753,8 @@ Tabel 5.5.2. Atribut Kelas LoginMitraPage
 | :--- | :--- | :--- |
 | *tombolVerifikasi* | *private* | *Button* |
 | *inputKredensial* | *private* | *String* |
-| *...* | *...* | *...* |
 
 ### 5.5.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *LoginMitraPage*  
 **Nama Operasi:** *submitVerifikasi(email: String, sandi: String): void*  
@@ -810,18 +787,14 @@ Tabel 5.6.1. Operasi Kelas StatusVerifikasiMitraPage
 | Nama Operasi | Visibility (private, public) | Keterangan |
 | :--- | :--- | :--- |
 | *infoStatus(idMitra: String): void* | *public* | *Meminta dan menampilkan status verifikasi akun pendaftaran mitra terkini.* |
-| *...* | *...* | *...* |
 
 Tabel 5.6.2. Atribut Kelas StatusVerifikasiMitraPage
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
 | *status* | *private* | *String* |
-| *...* | *...* | *...* |
 
 ### 5.6.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *StatusVerifikasiMitraPage*  
 **Nama Operasi:** *infoStatus(idMitra: String): void*  
@@ -839,7 +812,6 @@ END PROCEDURE
 ```
 
 
-
 ## 5.7 Kelas VerifikasiMitraPage
 
 **Nama Kelas:** *VerifikasiMitraPage*  
@@ -850,18 +822,14 @@ Tabel 5.7.1. Operasi Kelas VerifikasiMitraPage
 | Nama Operasi | Visibility (private, public) | Keterangan |
 | :--- | :--- | :--- |
 | *ubahStatus(idMitra: String, statusBaru: String, catatan: String): void* | *public* | *Mengubah status verifikasi pendaftar mitra berdasarkan keputusan peninjauan admin.* |
-| *...* | *...* | *...* |
 
 Tabel 5.7.2. Atribut Kelas VerifikasiMitraPage
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
 | *status* | *private* | *String* |
-| *...* | *...* | *...* |
 
 ### 5.7.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *VerifikasiMitraPage*  
 **Nama Operasi:** *ubahStatus(idMitra: String, statusBaru: String, catatan: String): void*  
@@ -880,7 +848,6 @@ END PROCEDURE
 ```
 
 
-
 ## 5.8 Kelas EditProfilMitraPage
 
 **Nama Kelas:** *EditProfilMitraPage*  
@@ -891,18 +858,14 @@ Tabel 5.8.1. Operasi Kelas EditProfilMitraPage
 | Nama Operasi | Visibility (private, public) | Keterangan |
 | :--- | :--- | :--- |
 | *validasiData(inputKredensial: String, tagKeahlian: String): Boolean* | *public* | *Memeriksa keabsahan data profil dan tag keahlian sebelum disimpan.* |
-| *...* | *...* | *...* |
 
 Tabel 5.8.2. Atribut Kelas EditProfilMitraPage
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
 | *inputKredensial* | *private* | *String* |
-| *...* | *...* | *...* |
 
 ### 5.8.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *EditProfilMitraPage*  
 **Nama Operasi:** *validasiData(inputKredensial: String, tagKeahlian: String): Boolean*  
@@ -925,8 +888,6 @@ END FUNCTION
 ```
 
 
-
-
 ## 5.9 EditDokumenLegalitasPage
 
 **Nama Kelas:** EditDokumenLegalitasPage 
@@ -947,8 +908,6 @@ Tabel 5.1.2. Atribut Kelas [Nama Kelas 1]
 | inputDokumen | *...* | String |
 
 ### 5.9.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** EditDokumenLegalitasPage
 **Nama Operasi:** validasiData(inputDokumen: String): Boolean
@@ -985,8 +944,6 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 | *...* | *...* | *...* |
 
 
-
-
 ## 5.30 Kelas PencarianMitraController
 
 **Nama Kelas:** *PencarianMitraController*  
@@ -998,19 +955,14 @@ Tabel 5.30.1. Operasi Kelas PencarianMitraController
 | :--- | :--- | :--- |
 | *cariMitraSesuaiKasus(idKasus: String, filterKeahlian: String): List<MitraPengacara>* | *public* | *Memproses pencarian dan mencocokkan mitra pengacara berdasarkan kategori kasus dan tag keahlian.* |
 | *terapkanFilter(kategori: String, ratingMin: Float): List<MitraPengacara>* | *public* | *Menyaring daftar mitra berdasarkan kriteria filter tambahan.* |
-| *...* | *...* | *...* |
-
 
 Tabel 5.30.2. Atribut Kelas PencarianMitraController
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
 | *-* | *-* | *-* |
-| *...* | *...* | *...* |
 
 ### 5.30.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *PencarianMitraController*  
 **Nama Operasi:** *cariMitraSesuaiKasus(idKasus: String, filterKeahlian: String): List<MitraPengacara>*  
@@ -1033,8 +985,6 @@ Tabel 5.30.1. Query Operasi -
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
 | *-* | *-* | *Pengontrol meneruskan operasi pemanggilan data ke entitas Kasus dan MitraPengacara.* |
-| *...* | *...* | *...* |
-
 
 
 ## 5.31 Kelas PenjadwalanKonsultasiController
@@ -1048,19 +998,14 @@ Tabel 5.31.1. Operasi Kelas PenjadwalanKonsultasiController
 | :--- | :--- | :--- |
 | *buatSesiKonsultasi(idMasyarakat: String, idMitra: String, tanggal: String, waktu: String, idKasus: String): Boolean* | *public* | *Membuat pengajuan jadwal konsultasi baru.* |
 | *validasiJadwal(idMitra: String, tanggal: String, waktu: String): Boolean* | *public* | *Memeriksa ketersediaan jadwal mitra pada jam dan tanggal yang dipilih.* |
-| *...* | *...* | *...* |
-
 
 Tabel 5.31.2. Atribut Kelas PenjadwalanKonsultasiController
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
 | *-* | *-* | *-* |
-| *...* | *...* | *...* |
 
 ### 5.31.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *PenjadwalanKonsultasiController*  
 **Nama Operasi:** *buatSesiKonsultasi(idMasyarakat: String, idMitra: String, tanggal: String, waktu: String, idKasus: String): Boolean*  
@@ -1094,7 +1039,6 @@ END FUNCTION
 ```
 
 
-
 ## 5.32 Kelas SesiKonsultasiController
 
 **Nama Kelas:** *SesiKonsultasiController*  
@@ -1109,19 +1053,14 @@ Tabel 5.32.1. Operasi Kelas SesiKonsultasiController
 | *kelolaPesanChat(idSesi: String, pesan: String, senderId: String): Boolean* | *public* | *Mengelola lalu lintas pengiriman pesan ruang konsultasi real-time.* |
 | *validasiStatusPembayaran(idSesi: String): Boolean* | *public* | *Memastikan status pembayaran telah lunas sebelum membuka sesi chat.* |
 | *akhiriSesiKonsultasi(idSesi: String): Boolean* | *public* | *Menutup sesi chat konsultasi dan mencatat waktu penyelesaian.* |
-| *...* | *...* | *...* |
-
 
 Tabel 5.32.2. Atribut Kelas SesiKonsultasiController
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
 | *-* | *-* | *-* |
-| *...* | *...* | *...* |
 
 ### 5.32.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *SesiKonsultasiController*  
 **Nama Operasi:** *prosesKonfirmasiJadwal(idSesi: String, statusTerima: Boolean): Boolean*  
@@ -1144,6 +1083,7 @@ FUNCTION prosesKonfirmasiJadwal(idSesi: String, statusTerima: Boolean): Boolean
 END FUNCTION
 ```
 
+
 ## 5.33 Kelas UlasanController
 
 **Nama Kelas:** *UlasanController*  
@@ -1155,19 +1095,14 @@ Tabel 5.33.1. Operasi Kelas UlasanController
 | :--- | :--- | :--- |
 | *simpanUlasanBaru(idSesi: String, idMasyarakat: String, idMitra: String, rating: Integer, teks: String): Boolean* | *public* | *Menyimpan data ulasan baru dan memicu kalkulasi ulang skor rating mitra pengacara.* |
 | *perbaruiRatingMitra(idMitra: String): void* | *public* | *Menghitung rerata skor rating mitra setelah ulasan baru ditambahkan.* |
-| *...* | *...* | *...* |
-
 
 Tabel 5.33.2. Atribut Kelas UlasanController
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
 | *-* | *-* | *-* |
-| *...* | *...* | *...* |
 
 ### 5.33.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *UlasanController*  
 **Nama Operasi:** *simpanUlasanBaru(idSesi: String, idMasyarakat: String, idMitra: String, rating: Integer, teks: String): Boolean*  
@@ -1188,6 +1123,7 @@ FUNCTION simpanUlasanBaru(idSesi: String, idMasyarakat: String, idMitra: String,
 END FUNCTION
 ```
 
+
 ## 5.34 Kelas LaporanController
 
 **Nama Kelas:** *LaporanController*  
@@ -1199,19 +1135,14 @@ Tabel 5.34.1. Operasi Kelas LaporanController
 | :--- | :--- | :--- |
 | *buatLaporanBaru(idPelapor: String, idTerlapor: String, jenis: String, deskripsi: String, bukti: String): Boolean* | *public* | *Membuat entri laporan pelanggaran akun atau ulasan baru.* |
 | *validasiBuktiLaporan(bukti: String): Boolean* | *public* | *Memerikasa berkas bukti yang dilampirkan pelapor.* |
-| *...* | *...* | *...* |
-
 
 Tabel 5.34.2. Atribut Kelas LaporanController
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
 | *-* | *-* | *-* |
-| *...* | *...* | *...* |
 
 ### 5.34.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *LaporanController*  
 **Nama Operasi:** *buatLaporanBaru(idPelapor: String, idTerlapor: String, jenis: String, deskripsi: String, bukti: String): Boolean*  
@@ -1231,7 +1162,6 @@ FUNCTION buatLaporanBaru(idPelapor: String, idTerlapor: String, jenis: String, d
     RETURN statusSimpan
 END FUNCTION
 ```
-
 
 
 ## 5.35 ModerasiAkunController
@@ -1254,7 +1184,6 @@ Tabel 5.35.2. Atribut Kelas ModerasiAkunController
 | - | - | - |
 
 
-
 ## 5.40 Kelas Masyarakat
 
 **Nama Kelas:** *Masyarakat*  
@@ -1266,8 +1195,6 @@ Tabel 5.40.1. Operasi Kelas Masyarakat
 | :--- | :--- | :--- |
 | *inputInfo(nama: String, nomorInduk: String, email: String, sandi: String): Boolean* | *public* | *Menyimpan data pendaftaran entitas akun masyarakat baru ke basis data.* |
 | *cekEmailTerdaftar(email: String): Boolean* | *public* | *Memeriksa apakah alamat email sudah tersimpan dalam basis data akun masyarakat.* |
-| *...* | *...* | *...* |
-
 
 Tabel 5.40.2. Atribut Kelas Masyarakat
 
@@ -1279,11 +1206,8 @@ Tabel 5.40.2. Atribut Kelas Masyarakat
 | email | private | String |
 | sandi| private | String |
 | statusAkun    | private | String |
-| *...* | *...* | *...* |
 
 ### 5.40.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *Masyarakat*  
 **Nama Operasi:** *cekEmailTerdaftar(email: String): Boolean*  
@@ -1299,14 +1223,12 @@ FUNCTION cekEmailTerdaftar(email: String): Boolean
 END FUNCTION
 ```
 
-
 Tabel 5.40.3. Query Operasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
 | Q-401 | `SELECT idMasyarakat FROM masyarakat WHERE email = ?;` | Mengecek keberadaan email masyarakat pada sistem. |
 | Q-002 | `INSERT INTO masyarakat (idMasyarakat, nama, nomorInduk, email, sandi, statusAkun) VALUES (?, ?, ?, ?, ?, ?);` | Menambahkan baris data akun masyarakat baru. |
-
 
 
 ## 5.41 Kelas MitraPengacara
@@ -1320,8 +1242,6 @@ Tabel 5.41.1. Operasi Kelas MitraPengacara
 | :--- | :--- | :--- |
 | *cekKetersediaanJadwal(idMitra: String, tanggal: String, waktu: String): Boolean* | *public* | *Memeriksa ketersediaan slot jadwal mitra pada tabel sesi konsultasi.* |
 | *infoProfil(idMitra: String): MitraPengacara* | *public* | *Mengambil detail profil dan tag keahlian mitra pengacara.* |
-| *...* | *...* | *...* |
-
 
 Tabel 5.41.2. Atribut Kelas MitraPengacara
 
@@ -1335,11 +1255,8 @@ Tabel 5.41.2. Atribut Kelas MitraPengacara
 | rating | private | Float |
 | saldo | private | Double |
 | rekeningPencairan | private | String | 
-| *...* | *...* | *...* |
 
 ### 5.41.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *MitraPengacara*  
 **Nama Operasi:** *cekKetersediaanJadwal(idMitra: String, tanggal: String, waktu: String): Boolean*  
@@ -1363,7 +1280,6 @@ Tabel 5.41.3. Query Operasi
 | Q-412 | `SELECT * FROM mitra_pengacara WHERE idMitra = ?;` | Memuat profil lengkap mitra pengacara. |
 
 
-
 ## 5.42 Kelas Admin
 
 **Nama Kelas:** *Admin*  
@@ -1375,8 +1291,6 @@ Tabel 5.42.1. Operasi Kelas Admin
 | :--- | :--- | :--- |
 | *verifikasiDokumen(idDokumen: String, status: String): Boolean* | *public* | *Memperbarui status verifikasi dokumen legalitas mitra oleh admin.* |
 | *login(idAdmin: String, sandi: String): Boolean* | *public* | *Memverifikasi identitas kredensial akun admin.* |
-| *...* | *...* | *...* |
-
 
 Tabel 5.42.2. Atribut Kelas Admin
 
@@ -1384,11 +1298,8 @@ Tabel 5.42.2. Atribut Kelas Admin
 | :--- | :--- | :--- |
 | idAdmin | private | String |
 | verifikasi | private | String |
-| *...* | *...* | *...* |
 
 ### 5.42.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *Admin*  
 **Nama Operasi:** *verifikasiDokumen(idDokumen: String, status: String): Boolean*  
@@ -1411,7 +1322,6 @@ Tabel 5.42.3. Query Operasi
 | Q-421 | `UPDATE dokumen_legalitas SET statusValiditas = ? WHERE idDokumen = ?;` | Mengubah status keabsahan dokumen pendaftaran mitra. |
 
 
-
 ## 5.43 Kelas Kasus
 
 **Nama Kelas:** *Kasus*  
@@ -1423,8 +1333,6 @@ Tabel 5.43.1. Operasi Kelas Kasus
 | :--- | :--- | :--- |
 | *infoDetailKasus(idKasus: String): Kasus* | *public* | *Mengambil detail deskripsi dan kategori kasus masyarakat berdasarkan idKasus.* |
 | *infoKategoriKasus(idKasus: String): String* | *public* | *Mengembalikan nama tag/kategori masalah dari kasus.* |
-| *...* | *...* | *...* |
-
 
 Tabel 5.43.2. Atribut Kelas Kasus
 
@@ -1436,8 +1344,6 @@ Tabel 5.43.2. Atribut Kelas Kasus
 | *...* | *...* | *...* |
 
 ### 5.43.1 Algoritma/Query
-
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** *Kasus*  
 **Nama Operasi:** *infoDetailKasus(idKasus: String): Kasus*  
@@ -1478,9 +1384,6 @@ Tabel 5.44.2. Atribut Kelas DasarHukum
 | :--- | :--- | :--- |
 | idPasal | private | String |
 
-
-
-
 ### 5.44.1 Algoritma/Query
 
 **Nama Kelas:** DasarHukum
@@ -1516,10 +1419,6 @@ Tabel 5.44.3. Query Operasi
 | :--- | :--- | :--- |
 | Q-001 | `SELECT * FROM dasar_hukum WHERE idPasal = ?;` | Mengambil data peraturan/pasal berdasarkan idPasal (operasi infoPasal dan pemeriksaan di updatePasal). |
 | Q-002 | `UPDATE dasar_hukum SET isiPasal = ? WHERE idPasal = ?;` | Memperbarui isi pasal berdasarkan idPasal (operasi updatePasal). |
-
-### 5.1.2 Algoritma/Query
-
-*[Ulangi pola 5.1.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
 
 <br>
 
