@@ -982,44 +982,212 @@ Tabel 5.x.x. Query Operasi [Nama Operasi]
 
 # BAB 6: Perancangan Antarmuka
 
-## 6.1 Rancangan Antarmuka [ID Layar 1]
+Bab ini memuat rancangan awal antarmuka untuk setiap halaman *client* pada Tabel 2.3. Setiap layar merealisasikan satu kelas *boundary* pada Tabel 4.1, yaitu LaporPage (I-01), StatusLaporanPage (I-02), ValidasiPage (I-03), EvaluasiPage (I-04), PenugasanPage (I-05), dan HasilPerbaikanForm (I-06). Layar Warga dan Eksekutor Lapangan dirancang untuk *smartphone*, sedangkan layar Tim Administrasi dirancang untuk komputer.
 
-Masukkan versi awal prototipe antarmuka, dimana untuk setiap antarmuka/layar, tuliskan spesifikasi rinci objek yang ditampilkan dan reaksi sistem terhadap interaksi pengguna.
+## 6.1 Rancangan Antarmuka I-01
 
-**Antarmuka:** *[ID layar]*  
-**Nama Layar:** *[Nama layar]*
+**Antarmuka:** I-01  
+**Nama Layar:** Formulir Laporan Kerusakan (Warga, mobile)
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-design.png" width="50%">
+<img alt="Rancangan Antarmuka I-01 - Formulir Laporan Kerusakan" src="./assets/I-01_formulir-laporan-kerusakan.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar 6.1. Rancangan Antarmuka [ID Layar] - [Nama Layar]</i>
+<i>Gambar 6.1. Rancangan Antarmuka I-01 - Formulir Laporan Kerusakan</i>
 </p>
 
-Tabel 6.1. Spesifikasi Objek Antarmuka [ID Layar]
+Tabel 6.1. Spesifikasi Objek Antarmuka I-01
 
 | Id_Objek | Jenis | Konten | Keterangan |
 | :--- | :--- | :--- | :--- |
-| *[ID objek]* | *[Jenis objek, misalnya Button, RTF Box, dll]* | *[String yang tampil pada layar]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
-| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem atau nama file terkait beserta deskripsi ringkasnya]* |
-| *...* | *...* | *...* | *...* |
+| I01-01 | Icon Button | Panah kembali (←) | Membatalkan pengisian dan kembali ke layar sebelumnya tanpa menyimpan data. |
+| I01-02 | Label | "Laporkan Kerusakan" | Judul layar. |
+| I01-03 | Dropdown | "Kategori kerusakan": Jalan berlubang, Lampu jalan mati, Saluran air tersumbat, Trotoar rusak, Rambu / marka rusak | Wajib dipilih. Kategori disimpan bersama laporan dan dipakai untuk filter di I-03 dan I-05. |
+| I01-04 | Text Area | "Deskripsi" (placeholder: "Jelaskan kondisi kerusakan") | Wajib diisi. Berisi uraian kondisi kerusakan dari warga. |
+| I01-05 | File Upload | "Foto", "JPG/PNG, maks. 10 MB" | Membuka kamera/galeri. Sistem memeriksa format (JPG/PNG) dan ukuran (≤ 10 MB); berkas yang tidak sesuai ditolak dengan pesan error. |
+| I01-06 | File Preview | Thumbnail, nama berkas, dan ukuran (contoh: "IMG_2041.jpg", "2,4 MB") | Menampilkan pratinjau foto yang berhasil diunggah. |
+| I01-07 | Icon Button | Ikon × ("Hapus foto") | Menghapus foto dari formulir. |
+| I01-08 | File Upload | "Video (opsional)", "MP4/MOV/MKV, maks. 10 MB" | Membuka kamera/galeri. Sistem memeriksa format (MP4/MOV/MKV) dan ukuran (≤ 10 MB); berkas yang tidak sesuai ditolak dengan pesan error. |
+| I01-09 | File Preview | Thumbnail video, nama berkas, ukuran, dan durasi (contoh: "VID_0388.mp4", "8,1 MB · 0:12") | Menampilkan pratinjau video yang berhasil diunggah. |
+| I01-10 | Icon Button | Ikon × ("Hapus video") | Menghapus video dari formulir. |
+| I01-11 | Button | "Gunakan Lokasi Saat Ini" | Meminta izin lokasi perangkat, mengambil koordinat GPS, lalu memindahkan penanda pada peta (I01-12) ke titik tersebut. |
+| I01-12 | Map | Peta kecil dengan penanda dan label "Click peta untuk pilih lokasi", area di luar batas kota diarsir dengan label "Luar batas kota" | Klik pada peta memindahkan penanda ke titik yang dipilih (pemilihan lokasi manual). Setiap perubahan titik memicu pengecekan batas daerah penanganan. |
+| I01-13 | Alert | "Lokasi di luar daerah penanganan. Pilih titik di dalam batas kota." | Muncul jika titik lokasi berada di luar batas kota. Selama pesan ini aktif, laporan tidak dapat dikirim. |
+| I01-14 | Button | "Batal" | Membatalkan pembuatan laporan dan kembali ke layar sebelumnya. |
+| I01-15 | Button | "Kirim Laporan" | Memvalidasi seluruh isian (kategori, deskripsi, minimal satu foto/video, lokasi di dalam batas kota). Jika valid, laporan disimpan dengan status **Diterima**, ID tiket dibuat, lalu dialog sukses (I01-16) ditampilkan. Jika tidak valid, pesan error ditampilkan pada isian yang bermasalah. |
+| I01-16 | Dialog | "Laporan terkirim", "ID tiket: LK-0123" | Dialog sukses yang muncul setelah laporan berhasil dikirim. Dialog ini merupakan keadaan setelah pengiriman sehingga tidak tampak pada Gambar 6.1. |
+| I01-17 | Button | "Lihat Status" | Menutup dialog dan membuka layar I-02 Status Laporan. |
+| I01-18 | Button | "Tutup" | Menutup dialog sukses. |
+
+## 6.2 Rancangan Antarmuka I-02
+
+**Antarmuka:** I-02  
+**Nama Layar:** Status Laporan (Warga, mobile) — tab Riwayat dan tab Peta
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-02 - Status Laporan (Riwayat)" src="./assets/I-02a_status-laporan-riwayat.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 6.2. Rancangan Antarmuka I-02 - Status Laporan (Tab Riwayat)</i>
+</p>
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-02 - Status Laporan (Peta)" src="./assets/I-02b_status-laporan-peta.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 6.3. Rancangan Antarmuka I-02 - Status Laporan (Tab Peta)</i>
+</p>
+
+Tabel 6.2. Spesifikasi Objek Antarmuka I-02
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I02-01 | Label | "Laporan Saya" | Judul layar. |
+| I02-02 | Icon Button | Ikon lonceng dengan badge jumlah notifikasi belum dibaca (contoh: "2") | Membuka daftar notifikasi perubahan status laporan milik warga. Memilih notifikasi menampilkan detail tiket terkait pada I02-07. |
+| I02-03 | Tab | "Riwayat" | Menampilkan daftar tiket laporan milik warga (I02-05 s.d. I02-09). |
+| I02-04 | Tab | "Peta" | Menampilkan peta sebaran laporan publik (I02-10 s.d. I02-14). |
+| I02-05 | Card List | Kartu tiket berisi ID tiket, tanggal, kategori, dan status (contoh: "LK-0123 · 24 Okt 2026", "Jalan berlubang") | Daftar laporan milik warga. Klik kartu memilih tiket (kartu diberi garis tepi aksen) dan menampilkan detailnya pada I02-07. |
+| I02-06 | Badge | Status: Diterima, Ditolak, Dikerjakan, Berhasil | Penanda status terkini tiket, dengan warna berbeda untuk setiap status. |
+| I02-07 | Panel | "Detail tiket", ID tiket · kategori, dan badge status | Menampilkan rincian tiket yang sedang dipilih. |
+| I02-08 | Timeline | Tahapan status beserta waktunya (contoh: "Diterima – 20 Okt, 19.02", "Ditolak – 21 Okt, 09.30") | Menampilkan riwayat perubahan status tiket secara berurutan. |
+| I02-09 | Info Box | "Alasan penolakan" beserta isi alasan dari Tim Administrasi | Hanya muncul jika status tiket **Ditolak**. Isinya berasal dari alasan yang dikirim di I-03. |
+| I02-10 | Map | Peta sebaran laporan publik, dengan label "Laporan publik di sekitar Anda" | Menampilkan seluruh laporan publik dalam batas kota. Tidak menampilkan nama atau identitas pelapor. |
+| I02-11 | Legend | Diterima (biru), Dikerjakan (kuning), Berhasil (hijau) | Keterangan arti warna penanda pada peta. |
+| I02-12 | Map Marker | Penanda berwarna sesuai status laporan | Klik penanda memilih laporan tersebut: penanda diperbesar dan kartu ringkas (I02-13) diperbarui. |
 
 
-## 6.X Rancangan Antarmuka [ID Layar X]
+## 6.3 Rancangan Antarmuka I-03
 
-*[Ulangi pola 6.1 untuk layar berikutnya sampai semua layar teridentifikasi]*
+**Antarmuka:** I-03  
+**Nama Layar:** Validasi Laporan (Tim Administrasi, desktop)
 
-## 6.Y Rancangan Antarmuka Keseluruhan
+<p align="center">
+<img alt="Rancangan Antarmuka I-03 - Validasi Laporan" src="./assets/I-03_validasi-laporan.png" width="90%">
+</p>
+<p align="center">
+<i>Gambar 6.4. Rancangan Antarmuka I-03 - Validasi Laporan</i>
+</p>
 
-Tuliskan daftar gambar seluruh antarmuka. Berikan ID unik untuk setiap tampilan dan gunakan ID yang sama pada subbab perancangan antarmuka masing-masing.
+Tabel 6.3. Spesifikasi Objek Antarmuka I-03
 
-Tabel 6.Y. Rancangan Antarmuka Keseluruhan
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I03-01 | Sidebar Menu | "Validasi Laporan" dengan badge jumlah antrean (contoh: "7") | Menu aktif. Menampilkan layar I-03. |
+| I03-02 | Sidebar Menu | "Evaluasi Hasil Kerja" dengan badge jumlah (contoh: "3") | Membuka layar I-04 Evaluasi Hasil Kerja. |
+| I03-03 | Label | "Masuk sebagai Admin Kota" | Menampilkan akun Tim Administrasi yang sedang masuk. |
+| I03-04 | Dropdown | "Kategori": Semua kategori, Jalan berlubang, Lampu jalan mati, Saluran air tersumbat, Trotoar rusak, Rambu / marka rusak | Memfilter isi tabel antrean (I03-06) berdasarkan kategori. |
+| I03-05 | Label | Jumlah laporan (contoh: "7 laporan") | Jumlah laporan dalam antrean sesuai filter aktif. |
+| I03-06 | Table | Kolom: ID tiket, Kategori, Waktu masuk, Status | Antrean laporan berstatus **Diterima**, diurutkan dari waktu masuk terbaru. Baris terpilih diberi latar berwarna. |
+| I03-07 | Link | ID tiket (contoh: "LK-0131") | Memilih laporan dan menampilkan rinciannya pada panel kanan (I03-08 s.d. I03-12). |
+| I03-08 | Panel | ID tiket · kategori, waktu masuk, badge status (contoh: "LK-0131 · Jalan berlubang", "Masuk 26 Okt 2026, 07.48", "Diterima") | Header panel rincian laporan terpilih. |
+| I03-09 | Image Viewer | Foto laporan | Menampilkan foto kiriman warga; klik untuk memperbesar. |
+| I03-10 | Video Player | Video laporan dengan durasi (contoh: "0:12") | Memutar video kiriman warga. |
+| I03-11 | Text | "Deskripsi" beserta isi deskripsi laporan | Menampilkan deskripsi dari warga. |
+| I03-12 | Map | "Lokasi · Jl. Sudirman" dengan penanda | Menampilkan titik lokasi laporan. |
+| I03-13 | Button | "Validasi" | Menyatakan laporan valid: status berubah menjadi **Dikerjakan**, laporan keluar dari antrean dan masuk ke Daftar Tugas eksekutor (I-05), lalu notifikasi dikirim ke pelapor. |
+| I03-14 | Button | "Tolak" | Menampilkan isian alasan penolakan (I03-15 dan I03-16). |
+| I03-15 | Text Area | "Alasan penolakan" (placeholder: "Tuliskan alasan yang akan dikirim ke pelapor") | Wajib diisi sebelum penolakan dikirim. |
+| I03-16 | Button | "Kirim Penolakan" | Status laporan berubah menjadi **Ditolak**, alasan disimpan dan ditampilkan ke pelapor di I-02, laporan keluar dari antrean. Jika alasan kosong, sistem menampilkan pesan error. |
+
+## 6.4 Rancangan Antarmuka I-04
+
+**Antarmuka:** I-04  
+**Nama Layar:** Evaluasi Hasil Kerja (Tim Administrasi, desktop)
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-04 - Evaluasi Hasil Kerja" src="./assets/I-04_evaluasi-hasil-kerja.png" width="90%">
+</p>
+<p align="center">
+<i>Gambar 6.5. Rancangan Antarmuka I-04 - Evaluasi Hasil Kerja</i>
+</p>
+
+Tabel 6.4. Spesifikasi Objek Antarmuka I-04
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I04-01 | Sidebar Menu | "Validasi Laporan" dengan badge jumlah (contoh: "7") | Membuka layar I-03 Validasi Laporan. |
+| I04-02 | Sidebar Menu | "Evaluasi Hasil Kerja" dengan badge jumlah (contoh: "3") | Menu aktif. Menampilkan layar I-04. |
+| I04-03 | Label | "Masuk sebagai Admin Kota" | Menampilkan akun Tim Administrasi yang sedang masuk. |
+| I04-04 | Card List | "Siap evaluasi (3)"; kartu berisi ID tiket, kategori, tim eksekutor, dan waktu kirim bukti (contoh: "LK-0123", "Jalan berlubang", "Tim Lapangan A · 26 Okt, 10.20") | Daftar pekerjaan yang hasilnya sudah dikirim eksekutor melalui I-06. Klik kartu menampilkan perbandingan pada area utama. |
+| I04-05 | Label | ID tiket · kategori, lokasi, dan tim eksekutor (contoh: "LK-0123 · Jalan berlubang", "Jl. Sudirman · dikerjakan oleh Tim Lapangan A") | Header area utama untuk pekerjaan terpilih. |
+| I04-06 | Badge | "Dikerjakan" | Status tiket saat dievaluasi. |
+| I04-07 | Image Viewer | "Sebelum · laporan warga, 24 Okt" | Foto kondisi awal dari laporan warga (I-01). Klik untuk memperbesar. |
+| I04-08 | Image Viewer | "Sesudah · bukti eksekutor, 26 Okt, 10.20" | Foto bukti hasil perbaikan dari eksekutor (I-06), ditampilkan berdampingan dengan I04-07. Klik untuk memperbesar. |
+| I04-09 | Text | "Catatan eksekutor" beserta isi catatan perbaikan | Menampilkan catatan yang dikirim eksekutor. |
+| I04-10 | Text Area | "Catatan evaluasi" (placeholder: "Tambahkan catatan untuk eksekutor atau arsip tiket") | Catatan Tim Administrasi; dikirim ke eksekutor bersama keputusan evaluasi dan disimpan pada riwayat tiket. |
+| I04-11 | Button | "Minta Ulang Bukti" | Mengembalikan tugas ke eksekutor (I-05) untuk mengunggah ulang bukti. Status tetap **Dikerjakan**. |
+| I04-12 | Button | "Belum Selesai" | Menandai perbaikan belum tuntas dan mengembalikan tugas ke Daftar Tugas eksekutor (I-05) beserta catatan evaluasi. Status tetap **Dikerjakan**. |
+| I04-13 | Button | "Konfirmasi Selesai" | Mengubah status tiket menjadi **Berhasil**, menghapus pekerjaan dari daftar evaluasi, lalu mengirim notifikasi ke pelapor (I-02). |
+
+## 6.5 Rancangan Antarmuka I-05
+
+**Antarmuka:** I-05  
+**Nama Layar:** Daftar Tugas (Eksekutor Lapangan, mobile)
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-05 - Daftar Tugas" src="./assets/I-05_daftar-tugas.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 6.6. Rancangan Antarmuka I-05 - Daftar Tugas</i>
+</p>
+
+Tabel 6.5. Spesifikasi Objek Antarmuka I-05
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I05-01 | Label | "Daftar Tugas", "Eksekutor Lapangan · 4 tugas aktif" | Judul layar dan jumlah tugas aktif milik eksekutor. |
+| I05-02 | Dropdown | "Kategori": Semua kategori, Jalan berlubang, Lampu jalan mati, Saluran air tersumbat, Trotoar rusak, Rambu / marka rusak | Memfilter daftar tugas (I05-04) berdasarkan kategori. |
+| I05-03 | Label | "Diurutkan berdasarkan skor prioritas tertinggi" | Keterangan urutan daftar tugas. |
+| I05-04 | Card List | Kartu tugas berisi ID tiket dan kategori (contoh: "LK-0123", "Jalan berlubang") | Daftar tugas berstatus **Dikerjakan** yang hasil perbaikannya belum dikirim, diurutkan dari skor prioritas tertinggi. Klik kartu menampilkan rincian pada I05-06. |
+| I05-05 | Indicator | Skor prioritas berupa angka dan bar (contoh: "92 /100") | Menampilkan skor prioritas tugas; panjang bar sebanding dengan skor. |
+| I05-06 | Panel | Rincian tugas terpilih (contoh: "LK-0123 · Jalan berlubang") | Menampilkan detail tugas yang sedang dipilih. |
+| I05-07 | Image Viewer | "Foto laporan warga" | Menampilkan foto dari laporan warga; klik untuk memperbesar. |
+| I05-08 | Text | Deskripsi laporan | Menampilkan deskripsi kerusakan dari warga. |
+| I05-09 | Label | Ikon lokasi dan alamat lengkap kerusakan | Menampilkan alamat titik kerusakan. |
+| I05-10 | Button | "Buka di Google Maps" | Membuka aplikasi atau situs Google Maps dengan koordinat lokasi kerusakan untuk navigasi. |
+| I05-11 | Button | "Laporkan Hasil" | Membuka layar I-06 Formulir Hasil Perbaikan untuk tiket terpilih. |
+
+## 6.6 Rancangan Antarmuka I-06
+
+**Antarmuka:** I-06  
+**Nama Layar:** Formulir Hasil Perbaikan (Eksekutor Lapangan, mobile)
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-06 - Formulir Hasil Perbaikan" src="./assets/I-06_formulir-hasil-perbaikan.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 6.7. Rancangan Antarmuka I-06 - Formulir Hasil Perbaikan</i>
+</p>
+
+Tabel 6.6. Spesifikasi Objek Antarmuka I-06
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I06-01 | Icon Button | Panah kembali (←) | Kembali ke layar I-05 Daftar Tugas tanpa mengirim hasil. |
+| I06-02 | Label | "Laporkan Hasil Perbaikan" | Judul layar. |
+| I06-03 | Card | "Tiket LK-0123", "Jalan berlubang · Jl. Sudirman", badge "Dikerjakan" | Identitas tiket yang sedang dilaporkan hasilnya. |
+| I06-04 | Text Area | "Catatan perbaikan *" (placeholder: "Contoh: Lubang ditambal aspal hotmix, area sudah dibersihkan.") | Wajib diisi. Jika kosong saat dikirim, garis tepi berubah merah. |
+| I06-05 | File Upload | "Foto bukti *", "JPG/PNG, maks. 10 MB", "Ambil atau unggah foto" | Wajib diisi. Membuka kamera/galeri; sistem memeriksa format dan ukuran berkas. Jika kosong saat dikirim, garis tepi berubah merah. |
+| I06-06 | File Upload + Preview | "Video bukti (opsional)", "MP4/MOV/MKV, maks. 10 MB"; pratinjau video, nama berkas, dan ukuran (contoh: "VID_0412.mp4", "9,3 MB") | Mengunggah video bukti dan menampilkan pratinjaunya. Sistem memeriksa format dan ukuran berkas. |
+| I06-07 | Icon Button | Ikon × ("Hapus video") | Menghapus video bukti dari formulir. |
+| I06-08 | Alert | "Gagal terkirim: foto dan deskripsi wajib diisi." | Muncul jika catatan perbaikan atau foto bukti belum diisi saat tombol Kirim Hasil ditekan. |
+| I06-09 | Button | "Kirim Hasil" | Memvalidasi isian wajib. Jika lengkap, hasil perbaikan dikirim dan masuk ke daftar Siap Evaluasi pada I-04, lalu tugas keluar dari daftar aktif I-05. Status tiket tetap **Dikerjakan** sampai dikonfirmasi Tim Administrasi. Jika tidak lengkap, I06-08 ditampilkan. |
+
+## 6.7 Rancangan Antarmuka Keseluruhan
+
+Berikut daftar seluruh antarmuka LaporKota. ID pada tabel ini sama dengan ID yang digunakan pada subbab 6.1 s.d. 6.6.
+
+Tabel 6.7. Rancangan Antarmuka Keseluruhan
 
 | No | Tampilan Antarmuka |
 | :--- | :--- |
-| *[I-01]* | <img src="./assets/diagram/contoh-design.png" alt="Contoh Desain" width="400"> |
-| *[I-02]* | *[Sisipkan gambar antarmuka I-02]* |
-| *[I-XX]* | *[Sisipkan gambar antarmuka berikutnya]* |
+| I-01 | <img src="./assets/I-01_formulir-laporan-kerusakan.png" alt="I-01 Formulir Laporan Kerusakan" width="250"> |
+| I-02 (Riwayat) | <img src="./assets/I-02a_status-laporan-riwayat.png" alt="I-02 Status Laporan - Riwayat" width="250"> |
+| I-02 (Peta) | <img src="./assets/I-02b_status-laporan-peta.png" alt="I-02 Status Laporan - Peta" width="250"> |
+| I-03 | <img src="./assets/I-03_validasi-laporan.png" alt="I-03 Validasi Laporan" width="500"> |
+| I-04 | <img src="./assets/I-04_evaluasi-hasil-kerja.png" alt="I-04 Evaluasi Hasil Kerja" width="500"> |
+| I-05 | <img src="./assets/I-05_daftar-tugas.png" alt="I-05 Daftar Tugas" width="250"> |
+| I-06 | <img src="./assets/I-06_formulir-hasil-perbaikan.png" alt="I-06 Formulir Hasil Perbaikan" width="250"> |
 
 <br>
 
