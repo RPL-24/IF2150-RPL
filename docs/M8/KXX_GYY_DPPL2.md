@@ -987,13 +987,20 @@ Bab ini memuat rancangan awal antarmuka untuk setiap halaman *client* pada Tabel
 ## 6.1 Rancangan Antarmuka I-01
 
 **Antarmuka:** I-01  
-**Nama Layar:** Formulir Laporan Kerusakan (Warga, mobile)
+**Nama Layar:** Formulir Laporan Kerusakan (Warga, mobile) — formulir dan dialog laporan terkirim
 
 <p align="center">
-<img alt="Rancangan Antarmuka I-01 - Formulir Laporan Kerusakan" src="./assets/I-01_formulir-laporan-kerusakan.png" width="35%">
+<img alt="Rancangan Antarmuka I-01 - Formulir Laporan Kerusakan" src="./assets/I-01a_formulir-laporan-kerusakan.png" width="35%">
 </p>
 <p align="center">
 <i>Gambar 6.1. Rancangan Antarmuka I-01 - Formulir Laporan Kerusakan</i>
+</p>
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-01 - Dialog Laporan Terkirim" src="./assets/I-01b_dialog-laporan-terkirim.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar 6.2. Rancangan Antarmuka I-01 - Dialog Laporan Terkirim</i>
 </p>
 
 Tabel 6.1. Spesifikasi Objek Antarmuka I-01
@@ -1014,8 +1021,8 @@ Tabel 6.1. Spesifikasi Objek Antarmuka I-01
 | I01-12 | Map | Peta kecil dengan penanda dan label "Click peta untuk pilih lokasi", area di luar batas kota diarsir dengan label "Luar batas kota" | Klik pada peta memindahkan penanda ke titik yang dipilih (pemilihan lokasi manual). Setiap perubahan titik memicu pengecekan batas daerah penanganan. |
 | I01-13 | Alert | "Lokasi di luar daerah penanganan. Pilih titik di dalam batas kota." | Muncul jika titik lokasi berada di luar batas kota. Selama pesan ini aktif, laporan tidak dapat dikirim. |
 | I01-14 | Button | "Batal" | Membatalkan pembuatan laporan dan kembali ke layar sebelumnya. |
-| I01-15 | Button | "Kirim Laporan" | Memvalidasi seluruh isian (kategori, deskripsi, minimal satu foto/video, lokasi di dalam batas kota). Jika valid, laporan disimpan dengan status **Diterima**, ID tiket dibuat, lalu dialog sukses (I01-16) ditampilkan. Jika tidak valid, pesan error ditampilkan pada isian yang bermasalah. |
-| I01-16 | Dialog | "Laporan terkirim", "ID tiket: LK-0123" | Dialog sukses yang muncul setelah laporan berhasil dikirim. Dialog ini merupakan keadaan setelah pengiriman sehingga tidak tampak pada Gambar 6.1. |
+| I01-15 | Button | "Kirim Laporan" | Memvalidasi seluruh isian (kategori, deskripsi, minimal satu foto/video, lokasi di dalam batas kota). Jika valid, laporan disimpan dengan status **Diterima**, ID tiket dibuat, lalu dialog sukses (I01-16) ditampilkan seperti pada Gambar 6.2. Jika tidak valid, pesan error ditampilkan pada isian yang bermasalah. |
+| I01-16 | Dialog | "Laporan terkirim", "ID tiket: LK-0123" | Dialog sukses berbentuk *pop-up* di atas formulir yang muncul setelah laporan berhasil dikirim (Gambar 6.2). |
 | I01-17 | Button | "Lihat Status" | Menutup dialog dan membuka layar I-02 Status Laporan. |
 | I01-18 | Button | "Tutup" | Menutup dialog sukses. |
 
@@ -1028,14 +1035,14 @@ Tabel 6.1. Spesifikasi Objek Antarmuka I-01
 <img alt="Rancangan Antarmuka I-02 - Status Laporan (Riwayat)" src="./assets/I-02a_status-laporan-riwayat.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar 6.2. Rancangan Antarmuka I-02 - Status Laporan (Tab Riwayat)</i>
+<i>Gambar 6.3. Rancangan Antarmuka I-02 - Status Laporan (Tab Riwayat)</i>
 </p>
 
 <p align="center">
 <img alt="Rancangan Antarmuka I-02 - Status Laporan (Peta)" src="./assets/I-02b_status-laporan-peta.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar 6.3. Rancangan Antarmuka I-02 - Status Laporan (Tab Peta)</i>
+<i>Gambar 6.4. Rancangan Antarmuka I-02 - Status Laporan (Tab Peta)</i>
 </p>
 
 Tabel 6.2. Spesifikasi Objek Antarmuka I-02
@@ -1045,7 +1052,7 @@ Tabel 6.2. Spesifikasi Objek Antarmuka I-02
 | I02-01 | Label | "Laporan Saya" | Judul layar. |
 | I02-02 | Icon Button | Ikon lonceng dengan badge jumlah notifikasi belum dibaca (contoh: "2") | Membuka daftar notifikasi perubahan status laporan milik warga. Memilih notifikasi menampilkan detail tiket terkait pada I02-07. |
 | I02-03 | Tab | "Riwayat" | Menampilkan daftar tiket laporan milik warga (I02-05 s.d. I02-09). |
-| I02-04 | Tab | "Peta" | Menampilkan peta sebaran laporan publik (I02-10 s.d. I02-14). |
+| I02-04 | Tab | "Peta" | Menampilkan peta sebaran laporan publik (I02-10 s.d. I02-12). |
 | I02-05 | Card List | Kartu tiket berisi ID tiket, tanggal, kategori, dan status (contoh: "LK-0123 · 24 Okt 2026", "Jalan berlubang") | Daftar laporan milik warga. Klik kartu memilih tiket (kartu diberi garis tepi aksen) dan menampilkan detailnya pada I02-07. |
 | I02-06 | Badge | Status: Diterima, Ditolak, Dikerjakan, Berhasil | Penanda status terkini tiket, dengan warna berbeda untuk setiap status. |
 | I02-07 | Panel | "Detail tiket", ID tiket · kategori, dan badge status | Menampilkan rincian tiket yang sedang dipilih. |
@@ -1053,7 +1060,7 @@ Tabel 6.2. Spesifikasi Objek Antarmuka I-02
 | I02-09 | Info Box | "Alasan penolakan" beserta isi alasan dari Tim Administrasi | Hanya muncul jika status tiket **Ditolak**. Isinya berasal dari alasan yang dikirim di I-03. |
 | I02-10 | Map | Peta sebaran laporan publik, dengan label "Laporan publik di sekitar Anda" | Menampilkan seluruh laporan publik dalam batas kota. Tidak menampilkan nama atau identitas pelapor. |
 | I02-11 | Legend | Diterima (biru), Dikerjakan (kuning), Berhasil (hijau) | Keterangan arti warna penanda pada peta. |
-| I02-12 | Map Marker | Penanda berwarna sesuai status laporan | Klik penanda memilih laporan tersebut: penanda diperbesar dan kartu ringkas (I02-13) diperbarui. |
+| I02-12 | Map Marker | Penanda berwarna sesuai status laporan | Klik penanda memilih laporan tersebut dan memperbesar penandanya. |
 
 
 ## 6.3 Rancangan Antarmuka I-03
@@ -1065,7 +1072,7 @@ Tabel 6.2. Spesifikasi Objek Antarmuka I-02
 <img alt="Rancangan Antarmuka I-03 - Validasi Laporan" src="./assets/I-03_validasi-laporan.png" width="90%">
 </p>
 <p align="center">
-<i>Gambar 6.4. Rancangan Antarmuka I-03 - Validasi Laporan</i>
+<i>Gambar 6.5. Rancangan Antarmuka I-03 - Validasi Laporan</i>
 </p>
 
 Tabel 6.3. Spesifikasi Objek Antarmuka I-03
@@ -1098,7 +1105,7 @@ Tabel 6.3. Spesifikasi Objek Antarmuka I-03
 <img alt="Rancangan Antarmuka I-04 - Evaluasi Hasil Kerja" src="./assets/I-04_evaluasi-hasil-kerja.png" width="90%">
 </p>
 <p align="center">
-<i>Gambar 6.5. Rancangan Antarmuka I-04 - Evaluasi Hasil Kerja</i>
+<i>Gambar 6.6. Rancangan Antarmuka I-04 - Evaluasi Hasil Kerja</i>
 </p>
 
 Tabel 6.4. Spesifikasi Objek Antarmuka I-04
@@ -1128,7 +1135,7 @@ Tabel 6.4. Spesifikasi Objek Antarmuka I-04
 <img alt="Rancangan Antarmuka I-05 - Daftar Tugas" src="./assets/I-05_daftar-tugas.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar 6.6. Rancangan Antarmuka I-05 - Daftar Tugas</i>
+<i>Gambar 6.7. Rancangan Antarmuka I-05 - Daftar Tugas</i>
 </p>
 
 Tabel 6.5. Spesifikasi Objek Antarmuka I-05
@@ -1156,7 +1163,7 @@ Tabel 6.5. Spesifikasi Objek Antarmuka I-05
 <img alt="Rancangan Antarmuka I-06 - Formulir Hasil Perbaikan" src="./assets/I-06_formulir-hasil-perbaikan.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar 6.7. Rancangan Antarmuka I-06 - Formulir Hasil Perbaikan</i>
+<i>Gambar 6.8. Rancangan Antarmuka I-06 - Formulir Hasil Perbaikan</i>
 </p>
 
 Tabel 6.6. Spesifikasi Objek Antarmuka I-06
@@ -1181,7 +1188,8 @@ Tabel 6.7. Rancangan Antarmuka Keseluruhan
 
 | No | Tampilan Antarmuka |
 | :--- | :--- |
-| I-01 | <img src="./assets/I-01_formulir-laporan-kerusakan.png" alt="I-01 Formulir Laporan Kerusakan" width="250"> |
+| I-01 (Formulir) | <img src="./assets/I-01a_formulir-laporan-kerusakan.png" alt="I-01 Formulir Laporan Kerusakan" width="250"> |
+| I-01 (Laporan Terkirim) | <img src="./assets/I-01b_dialog-laporan-terkirim.png" alt="I-01 Dialog Laporan Terkirim" width="250"> |
 | I-02 (Riwayat) | <img src="./assets/I-02a_status-laporan-riwayat.png" alt="I-02 Status Laporan - Riwayat" width="250"> |
 | I-02 (Peta) | <img src="./assets/I-02b_status-laporan-peta.png" alt="I-02 Status Laporan - Peta" width="250"> |
 | I-03 | <img src="./assets/I-03_validasi-laporan.png" alt="I-03 Validasi Laporan" width="500"> |
@@ -1192,7 +1200,6 @@ Tabel 6.7. Rancangan Antarmuka Keseluruhan
 <br>
 
 ---
-
 # BAB 7: Matriks Kerunutan
 
 Petakan kelas perancangan dengan use case yang terkait. Gunakan **BAB 6 Traceability pada dokumen SKPL** sebagai acuan keterkaitan kelas analisis dan use case, lalu sesuaikan dengan realisasi use case dan kelas perancangan pada BAB 3–BAB 5 DPPL.
