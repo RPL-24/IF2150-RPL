@@ -564,35 +564,239 @@ Tabel 5.1. Daftar Kelas Perancangan dan Kelas Analisis Terkait
 
 Untuk **setiap kelas**, identifikasi operasi berdasarkan tanggung jawab kelas beserta *visibility*-nya, serta atribut beserta *visibility* dan tipenya. Buat subbab tersendiri untuk setiap kelas.
 
-## 5.1 Kelas [Nama Kelas 1]
+## 5.1 Kelas RegistrasiMasyarakatPage
 
-**Nama Kelas:** *[Nama kelas]*  
-**ID Kelas:** *[ID kelas]*
+**Nama Kelas:** *RegistrasiMasyarakatPage*  
+**ID Kelas:** *C01*
 
-Tabel 5.1.1. Operasi Kelas [Nama Kelas 1]
+Tabel 5.1.1. Operasi Kelas RegistrasiMasyarakatPage
 
 | Nama Operasi | Visibility (private, public) | Keterangan |
 | :--- | :--- | :--- |
-| *[Signature operasi, termasuk parameter dan tipe kembalian]* | *[Visibility]* | *[Tanggung jawab operasi]* |
+| *bukaFormRegistrasi(): void* | *public* | *menampilkan antarmuka formulir registrasi masyarakat.* |
+| *submitRegistrasi(nama: String, nomorInduk: String, email: String, sandi: String): void* | *public* | *Mengirimkan data registrasi masyarakat ke controller untuk diproses.* |
+| *tampilkanPesanSukses(): void* | *public* | *Menampilkan notifikasi bahwa registrasi akun berhasil.* |
+| *tampilkanPesanError(pesan: String): void* | *public* | *Menampilkan notifikasi kesalahan input atau kegagalan registrasi.* |
 | *...* | *...* | *...* |
 
-Tabel 5.1.2. Atribut Kelas [Nama Kelas 1]
+Tabel 5.1.2. Atribut Kelas RegistrasiMasyarakatPage
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
-| *[Nama atribut]* | *[Visibility]* | *[Tipe sesuai bahasa pemrograman yang digunakan]* |
+| *tombolRegistrasi* | *private* | *Button* |
+| *inputNama* | *private* | *String* |
+| *inputNomorInduk* | *private* | *String* |
+| *inputEmail* | *private* | *String* |
+| *inputSandi* | *private* | *String* |
+
 | *...* | *...* | *...* |
 
 ### 5.1.1 Algoritma/Query
 
 Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
-**Nama Kelas:** *[Nama kelas]*  
-**Nama Operasi:** *[Signature operasi]*  
+**Nama Kelas:** *RegistrasiMasyarakatPage*  
+**Nama Operasi:** *sumbitRegistrasi(nama: String, nomorInduk: String, email: String, sandi: String): void*  
 **ID Algoritma:** *[Algo-001]*
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+PROCEDURE submitRegistrasi(nama: String, nomorInduk: String, email: String, sandi: String)
+    IF nama isEmpty OR nomorInduk isEmpty OR email isEmpty OR sandi isEmpty THEN
+        tampilkanPesanError("Semua field formulir registrasi wajib diisi.")
+        RETURN
+    END IF
+
+    berhasil <- RegistrasiMasyarakatController.buatAkun(nama, nomorInduk, email, sandi)
+    IF berhasil = true THEN
+        tampilkanPesanSukses()
+    ELSE
+        tampilkanPesanError("Registrasi gagal. Email sudah terdaftar atau kata sandi terlalu lemah.")
+    END IF
+END PROCEDURE
+```
+
+
+## 5.2 Kelas LoginMasyarakatPage
+
+**Nama Kelas:** *LoginMasyarakatPage*  
+**ID Kelas:** *C02*
+
+Tabel 5.2.1. Operasi Kelas LoginMasyarakatPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *bukaFormLogin(): void* | *public* | *menampilkan antarmuka formulir login masyarakat.* |
+| *submitVerifikasi(email: String, sandi: String): void* | *public* | *Mengirim kredensial login ke controller untuk diautentikasi.* |
+| *arahkanKeBeranda(): void* | *public* | *Mengarahkan tampilan ke halaman beranda (BerandaPage / C03) setelah login berhasil.* |
+| *tampilkanPesanError(pesan: String): void* | *public* | *Menampilkan notifikasi kegalalan login.* |
+| *...* | *...* | *...* |
+
+Tabel 5.2.2. Atribut Kelas LoginMasyarakatPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *tombolLogin* | *private* | *Button* |
+| *inputKredensial* | *private* | *String* |
+| *...* | *...* | *...* |
+
+### 5.2.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *LoginMasyarakatPage*  
+**Nama Operasi:** *sumbitVerifikasi(email: String, sandi: String): void*  
+**ID Algoritma:** *[Algo-002]*
+
+```text
+PROCEDURE submitVerifikasi(email: String, sandi: String)
+    IF email isEmpty OR sandi isEmpty THEN
+        tampilkanPesanError("Email dan password wajib diisi.")
+        RETURN
+    END IF
+
+    statusLogin <- AutentikasiController.validasiData(email, sandi)
+    IF statusLogin = true THEN
+        arahkanKeBeranda()
+    ELSE
+        tampilkanPesanError("Email/password salah atau akun tidak ditemukan.")
+    END IF
+END PROCEDURE
+```
+
+
+
+## 5.3 Kelas BerandaPage
+
+**Nama Kelas:** *BerandaPage*  
+**ID Kelas:** *C03*
+
+Tabel 5.3.1. Operasi Kelas BerandaPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *tampilkanBeranda(): void* | *public* | *Menampilkan halaman utama dengan pilihan fitur HaloLaw dan SearchLaw..* |
+| *pilihFitur(namaFitur: String): void* | *public* | *Mengarahkan masyarakat ke modul fitur yang dipilih.* |
+| *...* | *...* | *...* |
+
+Tabel 5.3.2. Atribut Kelas BerandaPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *pilihanFitur* | *private* | *String* |
+| *...* | *...* | *...* |
+
+### 5.3.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *BerandaPage*  
+**Nama Operasi:** *pilihFitur(namaFitur: String): void*  
+**ID Algoritma:** *[Algo-003]*
+
+```text
+PROCEDURE pilihFitur(namaFitur: String)
+    IF namaFitur = "HaloLaw" THEN
+        arahkanKeLamanDaftarMitra()
+    ELSE IF namaFitur = "SearchLaw" THEN
+        arahkanKeLamanSearchLaw()
+    ELSE
+        tampilkanPesanError("Fitur tidak valid.")
+    END IF
+END PROCEDURE
+```
+
+
+
+## 5.4 Kelas RegistrasiMitraPage
+
+**Nama Kelas:** *RegistrasiMitraPage*  
+**ID Kelas:** *C04*
+
+Tabel 5.4.1. Operasi Kelas RegistrasiMitraPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *bukaFormRegistrasiMitra(): void* | *public* | *Menampilkan antarmuka pendaftaran akun dan pengunggahan berkas bagi mitra pengacara.* |
+| *submitRegistrasi(nama: String, email: String, sandi: String, dokumen: File): void* | *public* | *Mengirimkan data registrasi dan dokumen legalitas mitra ke controller.* |
+| *...* | *...* | *...* |
+
+Tabel 5.4.2. Atribut Kelas RegistrasiMitraPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *tombolRegistrasi* | *private* | *Button* |
+| *inputDokumen* | *private* | *File* |
+| *...* | *...* | *...* |
+
+### 5.4.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *RegistrasiMitraPage*  
+**Nama Operasi:** *submitRegistrasi(nama: String, email: String, sandi: String, dokumen: File): void*  
+**ID Algoritma:** *[Algo-004]*
+
+```text
+PROCEDURE submitRegistrasi(nama: String, email: String, sandi: String, dokumen: File)
+    IF nama isEmpty OR email isEmpty OR sandi isEmpty OR dokumen isNull THEN
+        tampilkanPesanError("Semua field data diri dan berkas legalitas wajib diisi.")
+        RETURN
+    END IF
+
+    berhasil <- RegistrasiMitraController.buatAkunBaru(nama, email, sandi, dokumen)
+    IF berhasil = true THEN
+        tampilkanNotifikasiPending() 
+    ELSE
+        tampilkanPesanError("Pendaftaran gagal. Periksa format berkas atau lengkapi field yang diminta.")
+    END IF
+END PROCEDURE
+```
+
+
+
+## 5.5 Kelas LoginMitraPage
+
+**Nama Kelas:** *LoginMitraPage*  
+**ID Kelas:** *C05*
+
+Tabel 5.5.1. Operasi Kelas LoginMitraPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *submitVerifikasi(email: String, sandi: String): void* | *public* | *Mengirimkan kredensial login mitra ke controller* |
+| *tampilkanPesanError(pesan: String): void* | *public* | *Menampilkan peringatan kesalahan login atau status akun belum disetujui.* |
+| *...* | *...* | *...* |
+
+Tabel 5.5.2. Atribut Kelas LoginMitraPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *tombolVerifikasi* | *private* | *Button* |
+| *inputKredensial* | *private* | *String* |
+| *...* | *...* | *...* |
+
+### 5.5.1 Algoritma/Query
+
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
+**Nama Kelas:** *LoginMitraPage*  
+**Nama Operasi:** *submitVerifikasi(email: String, sandi: String): void*  
+**ID Algoritma:** *[Algo-005]*
+
+```text
+PROCEDURE submitVerifikasi(email: String, sandi: String)
+    IF email isEmpty OR sandi isEmpty THEN
+        tampilkanPesanError("Email dan password wajib diisi.")
+        RETURN
+    END IF
+
+    statusLogin <- AutentikasiController.validasiData(email, sandi)
+    IF statusLogin = true THEN
+        arahkanKeHalamanMitra()
+    ELSE
+        tampilkanPesanError("email/password salah atau akun mitra belum terverifikasi oleh Admin.")
+    END IF
+END PROCEDURE
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
@@ -608,11 +812,6 @@ Tabel 5.1.1. Query Operasi [Nama Operasi]
 ### 5.1.2 Algoritma/Query
 
 *[Ulangi pola 5.1.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
-
-
-## 5.2 Kelas [Nama Kelas Berikutnya]
-
-*[Ulangi pola 5.1: nama dan ID kelas, tabel operasi, tabel atribut, serta subbab algoritma/query untuk operasi penting jika diperlukan.]*
 
 ## 5.9 EditDokumenLegalitasPage
 
