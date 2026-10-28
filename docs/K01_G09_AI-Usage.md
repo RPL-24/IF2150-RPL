@@ -62,6 +62,28 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | *Gemini* | *Teman diskusi untuk mengonfirmasi ketepatan penggunaan notasi relasi UML (seperti perbedaan Agregasi, Komposisi, dan Dependensi) antarkelas.* | *"Antara kelas Session dan SessionHistory, apakah relasi yang tepat menggunakan Generalization atau Aggregation? Jelaskan alasannya."* | *AI memberikan penjelasan konseptual mengenai relasi Has-a vs Is-a. Berdasarkan pemahaman tersebut, kelompok kami memutuskan sendiri jenis relasi yang paling tepat dan mengimplementasikannya langsung pada diagram kelas di Draw.io.* |
 | *Gemini* | *Membantu memeriksa inkonsistensi penulisan (seperti kesalahan copy-paste tabel) serta merapikan format tabel Markdown pada Bab 4 dan Bab 5 (Traceability).* | *"Tolong cek dokumen Markdown kami ini, apakah ada tabel atribut/metode yang isinya masih tertukar antar-use case atau penomoran ID kelas yang ganda?"* | *AI membantu menemukan baris tabel yang terduplikasi dan sisa copy-paste dari draf sebelumnya. Seluruh nama kelas (C01-C24), atribut, metode, dan pemetaan traceability tetap kami periksa dan sesuaikan kembali secara manual agar semuanya sinkron dengan gambar diagram kami.* |
 ---
+
+### Milestone 5
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *-* | *-* | *"-"* | *-* |
+
+### Milestone 6
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *-* | *-* | *"-"* | *-* |
+
+### Milestone 7
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *-* | *-* | *"-"* | *-* |
+
+### Milestone 8
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Menentukan contoh format pseudocode untuk web based functions* | *Untuk merealisasikan fungsi seperti ini .... , berikan contoh pseudocode secara web based (seperti realisasi promise)* | *Output gemini dibandingkan dengan function aktual javascript atau typescript* |
+
+---
 ### Pernyataan Integritas dan Persetujuan
 
 Kami yang bertanda tangan di bawah ini menyatakan bahwa seluruh log penggunaan AI di atas adalah benar. Kami telah memvalidasi seluruh hasil AI dan bertanggung jawab penuh atas orisinalitas, keamanan, dan kebenaran hasil akhir dari tugas ini.

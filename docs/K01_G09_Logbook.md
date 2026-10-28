@@ -116,5 +116,13 @@
 | *21-10-2026* | *Hugo Daniel J N* | *Membuat Logo* | *1* | *Done* | *-* |
 | *21-10-2026* | *Hugo Daniel J N* | *Menyusun Bab 5* | *1* | *Done* | *-* |
 
+### Milestone 8
+**Periode:** [23-09-2026] - [30-09-2026]
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+|---|---|---|---|---|---|
+| *28-10-2026* | *Hugo Daniel J N* | *Bab 5 untuk C13 - C24* | *3* | *Done* | *-* |
+
+
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
