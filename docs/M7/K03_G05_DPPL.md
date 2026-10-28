@@ -103,9 +103,10 @@ Tabel 2.1  Rancangan Lingkungan Implementasi
 | Client | Chromium Based Browser | |
 | DBMS | PostgreSQL  | |
 | OS | Cross-platform (Windows/Linux/MacOS) melalui browser | |
-| Development Tools | | |
-| Filing System | | |
+| Development Tools | Visual Studio Code, Git dan GitHub, Node.js, React, Express, Socket.IO, Postman, Figma, draw.io |  Node.js dan Express untuk backend (MVC), React untuk frontend, Socket.IO untuk live chat, Postman untuk pengujian API  |
+| Filing System |File system lokal pada server (folder uploads/) | |
 | Bahasa Pemrograman | JavaScript | |
+
 
 ## 2.2 Style/Pattern Arsitektur Acuan
 
