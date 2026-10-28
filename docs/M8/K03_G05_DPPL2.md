@@ -4114,35 +4114,448 @@ Tabel 6.17. Spesifikasi Objek Antarmuka UI-17
 | O-68 | Chat Bubble | Bubble Pesan Chat | Menampilkan balon percakapan riwayat pesan teks antara pengguna dan Admin. |
 | O-69 | Input Field | Field Pesan Chat ("JawabAdmin") | Menyediakan kolom input teks untuk mengetik dan mengirimkan pesan jawaban. |
 
-## 6.X Rancangan Antarmuka [ID Layar X]
+## 6.18 Rancangan Antarmuka UI-18
+**Antarmuka:** UI-18 
+**Nama Layar:** Registrasi Mitra
 
-*[Ulangi pola 6.1 untuk layar berikutnya sampai semua layar teridentifikasi]*
+<p align="center">
+<img alt="Rancangan Antarmuka UI-18 - Registrasi Mitra" src="./assets/uiux/RegistrasiMitra.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.18. Rancangan Antarmuka UI-18 - Registrasi Mitra</i>
+</p>
 
-## 6.Y Rancangan Antarmuka Keseluruhan
+Tabel 6.18. Spesifikasi Objek Antarmuka UI-18
 
-Tuliskan daftar gambar seluruh antarmuka. Berikan ID unik untuk setiap tampilan dan gunakan ID yang sama pada subbab perancangan antarmuka masing-masing.
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-70 | Text Info | Judul Halaman ("Registrasi Mitra Pengacara") | Menampilkan judul halaman formulir pendaftaran akun mitra pengacara. |
+| O-71 | Text Info | Judul Seksi ("Data Akun") | Mengelompokkan isian data akun yang diperlukan untuk membuat akun mitra pengacara. |
+| O-72 | Input Field | Field Nama Lengkap/Nama Firma (placeholder "Gunakan nama lengkap sesuai KTP") | Menerima nama lengkap atau nama firma mitra pengacara sesuai identitas resmi. |
+| O-73 | Input Field | Field Email | Menerima alamat email mitra pengacara. |
+| O-74 | Input Field | Field Username | Menerima username unik yang akan digunakan mitra untuk login. |
+| O-75 | Input Field | Field Password (placeholder "Password (panjang karakter minimal 8 digit)") | Menerima kata sandi akun dengan panjang minimal 8 karakter; isian ditampilkan tersamarkan. |
+| O-76 | Input Field | Field Konfirmasi Password (placeholder "Tulis ulang password") | Menerima pengulangan kata sandi untuk memastikan sama dengan isian pada O-75. |
+| O-77 | Text Info | Judul Seksi ("Verifikasi Dokumen") | Mengelompokkan isian dan unggahan dokumen legalitas yang akan diperiksa oleh admin. |
+| O-78 | Input Field | Field Nama Firma (wajib, bertanda *) | Menerima nama firma tempat mitra pengacara bernaung; wajib diisi. |
+| O-79 | Upload Button | Tombol "Upload Dokumen" Ijazah (wajib, bertanda *) | Mengunggah berkas ijazah mitra pengacara; wajib diunggah. |
+| O-80 | Upload Button | Tombol "Upload Dokumen" KTA (wajib, bertanda *) | Mengunggah berkas Kartu Tanda Anggota (KTA) advokat; wajib diunggah. |
+| O-81 | Upload Button | Tombol "Upload Dokumen" SIPA (wajib, bertanda *) | Mengunggah berkas Surat Izin Praktik Advokat (SIPA); wajib diunggah. |
+| O-82 | Upload Button | Tombol "Upload Dokumen" BAS (wajib, bertanda *) | Mengunggah berkas Berita Acara Sumpah (BAS) advokat; wajib diunggah. |
+| O-83 | Upload Button | Tombol "Upload Dokumen" KTP | Mengunggah berkas KTP sebagai dokumen pendukung; bersifat opsional. |
+| O-84 | Upload Button | Tombol "Upload Dokumen" CV | Mengunggah berkas curriculum vitae (CV) sebagai dokumen pendukung; bersifat opsional. |
+| O-85 | Button | Tombol "Registrasi" | Mengirimkan data akun dan dokumen legalitas. Jika berhasil, akun tersimpan dengan status pending dan mitra diarahkan ke halaman status verifikasi (UI-32). Jika ada isian wajib yang kosong atau format dokumen tidak didukung, sistem menampilkan pesan kesalahan. |
 
-Tabel 6.Y. Rancangan Antarmuka Keseluruhan
+## 6.19 Rancangan Antarmuka UI-19
+**Antarmuka:** UI-19 
+**Nama Layar:** Login Mitra
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-19 - Login Mitra" src="./assets/uiux/LoginMitra.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.19. Rancangan Antarmuka UI-19 - Login Mitra</i>
+</p>
+
+Tabel 6.19. Spesifikasi Objek Antarmuka UI-19
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-86 | Text Info | Judul Form ("Login Sebagai Mitra Pengacara/Admin") | Menjelaskan bahwa form login ini digunakan oleh mitra pengacara dan admin. |
+| O-87 | Input Field | Field Username | Menerima username akun mitra pengacara atau admin. |
+| O-88 | Input Field | Field Password | Menerima kata sandi akun; isian ditampilkan tersamarkan. |
+| O-89 | Checkbox | Checkbox "Ingat username" | Menyimpan username agar terisi otomatis pada login berikutnya. |
+| O-90 | Button | Tombol "Log In" | Memvalidasi kredensial dan masuk ke beranda sesuai peran. Jika status akun mitra masih pending atau ditolak, sistem menampilkan pesan bahwa akun belum terverifikasi. |
+| O-91 | Link | Tautan "Lupa username atau password?" | Mengarahkan pengguna ke proses pemulihan username atau password. |
+| O-92 | Text Info | Teks ajakan ("Kamu bisa menggunakan fitur SearchLaw tanpa login!") | Memberi tahu bahwa fitur SearchLaw dapat digunakan tanpa login. |
+| O-93 | Button | Tombol "Log In Sebagai Tamu" | Masuk sebagai tamu untuk menggunakan fitur SearchLaw tanpa akun. |
+| O-94 | Text Info | Judul Seksi ("Ingin cek status verifikasi mitra hukum?") dan petunjuk pengisian | Menjelaskan bahwa mitra dapat mengecek status verifikasi dengan menuliskan nama akun. |
+| O-95 | Input Field | Field Username (cek status verifikasi) | Menerima nama akun mitra yang status verifikasinya ingin diketahui. |
+| O-96 | Button | Tombol "Cek Status" | Menampilkan halaman status verifikasi mitra (UI-32) berdasarkan username yang diisi. |
+| O-97 | Text Info | Judul Seksi ("Pertama kali menggunakan LawHub?") dan keterangan | Mengajak pengguna baru yang belum memiliki akun mitra untuk mendaftar. |
+| O-98 | Button | Tombol "Registrasi" | Mengarahkan pengguna ke halaman Registrasi Mitra (UI-18). |
+
+## 6.20 Rancangan Antarmuka UI-20
+**Antarmuka:** UI-20 
+**Nama Layar:** Landing Page
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-20 - Landing Page" src="./assets/uiux/LandingPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.20. Rancangan Antarmuka UI-20 - Landing Page</i>
+</p>
+
+Tabel 6.20. Spesifikasi Objek Antarmuka UI-20
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-99 | Link | Menu "Login" (Navigation Bar) | Mengarahkan pengguna ke halaman login. |
+| O-100 | Link | Menu "Daftar" (Navigation Bar) | Mengarahkan pengguna ke halaman registrasi. |
+| O-101 | Link | Menu "Cek Status Verifikasi" (Navigation Bar) | Mengarahkan mitra pengacara ke fitur pengecekan status verifikasi. |
+| O-102 | Button | Tombol "Kontak Kami" (Navigation Bar) | Menampilkan informasi kontak LawHub. |
+| O-103 | Text Info | Judul dan Deskripsi ("Menyediakan Informasi Hukum Lengkap") | Menjelaskan fitur SearchLaw sebagai layanan pencarian informasi hukum. |
+| O-104 | Image | Gambar Ilustrasi SearchLaw | Menampilkan gambar pendukung penjelasan fitur SearchLaw. |
+| O-105 | Button | Tombol "Coba SearchLaw" | Mengarahkan pengguna ke fitur SearchLaw. |
+| O-106 | Text Info | Judul dan Deskripsi ("Hubungi Pengacara Secara Online") | Menjelaskan fitur HaloLaw sebagai layanan konsultasi dengan pengacara secara online. |
+| O-107 | Image | Gambar Ilustrasi HaloLaw | Menampilkan gambar pendukung penjelasan fitur HaloLaw. |
+| O-108 | Button | Tombol "Coba HaloLaw" | Mengarahkan pengguna ke fitur HaloLaw. |
+
+## 6.21 Rancangan Antarmuka UI-21
+**Antarmuka:** UI-21 
+**Nama Layar:** Verifikasi Mitra Lanjutan
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-21 - Verifikasi Mitra Lanjutan" src="./assets/uiux/VerifikasiMitraLanjutan.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.21. Rancangan Antarmuka UI-21 - Verifikasi Mitra Lanjutan</i>
+</p>
+
+Tabel 6.21. Spesifikasi Objek Antarmuka UI-21
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-109 | Text Info | Judul Halaman ("Verifikasi Mitra Pengacara") | Menampilkan judul halaman detail pengajuan verifikasi mitra. |
+| O-110 | Text Info | Profil Mitra (foto dan "Nama Mitra") | Menampilkan foto profil dan nama mitra pengacara yang sedang ditinjau. |
+| O-111 | Text Info | Judul Seksi ("Data Akun") | Mengelompokkan data akun mitra yang dikirim saat registrasi. |
+| O-112 | Text Field | Field Nama Lengkap/Nama Firma (hanya baca) | Menampilkan nama lengkap atau nama firma mitra. |
+| O-113 | Text Field | Field Email (hanya baca) | Menampilkan alamat email mitra. |
+| O-114 | Text Field | Field Username (hanya baca) | Menampilkan username mitra. |
+| O-115 | Text Info | Judul Seksi ("Verifikasi Dokumen") | Mengelompokkan data dan dokumen legalitas yang perlu diperiksa admin. |
+| O-116 | Text Field | Field Nama Firma (hanya baca) | Menampilkan nama firma yang didaftarkan mitra. |
+| O-117 | Button | Tombol "Lihat Dokumen" Ijazah | Membuka berkas ijazah yang diunggah mitra untuk diperiksa. |
+| O-118 | Button | Tombol "Lihat Dokumen" KTA | Membuka berkas KTA yang diunggah mitra untuk diperiksa. |
+| O-119 | Button | Tombol "Lihat Dokumen" SIPA | Membuka berkas SIPA yang diunggah mitra untuk diperiksa. |
+| O-120 | Button | Tombol "Lihat Dokumen" BAS | Membuka berkas BAS yang diunggah mitra untuk diperiksa. |
+| O-121 | Button | Tombol "Lihat Dokumen" KTP | Membuka berkas KTP yang diunggah mitra untuk diperiksa. |
+| O-122 | Button | Tombol "Lihat Dokumen" CV | Membuka berkas CV yang diunggah mitra untuk diperiksa. |
+| O-123 | Input Field | Field Catatan (placeholder "Tulis catatan...") | Menerima catatan admin, misalnya alasan penolakan atau revisi yang perlu dilakukan mitra. |
+| O-124 | Button | Tombol "Verifikasi" | Menyetujui pengajuan sehingga status akun mitra menjadi terverifikasi dan mitra dinotifikasi. |
+| O-125 | Button | Tombol "Tolak" | Menolak pengajuan beserta catatan admin sehingga status akun mitra menjadi ditolak dan mitra dinotifikasi. |
+
+## 6.22 Rancangan Antarmuka UI-22
+**Antarmuka:** UI-22 
+**Nama Layar:** Tinjauan Laporan
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-22 - Tinjauan Laporan" src="./assets/uiux/TinjauanLaporan.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.22. Rancangan Antarmuka UI-22 - Tinjauan Laporan</i>
+</p>
+
+Tabel 6.22. Spesifikasi Objek Antarmuka UI-22
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-126 | Text Info | Judul Halaman ("List Laporan") | Menampilkan judul halaman daftar laporan yang masuk ke admin. |
+| O-127 | Card | Kartu Laporan (foto profil, "Nama", dan "Informasi") | Menampilkan identitas akun yang dilaporkan beserta ringkasan isi laporan. Kartu berulang untuk setiap laporan. |
+| O-128 | Input Field | Field Catatan (placeholder "Tulis catatan...") | Menerima catatan admin sebagai dasar keputusan atas laporan. |
+| O-129 | Button | Tombol "Tolak Blokir" | Menolak laporan sehingga akun yang dilaporkan tidak diblokir. |
+| O-130 | Button | Tombol "Blokir" | Menyetujui laporan dan memblokir akun yang dilaporkan. |
+
+## 6.23 Rancangan Antarmuka UI-23
+**Antarmuka:** UI-23 
+**Nama Layar:** Verifikasi Mitra
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-23 - Verifikasi Mitra" src="./assets/uiux/VerifikasiMitra.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.23. Rancangan Antarmuka UI-23 - Verifikasi Mitra</i>
+</p>
+
+Tabel 6.23. Spesifikasi Objek Antarmuka UI-23
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-131 | Text Info | Judul Halaman ("List Mitra") | Menampilkan judul halaman daftar mitra pengacara yang mengajukan verifikasi. |
+| O-132 | Search Field | Field Pencarian (placeholder "Cari") | Mencari mitra pengacara berdasarkan kata kunci. |
+| O-133 | Button | Tombol "Filter" | Membuka opsi penyaringan daftar mitra. |
+| O-134 | Dropdown | Pilihan "Status" | Menyaring daftar mitra berdasarkan status verifikasi. |
+| O-135 | Dropdown | Pilihan "Terbaru" | Mengurutkan daftar mitra berdasarkan waktu pengajuan terbaru. |
+| O-136 | Card | Kartu Mitra (foto profil, "Nama Mitra", dan "Informasi") | Menampilkan ringkasan data mitra pengacara. Kartu berulang untuk setiap mitra. |
+| O-137 | Link | Tautan "Lihat Detail dan Dokumen" | Mengarahkan admin ke halaman Verifikasi Mitra Lanjutan (UI-21). |
+| O-138 | Badge | Label Status Verifikasi ("Terverifikasi", "Belum Terverifikasi", "Verifikasi Tertunda") | Menampilkan status verifikasi mitra dengan warna berbeda: hijau, merah, dan kuning. |
+
+## 6.24 Rancangan Antarmuka UI-24
+**Antarmuka:** UI-24 
+**Nama Layar:** Laporkan Ulasan
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-24 - Laporkan Ulasan" src="./assets/uiux/LaporkanUlasan.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.24. Rancangan Antarmuka UI-24 - Laporkan Ulasan</i>
+</p>
+
+Tabel 6.24. Spesifikasi Objek Antarmuka UI-24
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-139 | Text Info | Judul Form ("Laporkan Ulasan") | Menampilkan judul form pelaporan ulasan. |
+| O-140 | Text Info | Profil Pemberi Ulasan (foto dan "Nama Akun") | Menampilkan foto dan nama akun pemberi ulasan yang dilaporkan. |
+| O-141 | Text Info | Isi Ulasan ("[Ulasan]") | Menampilkan isi ulasan yang dilaporkan. |
+| O-142 | Text Info | Label Instruksi ("Please select the report category") | Meminta pelapor memilih kategori laporan. |
+| O-143 | Checkbox | Pilihan Kategori Laporan (enam pilihan "Kategori") | Menyediakan pilihan alasan pelaporan; pelapor memilih kategori yang sesuai. |
+| O-144 | Input Field | Field Catatan (placeholder "Tulis catatan...") | Menerima keterangan tambahan dari pelapor. |
+| O-145 | Button | Tombol "Kirim" | Mengirimkan laporan ulasan kepada admin untuk ditinjau. |
+| O-146 | Button | Tombol "Batal" | Membatalkan pelaporan dan menutup form. |
+
+## 6.25 Rancangan Antarmuka UI-25
+**Antarmuka:** UI-25 
+**Nama Layar:** Laporkan Akun
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-25 - Laporkan Akun" src="./assets/uiux/LaporkanAkun.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.25. Rancangan Antarmuka UI-25 - Laporkan Akun</i>
+</p>
+
+Tabel 6.25. Spesifikasi Objek Antarmuka UI-25
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-147 | Text Info | Judul Form ("Laporkan Akun") | Menampilkan judul form pelaporan akun. |
+| O-148 | Text Info | Profil Akun yang Dilaporkan (foto dan "Nama Akun") | Menampilkan foto dan nama akun yang akan dilaporkan. |
+| O-149 | Text Info | Label Instruksi ("Please select the report category") | Meminta pelapor memilih kategori laporan. |
+| O-150 | Checkbox | Pilihan Kategori Laporan (enam pilihan "Kategori") | Menyediakan pilihan alasan pelaporan; pelapor memilih kategori yang sesuai. |
+| O-151 | Input Field | Field Catatan (placeholder "Tulis catatan...") | Menerima keterangan tambahan dari pelapor. |
+| O-152 | Button | Tombol "Kirim" | Mengirimkan laporan akun kepada admin untuk ditinjau. |
+| O-153 | Button | Tombol "Batal" | Membatalkan pelaporan dan menutup form. |
+
+## 6.26 Rancangan Antarmuka UI-26
+**Antarmuka:** UI-26 
+**Nama Layar:** Pencairan Dana
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-26 - Pencairan Dana" src="./assets/uiux/PencairanDana.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.26. Rancangan Antarmuka UI-26 - Pencairan Dana</i>
+</p>
+
+Tabel 6.26. Spesifikasi Objek Antarmuka UI-26
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-154 | Text Info | Judul Halaman ("Keuangan") | Menampilkan judul halaman keuangan mitra pengacara. |
+| O-155 | Text Info | Total Saldo ("Rp[Angka]") | Menampilkan total saldo mitra yang dapat dicairkan. |
+| O-156 | Button | Tombol "Cairkan Dana" | Memulai proses pencairan dana ke rekening tujuan. |
+| O-157 | Text Info | Keterangan ("Pencairan dilakukan manual, tidak otomatis setelah pembayaran diterima.") | Menjelaskan bahwa pencairan dana tidak dilakukan otomatis setelah pembayaran diterima sistem. |
+| O-158 | Text Info | Judul Seksi ("Rekening Tujuan") | Mengelompokkan data rekening tujuan pencairan dana. |
+| O-159 | Text Field | Field Nama Bank/E-Wallet (hanya baca) | Menampilkan nama bank atau e-wallet tujuan pencairan. |
+| O-160 | Text Field | Field Nomor Rekening (sebagian tersamarkan) | Menampilkan nomor rekening tujuan dengan sebagian digit disamarkan. |
+| O-161 | Text Field | Field Nama Pemilik (hanya baca) | Menampilkan nama pemilik rekening tujuan. |
+| O-162 | Text Info | Judul Seksi ("Informasi Transaksi") | Mengelompokkan daftar riwayat transaksi mitra. |
+| O-163 | List Item | Item Transaksi (tanggal, keterangan "Pembayaran Klien A", nominal "IDR", dan nama bank/e-wallet) | Menampilkan satu catatan transaksi. Item berulang untuk setiap transaksi. |
+| O-164 | Badge | Label Status Transaksi ("Berhasil", "Pending", "Belum") | Menampilkan status transaksi dengan warna berbeda: hijau, kuning, dan merah. |
+
+## 6.27 Rancangan Antarmuka UI-27
+**Antarmuka:** UI-27 
+**Nama Layar:** Edit Dokumen Legalitas Mitra
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-27 - Edit Dokumen Legalitas Mitra" src="./assets/uiux/EditDokumenLegalitasMitra.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.27. Rancangan Antarmuka UI-27 - Edit Dokumen Legalitas Mitra</i>
+</p>
+
+Tabel 6.27. Spesifikasi Objek Antarmuka UI-27
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-165 | Text Info | Judul Halaman ("Edit Dokumen Mitra Pengacara") | Menampilkan judul halaman perubahan dokumen legalitas mitra. |
+| O-166 | Text Info | Judul Seksi ("Data Akun") | Mengelompokkan data akun mitra. |
+| O-167 | Text Field | Field Username | Menampilkan username mitra. |
+| O-168 | Text Field | Field Nama Firma | Menampilkan nama firma mitra. |
+| O-169 | Text Info | Judul Seksi ("Informasi Dokumen") dan petunjuk ("Unggah ulang dokumen apabila terdapat kesalahan") | Menjelaskan bahwa mitra dapat mengunggah ulang dokumen yang salah atau diminta direvisi oleh admin. |
+| O-170 | Upload Button | Tombol "Upload Dokumen" Ijazah (wajib, bertanda *) | Mengunggah ulang berkas ijazah. |
+| O-171 | Upload Button | Tombol "Upload Dokumen" KTA (wajib, bertanda *) | Mengunggah ulang berkas KTA. |
+| O-172 | Upload Button | Tombol "Upload Dokumen" SIPA (wajib, bertanda *) | Mengunggah ulang berkas SIPA. |
+| O-173 | Upload Button | Tombol "Upload Dokumen" BAS (wajib, bertanda *) | Mengunggah ulang berkas BAS. |
+| O-174 | Upload Button | Tombol "Upload Dokumen" KTP | Mengunggah ulang berkas KTP; bersifat opsional. |
+| O-175 | Upload Button | Tombol "Upload Dokumen" CV | Mengunggah ulang berkas CV; bersifat opsional. |
+
+## 6.28 Rancangan Antarmuka UI-28
+**Antarmuka:** UI-28 
+**Nama Layar:** Edit Profil Mitra
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-28 - Edit Profil Mitra" src="./assets/uiux/EditProfilMitra.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.28. Rancangan Antarmuka UI-28 - Edit Profil Mitra</i>
+</p>
+
+Tabel 6.28. Spesifikasi Objek Antarmuka UI-28
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-176 | Text Info | Profil Mitra (foto, "Nama Mitra", dan deskripsi) | Menampilkan foto, nama, dan deskripsi singkat mitra pengacara. |
+| O-177 | Tag | Tag Keahlian ("Keahlian 1", "Keahlian 2", "Keahlian 3") | Menampilkan bidang keahlian mitra pengacara. |
+| O-178 | Text Info | Judul Seksi ("Jadwal") | Mengelompokkan pengaturan jadwal ketersediaan mitra. |
+| O-179 | Button | Tombol "Edit Dokumen" | Mengarahkan mitra ke halaman Edit Dokumen Legalitas Mitra (UI-27). |
+| O-180 | Calendar | Kalender Bulanan | Menampilkan tanggal dalam satu bulan; tanggal terpilih disorot untuk menentukan hari yang jadwalnya dilihat atau diubah. |
+| O-181 | Dropdown | Pilihan Bulan | Memilih bulan yang ditampilkan pada kalender. |
+| O-182 | Dropdown | Pilihan Tahun | Memilih tahun yang ditampilkan pada kalender. |
+| O-183 | Button | Tombol Panah Navigasi (sebelumnya/berikutnya) | Berpindah ke bulan sebelumnya atau bulan berikutnya pada kalender. |
+| O-184 | Text Info | Judul Seksi ("Waktu Tersedia") | Mengelompokkan daftar slot waktu yang tersedia pada tanggal terpilih. |
+| O-185 | List Item | Item Slot Waktu (contoh "14.00 - 15.00") | Menampilkan satu slot waktu ketersediaan mitra pada tanggal terpilih. |
+| O-186 | Button | Tombol "Edit" pada setiap slot waktu | Mengubah slot waktu ketersediaan yang bersangkutan. |
+
+## 6.29 Rancangan Antarmuka UI-29
+**Antarmuka:** UI-29 
+**Nama Layar:** Konfirmasi Konsultasi
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-29 - Konfirmasi Konsultasi" src="./assets/uiux/KonfirmasiKonsultasi.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.29. Rancangan Antarmuka UI-29 - Konfirmasi Konsultasi</i>
+</p>
+
+Tabel 6.29. Spesifikasi Objek Antarmuka UI-29
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-187 | Text Info | Profil Klien (foto dan "Nama Klien") | Menampilkan foto dan nama masyarakat yang mengajukan konsultasi. |
+| O-188 | Text Info | Waktu Pengajuan (ikon kalender, tanggal, dan jam) | Menampilkan waktu pengajuan konsultasi oleh klien. |
+| O-189 | Text Info | Permintaan Durasi (ikon jam dan durasi) | Menampilkan durasi konsultasi yang diminta klien. |
+| O-190 | Text Info | Sisa Waktu Respon (ikon dan waktu) | Menampilkan sisa waktu yang dimiliki mitra untuk menanggapi permintaan sebelum kedaluwarsa. |
+| O-191 | Tag | Tag Kategori | Menampilkan kategori kasus yang dipilih klien. |
+| O-192 | Text Info | Deskripsi Kasus | Menampilkan uraian masalah atau kasus yang disampaikan klien. |
+| O-193 | Input Field | Field Catatan (placeholder "Tulis catatan...") | Menerima catatan mitra atas keputusannya, misalnya alasan penolakan. |
+| O-194 | Button | Tombol "Terima" | Menerima permintaan konsultasi sehingga sesi terjadwal dan klien dinotifikasi. |
+| O-195 | Button | Tombol "Tolak" | Menolak permintaan konsultasi dan klien dinotifikasi. |
+
+## 6.30 Rancangan Antarmuka UI-30
+**Antarmuka:** UI-30 
+**Nama Layar:** List Pengajuan
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-30 - List Pengajuan" src="./assets/uiux/ListPengajuan.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.30. Rancangan Antarmuka UI-30 - List Pengajuan</i>
+</p>
+
+Tabel 6.30. Spesifikasi Objek Antarmuka UI-30
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-196 | Text Info | Judul Halaman ("List Konsultasi") | Menampilkan judul halaman daftar pengajuan konsultasi yang masuk. |
+| O-197 | Search Field | Field Pencarian (placeholder "Cari") | Mencari pengajuan konsultasi berdasarkan kata kunci. |
+| O-198 | Button | Tombol "Filter" | Membuka opsi penyaringan daftar pengajuan. |
+| O-199 | Dropdown | Pilihan "Status" | Menyaring daftar pengajuan berdasarkan status. |
+| O-200 | Dropdown | Pilihan "Jadwal Terdekat" | Mengurutkan daftar pengajuan berdasarkan jadwal paling dekat. |
+| O-201 | Dropdown | Pilihan "Terbaru" | Mengurutkan daftar pengajuan berdasarkan waktu pengajuan terbaru. |
+| O-202 | Card | Kartu Pengajuan (foto profil, "Nama Klien", dan "Informasi") | Menampilkan ringkasan satu pengajuan konsultasi. Kartu berulang untuk setiap pengajuan. |
+| O-203 | Link | Tautan "Lihat Detail" | Mengarahkan mitra ke halaman Konfirmasi Konsultasi (UI-29). |
+| O-204 | Text Info | Waktu Pengajuan (ikon kalender, tanggal, dan jam) | Menampilkan waktu pengajuan konsultasi. |
+| O-205 | Text Info | Sisa Waktu Respon (ikon dan waktu) | Menampilkan sisa waktu untuk menanggapi pengajuan. |
+| O-206 | Badge | Label Status Pengajuan ("Status") | Menampilkan status pengajuan konsultasi, misalnya menunggu, terjadwal, atau ditolak. |
+
+## 6.31 Rancangan Antarmuka UI-31
+**Antarmuka:** UI-31 
+**Nama Layar:** Beranda Mitra
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-31 - Beranda Mitra" src="./assets/uiux/BerandaMitra.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.31. Rancangan Antarmuka UI-31 - Beranda Mitra</i>
+</p>
+
+Tabel 6.31. Spesifikasi Objek Antarmuka UI-31
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-207 | Text Info | Sapaan ("Halo, [Nama Mitra]!") | Menyapa mitra pengacara yang sedang login dengan nama akunnya. |
+| O-208 | Text Info | Judul Seksi ("Overview") | Mengelompokkan ringkasan kondisi akun mitra. |
+| O-209 | Card | Kartu Statistik "Permintaan menunggu" | Menampilkan jumlah permintaan konsultasi yang menunggu tanggapan mitra. |
+| O-210 | Card | Kartu Statistik "Sesi terjadwal mendatang" | Menampilkan jumlah sesi konsultasi terjadwal yang akan datang. |
+| O-211 | Card | Kartu Statistik "Rating" | Menampilkan rating mitra dari ulasan masyarakat. |
+| O-212 | Card | Kartu Statistik "Dana yang Bisa Dicairkan" | Menampilkan jumlah dana yang dapat dicairkan oleh mitra. |
+| O-213 | Text Info | Judul Seksi ("Permintaan Terbaru") | Mengelompokkan daftar permintaan konsultasi terbaru. |
+| O-214 | Link | Tautan "Lihat Semua" | Mengarahkan mitra ke halaman List Pengajuan (UI-30). |
+| O-215 | Card | Kartu Permintaan Terbaru (nomor urut, nama, dan tanggal permintaan) | Menampilkan ringkasan tiga permintaan konsultasi terbaru. |
+| O-216 | Text Info | Judul Seksi ("Sesi Terjadwal Berikutnya") | Mengelompokkan daftar sesi konsultasi terjadwal berikutnya. |
+| O-217 | Card | Kartu Sesi Terjadwal (nomor urut, nama, dan tanggal) | Menampilkan ringkasan tiga sesi konsultasi terjadwal berikutnya. |
+| O-218 | Button | Tombol "Konsultasi" | Masuk ke sesi konsultasi yang bersangkutan. |
+
+## 6.32 Rancangan Antarmuka UI-32
+**Antarmuka:** UI-32 
+**Nama Layar:** Status Verifikasi Mitra
+
+<p align="center">
+<img alt="Rancangan Antarmuka UI-32 - Status Verifikasi Mitra" src="./assets/uiux/StatusVerifikasiMitra.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.32. Rancangan Antarmuka UI-32 - Status Verifikasi Mitra</i>
+</p>
+
+Tabel 6.32. Spesifikasi Objek Antarmuka UI-32
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-219 | Text Info | Judul Halaman ("Rincian Registrasi Mitra Pengacara") | Menampilkan judul halaman rincian dan status registrasi mitra. |
+| O-220 | Text Info | Judul Seksi ("Status Registrasi") | Mengelompokkan indikator progres verifikasi akun mitra. |
+| O-221 | Progress Step | Langkah 1 ("Pendaftaran terkirim") | Menandakan dokumen telah dikirim untuk diverifikasi admin beserta tanggal pengiriman; langkah selesai ditandai warna hijau. |
+| O-222 | Progress Step | Langkah 2 ("Pemeriksaan dokumen oleh admin") | Menandakan tahap pemeriksaan dokumen oleh admin beserta keterangannya. |
+| O-223 | Progress Step | Langkah 3 ("Hasil verifikasi") | Menandakan hasil akhir verifikasi (disetujui atau ditolak) beserta keterangannya. |
+| O-224 | Text Info | Judul Seksi ("Data Akun") | Mengelompokkan data akun mitra. |
+| O-225 | Text Field | Field Username | Menampilkan username mitra. |
+| O-226 | Text Field | Field Nama Firma | Menampilkan nama firma mitra. |
+| O-227 | Text Info | Judul Seksi ("Informasi Dokumen") dan petunjuk ("Unggah ulang dokumen apabila terdapat kesalahan") | Menjelaskan bahwa mitra dapat mengunggah ulang dokumen yang salah. |
+| O-228 | Upload Button | Tombol "Upload Dokumen" Ijazah (wajib, bertanda *) | Mengunggah ulang berkas ijazah. |
+| O-229 | Upload Button | Tombol "Upload Dokumen" KTA (wajib, bertanda *) | Mengunggah ulang berkas KTA. |
+| O-230 | Upload Button | Tombol "Upload Dokumen" SIPA (wajib, bertanda *) | Mengunggah ulang berkas SIPA. |
+| O-231 | Upload Button | Tombol "Upload Dokumen" BAS (wajib, bertanda *) | Mengunggah ulang berkas BAS. |
+| O-232 | Upload Button | Tombol "Upload Dokumen" KTP | Mengunggah ulang berkas KTP; bersifat opsional. |
+| O-233 | Upload Button | Tombol "Upload Dokumen" CV | Mengunggah ulang berkas CV; bersifat opsional. |
+
+## 6.33 Rancangan Antarmuka Keseluruhan
+
+Tabel 6.33. Rancangan Antarmuka Keseluruhan
 
 | No | Tampilan Antarmuka |
 | :--- | :--- |
 | [UI-01] | <img src="./assets/uiux/RegistrasiMasyarakatPage.png" alt="Registrasi Masyarakat" width="400"> |
 | [UI-02] | <img src="./assets/uiux/LoginMasyarakatPage.png" alt="Login Masyarakat" width="400"> |
-| [UI-03]| <img src="./assets/uiux/BerandaMasyarakatPage.png" alt="Beranda Masyarakat" width="400"> |
-| [UI-04]| <img src="./assets/uiux/SearchLawPage.png" alt="SearchLaw" width="400"> |
-| [UI-05]| <img src="./assets/uiux/HaloLawFormPage.png" alt="Form Kasus Masyarakat" width="400"> |
-| [UI-06]| <img src="./assets/uiux/HaloLawListMitraPage.png" alt="HaloLaw List Mitra" width="400"> |
-| [UI-07]| <img src="./assets/uiux/HaloLawPageKosong.png" alt="HaloLaw List Mitra kosong" width="400"> |
-| [UI-08]| <img src="./assets/uiux/PemilihanJadwalPage.png" alt="Pemilihan Jadwal" width="400"> |
-| [UI-09]| <img src="./assets/uiux/PembayaranPage.png" alt="Pembayaran" width="400"> |
-| [UI-10]| <img src="./assets/uiux/KonsulPOVMasyarakatPage.png" alt="Konsul Masyarakat" width="400"> |
-| [UI-11]| <img src="./assets/uiux/KonsulPOVMitraPage.png" alt="Konsul Mitra" width="400"> |
-| [UI-12]| <img src="./assets/uiux/FormUlasanPage.png" alt="Form Ulasan" width="400"> |
-| [UI-13]| <img src="./assets/uiux/HistoryChatPage.png" alt="History Chat" width="400"> |
-| [UI-14]| <img src="./assets/uiux/HistoryListMasyarakatPage.png" alt="History Chat" width="400"> |
-| [UI-15]| <img src="./assets/uiux/HistoryListMitraPage.png" alt="History List Mitra" width="400"> |
-| [UI-16]| <img src="./assets/uiux/LiveChatMasyarakatPage.png" alt="Live chat masyarakat " width="400"> |
-| [UI-17]| <img src="./assets/uiux/LiveChatAdminPage.png" alt="Live chat mitra " width="400"> |
+| [UI-03] | <img src="./assets/uiux/BerandaMasyarakatPage.png" alt="Beranda Masyarakat" width="400"> |
+| [UI-04] | <img src="./assets/uiux/SearchLawPage.png" alt="SearchLaw" width="400"> |
+| [UI-05] | <img src="./assets/uiux/HaloLawFormPage.png" alt="Form Kasus Masyarakat" width="400"> |
+| [UI-06] | <img src="./assets/uiux/HaloLawListMitraPage.png" alt="HaloLaw List Mitra" width="400"> |
+| [UI-07] | <img src="./assets/uiux/HaloLawPageKosong.png" alt="HaloLaw List Mitra kosong" width="400"> |
+| [UI-08] | <img src="./assets/uiux/PemilihanJadwalPage.png" alt="Pemilihan Jadwal" width="400"> |
+| [UI-09] | <img src="./assets/uiux/PembayaranPage.png" alt="Pembayaran" width="400"> |
+| [UI-10] | <img src="./assets/uiux/KonsulPOVMasyarakatPage.png" alt="Konsul Masyarakat" width="400"> |
+| [UI-11] | <img src="./assets/uiux/KonsulPOVMitraPage.png" alt="Konsul Mitra" width="400"> |
+| [UI-12] | <img src="./assets/uiux/FormUlasanPage.png" alt="Form Ulasan" width="400"> |
+| [UI-13] | <img src="./assets/uiux/HistoryChatPage.png" alt="History Chat" width="400"> |
+| [UI-14] | <img src="./assets/uiux/HistoryListMasyarakatPage.png" alt="History List Masyarakat" width="400"> |
+| [UI-15] | <img src="./assets/uiux/HistoryListMitraPage.png" alt="History List Mitra" width="400"> |
+| [UI-16] | <img src="./assets/uiux/LiveChatMasyarakatPage.png" alt="Live Chat Masyarakat" width="400"> |
+| [UI-17] | <img src="./assets/uiux/LiveChatAdminPage.png" alt="Live Chat Admin" width="400"> |
+| [UI-18] | <img src="./assets/uiux/RegistrasiMitra.png" alt="Registrasi Mitra" width="400"> |
+| [UI-19] | <img src="./assets/uiux/LoginMitra.png" alt="Login Mitra" width="400"> |
+| [UI-20] | <img src="./assets/uiux/LandingPage.png" alt="Landing Page" width="400"> |
+| [UI-21] | <img src="./assets/uiux/VerifikasiMitraLanjutan.png" alt="Verifikasi Mitra Lanjutan" width="400"> |
+| [UI-22] | <img src="./assets/uiux/TinjauanLaporan.png" alt="Tinjauan Laporan" width="400"> |
+| [UI-23] | <img src="./assets/uiux/VerifikasiMitra.png" alt="Verifikasi Mitra" width="400"> |
+| [UI-24] | <img src="./assets/uiux/LaporkanUlasan.png" alt="Laporkan Ulasan" width="400"> |
+| [UI-25] | <img src="./assets/uiux/LaporkanAkun.png" alt="Laporkan Akun" width="400"> |
+| [UI-26] | <img src="./assets/uiux/PencairanDana.png" alt="Pencairan Dana" width="400"> |
+| [UI-27] | <img src="./assets/uiux/EditDokumenLegalitasMitra.png" alt="Edit Dokumen Legalitas Mitra" width="400"> |
+| [UI-28] | <img src="./assets/uiux/EditProfilMitra.png" alt="Edit Profil Mitra" width="400"> |
+| [UI-29] | <img src="./assets/uiux/KonfirmasiKonsultasi.png" alt="Konfirmasi Konsultasi" width="400"> |
+| [UI-30] | <img src="./assets/uiux/ListPengajuan.png" alt="List Pengajuan" width="400"> |
+| [UI-31] | <img src="./assets/uiux/BerandaMitra.png" alt="Beranda Mitra" width="400"> |
+| [UI-32] | <img src="./assets/uiux/StatusVerifikasiMitra.png" alt="Status Verifikasi Mitra" width="400"> |
 <br>
 
 ---
