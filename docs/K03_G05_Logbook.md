@@ -99,3 +99,39 @@
 | 27-10-2026 | Ami, Raya | Implementasi dan perapian detail atribut serta metode kelas | 2 | Done | - | 
 | 28-10-2026 | Cherinette, Cathrine | Finalisasi dokumentasi perancangan sistem | 2 | Done | - | 
 | 30-10-2026 | Seluruh Anggota | Final review, pengecekan traceability, dan pengumpulan tugas | 2 | Done | - |
+
+---
+### Milestone 6
+**Periode** : 30-09-2026 - 07-10-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| --- | --- | --- | --- | --- | --- |
+| 30-09-2026 | Ami | Menginisiasi logbook MS 3-5, mengupdate dokumentasi penggunaan AI, dan mendefinisikan atribut keseluruhan | 2 | Done | - |
+| 30-09-2026 | Raya | Memperbaiki format atribut pada kelas dan menambahkan dokumentasi *AI usage* | 2 | Done | - |
+| 01-10-2026 | Cherinette | Melakukan penggabungan (*merge*) *branch* RPL-24 ke main dan merapikan repositori| 1 | Done | - |
+| 06-10-2026 | Cathrine, Livy | Pengecekan kesesuaian atribut kelas dan persiapan dokumen APL untuk asistensi | 2 | Done | - |
+| 07-10-2026 | Ami | Melakukan penyusunan dan penulisan BAB 1 (Pendahuluan APL) | 2 | Done | - |
+| 07-10-2026 | Cherinette | Melakukan penyusunan dan penulisan Bab 2 (Identifikasi Komponen) | 2 | Done | - |
+ 
+---
+### Milestone 7
+**Periode** : 07-10-2026 - 19-10-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| --- | --- | --- | --- | --- | --- |
+| 07-10-2026 | Ami | Melampirkan dokumentasi foto asistensi kelompok dan memperbaiki formatnya | 1 | Done | - |
+| 08-10-2026 | Raya | Menambahkan penjelasan diagram dan membuat diagram *Logical View* pada dokumen APL | 3 | Done | - |
+| 10-10-2026 | Cherinette | Memperbarui file utama dokumen APL dan merapikan folder aset diagram | 2 | Done | - |
+| 18-10-2026 | Cathrine, Livy | *Review* kelengkapan dokumen arsitektur dan persiapan pembagian tugas realisasi *use case* | 2 | Done | - |
+| 19-10-2026 | Cherinette, Raya | Penyusunan DPPL untuk Bab 3.16-3.20 dan memasukkan realisasi UC06-UC10 | 3 | Done | - |
+
+---
+### Milestone 8
+**Periode** : 19-10-2026 - 28-10-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| --- | --- | --- | --- | --- | --- |
+| 19-10-2026 | Livy | Membuat *sequence diagram* untuk UC21-22 dan menyusun Bab 5 Matriks Kerunutan | 3 | Done | - |
+| 21-10-2026 | Cathrine | Menyusun dokumentasi realisasi dan diagram untuk UC01-UC05 | 3 | Done | - |
+| 24-10-2026 | Ami | Mengerjakan DPPL Bab 1.1, 1.2, Bab 3.11-3.15, menyisipkan logo aplikasi, serta *sequence diagram* UC11-15 | 4 | Done | - |
+| 26-10-2026 | Cherinette, Cathrine | Pembuatan *draft pseudocode* untuk kelas perancangan (C01-C08, C30-C43) dan format tabel | 4 | Done | - |
+| 28-10-2026 | Livy, Cherinette | Melengkapi gambar arsitektur MVC, menyusun kelas perancangan (C09-16, C35-47), dan menyusun Bab 7 | 4 | Done | - |
+| 28-10-2026 | Raya | Menyusun dan mengimplementasikan rancangan antarmuka (UI/UX) sistem | 5 | Done | - |
+| 28-10-2026 | Ami | Merancang, membuat, dan menyelesaikan desain antarmuka (UI/UX) sistem secara ekstensif | 15 | Done | Mendesain banyak layar memakan waktu cukup lama |
