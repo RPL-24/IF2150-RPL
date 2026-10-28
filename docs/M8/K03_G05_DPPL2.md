@@ -3571,27 +3571,347 @@ Tabel 5.51.3. Query Operasi
 
 # BAB 6: Perancangan Antarmuka
 
-## 6.1 Rancangan Antarmuka [ID Layar 1]
-
-Masukkan versi awal prototipe antarmuka, dimana untuk setiap antarmuka/layar, tuliskan spesifikasi rinci objek yang ditampilkan dan reaksi sistem terhadap interaksi pengguna.
-
-**Antarmuka:** *[ID layar]*  
-**Nama Layar:** *[Nama layar]*
+## 6.1 Rancangan Antarmuka UI-01
+**Antarmuka:** UI-01 
+**Nama Layar:** Registrasi Masyarakat
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-design.png" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/RegistrasiMasyarakatPage.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar 6.1. Rancangan Antarmuka [ID Layar] - [Nama Layar]</i>
+<i>Gambar 6.1. Rancangan Antarmuka UI-01 - Registrasi Masyarakat</i>
 </p>
 
-Tabel 6.1. Spesifikasi Objek Antarmuka [ID Layar]
+Tabel 6.1. Spesifikasi Objek Antarmuka UI-01
 
 | Id_Objek | Jenis | Konten | Keterangan |
 | :--- | :--- | :--- | :--- |
-| *[ID objek]* | *[Jenis objek, misalnya Button, RTF Box, dll]* | *[String yang tampil pada layar]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
-| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem atau nama file terkait beserta deskripsi ringkasnya]* |
-| *...* | *...* | *...* | *...* |
+| O-01 | Button | Daftar | Memproses data registrasi yang telah diisi. Sistem memvalidasi kelengkapan dan kesesuaian data, termasuk konfirmasi kata sandi, sebelum melanjutkan proses pendaftaran akun. |
+| O-02 | Input Fields | Data Akun (Nama Lengkap, Username, Nomor Handphone, Alamat Email, Kata Sandi, Konfirmasi Kata Sandi) | Menyediakan kolom input data masyarakat yang terdiri atas nama lengkap sesuai KTP, username, nomor handphone dengan kode negara +62, alamat email, kata sandi minimal 6 karakter, dan konfirmasi kata sandi. |
+
+## 6.2 Rancangan Antarmuka UI-02
+**Antarmuka:** UI-02 
+**Nama Layar:** Login Masyarakat
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/LoginMasyarakatPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.2. Rancangan Antarmuka UI-02 -Login Masyarakat</i>
+</p>
+
+Tabel 6.2. Spesifikasi Objek Antarmuka UI-02
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-03 | Input Fields | Data Login (Username, Kata Sandi) | Menyediakan kolom input username dan kata sandi untuk autentikasi pengguna masyarakat.|
+| O-04 | Checkbox | Ingat username | Memungkinkan pengguna memilih opsi untuk mengingat username agar lebih mudah saat melakukan login berikutnya. |
+| O-05 | Button | Masuk | Memproses data login dan memvalidasi username serta kata sandi. Jika valid, sistem mengarahkan pengguna ke halaman utama masyarakat. |
+| O-06 | Button | Masuk Sebagai Tamu | Mengarahkan pengguna ke halaman tamu agar dapat menggunakan fitur SearchLaw tanpa login. |
+| O-07 | Button | Registrasi | Mengarahkan pengguna ke halaman registrasi untuk membuat akun baru. |
+
+## 6.3 Rancangan Antarmuka UI-03
+**Antarmuka:** UI-03 
+**Nama Layar:** Beranda Masyarakat
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/BerandaMasyarakatPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.3. Rancangan Antarmuka UI-03 - Beranda Masyarakat</i>
+</p>
+
+Tabel 6.3. Spesifikasi Objek Antarmuka UI-03
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-08 | Logo | Logo LawHub (Header) | Menampilkan logo utama LawHub pada bagian navigasi atas dan mengarahkan pengguna kembali ke halaman Beranda |
+| O-09 | Button | Beranda | Mengarahkan pengguna ke halaman utama (Beranda) |
+| O-10 | Button | History | Mengarahkan pengguna ke halaman riwayat pencarian atau aktivitas konsultasi |
+| O-11 | Button | Live Chat | Mengarahkan pengguna ke fitur obrolan langsung (Live Chat) |
+| O-12 | Button | SearchLaw | Menampilkan deskripsi fitur pencarian dasar hukum ("Bingung mencari dasar hukum...") dan mengarahkan ke halaman SearchLaw |
+| O-13 | Button | HaloLaw | Menampilkan deskripsi fitur konsultasi pengacara ("Mau konsultasi soal kasusmu...") dan mengarahkan ke halaman HaloLaw |
+
+## 6.4 Rancangan Antarmuka UI-04
+**Antarmuka:** UI-04 
+**Nama Layar:** SearchLaw
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/SearchLawPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.4. Rancangan Antarmuka UI-04 - SearchLaw</i>
+</p>
+
+Tabel 6.4. Spesifikasi Objek Antarmuka UI-04
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-14| Logo | Logo SearchLaw (Header) | Menampilkan identitas dan logo fitur SearchLaw di bagian tengah header |
+| O-15 | Input Field | Search Bar ("Cari") | Memungkinkan pengguna memasukkan kata kunci, judul undang-undang, atau nomor pasal yang ingin dicari |
+| O-16 | Button | Tombol Filter | Membuka opsi filter/penyaringan untuk membatasi kriteria pencarian dokumen hukum. |
+| O-17 | Container | Hasil Pencarian | Menampilkan ringkasan dokumen hukum (UU Pasal X Ayat X Tahun XXXX) beserta teks pratinjau isi pasal |
+| O-18 | Text Link | Tautan "Selebihnya..." | Mengarahkan pengguna ke halaman rincian/detail lengkap dari pasal atau undang-undang yang dipilih |
+
+## 6.5 Rancangan Antarmuka UI-05
+**Antarmuka:** UI-05 
+**Nama Layar:** HaloLaw Form Kasus
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/HaloLawFormPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.5. Rancangan Antarmuka UI-05 - Halo Law Form Page</i>
+</p>
+
+Tabel 6.5. Spesifikasi Objek Antarmuka UI-05
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-19 | Logo | Logo HaloLaw (Header) | Menampilkan identitas dan logo fitur HaloLaw di bagian tengah header |
+| O-20 | Input Field | Deskripsi Kasus ("Deskripsikan Kasusmu ...") | Memungkinkan pengguna mengetikkan penjelasan kronologi atau detail permasalahan hukum yang dihadapi |
+| O-21 | File Upload | Tombol "Upload Dokumen" (Bukti Pendukung) | Memungkinkan pengguna mengunggah berkas atau dokumen bukti pendukung terkait kasus |
+| O-22  | Checkbox | Checkbox Request Tag Keahlian Mitra | Memungkinkan pengguna memilih opsi kategori keahlian hukum (Hukum Pidana, Hukum Perdata, Hukum Administrasi Negara) yang dibutuhkan|
+| O-23 | Button | Tombol "Cari Mitra" | Memproses data pengisian formulir dan mengarahkan pengguna ke daftar atau pencarian mitra pengacara yang sesuai |
+
+## 6.6 Rancangan Antarmuka UI-06
+**Antarmuka:** UI-06 
+**Nama Layar:** HaloLaw List Mitra
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/HaloLawListMitraPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.6. Rancangan Antarmuka UI-06 - Halo Law List Mitra Page</i>
+</p>
+
+Tabel 6.6. Spesifikasi Objek Antarmuka UI-06
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-24 | Button | Tombol "Edit Submisi Kasus" | Mengarahkan pengguna kembali ke halaman formulir untuk mengubah rincian kasus yang telah dimasukkan. |
+| O-24| Filter | Filter & Tag Keahlian | Memungkinkan pengguna menyaring daftar mitra pengacara berdasarkan kriteria keahlian yang dipilih. |
+| O-25 | Container | Profil Mitra Pengacara | Menampilkan informasi ringkas mitra pengacara yang mencakup foto profil, nama, deskripsi pengalaman, dan tag bidang keahlian. |
+| O-26 | Button | Tombol "Atur Jadwal Konsultasi" | Mengarahkan pengguna ke halaman atau modul penjadwalan konsultasi dengan mitra pengacara yang dipilih. |
+
+## 6.7 Rancangan Antarmuka UI-07
+**Antarmuka:** UI-07 
+**Nama Layar:** HaloLaw List Mitra Kosong
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/HaloLawPageKosong.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.7. Rancangan Antarmuka UI-07 - Halo Law List Mitra Kosong</i>
+</p>
+
+Tabel 6.7. Spesifikasi Objek Antarmuka UI-07
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-27 | Button | Tombol "Edit Submisi Kasus" | Mengarahkan pengguna kembali ke halaman formulir untuk mengubah rincian kasus yang telah dimasukkan. |
+| O-28 | Filter | Filter & Tag Keahlian | Memungkinkan pengguna menyaring daftar mitra pengacara berdasarkan kriteria keahlian yang dipilih. |
+| O-29 | Text Info | Pesan Empty State ("Tidak ada mitra...") | Menampilkan informasi bahwa tidak ada mitra pengacara yang sesuai dengan kriteria/filter terpilih, serta memberi petunjuk untuk memilih tag keahlian lain. |
+
+## 6.8 Rancangan Antarmuka UI-08
+**Antarmuka:** UI-08 
+**Nama Layar:** Pemilihan Jadwal Konsultasi
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/PemilihanJadwalPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.8. Rancangan Antarmuka UI-08 - Pemilihan Jadwal Konsultasi</i>
+</p>
+
+Tabel 6.8. Spesifikasi Objek Antarmuka UI-08
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-30 | Container | Data Ringkasan Mitra Pengacara | Menampilkan informasi ringkas mitra pengacara terpilih (foto profil, nama, deskripsi, dan tag keahlian). |
+| O-31 | Date Picker | Kalender Pemilihan Tanggal | Memungkinkan pengguna memilih tanggal konsultasi dengan navigasi pilihan bulan dan tahun. |
+| O-32 | List | List Slot Waktu ("Waktu Tersedia") | Menampilkan daftar pilihan slot jam konsultasi yang tersedia pada tanggal yang dipilih. |
+| O-33 | Button | Tombol "Pilih" | Memilih slot waktu konsultasi tertentu dan melanjutkannya ke tahap konfirmasi. |
+
+## 6.9 Rancangan Antarmuka UI-09
+**Antarmuka:** UI-09 
+**Nama Layar:** Pembayaran
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/PembayaranPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.9. Rancangan Antarmuka UI-09 - Pembayaran</i>
+</p>
+
+Tabel 6.9. Spesifikasi Objek Antarmuka UI-09
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-34 | Input Fields | Data Kartu (Nomor Kartu, Tanggal Kadaluwarsa, Kode Keamanan CVC/CVV) | Menyediakan kolom input detail kartu (nomor kartu, tanggal kadaluwarsa HH/BB/TT, dan kode CVC/CVV) untuk metode pembayaran kartu kredit/debit. |
+| O-35 | Button | Tombol "Gunakan E-Wallet" | Memungkinkan pengguna memilih metode pembayaran melalui dompet digital (E-Wallet). |
+| O-36 | Button | Tombol "Gunakan Virtual Account" | Memungkinkan pengguna memilih metode pembayaran melalui Virtual Account bank. |
+| O-37 | Button | Tombol "Gunakan Qris" | Memungkinkan pengguna memilih metode pembayaran menggunakan pemindaian kode QRIS. |
+| O-38 | Text Info | Ringkasan Total Biaya | Menampilkan rincian komponen biaya meliputi Biaya per Jam, Durasi Sesi, Pajak, dan Total yang harus dibayar. |
+| O-39 | Timer | Sisa Waktu Pembayaran | Menampilkan indikator penghitung waktu mundur (countdown timer) batas waktu penyelesaian transaksi. |
+| O-40 | Button | Tombol "Bayar Sekarang" | Memproses transaksi pembayaran sesuai metode dan rincian yang dipilih. |
+
+## 6.10 Rancangan Antarmuka UI-10
+**Antarmuka:** UI-10 
+**Nama Layar:** Chat Konsultasi Masyarakat
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/KonsulPOVMasyarakatPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.10. Rancangan Antarmuka UI-10 - Chat Konsultasi Masyarakat</i>
+</p>
+
+Tabel 6.10. Spesifikasi Objek Antarmuka UI-10
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-41 | Text Info | Profil Mitra Pengacara (Sub-header) | Menampilkan foto profil dan nama mitra pengacara yang sedang aktif melayani sesi konsultasi. |
+| O-42 | Button | Tombol "Sudahi Sesi" | Memungkinkan pengguna untuk mengakhiri sesi obrolan/konsultasi secara langsung. |
+| O-43 | Chat Bubble  | Bubble Pesan Chat | Menampilkan balon percakapan pesan teks yang dikirim oleh  pengguna. |
+| O-44 | Chat Bubble  | Bubble Pesan Chat | Menampilkan balon percakapan pesan teks yang dikirim oleh mitra pengacara. |
+| O-45 | Input Field | Field Pesan Chat ("...") | Menyediakan kolom input teks untuk mengetik dan mengirimkan pesan baru dalam obrolan konsultasi. |
+
+## 6.11 Rancangan Antarmuka UI-11
+**Antarmuka:** UI-11 
+**Nama Layar:** Chat Konsultasi Mitra
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/KonsulPOVMitraPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.11. Rancangan Antarmuka UI-11 - Chat Konsultasi Mitra</i>
+</p>
+
+Tabel 6.11. Spesifikasi Objek Antarmuka UI-11
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-46 | Text Info | Profil Klien (Sub-header) | Menampilkan foto profil dan nama/identitas klien (Klien 1) yang sedang berkonsultasi dengan mitra.|
+| O-47 | Chat Bubble  | Bubble Pesan Chat | Menampilkan balon percakapan pesan teks yang dikirim oleh  pengguna. |
+| O-48 | Chat Bubble  | Bubble Pesan Chat | Menampilkan balon percakapan pesan teks yang dikirim oleh mitra pengacara. |
+| O-49 | Input Field | Field Pesan Chat ("...") | Menyediakan kolom input teks untuk mengetik dan mengirimkan pesan baru dalam obrolan konsultasi. |
+
+## 6.12 Rancangan Antarmuka UI-12
+**Antarmuka:** UI-12 
+**Nama Layar:** Form Ulasan
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/FormUlasanPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.12. Rancangan Antarmuka UI-12 - Form Ulasan</i>
+</p>
+
+Tabel 6.12. Spesifikasi Objek Antarmuka UI-12
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-50 |  Container | Ringkasan Mitra Pengacara | Menampilkan informasi ringkas mitra pengacara yang diulas (foto profil, nama, deskripsi, dan tag keahlian). |
+| O-51 | Button | Rating Bintang ("Berikan Nilai") | Memungkinkan pengguna memberikan penilaian tingkat kepuasan layanan dalam bentuk jumlah bintang (1-5 bintang). |
+| O-52 | Input Field | Field Ulasan ("Tulis Ulasan") | Menyediakan kolom input teks bagi pengguna untuk mengetik ulasan atau umpan balik tertulis mengenai konsultasi. |
+| O-53 | Button | Tombol "Kirim" | Memproses dan menyimpan nilai rating serta ulasan pengguna ke sistem. |
+| O-54 | Button | Tombol "Batal" | Membatalkan pengisian ulasan dan mengarahkan pengguna kembali ke halaman sebelumnya. |
+
+## 6.13 Rancangan Antarmuka UI-13
+**Antarmuka:** UI-13 
+**Nama Layar:** History Chat
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/HistoryChatPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.13. Rancangan Antarmuka UI-13 - History Chat</i>
+</p>
+
+Tabel 6.13. Spesifikasi Objek Antarmuka UI-13
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-55 |  Text Info | Profil Mitra Pengacara (Sub-header) | Menampilkan foto profil dan nama mitra pengacara (MitraPengacara 1) dalam ruang percakapan. |
+| O-56 | Chat Bubble  | Bubble Pesan Chat | Menampilkan balon percakapan pesan teks yang dikirim oleh  pengguna. |
+| O-57 | Chat Bubble | Bubble Pesan Chat | Menampilkan balon percakapan riwayat pesan teks dalam obrolan konsultasi. |
+
+## 6.14 Rancangan Antarmuka UI-14
+**Antarmuka:** UI-14 
+**Nama Layar:** List History Chat Masyarakat
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/HistoryListMasyarakatPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.14. Rancangan Antarmuka UI-14 - List History Chat Masyarakat</i>
+</p>
+
+Tabel 6.14. Spesifikasi Objek Antarmuka UI-14
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-58 | Container | Riwayat Konsultasi | Menampilkan daftar kartu riwayat sesi konsultasi hukum yang pernah dilakukan oleh pengguna. |
+| O-59 | Text Info | Informasi Mitra Pengacara (Foto & Nama) | Menampilkan foto profil dan nama mitra pengacara pada masing-masing item riwayat. |
+| O-60 | Text Info | Ringkasan Kasus ("Kasus : ...") | Menampilkan pratinjau atau deskripsi singkat kasus yang telah dikonsultasikan pada sesi tersebut. |
+
+## 6.15 Rancangan Antarmuka UI-15
+**Antarmuka:** UI-15 
+**Nama Layar:** List History Chat Mitra
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/HistoryListMitraPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.15. Rancangan Antarmuka UI-15 - List History Chat Mitra</i>
+</p>
+
+Tabel 6.15. Spesifikasi Objek Antarmuka UI-15
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-61 | Container | Riwayat Konsultasi | Menampilkan daftar kartu riwayat sesi konsultasi hukum yang pernah dilakukan oleh mitra pengacara. |
+| O-62 | Text Info | Informasi Klien (Foto & Nama) | Menampilkan foto profil dan nama klien pada masing-masing item riwayat. |
+| O-63 | Text Info | Ringkasan Kasus ("Kasus : ...") | Menampilkan pratinjau atau deskripsi singkat kasus yang telah dikonsultasikan pada sesi tersebut. |
+
+## 6.16 Rancangan Antarmuka UI-16
+**Antarmuka:** UI-16 
+**Nama Layar:** Live Chat Masyarakat
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/LiveChatPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.16. Rancangan Antarmuka UI-16 - Live Chat Masyarakat</i>
+</p>
+
+Tabel 6.16. Spesifikasi Objek Antarmuka UI-16
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-64 | Text Info | Profil Admin (Sub-header) | Menampilkan foto profil dan nama/identitas Admin yang melayani sesi bantuan pelanggan. |
+| O-65 | Chat Bubble | Bubble Pesan Chat | Menampilkan balon percakapan riwayat pesan teks antara pengguna dan Admin. |
+| O-66 | Input Field | Field Pesan Chat ("TanyaAdmin!") | Menyediakan kolom input teks untuk mengetik dan mengirimkan pesan bantuan kepada Admin. |
+
+## 6.17 Rancangan Antarmuka UI-17
+**Antarmuka:** UI-17 
+**Nama Layar:** Live Chat Mitra
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/LiveChatPage.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.17. Rancangan Antarmuka UI-17 - List History Chat Mitra</i>
+</p>
+
+Tabel 6.17. Spesifikasi Objek Antarmuka UI-17
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| O-67 | Text Info | Profil Masyarakat (Sub-header) | Menampilkan foto profil dan nama/identitas Admin yang melayani sesi bantuan pelanggan. |
+| O-68 | Chat Bubble | Bubble Pesan Chat | Menampilkan balon percakapan riwayat pesan teks antara pengguna dan Admin. |
+| O-69 | Input Field | Field Pesan Chat ("JawabAdmin") | Menyediakan kolom input teks untuk mengetik dan mengirimkan pesan jawaban. |
 
 ## 6.X Rancangan Antarmuka [ID Layar X]
 
@@ -3605,10 +3925,23 @@ Tabel 6.Y. Rancangan Antarmuka Keseluruhan
 
 | No | Tampilan Antarmuka |
 | :--- | :--- |
-| *[I-01]* | <img src="./assets/diagram/contoh-design.png" alt="Contoh Desain" width="400"> |
-| *[I-02]* | *[Sisipkan gambar antarmuka I-02]* |
-| *[I-XX]* | *[Sisipkan gambar antarmuka berikutnya]* |
-
+| [UI-01] | <img src="./assets/uiux/RegistrasiMasyarakatPage.png" alt="Registrasi Masyarakat" width="400"> |
+| [UI-02] | <img src="./assets/uiux/LoginMasyarakatPage.png" alt="Login Masyarakat" width="400"> |
+| [UI-03]| <img src="./assets/uiux/BerandaMasyarakatPage.png" alt="Beranda Masyarakat" width="400"> |
+| [UI-04]| <img src="./assets/uiux/SearchLawPage.png" alt="SearchLaw" width="400"> |
+| [UI-05]| <img src="./assets/uiux/HaloLawFormPage.png" alt="Form Kasus Masyarakat" width="400"> |
+| [UI-06]| <img src="./assets/uiux/HaloLawListMitraPage.png" alt="HaloLaw List Mitra" width="400"> |
+| [UI-07]| <img src="./assets/uiux/HaloLawListPageKosong.png" alt="HaloLaw List Mitra kosong" width="400"> |
+| [UI-08]| <img src="./assets/uiux/PemilihanJadwalPage.png" alt="Pemilihan Jadwal" width="400"> |
+| [UI-09]| <img src="./assets/uiux/PembayaranPage.png" alt="Pembayaran" width="400"> |
+| [UI-10]| <img src="./assets/uiux/KonsulPOVMasyarakatPage.png" alt="Konsul Masyarakat" width="400"> |
+| [UI-11]| <img src="./assets/uiux/KonsulPOVMitraPage.png" alt="Konsul Mitra" width="400"> |
+| [UI-12]| <img src="./assets/uiux/FormUlasanPage.png" alt="Form Ulasan" width="400"> |
+| [UI-13]| <img src="./assets/uiux/HistoryChatPage.png" alt="History Chat" width="400"> |
+| [UI-14]| <img src="./assets/uiux/HistoryListMasyarakatPage.png" alt="History Chat" width="400"> |
+| [UI-15]| <img src="./assets/uiux/HistoryListMitraPage.png" alt="History List Mitra" width="400"> |
+| [UI-16]| <img src="./assets/uiux/LiveChatMasyarakatPage.png" alt="Live chat masyarakat " width="400"> |
+| [UI-17]| <img src="./assets/uiux/LiveChatMitraPage.png" alt="Live chat mitra " width="400"> |
 <br>
 
 ---
