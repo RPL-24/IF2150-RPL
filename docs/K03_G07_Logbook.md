@@ -168,6 +168,7 @@
 | 27-10-2026 | Rafi Pradipta Andira Sulistyo | Revisi I-01 | 1 | Done | - |  
 | 27-10-2026 | Rafi Pradipta Andira Sulistyo | Revisi I-02b | 0,5 | Done | - | 
 | 28-10-2026 | Gede Pranajayanta Suputra | mengerjakan implementasi dan query C06 C12 C16 C18 C22 | 0,5 | Done | - | 
+| 28-10-2026 | Gede Pranajayanta Suputra | mengerjakan implementasi dan query C01 C02 C03 C04 C05 C11 C17 | 1,5 | Done | - | 
 
 
 
