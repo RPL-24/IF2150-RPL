@@ -5247,46 +5247,665 @@ END PROCEDURE
 
 # BAB 6: Perancangan Antarmuka
 
+Bab ini berisi rancangan antarmuka antri.in versi awal prototipe. Seluruh layar dirancang sebagai aplikasi web untuk Google Chrome dengan lebar 1440 px. Layar pelanggan mengadaptasi pola tata letak gofood.co.id, yaitu *header* navigasi, kolom pencarian, *grid* kartu restoran, dan halaman *checkout* dua kolom. Layar restoran dan admin berbentuk *dashboard* dengan menu samping. Setiap objek diberi ID dengan format `I-XX-NN`, yaitu ID layar diikuti nomor urut objek, dan kolom Keterangan merujuk ID algoritma pada BAB 5.
+
 ## 6.1 Rancangan Antarmuka I-01
 
-Masukkan versi awal prototipe antarmuka, dimana untuk setiap antarmuka/layar, tuliskan spesifikasi rinci objek yang ditampilkan dan reaksi sistem terhadap interaksi pengguna.
-
 **Antarmuka:** *I-01*  
-**Nama Layar:** *PencarianRestoPage*
+**Nama Layar:** *Registrasi Akun*  
+**Kelas Boundary:** *RegistrasiPage*  
+**Use Case:** *UC10*
+
+Halaman pendaftaran akun baru. Panel kiri menampilkan identitas antri.in, panel kanan berisi formulir registrasi.
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/PencarianRestoPage.png" width="50%">
+<img alt="Rancangan Antarmuka I-01 - Registrasi Akun" src="./assets/ui/I-01.png" width="80%">
 </p>
 <p align="center">
-<i>Gambar 6.1. Rancangan Antarmuka I-01 - PencarianRestoPage</i>
+<i>Gambar 6.1. Rancangan Antarmuka I-01 - Registrasi Akun</i>
 </p>
 
-Tabel 6.1. Spesifikasi Objek Antarmuka [ID Layar]
+Tabel 6.1. Spesifikasi Objek Antarmuka I-01
 
 | Id_Objek | Jenis | Konten | Keterangan |
 | :--- | :--- | :--- | :--- |
-| *[ID objek]* | *[Jenis objek, misalnya Button, RTF Box, dll]* | *[String yang tampil pada layar]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
-| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem atau nama file terkait beserta deskripsi ringkasnya]* |
-| *...* | *...* | *...* | *...* |
-
-
-## 6.X Rancangan Antarmuka [ID Layar X]
-
-*[Ulangi pola 6.1 untuk layar berikutnya sampai semua layar teridentifikasi]*
-
-## 6.Y Rancangan Antarmuka Keseluruhan
-
-Tuliskan daftar gambar seluruh antarmuka. Berikan ID unik untuk setiap tampilan dan gunakan ID yang sama pada subbab perancangan antarmuka masing-masing.
-
-Tabel 6.Y. Rancangan Antarmuka Keseluruhan
-
-| No | Tampilan Antarmuka |
-| :--- | :--- |
-| *[I-01]* | <img src="./assets/diagram/contoh-design.png" alt="Contoh Desain" width="400"> |
-| *[I-02]* | *[Sisipkan gambar antarmuka I-02]* |
-| *[I-XX]* | *[Sisipkan gambar antarmuka berikutnya]* |
+| *I-01-01* | *Image* | *Logo antri.in* | Identitas aplikasi. |
+| *I-01-02* | *Segmented Control* | *"Pelanggan" / "Restoran"* | Memilih peran akun yang didaftarkan. |
+| *I-01-03* | *Text Field* | *Nama lengkap* | Input nama pengguna. |
+| *I-01-04* | *Text Field* | *Email* | Input email; divalidasi agar belum terdaftar (Algo-097). |
+| *I-01-05* | *Text Field* | *Nomor telepon* | Input nomor telepon. |
+| *I-01-06* | *Password Field* | *Kata sandi* | Minimal 8 karakter. |
+| *I-01-07* | *Password Field* | *Konfirmasi kata sandi* | Harus sama dengan kata sandi; jika tidak, tampil pesan error (UC10 Skenario Alternatif 2). |
+| *I-01-08* | *Checkbox* | *"Saya menyetujui Syarat & Ketentuan antri.in"* | Wajib dicentang sebelum mendaftar. |
+| *I-01-09* | *Button* | *"Daftar"* | Mengirim formulir (Algo-134), membuat akun (Algo-104) dan menyimpan kredensial (Algo-100). Berhasil: menuju I-02. Email/nomor sudah terdaftar: tampil pesan error (UC10 Skenario Alternatif 1). |
+| *I-01-10* | *Link* | *"Masuk"* | Menuju I-02. |
+| *I-01-11* | *Link* | *"Daftarkan restoranmu"* | Menuju I-13. |
 
 <br>
+
+## 6.2 Rancangan Antarmuka I-02
+
+**Antarmuka:** *I-02*  
+**Nama Layar:** *Login*  
+**Kelas Boundary:** *LoginPage*  
+**Use Case:** *UC11*
+
+Halaman masuk untuk pelanggan, restoran, dan admin.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-02 - Login" src="./assets/ui/I-02.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.2. Rancangan Antarmuka I-02 - Login</i>
+</p>
+
+Tabel 6.2. Spesifikasi Objek Antarmuka I-02
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-02-01* | *Image* | *Logo antri.in* | Identitas aplikasi. |
+| *I-02-02* | *Text Field* | *Email* | Input email terdaftar. |
+| *I-02-03* | *Password Field* | *Kata sandi* | Input kata sandi. |
+| *I-02-04* | *Checkbox* | *"Ingat saya"* | Mempertahankan sesi login di perangkat. |
+| *I-02-05* | *Link* | *"Lupa kata sandi?"* | Menuju halaman pemulihan kata sandi. |
+| *I-02-06* | *Button* | *"Masuk"* | Memverifikasi kredensial (Algo-136, Algo-105) dan menerbitkan sesi. Berhasil: pelanggan menuju I-05, restoran menuju I-14, admin menuju I-18. Gagal: tampil pesan "Email atau kata sandi yang Anda masukkan salah" (UC11 Skenario Alternatif 1). |
+| *I-02-07* | *Link* | *"Daftar sekarang"* | Menuju I-01. |
+
+<br>
+
+## 6.3 Rancangan Antarmuka I-03
+
+**Antarmuka:** *I-03*  
+**Nama Layar:** *Profil Akun*  
+**Kelas Boundary:** *HalamanProfilPage*  
+**Use Case:** *UC12*
+
+Halaman akun pengguna yang berisi data profil dan akses untuk keluar akun.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-03 - Profil Akun" src="./assets/ui/I-03.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.3. Rancangan Antarmuka I-03 - Profil Akun</i>
+</p>
+
+Tabel 6.3. Spesifikasi Objek Antarmuka I-03
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-03-01* | *Navbar* | *Logo, "Beranda", "Antrean saya", "Keluhan", ikon keranjang, avatar* | Navigasi utama pelanggan menuju I-05, I-11, I-12, dan I-07. |
+| *I-03-02* | *Card* | *Avatar, nama, email, nomor telepon, label peran* | Menampilkan data akun (Algo-099). |
+| *I-03-03* | *Button* | *"Ubah profil"* | Membuka formulir ubah profil. |
+| *I-03-04* | *List Item* | *"Pesanan aktif"* | Menuju I-11. |
+| *I-03-05* | *List Item* | *"Riwayat pesanan"* | Menampilkan daftar pesanan yang sudah selesai. |
+| *I-03-06* | *List Item* | *"Kirim keluhan"* | Menuju I-12. |
+| *I-03-07* | *List Item* | *"Keamanan akun"* | Membuka pengaturan kata sandi. |
+| *I-03-08* | *Button* | *"Keluar dari akun"* | Menampilkan dialog konfirmasi I-04 (Algo-101). |
+
+<br>
+
+## 6.4 Rancangan Antarmuka I-04
+
+**Antarmuka:** *I-04*  
+**Nama Layar:** *Dialog Konfirmasi Keluar*  
+**Kelas Boundary:** *KonfirmasiLogoutPage*  
+**Use Case:** *UC12*
+
+Dialog yang muncul di atas I-03 untuk memastikan pengguna ingin mengakhiri sesi.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-04 - Dialog Konfirmasi Keluar" src="./assets/ui/I-04.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.4. Rancangan Antarmuka I-04 - Dialog Konfirmasi Keluar</i>
+</p>
+
+Tabel 6.4. Spesifikasi Objek Antarmuka I-04
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-04-01* | *Overlay* | *Latar gelap transparan* | Menonaktifkan interaksi dengan I-03 selama dialog terbuka. |
+| *I-04-02* | *Label* | *"Keluar dari akun?" dan teks penjelasan* | Pesan konfirmasi. |
+| *I-04-03* | *Button* | *"Batal"* | Menutup dialog dan mempertahankan sesi (Algo-103, UC12 Skenario Alternatif 1). |
+| *I-04-04* | *Button* | *"Ya, keluar"* | Menghapus sesi login (Algo-102, Algo-106, Algo-109), lalu menuju I-02. |
+
+<br>
+
+## 6.5 Rancangan Antarmuka I-05
+
+**Antarmuka:** *I-05*  
+**Nama Layar:** *Beranda & Pencarian Restoran*  
+**Kelas Boundary:** *PencarianRestoPage*  
+**Use Case:** *UC01*
+
+Halaman utama pelanggan untuk mencari restoran viral, dengan tata letak terinspirasi dari gofood.co.id.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-05 - Beranda & Pencarian Restoran" src="./assets/ui/I-05.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.5. Rancangan Antarmuka I-05 - Beranda & Pencarian Restoran</i>
+</p>
+
+Tabel 6.5. Spesifikasi Objek Antarmuka I-05
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-05-01* | *Navbar* | *Logo, "Beranda", "Antrean saya", "Keluhan", ikon keranjang, avatar* | Navigasi utama pelanggan; ikon keranjang menuju I-07, avatar menuju I-03. |
+| *I-05-02* | *Label* | *"Makan makanan viral, tanpa antre berjam-jam."* | Judul halaman (Algo-119). |
+| *I-05-03* | *Text Field* | *"Cari restoran atau makanan viral…"* | Input kata kunci pencarian (Algo-120). |
+| *I-05-04* | *Button* | *"Cari"* | Menjalankan pencarian (Algo-122, Algo-125) dan memperbarui daftar restoran. |
+| *I-05-05* | *Chip* | *"Semua", "Rating 4.5+", "Antrean pendek", "Bakso", "Seblak", dst.* | Menerapkan filter rating atau jenis makanan (Algo-121, Algo-126). |
+| *I-05-06* | *Card* | *Antrean aktif pelanggan: nomor antrean, sisa antrean, estimasi waktu* | Ringkasan antrean yang sedang berjalan; klik menuju I-11. |
+| *I-05-07* | *Label* | *"Lagi viral di Bandung"* | Judul daftar restoran, diurutkan dari yang paling viral. |
+| *I-05-08* | *Card (grid)* | *Foto, nama restoran, kategori dan lokasi, rating, badge antrean, badge ketersediaan meja* | Menampilkan restoran hasil pencarian beserta status antrean (Algo-123, Algo-127). Klik menuju I-06. |
+| *I-05-09* | *Link* | *"Lihat semua"* | Menampilkan seluruh restoran. |
+| *I-05-10* | *Label* | *"Restoran tidak ditemukan"* | Muncul jika hasil pencarian kosong, lalu menampilkan restoran paling viral (Algo-124, UC01 Skenario Alternatif 1). |
+
+<br>
+
+## 6.6 Rancangan Antarmuka I-06
+
+**Antarmuka:** *I-06*  
+**Nama Layar:** *Detail Restoran & Menu*  
+**Kelas Boundary:** *PencarianRestoPage / PemesananView*  
+**Use Case:** *UC01, UC02*
+
+Halaman detail restoran berisi informasi antrean, daftar menu, dan panel pesanan.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-06 - Detail Restoran & Menu" src="./assets/ui/I-06.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.6. Rancangan Antarmuka I-06 - Detail Restoran & Menu</i>
+</p>
+
+Tabel 6.6. Spesifikasi Objek Antarmuka I-06
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-06-01* | *Breadcrumb* | *"Beranda › Bandung › Nama restoran"* | Navigasi kembali ke I-05. |
+| *I-06-02* | *Image* | *Foto restoran* | Banner restoran. |
+| *I-06-03* | *Label* | *Nama restoran, rating, kategori, alamat, jam buka* | Detail restoran (Algo-009). |
+| *I-06-04* | *Card* | *"Antrean saat ini", "Estimasi tunggu", "Tersisa untuk dine-in"* | Status antrean dan kuota meja terkini (Algo-028, Algo-127). |
+| *I-06-05* | *Chip* | *"Terlaris", "Bakso", "Mie", "Minuman"* | Memfilter kategori menu. |
+| *I-06-06* | *Card (grid)* | *Foto menu, nama, deskripsi, harga* | Daftar menu restoran (Algo-010, Algo-019). |
+| *I-06-07* | *Button* | *"Tambah"* | Menambahkan menu ke keranjang (Algo-003, Algo-035). |
+| *I-06-08* | *Stepper* | *"− 1 +"* | Mengubah jumlah menu di keranjang (Algo-035, Algo-036). |
+| *I-06-09* | *Badge* | *"Habis"* | Menu dengan stok 0 tidak dapat dipilih (Algo-025). |
+| *I-06-10* | *Panel* | *"Pesananmu": daftar item, subtotal, info meja tersisa* | Ringkasan keranjang (Algo-037). |
+| *I-06-11* | *Button* | *"Lanjut ke keranjang"* | Menuju I-07. |
+
+<br>
+
+## 6.7 Rancangan Antarmuka I-07
+
+**Antarmuka:** *I-07*  
+**Nama Layar:** *Keranjang & Mode Layanan*  
+**Kelas Boundary:** *PemesananView*  
+**Use Case:** *UC02*
+
+Halaman keranjang untuk memilih cara makan, jumlah rombongan, dan memeriksa pesanan.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-07 - Keranjang & Mode Layanan" src="./assets/ui/I-07.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.7. Rancangan Antarmuka I-07 - Keranjang & Mode Layanan</i>
+</p>
+
+Tabel 6.7. Spesifikasi Objek Antarmuka I-07
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-07-01* | *Radio Card* | *"Dine-in", "Takeaway", "Booking tempat"* | Memilih mode pemesanan. "Booking tempat" menuju I-08 (UC02 Skenario Alternatif 2); "Takeaway" mengabaikan kuota meja (UC02 Skenario Alternatif 1). |
+| *I-07-02* | *Stepper* | *"Jumlah rombongan"* | Jumlah orang untuk alokasi meja dine-in. |
+| *I-07-03* | *List Item* | *Foto, nama menu, catatan, harga* | Daftar item di keranjang. |
+| *I-07-04* | *Stepper* | *"− 1 +"* | Mengubah jumlah item (Algo-035, Algo-036). |
+| *I-07-05* | *Link* | *"+ Tambah menu"* | Kembali ke I-06. |
+| *I-07-06* | *Card* | *"Ringkasan": cara makan, subtotal, biaya layanan, total* | Menghitung total tagihan (Algo-037). |
+| *I-07-07* | *Button* | *"Lanjut ke pembayaran"* | Memeriksa stok dan kuota meja (Algo-020), membuat tagihan (Algo-040), lalu menuju I-09. Jika stok habis, menu ditandai dan tampil notifikasi "Mohon maaf, terdapat menu pilihan yang telah habis" (UC02 Skenario Alternatif 3). |
+| *I-07-08* | *Banner* | *"Stok dan meja diperiksa ulang…"* | Informasi bagi pelanggan. |
+
+<br>
+
+## 6.8 Rancangan Antarmuka I-08
+
+**Antarmuka:** *I-08*  
+**Nama Layar:** *Pilih Jadwal Booking*  
+**Kelas Boundary:** *PemesananView*  
+**Use Case:** *UC02*
+
+Halaman pemilihan tanggal dan jam kedatangan untuk mode booking tempat.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-08 - Pilih Jadwal Booking" src="./assets/ui/I-08.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.8. Rancangan Antarmuka I-08 - Pilih Jadwal Booking</i>
+</p>
+
+Tabel 6.8. Spesifikasi Objek Antarmuka I-08
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-08-01* | *Link* | *"‹ Kembali ke keranjang"* | Menuju I-07. |
+| *I-08-02* | *Calendar* | *Kalender bulan berjalan* | Hanya 7 hari ke depan yang dapat dipilih; tanggal lain dinonaktifkan. |
+| *I-08-03* | *Banner* | *"Reservasi hanya bisa untuk 7 hari ke depan"* | Informasi batas reservasi (KF09). |
+| *I-08-04* | *Button Group* | *Slot jam kedatangan dengan status "Tersedia" / "Penuh"* | Memilih jam; slot penuh tidak dapat dipilih (UC02 Skenario Alternatif 5). |
+| *I-08-05* | *Stepper* | *"Jumlah kursi"* | Jumlah kursi yang dipesan. |
+| *I-08-06* | *Label* | *"Jadwal dipilih"* | Ringkasan tanggal, jam, dan jumlah orang. |
+| *I-08-07* | *Button* | *"Simpan jadwal"* | Memvalidasi tanggal dan kuota reservasi (Algo-039), lalu kembali ke I-07. |
+| *I-08-08* | *Button* | *"Batal"* | Kembali ke I-07 tanpa menyimpan jadwal. |
+
+<br>
+
+## 6.9 Rancangan Antarmuka I-09
+
+**Antarmuka:** *I-09*  
+**Nama Layar:** *Pembayaran*  
+**Kelas Boundary:** *PemesananView*  
+**Use Case:** *UC02*
+
+Halaman pemilihan metode pembayaran digital dan penyelesaian tagihan.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-09 - Pembayaran" src="./assets/ui/I-09.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.9. Rancangan Antarmuka I-09 - Pembayaran</i>
+</p>
+
+Tabel 6.9. Spesifikasi Objek Antarmuka I-09
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-09-01* | *Radio Card* | *"Dompet digital (e-wallet)", "Virtual account bank", "Kartu debit / kredit"* | Memilih metode pembayaran digital (Algo-004). |
+| *I-09-02* | *Card* | *"Rincian pesanan"* | Daftar menu, cara makan, dan jumlah orang (Algo-043). |
+| *I-09-03* | *Timer* | *"Selesaikan pembayaran dalam 04:52"* | Hitung mundur batas waktu pembayaran (KNF07, Algo-047). |
+| *I-09-04* | *Card* | *Subtotal, biaya layanan, total tagihan* | Ringkasan biaya. |
+| *I-09-05* | *Button* | *"Bayar sekarang"* | Membuat transaksi ke Payment Gateway (Algo-045) dan memverifikasi pembayaran (Algo-046, Algo-005). Berhasil: menuju I-10. |
+| *I-09-06* | *Label* | *"Pesanan dibatalkan otomatis jika waktu habis."* | Jika waktu habis atau pembayaran gagal, pesanan dibatalkan (Algo-041) dan tampil pesan "Batas waktu pembayaran habis. Transaksi dibatalkan" (UC02 Skenario Alternatif 4). |
+
+<br>
+
+## 6.10 Rancangan Antarmuka I-10
+
+**Antarmuka:** *I-10*  
+**Nama Layar:** *Tiket Antrean*  
+**Kelas Boundary:** *PemesananView*  
+**Use Case:** *UC02*
+
+Halaman konfirmasi setelah pembayaran berhasil, menampilkan tiket antrean resmi.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-10 - Tiket Antrean" src="./assets/ui/I-10.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.10. Rancangan Antarmuka I-10 - Tiket Antrean</i>
+</p>
+
+Tabel 6.10. Spesifikasi Objek Antarmuka I-10
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-10-01* | *Icon* | *Tanda centang* | Penanda pembayaran berhasil. |
+| *I-10-02* | *Label* | *"Pembayaran berhasil!"* | Pesan konfirmasi. |
+| *I-10-03* | *Card* | *Nomor antrean, mode dan jumlah orang* | Tiket antrean yang diterbitkan (Algo-050, Algo-051). |
+| *I-10-04* | *Label* | *Restoran, ID pesanan, estimasi siap, total dibayar* | Rincian tiket dan bukti pembayaran (Algo-049). |
+| *I-10-05* | *Button* | *"Pantau antrean"* | Menuju I-11 (Algo-006). |
+| *I-10-06* | *Button* | *"Kembali ke beranda"* | Menuju I-05. |
+
+<br>
+
+## 6.11 Rancangan Antarmuka I-11
+
+**Antarmuka:** *I-11*  
+**Nama Layar:** *Status Antrean*  
+**Kelas Boundary:** *HalamanStatusAntrean*  
+**Use Case:** *UC03*
+
+Halaman pemantauan antrean pelanggan yang diperbarui secara real-time.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-11 - Status Antrean" src="./assets/ui/I-11.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.11. Rancangan Antarmuka I-11 - Status Antrean</i>
+</p>
+
+Tabel 6.11. Spesifikasi Objek Antarmuka I-11
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-11-01* | *Card* | *Nomor antrean pelanggan dan nomor yang sedang dilayani* | Status antrean terkini (Algo-056, Algo-054). |
+| *I-11-02* | *Progress Bar* | *"6 antrean lagi", "± 18 menit"* | Sisa antrean dan estimasi waktu tunggu (Algo-028). |
+| *I-11-03* | *Badge* | *"Live"* | Menandakan data diperbarui otomatis tanpa memuat ulang halaman (Algo-055, Algo-057). |
+| *I-11-04* | *Stepper* | *"Pembayaran diterima", "Masuk antrean dapur", "Sedang disiapkan", "Siap / meja siap"* | Progres pesanan; pelanggan menerima notifikasi saat pesanan siap. |
+| *I-11-05* | *Card* | *"Detail pesanan"* | ID pesanan, item, total, waktu bayar (Algo-043). |
+| *I-11-06* | *Button* | *"Lihat tiket"* | Menuju I-10. |
+| *I-11-07* | *Button* | *"Kirim keluhan"* | Menuju I-12. |
+
+<br>
+
+## 6.12 Rancangan Antarmuka I-12
+
+**Antarmuka:** *I-12*  
+**Nama Layar:** *Formulir Keluhan*  
+**Kelas Boundary:** *KeluhanFormPage*  
+**Use Case:** *UC13*
+
+Halaman formulir untuk menyampaikan keluhan kepada admin.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-12 - Formulir Keluhan" src="./assets/ui/I-12.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.12. Rancangan Antarmuka I-12 - Formulir Keluhan</i>
+</p>
+
+Tabel 6.12. Spesifikasi Objek Antarmuka I-12
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-12-01* | *Dropdown* | *Pesanan terkait* | Memilih pesanan yang dikeluhkan (Algo-137). |
+| *I-12-02* | *Chip* | *"Pesanan tidak sesuai", "Waktu tunggu", "Pelayanan", "Pembayaran", "Lainnya"* | Memilih kategori keluhan. |
+| *I-12-03* | *Text Area* | *"Isi keluhan" (maks. 500 karakter)* | Input isi keluhan. |
+| *I-12-04* | *Button* | *"Kirim keluhan"* | Mengirim dan menyimpan keluhan (Algo-138, Algo-139, Algo-111), lalu menampilkan pesan bahwa keluhan terkirim. |
+| *I-12-05* | *Button* | *"Batal"* | Kembali ke halaman sebelumnya tanpa mengirim keluhan. |
+
+<br>
+
+## 6.13 Rancangan Antarmuka I-13
+
+**Antarmuka:** *I-13*  
+**Nama Layar:** *Pendaftaran Mitra*  
+**Kelas Boundary:** *RegistrasiRestoPage*  
+**Use Case:** *UC04*
+
+Halaman pendaftaran restoran sebagai mitra baru, terdiri atas profil restoran, dokumen perizinan, dan daftar menu.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-13 - Pendaftaran Mitra" src="./assets/ui/I-13.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.13. Rancangan Antarmuka I-13 - Pendaftaran Mitra</i>
+</p>
+
+Tabel 6.13. Spesifikasi Objek Antarmuka I-13
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-13-01* | *Text Field* | *Nama restoran, kategori makanan, alamat, email kontak, nomor telepon* | Input profil restoran (Algo-131). |
+| *I-13-02* | *File Upload* | *"Unggah foto (JPG/PNG)"* | Mengunggah foto restoran. |
+| *I-13-03* | *File Upload* | *NIB, sertifikat halal, izin usaha (PDF/JPG, maks. 5 MB)* | Mengunggah dokumen perizinan (Algo-062) dan memvalidasi formatnya (Algo-063). |
+| *I-13-04* | *List Item* | *Nama menu dan harga* | Daftar menu yang diajukan; ikon hapus menghapus menu dari daftar. |
+| *I-13-05* | *Link* | *"+ Tambah menu"* | Menambahkan baris menu (Algo-022). |
+| *I-13-06* | *Button* | *"Daftar"* | Memvalidasi kelengkapan data (Algo-132, Algo-058) dan menyimpan pengajuan dengan status "Menunggu Verifikasi" (Algo-059). Jika data tidak lengkap atau format tidak valid, bagian bermasalah ditandai dan tampil pesan peringatan (UC04 Skenario Alternatif 1). |
+| *I-13-07* | *Link* | *"Sudah terdaftar? Masuk"* | Menuju I-02. |
+
+<br>
+
+## 6.14 Rancangan Antarmuka I-14
+
+**Antarmuka:** *I-14*  
+**Nama Layar:** *Dashboard & Kelola Antrean*  
+**Kelas Boundary:** *DashboardAntreanPage, KelolaAntreanPage*  
+**Use Case:** *UC06, UC09*
+
+Dashboard restoran untuk memantau dan mengelola antrean.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-14 - Dashboard & Kelola Antrean" src="./assets/ui/I-14.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.14. Rancangan Antarmuka I-14 - Dashboard & Kelola Antrean</i>
+</p>
+
+Tabel 6.14. Spesifikasi Objek Antarmuka I-14
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-14-01* | *Sidebar* | *"Dashboard Antrean", "Kuota & Meja", "Menu & Stok", "Profil Restoran"* | Navigasi restoran menuju I-14, I-16, dan I-17. |
+| *I-14-02* | *Card* | *Antrean aktif, meja terisi, jumlah dine-in dan takeaway, status antrean* | Ringkasan antrean (Algo-078, Algo-033). |
+| *I-14-03* | *Chip* | *"Semua", "Dine-in", "Takeaway"* | Memfilter daftar antrean. |
+| *I-14-04* | *Table* | *No. antrean, pelanggan, mode, rombongan, pesanan, waktu menunggu, status* | Daftar antrean beserta rincian pesanan (Algo-069, Algo-076), diperbarui otomatis (Algo-079). Jika kosong, tampil "Belum ada antrean saat ini" (UC09 Skenario Alternatif 1). |
+| *I-14-05* | *Button* | *"Dequeue terdepan" / "Dequeue"* | Menampilkan dialog I-15 (Algo-077). |
+| *I-14-06* | *Label* | *"Pelanggan terdepan otomatis di-dequeue jika tidak hadir dalam 30 menit."* | Timer dequeue otomatis (Algo-071, UC06 Skenario Alternatif 2). |
+
+<br>
+
+## 6.15 Rancangan Antarmuka I-15
+
+**Antarmuka:** *I-15*  
+**Nama Layar:** *Dialog Konfirmasi Dequeue*  
+**Kelas Boundary:** *KonfirmasiDequeuePage*  
+**Use Case:** *UC06*
+
+Dialog yang muncul di atas I-14 sebelum pelanggan terdepan dihapus dari antrean.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-15 - Dialog Konfirmasi Dequeue" src="./assets/ui/I-15.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.15. Rancangan Antarmuka I-15 - Dialog Konfirmasi Dequeue</i>
+</p>
+
+Tabel 6.15. Spesifikasi Objek Antarmuka I-15
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-15-01* | *Overlay* | *Latar gelap transparan* | Menonaktifkan interaksi dengan I-14 (Algo-072). |
+| *I-15-02* | *Label* | *"Dequeue antrean A-021?" dan teks penjelasan* | Pesan konfirmasi. |
+| *I-15-03* | *Button* | *"Batal"* | Menutup dialog tanpa perubahan (Algo-075, Algo-073, UC06 Skenario Alternatif 1). |
+| *I-15-04* | *Button* | *"Ya, dequeue"* | Menghapus pelanggan terdepan dan memperbarui antrean (Algo-074, Algo-070, Algo-031), lalu kembali ke I-14. |
+
+<br>
+
+## 6.16 Rancangan Antarmuka I-16
+
+**Antarmuka:** *I-16*  
+**Nama Layar:** *Pengaturan Kuota & Meja*  
+**Kelas Boundary:** *PengaturanKuotaPage*  
+**Use Case:** *UC07*
+
+Halaman restoran untuk mengatur kuota antrean dan kapasitas meja.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-16 - Pengaturan Kuota & Meja" src="./assets/ui/I-16.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.16. Rancangan Antarmuka I-16 - Pengaturan Kuota & Meja</i>
+</p>
+
+Tabel 6.16. Spesifikasi Objek Antarmuka I-16
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-16-01* | *Text Field* | *"Kuota antrean maksimum (per hari)"* | Input kuota antrean (Algo-085). |
+| *I-16-02* | *Text Field* | *"Kapasitas meja dine-in"* | Input jumlah meja. |
+| *I-16-03* | *Toggle* | *"Tutup antrean sementara"* | Menutup antrean (setara kuota 0); pelanggan melihat status "Antrean ditutup" (Algo-081, UC07 Skenario Alternatif 2). |
+| *I-16-04* | *Button* | *"Simpan pengaturan"* | Memvalidasi input (Algo-087) dan menyimpan pengaturan (Algo-086, Algo-083, Algo-080). Input negatif atau bukan angka ditolak dengan pesan peringatan (Algo-084, UC07 Skenario Alternatif 1). |
+| *I-16-05* | *Button* | *"Batal"* | Membatalkan perubahan. |
+| *I-16-06* | *Card* | *"Pratinjau di aplikasi pelanggan"* | Contoh kartu restoran seperti yang terlihat di I-05. |
+
+<br>
+
+## 6.17 Rancangan Antarmuka I-17
+
+**Antarmuka:** *I-17*  
+**Nama Layar:** *Pengaturan Menu & Stok*  
+**Kelas Boundary:** *PengaturanMenuPage*  
+**Use Case:** *UC08*
+
+Halaman restoran untuk mengelola daftar menu dan stok.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-17 - Pengaturan Menu & Stok" src="./assets/ui/I-17.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.17. Rancangan Antarmuka I-17 - Pengaturan Menu & Stok</i>
+</p>
+
+Tabel 6.17. Spesifikasi Objek Antarmuka I-17
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-17-01* | *Text Field* | *"Cari menu…"* | Mencari menu. |
+| *I-17-02* | *Chip* | *"Semua", "Bakso", "Mie", "Minuman"* | Memfilter kategori menu. |
+| *I-17-03* | *Button* | *"Tambah menu"* | Membuka formulir menu baru (Algo-089) dan menyimpannya (Algo-090, Algo-094) (UC08 Skenario Alternatif 1). |
+| *I-17-04* | *Table* | *Foto, nama menu, kategori, harga, stok, status* | Daftar menu restoran (Algo-088, Algo-092). |
+| *I-17-05* | *Number Field* | *Stok (porsi)* | Mengubah stok; perubahan tersimpan dan diperbarui di aplikasi pelanggan (Algo-095). Stok 0 menampilkan status "Habis" (UC08 Skenario Alternatif 3). |
+| *I-17-06* | *Icon Button* | *Ikon edit* | Mengubah informasi menu (Algo-095). |
+| *I-17-07* | *Icon Button* | *Ikon hapus* | Menghapus menu dari database (Algo-091, Algo-096, UC08 Skenario Alternatif 2). |
+
+<br>
+
+## 6.18 Rancangan Antarmuka I-18
+
+**Antarmuka:** *I-18*  
+**Nama Layar:** *Verifikasi Pengajuan Mitra*  
+**Kelas Boundary:** *VerifikasiRestoranPage*  
+**Use Case:** *UC05*
+
+Halaman admin untuk meninjau dan memverifikasi pengajuan mitra restoran.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-18 - Verifikasi Pengajuan Mitra" src="./assets/ui/I-18.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.18. Rancangan Antarmuka I-18 - Verifikasi Pengajuan Mitra</i>
+</p>
+
+Tabel 6.18. Spesifikasi Objek Antarmuka I-18
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-18-01* | *Sidebar* | *"Verifikasi Mitra", "Keluhan", "Kelola Restoran"* | Navigasi admin menuju I-18, I-19, dan I-20. |
+| *I-18-02* | *List Item* | *Nama restoran, tanggal pengajuan, status* | Daftar pengajuan; klik menampilkan detail berkas (Algo-064). |
+| *I-18-03* | *Card* | *Profil restoran, dokumen perizinan, menu yang diajukan* | Detail berkas pengajuan (Algo-129). |
+| *I-18-04* | *Text Area* | *"Alasan penolakan"* | Wajib diisi jika pengajuan ditolak. |
+| *I-18-05* | *Button* | *"Tolak"* | Mengubah status menjadi "Ditolak" (Algo-061) dan mengirim email penolakan beserta alasannya (Algo-068) (UC05 Skenario Alternatif 1). |
+| *I-18-06* | *Button* | *"Setujui"* | Mengubah status menjadi "Disetujui" (Algo-060), menampilkan restoran di daftar restoran viral, dan mengirim email penerimaan (Algo-068). Status diperbarui di layar (Algo-130). |
+
+<br>
+
+## 6.19 Rancangan Antarmuka I-19
+
+**Antarmuka:** *I-19*  
+**Nama Layar:** *Daftar Keluhan*  
+**Kelas Boundary:** *KeluhanDashboardPage*  
+**Use Case:** *UC14*
+
+Halaman admin untuk meninjau keluhan dari seluruh pelanggan.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-19 - Daftar Keluhan" src="./assets/ui/I-19.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.19. Rancangan Antarmuka I-19 - Daftar Keluhan</i>
+</p>
+
+Tabel 6.19. Spesifikasi Objek Antarmuka I-19
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-19-01* | *Chip* | *"Semua", "Baru", "Sudah dibaca"* | Memfilter keluhan berdasarkan status. |
+| *I-19-02* | *Text Field* | *"Cari restoran…"* | Mencari keluhan berdasarkan nama restoran. |
+| *I-19-03* | *Table* | *Pelanggan, restoran, isi keluhan, waktu, status* | Daftar keluhan semua pelanggan (Algo-142, Algo-140, Algo-066). |
+| *I-19-04* | *Card* | *"Detail keluhan"* | Isi lengkap keluhan dan pesanan terkait (Algo-143); status berubah menjadi "Dibaca" (Algo-112). |
+| *I-19-05* | *Banner* | *Jumlah keluhan restoran dalam 7 hari terakhir* | Bahan pertimbangan tindak lanjut terhadap restoran. |
+| *I-19-06* | *Button* | *"Lihat di Kelola Restoran"* | Menuju I-20 untuk menindaklanjuti restoran. |
+
+<br>
+
+## 6.20 Rancangan Antarmuka I-20
+
+**Antarmuka:** *I-20*  
+**Nama Layar:** *Kelola Restoran Mitra*  
+**Kelas Boundary:** *DashboardKelolaRestoranPage*  
+**Use Case:** *UC15*
+
+Halaman admin untuk melihat dan menghapus restoran mitra.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-20 - Kelola Restoran Mitra" src="./assets/ui/I-20.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.20. Rancangan Antarmuka I-20 - Kelola Restoran Mitra</i>
+</p>
+
+Tabel 6.20. Spesifikasi Objek Antarmuka I-20
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-20-01* | *Text Field* | *"Cari nama restoran…"* | Mencari restoran. |
+| *I-20-02* | *Chip* | *"Semua", "Aktif", "Banyak keluhan"* | Memfilter daftar restoran. |
+| *I-20-03* | *Table* | *Restoran, kategori, rating, jumlah keluhan 7 hari, tanggal bergabung, status* | Daftar restoran mitra (Algo-113). |
+| *I-20-04* | *Button* | *"Hapus"* | Menampilkan dialog I-21 (Algo-114). |
+
+<br>
+
+## 6.21 Rancangan Antarmuka I-21
+
+**Antarmuka:** *I-21*  
+**Nama Layar:** *Dialog Konfirmasi Hapus Restoran*  
+**Kelas Boundary:** *KonfirmasiHapusRestoranPage*  
+**Use Case:** *UC15*
+
+Dialog yang muncul di atas I-20 sebelum restoran dihapus.
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-21 - Dialog Konfirmasi Hapus Restoran" src="./assets/ui/I-21.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.21. Rancangan Antarmuka I-21 - Dialog Konfirmasi Hapus Restoran</i>
+</p>
+
+Tabel 6.21. Spesifikasi Objek Antarmuka I-21
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *I-21-01* | *Overlay* | *Latar gelap transparan* | Menonaktifkan interaksi dengan I-20. |
+| *I-21-02* | *Label* | *"Hapus [nama restoran]?" dan peringatan* | Pesan konfirmasi bahwa tindakan tidak dapat dibatalkan. |
+| *I-21-03* | *Button* | *"Batal"* | Menutup dialog tanpa perubahan (Algo-116, UC15 Skenario Alternatif 1). |
+| *I-21-04* | *Button* | *"Hapus restoran"* | Menonaktifkan restoran dan relasi menunya (Algo-115, Algo-067, Algo-117, Algo-017, Algo-118), lalu kembali ke I-20 dengan pesan "Restoran berhasil dihapus". |
+
+<br>
+
+## 6.22 Rancangan Antarmuka Keseluruhan
+
+Daftar seluruh antarmuka antri.in beserta ID uniknya. ID yang sama digunakan pada subbab perancangan antarmuka masing-masing.
+
+Tabel 6.22. Rancangan Antarmuka Keseluruhan
+
+| No | Nama Layar | Aktor | Tampilan Antarmuka |
+| :--- | :--- | :--- | :--- |
+| *I-01* | *Registrasi Akun* | *Semua pengguna* | <img src="./assets/ui/I-01.png" alt="I-01 Registrasi Akun" width="400"> |
+| *I-02* | *Login* | *Semua pengguna* | <img src="./assets/ui/I-02.png" alt="I-02 Login" width="400"> |
+| *I-03* | *Profil Akun* | *Semua pengguna* | <img src="./assets/ui/I-03.png" alt="I-03 Profil Akun" width="400"> |
+| *I-04* | *Dialog Konfirmasi Keluar* | *Semua pengguna* | <img src="./assets/ui/I-04.png" alt="I-04 Dialog Konfirmasi Keluar" width="400"> |
+| *I-05* | *Beranda & Pencarian Restoran* | *Pelanggan* | <img src="./assets/ui/I-05.png" alt="I-05 Beranda & Pencarian Restoran" width="400"> |
+| *I-06* | *Detail Restoran & Menu* | *Pelanggan* | <img src="./assets/ui/I-06.png" alt="I-06 Detail Restoran & Menu" width="400"> |
+| *I-07* | *Keranjang & Mode Layanan* | *Pelanggan* | <img src="./assets/ui/I-07.png" alt="I-07 Keranjang & Mode Layanan" width="400"> |
+| *I-08* | *Pilih Jadwal Booking* | *Pelanggan* | <img src="./assets/ui/I-08.png" alt="I-08 Pilih Jadwal Booking" width="400"> |
+| *I-09* | *Pembayaran* | *Pelanggan* | <img src="./assets/ui/I-09.png" alt="I-09 Pembayaran" width="400"> |
+| *I-10* | *Tiket Antrean* | *Pelanggan* | <img src="./assets/ui/I-10.png" alt="I-10 Tiket Antrean" width="400"> |
+| *I-11* | *Status Antrean* | *Pelanggan* | <img src="./assets/ui/I-11.png" alt="I-11 Status Antrean" width="400"> |
+| *I-12* | *Formulir Keluhan* | *Pelanggan* | <img src="./assets/ui/I-12.png" alt="I-12 Formulir Keluhan" width="400"> |
+| *I-13* | *Pendaftaran Mitra* | *Restoran* | <img src="./assets/ui/I-13.png" alt="I-13 Pendaftaran Mitra" width="400"> |
+| *I-14* | *Dashboard & Kelola Antrean* | *Restoran* | <img src="./assets/ui/I-14.png" alt="I-14 Dashboard & Kelola Antrean" width="400"> |
+| *I-15* | *Dialog Konfirmasi Dequeue* | *Restoran* | <img src="./assets/ui/I-15.png" alt="I-15 Dialog Konfirmasi Dequeue" width="400"> |
+| *I-16* | *Pengaturan Kuota & Meja* | *Restoran* | <img src="./assets/ui/I-16.png" alt="I-16 Pengaturan Kuota & Meja" width="400"> |
+| *I-17* | *Pengaturan Menu & Stok* | *Restoran* | <img src="./assets/ui/I-17.png" alt="I-17 Pengaturan Menu & Stok" width="400"> |
+| *I-18* | *Verifikasi Pengajuan Mitra* | *Admin* | <img src="./assets/ui/I-18.png" alt="I-18 Verifikasi Pengajuan Mitra" width="400"> |
+| *I-19* | *Daftar Keluhan* | *Admin* | <img src="./assets/ui/I-19.png" alt="I-19 Daftar Keluhan" width="400"> |
+| *I-20* | *Kelola Restoran Mitra* | *Admin* | <img src="./assets/ui/I-20.png" alt="I-20 Kelola Restoran Mitra" width="400"> |
+| *I-21* | *Dialog Konfirmasi Hapus Restoran* | *Admin* | <img src="./assets/ui/I-21.png" alt="I-21 Dialog Konfirmasi Hapus Restoran" width="400"> |
+
+<br>
+
+---
 
 ---
 
