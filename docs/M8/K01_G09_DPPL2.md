@@ -2498,3 +2498,7 @@ Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 | *[ID kelas - Nama kelas]* | *[ID UC - Nama use case; tuliskan seluruh use case terkait]* |
 | *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
 | *...* | *...* |
+
+
+# Lampiran
+- https://www.figma.com/design/KHUnZ5eoo8LLb4JlLLY7lD/PeerUP?node-id=0-1&t=HUsRNIOViUmjL4Xl-1
