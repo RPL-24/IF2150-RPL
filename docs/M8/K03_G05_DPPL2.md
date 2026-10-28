@@ -4097,13 +4097,13 @@ Tabel 6.16. Spesifikasi Objek Antarmuka UI-16
 
 ## 6.17 Rancangan Antarmuka UI-17
 **Antarmuka:** UI-17 
-**Nama Layar:** Live Chat Mitra
+**Nama Layar:** Live Chat Admin
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/LiveChatPage.png" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/LiveChatAdminPage.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar 6.17. Rancangan Antarmuka UI-17 - List History Chat Mitra</i>
+<i>Gambar 6.17. Rancangan Antarmuka UI-17 - List History Chat Admin</i>
 </p>
 
 Tabel 6.17. Spesifikasi Objek Antarmuka UI-17
@@ -4142,7 +4142,7 @@ Tabel 6.Y. Rancangan Antarmuka Keseluruhan
 | [UI-14]| <img src="./assets/uiux/HistoryListMasyarakatPage.png" alt="History Chat" width="400"> |
 | [UI-15]| <img src="./assets/uiux/HistoryListMitraPage.png" alt="History List Mitra" width="400"> |
 | [UI-16]| <img src="./assets/uiux/LiveChatMasyarakatPage.png" alt="Live chat masyarakat " width="400"> |
-| [UI-17]| <img src="./assets/uiux/LiveChatMitraPage.png" alt="Live chat mitra " width="400"> |
+| [UI-17]| <img src="./assets/uiux/LiveChatAdminPage.png" alt="Live chat mitra " width="400"> |
 <br>
 
 ---
