@@ -183,9 +183,6 @@ Logical View dipilih karena bertujuan untuk menunjukkan interaksi dan alur pemro
 
 Diagram dibagi menjadi tiga jalur utama, yaitu View, Controller, dan Model, sesuai dengan penerapan pola arsitektur Model-View-Controller (MVC) yang telah ditetapkan pada BAB 1. Komponen Integrasi Eksternal (PaymentGatewayAdapter) diletakkan di luar jalur utama (sebelah kanan) karena komponen ini bertindak sebagai perantara komunikasi diluar dari sistem dan hanya dipanggil oleh Controller. Komponen Penyimpanan Data (Database) diletakkan di bagian paling bawah sebagai fondasi penyimpanan data keseluruhan.
 
-### 2.4.X View [Nama View]
-*[Lakukan hal yang sama dengan bagian sebelumnya]*
-
 <br>
 
 ---
@@ -206,14 +203,13 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 | 1 | *RegistrasiView* | *RegistrasiMasyarakatPage* |
 | 2 | *RegistrasiController* | *RegistrasiMasyarakatController* |
 | 3 | *Masyarakat* | *Masyarakat* |
-| ... | *...* | *...* |
 
 ### 3.1.2 Sequence Diagram
 
 - **Skenario Normal**
 
 <p align="center">
-<img alt="sequence Diagram UC01" src="./assets/diagram/seqeuence-diagram-01.webp" width="50%">
+<img alt="sequence Diagram UC01" src="./assets/diagram/sequence-diagram-01.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 1. Sequence Diagram UC01</i>
@@ -222,7 +218,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 - **Skenario Alternatif 1 : Registrasi Gagal saat email sudah terdaftar atau password lemah**
 
 <p align="center">
-<img alt="Sequence Diagram Alternatif UC01" src="./assets/diagram/seqeuence-diagram-alt-01.webp" width="50%">
+<img alt="Sequence Diagram Alternatif UC01" src="./assets/diagram/sequence-diagram-alt-01.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 2. Sequence Diagram Alternatif UC01 - email sudah terdaftar atau password lemah</i>
@@ -251,14 +247,13 @@ Tabel 3.2. Identifikasi Kelas Use Case UC02
 | 1 | *AutentikasiView* | *LoginMasyarakatPage* |
 | 2 | *AutentikasiController* | *LoginMasyarakatController* |
 | 3 | *Masyarakat* | *Masyarakat*|
-| ... | *...* | *...* |
 
 ### 3.2.2 Sequence Diagram
 
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Sequence Diagram UC02" src="./assets/diagram/seqeuence-diagram-02.webp" width="50%">
+<img alt="Sequence Diagram UC02" src="./assets/diagram/sequence-diagram-02.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 4. Sequence Diagram UC02</i>
@@ -267,7 +262,7 @@ Tabel 3.2. Identifikasi Kelas Use Case UC02
 - **Skenario Alternatif 1: Kesalahan Kredensial atau Akun Tidak Terdaftar**
 
 <p align="center">
-<img alt="Sequence Diagram Alternatif" src="./assets/diagram/seqeuence-diagram-alt-02.webp" width="50%">
+<img alt="Sequence Diagram Alternatif" src="./assets/diagram/sequence-diagram-alt-02.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 5. Sequence Diagram Alternatif UC02 - Login Akun bagi Masyarakat</i>
@@ -297,7 +292,6 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 | 2 | *RegistrasiController* | *RegistrasiMitraController* |
 | 3 | *MitraPengacara* | *MitraPengacara* |
 | 4 | *DokumenLegalitas* | *DokumenLegalitas* |
-| ... | *...* | *...* |
 
 ### 3.3.2 Sequence Diagram
 
@@ -305,7 +299,7 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 - **Skenario Normal**
 
 <p align="center">
-<img alt="sequence Diagram UC03" src="./assets/diagram/seqeuence-diagram-03.webp" width="50%">
+<img alt="sequence Diagram UC03" src="./assets/diagram/sequence-diagram-03.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 7. Sequence Diagram UC03</i>
@@ -314,7 +308,7 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 - **Skenario Alternatif 1 : Registrasi Gagal saat email sudah terdaftar atau password lemah**
 
 <p align="center">
-<img alt="Sequence Diagram Alternatif UC03" src="./assets/diagram/seqeuence-diagram-alt-03.webp" width="50%">
+<img alt="Sequence Diagram Alternatif UC03" src="./assets/diagram/sequence-diagram-alt-03.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 8. Sequence Diagram Alternatif UC03 - email sudah terdaftar atau password lemah</i>
@@ -343,14 +337,13 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 | 1 | *AutentikasiView* | *LoginMitraPage* |
 | 2 | *AutentikasiController* | *LoginMitraController* |
 | 3 | *MitraPengacara* | *MitraPengacara*|
-| ... | *...* | *...* |
 
 ### 3.4.2 Sequence Diagram
 
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Sequence Diagram UC04" src="./assets/diagram/seqeuence-diagram-04.webp" width="50%">
+<img alt="Sequence Diagram UC04" src="./assets/diagram/sequence-diagram-04.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 9. Sequence Diagram UC04</i>
@@ -359,7 +352,7 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 - **Skenario Alternatif 1: Akun belum terverifikasi atau Kredensial Salah**
 
 <p align="center">
-<img alt="Sequence Diagram Alternatif UC04" src="./assets/diagram/seqeuence-diagram-alt-04.webp" width="50%">
+<img alt="Sequence Diagram Alternatif UC04" src="./assets/diagram/sequence-diagram-alt-04.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 10. Sequence Diagram Alternatif UC04 - Login Akun bagi Mitra Pengacara</i>
@@ -389,14 +382,13 @@ Tabel 3.5. Identifikasi Kelas Use Case UC05
 | 1 | *StatusVerifikasiMitraView* | *StatusVerifikasiMitraPage* |
 | 2 | *VerifikasiMitraViewController* | *VerifikasiMitraViewController* |
 | 3 | *MitraPengacara* | *Mitra Pengacara*|
-| ... | *...* | *...* |
 
 ### 3.5.2 Sequence Diagram
 
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Sequence Diagram UC05" src="./assets/diagram/seqeuence-diagram-05.webp" width="50%">
+<img alt="Sequence Diagram UC05" src="./assets/diagram/sequence-diagram-05.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 12. Sequence Diagram UC05</i>
@@ -405,7 +397,7 @@ Tabel 3.5. Identifikasi Kelas Use Case UC05
 - **Skenario Alternatif 1: Belum Pernah Mengajukan pendaftar**
 
 <p align="center">
-<img alt="Sequence Diagram Alternatif" src="./assets/diagram/seqeuence-diagram-alt-05.webp" width="50%">
+<img alt="Sequence Diagram Alternatif" src="./assets/diagram/sequence-diagram-alt-05.webp" width="50%">
 </p>
 <p align="center">
 <i>Gambar 13. Sequence Diagram Alternatif UC05 - Belum Pernah Mengajukan Pendaftaran</i>
@@ -434,7 +426,6 @@ Tabel 3.6.1 Identifikasi Kelas Use Case [UC01]
 | 1 | *StatusVerifikasiMitraView* | *VerifikasiMitraPage* |
 | 2 | *VerifikasiMitraController* | *VerifikasiMitraController* |
 | 3 | *Admin* | *Admin* |
-| ... | *...* | *...* |
 
 ### 3.6.2 Sequence Diagram
 
@@ -482,7 +473,6 @@ Tabel 3.7.1 Identifikasi Kelas Use Case [UC01]
 | 1 | *EditProfilMitraPage* | *EditDokumenLegalitasPage* |
 | 2 | *EditProfilMitraPage View* | *EditProfilMitraPage* |
 | 3 | *MitraPengacara* | *MitraPengacara* |
-| ... | *...* | *...* |
 
 ### 3.7.2 Sequence Diagram
 
