@@ -727,8 +727,101 @@ Tabel 3.19. Identifikasi Kelas Use Case [UC19 & UC20]
 <i>Gambar 60. Diagram Kelas Live Chat Admin</i>
 </p>
 
+## 3.21 Use Case UC21
+
+**ID Use Case:** UC21
+**Nama Use Case:** Membayar Biaya Sesi Konsultasi
+
+### 3.21.1 Identifikasi Kelas
+
+Tabel 3.21. Identifikasi Kelas Use Case [UC21]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- | 
+| 1 | PembayaranPage | PembayaranPage |
+| 2 | PembayaranController | PembayaranController |
+| 3 | Masyarakat  | Masyarakat |
+| 4 | SesiKonsultasi | SesiKonsultasi |
+| 5 | Pembayaran | Pembayaran |
+
+### 3.21.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC21" src="./assets/diagram/sequence-diagram-21.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 61. Sequence Diagram UC21</i>
+</p>
+
+-**Skenario Alternatif 1: Pembayaran ditolak**
+
+<p align="center">
+<img alt="Sequence Diagram UC21 - Pembayaran ditolak" src="./assets/diagram/sequence-diagram-alt-21.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 62. Sequence Diagram UC21 - Pembayaran ditolak</i>
+</p>
+
+### 3.21.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas Membayar Biaya Sesi Konsultasi" src="./assets/diagram/diagram-kelas-21.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 63. Diagram Kelas Membayar Biaya Sesi Konsultasi</i>
+</p>
+
 <br>
 
+## 3.22 Use Case UC22
+
+**ID Use Case:** UC22
+**Nama Use Case:** Mencairkan Dana
+
+### 3.22.1 Identifikasi Kelas
+
+Tabel 3.22. Identifikasi Kelas Use Case [UC22]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- | 
+| 1 | PencairanDanaPage | PencairanDanaPage |
+| 2 | PencairanDanaController | PencairanDanaController |
+| 3 | MitraPengacara | MitraPengacara |
+| 4 | PencairanDana | PencairanDana |
+
+### 3.22.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-22.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 64. Sequence Diagram UC22</i>
+</p>
+
+-**Skenario Alternatif 1: Pencairan ditolak**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-22.webp" width="50%">
+</p>
+<p align="center">
+<i>Gambar 65. Sequence Diagram UC22 - Pencairan ditolak</i>
+</p>
+
+### 3.22.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-22.webp" width="35%">
+</p>
+<p align="center">
+<i>Gambar 66. Diagram Kelas Mencairkan Dana</i>
+</p>
+
+<br>
+---
 
 # BAB 4: Diagram Kelas Keseluruhan
 
@@ -1543,6 +1636,658 @@ FUNCTION submitLaporan(): Boolean
     END IF
 END FUNCTION
 ```
+
+## 5.17 Kelas LaporanUlasanPage 
+
+**Nama Kelas:** *LaporanUlasanPage *  
+**ID Kelas:** *C17*
+
+Tabel 5.17.1. Operasi Kelas LaporanUlasanPage 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *bukaFormLaporanUlasan(): void* | *public* | *Menampilkan antarmuka formulir laporan dan ulasan dari masyarakat.* |
+| *submitLaporanUlasan(alasan: String, keterangan: String): void* | *public* | *Mengirimkan data laporan dan ulasan dari masyarakat ke controller untuk diproses.* |
+| *statusUlasan(): String* | *public* | *Menampilkan status ulasan (diterima/menunggu/ditolak).* |
+
+Tabel 5.17.2. Atribut Kelas LaporanUlasanPage 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idUlasan* | *private* | *String* |
+| *idMitra* | *private* | *String* |
+
+
+### 5.17.1 Algoritma/Query
+
+**Nama Kelas:** *LaporanUlasanPage *  
+**Nama Operasi:** *submitLaporanUlasan(alasan: String, keterangan: String): void*  
+**ID Algoritma:** *[Algo-017]*
+
+```text
+PROCEDURE submitLaporanUlasan(alasan: String, keterangan: String)
+    IF alasan isEmpty OR keterangan isEmpty THEN
+        tampilkanPesanError("Alasan dan keterangan laporan wajib diisi.")
+        RETURN
+    END IF
+
+    idUlasan <- generateIdUlasan()
+    berhasil <- Q-171 dengan parameter idUlasan, idMitra, alasan, dan keterangan
+    IF berhasil = true THEN
+        tampilkanPesanSukses()
+    ELSE
+        tampilkanPesanError("Pengiriman laporan dan ulasan gagal. Silakan coba lagi.")
+    END IF
+END PROCEDURE
+```
+
+Tabel 5.17.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-171 | `INSERT INTO laporan_ulasan (idUlasan, idMitra, alasan, keterangan, statusUlasan) VALUES (?, ?, ?, ?, ‘Menunggu’)` | Menyimpan laporan dan ulasan baru dari masyarakat dengan status awal “Menunggu”. |
+
+## 5.18 Kelas TinjauanPage 
+
+**Nama Kelas:** *TinjauanPage  *  
+**ID Kelas:** *C18*
+
+Tabel 5.18.1. Operasi Kelas TinjauanPage 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *submitHasilLaporan(idLaporan: String, hasil: String): void* | *public* | *Mengirimkan data laporan masyarakat ke controller untuk diproses.* |
+| *tampilkanLaporan(): void* | *public* | *Menampilkan antarmuka keseluruhan laporan* ||
+| *tolakLaporan(idLaporan: String): void* | *public* | *Mengubah status laporan menjadi “Ditolak”.* |
+
+Tabel 5.18.2. Atribut Kelas TinjauanPage 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idAdmin* | *private* | *String* |
+| *pilihLaporan* | *private* | *String* |
+
+
+### 5.18.1 Algoritma/Query
+
+**Nama Kelas:** *TinjauanPage*  
+**Nama Operasi:** *submitHasil(idLaporan: String, hasil: String): void*  
+**ID Algoritma:** *[Algo-018]*
+
+```text
+PROCEDURE submitHasilLaporan(idLaporan: String, hasil: String)
+    IF idLaporan isEmpty OR hasil isEmpty THEN
+        tampilkanPesanError("Hasil tinjauan wajib diisi.")
+        RETURN
+    END IF
+
+    berhasil <- Q-181 dengan parameter hasil, idAdmin, dan idLaporan
+    IF berhasil = true THEN
+        tampilkanPesanSukses()
+    ELSE
+        tampilkanPesanError("Penyimpanan hasil tinjauan gagal. Silakan coba lagi.")
+    END IF
+END PROCEDURE
+```
+Tabel 5.18.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-181 | `UPDATE laporan_ulasan SET statusUlasan = ?, idAdmin = ? WHERE idUlasan = ?` | Memperbarui status laporan dan ulasan sesuai hasil tinjauan admin. |
+
+## 5.19 Kelas HistoryPage 
+
+**Nama Kelas:** *HistoryPage*  
+**ID Kelas:** *C19*
+
+Tabel 5.19.1. Operasi Kelas HistoryPage 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *lihatHistory(idMitra: String): void* | *public* | *menampilkan antarmuka riwayat penanganan mitra.* |
+
+Tabel 5.19.2. Atribut Kelas HistoryPage 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *listRiwayat* | *private* | *List<Kasus>* |
+| *idMasyarakat* | *private* | *String* |
+| *idMitra* | *private* | *String* |
+
+### 5.19.1 Algoritma/Query
+
+**Nama Kelas:** *HistoryPage *  
+**Nama Operasi:** *lihatHistory(idMitra: String): void*  
+**ID Algoritma:** *[Algo-019]*
+
+```text
+PROCEDURE lihatHistory(idMitra: String)
+    listRiwayat <- Q-191 dengan parameter idMitra
+
+    IF listRiwayat isEmpty THEN
+        tampilkanPesanKosong("Belum ada riwayat penanganan.")
+        RETURN
+    END IF
+
+    tampilkanDaftarRiwayat(listRiwayat)
+END PROCEDURE
+```
+
+Tabel 5.19.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-191 | `SELECT idKasus, idMasyarakat, tanggalKasus, statusKasus FROM kasus WHERE idMitra = ? ORDER BY tanggalKasus DESC` | Mengambil daftar riwayat penanganan kasus oleh mitra, diurutkan dari yang terbaru. |
+
+## 5.20 Kelas LiveChatMasyarakatPage 
+
+**Nama Kelas:** *LiveChatMasyarakatPage*  
+**ID Kelas:** *C20*
+
+Tabel 5.20.1. Operasi Kelas LiveChatMasyarakatPage 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *showChat(): void* | *public* | *Menampilkan antarmuka live chat beserta riwayat percakapan antara masyarakat dan admin.* |
+| *sendMessage(pertanyaan: String): void* | *public* | *Mengirimkan pertanyaan dari masyarakat ke admin melalui sesi live chat yang sedang aktif.* |
+| *endChat(): void* | *public* | *Mengakhiri sesi live chat dan menutup antarmuka percakapan.* |
+
+Tabel 5.20.2. Atribut Kelas LiveChatMasyarakatPage 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idMasyarakat* | *private* | *String* |
+| *chatAktifId* | *private* | *String* |
+
+
+### 5.20.1 Algoritma/Query
+
+**Nama Kelas:** *LiveChatMasyarakatPage*  
+**Nama Operasi:** *sendMessage(pertanyaan: String): void*
+**ID Algoritma:** *[Algo-020]*
+
+```text
+PROCEDURE sendMessage(pertanyaan: String)
+    IF pertanyaan isEmpty THEN
+        tampilkanPesanError("Pesan tidak boleh kosong.")
+        RETURN
+    END IF
+
+    idPesan <- generateIdPesan()
+    berhasil <- Q-201 dengan parameter idPesan, ckatAktifId, idMasyarakat, dan pertanyaan
+    IF berhasil = true THEN
+        tampilkanPesanDiChat(pertanyaan)
+    ELSE
+        tampilkanPesanError("Pesan gagal terkirim. Silakan coba lagi.")
+    END IF
+END PROCEDURE
+```
+
+Tabel 5.20.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-201 | `INSERT INTO pesan_chat (idPesan, idChat, idPengirim, isiPesan, waktuKirim) VALUES (?, ?, ?, ?, NOW())` | Menyimpan pesan yang dikirim masyarakat ke dalam sesi live chat yang sedang aktif. |
+
+## 5.21 Kelas LiveChatAdminPage 
+
+**Nama Kelas:** *LiveChatAdminPage*  
+**ID Kelas:** *C21*
+
+Tabel 5.21.1. Operasi Kelas LiveChatAdminPage 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *showChat(): void* | *public* | *Menampilkan antarmuka live chat beserta riwayat percakapan antara masyarakat dan admin.* |
+| *sendMessage(jawaban: String): void* | *public* | *Mengirimkan pertanyaan dari admin ke masyarakat melalui sesi live chat yang sedang aktif.* |
+| *endChat(): void* | *public* | *Mengakhiri sesi live chat dan menutup antarmuka percakapan.* |
+
+Tabel 5.21.2. Atribut Kelas LiveChatAdminPage 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idMasyarakat* | *private* | *String* |
+| *idAdmin* | *private* | *String* |
+| *chatAktifId* | *private* | *String* |
+
+
+### 5.21.1 Algoritma/Query
+
+**Nama Kelas:** *LiveChatAdminPage*  
+**Nama Operasi:** *sumbitRegistrasi(nama: String, nomorInduk: String, email: String, sandi: String): void*  
+**ID Algoritma:** *[Algo-021]*
+
+```text
+PROCEDURE sendMessage(jawaban: String)
+    IF jawaban isEmpty THEN
+        tampilkanPesanError("Pesan tidak boleh kosong.")
+        RETURN
+    END IF
+
+    idPesan <- generateIdPesan()
+    berhasil <- Q-201 dengan parameter idPesan, chatAktifId, idAdmin, dan jawaban
+    IF berhasil = true THEN
+        tampilkanPesanDiChat(jawaban)
+    ELSE
+        tampilkanPesanError("Pesan gagal terkirim. Silakan coba lagi.")
+    END IF
+END PROCEDURE
+```
+
+## 5.22 Kelas PembayaranPage 
+
+**Nama Kelas:** *PembayaranPage*  
+**ID Kelas:** *C22*
+
+Tabel 5.22.1. Operasi Kelas PembayaranPage 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *bukaPembayaranPage(): void* | *public* | *Menampilkan antarmuka pembayaran bagi masyarakat.* |
+| *pilihMetodePembayaran(metode: String): void* | *public* | *Masyarakat memilih metode pembayaran yang ingin digunakan.* |
+| *tampilkanFormKonfirmasiPembayaran(): void* | *public* | *Menampilkan antarmuka formulir konfirmasi pembayaran.* |
+| *submitPembayaran(): void* | *public* | *Mengirimkan data pembayaran ke controller untuk diproses.* |
+| *notifikasiPembayaranBerhasil(): void* | *public* | *Menampilkan notifikasi bahwa pembayaran berhasil.* |
+| *tampilkanPesanError(pesan: String): void* | *public* | *Menampilkan pesan error kegagalan pembayaran seperti melewati batas waktu, saldo tidak mencukupi, dsb.* |
+
+Tabel 5.22.2. Atribut Kelas PembayaranPage 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *metodePembayaran* | *private* | *String* |
+
+
+### 5.22.1 Algoritma/Query
+
+**Nama Kelas:** *PembayaranPage*  
+**Nama Operasi:** *submitPembayaran(): void* 
+**ID Algoritma:** *[Algo-022]*
+
+```text
+PROCEDURE submitPembayaran()
+    IF metodePembayaran isEmpty THEN
+        tampilkanPesanError("Metode pembayaran wajib dipilih.")
+        RETURN
+    END IF
+
+    idPembayaran <- generateIdPembayaran()
+    berhasil <- Q-221 dengan parameter idPembayaran, idSesi, metodePembayaran
+    IF berhasil = true THEN
+        notifikasiPembayaranBerhasil()
+    ELSE
+        tampilkanPesanError("Pembayaran gagal. Silakan coba lagi.")
+    END IF
+END PROCEDURE
+```
+
+Tabel 5.22.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-221 | `INSERT INTO pembayaran (idPembayaran, idSesi, metodePembayaran, statusPembayaran, waktuBayar) VALUES (?, ?, ?, 'Berhasil', NOW())` | Menyimpan data pembayaran sesi konsultasi dengan status “Berhasil”. |
+
+## 5.23 Kelas PencairanDanaPage 
+
+**Nama Kelas:** *PencairanDanaPage*  
+**ID Kelas:** *C23*
+
+Tabel 5.23.1. Operasi Kelas PencairanDanaPage 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *bukaPencairanDanaPage(): void* | *public* | *Menampilkan antarmuka pencairan dana bagi mitra.* |
+| *tampilkanRiwayatPembayaranPage(riwayat: List<String>): void* | *public* | *Menampilkan antarmuka riwayat pembayaran yang pernah masuk ke mitra.* |
+| *konfirmasiPencairanDana(): void* | *public* | *Menampilkan konfirmasi pencairan dana.* |
+| *tampilkanFormJumlahDana(): void* | *public* | *Menampilkan antarmuka formulir jumlah dana yang ingin dicairkan.* |
+| *submitPencairan(): void* | *public* | *Mengirimkan data pencairan dana ke controller untuk diproses.* |
+| *notifikasiPencairanDanaBerhasil(): void* | *public* | *Menampilkan notifikasi bahwa pencairan dana berhasil.* |
+| *tampilkanPesanError(pesan: String): void* | *public* | *Menampilkan pesan error kegagalan pencairan dana seperti saldo tidak mencukupi, rekening tidak ditemukan, dsb.* |
+
+
+Tabel 5.23.2. Atribut Kelas PencairanDanaPage 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idPencairan* | *private* | *String* |
+| *inputNominalPencairan* | *private* | *String* |
+| *inputRekeningTujuan* | *private* | *String* |
+
+### 5.23.1 Algoritma/Query
+
+**Nama Kelas:** *PencairanDanaPage*  
+**Nama Operasi:** *submitPencairan(): void*  
+**ID Algoritma:** *[Algo-023]*
+
+```text
+PROCEDURE submitPencairan()
+    IF inputNominalPencairan isEmpty OR inputRekeningTujuan isEmpty THEN
+        tampilkanPesanError("Nominal dan rekening tujuan pencairan wajib diisi.")
+        RETURN
+    END IF
+
+    totalPencairan <- toDouble(inputNominalPencairan)
+    IF totalPencairan <= 0 THEN
+        tampilkanPesanError("Nominal pencairan harus lebih dari 0.")
+        RETURN
+    END IF
+
+    saldoMitra <- Q-231 dengan parameter idMitra
+    IF saldoMitra < totalPencairan THEN
+        tampilkanPesanError("Saldo tidak mencukupi.")
+        RETURN
+    END IF
+
+    idPencairan <- generateIdPencairan()
+    berhasil <- Q-511 dengan parameter idPencairan, idMitra, totalPencairan, dan inputRekeningTujuan
+    IF berhasil = true THEN
+        notifikasiPencairanDanaBerhasil()
+    ELSE
+        tampilkanPesanError("Pencairan dana gagal. Silakan coba lagi.")
+    END IF
+END PROCEDURE
+```
+
+Tabel 5.23.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-231 | `SELECT saldo FROM akun_mitra WHERE idMitra = ?` | Mengambil saldo mitra untuk dicek terhadap nominal pencairan. |
+
+## 5.24 Kelas RegistrasiMasyarakatController 
+
+**Nama Kelas:** *RegistrasiMasyarakatController*  
+**ID Kelas:** *C24*
+
+Tabel 5.24.1. Operasi Kelas RegistrasiMasyarakatController 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *buatAkun(nama: String, nomorInduk: String, email: String, sandiHash: String): Boolean* | *public* | *Membuat akun baru dengan meminta input nama, nomor induk. Email, dan sandi dari pengguna.* |
+| *validasiData(email: String, sandi: String): Boolean* | *public* | *Melakukan validasi data dengan mencocokan email dan sandi dari input pengguna dengan kombinasi email dan sandi dari database.* |
+
+Tabel 5.24.2. Atribut Kelas RegistrasiMasyarakatController 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idRegistrasi* | *private* | *String* |
+
+
+### 5.24.1 Algoritma/Query
+
+**Nama Kelas:** *RegistrasiMasyarakatController*  
+**Nama Operasi:** *buatAkun(nama: String, nomorInduk: String, email: String, sandi: String): Boolean*  
+**ID Algoritma:** *[Algo-024]*
+
+```text
+FUNCTION buatAkun(nama: String, nomorInduk: String, email: String, sandi: String): Boolean
+    emailTerdaftar <- Q-241 dengan parameter email
+    IF emailTerdaftar not isEmpty THEN
+        RETURN false
+    END IF
+
+    IF sandi.length < 8 THEN
+        RETURN false
+    END IF
+
+    idRegistrasi <- generateIdRegistrasi()
+    berhasil <- Q-242 dengan parameter idRegistrasi, nama, nomorInduk, email, sandi
+    RETURN berhasil
+END FUNCTION
+```
+
+Tabel 5.24.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-241 | `SELECT idAkun FROM akun_masyarakat WHERE email = ?` | Mengecek apakah email sudah terdaftar. |
+| Q-242 | `INSERT INTO akun_masyarakat (idAkun, nama, nomorInduk, email, sandi) VALUES (?, ?, ?, ?, ?)` | Menyimpan akunn masyarakat baru. |
+
+## 5.25 Kelas AutentikasiController 
+
+**Nama Kelas:** *AutentikasiController*  
+**ID Kelas:** *C25*
+
+Tabel 5.25.1. Operasi Kelas AutentikasiController 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *autentikasiMasyarakat(email: String, sandi: String): Boolean* | *private* | *Melakukan validasi input email dan sandi pengguna masyarakat dengan data di database.* |
+| *autentikasiMitra(email: String, sandi: String): Boolean* | *private* | *Melakukan validasi input email dan sandi pengguna mitra dengan data di data base.* |
+| *verifikasiSandi(sandiInput: String, sandiHash: String): Boolean* | *private* | *Memverifikasi kecocokan sandi yang diinput pengguna dengan sandi ter-hash yang tersimpan di database, mengembalikan true jika cocok dan false jika tidak.* |
+
+Tabel 5.25.2. Atribut Kelas AutentikasiController 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *-* | *-* | *-* |
+
+
+### 5.25.1 Algoritma/Query
+
+**Nama Kelas:** *AutentikasiController*  
+**Nama Operasi:** *verifikasiSandi(sandiInput: String, sandiHash: String): Boolean*  
+**ID Algoritma:** *[Algo-025]*
+
+```text
+FUNCTION verifikasiSandi(sandiInput: String, sandiHash: String): Boolean
+    hashInput <- hash(sandiInput)
+    IF hashInput = sandiHash THEN
+        RETURN true
+    END IF
+    RETURN false
+END FUNCTION
+```
+
+## 5.26 Kelas RegistrasiMitraController 
+
+**Nama Kelas:** *RegistrasiMitraController* 
+**ID Kelas:** *C26*
+
+Tabel 5.26.1. Operasi Kelas RegistrasiMitraController 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *mendaftarMitra(nama: String, email: String, sandi: String, berkas: File): Boolean* | *public* | *Mengambil data registrasi dari input pengguna mitra* |
+| *validasiBerkas(berkas: File): void* | *private* | *Admin meninjau kesesuaian berkas dengan ketentuan yang ada* |
+
+Tabel 5.26.2. Atribut Kelas RegistrasiMitraController 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idRegistrasi* | *private* | *String* |
+
+
+### 5.26.1 Algoritma/Query
+
+**Nama Kelas:** *RegistrasiMitraController*  
+**Nama Operasi:** *mendaftarMitra(nama: String, email: String, sandi: String, berkas: File): Boolean* 
+**ID Algoritma:** *[Algo-026]*
+
+```text
+FUNCTION mendaftarMitra(nama: String, email: String, sandi: String, berkas: File): Boolean
+    emailTerdaftar <- Q-261 dengan parameter email
+    IF emailTerdaftar not isEmpty THEN
+        RETURN false
+    END IF
+
+    IF sandi.length < 8 THEN
+        RETURN false
+    END IF
+
+    idRegistrasi <- generateIdRegistrasi()
+    berhasil <- Q-262 dengan parameter idRegistrasi, nama, email, sandi, berkas
+    RETURN berhasil
+END FUNCTION
+```
+
+Tabel 5.26.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-261 | `SELECT idMitra FROM akun_mitra WHERE email = ?` | Mengecek apakah email mitra sudah terdaftar. |
+| Q-262 | `INSERT INTO akun_mitra (idMitra, nama, email, sandi, berkas, statusVerifikasi) VALUES (?, ?, ?, ?, ?, 'Menunggu')` | Menyimpan akun mitra baru beserta berkas dengan status verifikasi awal “Menunggu”. |
+
+## 5.27 Kelas VerifikasiMitraController 
+
+**Nama Kelas:** *VerifikasiMitraController*  
+**ID Kelas:** *C27*
+
+Tabel 5.27.1. Operasi Kelas VerifikasiMitraController 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *ambilStatusVerifikasi(idMitra: String): String* | *public* | *Mengambil status verifikasi mitra dari hasil penilaian admin.* |
+| *validasiData(idMitra: String, dokumenMitra): Boolean* | *public* | *Melakukan verifikasi dokumen mitra dan mengubah status verifikasi.* |
+
+Tabel 5.27.2. Atribut Kelas VerifikasiMitraController 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *status* | *private* | *String* |
+| *idMitra* | *private* | *String* |
+| *passwordMitra* | *private* | *String* |
+| *dokumenMitra* | *private* | *List<dokumenLegalitas>* |
+
+
+### 5.27.1 Algoritma/Query
+
+**Nama Kelas:** *VerifikasiMitraController*  
+**Nama Operasi:** *validasiData(idMitra: String, dokumenMitra): Boolean*
+**ID Algoritma:** *[Algo-027]*
+
+```text
+FUNCTION validasiData(idMitra: String, dokumenMitra): Boolean
+    IF dokumenMitra isEmpty THEN
+        RETURN false
+    END IF
+
+    mitraTerdaftar <- Q-271 dengan parameter idMitra
+    IF mitraTerdaftar isEmpty THEN
+        RETURN false
+    END IF
+
+    berhasil <- Q-272 dengan parameter idMitra
+    RETURN berhasil
+END FUNCTION
+```
+
+Tabel 5.27.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-271 | `SELECT idMitra FROM akun_mitra WHERE idMitra = ?` | Mengecek apakah mitra terdaftar. |
+| Q-272 | `UPDATE akun_mitra SET statusVerifikasi = 'Terverifikasi' WHERE idMitra = ?` | Mengubah status verifikasi mitra menjadi “Terverifikasi”. |
+
+Mitra edit profil, nambah file. File di verifikasi ulang 
+
+## 5.28 Kelas ProfilMitraController 
+
+**Nama Kelas:** *ProfilMitraController*  
+**ID Kelas:** *C28*
+
+Tabel 5.28.1. Operasi Kelas ProfilMitraController 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *validasiData(idMitra: String, dokumenMitra: File, mode: String): Boolean* | *public* | *Menyimpan dokumen mitra saat edit profil sesuai tombol yang dipilih: “Edit” menimpa dokumen lama, “Tambah” langsung menambahkan dokumen baru tanpa menghapus dokumen lama, lalu mengubah status verifikasi dari “Terverifikasi” menjadi “Menunggu” untuk ditinjau ulang oleh admin.* |
+
+Tabel 5.28.2. Atribut Kelas ProfilMitraController 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *inputDokumen* | *private* | *String* |
+
+
+### 5.28.1 Algoritma/Query
+
+**Nama Kelas:** *ProfilMitraController*  
+**Nama Operasi:** *validasiData(idMitra: String, dokumenMitra: File): Boolean*  
+**ID Algoritma:** *[Algo-028]*
+
+```text
+FUNCTION validasiData(idMitra: String, dokumenMitra: File, mode: String): Boolean
+    IF dokumenMitra isEmpty THEN
+        RETURN false
+    END IF
+
+    mitraTerdaftar <- Q-281 dengan parameter idMitra
+    IF mitraTerdaftar isEmpty THEN
+        RETURN false
+    END IF
+
+    IF mode = "Edit" THEN
+        berhasil <- Q-282 dengan parameter dokumenMitra dan idMitra
+    ELSE
+        idDokumen <- generateIdDokumen()
+        tersimpan <- Q-283 dengan parameter idDokumen, idMitra, dan dokumenMitra
+        IF tersimpan = false THEN
+            RETURN false
+        END IF
+        berhasil <- Q-284 dengan parameter idMitra
+    END IF
+
+    RETURN berhasil
+END FUNCTION
+```
+
+Tabel 5.28.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-281 | `SELECT idMitra FROM akun_mitra WHERE idMitra = ?` | Mengecek apakah mitra terdaftar. |
+| Q-282 | `UPDATE akun_mitra SET berkas = ?, statusVerifikasi = 'Menunggu' WHERE idMitra = ?` | Menimpa dokumen lama dengan dokumen baru dan mengubah status verifikasi menjadi “Menunggu”. |
+| Q-283 | `INSERT INTO dokumen_mitra (idDokumen, idMitra, berkas) VALUES (?, ?, ?)` | Menyimpan dokumen baru mitra tanpa menghapus dokumen lama, tidak peduli duplikat atau tidak. |
+| Q-284 | `UPDATE akun_mitra SET statusVerifikasi = 'Menunggu' WHERE idMitra = ?` | Mengubah status verifikasi mitra menjadi “Menunggu” setelah dokumen baru ditambahkan. |
+
+## 5.29 Kelas SearchLawController 
+
+**Nama Kelas:** *SearchLawController*  
+**ID Kelas:** *C29*
+
+Tabel 5.29.1. Operasi Kelas SearchLawController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *validasiData(kataKunci: String): Boolean* | *public* | *Melakukan pencarian pasal yang sesuai dengan kata kunci* |
+
+Tabel 5.29.2. Atribut Kelas SearchLawController 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *tombolCari* | *private* | *Button* |
+| *infoPasal* | *private* | *String* |
+| *kataKunci* | *private* | *String* |
+| *idPasal* | *private* | *String* |
+
+
+### 5.29.1 Algoritma/Query
+
+**Nama Kelas:** *SearchLawController*  
+**Nama Operasi:** *validasiData(kataKunci: String): Boolean*  
+**ID Algoritma:** *[Algo-029]*
+
+```text
+FUNCTION validasiData(kataKunci: String): Boolean
+    IF kataKunci isEmpty THEN
+        RETURN false
+    END IF
+
+    hasilPencarian <- Q-291 dengan parameter kataKunci
+    IF hasilPencarian isEmpty THEN
+        RETURN false
+    END IF
+
+    idPasal <- hasilPencarian.idPasal
+    infoPasal <- hasilPencarian.infoPasal
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.29.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-291 | `SELECT idPasal, infoPasal FROM pasal WHERE nomorPasal LIKE CONCAT('%', ?, '%') OR infoPasal LIKE CONCAT('%', ?, '%')` | Mencari pasal yang nomor atau isinya sesuai dengan kata kunci. |
 
 ## 5.30 Kelas PencarianMitraController
 
@@ -2593,6 +3338,233 @@ Tabel 5.47.3. Query Operasi
 | Q-002 | `INSERT INTO ulasan (idUlasan, idMitra, skorRating, teksUlasan, foto, tanggalUlasan) VALUES (?, ?, ?, ?, ?, ?);` | Menyimpan ulasan baru (simpanDataUlasan). |
 | Q-003 | `SELECT * FROM ulasan WHERE idUlasan = ?;` | Mengambil satu ulasan berdasarkan idUlasan (ambilDataUlasan dan getUlasan). |
 
+## 5.48 Kelas Laporan 
+
+**Nama Kelas:** *Laporan*  
+**ID Kelas:** *C48*
+
+Tabel 5.48.1. Operasi Kelas Laporan 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *buatLaporan(idPelapor: String, idUlasan: String, alasan: String, keterangan: String): Laporan* | *public* | *Membuat laporan baru mengenai pelanggaran selama sesi konsultasi, pelanggaran pada ulasan, dan ajuan untuk pemblokiran akun. idUlasan diisi hanya untuk laporan ulasan, sedangkan idTerlapor (mitra atau masyarakat) diisi untuk laporan lainnya.* |
+| *statusLaporan(): String* | *public* | *Mengirimkan status laporan (diterima/menunggu/ditolak).* |
+| *getDetailLaporan(idLaporan: String): Laporan* | *private* | *Mengambil detail laporan untuk dinilai oleh admin.* |
+
+Tabel 5.48.2. Atribut Kelas Laporan 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idLaporan* | *private* | *String* |
+| *idPelapor* | *private* | *String* |
+| *idTerlapor* | *private* | *String* |
+| *idUlasan* | *private* | *String* |
+| *jenisPelanggaran* | *private* | *String* |
+| *deskripsi* | *private* | *String* |
+| *statusLaporan* | *private* | *String* |
+| *tanggalLaporan* | *private* | *Date* |
+
+
+### 5.48.1 Algoritma/Query
+
+**Nama Kelas:** *Laporan*  
+**Nama Operasi:** *buatLaporan(idPelapor: String, idTerlapor: String, idUlasan: String, alasan: String, keterangan: String): Laporan*   
+**ID Algoritma:** *[Algo-048]*
+
+```text
+FUNCTION buatLaporan(idPelapor: String, idTerlapor: String, idUlasan: String, alasan: String, keterangan: String): Laporan
+    IF alasan isEmpty OR keterangan isEmpty THEN
+        RETURN null
+    END IF
+
+    IF idUlasan not isEmpty THEN
+        ulasanTerdaftar <- Q-481 dengan parameter idUlasan
+        IF ulasanTerdaftar isEmpty THEN
+            RETURN null
+        END IF
+
+        IF idPelapor = ulasanTerdaftar.idMitra THEN
+            idTerlapor <- ulasanTerdaftar.idMasyarakat
+        ELSE
+            idTerlapor <- ulasanTerdaftar.idMitra
+        END IF
+    ELSE
+        IF idTerlapor isEmpty THEN
+            RETURN null
+        END IF
+    END IF
+
+    idLaporan <- generateIdLaporan()
+    berhasil <- Q-482 dengan parameter idLaporan, idPelapor, idTerlapor, idUlasan, alasan, keterangan
+    IF berhasil = false THEN
+        RETURN null
+    END IF
+
+    laporanBaru <- Laporan(idLaporan, idPelapor, idTerlapor, idUlasan, alasan, keterangan, "Menunggu")
+    RETURN laporanBaru
+END FUNCTION
+```
+
+Tabel 5.48.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-481 | `SELECT idMitra, idMasyarakat FROM ulasan WHERE idUlasan = ?` | Mengecek apakah ulasan terdaftar dan mengambil mitra serta masyarakat yang terkait dengan ulasan tersebut. |
+| Q-482 | `INSERT INTO laporan (idLaporan, idPelapor, idTerlapor, idUlasan, jenisPelanggaran, deskripsi, statusLaporan, tanggalLaporan) VALUES (?, ?, ?, ?, ?, ?, 'Menunggu', NOW())` | Menyimpan laporan baru dengan status awal “Menunggu”. |
+
+cekStatusLunas diganti jadi cekStatusPembayaran
+
+## 5.49 Kelas Pembayaran 
+
+**Nama Kelas:** *Pembayaran*  
+**ID Kelas:** *C49*
+
+Tabel 5.49.1. Operasi Kelas Pembayaran 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *cekStatusPembayaran(): Boolean* | *public* | *Mengecek status pembayaran terbaru.* |
+| *getStatusPembayaran(): String* | *public* | *Mengambil status pembayaran terbaru.* |
+| *setStatusPembayaran(): void* | *public* | *Mengubah atau meng-update status pembayaran.* |
+
+Tabel 5.49.2. Atribut Kelas Pembayaran 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idPembayaran* | *private* | *String* |
+| *nominal* | *private* | *Double* |
+| *statusPembayaran* | *private* | *String* |
+| *metodeBayar* | *private* | *String* |
+| *idSesi* | *private* | *String* |
+| *waktuTransaksi* | *private* | *Date* |
+
+
+### 5.49.1 Algoritma/Query
+
+**Nama Kelas:** *Pembayaran*  
+**Nama Operasi:** *cekStatusPembayaran(): Boolean*  
+**ID Algoritma:** *[Algo-049]*
+
+```text
+PROCEDURE submitRegistrasi(nama: String, nomorInduk: String, email: String, sandi: String)
+FUNCTION cekStatusPembayaran(): Boolean
+    hasil <- Q-491 dengan parameter idPembayaran
+    IF hasil isEmpty THEN
+        RETURN false
+    END IF
+
+    IF hasil.statusPembayaran = "Berhasil" THEN
+        RETURN true
+    END IF
+    RETURN false
+END FUNCTION
+```
+
+Tabel 5.49.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-491 | `SELECT statusPembayaran FROM pembayaran WHERE idPembayaran = ?` | Mengambil status pembayaran terbaru berdasarkan id pembayaran. |
+
+## 5.50 Kelas LiveChat 
+
+**Nama Kelas:** *LiveChat*  
+**ID Kelas:** *C50*
+
+Tabel 5.50.1. Operasi Kelas LiveChat 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *updateStatusChat(statusChat: String): void* | *public* | *Mengubah atau meng-update status chat.* |
+
+Tabel 5.50.2. Atribut Kelas LiveChat 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idChat* | *private* | *String* |
+| *waktuChatMulai* | *private* | *DateTime* |
+| *waktuChatSelesai* | *private* | *DateTime* |
+| *statusChat* | *private* | *String* |
+| *historyChat* | *private* | *List<String>* |
+
+
+### 5.50.1 Algoritma/Query
+
+**Nama Kelas:** *LiveChat*  
+**Nama Operasi:** *updateStatusChat(statusChat: String): void* 
+**ID Algoritma:** *[Algo-050]*
+
+```text
+PROCEDURE updateStatusChat(statusChat: String)
+    IF statusChat isEmpty THEN
+        tampilkanPesanError("Status chat wajib diisi.")
+        RETURN
+    END IF
+
+    berhasil <- Q-501 dengan parameter statusChat dan idChat
+    IF berhasil = false THEN
+        tampilkanPesanError("Pembaruan status chat gagal. Silakan coba lagi.")
+    END IF
+END PROCEDURE
+```
+
+Tabel 5.50.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-501 | `UPDATE live_chat SET statusChat = ? WHERE idChat = ?` | Memperbarui status chat berdasarkan id chat. |
+
+## 5.51 Kelas PencairanDana 
+
+**Nama Kelas:** *PencairanDana*  
+**ID Kelas:** *C51*
+
+Tabel 5.51.1. Operasi Kelas PencairanDana 
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *pencairanDana(totalPencairan: Double, rekeningTujuan: String): void* | *public* | *Melakukan pencairan dana.* |
+| *getStatus(): String* | *public* | *Mengambil status pencairan dana terbaru.* |
+
+Tabel 5.51.2. Atribut Kelas PencairanDana 
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idMitra* | *private* | *String* |
+| *idPencairan* | *private* | *String* |
+| *totalPencairan* | *private* | *Double* |
+| *tanggalPengajuan* | *private* | *Date* |
+| *statusPencairan* | *private* | *String* |
+| *rekeningTujuan* | *private* | *String* |
+
+
+### 5.51.1 Algoritma/Query
+
+**Nama Kelas:** *PencairanDana*  
+**Nama Operasi:** *pencairanDana(totalPencairan: Double, rekeningTujuan: String): void*  
+**ID Algoritma:** *[Algo-051]*
+
+```text
+PROCEDURE pencairanDana(totalPencairan: Double, rekeningTujuan: String)
+    IF totalPencairan <= 0 OR rekeningTujuan isEmpty THEN
+        tampilkanPesanError("Nominal dan rekening tujuan pencairan wajib diisi dengan benar.")
+        RETURN
+    END IF
+
+    idPencairan <- generateIdPencairan()
+    berhasil <- Q-511 dengan parameter idPencairan, idMitra, totalPencairan, dan rekeningTujuan
+    IF berhasil = false THEN
+        tampilkanPesanError("Pencairan dana gagal. Silakan coba lagi.")
+    END IF
+END PROCEDURE
+```
+
+Tabel 5.51.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-511 | `INSERT INTO pencairan_dana (idPencairan, idMitra, totalPencairan, tanggalPengajuan, statusPencairan, rekeningTujuan) VALUES (?, ?, ?, NOW(), 'Menunggu', ?)`| Menyimpan pengajuan pencairan dana mitra dengan status awal “Menunggu”. |
+
 <br>
 
 ---
@@ -2649,6 +3621,54 @@ Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case; tuliskan seluruh use case terkait]* |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *...* | *...* |
+| C01 - RegistrasiMasyarakatPage | UC01 - Melakukan Registrasi Akun bagi Masyarakat |
+| C02 - LoginMasyarakatPage | UC02 - Melakukan Login bagi Masyarakat |
+| C03 - BerandaPage | UC02 - Melakukan Login bagi Masyarakat |
+| C04 - RegistrasiMitraPage | UC03 - Melakukan Registrasi Akun bagi Mitra Pengacara |
+| C05 - LoginMitraPage | UC04 - Melakukan Login bagi Mitra Pengacara |
+| C06 - StatusVerifikasiMitraPage | UC05 - Melihat Status Registrasi Akun Mitra Pengacara |
+| C07 - VerifikasiMitraPage | UC06 - Memverifikasi Pendaftar Mitra Pengacara |
+| C08 - EditProfilMitraPage | UC07 - Verifikasi Akun Pengacara |
+| C09 - EditDokumenLegalitasPage | UC07 - Verifikasi Akun Pengacara |
+| C10 - SearchLawPage | UC08 - Melakukan Pencarian Pasal |
+| C11 - DaftarMitraPengacaraPage | UC09 - Melihat Daftar Pengacara |
+| C12 - PemilihanJadwalKonsultasiPage | UC10 - Memilih Mitra Pengacara untuk Sesi Konsultasi |
+| C13 - KonfirmasiKonsultasiPage | UC11 - Menanggapi Sesi Konsultasi |
+| C14 - ChatKonsultasiPage | UC12 - Melakukan Sesi Konsultasi |
+| C15 - UlasanPage | UC13 - Memberi Ulasan, Feedback, dan/atau Rating |
+| C16 - LaporanAkunPage / LaporanUlasanPage | UC14 - Melaporkan Pelanggaran, UC15 - Melaporkan Pelanggaran |
+| C17 - LaporanUlasanPage | UC16 - Melaporkan Ulasan |
+| C18 - TinjauanPage | UC17 - Memblokir Akun |
+| C19 - HistoryPage | UC18 - Melihat Riwayat Penanganan |
+| C20 - LiveChatMasyarakatPage | UC19 - Menanyakan Masalah Teknis |
+| C21 - LiveChatAdminPage | UC20 - Menjawab Pertanyaan |
+| C22 - PembayaranPage | UC21 - Membayar Biaya Sesi Konsultasi |
+| C23 - PencairanDanaPage | UC22 - Mencairkan Dana |
+| C24 - RegistrasiMasyarakatController | UC01 - Melakukan Registrasi Akun bagi Masyarakat |
+| C25 - AutentikasiController | UC02 - Melakukan Login bagi Masyarakat, UC04 - Melakukan Login bagi Mitra Pengacara |
+| C26 - RegistrasiMitraController | UC03 - Melakukan Registrasi Akun bagi Mitra Pengacara |
+| C27 - VerifikasiMitraController | UC05 - Melihat Status Registrasi Akun Mitra Pengacara, UC06 - Memverifikasi Pendaftar Mitra Pengacara |
+| C28 - ProfilMitraController | UC07 - Verifikasi Akun Pengacara |
+| C29 - SearchLawController | UC08 - Melakukan Pencarian Pasal |
+| C30 - PencarianMitraController | UC09 - Melihat Daftar Pengacara |
+| C31 - PenjadwalanKonsultasiController | UC10 - Memilih Mitra Pengacara untuk Sesi Konsultasi |
+| C32 - SesiKonsultasiController | UC11 - Menanggapi Sesi Konsultasi, UC12 - Melakukan Sesi Konsultasi |
+| C33 - UlasanController | UC13 - Memberi Ulasan, Feedback, dan/atau Rating |
+| C34 - LaporanController | UC14 - Melaporkan Pelanggaran, UC15 - Melaporkan Pelanggaran, UC16 - Melaporkan Ulasan |
+| C35 - ModerasiAkunController | UC17 - Memblokir Akun |
+| C36 - RiwayatController | UC18 - Melihat Riwayat Penanganan |
+| C37 - LiveChatController | UC19 - Menanyakan Masalah Teknis, UC20 - Menjawab Pertanyaan |
+| C38 - PembayaranController | UC21 - Membayar Biaya Sesi Konsultasi |
+| C39 - PencairanDanaController | UC22 - Mencairkan Dana |
+| C40 - Masyarakat | UC01 - Melakukan Registrasi Akun bagi Masyarakat, UC02 - Melakukan Login bagi Masyarakat, UC08 - Melakukan Pencarian Pasal, UC09 - Melihat Daftar Pengacara, UC10 - Memilih Mitra Pengacara untuk Sesi Konsultasi, UC12 - Melakukan Sesi Konsultasi, UC13 - Memberi Ulasan, Feedback, dan/atau Rating, UC14 - Melaporkan Pelanggaran, UC18 - Melihat Riwayat Penanganan, UC19 - Menanyakan Masalah Teknis, UC21 - Membayar Biaya Sesi Konsultasi |
+| C41 - MitraPengacara | UC03 - Melakukan Registrasi Akun bagi Mitra Pengacara, UC04 - Melakukan Login bagi Mitra Pengacara, UC05 - Melihat Status Registrasi Akun Mitra Pengacara, UC06 - Memverifikasi Pendaftar Mitra Pengacara, UC07 - Verifikasi Akun Pengacara, UC09 - Melihat Daftar Pengacara, UC11 - Menanggapi Sesi Konsultasi, UC12 - Melakukan Sesi Konsultasi, UC15 - Melaporkan Pelanggaran, UC16 - Melaporkan Ulasan, UC18 - Melihat Riwayat Penanganan, UC22 - Mencairkan Dana |
+| C42 - Admin | UC06 - Memverifikasi Pendaftar Mitra Pengacara, UC17 - Memblokir Akun, UC19 - Menanyakan Masalah Teknis, UC20 - Menjawab Pertanyaan |
+| C43 - Kasus | UC10 - Memilih Mitra Pengacara untuk Sesi Konsultasi, UC12 - Melakukan Sesi Konsultasi, UC18 - Melihat Riwayat Penanganan |
+| C44 - DasarHukum | UC08 - Melakukan Pencarian Pasal |
+| C45 - DokumenLegalitas | UC03 - Melakukan Registrasi Akun bagi Mitra Pengacara, UC05 - Melihat Status Registrasi Akun Mitra Pengacara, UC06 - Memverifikasi Pendaftar Mitra Pengacara, UC07 - Verifikasi Akun Pengacara |
+| C46 - SesiKonsultasi | UC10 - Memilih Mitra Pengacara untuk Sesi Konsultasi, UC11 - Menanggapi Sesi Konsultasi, UC12 - Melakukan Sesi Konsultasi, UC18 - Melihat Riwayat Penanganan, UC21 - Membayar Biaya Sesi Konsultasi |
+| C47 - Ulasan / Laporan | UC09 - Melihat Daftar Pengacara, UC13 - Memberi Ulasan, Feedback, dan/atau Rating, UC16 - Melaporkan Ulasan |
+| C48 - Laporan |  UC14 - Melaporkan Pelanggaran, UC15 - Melaporkan Pelanggaran, UC16 - Melaporkan Ulasan, UC17 - Memblokir Akun |
+| C49 - Pembayaran | UC12 - Melakukan Sesi Konsultasi, UC21 - Membayar Biaya Sesi Konsultasi |
+| C50 - LiveChat | UC19 - Menanyakan Masalah Teknis, UC20 - Menjawab Pertanyaan |
+| C51 - PencairanDana | UC22 - Mencairkan Dana |
