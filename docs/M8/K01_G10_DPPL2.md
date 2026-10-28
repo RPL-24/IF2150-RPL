@@ -104,7 +104,7 @@ Tabel 1.4. Aturan Penomoran
 | *Aktor* | *ACXX* | Mulai dari 01, 02, dan seterusnya |
 | *Algoritma* | *Algo-XX* | Mulai dari 01, 02, dan seterusnya |
 | *Antarmuka* | *I-XX* | Mulai dari 01, 02, dan seterusnya |
-| *Query* | *Q-XXX* | Mulai dari 01, 02, dan seterusnya |
+| *Query* | *Q-XXX* | Mulai dari 001, 002, dan seterusnya |
 | *Objek Antarmuka* | *I-XX-NN* | ID layar diikuti nomor urut objek pada layar tersebut |
 | *...* | *...* |
 
