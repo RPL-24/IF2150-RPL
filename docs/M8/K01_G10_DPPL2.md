@@ -65,7 +65,7 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | Singkatan, Akronim, atau Istilah | Penjelasan |
 | :--- | :--- |
 | *P/L* | *Singkatan dari Perangkat Lunak, yaitu aplikasi yang memberikan perintah kepada komputer untuk menjalankan tugas tertentu.* |
-| *DPPL* | *Singkatan dari Spesifikasi Kebutuhan Perangkat Lunak, yaitu dokumen yang merangkum kriteria-kriteria yang diperlukan untuk membangun aplikasi menjalankan tugasnya.* |
+| *DPPL* | *Singkatan dari Deskripsi Perancangan Perangkat Lunak, yaitu dokumen yang merangkum kriteria-kriteria yang diperlukan untuk membangun aplikasi menjalankan tugasnya.* |
 | *US* | *Singkatan dari User Story.* |
 | *A* | *Singkatan dari Aktivitas.* |
 | *R* | *Singkatan dari Requirement.* |
@@ -76,6 +76,15 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *EARS* | *Easy Approach to Requirements Syntax, yaitu pola penulisan kebutuhan agar konsisten dan mudah diuji.* |
 | *AC* | *Singkatan dari Aktor.* |
 | *Algo* | *Singkatan dari Algoritma.* |
+| *SKPL* | *Singkatan dari Spesifikasi Kebutuhan Perangkat Lunak, yaitu dokumen acuan kebutuhan fungsional, non-fungsional, dan use case antri.in.* |
+| *APL* | *Singkatan dari Arsitektur Perangkat Lunak, yaitu dokumen acuan pattern arsitektur dan komponen antri.in.* |
+| *MVC* | *Singkatan dari Model-View-Controller, yaitu pattern arsitektur yang memisahkan data (Model), tampilan (View), dan alur proses (Controller).* |
+| *DBMS* | *Singkatan dari Database Management System, yaitu perangkat lunak pengelola basis data. antri.in menggunakan PostgreSQL.* |
+| *SQL* | *Singkatan dari Structured Query Language, yaitu bahasa untuk mengakses dan mengelola data pada basis data relasional.* |
+| *REST API* | *Singkatan dari Representational State Transfer Application Programming Interface, yaitu antarmuka komunikasi antara client dan server melalui HTTP.* |
+| *UI* | *Singkatan dari User Interface, yaitu tampilan yang digunakan pengguna untuk berinteraksi dengan sistem.* |
+| *Q* | *Singkatan dari Query, digunakan sebagai awalan ID query SQL pada BAB 5.* |
+| *I* | *Singkatan dari Interface (antarmuka), digunakan sebagai awalan ID layar pada BAB 6.* |
 | *...* | *...* |
 
 ## 1.4 Aturan Penomoran
@@ -94,13 +103,15 @@ Tabel 1.4. Aturan Penomoran
 | *Requirement* | *RXX* | Mulai dari 01, 02, dan seterusnya |
 | *Aktor* | *ACXX* | Mulai dari 01, 02, dan seterusnya |
 | *Algoritma* | *Algo-XX* | Mulai dari 01, 02, dan seterusnya |
+| *Antarmuka* | *I-XX* | Mulai dari 01, 02, dan seterusnya |
+| *Objek Antarmuka* | *I-XX-NN* | ID layar diikuti nomor urut objek pada layar tersebut |
 | *...* | *...* |
 
 ## 1.5 Referensi
 Cantumkan dokumentasi P/L yang dirujuk oleh dokumen ini, **minimal dokumen SKPL dan APL**. Tambahkan buku, panduan, atau dokumentasi lain apabila digunakan.
 
-SKPL
-APL
+SKPL<br>
+APL<br>
 Pressman, R. S., _Software Engineering: A Practitioner's Approach_, _8th Edition_, McGraw-Hill, 2015.  
 Sommerville, I., _Software Engineering_, _10th Edition_, Pearson, 2016.  
 Larman, C., _Applying UML and Patterns: An Introduction to Object-Oriented Analysis and Design and Iterative Development_, _3rd Edition_, Prentice Hall, 2004.
