@@ -169,6 +169,8 @@
 | 27-10-2026 | Rafi Pradipta Andira Sulistyo | Revisi I-02b | 0,5 | Done | - | 
 | 28-10-2026 | Gede Pranajayanta Suputra | mengerjakan implementasi dan query C06 C12 C16 C18 C22 | 0,5 | Done | - | 
 | 28-10-2026 | Muhammad Atallah Ramadhan | mengerjakan implementasi dan query C01 C02 C03 C04 C05 C11 C17 | 1,5 | Done | - | 
+| 26-10-2026 | Bagas Anugrah Putra | mengerjakan rincian class C09 C10 C15 C21 C23 | 1 | Unfinished | Penyelarasan signature operasi dengan diagram use case |
+| 28-10-2026 | Bagas Anugrah Putra | menyelesaikan implementasi algoritma dan query C09 C10 C15 C21 C23 serta audit | 1 | Done | - |
 
 
 

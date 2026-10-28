@@ -680,7 +680,7 @@ Tabel 5.1. Daftar Kelas Perancangan dan Kelas Analisis Terkait
 
 **Nama Kelas:** *User*  
 **Nama Operasi:** *muatProfil*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-001]*
 
 ```text
 function muatProfil(idUser):
@@ -736,7 +736,7 @@ Tabel 5.1.1. Query Operasi muatProfil
 
 **Nama Kelas:** *Laporan*  
 **Nama Operasi:** *simpanLaporan*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-002]*
 
 ```text
 function simpanLaporan():
@@ -768,7 +768,7 @@ Tabel 5.2.1. Query Operasi simpanLaporan
 
 **Nama Kelas:** *Laporan*  
 **Nama Operasi:** *getRincianPublik*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-003]*
 
 ```text
 function getRincianPublik():
@@ -781,7 +781,7 @@ function getRincianPublik():
 
 **Nama Kelas:** *Laporan*  
 **Nama Operasi:** *tambahUpvote*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-004]*
 
 ```text
 function tambahUpvote(upvote):
@@ -807,7 +807,7 @@ Tabel 5.2.2. Query Operasi tambahUpvote
 
 **Nama Kelas:** *Laporan*  
 **Nama Operasi:** *hitungPrioritas*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-005]*
 
 ```text
 function hitungPrioritas():
@@ -826,7 +826,7 @@ Tabel 5.2.3. Query Operasi hitungPrioritas
 
 **Nama Kelas:** *Laporan*  
 **Nama Operasi:** *updateStatus*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-006]*
 
 ```text
 function updateStatus(statusBaru, alasan):
@@ -870,7 +870,7 @@ Tabel 5.2.4. Query Operasi updateStatus
 
 **Nama Kelas:** *Lokasi*  
 **Nama Operasi:** *hitungJarak*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-007]*
 
 ```text
 function hitungJarak(lokasiLain):
@@ -888,7 +888,7 @@ function hitungJarak(lokasiLain):
 
 **Nama Kelas:** *Lokasi*  
 **Nama Operasi:** *dalamWilayah*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-008]*
 
 ```text
 function dalamWilayah():
@@ -923,7 +923,7 @@ function dalamWilayah():
 
 **Nama Kelas:** *Foto*  
 **Nama Operasi:** *isFotoValid*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-009]*
 
 ```text
 function isFotoValid():
@@ -953,193 +953,7 @@ function isFotoValid():
 
 **Nama Kelas:** *Video*  
 **Nama Operasi:** *isVideoValid*  
-**ID Algoritma:** *[Algo-00x]*
-
-```text
-function isVideoValid():
-    MAKS_UKURAN <- 10 * 1024 * 1024    { 10 MB dalam byte }
-    if not(lowercase(format) in {"mp4", "mov", "mkv"}) then
-        return false
-    if ukuran > MAKS_UKURAN then
-        return false
-    return true
-```
-
-**Nama Kelas:** *Laporan*  
-**Nama Operasi:** *tambahUpvote*  
-**ID Algoritma:** *[Algo-00x]*
-
-```text
-function tambahUpvote(upvote):
-    if status = "Ditolak" or status = "Berhasil" then
-        return jumlahUpvote
-    sudahDukung <- Q-005(idTiket, upvote.idUser)
-    if sudahDukung > 0 then
-        return jumlahUpvote
-    Q-006(upvote.idUpvote, idTiket, upvote.idUser, upvote.waktuUpvote)
-    jumlahUpvote <- jumlahUpvote + 1
-    hitungPrioritas()
-    return jumlahUpvote
-```
-
-Tabel 5.2.2. Query Operasi tambahUpvote
-
-| No Query | Query | Keterangan |
-| :--- | :--- | :--- |
-| *Q-005* | *SELECT COUNT(*) FROM upvote WHERE id_tiket = $1 AND id_user = $2;* | *Memeriksa apakah Warga sudah pernah memberikan dukungan pada laporan tersebut* |
-| *Q-006* | *INSERT INTO upvote (id_upvote, id_tiket, id_user, waktu_upvote) VALUES ($1, $2, $3, $4);* | *Menyimpan data dukungan (upvote) baru* |
-
-### 5.2.4 Algoritma/Query
-
-**Nama Kelas:** *Laporan*  
-**Nama Operasi:** *hitungPrioritas*  
-**ID Algoritma:** *[Algo-00x]*
-
-```text
-function hitungPrioritas():
-    skorPrioritas <- jumlahUpvote
-    Q-007(idTiket, jumlahUpvote, skorPrioritas)
-    return skorPrioritas
-```
-
-Tabel 5.2.3. Query Operasi hitungPrioritas
-
-| No Query | Query | Keterangan |
-| :--- | :--- | :--- |
-| *Q-007* | *UPDATE laporan SET jumlah_upvote = $2, skor_prioritas = $3 WHERE id_tiket = $1;* | *Memperbarui jumlah upvote dan skor prioritas laporan* |
-
-### 5.2.5 Algoritma/Query
-
-**Nama Kelas:** *Laporan*  
-**Nama Operasi:** *updateStatus*  
-**ID Algoritma:** *[Algo-00x]*
-
-```text
-function updateStatus(statusBaru, alasan):
-    if statusBaru = "Ditolak" and alasan = NIL then
-        return false
-    valid <- (status = "Diterima" and (statusBaru = "Dikerjakan" or statusBaru = "Ditolak"))
-             or (status = "Dikerjakan" and statusBaru = "Berhasil")
-    if not(valid) then
-        return false
-    status <- statusBaru
-    if statusBaru = "Ditolak" then
-        alasanPenolakan <- alasan
-    Q-008(idTiket, status, alasanPenolakan)
-    Q-004(idTiket, status, time.current)
-    return true
-```
-
-Tabel 5.2.4. Query Operasi updateStatus
-
-| No Query | Query | Keterangan |
-| :--- | :--- | :--- |
-| *Q-008* | *UPDATE laporan SET status = $2, alasan_penolakan = $3 WHERE id_tiket = $1;* | *Memperbarui status laporan dan alasan penolakan (bila ada)* |
-| *Q-004* | *INSERT INTO riwayat_status (id_tiket, status, waktu) VALUES ($1, $2, $3);* | *Mencatat perubahan status laporan untuk linimasa pelacakan dan log audit* |
-
-## 5.3 Kelas Lokasi
-**Nama Kelas:** *Lokasi*  
-**ID Kelas:** *C03*
-
-| Nama Operasi | Visibility (private, public) | Keterangan |
-| :--- | :--- | :--- |
-| *getKoordinat(): List[Float]* | *public* | *Mengembalikan pasangan koordinat latitude dan longitude.* |
-| *hitungJarak(lokasiLain: Lokasi): Float* | *public* | *Menghitung jarak (dalam meter) ke lokasi lain menggunakan rumus Haversine, digunakan untuk pemeriksaan duplikasi dalam radius 20 meter.* |
-| *dalamWilayah(): Boolean* | *public* | *Memeriksa apakah koordinat berada di dalam batas wilayah penanganan.* |
-
-| Nama Atribut | Visibility (private, public) | Tipe |
-| :--- | :--- | :--- |
-| *latitude* | *private* | *Float* |
-| *longitude* | *private* | *Float* |
-
-### 5.3.1 Algoritma/Query
-
-**Nama Kelas:** *Lokasi*  
-**Nama Operasi:** *hitungJarak*  
-**ID Algoritma:** *[Algo-00x]*
-
-```text
-function hitungJarak(lokasiLain):
-    R <- 6371000    { jari-jari bumi dalam meter }
-    lat1 <- radian(latitude)
-    lat2 <- radian(lokasiLain.latitude)
-    dLat <- radian(lokasiLain.latitude - latitude)
-    dLon <- radian(lokasiLain.longitude - longitude)
-    a <- sin(dLat / 2)^2 + cos(lat1) * cos(lat2) * sin(dLon / 2)^2
-    c <- 2 * atan2(sqrt(a), sqrt(1 - a))
-    return R * c
-```
-
-### 5.3.2 Algoritma/Query
-
-**Nama Kelas:** *Lokasi*  
-**Nama Operasi:** *dalamWilayah*  
-**ID Algoritma:** *[Algo-00x]*
-
-```text
-function dalamWilayah():
-    batas <- BATAS_WILAYAH    { daftar titik sudut poligon wilayah penanganan }
-    n <- panjang(batas)
-    dalam <- false
-    j <- n - 1
-    i traversal [0..n-1]
-        if ((batas[i].latitude > latitude) != (batas[j].latitude > latitude)) and
-           (longitude < (batas[j].longitude - batas[i].longitude) * (latitude - batas[i].latitude)
-                        / (batas[j].latitude - batas[i].latitude) + batas[i].longitude) then
-            dalam <- not(dalam)
-        j <- i
-    return dalam
-```
-
-## 5.4 Kelas Foto
-**Nama Kelas:** *Foto*  
-**ID Kelas:** *C04*
-
-| Nama Operasi | Visibility (private, public) | Keterangan |
-| :--- | :--- | :--- |
-| *isFotoValid(): Boolean* | *public* | *Memeriksa apakah berkas foto berformat JPG/PNG dan berukuran maksimal 10 MB.* |
-
-| Nama Atribut | Visibility (private, public) | Tipe |
-| :--- | :--- | :--- |
-| *url* | *private* | *String* |
-| *format* | *private* | *String* |
-| *ukuran* | *private* | *Integer* |
-
-### 5.4.1 Algoritma/Query
-
-**Nama Kelas:** *Foto*  
-**Nama Operasi:** *isFotoValid*  
-**ID Algoritma:** *[Algo-00x]*
-
-```text
-function isFotoValid():
-    MAKS_UKURAN <- 10 * 1024 * 1024    { 10 MB dalam byte }
-    if not(lowercase(format) in {"jpg", "jpeg", "png"}) then
-        return false
-    if ukuran > MAKS_UKURAN then
-        return false
-    return true
-```
-
-## 5.5 Kelas Video
-**Nama Kelas:** *Video*  
-**ID Kelas:** *C05*
-
-| Nama Operasi | Visibility (private, public) | Keterangan |
-| :--- | :--- | :--- |
-| *isVideoValid(): Boolean* | *public* | *Memeriksa apakah berkas video berformat MP4/MOV/MKV dan berukuran maksimal 10 MB.* |
-
-| Nama Atribut | Visibility (private, public) | Tipe |
-| :--- | :--- | :--- |
-| *url* | *private* | *String* |
-| *format* | *private* | *String* |
-| *ukuran* | *private* | *Integer* |
-
-### 5.5.1 Algoritma/Query
-
-**Nama Kelas:** *Video*  
-**Nama Operasi:** *isVideoValid*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-010]*
 
 ```text
 function isVideoValid():
@@ -1173,7 +987,7 @@ Tabel 5.6.2. Atribut Kelas Upvote
 
 *Nama Kelas:* Upvote  
 *Nama Operasi:* catatUpvote  
-*ID Algoritma:* Algo-006
+*ID Algoritma:* *[Algo-011]*
 
 text
 procedure catatUpvote(idUser):
@@ -1207,7 +1021,7 @@ Tabel 5.6.3. Query Operasi Kelas Upvote
 
 **Nama Kelas:** *ListTugas*  
 **Nama Operasi:** *urutPrioritas*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-012]*
 
 ```text
 function urutPrioritas()
@@ -1225,7 +1039,7 @@ function urutPrioritas()
 
 **Nama Kelas:** *ListTugas*  
 **Nama Operasi:** *filterKategori*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-013]*
 
 ```text
 function filterKategori(kategori):
@@ -1265,7 +1079,7 @@ function filterKategori(kategori):
 
 **Nama Kelas:** *HasilPerbaikan*  
 **Nama Operasi:** *validasiBerkas*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-014]*
 
 ```text
 function validasiBerkas(foto, video):
@@ -1283,7 +1097,7 @@ function validasiBerkas(foto, video):
 
 **Nama Kelas:** *HasilPerbaikan*  
 **Nama Operasi:** *simpanBukti*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-015]*
 
 ```text
 function simpanBukti():
@@ -1333,7 +1147,7 @@ Tabel 5.9.2. Atribut Kelas Evaluasi
 
 **Nama Kelas:** *Evaluasi*  
 **Nama Operasi:** *simpanEvaluasi*  
-**ID Algoritma:** *Algo-009*
+**ID Algoritma:** *[Algo-016]*
 
 ```text
 function simpanEvaluasi():
@@ -1377,7 +1191,7 @@ Tabel 5.10.2. Atribut Kelas Notifikasi
 
 **Nama Kelas:** *Notifikasi*  
 **Nama Operasi:** *createNotifikasi*  
-**ID Algoritma:** *Algo-010*
+**ID Algoritma:** *[Algo-017]*
 
 ```text
 function createNotifikasi(idUser, pesan):
@@ -1393,7 +1207,7 @@ function createNotifikasi(idUser, pesan):
 
 **Nama Kelas:** *Notifikasi*  
 **Nama Operasi:** *tandaiDibaca*  
-**ID Algoritma:** *Algo-011*
+**ID Algoritma:** *[Algo-018]*
 
 ```text
 function tandaiDibaca():
@@ -1438,7 +1252,7 @@ Tabel 5.10.3. Query Operasi Kelas Notifikasi
 
 **Nama Kelas:** *LaporPage*  
 **Nama Operasi:** *userInput*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-019]*
 
 ```text
 procedure userInput(kategori, deskripsi, foto, video):
@@ -1457,7 +1271,7 @@ procedure userInput(kategori, deskripsi, foto, video):
 
 **Nama Kelas:** *LaporPage*  
 **Nama Operasi:** *kunciLokasi*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-020]*
 
 ```text
 procedure kunciLokasi():
@@ -1477,7 +1291,7 @@ procedure kunciLokasi():
 
 **Nama Kelas:** *LaporPage*  
 **Nama Operasi:** *submitForm*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-021]*
 
 ```text
 procedure submitForm():
@@ -1527,7 +1341,7 @@ Tabel 5.12.2. Atribut Kelas ValidasiPage
 
 **Nama Kelas:** *ValidasiPage*  
 **Nama Operasi:** *bukaDasborPenanganan*  
-**ID Algoritma:** *Algo-012*
+**ID Algoritma:** *[Algo-023]*
 
 ```text
 procedure bukaDasborPenanganan():
@@ -1542,7 +1356,7 @@ procedure bukaDasborPenanganan():
 
 **Nama Kelas:** *ValidasiPage*  
 **Nama Operasi:** *onValidClicked*  
-**ID Algoritma:** *Algo-013*
+**ID Algoritma:** *[Algo-023]*
 
 ```text
 procedure onValidClicked(idTiket):
@@ -1558,7 +1372,7 @@ procedure onValidClicked(idTiket):
 
 **Nama Kelas:** *ValidasiPage*  
 **Nama Operasi:** *submitAlasanPenolakan*  
-**ID Algoritma:** *Algo-014*
+**ID Algoritma:** *[Algo-024]*
 
 ```text
 procedure submitAlasanPenolakan(idTiket, alasan):
@@ -1596,7 +1410,7 @@ procedure submitAlasanPenolakan(idTiket, alasan):
 
 **Nama Kelas:** *PenugasanPage*  
 **Nama Operasi:** *tampilkanPage()*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-025]*
 
 ```text
 procedure tampilkanPage():
@@ -1613,7 +1427,7 @@ procedure tampilkanPage():
 
 **Nama Kelas:** *PenugasanPage*  
 **Nama Operasi:** *pilihLaporan()*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-026]*
 
 ```text
 procedure pilihLaporan():
@@ -1647,7 +1461,7 @@ procedure pilihLaporan():
 
 **Nama Kelas:** *HasilPernaikanForm*  
 **Nama Operasi:** *submitForm()*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-027]*
 
 ```text
 procedure submitForm():
@@ -1687,7 +1501,7 @@ Tabel 5.15.2. Atribut Kelas EvaluasiPage
 
 **Nama Kelas:** *EvaluasiPage*  
 **Nama Operasi:** *tampilkanPage*  
-**ID Algoritma:** *Algo-015*
+**ID Algoritma:** *[Algo-028]*
 
 ```text
 procedure tampilkanPage():
@@ -1702,7 +1516,7 @@ procedure tampilkanPage():
 
 **Nama Kelas:** *EvaluasiPage*  
 **Nama Operasi:** *pilihPekerjaan*  
-**ID Algoritma:** *Algo-016*
+**ID Algoritma:** *[Algo-029]*
 
 ```text
 procedure pilihPekerjaan(idTiket):
@@ -1715,7 +1529,7 @@ procedure pilihPekerjaan(idTiket):
 
 **Nama Kelas:** *EvaluasiPage*  
 **Nama Operasi:** *konfirmasiSelesai*  
-**ID Algoritma:** *Algo-017*
+**ID Algoritma:** *[Algo-030]*
 
 ```text
 procedure konfirmasiSelesai():
@@ -1754,7 +1568,7 @@ Tabel 5.16.2. Atribut Kelas StatusLaporanPage
 
 **Nama Kelas:** *StatusLaporanPage*  
 **Nama Operasi:** *pilihMenuRiwayat*  
-**ID Algoritma:** *Algo-018*
+**ID Algoritma:** *[Algo-031]*
 
 ```text
 procedure pilihMenuRiwayat():
@@ -1767,7 +1581,7 @@ procedure pilihMenuRiwayat():
 
 **Nama Kelas:** *StatusLaporanPage*  
 **Nama Operasi:** *pilihMenuPeta*  
-**ID Algoritma:** *Algo-019*
+**ID Algoritma:** *[Algo-032]*
 
 ```text
 procedure pilihMenuPeta():
@@ -1780,7 +1594,7 @@ procedure pilihMenuPeta():
 
 **Nama Kelas:** *StatusLaporanPage*  
 **Nama Operasi:** *onUpvoteClicked*  
-**ID Algoritma:** *Algo-020*
+**ID Algoritma:** *[Algo-033]*
 
 ```text
 procedure onUpvoteClicked():
@@ -1814,7 +1628,7 @@ procedure onUpvoteClicked():
 
 **Nama Kelas:** *LaporanController*  
 **Nama Operasi:** *validasiBerkas*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-034]*
 
 ```text
 function validasiBerkas(foto, video):
@@ -1833,7 +1647,7 @@ function validasiBerkas(foto, video):
 
 **Nama Kelas:** *LaporanController*  
 **Nama Operasi:** *validasiLokasi*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-035]*
 
 ```text
 function validasiLokasi(lokasi):
@@ -1846,7 +1660,7 @@ function validasiLokasi(lokasi):
 
 **Nama Kelas:** *LaporanController*  
 **Nama Operasi:** *kirimLaporan*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-036]*
 
 ```text
 function kirimLaporan(kategori, deskripsi, foto, video, lokasi, token):
@@ -1874,7 +1688,7 @@ function kirimLaporan(kategori, deskripsi, foto, video, lokasi, token):
 
 **Nama Kelas:** *LaporanController*  
 **Nama Operasi:** *verifikasiAkses*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-037]*
 
 ```text
 function verifikasiAkses():
@@ -1892,7 +1706,7 @@ function verifikasiAkses():
 
 **Nama Kelas:** *LaporanController*  
 **Nama Operasi:** *verifikasiAntiBot*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-038]*
 
 ```text
 function verifikasiAntiBot(token):
@@ -1906,7 +1720,7 @@ function verifikasiAntiBot(token):
 
 **Nama Kelas:** *LaporanController*  
 **Nama Operasi:** *cekDuplikat*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-039]*
 
 ```text
 function cekDuplikat(lokasi, kategori):
@@ -1931,7 +1745,7 @@ Tabel 5.17.1. Query Operasi cekDuplikat
 
 **Nama Kelas:** *LaporanController*  
 **Nama Operasi:** *terbitkanIdTiket*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-040]*
 
 ```text
 function terbitkanIdTiket():
@@ -1972,7 +1786,7 @@ Tabel 5.18.2. Atribut Kelas ValidasiController
 
 **Nama Kelas:** *ValidasiController*  
 **Nama Operasi:** *susunAntrean*  
-**ID Algoritma:** *Algo-028*
+**ID Algoritma:** *[Algo-041]*
 
 ```text
 function susunAntrean():
@@ -1986,7 +1800,7 @@ function susunAntrean():
 
 **Nama Kelas:** *ValidasiController*  
 **Nama Operasi:** *setujuiLaporan*  
-**ID Algoritma:** *Algo-029*
+**ID Algoritma:** *[Algo-042]*
 
 ```text
 function setujuiLaporan(idTiket):
@@ -2006,7 +1820,7 @@ function setujuiLaporan(idTiket):
 
 **Nama Kelas:** *ValidasiController*  
 **Nama Operasi:** *tolakLaporan*  
-**ID Algoritma:** *Algo-030*
+**ID Algoritma:** *[Algo-043]*
 
 ```text
 function tolakLaporan(idTiket, alasan):
@@ -2049,7 +1863,7 @@ Tabel 5.18.3. Query Operasi Kelas ValidasiController
 
 **Nama Kelas:** *PenugasanController*  
 **Nama Operasi:** *verifikasiAkses()*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-044]*
 
 ```text
 function verifikasiAkses():
@@ -2063,7 +1877,7 @@ function verifikasiAkses():
 
 **Nama Kelas:** *PenugasanController*  
 **Nama Operasi:** *doSorting()*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-045]*
 
 ```text
 function doSorting():
@@ -2100,7 +1914,7 @@ Tabel 5.19.1. Query Operasi [Nama Operasi]
 
 **Nama Kelas:** *PerbaikanController*  
 **Nama Operasi:** *validasiForm*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-046]*
 
 ```text
 function validasiForm(catatan, foto, video):
@@ -2124,7 +1938,7 @@ Tabel 5.x.x. Query Operasi [Nama Operasi]
 
 **Nama Kelas:** *PerbaikanController*  
 **Nama Operasi:** *unggahHasil*  
-**ID Algoritma:** *[Algo-00x]*
+**ID Algoritma:** *[Algo-047]*
 
 ```text
 function unggahHasil(idTiket, catatan, foto, video):
@@ -2165,7 +1979,7 @@ Tabel 5.21.2. Atribut Kelas EvaluasiController
 
 **Nama Kelas:** *EvaluasiController*  
 **Nama Operasi:** *verifikasiAkses*  
-**ID Algoritma:** *Algo-021*
+**ID Algoritma:** *[Algo-048]*
 
 ```text
 function verifikasiAkses():
@@ -2177,7 +1991,7 @@ function verifikasiAkses():
 
 **Nama Kelas:** *EvaluasiController*  
 **Nama Operasi:** *ambilDaftarUntukEvaluasi*  
-**ID Algoritma:** *Algo-022*
+**ID Algoritma:** *[Algo-049]*
 
 ```text
 function ambilDaftarUntukEvaluasi():
@@ -2192,7 +2006,7 @@ function ambilDaftarUntukEvaluasi():
 
 **Nama Kelas:** *EvaluasiController*  
 **Nama Operasi:** *simpanKeputusan*  
-**ID Algoritma:** *Algo-023*
+**ID Algoritma:** *[Algo-050]*
 
 ```text
 function simpanKeputusan(idTiket, keputusan, catatan):
@@ -2249,7 +2063,7 @@ Tabel 5.22.2. Atribut Kelas StatusController
 
 **Nama Kelas:** *StatusController*  
 **Nama Operasi:** *ambilRiwayatWarga*  
-**ID Algoritma:** *Algo-032*
+**ID Algoritma:** *[Algo-051]*
 
 ```text
 function ambilRiwayatWarga():
@@ -2261,7 +2075,7 @@ function ambilRiwayatWarga():
 
 **Nama Kelas:** *StatusController*  
 **Nama Operasi:** *ambilLaporanPublik*  
-**ID Algoritma:** *Algo-033*
+**ID Algoritma:** *[Algo-052]*
 
 ```text
 function ambilLaporanPublik():
@@ -2273,7 +2087,7 @@ function ambilLaporanPublik():
 
 **Nama Kelas:** *StatusController*  
 **Nama Operasi:** *prosesUpvote*  
-**ID Algoritma:** *Algo-034*
+**ID Algoritma:** *[Algo-053]*
 
 ```text
 function prosesUpvote(idTiket):
@@ -2319,7 +2133,7 @@ Tabel 5.23.2. Atribut Kelas NotifikasiController
 
 **Nama Kelas:** *NotifikasiController*  
 **Nama Operasi:** *kirimNotifikasi*  
-**ID Algoritma:** *Algo-025*
+**ID Algoritma:** *[Algo-054]*
 
 ```text
 function kirimNotifikasi(idPenerima, pesan):
@@ -2335,7 +2149,7 @@ function kirimNotifikasi(idPenerima, pesan):
 
 **Nama Kelas:** *NotifikasiController*  
 **Nama Operasi:** *kirimNotifikasiSelesai*  
-**ID Algoritma:** *Algo-026*
+**ID Algoritma:** *[Algo-055]*
 
 ```text
 function kirimNotifikasiSelesai(idPenerima):
@@ -2347,7 +2161,7 @@ function kirimNotifikasiSelesai(idPenerima):
 
 **Nama Kelas:** *NotifikasiController*  
 **Nama Operasi:** *updateStatusBaca*  
-**ID Algoritma:** *Algo-027*
+**ID Algoritma:** *[Algo-056]*
 
 ```text
 function updateStatusBaca(idNotifikasi):
@@ -2363,44 +2177,6 @@ Tabel 5.x.x. Query Operasi [Nama Operasi]
 | *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
 | *...* | *...* | *...* |
 
-## 5.X Kelas [Nama Kelas Berikutnya]
-
-*[Ulangi pola 5.1: nama dan ID kelas, tabel operasi, tabel atribut, serta subbab algoritma/query untuk operasi penting jika diperlukan.]*
-
-**Nama Kelas:** *[Nama kelas]*  
-**ID Kelas:** *[ID kelas]*
-
-Tabel 5.x.1. Operasi Kelas [Nama Kelas 1]
-
-| Nama Operasi | Visibility (private, public) | Keterangan |
-| :--- | :--- | :--- |
-| *[Signature operasi, termasuk parameter dan tipe kembalian]* | *[Visibility]* | *[Tanggung jawab operasi]* |
-| *...* | *...* | *...* |
-
-Tabel 5.x.2. Atribut Kelas [Nama Kelas 1]
-
-| Nama Atribut | Visibility (private, public) | Tipe |
-| :--- | :--- | :--- |
-| *[Nama atribut]* | *[Visibility]* | *[Tipe sesuai bahasa pemrograman yang digunakan]* |
-| *...* | *...* | *...* |
-
-### 5.x.x Algoritma/Query
-
-
-**Nama Kelas:** *[Nama kelas]*  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-00x]*
-
-```text
-[Tuliskan pseudocode algoritma operasi di sini.]
-```
-
-Tabel 5.x.x. Query Operasi [Nama Operasi]
-
-| No Query | Query | Keterangan |
-| :--- | :--- | :--- |
-| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
 
 <br>
 
