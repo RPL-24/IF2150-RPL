@@ -240,7 +240,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 
 ### 3.2.1 Identifikasi Kelas
 
-Tabel 3.2. Identifikasi Kelas Use Case UC02
+Tabel 3.2. Identifikasi Kelas Use Case [UC02]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
@@ -284,7 +284,7 @@ Tabel 3.2. Identifikasi Kelas Use Case UC02
 
 ### 3.3.1 Identifikasi Kelas
 
-Tabel 3.3. Identifikasi Kelas Use Case UC03
+Tabel 3.3. Identifikasi Kelas Use Case [UC03]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
@@ -330,7 +330,7 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 
 ### 3.4.1 Identifikasi Kelas
 
-Tabel 3.4. Identifikasi Kelas Use Case UC04
+Tabel 3.4. Identifikasi Kelas Use Case [UC04]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
@@ -375,7 +375,7 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 
 ### 3.5.1 Identifikasi Kelas
 
-Tabel 3.5. Identifikasi Kelas Use Case UC05
+Tabel 3.5. Identifikasi Kelas Use Case [UC05]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
@@ -419,7 +419,7 @@ Tabel 3.5. Identifikasi Kelas Use Case UC05
 
 ### 3.6.1 Identifikasi Kelas
 
-Tabel 3.6.1 Identifikasi Kelas Use Case [UC01]
+Tabel 3.6.1 Identifikasi Kelas Use Case [UC06]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
@@ -466,7 +466,7 @@ Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario no
 
 ### 3.7.1 Identifikasi Kelas
 
-Tabel 3.7.1 Identifikasi Kelas Use Case [UC01]
+Tabel 3.7.1 Identifikasi Kelas Use Case [UC07]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
@@ -487,7 +487,7 @@ Tabel 3.7.1 Identifikasi Kelas Use Case [UC01]
 ### 3.7.3 Diagram Kelas
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-07.png" width="35%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-07.webp" width="35%">
 </p>
 <p align="center">
 <i>Gambar 7. Diagram Kelas UC07</i>
@@ -500,7 +500,7 @@ Tabel 3.7.1 Identifikasi Kelas Use Case [UC01]
 
 ### 3.8.1 Identifikasi Kelas
 
-Tabel 3.8.1 Identifikasi Kelas Use Case [UC01]
+Tabel 3.8.1 Identifikasi Kelas Use Case [UC08]
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
