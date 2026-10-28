@@ -3590,6 +3590,912 @@ FUNCTION isAntreanTutup() RETURNS boolean
 END FUNCTION
 ```
 
+## 5.21 Kelas PengaturanKuotaController
+
+**Nama Kelas:** *PengaturanKuotaController*  
+**ID Kelas:** *C21*
+
+Tabel 5.21.1. Operasi Kelas PengaturanKuotaController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *displaySettings(restoranId: string): object* | *public* | Mengambil pengaturan kuota dan jumlah meja restoran. |
+| *onSaveSettings(restoranId: string, kuota: integer, meja: integer): boolean* | *public* | Menyimpan pengaturan kuota dan jumlah meja baru. |
+| *showErrorPeringatan(pesan: string): void* | *public* | Meneruskan pesan peringatan ke halaman pengaturan. |
+
+Tabel 5.21.2. Atribut Kelas PengaturanKuotaController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *kuotaInput* | *private* | *integer* |
+| *mejaInput* | *private* | *integer* |
+
+### 5.21.1 Algoritma/Query
+
+**Nama Kelas:** *PengaturanKuotaController*  
+**Nama Operasi:** *displaySettings(restoranId: string): object*  
+**ID Algoritma:** *Algo-082*
+
+```text
+FUNCTION displaySettings(restoranId) RETURNS object
+    pengaturan <- SELECT kuota_maksimum, kapasitas_meja FROM pengaturan_kuota
+                  WHERE restoran_id = restoranId
+    IF pengaturan IS NULL THEN
+        RETURN {kuotaMaksimum: 0, kapasitasMeja: 0}
+    END IF
+    RETURN pengaturan
+END FUNCTION
+```
+
+Tabel 5.21.1.1. Query Operasi displaySettings
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-056* | `SELECT kuota_maksimum, kapasitas_meja FROM pengaturan_kuota WHERE restoran_id = $1;` | Mengambil pengaturan kuota restoran. |
+
+### 5.21.2 Algoritma/Query
+
+**Nama Kelas:** *PengaturanKuotaController*  
+**Nama Operasi:** *onSaveSettings(restoranId: string, kuota: integer, meja: integer): boolean*  
+**ID Algoritma:** *Algo-083*
+
+```text
+FUNCTION onSaveSettings(restoranId, kuota, meja) RETURNS boolean
+    kuotaInput <- kuota
+    mejaInput <- meja
+    IF kuotaInput <= 0 OR mejaInput <= 0 THEN
+        showErrorPeringatan("Kuota dan jumlah meja harus lebih dari 0")
+        RETURN false
+    END IF
+    UPDATE pengaturan_kuota SET kuota_maksimum = kuotaInput, kapasitas_meja = mejaInput
+        WHERE restoran_id = restoranId
+    Kuota.updateKapasitas(restoranId)
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.21.2.1. Query Operasi onSaveSettings
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-057* | `UPDATE pengaturan_kuota SET kuota_maksimum = $2, kapasitas_meja = $3 WHERE restoran_id = $1;` | Menyimpan pengaturan kuota dan jumlah meja. |
+
+### 5.21.3 Algoritma/Query
+
+**Nama Kelas:** *PengaturanKuotaController*  
+**Nama Operasi:** *showErrorPeringatan(pesan: string): void*  
+**ID Algoritma:** *Algo-084*
+
+```text
+PROCEDURE showErrorPeringatan(pesan)
+    PengaturanKuotaPage.tampilkanError(pesan)
+END PROCEDURE
+```
+
+---
+
+## 5.22 Kelas PengaturanKuotaPage
+
+**Nama Kelas:** *PengaturanKuotaPage*  
+**ID Kelas:** *C22*
+
+Tabel 5.22.1. Operasi Kelas PengaturanKuotaPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *handleViewSettings(): void* | *public* | Menampilkan pengaturan kuota yang sedang berlaku. |
+| *handleSaveSettings(): void* | *public* | Mengirim pengaturan baru ke controller. |
+| *validateInput(): boolean* | *public* | Memeriksa input kuota dan jumlah meja sebelum disimpan. |
+
+Tabel 5.22.2. Atribut Kelas PengaturanKuotaPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *inputKuota* | *private* | *integer* |
+| *inputMeja* | *private* | *integer* |
+
+### 5.22.1 Algoritma/Query
+
+**Nama Kelas:** *PengaturanKuotaPage*  
+**Nama Operasi:** *handleViewSettings(): void*  
+**ID Algoritma:** *Algo-085*
+
+```text
+PROCEDURE handleViewSettings()
+    pengaturan <- PengaturanKuotaController.displaySettings(restoranIdSesi)
+    inputKuota <- pengaturan.kuotaMaksimum
+    inputMeja <- pengaturan.kapasitasMeja
+    renderInput(inputKuota, inputMeja)
+    renderTombol("Simpan")
+END PROCEDURE
+```
+
+### 5.22.2 Algoritma/Query
+
+**Nama Kelas:** *PengaturanKuotaPage*  
+**Nama Operasi:** *handleSaveSettings(): void*  
+**ID Algoritma:** *Algo-086*
+
+```text
+PROCEDURE handleSaveSettings()
+    IF NOT validateInput() THEN
+        RETURN
+    END IF
+    sukses <- PengaturanKuotaController.onSaveSettings(restoranIdSesi, inputKuota, inputMeja)
+    IF sukses THEN
+        tampilkanPesan("Pengaturan berhasil disimpan")
+    END IF
+END PROCEDURE
+```
+
+### 5.22.3 Algoritma/Query
+
+**Nama Kelas:** *PengaturanKuotaPage*  
+**Nama Operasi:** *validateInput(): boolean*  
+**ID Algoritma:** *Algo-087*
+
+```text
+FUNCTION validateInput() RETURNS boolean
+    IF inputKuota IS EMPTY OR inputMeja IS EMPTY THEN
+        tampilkanError("Kuota dan jumlah meja wajib diisi")
+        RETURN false
+    END IF
+    IF inputKuota BUKAN angka OR inputMeja BUKAN angka THEN
+        tampilkanError("Kuota dan jumlah meja harus berupa angka")
+        RETURN false
+    END IF
+    IF inputKuota <= 0 OR inputMeja <= 0 THEN
+        tampilkanError("Kuota dan jumlah meja harus lebih dari 0")
+        RETURN false
+    END IF
+    RETURN true
+END FUNCTION
+```
+
+---
+
+## 5.23 Kelas PengaturanMenuPage
+
+**Nama Kelas:** *PengaturanMenuPage*  
+**ID Kelas:** *C23*
+
+Tabel 5.23.1. Operasi Kelas PengaturanMenuPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *displayDaftarMenu(): void* | *public* | Menampilkan daftar menu milik restoran. |
+| *showFormTambahMenu(menuId: string): void* | *public* | Menampilkan formulir tambah menu, atau formulir ubah bila menuId diisi. |
+| *onSaveMenu(): void* | *public* | Menyimpan menu baru atau perubahan menu. |
+| *onDeleteMenu(menuId: string): void* | *public* | Menghapus menu setelah dikonfirmasi. |
+
+Tabel 5.23.2. Atribut Kelas PengaturanMenuPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *menuInput* | *private* | *object* |
+| *stokInput* | *private* | *integer* |
+| *hargaInput* | *private* | *number* |
+
+### 5.23.1 Algoritma/Query
+
+**Nama Kelas:** *PengaturanMenuPage*  
+**Nama Operasi:** *displayDaftarMenu(): void*  
+**ID Algoritma:** *Algo-088*
+
+```text
+PROCEDURE displayDaftarMenu()
+    daftar <- KelolaMenuController.handleFetchMenu(restoranIdSesi)
+    IF daftar IS EMPTY THEN
+        tampilkanPesan("Belum ada menu")
+    ELSE
+        FOR EACH m IN daftar DO
+            renderBaris(m.namaMenu, m.harga, m.stok, tombol: "Ubah", "Hapus")
+        END FOR
+    END IF
+    renderTombol("Tambah Menu")
+END PROCEDURE
+```
+
+### 5.23.2 Algoritma/Query
+
+**Nama Kelas:** *PengaturanMenuPage*  
+**Nama Operasi:** *showFormTambahMenu(menuId: string): void*  
+**ID Algoritma:** *Algo-089*
+
+```text
+PROCEDURE showFormTambahMenu(menuId)
+    IF menuId IS NULL THEN
+        menuInput <- {menuId: NULL, namaMenu: "", deskripsiMenu: ""}
+        hargaInput <- 0
+        stokInput <- 0
+    ELSE
+        menu <- KelolaMenuController.handleFetchMenuDetail(menuId)
+        menuInput <- {menuId: menu.menuId, namaMenu: menu.namaMenu, deskripsiMenu: menu.deskripsiMenu}
+        hargaInput <- menu.harga
+        stokInput <- menu.stok
+    END IF
+    renderForm(menuInput, hargaInput, stokInput)
+    renderTombol("Simpan")
+END PROCEDURE
+```
+
+### 5.23.3 Algoritma/Query
+
+**Nama Kelas:** *PengaturanMenuPage*  
+**Nama Operasi:** *onSaveMenu(): void*  
+**ID Algoritma:** *Algo-090*
+
+```text
+PROCEDURE onSaveMenu()
+    IF menuInput.namaMenu IS EMPTY OR hargaInput <= 0 OR stokInput < 0 THEN
+        tampilkanError("Nama, harga, dan stok menu tidak valid")
+        RETURN
+    END IF
+    data <- {namaMenu: menuInput.namaMenu, deskripsiMenu: menuInput.deskripsiMenu,
+             harga: hargaInput, stok: stokInput}
+    IF menuInput.menuId IS NULL THEN
+        sukses <- KelolaMenuController.handleAddMenu(restoranIdSesi, data)
+    ELSE
+        sukses <- KelolaMenuController.handleUpdateMenu(menuInput.menuId, data)
+    END IF
+    IF sukses THEN
+        tutupForm()
+        displayDaftarMenu()
+    ELSE
+        tampilkanError("Menu gagal disimpan")
+    END IF
+END PROCEDURE
+```
+
+### 5.23.4 Algoritma/Query
+
+**Nama Kelas:** *PengaturanMenuPage*  
+**Nama Operasi:** *onDeleteMenu(menuId: string): void*  
+**ID Algoritma:** *Algo-091*
+
+```text
+PROCEDURE onDeleteMenu(menuId)
+    jawaban <- tampilkanKonfirmasi("Hapus menu ini?")
+    IF jawaban = BATAL THEN
+        RETURN
+    END IF
+    sukses <- KelolaMenuController.handleDeleteMenu(menuId)
+    IF sukses THEN
+        displayDaftarMenu()
+    ELSE
+        tampilkanError("Menu gagal dihapus")
+    END IF
+END PROCEDURE
+```
+
+---
+
+## 5.24 Kelas KelolaMenuController
+
+**Nama Kelas:** *KelolaMenuController*  
+**ID Kelas:** *C24*
+
+Tabel 5.24.1. Operasi Kelas KelolaMenuController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *handleFetchMenu(restoranId: string): Menu[]* | *public* | Mengambil daftar menu aktif milik restoran. |
+| *handleFetchMenuDetail(menuId: string): Menu* | *public* | Mengambil detail satu menu. |
+| *handleAddMenu(restoranId: string, data: object): boolean* | *public* | Menambahkan menu baru. |
+| *handleUpdateMenu(menuId: string, data: object): boolean* | *public* | Memperbarui informasi, harga, dan stok menu. |
+| *handleDeleteMenu(menuId: string): boolean* | *public* | Menghapus (menonaktifkan) menu. |
+
+Tabel 5.24.2. Atribut Kelas KelolaMenuController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *menuData* | *private* | *Menu[]* |
+
+### 5.24.1 Algoritma/Query
+
+**Nama Kelas:** *KelolaMenuController*  
+**Nama Operasi:** *handleFetchMenu(restoranId: string): Menu[]*  
+**ID Algoritma:** *Algo-092*
+
+```text
+FUNCTION handleFetchMenu(restoranId) RETURNS Menu[]
+    menuData <- SELECT * FROM menu WHERE restoran_id = restoranId AND aktif = true
+                ORDER BY nama_menu ASC
+    RETURN menuData
+END FUNCTION
+```
+
+Tabel 5.24.1.1. Query Operasi handleFetchMenu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-058* | `SELECT * FROM menu WHERE restoran_id = $1 AND aktif = true ORDER BY nama_menu ASC;` | Mengambil daftar menu aktif restoran. |
+
+### 5.24.2 Algoritma/Query
+
+**Nama Kelas:** *KelolaMenuController*  
+**Nama Operasi:** *handleFetchMenuDetail(menuId: string): Menu*  
+**ID Algoritma:** *Algo-093*
+
+```text
+FUNCTION handleFetchMenuDetail(menuId) RETURNS Menu
+    menu <- SELECT * FROM menu WHERE menu_id = menuId AND aktif = true
+    IF menu IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN menu
+END FUNCTION
+```
+
+Tabel 5.24.2.1. Query Operasi handleFetchMenuDetail
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-059* | `SELECT * FROM menu WHERE menu_id = $1 AND aktif = true;` | Mengambil detail satu menu. |
+
+### 5.24.3 Algoritma/Query
+
+**Nama Kelas:** *KelolaMenuController*  
+**Nama Operasi:** *handleAddMenu(restoranId: string, data: object): boolean*  
+**ID Algoritma:** *Algo-094*
+
+```text
+FUNCTION handleAddMenu(restoranId, data) RETURNS boolean
+    IF data.namaMenu IS EMPTY OR data.harga <= 0 OR data.stok < 0 THEN
+        RETURN false
+    END IF
+    menuId <- generateId()
+    INSERT INTO menu VALUES (menuId, restoranId, data.namaMenu, data.deskripsiMenu,
+                             data.harga, data.stok, aktif = true)
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.24.3.1. Query Operasi handleAddMenu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-060* | `INSERT INTO menu (menu_id, restoran_id, nama_menu, deskripsi_menu, harga, stok, aktif) VALUES ($1, $2, $3, $4, $5, $6, true);` | Menambahkan menu baru. |
+
+### 5.24.4 Algoritma/Query
+
+**Nama Kelas:** *KelolaMenuController*  
+**Nama Operasi:** *handleUpdateMenu(menuId: string, data: object): boolean*  
+**ID Algoritma:** *Algo-095*
+
+```text
+FUNCTION handleUpdateMenu(menuId, data) RETURNS boolean
+    IF data.namaMenu IS EMPTY OR data.harga <= 0 OR data.stok < 0 THEN
+        RETURN false
+    END IF
+    jumlahBaris <- UPDATE menu SET nama_menu = data.namaMenu, deskripsi_menu = data.deskripsiMenu,
+                   harga = data.harga, stok = data.stok
+                   WHERE menu_id = menuId AND aktif = true
+    IF jumlahBaris = 0 THEN
+        RETURN false
+    END IF
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.24.4.1. Query Operasi handleUpdateMenu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-061* | `UPDATE menu SET nama_menu = $2, deskripsi_menu = $3, harga = $4, stok = $5 WHERE menu_id = $1 AND aktif = true;` | Memperbarui informasi, harga, dan stok menu. |
+
+### 5.24.5 Algoritma/Query
+
+**Nama Kelas:** *KelolaMenuController*  
+**Nama Operasi:** *handleDeleteMenu(menuId: string): boolean*  
+**ID Algoritma:** *Algo-096*
+
+```text
+FUNCTION handleDeleteMenu(menuId) RETURNS boolean
+    jumlahBaris <- UPDATE menu SET aktif = false, stok = 0 WHERE menu_id = menuId
+    IF jumlahBaris = 0 THEN
+        RETURN false
+    END IF
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.24.5.1. Query Operasi handleDeleteMenu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-062* | `UPDATE menu SET aktif = false, stok = 0 WHERE menu_id = $1;` | Menonaktifkan menu (soft delete). |
+
+---
+
+## 5.25 Kelas Pengguna
+
+**Nama Kelas:** *Pengguna*  
+**ID Kelas:** *C25*
+
+Tabel 5.25.1. Operasi Kelas Pengguna
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *validateAccount(username: string, password: string): boolean* | *public* | Mencocokkan username/email dan kata sandi pengguna. |
+| *logout(): void* | *public* | Mencatat bahwa pengguna telah keluar. |
+| *getUserInfo(): object* | *public* | Mengambil informasi profil pengguna. |
+| *saveCredentials(): boolean* | *public* | Menyimpan data akun baru beserta kata sandi yang di-hash. |
+
+Tabel 5.25.2. Atribut Kelas Pengguna
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *username* | *private* | *string* |
+| *password* | *private* | *string* |
+| *idPengguna* | *private* | *string* |
+| *email* | *private* | *string* |
+| *role* | *private* | *Role* |
+
+### 5.25.1 Algoritma/Query
+
+**Nama Kelas:** *Pengguna*  
+**Nama Operasi:** *validateAccount(username: string, password: string): boolean*  
+**ID Algoritma:** *Algo-097*
+
+```text
+FUNCTION validateAccount(username, password) RETURNS boolean
+    akun <- SELECT id_pengguna, password_hash, role FROM pengguna
+            WHERE username = username OR email = username
+    IF akun IS NULL THEN
+        RETURN false
+    END IF
+    IF NOT cocokkanHash(password, akun.passwordHash) THEN
+        RETURN false
+    END IF
+    idPengguna <- akun.idPengguna
+    role <- akun.role
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.25.1.1. Query Operasi validateAccount
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-063* | `SELECT id_pengguna, password_hash, role FROM pengguna WHERE username = $1 OR email = $1;` | Mengambil akun berdasarkan username atau email. |
+
+### 5.25.2 Algoritma/Query
+
+**Nama Kelas:** *Pengguna*  
+**Nama Operasi:** *logout(): void*  
+**ID Algoritma:** *Algo-098*
+
+```text
+PROCEDURE logout()
+    UPDATE pengguna SET terakhir_logout = now() WHERE id_pengguna = idPengguna
+END PROCEDURE
+```
+
+Tabel 5.25.2.1. Query Operasi logout
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-064* | `UPDATE pengguna SET terakhir_logout = NOW() WHERE id_pengguna = $1;` | Mencatat waktu logout pengguna. |
+
+### 5.25.3 Algoritma/Query
+
+**Nama Kelas:** *Pengguna*  
+**Nama Operasi:** *getUserInfo(): object*  
+**ID Algoritma:** *Algo-099*
+
+```text
+FUNCTION getUserInfo() RETURNS object
+    info <- SELECT id_pengguna, username, email, role FROM pengguna
+            WHERE id_pengguna = idPengguna
+    IF info IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN info
+END FUNCTION
+```
+
+Tabel 5.25.3.1. Query Operasi getUserInfo
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-065* | `SELECT id_pengguna, username, email, role FROM pengguna WHERE id_pengguna = $1;` | Mengambil informasi profil pengguna. |
+
+### 5.25.4 Algoritma/Query
+
+**Nama Kelas:** *Pengguna*  
+**Nama Operasi:** *saveCredentials(): boolean*  
+**ID Algoritma:** *Algo-100*
+
+```text
+FUNCTION saveCredentials() RETURNS boolean
+    idPengguna <- generateId()
+    passwordHash <- hash(password)
+    INSERT INTO pengguna VALUES (idPengguna, username, email, passwordHash, role)
+    IF gagal THEN
+        RETURN false
+    END IF
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.25.4.1. Query Operasi saveCredentials
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-066* | `INSERT INTO pengguna (id_pengguna, username, email, password_hash, role) VALUES ($1, $2, $3, $4, $5);` | Menyimpan akun pengguna baru. |
+
+---
+
+## 5.26 Kelas HalamanProfilPage
+
+**Nama Kelas:** *HalamanProfilPage*  
+**ID Kelas:** *C26*
+
+Tabel 5.26.1. Operasi Kelas HalamanProfilPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *tekanTombolLogout(): void* | *public* | Membuka dialog konfirmasi logout. |
+
+Tabel 5.26.2. Atribut Kelas HalamanProfilPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idPengguna* | *private* | *string* |
+| *namaUser* | *private* | *string* |
+
+### 5.26.1 Algoritma/Query
+
+**Nama Kelas:** *HalamanProfilPage*  
+**Nama Operasi:** *tekanTombolLogout(): void*  
+**ID Algoritma:** *Algo-101*
+
+```text
+PROCEDURE tekanTombolLogout()
+    IF idPengguna IS NULL THEN
+        arahkanKe(LoginPage)
+        RETURN
+    END IF
+    KonfirmasiLogoutPage.tampilkan("Apakah Anda yakin ingin keluar, " + namaUser + "?")
+END PROCEDURE
+```
+
+---
+
+## 5.27 Kelas KonfirmasiLogoutPage
+
+**Nama Kelas:** *KonfirmasiLogoutPage*  
+**ID Kelas:** *C27*
+
+Tabel 5.27.1. Operasi Kelas KonfirmasiLogoutPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *konfirmasiYa(): void* | *public* | Meneruskan permintaan logout ke controller. |
+| *konfirmasiBatal(): void* | *public* | Membatalkan logout dan menutup dialog. |
+
+Tabel 5.27.2. Atribut Kelas KonfirmasiLogoutPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *pesanKonfirmasi* | *private* | *string* |
+
+### 5.27.1 Algoritma/Query
+
+**Nama Kelas:** *KonfirmasiLogoutPage*  
+**Nama Operasi:** *konfirmasiYa(): void*  
+**ID Algoritma:** *Algo-102*
+
+```text
+PROCEDURE konfirmasiYa()
+    token <- ambilTokenDiKlien()
+    sukses <- AutentikasiController.processLogout(token)
+    tutupDialog()
+    IF sukses THEN
+        hapusTokenDiKlien()
+        arahkanKe(LoginPage)
+    ELSE
+        tampilkanError("Logout gagal, silakan coba lagi")
+    END IF
+END PROCEDURE
+```
+
+### 5.27.2 Algoritma/Query
+
+**Nama Kelas:** *KonfirmasiLogoutPage*  
+**Nama Operasi:** *konfirmasiBatal(): void*  
+**ID Algoritma:** *Algo-103*
+
+```text
+PROCEDURE konfirmasiBatal()
+    tutupDialog()               // sesi pengguna tetap aktif
+END PROCEDURE
+```
+
+---
+
+## 5.28 Kelas AutentikasiController
+
+**Nama Kelas:** *AutentikasiController*  
+**ID Kelas:** *C28*
+
+Tabel 5.28.1. Operasi Kelas AutentikasiController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *createAccount(data: object): boolean* | *public* | Memvalidasi dan membuat akun pengguna baru. |
+| *validation(username: string, password: string): string* | *public* | Memvalidasi login dan membuat token sesi. |
+| *processLogout(token: string): boolean* | *public* | Memproses logout pengguna. |
+| *handleSessionDeletion(token: string): boolean* | *public* | Menghapus sesi pengguna yang aktif. |
+
+Tabel 5.28.2. Atribut Kelas AutentikasiController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *akunId* | *private* | *string* |
+| *username* | *private* | *string* |
+| *password* | *private* | *string* |
+| *tokenManager* | *private* | *TokenManager* |
+
+### 5.28.1 Algoritma/Query
+
+**Nama Kelas:** *AutentikasiController*  
+**Nama Operasi:** *createAccount(data: object): boolean*  
+**ID Algoritma:** *Algo-104*
+
+```text
+FUNCTION createAccount(data) RETURNS boolean
+    IF data.username IS EMPTY OR data.email IS EMPTY OR data.password IS EMPTY THEN
+        RETURN false
+    END IF
+    IF NOT formatEmailValid(data.email) OR panjang(data.password) < 8 THEN
+        RETURN false
+    END IF
+    jumlah <- SELECT COUNT(*) FROM pengguna WHERE email = data.email OR username = data.username
+    IF jumlah > 0 THEN
+        RETURN false
+    END IF
+    IF data.role IS NULL THEN
+        data.role <- PELANGGAN
+    END IF
+    pengguna <- Pengguna(data.username, data.email, data.password, data.role)
+    RETURN pengguna.saveCredentials()
+END FUNCTION
+```
+
+Tabel 5.28.1.1. Query Operasi createAccount
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-067* | `SELECT COUNT(*) FROM pengguna WHERE email = $1 OR username = $2;` | Memeriksa apakah email atau username sudah terdaftar. |
+
+### 5.28.2 Algoritma/Query
+
+**Nama Kelas:** *AutentikasiController*  
+**Nama Operasi:** *validation(username: string, password: string): string*  
+**ID Algoritma:** *Algo-105*
+
+```text
+FUNCTION validation(username, password) RETURNS string
+    pengguna <- Pengguna()
+    IF NOT pengguna.validateAccount(username, password) THEN
+        RETURN NULL
+    END IF
+    info <- pengguna.getUserInfo()
+    token <- tokenManager.generate(info.idPengguna, info.role)
+    INSERT INTO sesi_pengguna VALUES (generateId(), info.idPengguna, token, true,
+                                      now(), now() + 24 jam)
+    RETURN token
+END FUNCTION
+```
+
+Tabel 5.28.2.1. Query Operasi validation
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-068* | `INSERT INTO sesi_pengguna (id_sesi, id_pengguna, token, status_aktif, waktu_login, waktu_kedaluwarsa) VALUES ($1, $2, $3, true, NOW(), NOW() + INTERVAL '24 hours');` | Membuat sesi baru setelah login berhasil. |
+
+### 5.28.3 Algoritma/Query
+
+**Nama Kelas:** *AutentikasiController*  
+**Nama Operasi:** *processLogout(token: string): boolean*  
+**ID Algoritma:** *Algo-106*
+
+```text
+FUNCTION processLogout(token) RETURNS boolean
+    IF NOT SesiPengguna.validateToken(token) THEN
+        RETURN false
+    END IF
+    sukses <- handleSessionDeletion(token)
+    IF NOT sukses THEN
+        RETURN false
+    END IF
+    pengguna <- Pengguna(tokenManager.ambilIdPengguna(token))
+    pengguna.logout()
+    RETURN true
+END FUNCTION
+```
+
+### 5.28.4 Algoritma/Query
+
+**Nama Kelas:** *AutentikasiController*  
+**Nama Operasi:** *handleSessionDeletion(token: string): boolean*  
+**ID Algoritma:** *Algo-107*
+
+```text
+FUNCTION handleSessionDeletion(token) RETURNS boolean
+    IF token IS EMPTY THEN
+        RETURN false
+    END IF
+    RETURN SesiPengguna.hapusSesi(token)
+END FUNCTION
+```
+
+---
+
+## 5.29 Kelas SesiPengguna
+
+**Nama Kelas:** *SesiPengguna*  
+**ID Kelas:** *C29*
+
+Tabel 5.29.1. Operasi Kelas SesiPengguna
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *validateSession(idSesi: string): boolean* | *public* | Memeriksa apakah sesi masih aktif dan belum kedaluwarsa. |
+| *hapusSesi(token: string): boolean* | *public* | Menonaktifkan sesi berdasarkan token. |
+| *validateToken(token: string): boolean* | *public* | Memeriksa keabsahan token sesi. |
+
+Tabel 5.29.2. Atribut Kelas SesiPengguna
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idSesi* | *private* | *string* |
+| *token* | *private* | *string* |
+| *statusAktif* | *private* | *boolean* |
+
+### 5.29.1 Algoritma/Query
+
+**Nama Kelas:** *SesiPengguna*  
+**Nama Operasi:** *validateSession(idSesi: string): boolean*  
+**ID Algoritma:** *Algo-108*
+
+```text
+FUNCTION validateSession(idSesi) RETURNS boolean
+    sesi <- SELECT status_aktif, waktu_kedaluwarsa FROM sesi_pengguna WHERE id_sesi = idSesi
+    IF sesi IS NULL THEN
+        RETURN false
+    END IF
+    IF sesi.statusAktif = false OR sesi.waktuKedaluwarsa < now() THEN
+        RETURN false
+    END IF
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.29.1.1. Query Operasi validateSession
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-069* | `SELECT status_aktif, waktu_kedaluwarsa FROM sesi_pengguna WHERE id_sesi = $1;` | Mengambil status dan masa berlaku sesi. |
+
+### 5.29.2 Algoritma/Query
+
+**Nama Kelas:** *SesiPengguna*  
+**Nama Operasi:** *hapusSesi(token: string): boolean*  
+**ID Algoritma:** *Algo-109*
+
+```text
+FUNCTION hapusSesi(token) RETURNS boolean
+    jumlahBaris <- UPDATE sesi_pengguna SET status_aktif = false
+                   WHERE token = token AND status_aktif = true
+    IF jumlahBaris = 0 THEN
+        RETURN false
+    END IF
+    statusAktif <- false
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.29.2.1. Query Operasi hapusSesi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-070* | `UPDATE sesi_pengguna SET status_aktif = false WHERE token = $1 AND status_aktif = true;` | Menonaktifkan sesi pengguna. |
+
+### 5.29.3 Algoritma/Query
+
+**Nama Kelas:** *SesiPengguna*  
+**Nama Operasi:** *validateToken(token: string): boolean*  
+**ID Algoritma:** *Algo-110*
+
+```text
+FUNCTION validateToken(token) RETURNS boolean
+    IF token IS EMPTY OR NOT verifikasiTandaTangan(token) THEN
+        RETURN false
+    END IF
+    sesi <- SELECT status_aktif, waktu_kedaluwarsa FROM sesi_pengguna WHERE token = token
+    IF sesi IS NULL OR sesi.statusAktif = false OR sesi.waktuKedaluwarsa < now() THEN
+        RETURN false
+    END IF
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.29.3.1. Query Operasi validateToken
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-071* | `SELECT status_aktif, waktu_kedaluwarsa FROM sesi_pengguna WHERE token = $1;` | Mengambil status sesi berdasarkan token. |
+
+---
+
+## 5.30 Kelas Keluhan
+
+**Nama Kelas:** *Keluhan*  
+**ID Kelas:** *C30*
+
+Tabel 5.30.1. Operasi Kelas Keluhan
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *simpanKeluhan(isi: string, pelangganId: string): void* | *public* | Menyimpan keluhan baru dari pelanggan. |
+| *updateStatusKeluhan(status: StatusKeluhan): void* | *public* | Memperbarui status keluhan. |
+
+Tabel 5.30.2. Atribut Kelas Keluhan
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idKeluhan* | *private* | *string* |
+| *isiKeluhan* | *private* | *string* |
+| *waktuKirim* | *private* | *Date* |
+| *status* | *private* | *StatusKeluhan* |
+
+### 5.30.1 Algoritma/Query
+
+**Nama Kelas:** *Keluhan*  
+**Nama Operasi:** *simpanKeluhan(isi: string, pelangganId: string): void*  
+**ID Algoritma:** *Algo-111*
+
+```text
+PROCEDURE simpanKeluhan(isi, pelangganId)
+    idKeluhan <- generateId()
+    isiKeluhan <- isi
+    waktuKirim <- now()
+    status <- BARU
+    INSERT INTO keluhan VALUES (idKeluhan, pelangganId, isiKeluhan, waktuKirim, status)
+END PROCEDURE
+```
+
+Tabel 5.30.1.1. Query Operasi simpanKeluhan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-072* | `INSERT INTO keluhan (id_keluhan, pelanggan_id, isi_keluhan, waktu_kirim, status) VALUES ($1, $2, $3, NOW(), 'BARU');` | Menyimpan keluhan pelanggan. |
+
+### 5.30.2 Algoritma/Query
+
+**Nama Kelas:** *Keluhan*  
+**Nama Operasi:** *updateStatusKeluhan(status: StatusKeluhan): void*  
+**ID Algoritma:** *Algo-112*
+
+```text
+PROCEDURE updateStatusKeluhan(statusBaru)
+    IF statusBaru NOT IN (BARU, DIPROSES, DITANGGAPI, SELESAI) THEN
+        RETURN
+    END IF
+    status <- statusBaru
+    UPDATE keluhan SET status = status WHERE id_keluhan = idKeluhan
+END PROCEDURE
+```
+
+Tabel 5.30.2.1. Query Operasi updateStatusKeluhan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-073* | `UPDATE keluhan SET status = $2 WHERE id_keluhan = $1;` | Memperbarui status keluhan. |
+
 ## 5.31 Kelas DashboardKelolaRestoranPage
 
 **Nama Kelas:** *DashboardKelolaRestoranPage*  
