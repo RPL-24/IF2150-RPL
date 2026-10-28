@@ -99,8 +99,8 @@ Tabel 1.4. Aturan Penomoran
 ## 1.5 Referensi
 Cantumkan dokumentasi P/L yang dirujuk oleh dokumen ini, **minimal dokumen SKPL dan APL**. Tambahkan buku, panduan, atau dokumentasi lain apabila digunakan.
 
-SKPL
-APL
+SKPL<br>
+APL<br>
 Pressman, R. S., _Software Engineering: A Practitioner's Approach_, _8th Edition_, McGraw-Hill, 2015.  
 Sommerville, I., _Software Engineering_, _10th Edition_, Pearson, 2016.  
 Larman, C., _Applying UML and Patterns: An Introduction to Object-Oriented Analysis and Design and Iterative Development_, _3rd Edition_, Prentice Hall, 2004.
