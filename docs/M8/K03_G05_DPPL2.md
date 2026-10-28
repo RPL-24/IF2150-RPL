@@ -4081,7 +4081,7 @@ Tabel 6.15. Spesifikasi Objek Antarmuka UI-15
 **Nama Layar:** Live Chat Masyarakat
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/LiveChatPage.png" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/uiux/LiveChatMasyarakatPage.png" width="50%">
 </p>
 <p align="center">
 <i>Gambar 6.16. Rancangan Antarmuka UI-16 - Live Chat Masyarakat</i>
@@ -4132,7 +4132,7 @@ Tabel 6.Y. Rancangan Antarmuka Keseluruhan
 | [UI-04]| <img src="./assets/uiux/SearchLawPage.png" alt="SearchLaw" width="400"> |
 | [UI-05]| <img src="./assets/uiux/HaloLawFormPage.png" alt="Form Kasus Masyarakat" width="400"> |
 | [UI-06]| <img src="./assets/uiux/HaloLawListMitraPage.png" alt="HaloLaw List Mitra" width="400"> |
-| [UI-07]| <img src="./assets/uiux/HaloLawListPageKosong.png" alt="HaloLaw List Mitra kosong" width="400"> |
+| [UI-07]| <img src="./assets/uiux/HaloLawPageKosong.png" alt="HaloLaw List Mitra kosong" width="400"> |
 | [UI-08]| <img src="./assets/uiux/PemilihanJadwalPage.png" alt="Pemilihan Jadwal" width="400"> |
 | [UI-09]| <img src="./assets/uiux/PembayaranPage.png" alt="Pembayaran" width="400"> |
 | [UI-10]| <img src="./assets/uiux/KonsulPOVMasyarakatPage.png" alt="Konsul Masyarakat" width="400"> |
