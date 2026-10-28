@@ -204,6 +204,7 @@
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | *23-10-2026* | *Bayu Palamarta Wirawan* | *Melakukan inisialisasi Milestone 8* | *1* | *Done* | *-* |
 | *23-10-2026* | *Bayu Palamarta Wirawan* | *Mengerjakan Bab 5 Kelas 31 - 42* | *3* | *Done* | *-* |
+|*24-10-2026*|*Muhammad Fauzi Muharam*|*Membuat antarmuka antri.in*|*2*|*Done*|
 | *26-10-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki kelas perancangan* | *0.5* | *Done* | *-* |
 | *26-10-2026* | *Bayu Palamarta Wirawan* | *Membuat Form Asistensi* | *0.5* | *Done* | *-* |
 | *26-10-2026* | *Chatima Anandakhorita* | *Mengerjakan Bab 5 Kelas 1-10* | *3* | *Done* | *-* |
@@ -211,6 +212,7 @@
 | *27-10-2026* | *Muhammad Nur Fikri Hariyawan* | *Mengerjakan Bab 5 Kelas 11-20* | *2.4* | *Done* | *-* |
 | *28-10-2026* | *Athallah Nanda Andita* | *Mengerjakan Bab 5 Kelas 21 - 30* | *2.5* | *Done* | *-* |
 | *28-10-2026* | *Chatima Anandakhorita* | *Memperbaiki 1.1, 1..4, kemudian menambahkan 1.6* | *1* | *Done* | *-* |
+| *28-10-2026* | *Muhammad Fauzi Muharam* | *Melengkapi bab 6* | *2* | *Done* | *-* |
 
 **Catatan/Evaluasi Milestone 8:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*

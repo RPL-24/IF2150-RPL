@@ -74,6 +74,7 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
 | *Gemini* | *Mengecek Ketepatan Algoritma* | *"Apakah algoritma yang ditulis tepat tanpa kesalahan logika?"* | *Saya menyesuaikan algoritma yang ditulis agar tidak salah* |
+| *Claude* | *Berdasarkan dokumen-dokumen yang telah kuberikan, buatkan desain antarmuka antri.in* | *"Apakah algoritma yang ditulis tepat tanpa kesalahan logika?"* | *Saya menyesuaikan algoritma yang ditulis agar tidak salah* |
 | | | | | |
 
 ---
