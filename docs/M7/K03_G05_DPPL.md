@@ -271,7 +271,7 @@ Tabel 3.2. Identifikasi Kelas Use Case UC02
 ### 3.2.3 Diagram Kelas
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-02.webp" width="35%">
+<img alt="Diagram Kelas UC02" src="./assets/diagram/diagram-kelas-02.webp" width="35%">
 </p>
 <p align="center">
 <i>Gambar 6. Diagram Kelas Login Akun bagi Masyarakat</i>
@@ -1065,7 +1065,7 @@ Tabel 3.21. Identifikasi Kelas Use Case [UC21]
 <img alt="Sequence Diagram UC21" src="./assets/diagram/sequence-diagram-21.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC21</i>
+<i>Gambar 61. Sequence Diagram UC21</i>
 </p>
 
 -**Skenario Alternatif 1: Pembayaran ditolak**
@@ -1074,7 +1074,7 @@ Tabel 3.21. Identifikasi Kelas Use Case [UC21]
 <img alt="Sequence Diagram UC21 - Pembayaran ditolak" src="./assets/diagram/sequence-diagram-alt-21.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC21 - Pembayaran ditolak</i>
+<i>Gambar 62. Sequence Diagram UC21 - Pembayaran ditolak</i>
 </p>
 
 ### 3.21.3 Diagram Kelas
@@ -1083,7 +1083,7 @@ Tabel 3.21. Identifikasi Kelas Use Case [UC21]
 <img alt="Diagram Kelas Membayar Biaya Sesi Konsultasi" src="./assets/diagram/diagram-kelas-21.webp" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Membayar Biaya Sesi Konsultasi</i>
+<i>Gambar 63. Diagram Kelas Membayar Biaya Sesi Konsultasi</i>
 </p>
 
 <br>
@@ -1112,7 +1112,7 @@ Tabel 3.22. Identifikasi Kelas Use Case [UC22]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-22.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC22</i>
+<i>Gambar 64. Sequence Diagram UC22</i>
 </p>
 
 -**Skenario Alternatif 1: Pencairan ditolak**
@@ -1121,7 +1121,7 @@ Tabel 3.22. Identifikasi Kelas Use Case [UC22]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence-diagram-alt-22.webp" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC22 - Pencairan ditolak</i>
+<i>Gambar 65. Sequence Diagram UC22 - Pencairan ditolak</i>
 </p>
 
 ### 3.22.3 Diagram Kelas
@@ -1130,7 +1130,7 @@ Tabel 3.22. Identifikasi Kelas Use Case [UC22]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/diagram-kelas-22.webp" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Mencairkan Dana</i>
+<i>Gambar 66. Diagram Kelas Mencairkan Dana</i>
 </p>
 
 <br>
