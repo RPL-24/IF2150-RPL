@@ -1152,7 +1152,8 @@ Tabel 6.2. Spesifikasi Objek Antarmuka I-02
 | I02-10 | Map | Peta sebaran laporan publik, dengan label "Laporan publik di sekitar Anda" | Menampilkan seluruh laporan publik dalam batas kota. Tidak menampilkan nama atau identitas pelapor. |
 | I02-11 | Legend | Diterima (biru), Dikerjakan (kuning), Berhasil (hijau) | Keterangan arti warna penanda pada peta. |
 | I02-12 | Map Marker | Penanda berwarna sesuai status laporan | Klik penanda memilih laporan tersebut dan memperbesar penandanya. |
-
+| I02-13 | Card | ID tiket, kategori, badge status, dan jumlah dukungan (contoh: "LK-0097", "Trotoar rusak", "Dikerjakan", "12 dukungan") | Ringkasan laporan yang dipilih pada peta. Jumlah dukungan mencakup dukungan dari tombol I02-14 dan laporan duplikat (laporan sekategori dalam radius ≤ 20 m) yang otomatis dicatat sebagai dukungan. |
+| I02-14 | Button | "Dukung (12)" | Menambah satu dukungan dari warga untuk laporan terpilih (satu dukungan per akun); angka pada tombol dan I02-13 bertambah. |
 
 ## 6.3 Rancangan Antarmuka I-03
 

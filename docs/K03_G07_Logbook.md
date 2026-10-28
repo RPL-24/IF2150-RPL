@@ -164,6 +164,9 @@
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | 26-10-2026 | Pasaribu Fritz T.A.M. | Mengerjakan Rincian Class C07, C08, C13, C14, C19, C20  | 1 | Unfinished | Masih bingung untuk bagian tabel query |
 | 27-10-2026 | Pasaribu Fritz T.A.M. | Menyelesaikan Rincian Class C07, C08, C13, C14, C19, C20  | 1 | Done | - |  
+| 26-10-2026 | Rafi Pradipta Andira Sulistyo | Menyusun rancangnan Interface bab 6 | 3 | Done | - |  
+| 27-10-2026 | Rafi Pradipta Andira Sulistyo | Revisi I-01 | 1 | Done | - |  
+| 27-10-2026 | Rafi Pradipta Andira Sulistyo | Revisi I-02b | 0,5 | Done | - | 
 
 
 ---
