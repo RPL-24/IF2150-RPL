@@ -129,7 +129,7 @@
 
 
 ### Milestone 6
-**Periode:** 7-10-2026 - 21-10-2026 
+**Periode:** 30-09-2026 - 07-10-2026 
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
@@ -143,7 +143,7 @@
 
 
 ### Milestone 7
-**Periode:** 7-10-2026 - 7-10-2026 
+**Periode:** 07-10-2026 - 21-10-2026 
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / Blocker | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
@@ -155,6 +155,15 @@
 | 20-10-2026 | Bagas Anugrah Putra | Mengerjakan realisasi UC02 | 1 | *Unfinished | - |
 | 21-10-2026 | Bagas Anugrah Putra | Mengerjakan realisasi UC02 | 1 | *Done | - |
 | 21-10-2026 | Gede Pranajayanta Suputra | Mengerjakan realisasi UC05 | 2 | *Done | - |
+
+
+### Milestone 8
+**Periode:** 21-10-2026 - 28-10-2026 
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / Blocker | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 26-10-2026 | Pasaribu Fritz T.A.M. | Mengerjakan Rincian Class C07, C08, C13, C14, C19, C20  | 1 | Unfinished | Masih bingung untuk bagian tabel query |
+| 27-10-2026 | Pasaribu Fritz T.A.M. | Menyelesaikan Rincian Class C07, C08, C13, C14, C19, C20  | 1 | Done | - |  
 
 
 ---
