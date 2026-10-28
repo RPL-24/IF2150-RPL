@@ -967,6 +967,43 @@ function isVideoValid():
     return true
 ```
 
+## 5.6 Kelas Upvote
+**Nama Kelas:** *Upvote*  
+**ID Kelas:** *C06*
+
+Tabel 5.6.1. Operasi Kelas Upvote
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *catatUpvote(idUser: String): void* | *public* | *Menyimpan data pemberian dukungan warga terhadap tiket laporan tertentu ke dalam basis data.* |
+| *getJumlahUpvote(): Integer* | *public* | *Menghitung dan mengembalikan total akumulasi dukungan warga pada suatu tiket laporan.* |
+
+Tabel 5.6.2. Atribut Kelas Upvote
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idUpvote* | *private* | *String* |
+| *waktuUpvote* | *private* | *DateTime* |
+
+### 5.6.1 Algoritma/Query
+
+**Nama Kelas:** *Upvote*  
+**Nama Operasi:** *catatUpvote*  
+**ID Algoritma:** *Algo-006*
+
+```text
+procedure catatUpvote(idUser):
+    waktuUpvote <- time.current
+    Q-001(idTiket, idUser, waktuUpvote)
+```
+
+Tabel 5.6.3. Query Operasi Kelas Upvote
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-001* | *INSERT INTO upvote (id_tiket, id_user, waktu_upvote) VALUES ($1, $2, $3);* | *Mencatat rekaman upvote baru dari pengguna terautentikasi ke dalam tabel upvote.* |
+| *Q-002* | *SELECT COUNT(*) FROM upvote WHERE id_tiket = $1;* | *Menghitung akumulasi total upvote yang dimiliki oleh suatu tiket laporan.* |
+
 ## 5.7 Kelas ListTugas
 **Nama Kelas:** *ListTugas*  
 **ID Kelas:** *C07*
@@ -1086,6 +1123,80 @@ Tabel 5.8.1. Query Operasi [Nama Operasi]
 | *Q-003* | *INSERT INTO video (id_hasil, url, format, ukuran) VALUES ($1, $2, $3, $4);* | *Menyimpan tautan berkas video bukti yang diunggah ke Supabase Storage* |
 | *...* | *...* | *...* |
 
+## 5.12 Kelas ValidasiPage
+**Nama Kelas:** *ValidasiPage*  
+**ID Kelas:** *C12*
+
+Tabel 5.12.1. Operasi Kelas ValidasiPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *bukaDasborPenanganan(): void* | *public* | *Membuka halaman dasbor verifikasi Tim Administrasi, memverifikasi akses, dan memuat antrean laporan Diterima.* |
+| *tampilkanAntrean(): void* | *public* | *Merender daftar tiket laporan berstatus Diterima ke dalam tabel antrean.* |
+| *pilihFilterKategori(kategori: String): void* | *public* | *Menerapkan penyaringan antrean tiket laporan berdasarkan kategori kerusakan yang dipilih admin.* |
+| *pilihLaporan(idTiket: String): void* | *public* | *Menerima aksi klik pada baris antrean dan menampilkan panel rincian bukti laporan di sisi kanan.* |
+| *onValidClicked(idTiket: String): void* | *public* | *Mengirimkan perintah persetujuan laporan ke controller saat tombol "Validasi" ditekan.* |
+| *onTolakClicked(idTiket: String): void* | *public* | *Membuka modal/kolom isian formulir penulisan alasan penolakan laporan.* |
+| *submitAlasanPenolakan(idTiket: String, alasan: String): void* | *public* | *Memvalidasi dan mengirimkan alasan penolakan ke controller saat tombol "Kirim Penolakan" ditekan.* |
+
+Tabel 5.12.2. Atribut Kelas ValidasiPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *pilihanFilter* | *private* | *String* |
+| *idTiketTerpilih* | *private* | *String* |
+| *inputAlasanPenolakan* | *private* | *String* |
+
+### 5.12.1 Algoritma/Query
+
+**Nama Kelas:** *ValidasiPage*  
+**Nama Operasi:** *bukaDasborPenanganan*  
+**ID Algoritma:** *Algo-012*
+
+```text
+procedure bukaDasborPenanganan():
+    if not(validasiController.verifikasiAkses()) then
+        output("Akses ditolak: Hanya Tim Administrasi yang dapat mengakses halaman ini")
+        return
+    daftarAntrean <- validasiController.susunAntrean()
+    tampilkanAntrean()
+```
+
+### 5.12.2 Algoritma/Query
+
+**Nama Kelas:** *ValidasiPage*  
+**Nama Operasi:** *onValidClicked*  
+**ID Algoritma:** *Algo-013*
+
+```text
+procedure onValidClicked(idTiket):
+    berhasil <- validasiController.setujuiLaporan(idTiket)
+    if berhasil then
+        output("Laporan berhasil divalidasi dan diteruskan ke daftar tugas penugasan.")
+        bukaDasborPenanganan()
+    else
+        output("Gagal memvalidasi laporan.")
+```
+
+### 5.12.3 Algoritma/Query
+
+**Nama Kelas:** *ValidasiPage*  
+**Nama Operasi:** *submitAlasanPenolakan*  
+**ID Algoritma:** *Algo-014*
+
+```text
+procedure submitAlasanPenolakan(idTiket, alasan):
+    if alasan = "" or alasan = NIL then
+        output("Gagal terkirim: Alasan penolakan wajib diisi.")
+        return
+    berhasil <- validasiController.tolakLaporan(idTiket, alasan)
+    if berhasil then
+        output("Laporan berhasil ditolak dan status diperbarui.")
+        bukaDasborPenanganan()
+    else
+        output("Gagal memproses penolakan laporan.")
+```
+
 ## 5.13 Kelas PenugasanPage
 **Nama Kelas:** *PenugasanPage*  
 **ID Kelas:** *C13*
@@ -1170,7 +1281,152 @@ procedure submitForm():
     else
         output("Gagal terkirim")
 ```
+## 5.16 Kelas StatusLaporanPage
+**Nama Kelas:** *StatusLaporanPage*  
+**ID Kelas:** *C16*
 
+Tabel 5.16.1. Operasi Kelas StatusLaporanPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *pilihMenuRiwayat(): void* | *public* | *Mengaktifkan tab Riwayat dan menampilkan linimasa laporan pribadi milik warga.* |
+| *pilihMenuPeta(): void* | *public* | *Mengaktifkan tab Peta dan menampilkan visualisasi titik laporan publik pada peta Leaflet.* |
+| *bukaTautanNotifikasi(idNotifikasi: String): void* | *public* | *Membuka detail tiket laporan yang bersangkutan langsung dari daftar notifikasi pengguna.* |
+| *pilihTiket(idTiket: String): void* | *public* | *Memilih salah satu tiket dari daftar riwayat untuk menampilkan detail linimasa statusnya.* |
+| *pilihMarker(idTiket: String): void* | *public* | *Memilih salah satu penanda laporan publik di peta untuk menampilkan kartu ringkas tiket.* |
+| *onUpvoteClicked(): void* | *public* | *Mengirimkan penambahan dukungan upvote saat warga menekan tombol upvote pada laporan publik.* |
+| *tampilkanRiwayat(daftarLaporan: List[Laporan]): void* | *public* | *Merender daftar kartu laporan warga pelapor beserta badge status dan tanggal pengajuan.* |
+| *tampilkanPetaSebaran(daftarLaporanPublik: List[Laporan]): void* | *public* | *Merender penanda-penanda laporan publik pada peta interaktif sesuai koordinat lokasi.* |
+| *tampilkanDetailTiket(detail: Laporan): void* | *public* | *Menampilkan panel rincian tiket meliputi foto kerusakan, linimasa tahapan status, dan alasan penolakan jika ada.* |
+
+Tabel 5.16.2. Atribut Kelas StatusLaporanPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *pilihanTiket* | *private* | *String* |
+| *modeTampilan* | *private* | *String* |
+
+### 5.16.1 Algoritma/Query
+
+**Nama Kelas:** *StatusLaporanPage*  
+**Nama Operasi:** *pilihMenuRiwayat*  
+**ID Algoritma:** *Algo-018*
+
+```text
+procedure pilihMenuRiwayat():
+    modeTampilan <- "Riwayat"
+    daftarLaporan <- statusController.ambilRiwayatWarga()
+    tampilkanRiwayat(daftarLaporan)
+```
+
+### 5.16.2 Algoritma/Query
+
+**Nama Kelas:** *StatusLaporanPage*  
+**Nama Operasi:** *pilihMenuPeta*  
+**ID Algoritma:** *Algo-019*
+
+```text
+procedure pilihMenuPeta():
+    modeTampilan <- "Peta"
+    daftarPublik <- statusController.ambilLaporanPublik()
+    tampilkanPetaSebaran(daftarPublik)
+```
+
+### 5.16.3 Algoritma/Query
+
+**Nama Kelas:** *StatusLaporanPage*  
+**Nama Operasi:** *onUpvoteClicked*  
+**ID Algoritma:** *Algo-020*
+
+```text
+procedure onUpvoteClicked():
+    if pilihanTiket = NIL then
+        return
+    totalUpvote <- statusController.prosesUpvote(pilihanTiket)
+    output("Dukungan berhasil ditambahkan")
+```
+
+## 5.18 Kelas ValidasiController
+**Nama Kelas:** *ValidasiController*  
+**ID Kelas:** *C18*
+
+Tabel 5.18.1. Operasi Kelas ValidasiController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *verifikasiAkses(): Boolean* | *public* | *Memastikan pengguna yang sedang aktif memiliki sesi resmi dengan peran Tim Administrasi.* |
+| *susunAntrean(): List[Laporan]* | *public* | *Mengambil seluruh laporan berstatus Diterima yang diurutkan berdasarkan waktu masuk terbaru.* |
+| *saringAntrean(kategori: String): List[Laporan]* | *public* | *Menyaring antrean laporan berstatus Diterima berdasarkan kategori tertentu.* |
+| *ambilRincianLaporan(idTiket: String): Laporan* | *public* | *Mengambil data detail laporan lengkap beserta berkas media bukti kerusakan dan titik koordinat lokasi.* |
+| *setujuiLaporan(idTiket: String): Boolean* | *public* | *Mengubah status laporan menjadi Dikerjakan, menghitung skor prioritas, dan memicu notifikasi validasi ke pelapor.* |
+| *tolakLaporan(idTiket: String, alasan: String): Boolean* | *public* | *Mengubah status laporan menjadi Ditolak, menyimpan catatan alasan penolakan, dan mengirimkan notifikasi.* |
+
+Tabel 5.18.2. Atribut Kelas ValidasiController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idUserAktif* | *private* | *String* |
+
+### 5.18.1 Algoritma/Query
+
+**Nama Kelas:** *ValidasiController*  
+**Nama Operasi:** *susunAntrean*  
+**ID Algoritma:** *Algo-028*
+
+```text
+function susunAntrean():
+    if not(verifikasiAkses()) then
+        return NIL
+    daftarAntrean <- Q-001
+    return daftarAntrean
+```
+
+### 5.18.2 Algoritma/Query
+
+**Nama Kelas:** *ValidasiController*  
+**Nama Operasi:** *setujuiLaporan*  
+**ID Algoritma:** *Algo-029*
+
+```text
+function setujuiLaporan(idTiket):
+    if not(verifikasiAkses()) then
+        return false
+    berhasil <- Q-002(idTiket, "Dikerjakan")
+    if berhasil then
+        laporan <- ambilRincianLaporan(idTiket)
+        laporan.hitungPrioritas()
+        idPelapor <- Q-004(idTiket)
+        notifikasiController.kirimNotifikasi(idPelapor, "Laporan Anda telah divalidasi dan diteruskan ke tim lapangan.")
+        return true
+    return false
+```
+
+### 5.18.3 Algoritma/Query
+
+**Nama Kelas:** *ValidasiController*  
+**Nama Operasi:** *tolakLaporan*  
+**ID Algoritma:** *Algo-030*
+
+```text
+function tolakLaporan(idTiket, alasan):
+    if not(verifikasiAkses()) then
+        return false
+    berhasil <- Q-003(idTiket, "Ditolak", alasan)
+    if berhasil then
+        idPelapor <- Q-004(idTiket)
+        notifikasiController.kirimNotifikasi(idPelapor, "Laporan Anda ditolak dengan alasan: " + alasan)
+        return true
+    return false
+```
+
+Tabel 5.18.3. Query Operasi Kelas ValidasiController
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-001* | *SELECT id_tiket, kategori, deskripsi, status, waktu_masuk FROM laporan WHERE status = 'Diterima' ORDER BY waktu_masuk DESC;* | *Mengambil daftar laporan yang menunggu proses validasi oleh Tim Administrasi.* |
+| *Q-002* | *UPDATE laporan SET status = $2 WHERE id_tiket = $1;* | *Memperbarui status laporan menjadi Dikerjakan setelah disetujui.* |
+| *Q-003* | *UPDATE laporan SET status = $2, alasan_penolakan = $3 WHERE id_tiket = $1;* | *Memperbarui status laporan menjadi Ditolak beserta pencatatan alasan penolakannya.* |
+| *Q-004* | *SELECT id_pelapor FROM laporan WHERE id_tiket = $1;* | *Mengambil pengenal akun warga yang mengajukan tiket laporan terkait.* |
 
 ## 5.19 Kelas PenugasanController
 **Nama Kelas:** *PenugasanController*  
@@ -1280,6 +1536,76 @@ function unggahHasil(idTiket, catatan, foto, video):
         return false
     return hasil.simpanBukti()
 ```
+
+## 5.22 Kelas StatusController
+**Nama Kelas:** *StatusController*  
+**ID Kelas:** *C22*
+
+Tabel 5.22.1. Operasi Kelas StatusController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *ambilRiwayatWarga(): List[Laporan]* | *public* | *Mengambil seluruh daftar laporan yang dibuat oleh akun warga yang sedang masuk.* |
+| *ambilLaporanPublik(): List[Laporan]* | *public* | *Mengambil data sebaran seluruh laporan publik dalam kota secara anonim untuk ditampilkan di peta.* |
+| *ambilDetailStatus(idTiket: String): Laporan* | *public* | *Mengambil informasi status lengkap, linimasa penanganan, dan alasan penolakan jika status tiket Ditolak.* |
+| *prosesUpvote(idTiket: String): Integer* | *public* | *Menambahkan dukungan upvote warga pada laporan aktif, memicu hitung ulang skor prioritas, dan mengembalikan total dukungan terkini.* |
+
+Tabel 5.22.2. Atribut Kelas StatusController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idUserAktif* | *private* | *String* |
+
+### 5.22.1 Algoritma/Query
+
+**Nama Kelas:** *StatusController*  
+**Nama Operasi:** *ambilRiwayatWarga*  
+**ID Algoritma:** *Algo-032*
+
+```text
+function ambilRiwayatWarga():
+    daftarRiwayat <- Q-001(idUserAktif)
+    return daftarRiwayat
+```
+
+### 5.22.2 Algoritma/Query
+
+**Nama Kelas:** *StatusController*  
+**Nama Operasi:** *ambilLaporanPublik*  
+**ID Algoritma:** *Algo-033*
+
+```text
+function ambilLaporanPublik():
+    daftarPublik <- Q-002
+    return daftarPublik
+```
+
+### 5.22.3 Algoritma/Query
+
+**Nama Kelas:** *StatusController*  
+**Nama Operasi:** *prosesUpvote*  
+**ID Algoritma:** *Algo-034*
+
+```text
+function prosesUpvote(idTiket):
+    upvote <- {Upvote baru}
+    upvote.catatUpvote(idUserAktif)
+    
+    totalUpvote <- Q-003(idTiket)
+    laporan <- ambilDetailStatus(idTiket)
+    laporan.hitungPrioritas()
+    
+    return totalUpvote
+```
+
+Tabel 5.22.3. Query Operasi Kelas StatusController
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-001* | *SELECT id_tiket, kategori, deskripsi, status, waktu_masuk, alasan_penolakan FROM laporan WHERE id_pelapor = $1 ORDER BY waktu_masuk DESC;* | *Mengambil seluruh daftar riwayat laporan pribadi milik akun warga aktif.* |
+| *Q-002* | *SELECT l.id_tiket, l.kategori, l.deskripsi, l.status, l.jumlah_upvote, loc.latitude, loc.longitude FROM laporan l JOIN lokasi loc ON l.id_lokasi = loc.id WHERE l.status != 'Ditolak';* | *Mengambil data seluruh laporan aktif untuk visualisasi penanda pada peta sebaran publik.* |
+| *Q-003* | *UPDATE laporan SET jumlah_upvote = jumlah_upvote + 1 WHERE id_tiket = $1 RETURNING jumlah_upvote;* | *Menambahkan jumlah upvote pada tiket laporan secara atomik dan mengembalikan nilai terbarunya.* |
+| *Q-004* | *SELECT * FROM laporan WHERE id_tiket = $1;* | *Mengambil rincian data lengkap dari tiket laporan tertentu.* |
 
 Tabel 5.x.x. Query Operasi [Nama Operasi]
 
