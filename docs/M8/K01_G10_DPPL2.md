@@ -94,6 +94,8 @@ Tabel 1.4. Aturan Penomoran
 | *Requirement* | *RXX* | Mulai dari 01, 02, dan seterusnya |
 | *Aktor* | *ACXX* | Mulai dari 01, 02, dan seterusnya |
 | *Algoritma* | *Algo-XX* | Mulai dari 01, 02, dan seterusnya |
+| *Antarmuka* | *I-XX* | Mulai dari 01, 02, dan seterusnya |
+| *Objek Antarmuka* | *I-XX-NN* | ID layar diikuti nomor urut objek pada layar tersebut |
 | *...* | *...* |
 
 ## 1.5 Referensi
