@@ -908,14 +908,12 @@ Tabel 5.1.1. Operasi Kelas EditDokumenLegalitasPage
 
 | Nama Operasi | Visibility (private, public) | Keterangan |
 | :--- | :--- | :--- |
-| *[Signature operasi, termasuk parameter dan tipe kembalian]* | *[Visibility]* | *[Tanggung jawab operasi]* |
 | validasiData(inputDokumen: String): Boolean | *...* | *...* |
 
 Tabel 5.1.2. Atribut Kelas [Nama Kelas 1]
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
-| *[Nama atribut]* | *[Visibility]* | *[Tipe sesuai bahasa pemrograman yang digunakan]* |
 | inputDokumen | *...* | String |
 
 ### 5.9.1 Algoritma/Query
@@ -945,14 +943,349 @@ FUNCTION validasiData(inputDokumen: String): Boolean
 END FUNCTION
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
-
-Tabel 5.1.1. Query Operasi [Nama Operasi]
+Tabel 5.9.1. Query Operasi [Nama Operasi]
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
 | *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
 | *...* | *...* | *...* |
+
+
+## 5.10 SearchLawPage
+
+**Nama Kelas:** SearchLawPage
+**ID Kelas:** C10
+
+Tabel 5.10.1. Operasi Kelas SearchLawPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| cariPasal() | *...* | *...* |
+
+Tabel 5.10.2. Atribut Kelas SearchLawPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| tombolCari | *...* | String |
+| infoPasal | *...* | String |
+
+### 5.10.1 Algoritma/Query
+
+**Nama Kelas:** SearchLawPage
+**Nama Operasi:** cariPasal()
+**ID Algoritma:** *[Algo-010]*
+
+```text
+FUNCTION validasiData(inputDokumen: String): Boolean
+    IF inputDokumen IS NULL OR inputDokumen IS EMPTY THEN
+        tampilkan pesan "Dokumen legalitas belum dipilih"
+        RETURN false
+    END IF
+
+    IF formatFile(inputDokumen) NOT IN FORMAT_DIIZINKAN THEN
+        tampilkan pesan "Format dokumen tidak didukung"
+        RETURN false
+    END IF
+
+    IF ukuranFile(inputDokumen) > UKURAN_MAKS THEN
+        tampilkan pesan "Ukuran dokumen melebihi batas"
+        RETURN false
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.10.1. Query Operasi [Nama Operasi]
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *...* | *...* | *...* |
+
+
+
+
+
+
+## 5.11 DaftarMitraPengacaraPage
+
+**Nama Kelas:** DaftarMitraPengacaraPage
+**ID Kelas:** C11
+
+Tabel 5.11.1. Operasi Kelas DaftarMitraPengacaraPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| inputPencarian(kataKunciKasus: String, filterKeahlian: String): void | *...* | *...* |
+| tampilkanDaftarMitra(daftarMitra: List<MitraPengacara>): void | *...* | *...* |
+
+Tabel 5.11.2. Atribut Kelas DaftarMitraPengacaraPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| kataKunciKasus | *...* | String |
+| filterKeahlian | *...* | String |
+
+
+### 5.11.1 Algoritma/Query
+
+**Nama Kelas:** DaftarMitraPengacaraPage
+**Nama Operasi:** cariPasal()
+**ID Algoritma:** *[Algo-011]*
+
+```text
+FUNCTION validasiData(inputDokumen: String): Boolean
+    IF inputDokumen IS NULL OR inputDokumen IS EMPTY THEN
+        tampilkan pesan "Dokumen legalitas belum dipilih"
+        RETURN false
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.11.1. Query Operasi tampilkanDaftarMitra
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+| *...* | *...* | *...* |
+
+
+## 5.12 PemilihanJadwalKonsultasiPage |
+
+**Nama Kelas:** PemilihanJadwalKonsultasiPage |
+**ID Kelas:** C12
+
+Tabel 5.12.1. Operasi Kelas PemilihanJadwalKonsultasiPage |
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| pilihMitra(pilihanMitra: String): void| *...* | *...* |
+| pilihJadwal(pilihanTanggal: Date, pilihanWaktu: Time): void | *...* | *...* |
+
+Tabel 5.12.2. Atribut Kelas PemilihanJadwalKonsultasiPage |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| pilihanMitra | *...* | String |
+| pilihanTanggal | *...* | String |
+
+
+### 5.12.1 Algoritma/Query
+
+**Nama Kelas:** DaftarMitraPengacaraPage
+**Nama Operasi:** pilihMitra
+**ID Algoritma:** *[Algo-012]*
+
+```text
+FUNCTION validasiData(inputDokumen: String): Boolean
+    IF inputDokumen IS NULL OR inputDokumen IS EMPTY THEN
+        tampilkan pesan "Dokumen legalitas belum dipilih"
+        RETURN false
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.12.1. Query Operasi pilihMitra
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+
+### 5.12.2 Algoritma/Query
+
+**Nama Kelas:** DaftarMitraPengacaraPage
+**Nama Operasi:** pilihJadwal
+**ID Algoritma:** *[Algo-013]*
+
+```text
+FUNCTION validasiData(inputDokumen: String): Boolean
+    IF inputDokumen IS NULL OR inputDokumen IS EMPTY THEN
+        tampilkan pesan "Dokumen legalitas belum dipilih"
+        RETURN false
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.12.2. Query Operasi pilihMitra
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+
+
+## 5.13 KonfirmasiKonsultasiPage
+
+**Nama Kelas:** KonfirmasiKonsultasiPage
+**ID Kelas:** C13
+
+Tabel 5.13.1. Operasi Kelas DKonfirmasiKonsultasiPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| klikKonfirmasi(terima: boolean): boolean | *...* | *...* |
+| tampilkanPermintaanJadwal(): void | *...* | *...* |
+
+Tabel 5.11.2. Atribut Kelas KonfirmasiKonsultasiPage
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| pilihanKonfirmasi| *...* | String |
+| catatanKonfirmasi | *...* | String |
+
+### 5.13.1 Algoritma/Query
+
+**Nama Kelas:** KonfirmasiKonsultasiPage
+**Nama Operasi:** klikKonfirmasi
+**ID Algoritma:** *[Algo-014]*
+
+```text
+FUNCTION validasiData(inputDokumen: String): Boolean
+    IF inputDokumen IS NULL OR inputDokumen IS EMPTY THEN
+        tampilkan pesan "Dokumen legalitas belum dipilih"
+        RETURN false
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.13.1. Query Operasi tampilkanDaftarMitra
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+
+
+## 5.14 ChatKonsultasiPage
+
+**Nama Kelas:** ChatKonsultasiPage
+**ID Kelas:** C14
+
+Tabel 5.14.1. Operasi Kelas ChatKonsultasiPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| kirimPesan(): void | *...* | *...* |
+| tampilkanPesanTerkini(): void | *...* | *...* |
+
+Tabel 5.14.2. Atribut Kelas ChatKonsultasiPage
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| pesanInput | *...* | String |
+| lampiranFile | *...* | String |
+
+### 5.14.1 Algoritma/Query
+
+**Nama Kelas:** ChatKonsultasiPage
+**Nama Operasi:** kirimPesan
+**ID Algoritma:** *[Algo-015]*
+
+```text
+FUNCTION validasiData(inputDokumen: String): Boolean
+    IF inputDokumen IS NULL OR inputDokumen IS EMPTY THEN
+        tampilkan pesan "Dokumen legalitas belum dipilih"
+        RETURN false
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.14.1. Query Operasi tampilkanDaftarMitra
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+
+
+## 5.15 UlasanPage
+
+**Nama Kelas:** UlasanPage
+**ID Kelas:** C15
+
+Tabel 5.15.1. Operasi Kelas UlasanPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| isiFormUlasan(): void | *...* | *...* |
+| kirimUlasan(): void | *...* | *...* |
+
+Tabel 5.14.2. Atribut Kelas UlasanPage
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| inputRating | *...* | String |
+| inputTeksUlasan | *...* | String |
+
+### 5.15.1 Algoritma/Query
+
+**Nama Kelas:** UlasanPage
+**Nama Operasi:** kirimUlasan()
+**ID Algoritma:** *[Algo-016]*
+
+```text
+FUNCTION validasiData(inputDokumen: String): Boolean
+    IF inputDokumen IS NULL OR inputDokumen IS EMPTY THEN
+        tampilkan pesan "Dokumen legalitas belum dipilih"
+        RETURN false
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.15.1. Query Operasi kirimUlasan()
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
+
+
+## 5.16 LaporanAkunPage
+
+**Nama Kelas:** LaporanAkunPage
+**ID Kelas:** C16
+
+Tabel 5.16.1. Operasi Kelas LaporanAkunPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| isiFormUlasan(): void | *...* | *...* |
+| kirimUlasan(): void | *...* | *...* |
+
+Tabel 5.14.2. Atribut Kelas LaporanAkunPage
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| inputRating | *...* | String |
+| inputTeksUlasan | *...* | String |
+
+### 5.16.1 Algoritma/Query
+
+**Nama Kelas:** UlasanPage
+**Nama Operasi:** kirimUlasan()
+**ID Algoritma:** *[Algo-016]*
+
+```text
+FUNCTION validasiData(inputDokumen: String): Boolean
+    IF inputDokumen IS NULL OR inputDokumen IS EMPTY THEN
+        tampilkan pesan "Dokumen legalitas belum dipilih"
+        RETURN false
+    END IF
+
+    RETURN true
+END FUNCTION
+```
+
+Tabel 5.16.1. Query Operasi kirimUlasan()
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
 
 
 ## 5.30 Kelas PencarianMitraController
@@ -1195,6 +1528,209 @@ Tabel 5.35.2. Atribut Kelas ModerasiAkunController
 | - | - | - |
 
 
+## 5.36 RiwayatController
+
+**Nama Kelas:** RiwayatController
+**ID Kelas:** C36
+
+Tabel 5.36.1. Operasi Kelas RiwayatController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| getRiwayatPengacara(idMitra: String): List<Kasus> | | |
+| getRiwayatMasyarakat():  | | |
+| detailRiwayat(): List<Kasus> | | |
+
+
+Tabel 5.36.2. Atribut Kelas RiwayatController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *-* | *-* | *-* |
+
+### 5.36.1 Algoritma/Query
+
+**Nama Kelas:** RiwayatController
+**Nama Operasi:**  
+**ID Algoritma:** *[Algo-037]*
+
+```text
+FUNCTION buatLaporanBaru(idPelapor: String, idTerlapor: String, jenis: String, deskripsi: String, bukti: String): Boolean
+    IF deskripsi IS EMPTY THEN
+        RETURN false
+    END IF
+
+    IF validasiBuktiLaporan(bukti) = false THEN
+        RETURN false
+    END IF
+
+    statusSimpan <- Laporan.simpanDataLaporan(idPelapor, idTerlapor, jenis, deskripsi, bukti, "Pending")
+    RETURN statusSimpan
+END FUNCTION
+```
+
+
+## 5.37 Kelas LiveChatController
+
+**Nama Kelas:** LiveChatController
+**ID Kelas:** C37
+
+Tabel 5.37.1. Operasi Kelas LiveChatController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| startChat(idMasyarakat: String, pertanyaan: String): LiveChat | | |
+| assignAdmin(): String | | |
+| closeChat(idChat: String): boolean | | |
+
+Tabel 5.37.2. Atribut Kelas LiveChatController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *-* | *-* | *-* |
+
+### 5.37.1 Algoritma/Query
+
+**Nama Kelas:** LiveChatController
+**Nama Operasi:** startChat(idMasyarakat: String, pertanyaan: String): LiveChat
+**ID Algoritma:** *[Algo-038]*
+
+```text
+PROCEDURE ubahStatus(idMitra: String, statusBaru: String, catatan: String)
+    berhasil <- VerifikasiMitraController.updateStatusVerifikasi(idMitra, statusBaru, catatan)
+    IF berhasil = true THEN
+        tampilkanNotifikasi("Status verifikasi pendaftar berhasil diperbarui.")
+        perbaruiDaftarPengajuanAdmin()
+    ELSE
+        tampilkanPesanError("Gagal memperbarui status verifikasi.")
+    END IF
+END PROCEDURE
+```
+
+Tabel 5.37.1. Query Operasi startChat
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *-* | *-* | *Pengontrol meneruskan operasi pemanggilan data ke entitas Kasus dan MitraPengacara.* |
+
+### 5.37.2 Algoritma/Query
+
+**Nama Kelas:** LiveChatController
+**Nama Operasi:** assignAdmin
+**ID Algoritma:** *[Algo-039]*
+
+```text
+PROCEDURE ubahStatus(idMitra: String, statusBaru: String, catatan: String)
+    berhasil <- VerifikasiMitraController.updateStatusVerifikasi(idMitra, statusBaru, catatan)
+    IF berhasil = true THEN
+        tampilkanNotifikasi("Status verifikasi pendaftar berhasil diperbarui.")
+        perbaruiDaftarPengajuanAdmin()
+    ELSE
+        tampilkanPesanError("Gagal memperbarui status verifikasi.")
+    END IF
+END PROCEDURE
+```
+
+Tabel 5.37.2. Query Operasi assignAdmin
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *-* | *-* | *Pengontrol meneruskan operasi pemanggilan data ke entitas Kasus dan MitraPengacara.* |
+
+
+## 5.38 Kelas LiveChatController
+
+**Nama Kelas:** PembayaranController
+**ID Kelas:** C38
+
+Tabel 5.38.1. Operasi Kelas PembayaranController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| prosesPembayaran() | | |
+| bukaSesiChat() | | |
+
+Tabel 5.38.2. Atribut Kelas PembayaranController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| idPembayaran | *-* | String |
+| idSesi | *-* | String |
+| totalPembayaran | *-* | *-* |
+| sesiPembayaran | *-* | *-* |
+
+### 5.38.1 Algoritma/Query
+
+**Nama Kelas:** LiveChatController
+**Nama Operasi:** startChat(idMasyarakat: String, pertanyaan: String): LiveChat
+**ID Algoritma:** *[Algo-040]*
+
+```text
+PROCEDURE ubahStatus(idMitra: String, statusBaru: String, catatan: String)
+    berhasil <- VerifikasiMitraController.updateStatusVerifikasi(idMitra, statusBaru, catatan)
+    IF berhasil = true THEN
+        tampilkanNotifikasi("Status verifikasi pendaftar berhasil diperbarui.")
+        perbaruiDaftarPengajuanAdmin()
+    ELSE
+        tampilkanPesanError("Gagal memperbarui status verifikasi.")
+    END IF
+END PROCEDURE
+```
+
+Tabel 5.38.1. Query Operasi startChat
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *-* | *-* | *Pengontrol meneruskan operasi pemanggilan data ke entitas Kasus dan MitraPengacara.* |
+
+
+## 5.39 Kelas PencairanDanaController
+
+**Nama Kelas:** PencairanDanaController
+**ID Kelas:** C39
+
+Tabel 5.39.1. Operasi Kelas PencairanDanaController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| validasiSaldo() | | |
+| prosesPencairan() | | |
+
+Tabel 5.39.2. Atribut Kelas PencairanDanaController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| idPencairan | *-* | String |
+| idMitra | *-* | String |
+| totalPencarian | *-* | *-* |
+| statusPencarian | *-* | String |
+| rekeningTujuan | *-* | String |
+
+### 5.39.1 Algoritma/Query
+
+**Nama Kelas:** PencairanDanaController
+**Nama Operasi:** validasiSaldo
+**ID Algoritma:** *[Algo-041]*
+
+```text
+PROCEDURE ubahStatus(idMitra: String, statusBaru: String, catatan: String)
+    berhasil <- VerifikasiMitraController.updateStatusVerifikasi(idMitra, statusBaru, catatan)
+    IF berhasil = true THEN
+        tampilkanNotifikasi("Status verifikasi pendaftar berhasil diperbarui.")
+        perbaruiDaftarPengajuanAdmin()
+    ELSE
+        tampilkanPesanError("Gagal memperbarui status verifikasi.")
+    END IF
+END PROCEDURE
+```
+
+Tabel 5.39.1. Query Operasi validasiSaldo
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *-* | *-* | *Pengontrol meneruskan operasi pemanggilan data ke entitas Kasus dan MitraPengacara.* |
+
+
 ## 5.40 Kelas Masyarakat
 
 **Nama Kelas:** *Masyarakat*  
@@ -1430,6 +1966,139 @@ Tabel 5.44.3. Query Operasi
 | :--- | :--- | :--- |
 | Q-001 | `SELECT * FROM dasar_hukum WHERE idPasal = ?;` | Mengambil data peraturan/pasal berdasarkan idPasal (operasi infoPasal dan pemeriksaan di updatePasal). |
 | Q-002 | `UPDATE dasar_hukum SET isiPasal = ? WHERE idPasal = ?;` | Memperbarui isi pasal berdasarkan idPasal (operasi updatePasal). |
+
+
+## 5.45 DokumenLegalitas
+
+**Nama Kelas:** DokumenLegalitas
+**ID Kelas:** C45
+
+Tabel 5.43.1. Operasi Kelas DokumenLegalitas
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *infoDetailKasus(idKasus: String): Kasus* | *public* | *Mengambil detail deskripsi dan kategori kasus masyarakat berdasarkan idKasus.* |
+| *infoKategoriKasus(idKasus: String): String* | *public* | *Mengembalikan nama tag/kategori masalah dari kasus.* |
+
+Tabel 5.43.2. Atribut Kelas Kasus
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| idKasus | private | String |
+| kategoriMasalah | private | String |
+| dekripsi | private | String |
+| *...* | *...* | *...* |
+
+### 5.43.1 Algoritma/Query
+
+**Nama Kelas:** *Kasus*  
+**Nama Operasi:** *infoDetailKasus(idKasus: String): Kasus*  
+**ID Algoritma:** *[Algo-043]*
+
+```text
+FUNCTION infoDetailKasus(idKasus: String): Kasus
+    dataKasus <- Q-431 dengan parameter idKasus
+    IF dataKasus IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN dataKasus
+END FUNCTION
+```
+
+Tabel 5.43.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-431 | `SELECT * FROM kasus WHERE idKasus = ?;` | Mengambil detail entitas kasus dari database. |
+
+
+## 5.46 SesiKonsultasi
+
+**Nama Kelas:** SesiKonsultasi
+**ID Kelas:** C46
+
+Tabel 5.43.1. Operasi Kelas SesiKonsultasi
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *infoDetailKasus(idKasus: String): Kasus* | *public* | *Mengambil detail deskripsi dan kategori kasus masyarakat berdasarkan idKasus.* |
+| *infoKategoriKasus(idKasus: String): String* | *public* | *Mengembalikan nama tag/kategori masalah dari kasus.* |
+
+Tabel 5.43.2. Atribut Kelas SesiKonsultasi
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| idKasus | private | String |
+| kategoriMasalah | private | String |
+| dekripsi | private | String |
+| *...* | *...* | *...* |
+
+### 5.43.1 Algoritma/Query
+
+**Nama Kelas:** SesiKonsultasi
+**Nama Operasi:** *infoDetailKasus(idKasus: String): Kasus*  
+**ID Algoritma:** *[Algo-043]*
+
+```text
+FUNCTION infoDetailKasus(idKasus: String): Kasus
+    dataKasus <- Q-431 dengan parameter idKasus
+    IF dataKasus IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN dataKasus
+END FUNCTION
+```
+
+Tabel 5.43.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-431 | `SELECT * FROM kasus WHERE idKasus = ?;` | Mengambil detail entitas kasus dari database. |
+
+
+## 5.47 Ulasan
+
+**Nama Kelas:** Ulasan
+**ID Kelas:** C47
+
+Tabel 5.47.1. Operasi Kelas Ulasan
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| simpanDataUlasan() | *public* | *Mengambil detail deskripsi dan kategori kasus masyarakat berdasarkan idKasus.* |
+| infoDataUlasan() | *public* | *Mengembalikan nama tag/kategori masalah dari kasus.* |
+
+Tabel 5.47.2. Atribut Kelas Ulasan
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| idKasus | private | String |
+| kategoriMasalah | private | String |
+| dekripsi | private | String |
+| *...* | *...* | *...* |
+
+### 5.47.1 Algoritma/Query
+
+**Nama Kelas:** Ulasan
+**Nama Operasi:** *infoDetailKasus(idKasus: String): Kasus*  
+**ID Algoritma:** *[Algo-043]*
+
+```text
+FUNCTION infoDetailKasus(idKasus: String): Kasus
+    dataKasus <- Q-431 dengan parameter idKasus
+    IF dataKasus IS NULL THEN
+        RETURN NULL
+    END IF
+    RETURN dataKasus
+END FUNCTION
+```
+
+Tabel 5.47.3. Query Operasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-431 | `SELECT * FROM kasus WHERE idKasus = ?;` | Mengambil detail entitas kasus dari database. |
+
 
 <br>
 

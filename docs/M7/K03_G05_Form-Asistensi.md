@@ -4,8 +4,8 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | *\[Hari\]* |
-| **Tanggal** | *\[DD/MM/YYYY\]* |
+| **Hari** | Selasa |
+| **Tanggal** | 21/10/2026 |
 | **Kelas** | K03 |
 | **Nomor Kelompok** | G05  |
 | **Nama Kelompok** | HEYSRIUSLAH  |
