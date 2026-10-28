@@ -26,7 +26,7 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
+| 1. Button sesuaikan sama buttonnya. Terus dikasih keterangan dia ngarah ke halaman apa. Untuk teks, gausah 1 1 gapapa disatuin juga boleh.  |
 | 2. ... |
 | 3. ... |
 | 4. ... |
