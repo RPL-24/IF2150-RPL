@@ -1123,6 +1123,96 @@ Tabel 5.8.1. Query Operasi [Nama Operasi]
 | *Q-003* | *INSERT INTO video (id_hasil, url, format, ukuran) VALUES ($1, $2, $3, $4);* | *Menyimpan tautan berkas video bukti yang diunggah ke Supabase Storage* |
 | *...* | *...* | *...* |
 
+## 5.11 Kelas LaporPage
+**Nama Kelas:** *LaporPage*  
+**ID Kelas:** *C11*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *bukaForm(): void* | *public* | *Menampilkan formulir pelaporan dan secara otomatis memulai penguncian lokasi perangkat.* |
+| *userInput(kategori: String, deskripsi: String, foto: List[Foto], video: List[Video]): void* | *public* | *Menerima isian kategori, deskripsi, serta berkas foto dan video, lalu meminta LaporanController memvalidasi berkas sebelum menampilkan pratinjau.* |
+| *kunciLokasi(): void* | *public* | *Mengambil koordinat perangkat melalui Geolocation API dan meminta LaporanController memvalidasi wilayahnya.* |
+| *tandaiLokasiManual(latitude: Float, longitude: Float): void* | *public* | *Menerima titik lokasi yang ditandai Warga secara manual pada peta dan meminta LaporanController memvalidasi wilayahnya.* |
+| *submitForm(): void* | *public* | *Memeriksa kelengkapan formulir, mengunggah berkas langsung ke Supabase Storage, mengirim laporan ke LaporanController, dan menampilkan hasilnya.* |
+| *batalkanLaporan(): void* | *public* | *Membatalkan pengisian laporan dan menutup formulir.* |
+| *ambilTokenAntiBot(): String* | *private* | *Mengambil token verifikasi dari layanan anti-bot pada sisi klien.* |
+| *hapusBerkasTidakValid(): void* | *private* | *Menghapus berkas foto/video yang tidak lolos validasi dari formulir.* |
+| *tampilkanPesan(pesan: String): void* | *private* | *Menampilkan pesan validasi, peringatan, atau konfirmasi kepada Warga.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *inputKategori* | *private* | *String* |
+| *inputDeskripsi* | *private* | *String* |
+| *berkasFoto* | *private* | *List[Foto]* |
+| *berkasVideo* | *private* | *List[Video]* |
+| *lokasi* | *private* | *Lokasi* |
+| *pesanError* | *private* | *String* |
+
+### 5.11.1 Algoritma/Query
+
+**Nama Kelas:** *LaporPage*  
+**Nama Operasi:** *userInput*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+procedure userInput(kategori, deskripsi, foto, video):
+    inputKategori <- kategori
+    inputDeskripsi <- deskripsi
+    berkasFoto <- foto
+    berkasVideo <- video
+    if not(laporanController.validasiBerkas(berkasFoto, berkasVideo)) then
+        hapusBerkasTidakValid()
+        tampilkanPesan("Foto harus JPG/PNG, video MP4/MOV/MKV, maks. 10 MB")
+    else
+        tampilkan pratinjau berkasFoto dan berkasVideo
+```
+
+### 5.11.2 Algoritma/Query
+
+**Nama Kelas:** *LaporPage*  
+**Nama Operasi:** *kunciLokasi*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+procedure kunciLokasi():
+    posisi <- Geolocation API getCurrentPosition(batas waktu 3 detik)
+    if posisi = NIL then
+        tampilkanPesan("Lokasi tidak terdeteksi, tandai lokasi secara manual pada peta")
+        return
+    lokasi <- new Lokasi(posisi.latitude, posisi.longitude)
+    if not(laporanController.validasiLokasi(lokasi)) then
+        lokasi <- NIL
+        tampilkanPesan("Lokasi di luar daerah penanganan")
+    else
+        tampilkan titik lokasi pada peta
+```
+
+### 5.11.3 Algoritma/Query
+
+**Nama Kelas:** *LaporPage*  
+**Nama Operasi:** *submitForm*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+procedure submitForm():
+    if inputKategori = NIL or inputDeskripsi = NIL or lokasi = NIL
+       or (berkasFoto kosong and berkasVideo kosong) then
+        tampilkanPesan("Lengkapi kategori, deskripsi, lokasi, dan berkas bukti")
+        return
+    token <- ambilTokenAntiBot()
+    for f in berkasFoto do
+        f.url <- unggah f ke Supabase Storage
+    for v in berkasVideo do
+        v.url <- unggah v ke Supabase Storage
+    idTiket <- laporanController.kirimLaporan(inputKategori, inputDeskripsi, berkasFoto, berkasVideo, lokasi, token)
+    if idTiket = NIL then
+        tampilkanPesan("Laporan gagal dikirim, silakan coba lagi")
+    else if laporanController.isDuplikat() then
+        tampilkanPesan("Laporan serupa sudah ada (ID tiket: " + idTiket + "), laporan Anda dialihkan menjadi dukungan (upvote)")
+    else
+        tampilkanPesan("Laporan terkirim, ID tiket: " + idTiket)
+```
+
 ## 5.12 Kelas ValidasiPage
 **Nama Kelas:** *ValidasiPage*  
 **ID Kelas:** *C12*
@@ -1345,6 +1435,698 @@ procedure onUpvoteClicked():
     totalUpvote <- statusController.prosesUpvote(pilihanTiket)
     output("Dukungan berhasil ditambahkan")
 ```
+
+## 5.17 Kelas LaporanController
+**Nama Kelas:** *LaporanController*  
+**ID Kelas:** *C17*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *validasiBerkas(foto: List[Foto], video: List[Video]): Boolean* | *public* | *Memeriksa format dan ukuran setiap berkas foto dan video bukti kerusakan.* |
+| *validasiLokasi(lokasi: Lokasi): Boolean* | *public* | *Memeriksa apakah lokasi laporan tersedia dan berada di dalam wilayah penanganan.* |
+| *kirimLaporan(kategori: String, deskripsi: String, foto: List[Foto], video: List[Video], lokasi: Lokasi, token: String): String* | *public* | *Memverifikasi akses dan anti-bot, memvalidasi berkas dan lokasi, memeriksa duplikasi, menerbitkan ID tiket, menyimpan laporan, dan memicu notifikasi ke Warga pelapor. Mengembalikan ID tiket, atau NIL bila gagal.* |
+| *isDuplikat(): Boolean* | *public* | *Mengembalikan apakah laporan terakhir yang dikirim terdeteksi sebagai duplikat dan dialihkan menjadi upvote.* |
+| *verifikasiAkses(): Boolean* | *private* | *Memeriksa sesi pengguna melalui Supabase Auth dan memastikan pengguna berperan sebagai Warga.* |
+| *verifikasiAntiBot(token: String): Boolean* | *private* | *Memverifikasi token anti-bot ke layanan verifikasi untuk memastikan pengiriman dilakukan oleh manusia.* |
+| *cekDuplikat(lokasi: Lokasi, kategori: String): Laporan* | *private* | *Mencari laporan aktif berkategori sama dalam radius 20 meter. Mengembalikan laporan tersebut, atau NIL bila tidak ada.* |
+| *terbitkanIdTiket(): String* | *private* | *Membuat ID tiket unik untuk laporan baru.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idUserAktif* | *private* | *String* |
+| *statusDuplikat* | *private* | *Boolean* |
+
+### 5.17.1 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *validasiBerkas*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function validasiBerkas(foto, video):
+    if foto kosong and video kosong then
+        return false
+    for f in foto do
+        if not(f.isFotoValid()) then
+            return false
+    for v in video do
+        if not(v.isVideoValid()) then
+            return false
+    return true
+```
+
+### 5.17.2 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *validasiLokasi*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function validasiLokasi(lokasi):
+    if lokasi = NIL then
+        return false
+    return lokasi.dalamWilayah()
+```
+
+### 5.17.3 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *kirimLaporan*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function kirimLaporan(kategori, deskripsi, foto, video, lokasi, token):
+    statusDuplikat <- false
+    if not(verifikasiAkses()) then
+        return NIL
+    if not(verifikasiAntiBot(token)) then
+        return NIL
+    if not(validasiBerkas(foto, video)) or not(validasiLokasi(lokasi)) then
+        return NIL
+    duplikat <- cekDuplikat(lokasi, kategori)
+    if duplikat != NIL then
+        statusDuplikat <- true
+        duplikat.tambahUpvote(new Upvote(idUserAktif))
+        return duplikat.idTiket
+    idTiket <- terbitkanIdTiket()
+    laporan <- new Laporan(idTiket, idUserAktif, kategori, deskripsi, lokasi, foto, video)
+    if not(laporan.simpanLaporan()) then
+        return NIL
+    notifikasiController.kirimNotifikasi(idUserAktif, idTiket)
+    return idTiket
+```
+
+### 5.17.4 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *verifikasiAkses*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function verifikasiAkses():
+    sesi <- Supabase Auth getUser()
+    if sesi = NIL then
+        return false
+    idUserAktif <- sesi.id
+    user <- new User()
+    if not(user.muatProfil(idUserAktif)) then
+        return false
+    return user.isWarga()
+```
+
+### 5.17.5 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *verifikasiAntiBot*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function verifikasiAntiBot(token):
+    if token = NIL then
+        return false
+    respons <- kirim token dan kunci rahasia ke layanan verifikasi anti-bot
+    return respons.success
+```
+
+### 5.17.6 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *cekDuplikat*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function cekDuplikat(lokasi, kategori):
+    RADIUS <- 20          { meter }
+    DELTA <- 0.0002       { kurang lebih 22 meter dalam derajat, untuk penyaringan awal }
+    kandidat <- Q-001(kategori, lokasi.latitude - DELTA, lokasi.latitude + DELTA,
+                      lokasi.longitude - DELTA, lokasi.longitude + DELTA)
+    for k in kandidat do
+        lokasiLain <- new Lokasi(k.latitude, k.longitude)
+        if lokasi.hitungJarak(lokasiLain) <= RADIUS then
+            return muat Laporan dengan idTiket = k.id_tiket
+    return NIL
+```
+
+Tabel 5.17.1. Query Operasi cekDuplikat
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-001* | *SELECT id_tiket, latitude, longitude FROM laporan WHERE kategori = $1 AND status IN ('Diterima', 'Dikerjakan') AND latitude BETWEEN $2 AND $3 AND longitude BETWEEN $4 AND $5;* | *Mengambil laporan aktif berkategori sama di sekitar lokasi sebagai kandidat duplikasi* |
+
+## 5.1 Kelas User
+**Nama Kelas:** *User*  
+**ID Kelas:** *C01*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *muatProfil(idUser: String): Boolean* | *public* | *Memuat data profil akun (nama, email, dan peran) dari basis data berdasarkan ID akun yang terautentikasi melalui Supabase Auth.* |
+| *getIdUser(): String* | *public* | *Mengembalikan ID akun pengguna.* |
+| *getRole(): String* | *public* | *Mengembalikan peran pengguna, yaitu "Warga", "TimAdministrasi", atau "EksekutorLapangan".* |
+| *isWarga(): Boolean* | *public* | *Memeriksa apakah pengguna berperan sebagai Warga.* |
+| *isAdmin(): Boolean* | *public* | *Memeriksa apakah pengguna berperan sebagai Tim Administrasi.* |
+| *isEksekutor(): Boolean* | *public* | *Memeriksa apakah pengguna berperan sebagai Eksekutor Lapangan.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idUser* | *private* | *String* |
+| *nama* | *private* | *String* |
+| *email* | *private* | *String* |
+| *role* | *private* | *String* |
+
+### 5.1.1 Algoritma/Query
+
+**Nama Kelas:** *User*  
+**Nama Operasi:** *muatProfil*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function muatProfil(idUser):
+    data <- Q-001(idUser)
+    if data = NIL then
+        return false
+    this.idUser <- data.id_user
+    nama <- data.nama
+    email <- data.email
+    role <- data.role
+    return true
+```
+
+Tabel 5.1.1. Query Operasi muatProfil
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-001* | *SELECT id_user, nama, email, role FROM pengguna WHERE id_user = $1;* | *Mengambil data profil dan peran akun berdasarkan ID akun dari Supabase Auth* |
+
+## 5.2 Kelas Laporan
+**Nama Kelas:** *Laporan*  
+**ID Kelas:** *C02*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *simpanLaporan(): Boolean* | *public* | *Menyimpan data laporan beserta lokasi, foto, dan video bukti ke basis data dengan status awal "Diterima", serta mencatat riwayat status pertama.* |
+| *getRincian(): Laporan* | *public* | *Mengembalikan rincian lengkap laporan, termasuk identitas pelapor, untuk Warga pelapor dan Tim Administrasi.* |
+| *getRincianPublik(): Laporan* | *public* | *Mengembalikan rincian laporan tanpa identitas pelapor untuk ditampilkan pada peta sebaran publik.* |
+| *getKategori(): String* | *public* | *Mengembalikan kategori kerusakan laporan.* |
+| *getLokasi(): Lokasi* | *public* | *Mengembalikan objek Lokasi tempat laporan dibuat.* |
+| *tambahUpvote(upvote: Upvote): Integer* | *public* | *Mencatat dukungan (upvote) dari seorang Warga, menghitung ulang skor prioritas, dan mengembalikan jumlah upvote terbaru.* |
+| *hitungPrioritas(): Float* | *public* | *Menghitung skor prioritas laporan berdasarkan jumlah upvote dan menyimpannya ke basis data.* |
+| *updateStatus(statusBaru: String, alasan: String): Boolean* | *public* | *Memperbarui status laporan sesuai alur yang diizinkan, mewajibkan alasan bila status menjadi "Ditolak", dan mencatat riwayat perubahan status.* |
+| *tambahHasilPerbaikan(hasil: HasilPerbaikan): void* | *public* | *Menambahkan hasil perbaikan dari Eksekutor Lapangan ke daftar hasil perbaikan laporan.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idTiket* | *private* | *String* |
+| *idPelapor* | *private* | *String* |
+| *kategori* | *private* | *String* |
+| *deskripsi* | *private* | *String* |
+| *status* | *private* | *String* |
+| *waktuMasuk* | *private* | *DateTime* |
+| *jumlahUpvote* | *private* | *Integer* |
+| *skorPrioritas* | *private* | *Float* |
+| *alasanPenolakan* | *private* | *String* |
+| *lokasi* | *private* | *Lokasi* |
+| *fotoBukti* | *private* | *List[Foto]* |
+| *videoBukti* | *private* | *List[Video]* |
+| *hasilPerbaikan* | *private* | *List[HasilPerbaikan]* |
+
+### 5.2.1 Algoritma/Query
+
+**Nama Kelas:** *Laporan*  
+**Nama Operasi:** *simpanLaporan*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function simpanLaporan():
+    status <- "Diterima"
+    waktuMasuk <- time.current
+    jumlahUpvote <- 0
+    skorPrioritas <- 0
+    hasil <- Q-001(idTiket, idPelapor, kategori, deskripsi, status, lokasi.latitude, lokasi.longitude, waktuMasuk)
+    if hasil = NIL then
+        return false
+    for f in fotoBukti do
+        Q-002(idTiket, f.url, f.format, f.ukuran)
+    for v in videoBukti do
+        Q-003(idTiket, v.url, v.format, v.ukuran)
+    Q-004(idTiket, status, waktuMasuk)
+    return true
+```
+
+Tabel 5.2.1. Query Operasi simpanLaporan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-001* | *INSERT INTO laporan (id_tiket, id_pelapor, kategori, deskripsi, status, latitude, longitude, waktu_masuk, jumlah_upvote, skor_prioritas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 0, 0) RETURNING id_tiket;* | *Menyimpan data laporan baru beserta koordinat lokasinya* |
+| *Q-002* | *INSERT INTO foto (id_tiket, url, format, ukuran) VALUES ($1, $2, $3, $4);* | *Menyimpan tautan berkas foto bukti kerusakan yang diunggah ke Supabase Storage* |
+| *Q-003* | *INSERT INTO video (id_tiket, url, format, ukuran) VALUES ($1, $2, $3, $4);* | *Menyimpan tautan berkas video bukti kerusakan yang diunggah ke Supabase Storage* |
+| *Q-004* | *INSERT INTO riwayat_status (id_tiket, status, waktu) VALUES ($1, $2, $3);* | *Mencatat perubahan status laporan untuk linimasa pelacakan dan log audit* |
+
+### 5.2.2 Algoritma/Query
+
+**Nama Kelas:** *Laporan*  
+**Nama Operasi:** *getRincianPublik*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function getRincianPublik():
+    publik <- salinan(this)
+    publik.idPelapor <- NIL
+    return publik
+```
+
+### 5.2.3 Algoritma/Query
+
+**Nama Kelas:** *Laporan*  
+**Nama Operasi:** *tambahUpvote*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function tambahUpvote(upvote):
+    if status = "Ditolak" or status = "Berhasil" then
+        return jumlahUpvote
+    sudahDukung <- Q-005(idTiket, upvote.idUser)
+    if sudahDukung > 0 then
+        return jumlahUpvote
+    Q-006(upvote.idUpvote, idTiket, upvote.idUser, upvote.waktuUpvote)
+    jumlahUpvote <- jumlahUpvote + 1
+    hitungPrioritas()
+    return jumlahUpvote
+```
+
+Tabel 5.2.2. Query Operasi tambahUpvote
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-005* | *SELECT COUNT(*) FROM upvote WHERE id_tiket = $1 AND id_user = $2;* | *Memeriksa apakah Warga sudah pernah memberikan dukungan pada laporan tersebut* |
+| *Q-006* | *INSERT INTO upvote (id_upvote, id_tiket, id_user, waktu_upvote) VALUES ($1, $2, $3, $4);* | *Menyimpan data dukungan (upvote) baru* |
+
+### 5.2.4 Algoritma/Query
+
+**Nama Kelas:** *Laporan*  
+**Nama Operasi:** *hitungPrioritas*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function hitungPrioritas():
+    skorPrioritas <- jumlahUpvote
+    Q-007(idTiket, jumlahUpvote, skorPrioritas)
+    return skorPrioritas
+```
+
+Tabel 5.2.3. Query Operasi hitungPrioritas
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-007* | *UPDATE laporan SET jumlah_upvote = $2, skor_prioritas = $3 WHERE id_tiket = $1;* | *Memperbarui jumlah upvote dan skor prioritas laporan* |
+
+### 5.2.5 Algoritma/Query
+
+**Nama Kelas:** *Laporan*  
+**Nama Operasi:** *updateStatus*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function updateStatus(statusBaru, alasan):
+    if statusBaru = "Ditolak" and alasan = NIL then
+        return false
+    valid <- (status = "Diterima" and (statusBaru = "Dikerjakan" or statusBaru = "Ditolak"))
+             or (status = "Dikerjakan" and statusBaru = "Berhasil")
+    if not(valid) then
+        return false
+    status <- statusBaru
+    if statusBaru = "Ditolak" then
+        alasanPenolakan <- alasan
+    Q-008(idTiket, status, alasanPenolakan)
+    Q-004(idTiket, status, time.current)
+    return true
+```
+
+Tabel 5.2.4. Query Operasi updateStatus
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-008* | *UPDATE laporan SET status = $2, alasan_penolakan = $3 WHERE id_tiket = $1;* | *Memperbarui status laporan dan alasan penolakan (bila ada)* |
+| *Q-004* | *INSERT INTO riwayat_status (id_tiket, status, waktu) VALUES ($1, $2, $3);* | *Mencatat perubahan status laporan untuk linimasa pelacakan dan log audit* |
+
+## 5.3 Kelas Lokasi
+**Nama Kelas:** *Lokasi*  
+**ID Kelas:** *C03*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *getKoordinat(): List[Float]* | *public* | *Mengembalikan pasangan koordinat latitude dan longitude.* |
+| *hitungJarak(lokasiLain: Lokasi): Float* | *public* | *Menghitung jarak (dalam meter) ke lokasi lain menggunakan rumus Haversine, digunakan untuk pemeriksaan duplikasi dalam radius 20 meter.* |
+| *dalamWilayah(): Boolean* | *public* | *Memeriksa apakah koordinat berada di dalam batas wilayah penanganan.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *latitude* | *private* | *Float* |
+| *longitude* | *private* | *Float* |
+
+### 5.3.1 Algoritma/Query
+
+**Nama Kelas:** *Lokasi*  
+**Nama Operasi:** *hitungJarak*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function hitungJarak(lokasiLain):
+    R <- 6371000    { jari-jari bumi dalam meter }
+    lat1 <- radian(latitude)
+    lat2 <- radian(lokasiLain.latitude)
+    dLat <- radian(lokasiLain.latitude - latitude)
+    dLon <- radian(lokasiLain.longitude - longitude)
+    a <- sin(dLat / 2)^2 + cos(lat1) * cos(lat2) * sin(dLon / 2)^2
+    c <- 2 * atan2(sqrt(a), sqrt(1 - a))
+    return R * c
+```
+
+### 5.3.2 Algoritma/Query
+
+**Nama Kelas:** *Lokasi*  
+**Nama Operasi:** *dalamWilayah*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function dalamWilayah():
+    batas <- BATAS_WILAYAH    { daftar titik sudut poligon wilayah penanganan }
+    n <- panjang(batas)
+    dalam <- false
+    j <- n - 1
+    i traversal [0..n-1]
+        if ((batas[i].latitude > latitude) != (batas[j].latitude > latitude)) and
+           (longitude < (batas[j].longitude - batas[i].longitude) * (latitude - batas[i].latitude)
+                        / (batas[j].latitude - batas[i].latitude) + batas[i].longitude) then
+            dalam <- not(dalam)
+        j <- i
+    return dalam
+```
+
+## 5.4 Kelas Foto
+**Nama Kelas:** *Foto*  
+**ID Kelas:** *C04*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *isFotoValid(): Boolean* | *public* | *Memeriksa apakah berkas foto berformat JPG/PNG dan berukuran maksimal 10 MB.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *url* | *private* | *String* |
+| *format* | *private* | *String* |
+| *ukuran* | *private* | *Integer* |
+
+### 5.4.1 Algoritma/Query
+
+**Nama Kelas:** *Foto*  
+**Nama Operasi:** *isFotoValid*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function isFotoValid():
+    MAKS_UKURAN <- 10 * 1024 * 1024    { 10 MB dalam byte }
+    if not(lowercase(format) in {"jpg", "jpeg", "png"}) then
+        return false
+    if ukuran > MAKS_UKURAN then
+        return false
+    return true
+```
+
+## 5.5 Kelas Video
+**Nama Kelas:** *Video*  
+**ID Kelas:** *C05*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *isVideoValid(): Boolean* | *public* | *Memeriksa apakah berkas video berformat MP4/MOV/MKV dan berukuran maksimal 10 MB.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *url* | *private* | *String* |
+| *format* | *private* | *String* |
+| *ukuran* | *private* | *Integer* |
+
+### 5.5.1 Algoritma/Query
+
+**Nama Kelas:** *Video*  
+**Nama Operasi:** *isVideoValid*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function isVideoValid():
+    MAKS_UKURAN <- 10 * 1024 * 1024    { 10 MB dalam byte }
+    if not(lowercase(format) in {"mp4", "mov", "mkv"}) then
+        return false
+    if ukuran > MAKS_UKURAN then
+        return false
+    return true
+```
+
+## 5.11 Kelas LaporPage
+**Nama Kelas:** *LaporPage*  
+**ID Kelas:** *C11*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *bukaForm(): void* | *public* | *Menampilkan formulir pelaporan dan secara otomatis memulai penguncian lokasi perangkat.* |
+| *userInput(kategori: String, deskripsi: String, foto: List[Foto], video: List[Video]): void* | *public* | *Menerima isian kategori, deskripsi, serta berkas foto dan video, lalu meminta LaporanController memvalidasi berkas sebelum menampilkan pratinjau.* |
+| *kunciLokasi(): void* | *public* | *Mengambil koordinat perangkat melalui Geolocation API dan meminta LaporanController memvalidasi wilayahnya.* |
+| *tandaiLokasiManual(latitude: Float, longitude: Float): void* | *public* | *Menerima titik lokasi yang ditandai Warga secara manual pada peta dan meminta LaporanController memvalidasi wilayahnya.* |
+| *submitForm(): void* | *public* | *Memeriksa kelengkapan formulir, mengunggah berkas langsung ke Supabase Storage, mengirim laporan ke LaporanController, dan menampilkan hasilnya.* |
+| *batalkanLaporan(): void* | *public* | *Membatalkan pengisian laporan dan menutup formulir.* |
+| *ambilTokenAntiBot(): String* | *private* | *Mengambil token verifikasi dari layanan anti-bot pada sisi klien.* |
+| *hapusBerkasTidakValid(): void* | *private* | *Menghapus berkas foto/video yang tidak lolos validasi dari formulir.* |
+| *tampilkanPesan(pesan: String): void* | *private* | *Menampilkan pesan validasi, peringatan, atau konfirmasi kepada Warga.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *inputKategori* | *private* | *String* |
+| *inputDeskripsi* | *private* | *String* |
+| *berkasFoto* | *private* | *List[Foto]* |
+| *berkasVideo* | *private* | *List[Video]* |
+| *lokasi* | *private* | *Lokasi* |
+| *pesanError* | *private* | *String* |
+
+### 5.11.1 Algoritma/Query
+
+**Nama Kelas:** *LaporPage*  
+**Nama Operasi:** *userInput*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+procedure userInput(kategori, deskripsi, foto, video):
+    inputKategori <- kategori
+    inputDeskripsi <- deskripsi
+    berkasFoto <- foto
+    berkasVideo <- video
+    if not(laporanController.validasiBerkas(berkasFoto, berkasVideo)) then
+        hapusBerkasTidakValid()
+        tampilkanPesan("Foto harus JPG/PNG, video MP4/MOV/MKV, maks. 10 MB")
+    else
+        tampilkan pratinjau berkasFoto dan berkasVideo
+```
+
+### 5.11.2 Algoritma/Query
+
+**Nama Kelas:** *LaporPage*  
+**Nama Operasi:** *kunciLokasi*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+procedure kunciLokasi():
+    posisi <- Geolocation API getCurrentPosition(batas waktu 3 detik)
+    if posisi = NIL then
+        tampilkanPesan("Lokasi tidak terdeteksi, tandai lokasi secara manual pada peta")
+        return
+    lokasi <- new Lokasi(posisi.latitude, posisi.longitude)
+    if not(laporanController.validasiLokasi(lokasi)) then
+        lokasi <- NIL
+        tampilkanPesan("Lokasi di luar daerah penanganan")
+    else
+        tampilkan titik lokasi pada peta
+```
+
+### 5.11.3 Algoritma/Query
+
+**Nama Kelas:** *LaporPage*  
+**Nama Operasi:** *submitForm*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+procedure submitForm():
+    if inputKategori = NIL or inputDeskripsi = NIL or lokasi = NIL
+       or (berkasFoto kosong and berkasVideo kosong) then
+        tampilkanPesan("Lengkapi kategori, deskripsi, lokasi, dan berkas bukti")
+        return
+    token <- ambilTokenAntiBot()
+    for f in berkasFoto do
+        f.url <- unggah f ke Supabase Storage
+    for v in berkasVideo do
+        v.url <- unggah v ke Supabase Storage
+    idTiket <- laporanController.kirimLaporan(inputKategori, inputDeskripsi, berkasFoto, berkasVideo, lokasi, token)
+    if idTiket = NIL then
+        tampilkanPesan("Laporan gagal dikirim, silakan coba lagi")
+    else if laporanController.isDuplikat() then
+        tampilkanPesan("Laporan serupa sudah ada (ID tiket: " + idTiket + "), laporan Anda dialihkan menjadi dukungan (upvote)")
+    else
+        tampilkanPesan("Laporan terkirim, ID tiket: " + idTiket)
+```
+
+## 5.17 Kelas LaporanController
+**Nama Kelas:** *LaporanController*  
+**ID Kelas:** *C17*
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *validasiBerkas(foto: List[Foto], video: List[Video]): Boolean* | *public* | *Memeriksa format dan ukuran setiap berkas foto dan video bukti kerusakan.* |
+| *validasiLokasi(lokasi: Lokasi): Boolean* | *public* | *Memeriksa apakah lokasi laporan tersedia dan berada di dalam wilayah penanganan.* |
+| *kirimLaporan(kategori: String, deskripsi: String, foto: List[Foto], video: List[Video], lokasi: Lokasi, token: String): String* | *public* | *Memverifikasi akses dan anti-bot, memvalidasi berkas dan lokasi, memeriksa duplikasi, menerbitkan ID tiket, menyimpan laporan, dan memicu notifikasi ke Warga pelapor. Mengembalikan ID tiket, atau NIL bila gagal.* |
+| *isDuplikat(): Boolean* | *public* | *Mengembalikan apakah laporan terakhir yang dikirim terdeteksi sebagai duplikat dan dialihkan menjadi upvote.* |
+| *verifikasiAkses(): Boolean* | *private* | *Memeriksa sesi pengguna melalui Supabase Auth dan memastikan pengguna berperan sebagai Warga.* |
+| *verifikasiAntiBot(token: String): Boolean* | *private* | *Memverifikasi token anti-bot ke layanan verifikasi untuk memastikan pengiriman dilakukan oleh manusia.* |
+| *cekDuplikat(lokasi: Lokasi, kategori: String): Laporan* | *private* | *Mencari laporan aktif berkategori sama dalam radius 20 meter. Mengembalikan laporan tersebut, atau NIL bila tidak ada.* |
+| *terbitkanIdTiket(): String* | *private* | *Membuat ID tiket unik untuk laporan baru.* |
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idUserAktif* | *private* | *String* |
+| *statusDuplikat* | *private* | *Boolean* |
+
+### 5.17.1 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *validasiBerkas*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function validasiBerkas(foto, video):
+    if foto kosong and video kosong then
+        return false
+    for f in foto do
+        if not(f.isFotoValid()) then
+            return false
+    for v in video do
+        if not(v.isVideoValid()) then
+            return false
+    return true
+```
+
+### 5.17.2 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *validasiLokasi*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function validasiLokasi(lokasi):
+    if lokasi = NIL then
+        return false
+    return lokasi.dalamWilayah()
+```
+
+### 5.17.3 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *kirimLaporan*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function kirimLaporan(kategori, deskripsi, foto, video, lokasi, token):
+    statusDuplikat <- false
+    if not(verifikasiAkses()) then
+        return NIL
+    if not(verifikasiAntiBot(token)) then
+        return NIL
+    if not(validasiBerkas(foto, video)) or not(validasiLokasi(lokasi)) then
+        return NIL
+    duplikat <- cekDuplikat(lokasi, kategori)
+    if duplikat != NIL then
+        statusDuplikat <- true
+        duplikat.tambahUpvote(new Upvote(idUserAktif))
+        return duplikat.idTiket
+    idTiket <- terbitkanIdTiket()
+    laporan <- new Laporan(idTiket, idUserAktif, kategori, deskripsi, lokasi, foto, video)
+    if not(laporan.simpanLaporan()) then
+        return NIL
+    notifikasiController.kirimNotifikasi(idUserAktif, idTiket)
+    return idTiket
+```
+
+### 5.17.4 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *verifikasiAkses*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function verifikasiAkses():
+    sesi <- Supabase Auth getUser()
+    if sesi = NIL then
+        return false
+    idUserAktif <- sesi.id
+    user <- new User()
+    if not(user.muatProfil(idUserAktif)) then
+        return false
+    return user.isWarga()
+```
+
+### 5.17.5 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *verifikasiAntiBot*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function verifikasiAntiBot(token):
+    if token = NIL then
+        return false
+    respons <- kirim token dan kunci rahasia ke layanan verifikasi anti-bot
+    return respons.success
+```
+
+### 5.17.6 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *cekDuplikat*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function cekDuplikat(lokasi, kategori):
+    RADIUS <- 20          { meter }
+    DELTA <- 0.0002       { kurang lebih 22 meter dalam derajat, untuk penyaringan awal }
+    kandidat <- Q-001(kategori, lokasi.latitude - DELTA, lokasi.latitude + DELTA,
+                      lokasi.longitude - DELTA, lokasi.longitude + DELTA)
+    for k in kandidat do
+        lokasiLain <- new Lokasi(k.latitude, k.longitude)
+        if lokasi.hitungJarak(lokasiLain) <= RADIUS then
+            return muat Laporan dengan idTiket = k.id_tiket
+    return NIL
+```
+
+Tabel 5.17.1. Query Operasi cekDuplikat
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-001* | *SELECT id_tiket, latitude, longitude FROM laporan WHERE kategori = $1 AND status IN ('Diterima', 'Dikerjakan') AND latitude BETWEEN $2 AND $3 AND longitude BETWEEN $4 AND $5;* | *Mengambil laporan aktif berkategori sama di sekitar lokasi sebagai kandidat duplikasi* |
+
+### 5.17.7 Algoritma/Query
+
+**Nama Kelas:** *LaporanController*  
+**Nama Operasi:** *terbitkanIdTiket*  
+**ID Algoritma:** *[Algo-00x]*
+
+```text
+function terbitkanIdTiket():
+    tanggal <- format(time.current, "YYYYMMDD")
+    urutan <- Q-002()
+    return "LK-" + tanggal + "-" + padKiri(urutan, 5, "0")
+```
+
+Tabel 5.17.2. Query Operasi terbitkanIdTiket
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-002* | *SELECT nextval('seq_tiket_laporan');* | *Mengambil nomor urut berikutnya dari sequence basis data sehingga setiap ID tiket dijamin unik* |
 
 ## 5.18 Kelas ValidasiController
 **Nama Kelas:** *ValidasiController*  
