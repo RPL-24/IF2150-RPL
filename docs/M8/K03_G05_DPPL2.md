@@ -89,10 +89,13 @@ Tabel 1.4. Aturan Penomoran
 |
 
 ## 1.5 Referensi
-Cantumkan dokumentasi P/L yang dirujuk oleh dokumen ini, **minimal dokumen SKPL dan APL**. Tambahkan buku, panduan, atau dokumentasi lain apabila digunakan.
+1. SKPL
+2. APL
+3. Sequence Diagram 1-5
+Kami mengambil referensi dari milestone yang sudah diselesaikan sebelumnya 
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut, dengan maksimal 1 paragraf.
+Dokumen Deskripsi Perancangan Perangkat Lunak (DPPL) ini disusun mengenai perancangan rinci kelas terkait spesifikasi rinci seluruh kelas mencakup visibilitas operasi, atribut, algoritma pseudocode, dan query basis data. Selain itu, dokumen ini memuat perancangan antarmuka menampilkan rancangan visual antarmuka pengguna (UI-01 hingga UI-32) beserta spesifikasi objek interaktifnya. Terakhir, Bab 7 Matriks Kerunutan memetakan kerunutan antara kelas perancangan dan use case terkait untuk memastikan seluruh kebutuhan fungsional terpenuhi secara konsisten.
 
 <br>
 
