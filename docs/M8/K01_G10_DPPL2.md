@@ -40,12 +40,6 @@ Dipersiapkan oleh:
 
 <br>
 
-> **Petunjuk pengerjaan:** *[Silahkan hapus bagian ini setelah selesai mengerjakan]*
->
-> Dokumen ini melanjutkan **Deskripsi Perancangan Perangkat Lunak**. Gunakan nama, ID, kebutuhan, dan use case yang konsisten dengan kedua dokumen tersebut. Contoh pola ID baru di bawah dapat disesuaikan dengan kesepakatan kelompok, ID yang sudah ada tetap dipertahankan.
-
-<br>
-
 ---
 
 
@@ -118,7 +112,7 @@ Sommerville, I., _Software Engineering_, _10th Edition_, Pearson, 2016.
 Larman, C., _Applying UML and Patterns: An Introduction to Object-Oriented Analysis and Design and Iterative Development_, _3rd Edition_, Prentice Hall, 2004.
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut, dengan maksimal 1 paragraf.
+Dokumen ini disusun dengan isi tujuh bab untuk memberikan gambaran detail mengenai rancangan aplikasi antri.in. Bab 1 memberikan pengantar yang mencakup tujuan penulisan, penegasan lingkup masalah pada perancangan, daftar istilah, aturan penomoran, referensi, serta ikhtisar dokumen. Bab 2 memaparkan perancangan arsitektur yang meliputi lingkungan implementasi, arsitektur MVC, pengelompokan komponen, dan sudut pandang arsitektur logical view dan process view. Bab 3 menjabarkan realisasi seluruh use case (UC01–UC15) melalui identifikasi kelas perancangan, sequence diagram untuk skenario normal dan alternatif, serta diagram kelas per use case. Bab 4 menyajikan diagram kelas keseluruhan beserta daftar lengkap atribut dan metodenya. Bab 5 mendokumentasikan perancangan rinci kelas yang mencakup operasi, atribut, algoritma pseudo-code, dan query basis data untuk 42 kelas perancangan. Bab 6 menampilkan rancangan antarmuka visual secara menyeluruh (I-01 hingga I-XX). Dokumen ini ditutup oleh Bab 7 yang menyusun matriks kerunutan (traceability matrix) untuk memetakan keterkaitan antara kelas perancangan dengan use case yang direalisasikan. 
 
 <br>
 
