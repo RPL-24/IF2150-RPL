@@ -604,7 +604,7 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 | C07 | ListTugas | - jumlahLaporanAktif: Integer<br>- daftarLaporan: List[Laporan] | + urutPrioritas(): List[Laporan]<br>+ filterKategori(kategori: String): List[Laporan]<br>+ getLaporanById(idTiket: String): Laporan |
 | C08 | HasilPerbaikan | - idHasil: String<br>- catatan: String<br>- waktuUnggah: DateTime<br>- fotoBukti: List[Foto]<br>- videoBukti: List[Video] | + validasiBerkas(foto: List[Foto], video: List[Video]): Boolean<br>+ simpanBukti(): Boolean<br>+ getBuktiLengkap(): HasilPerbaikan |
 | C09 | Evaluasi | - idEvaluasi: String<br>- idTiket: String<br>- keputusan: String<br>- catatan: String<br>- waktuEvaluasi: DateTime | + Evaluasi(idTiket: String, keputusan: String, catatan: String)<br>+ simpanEvaluasi(): Boolean<br>+ getKeputusan(): String |
-| C10 | Notifikasi | - idNotifikasi: String<br>- isiPesan: String<br>- waktuKirim: DateTime<br>- statusBaca: Boolean | + Notifikasi(idUser: String, pesan: String)<br>+ createNotifikasi(idUser: String, pesan: String)<br>+ createNotifikasiSelesai(idUser: String)<br>+ buatPesan(): String<br>+ tandaiDibaca(): Boolean |
+| C10 | Notifikasi | - idNotifikasi: String<br>- isiPesan: String<br>- waktuKirim: DateTime<br>- statusBaca: Boolean | + Notifikasi(idUser: String, pesan: String)<br>+ createNotifikasi(idUser: String, pesan: String): Boolean<br>+ createNotifikasiSelesai(idUser: String): Boolean<br>+ buatPesan(): String<br>+ tandaiDibaca(): Boolean |
 | C11 | LaporPage | - kategoriDipilih: String<br>- inputDeskripsi: String<br>- berkasFoto: List[Foto]<br>- berkasVideo: List[Video]<br>- lokasiTerkunci: Lokasi | + bukaForm(): void<br>+ userInput(kategori: String, deskripsi: String, foto: List[Foto], video: List[Video]): void<br>+ kunciLokasi(): void<br>+ tandaiLokasiManual(latitude: Double, longitude: Double): void<br>+ submitForm(): void<br>+ batalkanLaporan(): void<br>- ambilTokenAntiBot(): String<br>- hapusBerkasTidakValid(): void<br>- tampilkanPesan(pesan: String): void |
 | C12 | ValidasiPage | - pilihanFilter: String<br>- idTiketTerpilih: String<br>- inputAlasanPenolakan: String | + bukaDasborPenanganan(): void<br>+ tampilkanAntrean(): void<br>+ pilihFilterKategori(kategori: String): void<br>+ pilihLaporan(idTiket: String): void<br>+ onValidClicked(idTiket: String): void<br>+ onTolakClicked(idTiket: String): void<br>+ submitAlasanPenolakan(idTiket: String, alasan: String): void |
 | C13 | PenugasanPage | - pilihanKategori: String<br>- statusTampilan: String<br>- idTiketAktif: String | + tampilkanPage(): void<br>+ pindahPage(): void<br>+ renderRincianLaporan(laporan: Laporan): void<br>+ renderListTugas(daftar: List[Laporan]): void<br>+ pilihLaporan(): void<br>+ pilihKategori(): void |
@@ -826,6 +826,108 @@ Tabel 5.8.1. Query Operasi [Nama Operasi]
 | *Q-003* | *INSERT INTO video (id_hasil, url, format, ukuran) VALUES ($1, $2, $3, $4);* | *Menyimpan tautan berkas video bukti yang diunggah ke Supabase Storage* |
 | *...* | *...* | *...* |
 
+## 5.9 Kelas Evaluasi
+**Nama Kelas:** *Evaluasi*  
+**ID Kelas:** *C09*
+
+Tabel 5.9.1. Operasi Kelas Evaluasi
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *Evaluasi(idTiket: String, keputusan: String, catatan: String)* | *public* | *Konstruktor untuk membuat instansiasi objek Evaluasi baru atas laporan tertentu.* |
+| *simpanEvaluasi(): Boolean* | *public* | *Menyimpan rekaman hasil keputusan evaluasi beserta catatan verifikasi ke basis data.* |
+| *getKeputusan(): String* | *public* | *Mengembalikan nilai keputusan evaluasi yang ditetapkan oleh Tim Administrasi.* |
+
+Tabel 5.9.2. Atribut Kelas Evaluasi
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idEvaluasi* | *private* | *String* |
+| *idTiket* | *private* | *String* |
+| *keputusan* | *private* | *String* |
+| *catatan* | *private* | *String* |
+| *waktuEvaluasi* | *private* | *DateTime* |
+
+### 5.9.1 Algoritma/Query
+
+**Nama Kelas:** *Evaluasi*  
+**Nama Operasi:** *simpanEvaluasi*  
+**ID Algoritma:** *Algo-009*
+
+```text
+function simpanEvaluasi():
+    waktuEvaluasi <- time.current
+    idEvaluasi <- Q-001(idTiket, keputusan, catatan, waktuEvaluasi)
+    if idEvaluasi = NIL then
+        return false
+    return true
+```
+
+Tabel 5.9.3. Query Operasi simpanEvaluasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-001* | *INSERT INTO evaluasi (id_tiket, keputusan, catatan, waktu_evaluasi) VALUES ($1, $2, $3, $4) RETURNING id_evaluasi;* | *Menyimpan data hasil evaluasi penanganan perbaikan oleh Tim Administrasi dan mengembalikan idEvaluasi.* |
+
+## 5.10 Kelas Notifikasi
+**Nama Kelas:** *Notifikasi*  
+**ID Kelas:** *C10*
+
+Tabel 5.10.1. Operasi Kelas Notifikasi
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *Notifikasi(idUser: String, pesan: String)* | *public* | *Konstruktor untuk membuat objek notifikasi baru.* |
+| *createNotifikasi(idUser: String, pesan: String): Boolean* | *public* | *Membuat rekaman notifikasi umum ke basis data untuk pengguna tertentu.* |
+| *createNotifikasiSelesai(idUser: String): Boolean* | *public* | *Membuat notifikasi khusus bahwa perbaikan fasilitas publik telah berhasil diselesaikan.* |
+| *buatPesan(): String* | *public* | *Mengembalikan teks isi pesan notifikasi.* |
+| *tandaiDibaca(): Boolean* | *public* | *Memperbarui status keterbacaan notifikasi menjadi true.* |
+
+Tabel 5.10.2. Atribut Kelas Notifikasi
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idNotifikasi* | *private* | *String* |
+| *isiPesan* | *private* | *String* |
+| *waktuKirim* | *private* | *DateTime* |
+| *statusBaca* | *private* | *Boolean* |
+
+### 5.10.1 Algoritma/Query
+
+**Nama Kelas:** *Notifikasi*  
+**Nama Operasi:** *createNotifikasi*  
+**ID Algoritma:** *Algo-010*
+
+```text
+function createNotifikasi(idUser, pesan):
+    waktuKirim <- time.current
+    statusBaca <- false
+    idNotifikasi <- Q-001(idUser, pesan, waktuKirim, statusBaca)
+    if idNotifikasi = NIL then
+        return false
+    return true
+```
+
+### 5.10.2 Algoritma/Query
+
+**Nama Kelas:** *Notifikasi*  
+**Nama Operasi:** *tandaiDibaca*  
+**ID Algoritma:** *Algo-011*
+
+```text
+function tandaiDibaca():
+    statusBaca <- true
+    berhasil <- Q-002(idNotifikasi)
+    return berhasil
+```
+
+Tabel 5.10.3. Query Operasi Kelas Notifikasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-001* | *INSERT INTO notifikasi (id_user, isi_pesan, waktu_kirim, status_baca) VALUES ($1, $2, $3, $4) RETURNING id_notifikasi;* | *Menyimpan pesan notifikasi baru ke database untuk akun pengguna tertentu.* |
+| *Q-002* | *UPDATE notifikasi SET status_baca = TRUE WHERE id_notifikasi = $1;* | *Mengubah status baca notifikasi menjadi true.* |
+
 ## 5.13 Kelas PenugasanPage
 **Nama Kelas:** *PenugasanPage*  
 **ID Kelas:** *C13*
@@ -911,6 +1013,73 @@ procedure submitForm():
         output("Gagal terkirim")
 ```
 
+## 5.15 Kelas EvaluasiPage
+**Nama Kelas:** *EvaluasiPage*  
+**ID Kelas:** *C15*
+
+Tabel 5.15.1. Operasi Kelas EvaluasiPage
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *tampilkanPage(): void* | *public* | *Membuka dashboard evaluasi Tim Administrasi, memverifikasi hak akses, dan memuat daftar pekerjaan siap evaluasi.* |
+| *renderListPekerjaan(daftar: List[Laporan]): void* | *public* | *Menampilkan daftar pekerjaan yang siap dievaluasi pada panel antarmuka.* |
+| *pilihPekerjaan(idTiket: String): void* | *public* | *Menerima tiket pekerjaan yang dipilih admin dan meminta rincian komparasi bukti dari EvaluasiController.* |
+| *renderDetailPekerjaan(laporan: Laporan, hasil: HasilPerbaikan): void* | *public* | *Menampilkan perbandingan berdampingan antara foto kerusakan awal dan foto bukti hasil kerja eksekutor.* |
+| *konfirmasiSelesai(): void* | *public* | *Mengirimkan keputusan persetujuan pekerjaan selesai saat admin menekan tombol "Konfirmasi Selesai".* |
+| *konfirmasiBelumSelesai(catatan: String): void* | *public* | *Mengirimkan penolakan pekerjaan beserta catatan evaluasi saat admin menekan tombol "Belum Selesai".* |
+| *mintaUlangBukti(catatan: String): void* | *public* | *Mengirimkan instruksi pengambilan ulang bukti kepada eksekutor saat admin menekan "Minta Ulang Bukti".* |
+| *tampilkanHasilEvaluasi(berhasil: Boolean): void* | *public* | *Menampilkan konfirmasi pesan berhasil atau gagalnya pemrosesan evaluasi pada antarmuka.* |
+
+Tabel 5.15.2. Atribut Kelas EvaluasiPage
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *daftarPekerjaan* | *private* | *List[Laporan]* |
+| *idTiketDipilih* | *private* | *String* |
+| *inputCatatan* | *private* | *String* |
+
+### 5.15.1 Algoritma/Query
+
+**Nama Kelas:** *EvaluasiPage*  
+**Nama Operasi:** *tampilkanPage*  
+**ID Algoritma:** *Algo-015*
+
+```text
+procedure tampilkanPage():
+    if not(evaluasiController.verifikasiAkses()) then
+        output("Akses ditolak: Hanya Tim Administrasi yang dapat mengakses halaman ini")
+        return
+    daftarPekerjaan <- evaluasiController.ambilDaftarUntukEvaluasi()
+    renderListPekerjaan(daftarPekerjaan)
+```
+
+### 5.15.2 Algoritma/Query
+
+**Nama Kelas:** *EvaluasiPage*  
+**Nama Operasi:** *pilihPekerjaan*  
+**ID Algoritma:** *Algo-016*
+
+```text
+procedure pilihPekerjaan(idTiket):
+    idTiketDipilih <- idTiket
+    detail <- evaluasiController.ambilDetailEvaluasi(idTiket)
+    renderDetailPekerjaan(detail.laporan, detail.hasilPerbaikan)
+```
+
+### 5.15.3 Algoritma/Query
+
+**Nama Kelas:** *EvaluasiPage*  
+**Nama Operasi:** *konfirmasiSelesai*  
+**ID Algoritma:** *Algo-017*
+
+```text
+procedure konfirmasiSelesai():
+    berhasil <- evaluasiController.simpanKeputusan(idTiketDipilih, "Berhasil", inputCatatan)
+    tampilkanHasilEvaluasi(berhasil)
+    if berhasil then
+        daftarPekerjaan <- evaluasiController.ambilDaftarUntukEvaluasi()
+        renderListPekerjaan(daftarPekerjaan)
+```
 
 ## 5.19 Kelas PenugasanController
 **Nama Kelas:** *PenugasanController*  
@@ -1019,6 +1188,154 @@ function unggahHasil(idTiket, catatan, foto, video):
     if not(hasil.validasiBerkas(foto, video)) then
         return false
     return hasil.simpanBukti()
+```
+
+## 5.21 Kelas EvaluasiController
+**Nama Kelas:** *EvaluasiController*  
+**ID Kelas:** *C21*
+
+Tabel 5.21.1. Operasi Kelas EvaluasiController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *verifikasiAkses(): Boolean* | *public* | *Memastikan pengguna yang login memiliki role Tim Administrasi.* |
+| *ambilDaftarUntukEvaluasi(): List[Laporan]* | *public* | *Mengambil daftar laporan yang siap dievaluasi dari basis data.* |
+| *pilihSiapEvaluasi(daftar: List[Laporan]): List[Laporan]* | *public* | *Menyaring laporan berstatus Dikerjakan yang telah memiliki kelengkapan berkas hasil perbaikan.* |
+| *urutkanBerdasarkanWaktu(daftar: List[Laporan]): List[Laporan]* | *public* | *Mengurutkan daftar penugasan evaluasi berdasarkan waktu unggah hasil kerja dari yang terbaru.* |
+| *ambilDetailEvaluasi(idTiket: String): Object* | *public* | *Mengambil objek gabungan Laporan awal dan HasilPerbaikan untuk ditampilkan berdampingan.* |
+| *simpanKeputusan(idTiket: String, keputusan: String, catatan: String): Boolean* | *public* | *Mengoordinasikan penyimpanan data evaluasi, pembaruan status laporan, dan pengiriman notifikasi.* |
+| *ambilIdEksekutor(idTiket: String): String* | *public* | *Mengambil ID pengguna eksekutor yang menangani tiket laporan terkait.* |
+| *ambilIdWarga(idTiket: String): String* | *public* | *Mengambil ID pengguna warga yang pertama kali melaporkan kerusakan.* |
+
+Tabel 5.21.2. Atribut Kelas EvaluasiController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idUserAktif* | *private* | *String* |
+
+### 5.21.1 Algoritma/Query
+
+**Nama Kelas:** *EvaluasiController*  
+**Nama Operasi:** *verifikasiAkses*  
+**ID Algoritma:** *Algo-021*
+
+```text
+function verifikasiAkses():
+    role <- user.getRole()
+    return role = "Tim Administrasi"
+```
+
+### 5.21.2 Algoritma/Query
+
+**Nama Kelas:** *EvaluasiController*  
+**Nama Operasi:** *ambilDaftarUntukEvaluasi*  
+**ID Algoritma:** *Algo-022*
+
+```text
+function ambilDaftarUntukEvaluasi():
+    if not(verifikasiAkses()) then
+        return NIL
+    daftar <- Q-001
+    daftarSiap <- pilihSiapEvaluasi(daftar)
+    return urutkanBerdasarkanWaktu(daftarSiap)
+```
+
+### 5.21.3 Algoritma/Query
+
+**Nama Kelas:** *EvaluasiController*  
+**Nama Operasi:** *simpanKeputusan*  
+**ID Algoritma:** *Algo-023*
+
+```text
+function simpanKeputusan(idTiket, keputusan, catatan):
+    if not(verifikasiAkses()) then
+        return false
+    evaluasi <- {Evaluasi baru}
+    evaluasi.Evaluasi(idTiket, keputusan, catatan)
+    suksesSimpan <- evaluasi.simpanEvaluasi()
+    if not(suksesSimpan) then
+        return false
+
+    idPelapor <- ambilIdWarga(idTiket)
+    idEksekutor <- ambilIdEksekutor(idTiket)
+
+    if keputusan = "Berhasil" then
+        Q-002(idTiket, "Berhasil")
+        notifikasiController.kirimNotifikasiSelesai(idPelapor)
+    else if keputusan = "Belum Selesai" then
+        Q-002(idTiket, "Dikerjakan")
+        notifikasiController.kirimNotifikasi(idEksekutor, "Perbaikan belum selesai: " + catatan)
+    else if keputusan = "Minta Ulang Bukti" then
+        Q-002(idTiket, "Dikerjakan")
+        notifikasiController.kirimNotifikasi(idEksekutor, "Unggah ulang bukti kerja: " + catatan)
+    return true
+```
+
+Tabel 5.21.3. Query Operasi Kelas EvaluasiController
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-001* | *SELECT l.id_tiket, l.kategori, l.deskripsi, l.status, hp.waktu_unggah, hp.catatan FROM laporan l JOIN hasil_perbaikan hp ON l.id_tiket = hp.id_tiket WHERE l.status = 'Dikerjakan';* | *Mengambil seluruh laporan berstatus Dikerjakan yang telah memiliki bukti perbaikan dari eksekutor.* |
+| *Q-002* | *UPDATE laporan SET status = $2 WHERE id_tiket = $1;* | *Memperbarui status laporan di database sesuai keputusan evaluasi.* |
+
+## 5.23 Kelas NotifikasiController
+**Nama Kelas:** *NotifikasiController*  
+**ID Kelas:** *C23*
+
+Tabel 5.23.1. Operasi Kelas NotifikasiController
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *susunPesanNotifikasi(idPenerima: String, pesan: String): void* | *public* | *Menyusun format teks pesan notifikasi yang akan dikirim.* |
+| *kirimNotifikasi(idPenerima: String, pesan: String): Boolean* | *public* | *Menyimpan notifikasi ke database dan menyiarkan notifikasi real-time via WebSocket Supabase Realtime.* |
+| *kirimNotifikasiSelesai(idPenerima: String): Boolean* | *public* | *Mengirimkan pesan terstandarisasi bahwa fasilitas publik yang dilaporkan telah berhasil diperbaiki.* |
+| *updateStatusBaca(idNotifikasi: String): Boolean* | *public* | *Mengoordinasikan pembaruan status baca notifikasi melalui pemanggilan entitas Notifikasi.* |
+
+Tabel 5.23.2. Atribut Kelas NotifikasiController
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idPenerima* | *private* | *String* |
+
+### 5.23.1 Algoritma/Query
+
+**Nama Kelas:** *NotifikasiController*  
+**Nama Operasi:** *kirimNotifikasi*  
+**ID Algoritma:** *Algo-025*
+
+```text
+function kirimNotifikasi(idPenerima, pesan):
+    notif <- {Notifikasi baru}
+    sukses <- notif.createNotifikasi(idPenerima, pesan)
+    if sukses then
+        realtime.broadcast("channel_user_" + idPenerima, pesan)
+        return true
+    return false
+```
+
+### 5.23.2 Algoritma/Query
+
+**Nama Kelas:** *NotifikasiController*  
+**Nama Operasi:** *kirimNotifikasiSelesai*  
+**ID Algoritma:** *Algo-026*
+
+```text
+function kirimNotifikasiSelesai(idPenerima):
+    pesan <- "Laporan kerusakan fasilitas publik Anda telah selesai diperbaiki."
+    return kirimNotifikasi(idPenerima, pesan)
+```
+
+### 5.23.3 Algoritma/Query
+
+**Nama Kelas:** *NotifikasiController*  
+**Nama Operasi:** *updateStatusBaca*  
+**ID Algoritma:** *Algo-027*
+
+```text
+function updateStatusBaca(idNotifikasi):
+    notif <- {Notifikasi baru}
+    notif.idNotifikasi <- idNotifikasi
+    return notif.tandaiDibaca()
 ```
 
 Tabel 5.x.x. Query Operasi [Nama Operasi]
