@@ -40,19 +40,13 @@ Dipersiapkan oleh:
 
 <br>
 
-> **Petunjuk pengerjaan:** *[Silahkan hapus bagian ini setelah selesai mengerjakan]*
->
-> Dokumen ini melanjutkan **Deskripsi Perancangan Perangkat Lunak**. Gunakan nama, ID, kebutuhan, dan use case yang konsisten dengan kedua dokumen tersebut. Contoh pola ID baru di bawah dapat disesuaikan dengan kesepakatan kelompok, ID yang sudah ada tetap dipertahankan.
-
-<br>
-
 ---
 
 
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Dokumen ini bertujuan untuk menjabarkan rancangan perangkat lunak antri.in yang mencakup pendahuluan, perancangan arsitektur, realisasi setiap use case melalui sequence diagram dan diagram kelas, serta keterkaitan kelas perancangan dengan use case. Dokumen ini akan digunakan oleh kelompok Ducklings sebagai acuan dalam pengembangan, serta asisten dosen dan dosen sebagai acuan dalam penilaian.
+Dokumen Deskripsi Perancangan Perangkat Lunak (DPPL) 2 ini bertujuan untuk menjabarkan rancangan perangkat lunak antri.in agar siap diimplementasikan oleh tim pengembang (kelompok Ducklings) dan dinilai oleh asisten dosen serta dosen. Dokumen ini merupakan kelanjutan dari spesifikasi yang telah disepakati sebelumnya, dengan catatan bahwa bagian baru dalam dokumen ini yang sama sekali belum pernah didefinisikan pada dokumen-dokumen sebelumnya secara khusus terdapat pada BAB 5 (Perancangan Rinci Kelas) yang memuat logika algoritma beserta query basis data, dan BAB 6 (Perancangan Antarmuka) yang mendefinisikan prototipe antarmuka produk.
 
 ## 1.2 Lingkup Masalah
 Fenomena makanan viral memicu antrean panjang berjam-jam yang membebani pelanggan, karena mereka harus datang lebih awal, menunggu di lokasi, dan mengantre tanpa informasi stok menu maupun estimasi waktu tunggu, ditambah proses pemesanan dan pembayaran di kasir yang memakan waktu 2-5 menit per transaksi. Aplikasi pesan-antar seperti GoFood, GrabFood, dan ShopeeFood pun hanya berfokus pada pengantaran dan tidak membatasi kuota transaksi per rentang waktu, sehingga restoran kewalahan saat pesanan online dan pelanggan fisik datang bersamaan. Celah utamanya adalah belum adanya integrasi antara pemantauan antrean real-time, pengaturan slot waktu, serta pemesanan dan pembayaran awal, sehingga antri.in hadir untuk menghapus waktu berpikir di kasir, meratakan kedatangan pelanggan berbasis kuota jam, dan memberi kebebasan bagi konsumen selama menunggu. Dari fenomena tersebut perangkat lunak bernama antri.in yang akan kami kembangkan merupakan sistem pemesanan makanan viral dengan antrean digital berbasis web yang bertujuan agar pengguna tidak perlu mengantri secara langsung pada restoran. Sistem ini memungkinkan pengguna untuk mencari restoran makanan viral, melihat informasi makanan dan restoran, melakukan pemesanan, memantau antrean dan estimasi pesanan akan selesai, serta fitur booking tempat jika pengguna memutuskan untuk dine-in. Cara kerja dari aplikasi berbasis web ini adalah pertama pengguna memilih restoran yang tersedia, kemudian pengguna dapat membaca informasi mengenai makanan yang terdapat di restoran tersebut. Jika sudah, pengguna dapat memilih makanan yang akan dibeli dan lanjut ke proses pembayaran. Ketika pengguna sudah membayar, barulah akan mendapatkan nomor antrian dan estimasi pesanan selesai sehingga pengguna dapat memperkirakan waktu kedatangan.
@@ -104,6 +98,7 @@ Tabel 1.4. Aturan Penomoran
 | *Aktor* | *ACXX* | Mulai dari 01, 02, dan seterusnya |
 | *Algoritma* | *Algo-XX* | Mulai dari 01, 02, dan seterusnya |
 | *Antarmuka* | *I-XX* | Mulai dari 01, 02, dan seterusnya |
+| *Query* | *Q-XXX* | Mulai dari 001, 002, dan seterusnya |
 | *Objek Antarmuka* | *I-XX-NN* | ID layar diikuti nomor urut objek pada layar tersebut |
 | *...* | *...* |
 
@@ -117,7 +112,7 @@ Sommerville, I., _Software Engineering_, _10th Edition_, Pearson, 2016.
 Larman, C., _Applying UML and Patterns: An Introduction to Object-Oriented Analysis and Design and Iterative Development_, _3rd Edition_, Prentice Hall, 2004.
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut, dengan maksimal 1 paragraf.
+Dokumen ini disusun dengan isi tujuh bab untuk memberikan gambaran detail mengenai rancangan aplikasi antri.in. Bab 1 memberikan pengantar yang mencakup tujuan penulisan, penegasan lingkup masalah pada perancangan, daftar istilah, aturan penomoran, referensi, serta ikhtisar dokumen. Bab 2 memaparkan perancangan arsitektur yang meliputi lingkungan implementasi, arsitektur MVC, pengelompokan komponen, dan sudut pandang arsitektur logical view dan process view. Bab 3 menjabarkan realisasi seluruh use case (UC01–UC15) melalui identifikasi kelas perancangan, sequence diagram untuk skenario normal dan alternatif, serta diagram kelas per use case. Bab 4 menyajikan diagram kelas keseluruhan beserta daftar lengkap atribut dan metodenya. Bab 5 mendokumentasikan perancangan rinci kelas yang mencakup operasi, atribut, algoritma pseudo-code, dan query basis data untuk 42 kelas perancangan. Bab 6 menampilkan rancangan antarmuka visual secara menyeluruh (I-01 hingga I-XX). Dokumen ini ditutup oleh Bab 7 yang menyusun matriks kerunutan (traceability matrix) untuk memetakan keterkaitan antara kelas perancangan dengan use case yang direalisasikan. 
 
 <br>
 

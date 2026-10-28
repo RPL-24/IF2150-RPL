@@ -70,6 +70,12 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | *Gemini* | *Mengecek dan memperbaiki diagram* | *"cek diagram sequence dan diagram yang sudah saya buat apakah sudah sesuai, dna jika ada yang perlu diubah beritahu bagian mana saja yang perlu diubah"* | *Saya membaca ulang hasil yang dicek AI dan memperbaikinya jika sesuai* |
 | | | | | |
 
+### Milestone 8
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Mengecek Ketepatan Algoritma* | *"Apakah algoritma yang ditulis tepat tanpa kesalahan logika?"* | *Saya menyesuaikan algoritma yang ditulis agar tidak salah* |
+| | | | | |
+
 ---
 ### Pernyataan Integritas dan Persetujuan
 

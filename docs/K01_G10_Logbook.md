@@ -210,6 +210,7 @@
 | *26-10-2026* | *Chatima Anandakhorita* | *Memperbaiki kesalahan penulisan pada implementasi Bab 5 Kelas 1-10* | *0.2* | *Done* | *-* |
 | *27-10-2026* | *Muhammad Nur Fikri Hariyawan* | *Mengerjakan Bab 5 Kelas 11-20* | *2.4* | *Done* | *-* |
 | *28-10-2026* | *Athallah Nanda Andita* | *Mengerjakan Bab 5 Kelas 21 - 30* | *2.5* | *Done* | *-* |
+| *28-10-2026* | *Chatima Anandakhorita* | *Memperbaiki 1.1, 1..4, kemudian menambahkan 1.6* | *1* | *Done* | *-* |
 
 **Catatan/Evaluasi Milestone 8:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
