@@ -1,4 +1,4 @@
-﻿<h1>
+<h1>
 IF2150 REKAYASA PERANGKAT LUNAK
 <br>
 TUGAS 5
@@ -1694,7 +1694,6 @@ FUNCTION processSessionCreation(idMentor: string, data: SessionData): Promise<Se
         THROW Error("SCHEDULE_CONFLICT")
     END IF
 
-    // Operasi CRUD pembuatan dan penyimpanan sesi didelegasikan ke kelas entitas Session
     newSession <- NEW Session(idMentor, data.topic, data.schedule, data.format, data.capacity)
     savedSession <- AWAIT newSession.saveSession()
     THIS.session <- savedSession
@@ -1708,7 +1707,6 @@ END FUNCTION
 
 ```text
 FUNCTION findRecommendation(idMentee: string): Promise<Session[]>
-    // Mengambil data melalui getter pada kelas entitas Preference dan Session
     preference <- AWAIT Preference.getPreferenceByUser(idMentee)
     IF preference IS NULL OR NOT preference.isComplete() THEN
         THROW Error("PREFERENCE_NOT_SET")
@@ -1747,7 +1745,6 @@ END FUNCTION
 
 ```text
 FUNCTION processSessionConfirmation(idSession: string, idUser: string, isConducted: boolean, reason?: string): Promise<Session>
-    // Mengambil objek entitas menggunakan getter pada kelas Session
     targetSession <- AWAIT Session.getSessionById(idSession)
     IF targetSession IS NULL THEN
         THROW Error("SESSION_NOT_FOUND")
@@ -1819,7 +1816,6 @@ FUNCTION submitFeedback(idSession: string, idMentee: string, rating: number, com
 END FUNCTION
 
 FUNCTION saveFeedback(idSession: string, idMentee: string, rating: number, comment?: string): Promise<Feedback>
-    // Pembuatan dan penyimpanan data didelegasikan ke setter/CRUD kelas entitas Feedback
     feedbackObj <- NEW Feedback(idSession, idMentee)
     feedbackObj.setRating(rating)
     feedbackObj.setComment(comment)
@@ -1846,7 +1842,6 @@ FUNCTION retrieveFeedbackBySession(idSession: string, idMentor: string): Promise
         THROW Error("SESSION_NOT_COMPLETED")
     END IF
 
-    // Pengambilan daftar feedback didelegasikan ke metode getter kelas entitas Feedback
     THIS.feedbackList <- AWAIT Feedback.getFeedbackBySession(idSession)
     RETURN THIS.feedbackList
 END FUNCTION
