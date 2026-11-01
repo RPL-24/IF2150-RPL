@@ -9,7 +9,7 @@ IMPLEMENTASI PERANGKAT LUNAK
 
 ## *SisaRasa*
 <p align="center">
-  <img alt="Penerapan Arsitektur Client-Server dan Layered pada SisaRasa" src="./assets/diagram/sisarasa-logo.png" width="50%">
+  <img alt="Penerapan Arsitektur Client-Server dan Layered pada SisaRasa" src="./assets/sisarasa-logo.png" width="50%">
 </p>
 
 ### Untuk: *Amanda Aurellia Salsabilla*
