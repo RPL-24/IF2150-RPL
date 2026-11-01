@@ -7,24 +7,26 @@ IMPLEMENTASI PERANGKAT LUNAK
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
-### *[Logo Perangkat Lunak]*
+## *SisaRasa*
+<p align="center">
+  <img alt="Penerapan Arsitektur Client-Server dan Layered pada SisaRasa" src="./assets/diagram/sisarasa-logo.png" width="50%">
+</p>
 
-### Untuk: *[Nama Asisten]*
+### Untuk: *Amanda Aurellia Salsabilla*
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
-| --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| --------- | ---------- |
+| Kelas     | K1         |
+| Kelompok  | 6          |
 
-| NIM | Nama |
-|---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| NIM      | Nama                         |
+| -------- | ---------------------------- |
+| 13525067 | Fathar Atandra Denaya        |
+| 13525040 | Muhammad Zaky Amani          |
+| 13525139 | Josephine Bintang N.L        |
+| 13525070 | Devina Athalia Putri Kusumah |
+| 13525004 | Nabil Rabbani                |
 ---
 
 > **Petunjuk pengerjaan:** *[Silahkan hapus bagian ini setelah selesai mengerjakan]*
@@ -34,7 +36,7 @@ Dipersiapkan oleh:
 ---
 
 **Deadline:** Rabu, 11 November 2026, 21.50 WIB
-**Asistensi akbar:** *[Hari, DD Bulan YYYY, HH.MM WIB, lokasi/link]*
+**Asistensi akbar:** Senin, 2 November 2026, 19.00 WIB
 
 ---
 
@@ -184,14 +186,17 @@ Ketentuan:
 
 ## B.1 Perubahan dari DPPL
 
-Catat semua perbedaan antara perancangan (DPPL) dan implementasi akhir. Jika tidak ada perubahan, tuliskan "Tidak ada perubahan".
+Perbedaan antara perancangan (DPPL) dan implementasi akhir dicatat pada tabel berikut.
 
 Tabel B.1. Perubahan dari DPPL
 
 | No | Bagian DPPL | Rancangan Awal | Implementasi Akhir | Alasan |
-| :--- | :--- | :--- | :--- | :--- |
-| 1 | *[mis. Kelas C05, layar I-03, tabel `orders`]* | *[Yang direncanakan]* | *[Yang dibuat]* | *[Alasan perubahan]* |
-| *...* | *...* | *...* | *...* | *...* |
+|:---|:------------|:---------------|:-------------------|:-------|
+| 1 | Tabel 2.3 (komponen Modul Pembeli dan Modul Penjual); layar I-01 dan I-02 | Tidak ada view dan controller khusus untuk autentikasi. | Ditambahkan `AuthView` (layar Masuk dan Registrasi) beserta penanganan autentikasi pada rute `/api/auth`. Server mengeluarkan token JWT yang disisipkan pada setiap permintaan berikutnya. | Seluruh use case (UC01–UC07) membutuhkan identitas dan peran pengguna. Token JWT dibutuhkan untuk otorisasi API sesuai protokol jaringan pada DPPL 2.4.2.2. |
+| 2 | Tabel 2.3 (`KatalogAnonimView`); layar I-04 | Kontrol filter alergen berada di dalam `KatalogAnonimView`. | Filter alergen dipisah menjadi layar tersendiri, `FilterAlergenView`. Katalog hanya menyediakan tombol "Filter alergen" yang membuka layar tersebut. | Layar ponsel terbatas. Layar terpisah memberi ruang untuk delapan pilihan alergen dan peringatan kontaminasi silang (KF07). |
+| 3 | Tabel 2.3; layar I-08 | Tidak ada layar khusus pengaturan akun. | Ditambahkan `AkunView` yang memuat filter alergen, alamat server, riwayat pengaduan, dan tombol keluar. | Pengguna membutuhkan satu tempat untuk preferensi, akses riwayat pengaduan (UC06), dan mengakhiri sesi. |
+| 4 | `TiketPickupView`, kelas C08 `QRPickup`; layar I-07 | QR pickup ditampilkan dari data yang diambil dari server. | QR dan OTP cadangan disimpan di perangkat sebagai tiket tersimpan, sehingga tetap dapat dibuka tanpa internet. Konfirmasi pengambilan oleh Penjual tetap diverifikasi server. | Sinyal di lokasi pickup sering lemah. Penyimpanan lokal menjaga Pembeli tetap dapat menunjukkan tiket. |
+| 5 | Kelas C04 `Pesanan`, atribut `statusPesanan` | Status: menunggu bayar, menunggu pickup, selesai, gagal diambil, dibatalkan. | Tujuh status: Menunggu pembayaran, Siap diambil, Dibatalkan, Selesai, Dalam pengaduan, Direfund, dan Tidak diambil. | Status pengaduan dan refund (UC06) perlu terlihat langsung pada daftar pesanan. Istilah disesuaikan dengan bahasa pengguna. |
 
 ## B.2 Bukti Penerapan Best Practices
 
@@ -229,8 +234,11 @@ Tabel B.4. Kontribusi Anggota
 
 | NIM | Nama | Modul / Fitur yang Dikerjakan | Persentase Kontribusi |
 | :--- | :--- | :--- | :--- |
-| *[NIM 1]* | *[Nama]* | *[Modul/fitur]* | *[%]* |
-| *...* | *...* | *...* | *...* |
+| *13525004* | *Nabil Rabbani* | *[Modul/fitur]* | *[%]* |
+| *13525040* | *Muhammad Zaky Amani* | *[Modul/fitur]* | *[%]* |
+| *13525067* | *Fathar Atandra Denaya* | *[Modul/fitur]* | *[%]* |
+| *13525070* | *Devina Athalia Putri Kusumah* | *[Modul/fitur]* | *[%]* |
+| *13525139* | *Josephine Bintang N.L* | *[Modul/fitur]* | *[%]* |
 
 ## B.5 Traceability Kelas Perancangan ke Implementasi
 
