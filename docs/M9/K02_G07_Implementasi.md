@@ -7,24 +7,25 @@ IMPLEMENTASI PERANGKAT LUNAK
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
-### *[Logo Perangkat Lunak]*
+## *Pross*
+<img alt="Logo Pross" src="./assets/Logo temp Pross.jpeg" width="70%">
 
-### Untuk: *[Nama Asisten]*
+### Untuk: *Stefani Angeline Oroh*
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | *K02* |
+| Kelompok | *G07* |
 
 | NIM | Nama |
-|---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| --- | --- |
+| *13525002* | *Ahmad Boutros Fathir* |
+| *13525020* | *Klio Lysander* |
+| *13525047* | *Muhammad Fakhriyan Rizki M.* |
+| *13525053* | *Kevin Sie* |
+| *13525056* | *Mochammad Nuha Al Ghifari* |
+| *13525062* | *Rafel Dzinun Muhammad* |
 ---
 
 > **Petunjuk pengerjaan:** *[Silahkan hapus bagian ini setelah selesai mengerjakan]*
