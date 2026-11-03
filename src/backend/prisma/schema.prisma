@@ -1,0 +1,163 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  PELANGGAN
+  PEMBERI_JASA
+  LAYANAN_PELANGGAN
+}
+
+model Pengguna {
+  idPengguna      String    @id @default(uuid()) @map("id_pengguna")
+  namaPengguna    String    @map("nama_pengguna")
+  username        String    @unique
+  password        String
+  email           String    @unique
+  nomorTelpon     String    @map("nomor_telpon")
+  role            Role      @default(PELANGGAN)
+  avatarUrl       String?   @map("avatar_url")
+  akumulasiRating Float     @default(0.0) @map("akumulasi_rating")
+  riwayatRating   Float[]   @default([]) @map("riwayat_rating")
+
+  pemberiJasa      PemberiJasa?
+  layananPelanggan LayananPelanggan?
+  kontrakPelanggan KontrakPekerjaan[] @relation("PelangganKontrak")
+  pesanTerkirim    Komunikasi[]       @relation("PengirimPesan")
+  pesanDiterima    Komunikasi[]       @relation("PenerimaPesan")
+  tiketDiajukan    TiketLaporan[]
+  ratingDiberi     Rating[]           @relation("RatingPemberi")
+  ratingDiterima   Rating[]           @relation("RatingPenerima")
+  notifikasi       Notifikasi[]
+
+  @@map("pengguna")
+}
+
+model KategoriJasa {
+  idKategoriJasa String        @id @default(uuid()) @map("id_kategori_jasa")
+  jenisJasa      String        @map("jenis_jasa")
+  deskripsiJasa  String        @map("deskripsi_jasa")
+  tarif          Float
+  jamKerja       String        @map("jam_kerja")
+  daerahKerja    String        @map("daerah_kerja")
+  pemberiJasa    PemberiJasa[]
+
+  @@map("kategori_jasa")
+}
+
+model PemberiJasa {
+  idPemberiJasa      String            @id @map("id_pemberi_jasa")
+  namaToko           String            @default("") @map("nama_toko")
+  idKategoriJasa     String?           @map("id_kategori_jasa")
+  jenisJasa          String?           @map("jenis_jasa")
+  latitude           Float?
+  longitude          Float?
+  statusKetersediaan String            @default("Available") @map("status_ketersediaan")
+  isOnline           Boolean           @default(true) @map("is_online")
+  version            Int               @default(1) // Optimistic Locking KNF04
+
+  pengguna           Pengguna          @relation(fields: [idPemberiJasa], references: [idPengguna], onDelete: Cascade)
+  kategoriJasa       KategoriJasa?     @relation(fields: [idKategoriJasa], references: [idKategoriJasa])
+  kontrakPekerjaan   KontrakPekerjaan[]
+
+  @@map("pemberi_jasa")
+}
+
+model LayananPelanggan {
+  idLayananPelanggan String         @id @map("id_layanan_pelanggan")
+  status             String         @default("Available")
+  jumlahTiketDipegang Int           @default(0) @map("jumlah_tiket_dipegang")
+
+  pengguna           Pengguna       @relation(fields: [idLayananPelanggan], references: [idPengguna], onDelete: Cascade)
+  tiketDikelola      TiketLaporan[]
+
+  @@map("layanan_pelanggan")
+}
+
+model KontrakPekerjaan {
+  idKontrakPekerjaan String    @id @default(uuid()) @map("id_kontrak_pekerjaan")
+  idPelanggan        String    @map("id_pelanggan")
+  idPemberiJasa      String    @map("id_pemberi_jasa")
+  detailPekerjaan    String    @map("detail_pekerjaan")
+  persetujuanHarga   Int       @map("persetujuan_harga")
+  statusPekerjaan    String    @default("Menunggu") @map("status_pekerjaan") // Menunggu, On Progress, Menunggu Konfirmasi, Done, Ditolak
+  hasRating          Boolean   @default(false) @map("has_rating")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  expiresAt          DateTime? @map("expires_at") // Auto-cancel 30 menit (KF07)
+
+  pelanggan   Pengguna    @relation("PelangganKontrak", fields: [idPelanggan], references: [idPengguna])
+  pemberiJasa PemberiJasa @relation(fields: [idPemberiJasa], references: [idPemberiJasa])
+  rating      Rating?
+
+  @@map("kontrak_pekerjaan")
+}
+
+model Komunikasi {
+  idChat         String   @id @default(uuid()) @map("id_chat")
+  idPengguna     String   @map("id_pengguna")
+  idPenerima     String   @map("id_penerima")
+  idTiket        String?  @map("id_tiket")
+  isiPesan       String   @map("isi_pesan")
+  lampiranUrl    String?  @map("lampiran_url")
+  waktuTerkirim  DateTime @default(now()) @map("waktu_terkirim")
+  isChatTerbaca  Boolean  @default(false) @map("is_chat_terbaca")
+  statusChat     String   @default("SENT") @map("status_chat")
+  durasiChat     Float    @default(0) @map("durasi_chat")
+
+  pengirim Pengguna      @relation("PengirimPesan", fields: [idPengguna], references: [idPengguna])
+  penerima Pengguna      @relation("PenerimaPesan", fields: [idPenerima], references: [idPengguna])
+  tiket    TiketLaporan? @relation(fields: [idTiket], references: [idTiket])
+
+  @@map("komunikasi")
+}
+
+model TiketLaporan {
+  idTiket            String            @id @default(uuid()) @map("id_tiket")
+  idPengguna         String            @map("id_pengguna")
+  idLayananPelanggan String?           @map("id_layanan_pelanggan")
+  jenisTiket         String            @map("jenis_tiket")
+  keteranganTiket    String            @map("keterangan_tiket")
+  buktiFotoUrl       String?           @map("bukti_foto_url")
+  tanggalTiket       DateTime          @default(now()) @map("tanggal_tiket")
+  statusTiket        String            @default("Open") @map("status_tiket") // Open, Diproses, Selesai
+
+  pelapor          Pengguna          @relation(fields: [idPengguna], references: [idPengguna])
+  layananPelanggan LayananPelanggan? @relation(fields: [idLayananPelanggan], references: [idLayananPelanggan])
+  percakapan       Komunikasi[]
+
+  @@map("tiket_laporan")
+}
+
+model Rating {
+  idRating           String   @id @default(uuid()) @map("id_rating")
+  idPenggunaPemberi  String   @map("id_pengguna_pemberi")
+  idPenggunaPenerima String   @map("id_pengguna_penerima")
+  idKontrakPekerjaan String   @unique @map("id_kontrak_pekerjaan")
+  nilaiRating        Float    @map("nilai_rating")
+  ulasan             String?
+  tags               String[] @default([])
+  tanggalRating      DateTime @default(now()) @map("tanggal_rating")
+
+  pemberi Pengguna         @relation("RatingPemberi", fields: [idPenggunaPemberi], references: [idPengguna])
+  penerima Pengguna        @relation("RatingPenerima", fields: [idPenggunaPenerima], references: [idPengguna])
+  kontrak KontrakPekerjaan @relation(fields: [idKontrakPekerjaan], references: [idKontrakPekerjaan])
+
+  @@map("rating")
+}
+
+model Notifikasi {
+  idNotifikasi    String   @id @default(uuid()) @map("id_notifikasi")
+  idPenerima      String   @map("id_penerima")
+  isiNotifikasi   String   @map("isi_pesan")
+  waktuNotifikasi DateTime @default(now()) @map("waktu_notifikasi")
+  statusBaca      String   @default("Unread") @map("status_baca")
+
+  penerima Pengguna @relation(fields: [idPenerima], references: [idPengguna])
+
+  @@map("notifikasi")
+}
