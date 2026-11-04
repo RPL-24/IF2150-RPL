@@ -1,9 +1,12 @@
-// Milik Fondasi (F). Form login diisi di L6.
-export default function Page() {
+import { FormMasuk } from "@/client/components/shared/FormMasuk";
+import { nextAman } from "@/lib/navigasi";
+
+export default async function Page({ searchParams }: PageProps<"/login">) {
+  const { next } = await searchParams;
   return (
-    <main className="p-6">
-      <h1 className="text-xl font-semibold">login</h1>
-      <p className="text-sm text-gray-500">Belum diimplementasi (L6).</p>
+    <main className="mx-auto w-full max-w-sm p-6">
+      <h1 className="mb-6 text-2xl font-semibold">Masuk</h1>
+      <FormMasuk next={nextAman(typeof next === "string" ? next : null)} />
     </main>
   );
 }
