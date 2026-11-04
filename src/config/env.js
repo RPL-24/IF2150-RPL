@@ -20,7 +20,16 @@ module.exports = {
     database: process.env.DB_NAME || 'itbeli',
   },
 
+  smtp: {
+    host: process.env.SMTP_HOST || 'localhost',
+    port: angka('SMTP_PORT', 1025),
+    user: process.env.SMTP_USER || undefined,
+    pass: process.env.SMTP_PASS || undefined,
+    pengirim: process.env.SUREL_PENGIRIM || 'ITBELI <no-reply@itbeli.local>',
+  },
+
   bcryptSaltRounds: angka('BCRYPT_SALT_ROUNDS', 10),
   durasiSesiJam: angka('DURASI_SESI_JAM', 24),
+  durasiKodeMenit: angka('DURASI_KODE_MENIT', 15),
   kunciEnkripsiPesan: process.env.KUNCI_ENKRIPSI_PESAN,
 };
