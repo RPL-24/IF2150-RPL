@@ -13,13 +13,14 @@
     "db:seed:local": "wrangler d1 execute sehati-db --local --file=./seed/seed.sql",
     "db:studio:local": "DB_TARGET=local drizzle-kit studio",
     "db:studio:remote": "DB_TARGET=remote drizzle-kit studio",
-    "cf-typegen": "wrangler types",
+    "cf-typegen": "wrangler types"
   },
   "devDependencies": {
-    "@types/bun": "latest",
     "@types/better-sqlite3": "^7.6.0",
+    "@types/bun": "latest",
     "better-sqlite3": "^11.0.0",
     "drizzle-kit": "^0.31.11",
+    "vitest": "^5.1.0",
     "wrangler": "^4.157.0"
   },
   "peerDependencies": {
