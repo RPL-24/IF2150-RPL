@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const Pengguna = require('../models/Pengguna');
+const Akun = require('../models/Akun');
 
 exports.tampilLogin = (req, res) => {
   if (req.session.user) return res.redirect('/' + req.session.user.peran);
@@ -8,15 +8,19 @@ exports.tampilLogin = (req, res) => {
 
 exports.prosesLogin = (req, res) => {
   const { email, kataSandi } = req.body;
-  const p = Pengguna.cariByEmail(email);
+  const akun = Akun.cariByEmail(email);
 
-  if (!p || !bcrypt.compareSync(kataSandi, p.kataSandi)) {
+  if (!akun || !bcrypt.compareSync(kataSandi, akun.sandi)) {
     req.flash('error', 'Email atau kata sandi salah');
     return res.redirect('/login');
   }
+  if (akun.statusAkun === 'diblokir') {
+    req.flash('error', 'Akun Anda diblokir');
+    return res.redirect('/login');
+  }
 
-  req.session.user = { id: p.id, nama: p.nama, peran: p.peran };
-  res.redirect('/' + p.peran);
+  req.session.user = { id: akun.id, nama: akun.nama, peran: akun.peran };
+  res.redirect('/' + akun.peran);
 };
 
 exports.logout = (req, res) => {
