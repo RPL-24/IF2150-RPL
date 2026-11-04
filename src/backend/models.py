@@ -2,8 +2,9 @@ import sqlite3
 from dataclasses import dataclass
 from typing import Optional
 import bcrypt
+from pathlib import Path
 
-DATABASE_NAME = "savebite.db"
+DATABASE_NAME = str(Path(__file__).resolve().parent.parent / "savebite.db")
 
 CREATE_TABLES_SQL = """
 PRAGMA foreign_keys = ON;
