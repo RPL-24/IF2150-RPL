@@ -155,7 +155,10 @@ export default function AddProductPage({ navigation }: Props) {
   }
 
   return (
-    <SafeAreaView style={styles.screen} edges={['top', 'bottom']}>
+    <SafeAreaView
+      style={[styles.screen, { backgroundColor: palette.background }]}
+      edges={['top', 'bottom']}
+    >
       <StatusBar barStyle="dark-content" />
 
       <KeyboardAvoidingView
