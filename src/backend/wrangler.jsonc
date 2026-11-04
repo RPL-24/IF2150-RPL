@@ -1,0 +1,5 @@
+{
+	"main": "src/index.ts",
+  "name": "sehati-backend",
+  "compatibility_date": "2026-11-04",
+}
