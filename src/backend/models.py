@@ -1,6 +1,7 @@
 import sqlite3
 from dataclasses import dataclass
-from typing import Optional
+from datetime import datetime
+from typing import ClassVar, List, Optional
 import bcrypt
 
 DATABASE_NAME = "savebite.db"
@@ -147,8 +148,72 @@ class ListingMakanan:
     foto: Optional[str] = None
     aktif: bool = True
 
+    # Satu-satunya definisi kriteria "tersedia" di level query (UC02, UC04):
+    # aktif, stok > 0, dan belum melewati batas kedaluwarsa.
+    # datetime() menyamakan format "YYYY-MM-DD HH:MM:SS" dan "YYYY-MM-DDTHH:MM:SS".
+    KONDISI_TERSEDIA: ClassVar[str] = (
+        "aktif = 1 AND stok > 0 "
+        "AND datetime(batas_kedaluwarsa) > datetime(:waktu)"
+    )
+
     def is_tersedia(self, waktu_sekarang: str) -> bool:
         return self.aktif and self.stok > 0 and waktu_sekarang < self.batas_kedaluwarsa
+
+    @staticmethod
+    def _waktu_sekarang() -> str:
+        return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    @classmethod
+    def _dari_baris(cls, kolom: List[str], baris: tuple) -> "ListingMakanan":
+        data = dict(zip(kolom, baris))
+        data["aktif"] = bool(data["aktif"])
+        return cls(**data)
+
+    @classmethod
+    def ambilSemuaTersedia(
+        cls, conn: sqlite3.Connection, waktu: Optional[str] = None
+    ) -> List["ListingMakanan"]:
+        """Mengambil seluruh listing yang aktif, berstok > 0, dan belum kedaluwarsa (UC02)."""
+        return cls.cariDaftar(conn, waktu=waktu)
+
+    @classmethod
+    def cariDaftar(
+        cls,
+        conn: sqlite3.Connection,
+        kata_kunci: Optional[str] = None,
+        harga_min: Optional[int] = None,
+        harga_maks: Optional[int] = None,
+        waktu: Optional[str] = None,
+    ) -> List["ListingMakanan"]:
+        """Mengambil listing tersedia yang namanya memuat kata kunci dan harganya
+        berada dalam rentang (UC04). Parameter None berarti filter tidak dipakai."""
+        kata_kunci = kata_kunci.strip() if kata_kunci else None
+        pola = None
+        if kata_kunci:
+            # Escape karakter wildcard LIKE agar input pengguna dicari apa adanya
+            pola = "%" + kata_kunci.lower().replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
+
+        query = (
+            "SELECT id_listing, id_penjual, nama_makanan, porsi, kondisi, harga, stok, "
+            "batas_kedaluwarsa, deskripsi, foto, aktif "
+            "FROM listing_makanan "
+            f"WHERE {cls.KONDISI_TERSEDIA} "
+            "AND (:pola IS NULL OR LOWER(nama_makanan) LIKE :pola ESCAPE '\\') "
+            "AND (:harga_min IS NULL OR harga >= :harga_min) "
+            "AND (:harga_maks IS NULL OR harga <= :harga_maks) "
+            "ORDER BY datetime(batas_kedaluwarsa) ASC"
+        )
+        cursor = conn.execute(
+            query,
+            {
+                "waktu": waktu or cls._waktu_sekarang(),
+                "pola": pola,
+                "harga_min": harga_min,
+                "harga_maks": harga_maks,
+            },
+        )
+        kolom = [d[0] for d in cursor.description]
+        return [cls._dari_baris(kolom, baris) for baris in cursor.fetchall()]
 
 @dataclass
 class Transaksi:
