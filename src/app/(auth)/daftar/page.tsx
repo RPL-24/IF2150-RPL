@@ -1,9 +1,12 @@
-// Milik Fondasi (F). Form daftar diisi di L6.
-export default function Page() {
+import { FormDaftar } from "@/client/components/shared/FormDaftar";
+import { nextAman } from "@/lib/navigasi";
+
+export default async function Page({ searchParams }: PageProps<"/daftar">) {
+  const { next } = await searchParams;
   return (
-    <main className="p-6">
-      <h1 className="text-xl font-semibold">daftar</h1>
-      <p className="text-sm text-gray-500">Belum diimplementasi (L6).</p>
+    <main className="mx-auto w-full max-w-sm p-6">
+      <h1 className="mb-6 text-2xl font-semibold">Daftar</h1>
+      <FormDaftar next={nextAman(typeof next === "string" ? next : null)} />
     </main>
   );
 }
