@@ -1,0 +1,12 @@
+<%- include('../partials/header') %>
+<div class="card">
+  <h1>Masuk ke LawHub</h1>
+  <form method="POST" action="/login">
+    <label>Email</label>
+    <input type="email" name="email" required>
+    <label>Kata sandi</label>
+    <input type="password" name="kataSandi" required>
+    <button type="submit" class="btn">Masuk</button>
+  </form>
+</div>
+<%- include('../partials/footer') %>

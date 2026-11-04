@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LawHub</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <a href="/" class="brand">LawHub</a>
+  <% if (user) { %>
+    <span>Halo, <%= user.nama %> (<%= user.peran %>)</span>
+    <a href="/logout">Keluar</a>
+  <% } %>
+</nav>
+<main class="container">
+<% sukses.forEach(p => { %><div class="alert alert-sukses"><%= p %></div><% }) %>
+<% error.forEach(p => { %><div class="alert alert-error"><%= p %></div><% }) %>
