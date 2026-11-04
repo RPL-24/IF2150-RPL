@@ -1,16 +1,88 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Cookie, Depends, Header, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import sqlite3
-from datetime import date
+from datetime import date, datetime, timedelta
 import bcrypt
+import secrets
+from typing import Iterable
 from backend.validation import Validasi
 from backend.models import DATABASE_NAME
 
 router = APIRouter(prefix="/api/auth", tags=["Auth"])
+SESSION_DURATION_HOURS = 24
 
 class LoginRequest(BaseModel):
     email: str
     password: str
+
+
+def _ambil_pengguna_dari_sesi(token: str):
+    conn = sqlite3.connect(DATABASE_NAME)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            """
+            SELECT p.id_pengguna, p.nama, p.email,
+                   CASE WHEN pb.id_pengguna IS NOT NULL THEN 'PEMBELI' ELSE 'PENJUAL' END AS peran,
+                   s.kedaluwarsa_pada
+            FROM auth_session s
+            JOIN pengguna p ON p.id_pengguna = s.id_pengguna
+            LEFT JOIN pembeli pb ON pb.id_pengguna = p.id_pengguna
+            WHERE s.token = ?
+            """,
+            (token,),
+        )
+        row = cursor.fetchone()
+
+        if not row:
+            return None
+
+        exp = datetime.fromisoformat(row["kedaluwarsa_pada"])
+        if datetime.now() >= exp:
+            cursor.execute("DELETE FROM auth_session WHERE token = ?", (token,))
+            conn.commit()
+            return None
+
+        return {
+            "id_pengguna": row["id_pengguna"],
+            "nama": row["nama"],
+            "email": row["email"],
+            "peran": row["peran"],
+        }
+    finally:
+        conn.close()
+
+
+def get_current_user(
+    session_token: str | None = Cookie(default=None),
+    authorization: str | None = Header(default=None),
+):
+    token = session_token
+    if authorization and authorization.startswith("Bearer "):
+        token = authorization.removeprefix("Bearer ").strip()
+
+    if not token:
+        raise HTTPException(status_code=401, detail="Sesi tidak ditemukan")
+
+    user = _ambil_pengguna_dari_sesi(token)
+    if not user:
+        raise HTTPException(status_code=401, detail="Sesi tidak valid atau sudah kedaluwarsa")
+
+    return user
+
+
+def require_roles(allowed_roles: Iterable[str]):
+    allowed = set(allowed_roles)
+
+    def _role_guard(user=Depends(get_current_user)):
+        if user["peran"] not in allowed:
+            raise HTTPException(status_code=403, detail="Anda tidak memiliki akses ke endpoint ini")
+        return user
+
+    return _role_guard
 
 @router.post("/login")
 def login(req: LoginRequest):
@@ -71,5 +143,34 @@ def login(req: LoginRequest):
             conn.close()
             raise HTTPException(status_code=500, detail="Sistem gagal memproses reward login")
 
+    session_token = secrets.token_urlsafe(32)
+    expired_at = (datetime.now() + timedelta(hours=SESSION_DURATION_HOURS)).strftime("%Y-%m-%d %H:%M:%S")
+
+    try:
+        cursor.execute(
+            """
+            INSERT INTO auth_session (token, id_pengguna, kedaluwarsa_pada)
+            VALUES (?, ?, ?)
+            """,
+            (session_token, id_pengguna, expired_at),
+        )
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        conn.close()
+        raise HTTPException(status_code=500, detail="Sistem gagal membuat sesi login")
+
     conn.close()
-    return {"id_pengguna": id_pengguna, "nama": user['nama'], "peran": peran}
+
+    response = JSONResponse({"id_pengguna": id_pengguna, "nama": user['nama'], "peran": peran})
+    response.set_cookie(
+        key="session_token", value=session_token,
+        max_age=SESSION_DURATION_HOURS * 3600,
+        httponly=True, samesite="lax", path="/",
+    )
+    response.set_cookie(
+        key="role", value=peran,
+        max_age=SESSION_DURATION_HOURS * 3600,
+        httponly=True, samesite="lax", path="/",
+    )
+    return response
