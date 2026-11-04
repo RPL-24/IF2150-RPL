@@ -4,7 +4,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import type { Database, Enums, TablesInsert } from "../src/types/database";
-import { dalamWilayah, type Koordinat } from "../src/server/entities/Lokasi";
+import { dalamWilayah, hitungJarak } from "../src/server/entities/Lokasi";
 
 type Peran = Enums<"peran_user">;
 type Kategori = Enums<"kategori_kerusakan">;
@@ -158,16 +158,6 @@ const ms = (iso: string): number => Date.parse(iso);
 
 // Rumus sementara; rumus final ada di migration L7. Satu tempat supaya mudah diganti.
 const hitungSkor = (n: number): number => Math.min(100, n * 10);
-
-// ponytail: haversine lokal untuk validasi seed; ganti ke Lokasi.hitungJarak() setelah fungsi itu ada.
-function jarakMeter(a: Koordinat, b: Koordinat): number {
-  const rad = Math.PI / 180;
-  const dLat = (b.latitude - a.latitude) * rad;
-  const dLng = (b.longitude - a.longitude) * rad;
-  const h =
-    Math.sin(dLat / 2) ** 2 + Math.cos(a.latitude * rad) * Math.cos(b.latitude * rad) * Math.sin(dLng / 2) ** 2;
-  return 2 * 6_371_000 * Math.asin(Math.sqrt(h));
-}
 
 // ── DATA LAPORAN ─────────────────────────────────────────────────────────
 
@@ -462,7 +452,7 @@ function validasi(data: DataLaporan[]): string[] {
   aktif.forEach((a, i) =>
     aktif.slice(i + 1).forEach((b) => {
       if (a.laporan.kategori !== b.laporan.kategori) return;
-      const jarak = jarakMeter(a.laporan, b.laporan);
+      const jarak = hitungJarak(a.laporan, b.laporan);
       if (jarak <= 200) salah.push(`${a.kode}/${b.kode}: laporan aktif ${a.laporan.kategori} hanya berjarak ${Math.round(jarak)} m`);
     }),
   );
@@ -491,9 +481,21 @@ async function siapkanLaporan(data: DataLaporan[]): Promise<void> {
   console.log("\n[laporan]");
   const opsi = { ignoreDuplicates: true };
 
+  // Insert hanya laporan yang belum ada: default id_tiket (nextval) tetap dievaluasi walau
+  // ON CONFLICT DO NOTHING, jadi upsert ulang akan membakar nomor tiket.
+  const { data: ada, error: errorAda } = await supabase.from("laporan").select("id").in("id", ID_LAPORAN_SEED);
+  if (errorAda) throw new Error(`Gagal mengecek laporan seed: ${errorAda.message}`);
+  const idAda = new Set(ada.map((l) => l.id));
   // Urut waktu_masuk menaik supaya nomor LK terkecil = laporan tertua.
-  const urut = [...data].sort((a, b) => ms(a.laporan.waktu_masuk) - ms(b.laporan.waktu_masuk));
-  cek("laporan", (await supabase.from("laporan").upsert(urut.map((d) => d.laporan), opsi)).error);
+  const baru = data
+    .filter((d) => !idAda.has(d.laporan.id))
+    .sort((a, b) => ms(a.laporan.waktu_masuk) - ms(b.laporan.waktu_masuk));
+  if (baru.length === 0) {
+    console.log(`  • ${data.length} laporan sudah ada`);
+  } else {
+    cek("laporan", (await supabase.from("laporan").insert(baru.map((d) => d.laporan))).error);
+    console.log(`  ✓ ${baru.length} laporan dibuat, ${idAda.size} sudah ada`);
+  }
 
   const hasil = data.flatMap((d) => (d.hasil ? [d.hasil] : []));
   cek("hasil_perbaikan", (await supabase.from("hasil_perbaikan").upsert(hasil, opsi)).error);

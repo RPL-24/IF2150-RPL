@@ -30,3 +30,15 @@ export function dalamWilayah(
 
   return dalam;
 }
+
+const RADIUS_BUMI_M = 6_371_000;
+
+/** Jarak dua titik di permukaan bumi dalam meter (rumus haversine). Operasi DPPL C03. */
+export function hitungJarak(a: Koordinat, b: Koordinat): number {
+  const rad = Math.PI / 180;
+  const dLat = (b.latitude - a.latitude) * rad;
+  const dLng = (b.longitude - a.longitude) * rad;
+  const h =
+    Math.sin(dLat / 2) ** 2 + Math.cos(a.latitude * rad) * Math.cos(b.latitude * rad) * Math.sin(dLng / 2) ** 2;
+  return 2 * RADIUS_BUMI_M * Math.asin(Math.sqrt(h));
+}

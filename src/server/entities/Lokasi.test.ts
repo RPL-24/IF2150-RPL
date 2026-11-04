@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BATAS_WILAYAH } from "@/lib/batas-wilayah";
-import { dalamWilayah } from "@/server/entities/Lokasi";
+import { dalamWilayah, hitungJarak } from "@/server/entities/Lokasi";
 
 const KOTAK: ReadonlyArray<readonly [number, number]> = [
   [0, 0],
@@ -61,5 +61,27 @@ describe("dalamWilayah - batas Kota Bandung", () => {
       expect(lng).toBeGreaterThan(107.4);
       expect(lng).toBeLessThan(107.9);
     }
+  });
+});
+
+describe("hitungJarak", () => {
+  const ITB = { latitude: -6.8915, longitude: 107.6107 };
+  const ALUN_ALUN = { latitude: -6.9218, longitude: 107.607 };
+
+  it("titik yang sama berjarak 0", () => {
+    expect(hitungJarak(ITB, ITB)).toBe(0);
+  });
+
+  it("simetris", () => {
+    expect(hitungJarak(ITB, ALUN_ALUN)).toBe(hitungJarak(ALUN_ALUN, ITB));
+  });
+
+  it("ITB Ganesha ke Alun-alun Bandung ≈ 3394 m", () => {
+    expect(Math.abs(hitungJarak(ITB, ALUN_ALUN) - 3394)).toBeLessThanOrEqual(50);
+  });
+
+  it("0.0001° lintang di khatulistiwa ≈ 11.12 m", () => {
+    const jarak = hitungJarak({ latitude: 0, longitude: 0 }, { latitude: 0.0001, longitude: 0 });
+    expect(Math.abs(jarak - 11.12)).toBeLessThanOrEqual(0.2);
   });
 });
