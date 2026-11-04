@@ -1,0 +1,35 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC08 — Normal
+actor "Penjual" as User
+boundary ":HalamanListingPenjual" as UI
+boundary ":KartuProduk" as Kartu
+control ":BarangController" as BC
+control ":Otorisasi" as Oto
+entity ":SesiLogin" as Sesi
+entity ":Barang" as Barang
+User -> UI: muatDaftarListing()
+UI -> BC: getListingSaya(token)
+BC -> BC: getIdPenjualDariSesi(token)
+BC -> Oto: verifikasiToken(token)
+Oto -> Sesi: cariSesiAktif(token)
+Sesi --> Oto: sesiLogin
+Oto --> BC: sesiLogin
+BC -> Sesi: getIdAkun()
+Sesi --> BC: idPenjual
+BC -> Barang: getListingPenjual(idPenjual)
+Barang --> BC: daftarListing
+BC --> UI: daftarListing
+UI -> UI: tampilkanDaftarListing(daftarListing)
+UI -> UI: kelompokkanBerdasarkanStatus(daftarListing)
+note right of UI: Tab "Tersedia" dan riwayat "Terjual" (KF20, KF42)
+UI -> UI: pilihTab("Tersedia")
+loop setiap barang pada tab aktif
+  UI -> Kartu: render(barang)
+end
+@enduml

@@ -1,0 +1,99 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "DasborAdmin" as C11 {
+  - daftarLaporan: List<Laporan>
+  - filterStatus: String
+  - detailLaporan: Laporan
+  - statusBaru: String
+  - alasanTindakan: String
+  + onClickBukaBlokir(idAkun: String): void
+  + tampilkanModalKonfirmasi(aksi: String): void
+  + konfirmasiTindakan(alasan: String): void
+  + tampilkanStatusTerbaru(pesan: String): void
+}
+class "ModerasiController" as C21 {
+  + otorisasiAdmin(token: String): String
+  + bukaBlokirAkun(token: String, idAkun: String): Boolean
+  + pulihkanListingPengguna(idAkun: String): Boolean
+  + catatLogAdmin(idAdmin: String, jenisTindakan: String, objekDitindak: String, alasan: String): void
+}
+class "Akun" as C23 {
+  - idAkun: String
+  - nama: String
+  - nim: String
+  - email: String
+  - kataSandiHash: String
+  - statusAkun: String
+  - statusBlokir: Boolean
+  - peran: String
+  - setujuKebijakan: Boolean
+  - waktuDaftar: DateTime
+  + cariById(idAkun: String): Akun
+  + bukaBlokir(): Boolean
+}
+class "Penjual" as C25 {
+}
+class "Admin" as C26 {
+  + verifikasiPeran(idAkun: String): Boolean
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+}
+class "Barang" as C29 {
+  - idBarang: String
+  - idPenjual: String
+  - judul: String
+  - harga: Double
+  - deskripsiKondisi: String
+  - idKategori: String
+  - idLokasi: String
+  - status: String
+  - waktuUnggah: DateTime
+  - waktuUbah: DateTime
+  + pulihkanKatalog(idPenjual: String): Boolean
+}
+class "LogAdmin" as C39 {
+  - idLogAdmin: String
+  - idAdmin: String
+  - jenisTindakan: String
+  - objekDitindak: String
+  - waktu: DateTime
+  - alasan: String
+  + catatTindakan(idAdmin: String, jenisTindakan: String, objekDitindak: String, alasan: String): void
+}
+class "Otorisasi" as C41 {
+  + verifikasiAdmin(token: String): SesiLogin
+}
+C11 --> C21
+C21 ..> C41
+C21 ..> C28
+C21 ..> C39
+C21 ..> C29
+C21 ..> C23
+C41 ..> C28
+C41 ..> C26
+C23 <|-- C25
+C23 <|-- C26
+C23 "1" -- "0..*" C28
+C25 "1" *-- "0..*" C29
+C26 "1" -- "0..*" C39
+@enduml

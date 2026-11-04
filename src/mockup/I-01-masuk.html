@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-01 Masuk</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  /* Tombol Masuk mengikuti lebar isinya, bukan selebar kolom, seperti rancangan awal I-01. */
+  .authform .btn--masuk { align-self: flex-start; padding: 0 var(--sp-8); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar="otentikasi"></div>
+
+  <div class="auth">
+
+    <section class="hero">
+      <div class="hero__eyebrow">Marketplace preloved sivitas ITB</div>
+      <h1 class="hero__title">Barang bagus tak harus selalu baru.</h1>
+      <p class="hero__text">
+        Temukan kebutuhan kuliah, teruskan barang yang masih berharga.
+        Mulai dari komunitas kampus sendiri.
+      </p>
+      <div class="hero__media">
+        <div><div class="ph ph--jas"></div></div>
+        <div><div class="ph ph--kalkulator"></div></div>
+        <div><div class="ph ph--buku"></div></div>
+      </div>
+    </section>
+
+    <section class="authform">
+      <div>
+        <h2 class="authform__title">Kembali ke kampus.</h2>
+        <p class="authform__sub mt-2">
+          Masuk untuk mencari barang, mengelola listing, dan melanjutkan percakapan.
+        </p>
+      </div>
+
+      <div class="field">
+        <div class="field__label">Email institusi</div>
+        <div class="field__input">sulthan@itb.ac.id</div>
+        <div class="field__hint">Gunakan email berdomain @itb.ac.id.</div>
+      </div>
+
+      <div class="field">
+        <div class="field__label">Kata sandi</div>
+        <div class="field__input">••••••••••••</div>
+      </div>
+
+      <button class="btn btn--primer btn--masuk">Masuk</button>
+
+      <div class="row">
+        <span class="muted">Belum punya akun?</span>
+        <button class="btn btn--sekunder btn--sm ml-auto">Daftar</button>
+      </div>
+
+      <div class="infobox">
+        <strong>Khusus sivitas ITB</strong>
+        Akun harus terverifikasi sebelum masuk. Jangan bagikan kata sandi atau
+        kode verifikasi Anda kepada siapa pun.
+      </div>
+    </section>
+
+  </div>
+
+  <div class="footerlinks">
+    <a href="#">Bantuan</a><span>·</span>
+    <a href="#">Kebijakan Privasi</a><span>·</span>
+    <a href="#">Ketentuan Penggunaan</a>
+  </div>
+</div>
+</body>
+</html>

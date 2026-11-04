@@ -1,0 +1,123 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanKatalog" as C05 {
+  - listProduk: List<Barang>
+  - halamanAktif: Integer
+  - total: Integer
+  - kataKunci: String
+  - filterAktif: Map<String, Any>
+  - kriteriaUrutan: String
+  + inputPencarian(kataKunci: String): void
+  + pilihFilter(filterAktif: Map<String, Any>): void
+  + pilihUrutan(kriteriaUrutan: String): void
+  + validasiRentangHarga(hargaMin: Double, hargaMax: Double): Boolean
+  + tandaiRentangHarga(): void
+  + tampilkanFilterAktif(filterAktif: Map<String, Any>): void
+  + hapusSemuaFilter(): void
+  + resetHalaman(): void
+  + tampilkanHasil(hasil: Map<String, Any>): void
+  + pindahHalaman(halaman: Integer): void
+  + tampilkanPagination(total: Integer, halaman: Integer): void
+  + sembunyikanPagination(): void
+  + tampilkanPesanKosong(kodePesan: String): void
+}
+class "KartuProduk" as C06 {
+  - idBarang: String
+  - judul: String
+  - harga: Double
+  - fotoUtama: String
+  - status: String
+  - namaKategori: String
+  - namaLokasi: String
+  + render(barang: Barang): void
+}
+class "KatalogController" as C15 {
+  + getProduk(kataKunci: String, filterAktif: Map<String, Any>, kriteriaUrutan: String, halaman: Integer): Map<String, Any>
+  + paginasi(halaman: Integer, batas: Integer): Integer
+  + urutkanHasil(kriteriaUrutan: String): String
+}
+class "PencarianController" as C16 {
+  + normalisasiKataKunci(kataKunci: String): String
+  + cocokkanKataKunci(kataKunci: String): Map<String, Any>
+}
+class "FilterController" as C17 {
+  + validasiParameterFilter(filterAktif: Map<String, Any>): Boolean
+  + filterCategory(idKategori: String): Map<String, Any>
+  + filterPrice(hargaMin: Double, hargaMax: Double): Map<String, Any>
+  + filterLocation(idLokasi: String): Map<String, Any>
+}
+class "Akun" as C23 {
+  - idAkun: String
+  - nama: String
+  - nim: String
+  - email: String
+  - kataSandiHash: String
+  - statusAkun: String
+  - statusBlokir: Boolean
+  - peran: String
+  - setujuKebijakan: Boolean
+  - waktuDaftar: DateTime
+  + getSyaratTidakDiblokir(): Map<String, Any>
+}
+class "Penjual" as C25 {
+}
+class "Barang" as C29 {
+  - idBarang: String
+  - idPenjual: String
+  - judul: String
+  - harga: Double
+  - deskripsiKondisi: String
+  - idKategori: String
+  - idLokasi: String
+  - status: String
+  - waktuUnggah: DateTime
+  - waktuUbah: DateTime
+  + getKatalog(kriteria: Map<String, Any>, urutan: String, halaman: Integer, batas: Integer): Map<String, Any>
+}
+class "FotoBarang" as C30 {
+  - idFoto: String
+  - idBarang: String
+  - namaBerkas: String
+  - format: String
+  - ukuran: Long
+  - urutan: Integer
+  - pathBerkas: String
+  + getFotoUtama(idBarang: String): String
+}
+class "Kategori" as C31 {
+  - idKategori: String
+  - namaKategori: String
+  + validasiKategori(idKategori: String): Boolean
+}
+class "LokasiCOD" as C32 {
+  - idLokasi: String
+  - namaLokasi: String
+  - kampus: String
+  + validasiLokasi(idLokasi: String): Boolean
+}
+C05 --> C15
+C05 "1" *-- "0..20" C06
+C15 ..> C29
+C15 ..> C16
+C15 ..> C17
+C17 ..> C31
+C17 ..> C32
+C29 ..> C23
+C23 <|-- C25
+C25 "1" *-- "0..*" C29
+C29 "1" *-- "1..5" C30
+C31 "1" -- "0..*" C29
+C32 "1" -- "0..*" C29
+@enduml

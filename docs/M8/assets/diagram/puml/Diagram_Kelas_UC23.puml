@@ -1,0 +1,132 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "DasborAdmin" as C11 {
+  - daftarLaporan: List<Laporan>
+  - filterStatus: String
+  - detailLaporan: Laporan
+  - statusBaru: String
+  - alasanTindakan: String
+  + onClickBlokirAkun(idAkun: String): void
+  + tampilkanModalKonfirmasi(aksi: String): void
+  + konfirmasiTindakan(alasan: String): void
+  + tampilkanStatusTerbaru(pesan: String): void
+}
+class "NotifikasiController" as C19 {
+  + kirimPesanPenangguhan(idAkun: String, email: String, alasan: String): Boolean
+}
+class "ModerasiController" as C21 {
+  + otorisasiAdmin(token: String): String
+  + blokirAkun(token: String, idLaporan: String, idAkun: String, alasan: String): Boolean
+  + nonaktifkanListingPengguna(idAkun: String): Boolean
+  + catatLogAdmin(idAdmin: String, jenisTindakan: String, objekDitindak: String, alasan: String): void
+  + catatLogAudit(idLaporan: String, idAdmin: String, tindakan: String): void
+}
+class "Akun" as C23 {
+  - idAkun: String
+  - nama: String
+  - nim: String
+  - email: String
+  - kataSandiHash: String
+  - statusAkun: String
+  - statusBlokir: Boolean
+  - peran: String
+  - setujuKebijakan: Boolean
+  - waktuDaftar: DateTime
+  + cariById(idAkun: String): Akun
+  + blokir(): Boolean
+}
+class "Penjual" as C25 {
+}
+class "Admin" as C26 {
+  + verifikasiPeran(idAkun: String): Boolean
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+  + nonaktifkanByAkun(idAkun: String): void
+}
+class "Barang" as C29 {
+  - idBarang: String
+  - idPenjual: String
+  - judul: String
+  - harga: Double
+  - deskripsiKondisi: String
+  - idKategori: String
+  - idLokasi: String
+  - status: String
+  - waktuUnggah: DateTime
+  - waktuUbah: DateTime
+  + nonaktifkanByPemilik(idPenjual: String): Boolean
+}
+class "Notifikasi" as C35 {
+  - idNotifikasi: String
+  - idAkun: String
+  - jenis: String
+  - isi: String
+  - waktuKirim: DateTime
+  - statusBaca: Boolean
+  + simpan(idAkun: String, jenis: String, isi: String, waktuKirim: DateTime, statusBaca: Boolean): Boolean
+}
+class "LogAudit" as C38 {
+  - idLog: String
+  - idLaporan: String
+  - waktu: DateTime
+  - identitasAktor: String
+  - tindakan: String
+  + catatPemblokiranAkun(idLaporan: String, idAdmin: String, idAkun: String): void
+}
+class "LogAdmin" as C39 {
+  - idLogAdmin: String
+  - idAdmin: String
+  - jenisTindakan: String
+  - objekDitindak: String
+  - waktu: DateTime
+  - alasan: String
+  + catatTindakan(idAdmin: String, jenisTindakan: String, objekDitindak: String, alasan: String): void
+}
+class "Otorisasi" as C41 {
+  + verifikasiAdmin(token: String): SesiLogin
+}
+class "SurelAdapter" as C43 {
+  - hostSmtp: String
+  - portSmtp: Integer
+  - alamatPengirim: String
+  + kirimSurel(tujuan: String, subjek: String, isi: String): Boolean
+}
+C11 --> C21
+C19 ..> C35
+C19 ..> C43
+C21 ..> C41
+C21 ..> C28
+C21 ..> C38
+C21 ..> C39
+C21 ..> C29
+C21 ..> C23
+C21 ..> C19
+C41 ..> C28
+C41 ..> C26
+C23 <|-- C25
+C23 <|-- C26
+C23 "1" -- "0..*" C28
+C23 "1" -- "0..*" C35
+C25 "1" *-- "0..*" C29
+C26 "1" -- "0..*" C39
+@enduml

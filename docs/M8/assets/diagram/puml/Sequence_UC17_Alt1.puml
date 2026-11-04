@@ -1,0 +1,16 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC17 — Alternatif 1: Percobaan Pengiriman Pesan Kosong
+actor "Pengguna" as User
+boundary ":HalamanPercakapan" as UI
+
+User -> UI: kirimPesan(isi)
+UI -> UI: validasiInputKosong(isi)
+note right of UI: Isi kosong setelah spasi dipangkas;\ntombol "Kirim" nonaktif dan tidak ada\npermintaan yang dikirim ke server
+UI --> User: tombol "Kirim" tetap nonaktif
+@enduml

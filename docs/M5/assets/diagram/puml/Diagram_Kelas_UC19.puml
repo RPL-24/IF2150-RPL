@@ -1,0 +1,42 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC19 - Mengirimkan Laporan
+class "C07 HalamanDetailBarang" as C07
+class "C10 FormulirLaporan" as C10
+class "C20 LaporanController" as C20
+class "C23 Akun" as C23
+class "C28 SesiLogin" as C28
+class "C29 Barang" as C29
+class "C33 Percakapan" as C33
+class "C36 Laporan" as C36
+class "C37 BuktiLaporan" as C37
+class "C38 LogAudit" as C38
+C07 --> C20
+C10 --> C20
+C20 ..> C28
+C20 ..> C36
+C20 ..> C37
+C20 ..> C38
+C23 "1" -- "0..*" C28
+C29 "1" -- "0..*" C33
+C23 "1" -- "0..*" C36
+C36 "1" *-- "1..*" C37
+C36 "0..*" -- "0..1" C29
+C36 "0..*" -- "0..1" C33
+C36 "1" -- "0..*" C38
+@enduml

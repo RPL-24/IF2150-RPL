@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-06b Detail Barang (Terjual)</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  .detail { display: grid; grid-template-columns: 1fr 380px; gap: var(--sp-8); }
+  .gal__main { position: relative; height: 470px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+  .gal__main.is-terjual::after { content: ""; position: absolute; inset: 0; background: rgba(90,100,96,.55); }
+  .gal__main .card__badge { z-index: 2; top: var(--sp-4); left: var(--sp-4); height: 32px; font-size: 13px; }
+  .gal__thumbs { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sp-3); }
+  .gal__thumbs > div { height: 96px; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); overflow: hidden; background: var(--surface); }
+  .gal__thumbs > div.is-active { border: 2px solid var(--green-700); }
+  .seller { display: flex; gap: var(--sp-3); align-items: center; }
+  .seller__avatar { width: 44px; height: 44px; border-radius: var(--radius-full); overflow: hidden; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar></div>
+
+  <div class="shell">
+    <aside data-rail="katalog" data-aktif="Jas praktikum"></aside>
+
+    <main class="content">
+      <div class="content__inner col gap-5">
+
+        <p class="t-caption muted">Katalog · Jas praktikum · Jas Praktikum Fisika Ukuran L</p>
+
+        <div class="detail">
+
+          <div class="col gap-3">
+            <div class="gal__main is-terjual">
+              <span class="badge badge--terjual card__badge">Terjual</span>
+              <div class="ph ph--jas"></div>
+            </div>
+            <div class="gal__thumbs">
+              <div class="is-active"><div class="ph ph--jas"></div></div>
+              <div><div class="ph ph--jas"></div></div>
+              <div><div class="ph ph--lab"></div></div>
+              <div><div class="ph ph--lab"></div></div>
+              <div><div class="ph ph--jas"></div></div>
+            </div>
+          </div>
+
+          <aside class="col gap-4">
+
+            <div>
+              <div class="row gap-2" style="margin-bottom:var(--sp-2)">
+                <span class="badge badge--terjual">Terjual</span>
+              </div>
+              <h1 class="h-sec" style="font-size:24px;line-height:32px;color:var(--text-600)">
+                Jas Praktikum Fisika Ukuran L
+              </h1>
+              <div class="t-price-lg mt-2" style="color:var(--text-600)">Rp110.000</div>
+            </div>
+
+            <div class="row gap-2">
+              <span class="chip">Jas praktikum</span>
+              <span class="chip"><span class="ic ic--pin" style="width:16px;height:16px"></span>Labtek VI</span>
+            </div>
+
+            <p class="t-caption muted">Ditandai terjual 3 jam lalu oleh penjual</p>
+
+            <div class="row gap-3">
+              <button class="btn grow is-disabled" disabled>Hubungi Penjual</button>
+              <button class="btn btn--sekunder btn--sm">
+                <span class="ic ic--flag" style="width:16px;height:16px"></span>Laporkan
+              </button>
+            </div>
+
+            <div class="infobox--netral infobox">
+              Listing ini sudah ditandai terjual oleh penjualnya, sehingga tidak lagi muncul pada
+              katalog dan tombol “Hubungi Penjual” dinonaktifkan.
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="col gap-3">
+              <div class="h-sec" style="font-size:16px">Detail</div>
+              <div class="row">
+                <span class="muted">Kondisi</span>
+                <span class="ml-auto">Bekas, layak pakai</span>
+              </div>
+              <div class="row">
+                <span class="muted">Ukuran</span>
+                <span class="ml-auto">L</span>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="seller">
+              <div class="seller__avatar"><div class="ph ph--avatar"></div></div>
+              <div>
+                <div style="font-weight:600">Bagas Adi Nugroho</div>
+                <div class="t-caption muted">Fisika 2022 · 5 listing</div>
+              </div>
+              <button class="btn btn--teks btn--sm ml-auto">Lihat profil</button>
+            </div>
+
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

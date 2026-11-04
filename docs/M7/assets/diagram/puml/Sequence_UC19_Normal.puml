@@ -1,0 +1,61 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC19 — Normal
+actor "Pengguna" as User
+boundary ":HalamanDetailBarang" as HD
+boundary ":FormulirLaporan" as UI
+control ":LaporanController" as LC
+control ":Otorisasi" as Oto
+entity ":SesiLogin" as Sesi
+entity ":Barang" as Barang
+entity ":Percakapan" as Perc
+entity ":Laporan" as Lap
+participant ":PenyimpananBerkas" as Store
+entity ":BuktiLaporan" as Bukti
+entity ":LogAudit" as Audit
+User -> HD: onClickLapor()
+HD -> UI: tampilkanFormulirLaporan(objekDilaporkan)
+note right of UI: Formulir juga dapat dibuka dari profil pengguna,\nruang percakapan, atau menu bantuan
+User -> UI: unggahBukti(berkas)
+User -> UI: kirimLaporan()
+UI -> UI: validasiIsianWajib()
+UI -> LC: buatLaporan(token, data, berkasBukti)
+LC -> LC: getIdPelaporDariSesi(token)
+LC -> Oto: verifikasiToken(token)
+Oto -> Sesi: cariSesiAktif(token)
+Sesi --> Oto: sesiLogin
+Oto --> LC: sesiLogin
+LC -> Sesi: getIdAkun()
+Sesi --> LC: idPelapor
+LC -> LC: validasiDataLaporan(data)
+alt objek yang dilaporkan adalah listing
+  LC -> Barang: cariById(idBarang)
+  Barang --> LC: barang
+else objek yang dilaporkan adalah percakapan
+  LC -> Perc: cariById(idPercakapan)
+  Perc --> LC: percakapan
+  LC -> LC: susunMetadataPercakapan(idPercakapan, idPelapor)
+  note right of LC: Hanya ID percakapan, waktu, dan identitas\npelapor; tanpa isi pesan (KF37)
+end
+LC -> LC: validasiBukti(berkasBukti)
+LC -> Bukti: validasiLampiranWajib(berkasBukti)
+Bukti --> LC: true
+LC -> LC: simpanLaporan(data)
+LC -> Lap: simpanLaporanBaru(data)
+Lap --> LC: idLaporan (status "Baru")
+LC -> LC: simpanBukti(idLaporan, berkasBukti)
+LC -> Store: simpan(idLaporan, berkasBukti)
+Store --> LC: daftarPathBerkas
+loop setiap berkas bukti
+  LC -> Bukti: simpan(idLaporan, namaBerkas, pathBerkas)
+end
+LC -> LC: catatLogAudit(idLaporan, idPelapor)
+LC -> Audit: catatPenerimaanLaporan(idLaporan, idPelapor)
+LC --> UI: true
+UI -> UI: tampilkanNotifikasi("Laporan berhasil dikirim")
+@enduml

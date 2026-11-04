@@ -1,0 +1,95 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanDetailBarang" as C07 {
+  - barang: Barang
+  - daftarFoto: List<FotoBarang>
+  - fotoUtama: String
+  + showBarang(idBarang: String): void
+  + tampilkanDetail(detail: Map<String, Any>): void
+  + pilihFoto(indeksFoto: Integer): void
+  + tampilkanLightbox(indeksFoto: Integer): void
+  + bukaProfilPenjual(idPenjual: String): void
+  + tampilkanAksiPemilik(status: String): void
+  + tampilkanTombolPembeli(): void
+  + tampilkanArsipTerjual(): void
+  + tampilkanTidakDitemukan(): void
+}
+class "BarangController" as C14 {
+  + getBarang(idBarang: String, token: String, tujuan: String): Map<String, Any>
+}
+class "Penjual" as C25 {
+  + getIdentitas(idPenjual: String): Map<String, Any>
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+}
+class "Barang" as C29 {
+  - idBarang: String
+  - idPenjual: String
+  - judul: String
+  - harga: Double
+  - deskripsiKondisi: String
+  - idKategori: String
+  - idLokasi: String
+  - status: String
+  - waktuUnggah: DateTime
+  - waktuUbah: DateTime
+  + cariById(idBarang: String): Barang
+}
+class "FotoBarang" as C30 {
+  - idFoto: String
+  - idBarang: String
+  - namaBerkas: String
+  - format: String
+  - ukuran: Long
+  - urutan: Integer
+  - pathBerkas: String
+  + getGaleri(idBarang: String): List<FotoBarang>
+}
+class "Kategori" as C31 {
+  - idKategori: String
+  - namaKategori: String
+  + getKategori(idKategori: String): Kategori
+}
+class "LokasiCOD" as C32 {
+  - idLokasi: String
+  - namaLokasi: String
+  - kampus: String
+  + getLokasi(idLokasi: String): LokasiCOD
+}
+class "Otorisasi" as C41 {
+  + verifikasiToken(token: String): SesiLogin
+}
+C07 --> C14
+C14 ..> C25
+C14 ..> C28
+C14 ..> C29
+C14 ..> C30
+C14 ..> C31
+C14 ..> C32
+C14 ..> C41
+C41 ..> C28
+C25 "1" *-- "0..*" C29
+C29 "1" *-- "1..5" C30
+C31 "1" -- "0..*" C29
+C32 "1" -- "0..*" C29
+@enduml

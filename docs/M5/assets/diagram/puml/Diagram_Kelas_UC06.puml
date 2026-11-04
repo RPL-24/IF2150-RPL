@@ -1,0 +1,24 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC06 - Melihat Kebijakan Privasi dan Ketentuan Penggunaan
+class "C12 HalamanDokumenLegal" as C12
+class "C22 DokumenLegalController" as C22
+class "C40 DokumenLegal" as C40
+C12 --> C22
+C22 ..> C40
+@enduml

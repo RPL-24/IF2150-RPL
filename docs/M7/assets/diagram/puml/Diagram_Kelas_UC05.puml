@@ -1,0 +1,108 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanProfil" as C02 {
+  - dataAkun: Akun
+  - daftarKartuProduk: List<KartuProduk>
+  + muatProfil(): void
+  + tampilkanProfil(data: Akun): void
+  + tampilkanDaftarListing(daftarBarang: List<Barang>): void
+  + bukaPengaturanAkun(): void
+  + tampilkanTautanKebijakan(tautan: String): void
+}
+class "KartuProduk" as C06 {
+  - idBarang: String
+  - judul: String
+  - harga: Double
+  - fotoUtama: String
+  - status: String
+  - namaKategori: String
+  - namaLokasi: String
+  + render(barang: Barang): void
+}
+class "AkunController" as C13 {
+  + getTautanDokumenLegal(): String
+  + getProfil(token: String): Map<String, Any>
+  + getIdAkunDariSesi(token: String): String
+  + getDaftarBarangAkun(idAkun: String): List<Barang>
+}
+class "Akun" as C23 {
+  - idAkun: String
+  - nama: String
+  - nim: String
+  - email: String
+  - kataSandiHash: String
+  - statusAkun: String
+  - statusBlokir: Boolean
+  - peran: String
+  - setujuKebijakan: Boolean
+  - waktuDaftar: DateTime
+  + getDataIdentitas(): Map<String, String>
+}
+class "Pembeli" as C24 {
+}
+class "Penjual" as C25 {
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+}
+class "Barang" as C29 {
+  - idBarang: String
+  - idPenjual: String
+  - judul: String
+  - harga: Double
+  - deskripsiKondisi: String
+  - idKategori: String
+  - idLokasi: String
+  - status: String
+  - waktuUnggah: DateTime
+  - waktuUbah: DateTime
+  + getListingPenjual(idPenjual: String): List<Barang>
+}
+class "DokumenLegal" as C40 {
+  - idDokumen: String
+  - jenisDokumen: String
+  - judul: String
+  - isi: String
+  - klausaPrivasiPesan: String
+  - versi: String
+  - tanggalBerlaku: Date
+  - statusPublikasi: Boolean
+  - tautan: String
+  + getTautan(): String
+}
+class "Otorisasi" as C41 {
+  + verifikasiToken(token: String): SesiLogin
+}
+C02 --> C13
+C02 "1" *-- "0..*" C06
+C13 ..> C23
+C13 ..> C28
+C13 ..> C29
+C13 ..> C40
+C13 ..> C41
+C41 ..> C28
+C23 <|-- C24
+C23 <|-- C25
+C23 "1" -- "0..*" C28
+C23 "0..*" -- "1" C40
+C25 "1" *-- "0..*" C29
+@enduml

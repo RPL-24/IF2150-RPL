@@ -1,0 +1,339 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2140" height="1090" viewBox="0 0 2140 1090" font-family="Arial, Helvetica, sans-serif" fill="#000">
+<rect width="2140" height="1090" fill="#fff"/>
+<defs><marker id="open" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 L11 6 L1 11" fill="none" stroke="#000" stroke-width="1.3"/></marker></defs>
+<rect x="20" y="20" width="1750" height="222" rx="4" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="8 5"/>
+<rect x="20" y="342" width="1750" height="98" rx="4" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="8 5"/>
+<rect x="20" y="715" width="1750" height="90" rx="4" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="8 5"/>
+<rect x="1785" y="342" width="340" height="136" rx="4" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="8 5"/>
+<rect x="1785" y="488" width="340" height="150" rx="4" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="8 5"/>
+<rect x="30" y="975" width="780" height="100" rx="4" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="8 5"/>
+<path d="M345 790 L345 830 L490 830 L490 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M345 790 L345 830 L490 830 L490 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M315 790 L315 858 L740 858 L740 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M315 790 L315 858 L740 858 L740 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M285 790 L285 886 L920 886 L920 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M285 790 L285 886 L920 886 L920 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M255 790 L255 942 L1265 942 L1265 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M255 790 L255 942 L1265 942 L1265 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1265 810 L1271 800 L1265 790 L1259 800 Z" fill="#000" stroke="#000" stroke-width="1"/>
+<path d="M810 790 L810 830 L895 830 L895 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M810 790 L810 830 L895 830 L895 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M780 790 L780 914 L1240 914 L1240 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M780 790 L780 914 L1240 914 L1240 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M975 790 L975 830 L1065 830 L1065 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M975 790 L975 830 L1065 830 L1065 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M950 790 L950 858 L1215 858 L1215 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M950 790 L950 858 L1215 858 L1215 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1125 790 L1125 830 L1190 830 L1190 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1125 790 L1125 830 L1190 830 L1190 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1340 790 L1340 830 L1410 830 L1410 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1340 790 L1340 830 L1410 830 L1410 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1315 790 L1315 858 L1545 858 L1545 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1315 790 L1315 858 L1545 858 L1545 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1290 790 L1290 886 L1675 886 L1675 790" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1290 790 L1290 886 L1675 886 L1675 790" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M120 805 L120 990" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M120 805 L120 990" fill="none" stroke="#000" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M548 420 L548 515" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M548 420 L548 515" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<path d="M712 420 L712 515" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M712 420 L712 515" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<path d="M876 420 L876 515" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M876 420 L876 515" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<path d="M1040 420 L1040 515" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1040 420 L1040 515" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<path d="M1203 420 L1203 515" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1203 420 L1203 515" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<path d="M548 515 L1800 515" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M548 515 L1800 515" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M724 420 L724 565" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M724 420 L724 565" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<path d="M1215 420 L1215 565" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1215 420 L1215 565" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<path d="M724 565 L1800 565" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M724 565 L1800 565" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M736 420 L736 465" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M736 420 L736 465" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<path d="M1052 420 L1052 465" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1052 420 L1052 465" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<path d="M1227 420 L1227 465" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1227 420 L1227 465" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<path d="M736 465 L1545 465 L1545 420" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M736 465 L1545 465 L1545 420" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M1673 393 L1800 393" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1673 393 L1800 393" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M1673 410 L1745 410 L1745 440 L2040 440 L2040 417" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1673 410 L1745 410 L1745 440 L2040 440 L2040 417" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M1875 383 L1875 236" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1875 383 L1875 236" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M2040 383 L2040 236" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M2040 383 L2040 236" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M1950 515 L2110 515 L2110 770 L1767 770" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1950 515 L2110 515 L2110 770 L1767 770" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M1064 420 L1064 695" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1064 420 L1064 695" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1239 420 L1239 695" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1239 420 L1239 695" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1239 695 L354 695 L354 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1239 695 L354 695 L354 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M150 420 L262 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M150 420 L262 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M300 420 L286 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M300 420 L286 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M420 420 L310 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M420 420 L310 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M470 420 L490 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M470 420 L490 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M585 420 L334 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M585 420 L334 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M650 420 L545 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M650 420 L545 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M800 420 L770 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M800 420 L770 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M920 420 L925 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M920 420 L925 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M990 420 L1065 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M990 420 L1065 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1075 420 L965 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1075 420 L965 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1105 420 L1100 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1105 420 L1100 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1165 420 L1210 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1165 420 L1210 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1265 420 L1265 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1265 420 L1265 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1300 420 L1415 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1300 420 L1415 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1335 420 L1680 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1335 420 L1680 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1440 420 L1455 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1440 420 L1455 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1610 420 L1590 750" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1610 420 L1590 750" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M675 420 L675 990" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M675 420 L675 990" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M1005 420 L1005 640 L700 640 L700 990" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1005 420 L1005 640 L700 640 L700 990" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M450 94 L450 140" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M450 94 L450 140" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M286 140 L1300 140" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M286 140 L1300 140" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M286 140 L286 160" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M286 140 L286 160" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M286 160 L292 170 L286 180 L280 170 Z" fill="#000" stroke="#000" stroke-width="1"/>
+<path d="M614 140 L614 160" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M614 140 L614 160" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M614 160 L620 170 L614 180 L608 170 Z" fill="#000" stroke="#000" stroke-width="1"/>
+<path d="M1300 140 L1300 114" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1300 140 L1300 114" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M1300 114 L1306 104 L1300 94 L1294 104 Z" fill="#000" stroke="#000" stroke-width="1"/>
+<path d="M286 214 L286 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M286 214 L286 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M286 295 L122 295 L122 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M286 295 L122 295 L122 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M286 295 L430 295 L430 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M286 295 L430 295 L430 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M470 214 L470 310 L590 310 L590 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M470 214 L470 310 L590 310 L590 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M614 214 L614 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M614 214 L614 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M696 94 L696 325 L640 325 L640 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M696 94 L696 325 L640 325 L640 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M696 325 L920 325 L920 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M696 325 L920 325 L920 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M760 325 L760 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M760 325 L760 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M795 214 L795 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M795 214 L795 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M960 214 L960 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M960 214 L960 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M1106 214 L1106 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1106 214 L1106 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M1270 214 L1270 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1270 214 L1270 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M1352 94 L1352 325 L1320 325 L1320 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1352 94 L1352 325 L1320 325 L1320 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M1434 214 L1434 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1434 214 L1434 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M1580 214 L1580 380" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M1580 214 L1580 380" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M860 1012 L910 1012" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M860 1012 L910 1012" fill="none" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<path d="M860 1034 L910 1034" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M860 1034 L910 1034" fill="none" stroke="#000" stroke-width="1.2"/>
+<path d="M885 1062 L891 1052 L885 1042 L879 1052 Z" fill="#000" stroke="#000" stroke-width="1"/>
+<rect x="214" y="180" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="286" y="201.5" font-size="13" text-anchor="middle">KatalogView</text>
+<rect x="378" y="180" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="450" y="201.5" font-size="13" text-anchor="middle">FormulirBarangView</text>
+<rect x="542" y="180" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="614" y="201.5" font-size="13" text-anchor="middle">ListingPenjualView</text>
+<rect x="706" y="180" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="778" y="201.5" font-size="13" text-anchor="middle">PercakapanView</text>
+<rect x="870" y="180" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="942" y="201.5" font-size="13" text-anchor="middle">FormulirLaporanView</text>
+<rect x="1034" y="180" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1106" y="201.5" font-size="13" text-anchor="middle">DasborAdminView</text>
+<rect x="1198" y="180" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1270" y="201.5" font-size="13" text-anchor="middle">OtentikasiView</text>
+<rect x="1362" y="180" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1434" y="201.5" font-size="13" text-anchor="middle">DokumenLegalView</text>
+<rect x="1526" y="180" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1598" y="201.5" font-size="13" text-anchor="middle">NotifikasiView</text>
+<rect x="378" y="60" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="450" y="81.5" font-size="13" text-anchor="middle">KartuProdukView</text>
+<rect x="624" y="60" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="696" y="81.5" font-size="13" text-anchor="middle">DetailBarangView</text>
+<rect x="1280" y="60" width="144" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1352" y="81.5" font-size="13" text-anchor="middle">ProfilView</text>
+<rect x="47" y="380" width="150" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="122" y="404.5" font-size="13" text-anchor="middle">KatalogController</text>
+<rect x="211" y="380" width="150" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="286" y="404.5" font-size="13" text-anchor="middle">PencarianController</text>
+<rect x="375" y="380" width="150" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="450" y="404.5" font-size="13" text-anchor="middle">FilterController</text>
+<rect x="539" y="380" width="150" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="614" y="404.5" font-size="13" text-anchor="middle">BarangController</text>
+<rect x="703" y="380" width="150" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="778" y="404.5" font-size="13" text-anchor="middle">PercakapanController</text>
+<rect x="867" y="380" width="150" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="942" y="404.5" font-size="13" text-anchor="middle">LaporanController</text>
+<rect x="1031" y="380" width="150" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1106" y="404.5" font-size="13" text-anchor="middle">ModerasiController</text>
+<rect x="1195" y="380" width="150" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1270" y="404.5" font-size="13" text-anchor="middle">AkunController</text>
+<rect x="1359" y="380" width="150" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1434" y="404.5" font-size="13" text-anchor="middle">DokumenLegalController</text>
+<rect x="1523" y="380" width="150" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1598" y="404.5" font-size="13" text-anchor="middle">NotifikasiController</text>
+<rect x="238" y="750" width="124" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="300" y="774.5" font-size="13" text-anchor="middle">Barang</text>
+<rect x="458" y="750" width="124" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="520" y="774.5" font-size="13" text-anchor="middle">DataReferensi</text>
+<rect x="708" y="750" width="124" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="770" y="774.5" font-size="13" text-anchor="middle">Percakapan</text>
+<rect x="873" y="750" width="124" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="935" y="774.5" font-size="13" text-anchor="middle">Laporan</text>
+<rect x="1033" y="750" width="124" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1095" y="774.5" font-size="13" text-anchor="middle">LogAktivitas</text>
+<rect x="1175" y="750" width="180" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1265" y="774.5" font-size="13" text-anchor="middle">Akun</text>
+<rect x="1378" y="750" width="124" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1440" y="774.5" font-size="13" text-anchor="middle">DokumenLegal</text>
+<rect x="1513" y="750" width="124" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1575" y="774.5" font-size="13" text-anchor="middle">Notifikasi</text>
+<rect x="1643" y="750" width="124" height="40" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1705" y="774.5" font-size="13" text-anchor="middle">Otentikasi</text>
+<rect x="1800" y="383" width="150" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1875" y="404.5" font-size="13" text-anchor="middle">SurelAdapter</text>
+<rect x="1965" y="383" width="150" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="2040" y="404.5" font-size="13" text-anchor="middle">PushNotifikasiAdapter</text>
+<rect x="1800" y="498" width="150" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1875" y="519.5" font-size="13" text-anchor="middle">Otorisasi</text>
+<rect x="1800" y="548" width="150" height="34" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="1875" y="569.5" font-size="13" text-anchor="middle">Kriptografi</text>
+<rect x="1800" y="190" width="150" height="46" rx="4" fill="#fff" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<text x="1875" y="217.5" font-size="13" text-anchor="middle">Layanan SMTP</text>
+<text x="1875" y="232" font-size="11" text-anchor="middle">(sistem eksternal)</text>
+<rect x="1965" y="190" width="150" height="46" rx="4" fill="#fff" stroke="#000" stroke-width="1.2" stroke-dasharray="6 4"/>
+<text x="2040" y="217.5" font-size="13" text-anchor="middle">Layanan Web Push</text>
+<text x="2040" y="232" font-size="11" text-anchor="middle">(sistem eksternal)</text>
+<rect x="40" y="990" width="180" height="46" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="130" y="1017.5" font-size="13" text-anchor="middle">Database</text>
+<text x="130" y="1032" font-size="11" text-anchor="middle">(PostgreSQL, Supabase)</text>
+<rect x="590" y="990" width="200" height="46" rx="4" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="690" y="1017.5" font-size="13" text-anchor="middle">PenyimpananBerkas</text>
+<text x="690" y="1032" font-size="11" text-anchor="middle">(Supabase Storage)</text>
+<text x="32" y="40" font-size="15" font-weight="bold" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">View</text>
+<text x="32" y="362" font-size="15" font-weight="bold" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">Controller</text>
+<text x="32" y="735" font-size="15" font-weight="bold" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">Model</text>
+<text x="1797" y="469" font-size="13" font-weight="bold" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">Integrasi Eksternal</text>
+<text x="1797" y="629" font-size="13" font-weight="bold" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">Pendukung</text>
+<text x="42" y="1066" font-size="13" font-weight="bold" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">Penyimpanan Data</text>
+<text x="417.5" y="826" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">dikelompokkan</text>
+<text x="349" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="494" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">1</text>
+<text x="520" y="854" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">dibahas dalam</text>
+<text x="319" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">1</text>
+<text x="744" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="600" y="882" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">dilaporkan</text>
+<text x="289" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..1</text>
+<text x="924" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="460" y="938" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">komposisi: dimiliki penjual</text>
+<text x="259" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="1269" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">1</text>
+<text x="852.5" y="826" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">dilaporkan</text>
+<text x="814" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..1</text>
+<text x="899" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="1010" y="910" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">terlibat dalam</text>
+<text x="784" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="1244" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">1</text>
+<text x="1020" y="826" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">dicatat</text>
+<text x="979" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">1</text>
+<text x="1069" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="1150" y="854" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">membuat</text>
+<text x="954" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="1219" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">1</text>
+<text x="1157.5" y="826" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">dicatat</text>
+<text x="1129" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="1194" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">1</text>
+<text x="1375" y="826" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">menyetujui</text>
+<text x="1344" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="1414" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">1</text>
+<text x="1470" y="854" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">menerima</text>
+<text x="1319" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">1</text>
+<text x="1549" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="1580" y="882" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memiliki sesi &amp; kode</text>
+<text x="1294" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">1</text>
+<text x="1679" y="802" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="127" y="905" font-size="12" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">menyimpan data</text>
+<text x="1790" y="510" font-size="12" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memeriksa sesi &amp; peran</text>
+<text x="1125" y="510" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">ke Otorisasi</text>
+<text x="1790" y="560" font-size="12" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">hash / enkripsi</text>
+<text x="1125" y="560" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">ke Kriptografi</text>
+<text x="1538" y="460" font-size="12" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">meminta kirim notifikasi</text>
+<text x="1736" y="387" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">kirim surel</text>
+<text x="1890" y="455" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">kirim notifikasi push</text>
+<text x="1881" y="312" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">SMTP + TLS</text>
+<text x="2046" y="312" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">Web Push</text>
+<text x="2104" y="700" font-size="11.5" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">membaca data sesi</text>
+<text x="870" y="690" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses (Moderasi, Akun → Barang)</text>
+<text x="207.60000000000002" y="601.5" font-size="11.5" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="295.32" y="624.6" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="355.5" y="601.5" font-size="11.5" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="487.4" y="624.6" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="475.58" y="558.6" font-size="11.5" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="589.9" y="624.6" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="786.4" y="624.6" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="919.1" y="624.6" font-size="11.5" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="1041.5" y="624.6" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="985.2" y="677.4000000000001" font-size="11.5" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="1106.1" y="677.4000000000001" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="1197" y="618" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="1270" y="624.6" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="1376.3" y="624.6" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="1598.75" y="667.5" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="1454.3" y="624.6" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="1602.6" y="624.6" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">akses</text>
+<text x="669" y="960" font-size="11.5" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">menyimpan foto</text>
+<text x="706" y="960" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">menyimpan bukti laporan</text>
+<text x="1000" y="134" font-size="11.5" font-weight="normal" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">komposisi: memuat KartuProdukView</text>
+<text x="456" y="110" font-size="10.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">0..*</text>
+<text x="292" y="262" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil</text>
+<text x="476" y="262" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil</text>
+<text x="620" y="262" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil</text>
+<text x="702" y="160" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil</text>
+<text x="801" y="262" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil</text>
+<text x="966" y="262" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil</text>
+<text x="1112" y="262" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil</text>
+<text x="1276" y="262" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil</text>
+<text x="1358" y="160" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil</text>
+<text x="1440" y="262" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil</text>
+<text x="1586" y="262" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil</text>
+<text x="860" y="994" font-size="12" font-weight="bold" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">Keterangan:</text>
+<text x="920" y="1016" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">memanggil / bergantung pada (arah panah = pihak yang dipanggil)</text>
+<text x="920" y="1038" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">Controller mengakses Model; relasi antar-Model (angka = multiplisitas)</text>
+<text x="920" y="1060" font-size="11.5" font-weight="normal" text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">komposisi (bagian tidak dapat berdiri tanpa pemiliknya)</text>
+<text x="2120" y="1016" font-size="11.5" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">Kotak putus-putus berisi tulisan</text>
+<text x="2120" y="1032" font-size="11.5" font-weight="normal" text-anchor="end" paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round">"sistem eksternal" berada di luar P/L.</text>
+</svg>

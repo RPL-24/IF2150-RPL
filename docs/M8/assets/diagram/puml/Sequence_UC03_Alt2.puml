@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC03 — Alternatif 2: Akun Belum Terverifikasi
+actor "Pengguna" as User
+boundary ":HalamanOtentikasi" as UIo
+control ":AkunController" as AC
+control ":Kriptografi" as Kr
+entity ":Akun" as Akun
+User -> UIo: kirimFormulirLogin(email, kataSandi)
+UIo -> AC: login(email, kataSandi)
+AC -> AC: cariAkunByEmail(email)
+AC -> Akun: cariByEmail(email)
+Akun --> AC: akun (idAkun, kataSandiHash, statusAkun, statusBlokir, peran)
+AC -> AC: verifikasiKataSandi(kataSandi, kataSandiHash)
+AC -> Kr: cocokkanHash(kataSandi, kataSandiHash)
+Kr --> AC: true
+AC -> AC: cekStatusAkun(idAkun)
+AC -> Akun: getStatusAkun()
+Akun --> AC: "Belum Terverifikasi"
+note right of AC: Login ditolak (KF08)
+AC --> UIo: galat belum terverifikasi
+UIo -> UIo: tampilkanPesanGalat("Akun belum diverifikasi. Kirim ulang kode.")
+@enduml

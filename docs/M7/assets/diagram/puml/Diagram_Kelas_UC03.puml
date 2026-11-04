@@ -1,0 +1,70 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanOtentikasi" as C01 {
+  - nama: String
+  - nim: String
+  - email: String
+  - kataSandi: String
+  - setujuKebijakan: Boolean
+  - kodeVerifikasi: String
+  - sisaWaktu: Integer
+  - token: String
+  + tampilkanFormulirLogin(): void
+  + kirimFormulirLogin(email: String, kataSandi: String): void
+  + arahkanKeBeranda(): void
+  + tampilkanPesanGalat(pesan: String): void
+}
+class "AkunController" as C13 {
+  + login(email: String, kataSandi: String): Map<String, Any>
+  + cariAkunByEmail(email: String): Akun
+  + verifikasiKataSandi(kataSandi: String, kataSandiHash: String): Boolean
+  + cekStatusAkun(idAkun: String): String
+  + buatSesiLogin(idAkun: String): SesiLogin
+}
+class "Akun" as C23 {
+  - idAkun: String
+  - nama: String
+  - nim: String
+  - email: String
+  - kataSandiHash: String
+  - statusAkun: String
+  - statusBlokir: Boolean
+  - peran: String
+  - setujuKebijakan: Boolean
+  - waktuDaftar: DateTime
+  + cariByEmail(email: String): Akun
+  + getStatusAkun(): String
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + buatToken(idAkun: String): String
+  + simpan(idAkun: String, token: String, waktuMulai: DateTime, waktuKedaluwarsa: DateTime): Boolean
+}
+class "Kriptografi" as C42 {
+  - saltRounds: Integer
+  - kunciEnkripsi: String
+  + cocokkanHash(teks: String, hash: String): Boolean
+}
+C01 --> C13
+C13 ..> C23
+C13 ..> C28
+C13 ..> C42
+C23 "1" -- "0..*" C28
+@enduml
