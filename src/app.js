@@ -3,27 +3,31 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const akunRoutes = require('./routes/akunRoutes');
+const laporanRoutes = require('./routes/laporanRoutes');
 
 const DIR_VIEWS = path.join(__dirname, 'views');
 const DIR_HALAMAN = path.join(DIR_VIEWS, 'pages');
+const DIR_UPLOADS = path.join(__dirname, 'uploads');
 
 const app = express();
 app.use(express.json());
 
 // ───────────── API (satu baris per modul) ─────────────
 app.use('/api/akun', akunRoutes);
+app.use('/api/laporan', laporanRoutes);
 
 app.use('/api', (req, res) => {
   res.status(404).json({ sukses: false, pesan: 'Endpoint tidak ditemukan.' });
 });
 
-// ───────────── View ─────────────
+// ───────────── View & Berkas Statis ─────────────
 // Beranda adalah katalog (modul C); selama katalog belum ada, arahkan ke halaman masuk.
 app.get('/', (req, res) => {
   const adaKatalog = fs.existsSync(path.join(DIR_HALAMAN, 'katalog.html'));
   res.redirect(adaKatalog ? '/katalog' : '/masuk');
 });
 
+app.use('/uploads', express.static(DIR_UPLOADS));
 app.use(express.static(DIR_HALAMAN, { extensions: ['html'] })); // /masuk → pages/masuk.html
 app.use(express.static(DIR_VIEWS)); // /css, /js
 

@@ -34,3 +34,56 @@ CREATE TABLE IF NOT EXISTS sesi_login (
 );
 
 CREATE INDEX IF NOT EXISTS sesi_login_id_akun ON sesi_login (id_akun);
+
+-- ───────────── Modul E: Laporan & Moderasi ─────────────
+
+-- C36 Laporan
+CREATE TABLE IF NOT EXISTS laporan (
+  id_laporan         UUID PRIMARY KEY,
+  id_pelapor         UUID         NOT NULL REFERENCES akun (id_akun) ON DELETE CASCADE,
+  objek_dilaporkan   VARCHAR(255) NOT NULL,
+  jenis_pelanggaran  VARCHAR(50)  NOT NULL
+                     CHECK (jenis_pelanggaran IN ('Penipuan', 'Konten tidak pantas', 'Bug atau masalah teknis')),
+  teks_alasan        TEXT         NOT NULL,
+  waktu_lapor        TIMESTAMPTZ  NOT NULL DEFAULT now(),
+  status_penanganan  VARCHAR(20)  NOT NULL DEFAULT 'Baru'
+                     CHECK (status_penanganan IN ('Baru', 'Diproses', 'Selesai')),
+  waktu_perubahan    TIMESTAMPTZ  NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS laporan_id_pelapor ON laporan (id_pelapor);
+CREATE INDEX IF NOT EXISTS laporan_status_penanganan ON laporan (status_penanganan);
+CREATE INDEX IF NOT EXISTS laporan_waktu_lapor ON laporan (waktu_lapor DESC);
+
+-- C37 BuktiLaporan
+CREATE TABLE IF NOT EXISTS bukti_laporan (
+  id_bukti     UUID PRIMARY KEY,
+  id_laporan   UUID         NOT NULL REFERENCES laporan (id_laporan) ON DELETE CASCADE,
+  nama_berkas  VARCHAR(255) NOT NULL,
+  path_berkas  VARCHAR(500) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS bukti_laporan_id_laporan ON bukti_laporan (id_laporan);
+
+-- C38 LogAudit (KF48, KF49: append-only)
+CREATE TABLE IF NOT EXISTS log_audit (
+  id_log          UUID PRIMARY KEY,
+  id_laporan      UUID         NOT NULL REFERENCES laporan (id_laporan) ON DELETE CASCADE,
+  waktu           TIMESTAMPTZ  NOT NULL DEFAULT now(),
+  identitas_aktor VARCHAR(150) NOT NULL,
+  tindakan        TEXT         NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS log_audit_id_laporan ON log_audit (id_laporan);
+
+-- C39 LogAdmin
+CREATE TABLE IF NOT EXISTS log_admin (
+  id_log_admin   UUID PRIMARY KEY,
+  id_admin       UUID         NOT NULL REFERENCES akun (id_akun) ON DELETE CASCADE,
+  jenis_tindakan VARCHAR(50)  NOT NULL,
+  objek_ditindak VARCHAR(255) NOT NULL,
+  waktu          TIMESTAMPTZ  NOT NULL DEFAULT now(),
+  alasan         TEXT         NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS log_admin_id_admin ON log_admin (id_admin);

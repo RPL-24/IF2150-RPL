@@ -21,13 +21,22 @@ const Api = {
   },
 
   async kirim(method, path, body) {
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = {};
+    const isFormData = typeof FormData !== 'undefined' && body instanceof FormData;
+    if (!isFormData) {
+      headers['Content-Type'] = 'application/json';
+    }
+
     const token = Api.getToken();
     if (token) headers.Authorization = `Bearer ${token}`;
 
     let res;
     try {
-      res = await fetch(path, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
+      res = await fetch(path, {
+        method,
+        headers,
+        body: isFormData ? body : (body === undefined ? undefined : JSON.stringify(body)),
+      });
     } catch {
       return { status: 0, sukses: false, pesan: 'Tidak dapat terhubung ke server.' };
     }
