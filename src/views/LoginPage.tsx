@@ -63,9 +63,6 @@ export default function LoginPage({ navigation }: Props) {
         passwordInput,
       );
 
-      // App.tsx akan mendeteksi session baru
-      // dan otomatis menampilkan HomePage.
-
     } catch (e) {
       setPasswordInput('');
 
@@ -80,11 +77,11 @@ export default function LoginPage({ navigation }: Props) {
   }
 
   return (
-    <SafeAreaView style={styles.screen} edges={['top', 'bottom']}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={palette.background}
-      />
+    <SafeAreaView
+      style={[styles.screen, { backgroundColor: palette.background }]}
+      edges={['top', 'bottom']}
+    >
+      <StatusBar barStyle="dark-content" />
 
       <KeyboardAvoidingView
         style={styles.flex}

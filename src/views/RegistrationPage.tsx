@@ -153,11 +153,11 @@ export default function RegistrationPage({ navigation }: Props) {
   }
 
   return (
-    <SafeAreaView style={styles.screen} edges={['top', 'bottom']}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={palette.background}
-      />
+    <SafeAreaView
+      style={[styles.screen, { backgroundColor: palette.background }]}
+      edges={['top', 'bottom']}
+    >
+      <StatusBar barStyle="dark-content" />
 
       <KeyboardAvoidingView
         style={styles.flex}
