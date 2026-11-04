@@ -4,6 +4,7 @@ from fastapi import FastAPI, HTTPException
 from .models import DATABASE_NAME, init_db
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import auth
+from .api import routes as api_routes
 
 
 def get_db_connection():
@@ -31,6 +32,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
+app.include_router(api_routes.router, prefix="/api", tags=["API"])
 
 @app.get("/")
 def read_root():

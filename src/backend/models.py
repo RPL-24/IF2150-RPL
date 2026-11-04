@@ -82,6 +82,14 @@ CREATE TABLE IF NOT EXISTS kupon (
     terpakai BOOLEAN NOT NULL DEFAULT 0,
     FOREIGN KEY (id_pembeli) REFERENCES pembeli (id_pengguna) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS auth_session (
+    token TEXT PRIMARY KEY,
+    id_pengguna INTEGER NOT NULL,
+    dibuat_pada DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    kedaluwarsa_pada DATETIME NOT NULL,
+    FOREIGN KEY (id_pengguna) REFERENCES pengguna (id_pengguna) ON DELETE CASCADE
+);
 """
 
 def init_db(db_path: str = DATABASE_NAME):
