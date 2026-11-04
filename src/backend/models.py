@@ -1,6 +1,7 @@
 import sqlite3
 from dataclasses import dataclass
 from typing import Optional
+import bcrypt
 
 DATABASE_NAME = "savebite.db"
 
@@ -90,16 +91,29 @@ def init_db(db_path: str = DATABASE_NAME):
 
 @dataclass
 class Pengguna:
-    id_pengguna: Optional[int]
-    nama: str
-    email: str
-    password: str
+    def __init__(self, id_pengguna: int, nama: str, email: str, password_hash: str):
+        self.__idPengguna = id_pengguna 
+        self.__nama = nama 
+        self.__email = email 
+        self.__password = password_hash 
 
-    def verifikasi_password(self, password: str) -> bool:
-        return self.password == password
+    @staticmethod
+    def hash_password(password_plain: str) -> str:
+        """Menghasilkan hash bcrypt untuk kata sandi baru sebelum disimpan ke basis data"""
+        salt = bcrypt.gensalt()
+        return bcrypt.hashpw(password_plain.encode('utf-8'), salt).decode('utf-8')
 
-    def get_peran(self) -> str:
-        raise NotImplementedError
+    def verifikasiPassword(self, password: str) -> bool:
+        """Mengecek apakah password yang didapat saat login sama dengan hash bcrypt di atribut password"""
+        return bcrypt.checkpw(password.encode('utf-8'), self.__password.encode('utf-8'))
+
+    def getPeran(self) -> str:
+        """Operasi abstrak untuk mengembalikan peran pengguna"""
+        raise NotImplementedError("Metode ini harus diimplementasikan oleh kelas turunan (Penjual/Pembeli)")
+
+    def bukaListing(self):
+        """Mengambil listing milik pengguna penjual"""
+        pass
 
 @dataclass
 class Penjual(Pengguna):
