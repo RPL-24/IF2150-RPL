@@ -5,6 +5,7 @@ from .models import DATABASE_NAME, init_db
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import auth
 from .api import routes as api_routes
+from .controllers.katalog_controller import router as katalog_router
 
 
 def get_db_connection():
@@ -33,6 +34,7 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(api_routes.router, prefix="/api", tags=["API"])
+app.include_router(katalog_router)  # P3: UC02/UC03 katalog
 
 @app.get("/")
 def read_root():
