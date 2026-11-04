@@ -165,12 +165,38 @@ class ListingMakanan:
         "AND datetime(batas_kedaluwarsa) > datetime(:waktu)"
     )
 
-    def is_tersedia(self, waktu_sekarang: str) -> bool:
-        return self.aktif and self.stok > 0 and waktu_sekarang < self.batas_kedaluwarsa
+    def is_tersedia(self, waktu_sekarang=None) -> bool:
+        """Kriteria yang sama dengan KONDISI_TERSEDIA, untuk mengecek satu objek (UC03, UC05).
+        waktu_sekarang boleh str ISO, datetime, atau None (= sekarang)."""
+        waktu = self._ke_datetime(waktu_sekarang or datetime.now())
+        return (
+            bool(self.aktif)
+            and self.stok > 0
+            and waktu < self._ke_datetime(self.batas_kedaluwarsa)
+        )
+
+    @staticmethod
+    def _ke_datetime(nilai) -> datetime:
+        # fromisoformat menerima "YYYY-MM-DD HH:MM:SS" maupun "YYYY-MM-DDTHH:MM:SS"
+        return nilai if isinstance(nilai, datetime) else datetime.fromisoformat(nilai)
 
     @staticmethod
     def _waktu_sekarang() -> str:
         return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    @classmethod
+    def cariById(cls, conn: sqlite3.Connection, id_listing: int) -> Optional["ListingMakanan"]:
+        """Mengambil satu listing berdasarkan id (Q-C04-01). None jika tidak ada."""
+        cursor = conn.execute(
+            "SELECT id_listing, id_penjual, nama_makanan, porsi, kondisi, harga, stok, "
+            "batas_kedaluwarsa, deskripsi, foto, aktif "
+            "FROM listing_makanan WHERE id_listing = ?",
+            (id_listing,),
+        )
+        baris = cursor.fetchone()
+        if baris is None:
+            return None
+        return cls._dari_baris([d[0] for d in cursor.description], tuple(baris))
 
     @classmethod
     def _dari_baris(cls, kolom: List[str], baris: tuple) -> "ListingMakanan":
