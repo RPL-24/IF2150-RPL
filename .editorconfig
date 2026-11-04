@@ -6,3 +6,6 @@ root = true
 indent_style = space
 indent_size = 2
 
+[*.{js,ts,jsx,tsx,json,jsonc}]
+indent_style = space
+indent_size = 2
