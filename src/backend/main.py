@@ -1,7 +1,9 @@
 import sqlite3
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from .models import DATABASE_NAME, init_db
+from fastapi.middleware.cors import CORSMiddleware
+from .routers import auth
 
 
 def get_db_connection():
@@ -14,13 +16,21 @@ def get_db_connection():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Inisialisasi pembuatan skema basis data SQLite saat startup
     init_db(DATABASE_NAME)
     yield
 
 
 app = FastAPI(lifespan=lifespan)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(auth.router)
 
 @app.get("/")
 def read_root():
