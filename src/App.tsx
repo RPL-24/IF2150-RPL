@@ -1,4 +1,4 @@
-
+import AddProductPage from './views/AddProductPage';
 import { useEffect, useState } from 'react';
 
 import {
@@ -92,6 +92,12 @@ export default function App() {
             name="Home"
             component={HomePage}
             options={{ title: 'Pross' }}
+          />
+
+          <Stack.Screen
+            name="AddProduct"
+            component={AddProductPage}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       ) : (

@@ -3,10 +3,13 @@ import { Button, Text, View } from 'react-native';
 import { supabase } from '../services/supabase';
 import { AuthController } from '../controllers/AuthController';
 import { styles } from './styles';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '../navigation/types';
 
 const auth = new AuthController();
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-export default function HomePage() {
+export default function HomePage({ navigation }: Props) {
   const [username, setUsername] = useState('...');
   const [error, setError] = useState('');
 
@@ -52,6 +55,7 @@ export default function HomePage() {
       <Text>Halaman utama Pross (placeholder untuk integrasi fitur anggota lain).</Text>
       {error !== '' && <Text style={styles.error}>{error}</Text>}
       <Button title="Logout" onPress={logout} />
+      <Button title="+ Tambah Produk" onPress={() => navigation.navigate('AddProduct')} />
     </View>
   );
 }

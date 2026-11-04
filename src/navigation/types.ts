@@ -3,4 +3,5 @@ export type RootStackParamList = {
   Register: undefined;
   ResetPassword: undefined;
   Home: undefined;
+  AddProduct: undefined;
 };
