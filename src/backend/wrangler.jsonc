@@ -5,7 +5,9 @@
     "d1_databases": [
     {
       "binding": "D1",
-      "database_id": "2061ca01-6f0f-4e31-a2e7-5da3889d89ec"
+      "database_name": "sehati-db",
+      "database_id": "2061ca01-6f0f-4e31-a2e7-5da3889d89ec",
+      "migrations_dir": "migrations",
     }
   ],
 }
