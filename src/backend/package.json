@@ -10,6 +10,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply sehati-db --local",
     "db:migrate:remote": "wrangler d1 migrations apply sehati-db --remote",
+    "db:seed:local": "wrangler d1 execute sehati-db --local --file=./seed/seed.sql",
     "db:studio:local": "DB_TARGET=local drizzle-kit studio",
     "db:studio:remote": "DB_TARGET=remote drizzle-kit studio",
     "cf-typegen": "wrangler types",
