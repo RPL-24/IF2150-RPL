@@ -1,5 +1,8 @@
 import { useRouter } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+
+import { Teks } from '@/components/Teks';
+import { jarak, sudut, ukuran, warna } from '@/theme';
 
 /**
  * Temporary entry point so both navigators can be reached during development.
@@ -9,22 +12,35 @@ export default function Masuk() {
   const router = useRouter();
   return (
     <View style={styles.wadah}>
-      <Text style={styles.judul}>Sehati</Text>
-      <Text style={styles.ket}>Layar masuk sementara (issue #3)</Text>
+      <Teks gaya="h1">Sehati</Teks>
+      <Teks gaya="keterangan" style={styles.ket}>
+        Layar masuk sementara (issue #3)
+      </Teks>
       <Pressable style={styles.tombol} onPress={() => router.replace('/beranda')}>
-        <Text style={styles.label}>Masuk sebagai Mahasiswa</Text>
+        <Teks gaya="label" warna="inversi">
+          Masuk sebagai Mahasiswa
+        </Teks>
       </Pressable>
       <Pressable style={styles.tombol} onPress={() => router.replace('/admin')}>
-        <Text style={styles.label}>Masuk sebagai Administrator</Text>
+        <Teks gaya="label" warna="inversi">
+          Masuk sebagai Administrator
+        </Teks>
       </Pressable>
     </View>
   );
 }
 
+// The buttons become Tombol in the components checkbox.
 const styles = StyleSheet.create({
-  wadah: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12, padding: 24 },
-  judul: { fontSize: 26, fontWeight: '800' },
-  ket: { fontSize: 13, color: '#6B6B73', marginBottom: 12 },
-  tombol: { alignSelf: 'stretch', backgroundColor: '#E10A1E', borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
-  label: { color: '#FFFFFF', fontWeight: '600' },
+  wadah: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: jarak.sm, padding: jarak.xl },
+  ket: { marginBottom: jarak.sm },
+  tombol: {
+    alignSelf: 'stretch',
+    height: ukuran.tinggiKontrol,
+    backgroundColor: warna.merah,
+    borderRadius: sudut.md,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

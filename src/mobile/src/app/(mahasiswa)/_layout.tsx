@@ -1,5 +1,7 @@
 import { Tabs } from 'expo-router';
 
+import { warna } from '@/theme';
+
 /**
  * Mahasiswa navigation: the five tabs from DPPL BAB 6 (Beranda, Kalender,
  * Konsultasi, Pengingat, FAQ). The other Mahasiswa screens are tab routes
@@ -8,7 +10,7 @@ import { Tabs } from 'expo-router';
  */
 export default function MahasiswaLayout() {
   return (
-    <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: '#E10A1E' }}>
+    <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: warna.merah, tabBarInactiveTintColor: warna.teksSekunder }}>
       <Tabs.Screen name="beranda" options={{ title: 'Beranda' }} />
       <Tabs.Screen name="kalender" options={{ title: 'Kalender' }} />
       <Tabs.Screen name="konsultasi" options={{ title: 'Konsultasi' }} />

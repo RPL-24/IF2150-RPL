@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mobile",
+    "name": "Sehati",
     "slug": "rpl",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,7 +22,15 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/sehati-logo.png",
+          "imageWidth": 160,
+          "backgroundColor": "#FFFFFF"
+        }
+      ]
     ],
     "scheme": "sehati",
     "extra": {

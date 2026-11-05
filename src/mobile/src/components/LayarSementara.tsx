@@ -1,4 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+
+import { jarak, warna } from '@/theme';
+
+import { Teks } from './Teks';
 
 type Props = {
   /** Screen title, e.g. "Beranda". */
@@ -16,16 +20,21 @@ type Props = {
 export function LayarSementara({ judul, idLayar, issue }: Props) {
   return (
     <View style={styles.wadah}>
-      <Text style={styles.judul}>{judul}</Text>
-      <Text style={styles.ket}>
+      <Teks gaya="h2">{judul}</Teks>
+      <Teks gaya="keterangan">
         {idLayar} · dikerjakan pada issue #{issue}
-      </Text>
+      </Teks>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wadah: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8, padding: 24 },
-  judul: { fontSize: 20, fontWeight: '700' },
-  ket: { fontSize: 13, color: '#6B6B73' },
+  wadah: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: jarak.xs,
+    padding: jarak.xl,
+    backgroundColor: warna.latar,
+  },
 });
