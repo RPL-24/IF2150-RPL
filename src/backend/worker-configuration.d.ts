@@ -6,6 +6,13 @@ interface __BaseEnv_Env {
 	CLOUDFLARE_ACCOUNT_ID: string;
 	CLOUDFLARE_DATABASE_ID: string;
 	CLOUDFLARE_D1_TOKEN: string;
+	/** AES-256-GCM key (base64, 32 bytes) for Google tokens — Algo-001 KUNCI_TOKEN. */
+	KUNCI_TOKEN: string;
+	GOOGLE_CLIENT_ID: string;
+	GOOGLE_CLIENT_SECRET: string;
+	GOOGLE_REDIRECT_URI: string;
+	/** Absolute base URL of this API, used by the status cron (Algo-021). */
+	API_BASE_URL?: string;
 }
 declare namespace Cloudflare {
 	interface GlobalProps {
