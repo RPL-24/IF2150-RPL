@@ -4,6 +4,7 @@ const path = require('path');
 const express = require('express');
 const akunRoutes = require('./routes/akunRoutes');
 const laporanRoutes = require('./routes/laporanRoutes');
+const moderasiRoutes = require('./routes/moderasiRoutes');
 
 const DIR_VIEWS = path.join(__dirname, 'views');
 const DIR_HALAMAN = path.join(DIR_VIEWS, 'pages');
@@ -15,6 +16,7 @@ app.use(express.json());
 // ───────────── API (satu baris per modul) ─────────────
 app.use('/api/akun', akunRoutes);
 app.use('/api/laporan', laporanRoutes);
+app.use('/api/admin', moderasiRoutes);
 
 app.use('/api', (req, res) => {
   res.status(404).json({ sukses: false, pesan: 'Endpoint tidak ditemukan.' });
