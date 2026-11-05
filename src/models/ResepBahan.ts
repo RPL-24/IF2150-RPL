@@ -1,5 +1,5 @@
 import { BahanBaku } from './BahanBaku';
-import { isAngkaPositif, PESAN_INPUT_TIDAK_VALID } from './pesan';
+import { PESAN_TAKARAN_TIDAK_VALID, isAngkaPositif } from './pesan';
 
 export class ResepBahan {
   private takaran: number = 0;
@@ -21,7 +21,7 @@ export class ResepBahan {
 
   setTakaran(takaran: number): void {
     if (!isAngkaPositif(takaran)) {
-      throw new Error(PESAN_INPUT_TIDAK_VALID);
+      throw new Error(PESAN_TAKARAN_TIDAK_VALID);
     }
     this.takaran = takaran;
   }

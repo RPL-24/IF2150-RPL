@@ -1,11 +1,26 @@
-import { isAngkaPositif, PESAN_INPUT_TIDAK_VALID } from './pesan';
+import {
+  PESAN_HASIL_RESEP_TIDAK_VALID,
+  PESAN_INPUT_TIDAK_VALID,
+  PESAN_NAMA_PRODUK_WAJIB,
+  isAngkaPositif,
+  isBilanganBulatPositif,
+} from './pesan';
+
+export const DAFTAR_TAG = [
+  'Makanan utama',
+  'Camilan',
+  'Minuman',
+  'Dessert',
+  'Lainnya',
+];
 
 export class Produk {
   private namaProduk: string = '';
   private tag: string[] = [];
   private hargaJual: number = 0;
+  private hasilResep: number = 1;
   private margin: number = 0;
-  private statusPeringatan: boolean = false;
+    private statusPeringatan: boolean = false;
 
   getStatusPeringatan(): boolean{
     return this.statusPeringatan;
@@ -15,6 +30,7 @@ export class Produk {
     this.statusPeringatan = status_peringatan;
   }
 
+
   getNamaProduk(): string {
     return this.namaProduk;
   }
@@ -22,7 +38,7 @@ export class Produk {
   setNamaProduk(namaProduk: string): void {
     const nama = (namaProduk ?? '').trim();
     if (nama === '') {
-      throw new Error('Nama produk tidak boleh kosong');
+      throw new Error(PESAN_NAMA_PRODUK_WAJIB);
     }
     this.namaProduk = nama;
   }
@@ -51,6 +67,17 @@ export class Produk {
       throw new Error(PESAN_INPUT_TIDAK_VALID);
     }
     this.hargaJual = hargaJual;
+  }
+
+  getHasilResep(): number {
+    return this.hasilResep;
+  }
+
+  setHasilResep(hasilResep: number): void {
+    if (!isBilanganBulatPositif(hasilResep)) {
+      throw new Error(PESAN_HASIL_RESEP_TIDAK_VALID);
+    }
+    this.hasilResep = hasilResep;
   }
 
   getMargin(): number {
