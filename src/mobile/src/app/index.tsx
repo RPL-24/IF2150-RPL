@@ -1,8 +1,8 @@
 import { useRouter } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { Teks } from '@/components/Teks';
-import { jarak, sudut, ukuran, warna } from '@/theme';
+import { Teks, Tombol } from '@/components';
+import { jarak } from '@/theme';
 
 /**
  * Temporary entry point so both navigators can be reached during development.
@@ -16,31 +16,20 @@ export default function Masuk() {
       <Teks gaya="keterangan" style={styles.ket}>
         Layar masuk sementara (issue #3)
       </Teks>
-      <Pressable style={styles.tombol} onPress={() => router.replace('/beranda')}>
-        <Teks gaya="label" warna="inversi">
-          Masuk sebagai Mahasiswa
-        </Teks>
-      </Pressable>
-      <Pressable style={styles.tombol} onPress={() => router.replace('/admin')}>
-        <Teks gaya="label" warna="inversi">
-          Masuk sebagai Administrator
-        </Teks>
-      </Pressable>
+      <Tombol judul="Masuk sebagai Mahasiswa" onPress={() => router.replace('/beranda')} style={styles.tombol} />
+      <Tombol
+        judul="Masuk sebagai Administrator"
+        varian="sekunder"
+        onPress={() => router.replace('/admin')}
+        style={styles.tombol}
+      />
+      <Tombol judul="Lihat komponen" varian="teks" onPress={() => router.push('/komponen')} />
     </View>
   );
 }
 
-// The buttons become Tombol in the components checkbox.
 const styles = StyleSheet.create({
   wadah: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: jarak.sm, padding: jarak.xl },
   ket: { marginBottom: jarak.sm },
-  tombol: {
-    alignSelf: 'stretch',
-    height: ukuran.tinggiKontrol,
-    backgroundColor: warna.merah,
-    borderRadius: sudut.md,
-    borderCurve: 'continuous',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  tombol: { alignSelf: 'stretch' },
 });
