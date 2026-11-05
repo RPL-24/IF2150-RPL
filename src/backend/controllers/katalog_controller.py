@@ -1,12 +1,13 @@
-"""KatalogController (C16): UC02 melihat daftar listing, UC03 melihat detail listing.
+"""KatalogController (C16): UC02 melihat daftar listing, UC03 melihat detail listing,
+UC04 mencari & menyaring listing berdasarkan kata kunci dan rentang harga.
 
 Kriteria "tersedia" tidak ditulis di sini; semuanya lewat ListingMakanan
 (ambilSemuaTersedia / cariById + is_tersedia).
 """
 import sqlite3
-from typing import Iterator, List
+from typing import Iterator, List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 from ..models import ListingMakanan
 from ..routers.auth import require_roles
@@ -45,9 +46,34 @@ def ambilDetail(conn: sqlite3.Connection, id_listing: int) -> ListingMakanan:
     return listing
 
 
+def cariListing(
+    conn: sqlite3.Connection,
+    kata_kunci: Optional[str],
+    harga_min: Optional[int],
+    harga_maks: Optional[int],
+) -> List[ListingMakanan]:
+    """Algo-C16-03"""
+    if kata_kunci is not None and not kata_kunci.strip():
+        kata_kunci = None
+    if (harga_min is not None and harga_min < 0) or (harga_maks is not None and harga_maks < 0):
+        raise HTTPException(status_code=400, detail="Rentang harga tidak valid")
+    if harga_min is not None and harga_maks is not None and harga_min > harga_maks:
+        raise HTTPException(status_code=400, detail="Rentang harga tidak valid")
+    # Daftar kosong berarti tidak ada listing yang cocok (bukan error)
+    return ListingMakanan.cariDaftar(conn, kata_kunci=kata_kunci, harga_min=harga_min, harga_maks=harga_maks)
+
+
 @router.get("", response_model=List[ListingKatalog])
-def get_daftar_listing(conn: sqlite3.Connection = Depends(get_conn)):
-    return ambilListingTersedia(conn)
+def get_daftar_listing(
+    kata_kunci: Optional[str] = Query(None, description="Kata kunci nama makanan (UC04)"),
+    harga_min: Optional[int] = Query(None, description="Harga minimum dalam rupiah (UC04)"),
+    harga_maks: Optional[int] = Query(None, description="Harga maksimum dalam rupiah (UC04)"),
+    conn: sqlite3.Connection = Depends(get_conn),
+):
+    # Tanpa parameter pencarian → UC02 (semua listing tersedia); selain itu → UC04
+    if kata_kunci is None and harga_min is None and harga_maks is None:
+        return ambilListingTersedia(conn)
+    return cariListing(conn, kata_kunci, harga_min, harga_maks)
 
 
 @router.get("/{id_listing}", response_model=ListingKatalog)
