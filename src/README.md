@@ -116,11 +116,11 @@ src/
 
 | NIM | Nama Anggota | Peran & Modul / Fitur yang Diimplementasikan | Use Case & Kelas DPPL Terkait |
 | :--- | :--- | :--- | :--- |
-| **13525021** | Haikal Muhammad Royyan | **Fullstack & Core Integrator:** Pondasi server MVC, skema & seeder PostgreSQL, Pencarian Tenaga Kesehatan (Geolocation/Haversine), dan Pengajuan Jadwal Konsultasi | UC05, UC06 (C04, C08, C09, C18, C19, C20, C21, C22) |
-| **13525066** | Cynthia Winda Wijaya | **Backend 1 (Auth & User Management):** Registrasi Multirole, Verifikasi Akun Wali (UU PDP), Login, Reset Password, dan Manajemen Sesi | UC01, UC02, UC09, UC10 (C01, C02, C03, C05, C11, C27) |
-| **13525081** | Rendy Salastra Putra | **Frontend 2 (Health Tracking & Telehealth UI):** Antarmuka Daily Check-In bertahap, Visualisasi Grafik Statistik/Laporan, serta UI Pencarian & Konsultasi | UC03, UC04, UC05, UC06 (C13, C16, C18, C19, C21) |
-| **13525090** | Sophia Imelda Rogate Marpaung | **Frontend 1 (Auth, Onboarding & Dashboard UI):** Antarmuka Registrasi 3 Role, Konfirmasi Wali, Login, Reset Password, Dashboard Utama, dan Pengaturan/Logout | UC01, UC02, UC09, UC10 (C10, C12, C25, C26, C28, C29) |
-| **13525141** | Christabelcyne Costan | **Backend 2 (Health Data, Analytics & Emergency Alert):** API Daily Check-In (Enkripsi AES-256), Kalkulasi Statistik & Filter Privasi Wali, Kelola Konsultasi Nakes, serta Deteksi & Notifikasi Darurat | UC03, UC04, UC07, UC08 (C06, C07, C09, C14, C15, C17, C23, C24) |
+| **13525021** | Haikal Muhammad Royyan | **Backend 1** |  |
+| **13525066** | Cynthia Winda Wijaya | **Frontend 1** |  |
+| **13525081** | Rendy Salastra Putra | **Fullstack** |  |
+| **13525090** | Sophia Imelda Rogate Marpaung | **Frontend 2** |  |
+| **13525141** | Christabelcyne Costan | **Backend 2** |  |
 
 ### Kontrak Endpoint API Tim (API Specification)
 
