@@ -6,7 +6,10 @@ import {
   View,
 } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  createNavigationContainerRef,
+} from '@react-navigation/native';
 
 import {
   createNativeStackNavigator,
@@ -22,8 +25,25 @@ import LoginPage from './views/LoginPage';
 import RegistrationPage from './views/RegistrationPage';
 import ResetPasswordPage from './views/ResetPasswordPage';
 import HomePage from './views/HomePage';
+import NotificationPage from './views/NotificationPage';
+import IzinNotifikasiPage from './views/IzinNotifikasiPage';
+import ProductDetailPage from './views/ProductDetailPage';
+import {
+  pushNotificationUI as pushUI,
+  type DataNotifikasi,
+} from './services/PushNotificationUI';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const navigationRef = createNavigationContainerRef<RootStackParamList>();
+
+function bukaDariNotifikasi(data: DataNotifikasi) {
+  if (!navigationRef.isReady()) return;
+  if (data.tipe === 'kerugian' && data.idProduk) {
+    navigationRef.navigate('ProductDetail', { idProduk: data.idProduk });
+  } else {
+    navigationRef.navigate('Home');
+  }
+}
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -60,6 +80,20 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (!session) return;
+    let aktif = true;
+    pushUI.inisialisasi().catch((e) => console.warn('Gagal menyiapkan notifikasi:', e));
+    const berhenti = pushUI.onClickNotification(bukaDariNotifikasi);
+    pushUI.ambilKetukanTerakhir().then((data) => {
+      if (aktif && data !== null) bukaDariNotifikasi(data);
+    });
+    return () => {
+      aktif = false;
+      berhenti();
+    };
+  }, [session]);
+
   if (loading) {
     return (
       <View
@@ -79,7 +113,7 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       {session ? (
         <Stack.Navigator
           screenOptions={{
@@ -98,6 +132,24 @@ export default function App() {
             name="AddProduct"
             component={AddProductPage}
             options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="Notifikasi"
+            component={NotificationPage}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="IzinNotifikasi"
+            component={IzinNotifikasiPage}
+            options={{ title: 'Izin notifikasi' }}
+          />
+
+          <Stack.Screen
+            name="ProductDetail"
+            component={ProductDetailPage}
+            options={{ title: 'Detail Produk' }}
           />
         </Stack.Navigator>
       ) : (
