@@ -1,13 +1,19 @@
 import sqlite3
+from pathlib import Path
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from .models import DATABASE_NAME, init_db
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
 from .routers import auth
 from .api import routes as api_routes
 from .controllers.katalog_controller import router as katalog_router
-from api.listing_routes import router as listing_router
+from .api.listing_routes import router as listing_router
 
+BASE_DIR = Path(__file__).resolve().parent
+UPLOADS_DIR = BASE_DIR / "uploads" / "listing"
+UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
 def get_db_connection():
     """Helper untuk mendapatkan koneksi basis data SQLite dengan foreign key aktif."""
@@ -32,6 +38,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount("/uploads", StaticFiles(directory=BASE_DIR / "uploads"), name="uploads")
 
 app.include_router(auth.router)
 app.include_router(api_routes.router, prefix="/api", tags=["API"])
