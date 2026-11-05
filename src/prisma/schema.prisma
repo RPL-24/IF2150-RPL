@@ -1,0 +1,356 @@
+// Schema database Fajar Tech. FILE FASE 0: BEKU setelah Kam 5 Nov 18.00 WIB.
+// Mau ubah? Buat Issue, pemilik (Rafiandhi) yang membuat PR.
+// Sumber: DPPL BAB 4-5 (docs/M8/K03_G10_DPPL2.md), contracts/, contracts/SchemaReview.md.
+// Field Prisma memakai camelCase; tabel dan kolom memakai snake_case DPPL lewat @map dan @@map.
+// URL koneksi ada di prisma.config.ts.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---- Enumerasi (C06, C18, C21) ----
+
+enum Peran {
+  WARGA
+  TEKNISI
+  PENGURUS
+
+  @@map("peran")
+}
+
+enum StatusAkun {
+  MENUNGGU
+  DISETUJUI
+  DITOLAK
+
+  @@map("status_akun")
+}
+
+enum JenisPerangkat {
+  TANGKI_AIR
+  BATERAI
+  PANEL_SURYA
+
+  @@map("jenis_perangkat")
+}
+
+enum StatusPengiriman {
+  PENDING
+  TERKIRIM
+
+  @@map("status_pengiriman")
+}
+
+enum StatusLaporan {
+  MENUNGGU
+  SEDANG_DIPERBAIKI
+  SELESAI
+
+  @@map("status_laporan")
+}
+
+enum StatusTagihan {
+  DRAFT
+  FINAL
+
+  @@map("status_tagihan")
+}
+
+// ---- Akun dan peran (C01-C04, UC12-14) ----
+
+model Akun {
+  idAkun         String     @id @default(cuid()) @map("id_akun")
+  email          String     @unique
+  nama           String
+  peran          Peran
+  password       String // hash, bukan teks asli
+  statusAkun     StatusAkun @default(MENUNGGU) @map("status_akun")
+  waktuPengajuan DateTime   @default(now()) @map("waktu_pengajuan") @db.Timestamptz(3) // AkunRingkas.waktuPengajuan (I-16)
+
+  warga    Warga?
+  teknisi  Teknisi?
+  pengurus Pengurus?
+
+  @@index([statusAkun])
+  @@map("akun")
+}
+
+model Warga {
+  idWarga         Int     @id @default(autoincrement()) @map("id_warga")
+  idAkun          String  @unique @map("id_akun")
+  idKomunitas     String  @map("id_komunitas")
+  statusTerdaftar Boolean @default(false) @map("status_terdaftar")
+
+  akun      Akun              @relation(fields: [idAkun], references: [idAkun])
+  laporan   LaporanGangguan[]
+  pemakaian DataPemakaian[]
+  tagihan   Tagihan[]
+
+  @@map("warga")
+}
+
+// Teknisi dan Pengurus punya ID sendiri (KonteksSesi, C03, C04).
+// Penugasan, notifikasi, dan catatan pemeliharaan merujuk tabel teknisi.
+model Teknisi {
+  idTeknisi String  @id @default(cuid()) @map("id_teknisi")
+  idAkun    String  @unique @map("id_akun")
+  kontak    String? // FormRegistrasi belum memuat kontak
+
+  akun                Akun                  @relation(fields: [idAkun], references: [idAkun])
+  penugasanLaporan    PenugasanLaporan[]
+  penugasanPerangkat  PenugasanPerangkat[]
+  notifikasi          Notifikasi[]
+  catatanPemeliharaan CatatanPemeliharaan[]
+
+  @@map("teknisi")
+}
+
+model Pengurus {
+  idPengurus String @id @default(cuid()) @map("id_pengurus")
+  idAkun     String @unique @map("id_akun")
+
+  akun Akun @relation(fields: [idAkun], references: [idAkun])
+
+  @@map("pengurus")
+}
+
+// ---- Perangkat dan telemetri (C07-C12, UC01, UC05, UC06) ----
+
+// Satu tabel untuk TangkiAir, Baterai, dan PanelSurya. Kolom khusus jenis bernilai null
+// pada jenis lain, dan null juga berarti "belum ada pembacaan" (StatusInfrastruktur).
+model Perangkat {
+  idPerangkat    String         @id @default(cuid()) @map("id_perangkat")
+  jenisPerangkat JenisPerangkat @map("jenis_perangkat")
+  nama           String
+  lokasi         String
+
+  // TangkiAir (C08)
+  volumeLiter    Float? @map("volume_liter")
+  kapasitasLiter Float? @map("kapasitas_liter") // StatusTangki.kapasitasLiter
+  ambangRendah   Float? @map("ambang_rendah")
+  ambangKritis   Float? @map("ambang_kritis")
+
+  // Baterai (C09)
+  kapasitasPersen Float? @map("kapasitas_persen")
+  ambangBatasAman Float? @map("ambang_batas_aman")
+
+  // PanelSurya (C10)
+  dayaWatt  Float? @map("daya_watt")
+  kapasitas Float?
+
+  pembacaan           PembacaanSensor[]
+  dataHistoris        DataHistorisKinerja[]
+  penugasan           PenugasanPerangkat[]
+  notifikasi          Notifikasi[]
+  catatanPemeliharaan CatatanPemeliharaan[]
+
+  @@index([jenisPerangkat])
+  @@map("perangkat")
+}
+
+model PembacaanSensor {
+  idPembacaan String   @id @default(cuid()) @map("id_pembacaan")
+  idPerangkat String   @map("id_perangkat")
+  nilai       Float
+  satuan      String
+  waktu       DateTime @db.Timestamptz(3)
+
+  perangkat Perangkat @relation(fields: [idPerangkat], references: [idPerangkat])
+
+  @@index([idPerangkat, waktu]) // Perangkat.pembacaanTerakhir
+  @@map("pembacaan_sensor")
+}
+
+model DataHistorisKinerja {
+  idData         String   @id @default(cuid()) @map("id_data")
+  idPanel        String   @map("id_panel")
+  waktu          DateTime @db.Timestamptz(3)
+  dayaDihasilkan Float    @map("daya_dihasilkan") // W
+  energi         Float // kWh
+
+  panel Perangkat @relation(fields: [idPanel], references: [idPerangkat])
+
+  @@index([idPanel, waktu]) // Query BETWEEN UC06 dan profiling B.2.1
+  @@map("data_historis_kinerja")
+}
+
+// ---- Laporan gangguan (C20, C22, C24, UC03, UC04, UC07) ----
+
+model LaporanGangguan {
+  idLaporan     String        @id @default(cuid()) @map("id_laporan")
+  idWarga       Int           @map("id_warga")
+  jenisGangguan String        @map("jenis_gangguan")
+  deskripsi     String
+  foto          String[]      @default([]) // daftar URI, boleh kosong
+  waktuDibuat   DateTime      @default(now()) @map("waktu_dibuat") @db.Timestamptz(3)
+  status        StatusLaporan @default(MENUNGGU)
+
+  warga     Warga                  @relation(fields: [idWarga], references: [idWarga])
+  riwayat   RiwayatStatusLaporan[]
+  penugasan PenugasanLaporan[]
+
+  @@index([idWarga, waktuDibuat]) // cariMilikWarga
+  @@map("laporan_gangguan")
+}
+
+// Komposisi dari LaporanGangguan; entri bersifat append-only.
+model RiwayatStatusLaporan {
+  idRiwayat String        @id @default(cuid()) @map("id_riwayat")
+  idLaporan String        @map("id_laporan")
+  status    StatusLaporan
+  timestamp DateTime      @default(now()) @db.Timestamptz(3)
+
+  laporan LaporanGangguan @relation(fields: [idLaporan], references: [idLaporan], onDelete: Cascade)
+
+  @@index([idLaporan, timestamp])
+  @@map("riwayat_status_laporan")
+}
+
+model PenugasanLaporan {
+  idPenugasan    String   @id @default(cuid()) @map("id_penugasan")
+  idTeknisi      String   @map("id_teknisi")
+  idLaporan      String   @map("id_laporan")
+  waktuPenugasan DateTime @default(now()) @map("waktu_penugasan") @db.Timestamptz(3)
+
+  teknisi Teknisi         @relation(fields: [idTeknisi], references: [idTeknisi])
+  laporan LaporanGangguan @relation(fields: [idLaporan], references: [idLaporan])
+
+  @@unique([idTeknisi, idLaporan])
+  @@index([idLaporan])
+  @@map("penugasan_laporan")
+}
+
+// ---- Tanggung jawab perangkat dan peringatan (C23, C25, C26, UC05) ----
+
+model PenugasanPerangkat {
+  idPenugasan String @id @default(cuid()) @map("id_penugasan")
+  idTeknisi   String @map("id_teknisi")
+  idPerangkat String @map("id_perangkat")
+
+  teknisi   Teknisi   @relation(fields: [idTeknisi], references: [idTeknisi])
+  perangkat Perangkat @relation(fields: [idPerangkat], references: [idPerangkat])
+
+  @@unique([idTeknisi, idPerangkat])
+  @@index([idPerangkat]) // Algo-043: cari teknisi penanggung jawab perangkat
+  @@map("penugasan_perangkat")
+}
+
+// Satu tabel untuk Notifikasi dan PeringatanDayaKritis.
+// level dan kapasitas_saat_ini hanya terisi pada PeringatanDayaKritis.
+model Notifikasi {
+  idNotifikasi     String           @id @default(cuid()) @map("id_notifikasi")
+  idTeknisi        String           @map("id_teknisi")
+  idPerangkat      String?          @map("id_perangkat") // PeringatanDayaKritisDTO.idPerangkat
+  pesan            String
+  level            String?
+  kapasitasSaatIni Float?           @map("kapasitas_saat_ini")
+  statusPengiriman StatusPengiriman @default(PENDING) @map("status_pengiriman")
+  statusBaca       Boolean          @default(false) @map("status_baca")
+  waktu            DateTime         @default(now()) @db.Timestamptz(3)
+
+  teknisi   Teknisi    @relation(fields: [idTeknisi], references: [idTeknisi])
+  perangkat Perangkat? @relation(fields: [idPerangkat], references: [idPerangkat])
+
+  @@index([idTeknisi, statusPengiriman])
+  @@map("notifikasi")
+}
+
+// ---- Pemeliharaan (C27, UC08) ----
+
+model CatatanPemeliharaan {
+  idCatatan        String   @id @default(cuid()) @map("id_catatan")
+  idTeknisi        String   @map("id_teknisi")
+  idPerangkat      String   @map("id_perangkat")
+  waktuPelaksanaan DateTime @map("waktu_pelaksanaan") @db.Timestamptz(3)
+  tindakan         String
+  catatanHasil     String   @map("catatan_hasil")
+
+  teknisi   Teknisi   @relation(fields: [idTeknisi], references: [idTeknisi])
+  perangkat Perangkat @relation(fields: [idPerangkat], references: [idPerangkat])
+
+  @@index([idPerangkat, waktuPelaksanaan]) // Riwayat per perangkat dan waktu
+  @@index([idTeknisi])
+  @@map("catatan_pemeliharaan")
+}
+
+// ---- Iuran (C14-C17, C28, UC02, UC09-11) ----
+// Uang memakai Decimal(14,2). Volume dan energi juga Decimal agar total tagihan dan rekap presisi.
+
+model Periode {
+  idPeriode   String  @id @default(cuid()) @map("id_periode")
+  bulan       Int // 1-12
+  tahun       Int
+  statusFinal Boolean @default(false) @map("status_final")
+
+  aturanTarif  AturanTarif?
+  pemakaian    DataPemakaian[]
+  tagihan      Tagihan[]
+  rekapitulasi Rekapitulasi[]
+
+  @@unique([bulan, tahun])
+  @@map("periode")
+}
+
+// Boleh null agar DataPemakaian.isLengkap (Algo-012) bermakna.
+model DataPemakaian {
+  idPemakaian String    @id @default(cuid()) @map("id_pemakaian")
+  idWarga     Int       @map("id_warga")
+  idPeriode   String    @map("id_periode")
+  volumeAirM3 Decimal?  @map("volume_air_m3") @db.Decimal(12, 3)
+  energiKwh   Decimal?  @map("energi_kwh") @db.Decimal(12, 3)
+  waktuCatat  DateTime? @map("waktu_catat") @db.Timestamptz(3)
+
+  warga   Warga   @relation(fields: [idWarga], references: [idWarga])
+  periode Periode @relation(fields: [idPeriode], references: [idPeriode])
+
+  @@unique([idWarga, idPeriode])
+  @@index([idPeriode])
+  @@map("data_pemakaian")
+}
+
+// Tepat satu per periode, dipakai seluruh warga (KF28).
+model AturanTarif {
+  idAturan          String  @id @default(cuid()) @map("id_aturan")
+  idPeriode         String  @unique @map("id_periode")
+  tarifAirPerM3     Decimal @map("tarif_air_per_m3") @db.Decimal(14, 2)
+  tarifEnergiPerKwh Decimal @map("tarif_energi_per_kwh") @db.Decimal(14, 2)
+  biayaTetap        Decimal @map("biaya_tetap") @db.Decimal(14, 2)
+
+  periode Periode @relation(fields: [idPeriode], references: [idPeriode])
+
+  @@map("aturan_tarif")
+}
+
+model Tagihan {
+  idTagihan          String        @id @default(cuid()) @map("id_tagihan")
+  idWarga            Int           @map("id_warga")
+  idPeriode          String        @map("id_periode")
+  jumlahIuran        Decimal       @map("jumlah_iuran") @db.Decimal(14, 2)
+  dataPemakaianDasar String        @map("data_pemakaian_dasar")
+  status             StatusTagihan @default(DRAFT)
+
+  warga   Warga   @relation(fields: [idWarga], references: [idWarga])
+  periode Periode @relation(fields: [idPeriode], references: [idPeriode])
+
+  @@unique([idWarga, idPeriode])
+  @@index([idPeriode])
+  @@map("tagihan")
+}
+
+model Rekapitulasi {
+  idRekap              String  @id @default(cuid()) @map("id_rekap")
+  idPeriode            String  @map("id_periode")
+  totalPemakaianAir    Decimal @map("total_pemakaian_air") @db.Decimal(14, 3)
+  totalPemakaianEnergi Decimal @map("total_pemakaian_energi") @db.Decimal(14, 3)
+  totalIuran           Decimal @map("total_iuran") @db.Decimal(14, 2)
+
+  periode Periode @relation(fields: [idPeriode], references: [idPeriode])
+
+  @@index([idPeriode])
+  @@map("rekapitulasi")
+}
