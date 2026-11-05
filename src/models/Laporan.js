@@ -111,6 +111,23 @@ class Laporan {
     );
     return rowCount > 0;
   }
+
+  // Algo-056: statistik jumlah laporan berdasarkan status (untuk metrik kartu I-13)
+  static async getStatistikStatus() {
+    const { rows } = await db.query(
+      `SELECT status_penanganan, COUNT(*)::int as jumlah
+       FROM laporan
+       GROUP BY status_penanganan`,
+    );
+    const stats = { Baru: 0, Diproses: 0, Selesai: 0, Total: 0 };
+    for (const r of rows) {
+      if (stats[r.status_penanganan] !== undefined) {
+        stats[r.status_penanganan] = parseInt(r.jumlah, 10);
+      }
+      stats.Total += parseInt(r.jumlah, 10);
+    }
+    return stats;
+  }
 }
 
 module.exports = Laporan;
