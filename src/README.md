@@ -122,16 +122,25 @@ IF2150-RPL-K02-G07/
     ├── assets/                     # Logo dan aset visual
     ├── controllers/
     │   ├── AuthController.ts
+    │   ├── MarginController.ts
+    │   ├── margin.ts
     │   └── validators.ts
     ├── models/
-    │   └── PemilikUsaha.ts
+    │   ├── BahanBaku.ts
+    │   ├── PemilikUsaha.ts
+    │   ├── Produk.ts
+    │   ├── ResepBahan.ts
+    │   └── pesan.ts
     ├── navigation/
     │   └── types.ts
     ├── services/
     │   └── supabase.ts
     ├── tests/
+    │   ├── margin.test.ts
+    │   ├── models.test.ts
     │   └── validators.test.ts
     ├── views/
+    │   ├── AddProductPage.tsx
     │   ├── HomePage.tsx
     │   ├── LoginPage.tsx
     │   ├── RegistrationPage.tsx
@@ -141,6 +150,9 @@ IF2150-RPL-K02-G07/
     └── supabase/
         ├── config.toml
         ├── schema.sql
+        ├── seed.sql
+        ├── migrations/
+        │   └── 20261103000000_produk_bahan_resep.sql
         └── functions/
             └── login-with-username/
                 └── index.ts        # Entry point Edge Function
@@ -652,7 +664,9 @@ ke branch utama.
 | Logout                                                                | `AuthController.ts`                                            | Tersedia.                                                                        |
 | Home/dashboard                                                        | `HomePage.tsx`                                                 | Placeholder; belum menjadi dashboard operasional lengkap.                        |
 | Reset password                                                        | `ResetPasswordPage.tsx`                                        | Placeholder untuk integrasi lanjutan.                                            |
-| Produk, bahan baku, resep, HPP, margin, dan fitur operasional lainnya | Modul lanjutan                                                 | Mengikuti pembagian tugas anggota dan DPPL.                                      |
+| Tambah produk beserta resep (UC03) | `AddProductPage.tsx`, `MarginController.ts`, `Produk.ts`, `BahanBaku.ts`, `ResepBahan.ts` | Tersedia; memiliki unit test. |
+| Perhitungan HPP dan margin (UC04) | `MarginController.ts`, `margin.ts` | Tersedia; margin ditampilkan setelah produk disimpan. |
+| Fitur operasional lainnya | Modul lanjutan | Mengikuti pembagian tugas anggota dan DPPL. |
 
 ------------------------------------------------------------------------
 
@@ -707,6 +721,20 @@ aplikasi yang dibuat manual oleh `schema.sql`.
 `tbl_pemilik_usaha` beserta objek database pendukungnya. Tabel untuk
 produk, bahan baku, resep, riwayat harga, notifikasi, dan modul bisnis
 lainnya perlu ditambahkan sesuai kebutuhan fitur dan dokumen DPPL.
+
+### 9.5 Tabel produk, bahan baku, dan resep
+
+Didefinisikan pada `supabase/migrations/20261103000000_produk_bahan_resep.sql`. Migrasi ini bergantung pada `tbl_pemilik_usaha`.
+
+| Tabel | Kolom utama | Keterangan |
+|:--|:--|:--|
+| `tbl_produk` | `id_produk`, `id_pemilik`, `nama_produk`, `tag`, `harga_jual`, `margin` | Nama produk unik per pemilik tanpa membedakan huruf besar/kecil; `margin` boleh negatif. |
+| `tbl_bahan_baku` | `id_bahan`, `id_pemilik`, `nama_bahan`, `harga_beli` | Nama bahan unik per pemilik; `harga_beli` per satuan takaran. |
+| `tbl_resep_bahan` | `id_produk`, `id_bahan`, `takaran` | Primary key gabungan `(id_produk, id_bahan)`; resep ikut terhapus bila produk dihapus. |
+
+RLS diaktifkan pada ketiga tabel; pemilik hanya dapat mengakses datanya sendiri. Rumus: HPP = jumlah (takaran x harga beli), margin = harga jual - HPP.
+
+`supabase/seed.sql` membuat data contoh bila akun `demo@pross.test` sudah ada.
 
 ------------------------------------------------------------------------
 
