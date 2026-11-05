@@ -15,7 +15,7 @@ def get_current_penjual():
         "peran": "penjual"
     }
 
-@router.get("/", response_model=List[Dict[str, Any]])
+@router.get("/penjual", response_model=List[Dict[str, Any]])
 def get_daftar_listing_penjual(current_user: dict = Depends(get_current_penjual)):
     """UC01 / UC06 / UC09: Ambil semua listing milik penjual aktif"""
     return [
