@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ambilDaftarKatalog, ApiError, cariKatalog, type ListingKatalog } from "@/lib/api";
+import EmptyState from "./EmptyState";
 import KartuListing from "./KartuListing";
 import PesanKatalog, { perluLogin, PesanPerluLogin } from "./PesanKatalog";
 import { adaPencarian, bacaPencarian } from "./pencarian";
@@ -44,20 +45,43 @@ export default function DaftarListing() {
   // Hasil milik URL sebelumnya dianggap belum dimuat
   const terkini = hasil?.kunci === kunci ? hasil : null;
 
-  if (pencarian.hargaTidakValid) return <PesanKatalog jenis="error">Rentang harga tidak valid</PesanKatalog>;
+  const resetPencarian = { href: "/katalog", label: "Reset pencarian" };
+
+  if (pencarian.hargaTidakValid) {
+    return (
+      <EmptyState jenis="error" judul="Rentang harga tidak valid" aksi={resetPencarian}>
+        {pencarian.pesanHarga}
+      </EmptyState>
+    );
+  }
   if (terkini?.harusLogin) return <PesanPerluLogin />;
   if (terkini?.error) return <PesanKatalog jenis="error">{terkini.error}</PesanKatalog>;
   if (!terkini?.daftar) return <PesanKatalog>{mencari ? "Mencari listing…" : "Memuat katalog…"}</PesanKatalog>;
 
   const daftar = terkini.daftar;
   if (daftar.length === 0) {
-    if (!mencari) return <PesanKatalog>Belum ada makanan surplus yang tersedia</PesanKatalog>;
+    // UC02 Alt 1: tidak ada listing tersedia sama sekali
+    if (!mencari) {
+      return (
+        <EmptyState judul="Belum ada makanan surplus yang tersedia">
+          Semua listing sedang habis atau sudah melewati batas kedaluwarsa. Coba cek lagi nanti.
+        </EmptyState>
+      );
+    }
+    // UC04 Alt 1 (kata kunci) / Alt 2 (rentang harga): hasil pencarian kosong
     return (
-      <PesanKatalog>
+      <EmptyState
+        judul={
+          pencarian.kataKunci
+            ? "Makanan dengan kata kunci tersebut tidak ditemukan"
+            : "Tidak ada makanan pada rentang harga tersebut"
+        }
+        aksi={resetPencarian}
+      >
         {pencarian.kataKunci
-          ? "Makanan dengan kata kunci tersebut tidak ditemukan"
-          : "Tidak ada makanan pada rentang harga tersebut"}
-      </PesanKatalog>
+          ? `Tidak ada listing tersedia yang cocok dengan “${pencarian.kataKunci}”. Coba kata kunci lain atau ubah rentang harga.`
+          : "Coba perlebar rentang harga atau kosongkan filter."}
+      </EmptyState>
     );
   }
 
