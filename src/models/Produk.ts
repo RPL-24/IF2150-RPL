@@ -5,6 +5,15 @@ export class Produk {
   private tag: string[] = [];
   private hargaJual: number = 0;
   private margin: number = 0;
+  private statusPeringatan: boolean = false;
+
+  getStatusPeringatan(): boolean{
+    return this.statusPeringatan;
+  }
+
+  setStatusPeringatan(status_peringatan: boolean): void {
+    this.statusPeringatan = status_peringatan;
+  }
 
   getNamaProduk(): string {
     return this.namaProduk;
