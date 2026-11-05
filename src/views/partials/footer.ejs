@@ -1,3 +1,35 @@
 </main>
+<%
+  /*
+    FOOTER BERSAMA. Halaman tanpa footer (misalnya ruang chat):
+      include('../partials/footer', { tanpaFooter: true })
+  */
+%>
+<% if (!locals.tanpaFooter) { %>
+<footer class="footer">
+  <div class="footer-isi">
+    <div>
+      <a class="logo" href="/" aria-label="LawHub"><img src="/img/logo.png" alt="LawHub"></a>
+    </div>
+    <div>
+      <h4>Kontak Kami</h4>
+      <p>PT. HeySeriuslah<br>
+         ITB LabtekV - Lt 3<br>
+         Jl. Ganesha No. 10, Lb. Siliwangi<br>
+         Kecamatan Coblong, Kota Bandung,<br>
+         Jawa Barat 40132.</p>
+      <p class="kontak-tambahan">Email : Heyseriuslah@gmail.com<br>
+         Nomor Telepon : (+62)856-100-1920</p>
+    </div>
+    <div>
+      <h4>Layanan</h4>
+      <ul>
+        <li>Konsultasi Hukum Online</li>
+        <li>Pencarian Pasal Online</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+<% } %>
 </body>
 </html>
