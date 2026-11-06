@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorEmail = document.getElementById('Error_Email');
     const errorNoTelepon = document.getElementById('Error_NoTelepon');
     const hintError = document.getElementById('Hint_TglError');
+    const errorEmailOrtu = document.getElementById('Error_EmailOrangTua');
     const alertError = document.getElementById('Alert_Error');
     
     // Containers
@@ -133,6 +134,19 @@ document.addEventListener('DOMContentLoaded', () => {
             hintError.style.display = "none";
         }
 
+        // Validasi Email Orang Tua
+        const emailOrtuValue = inputEmailOrtu.value.trim();
+        const emailOrtuRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailOrtuValue === '') {
+            showErrorField(inputEmailOrtu, errorEmailOrtu, 'Email wajib diisi');
+            isValid = false;
+        } else if (!emailOrtuRegex.test(emailOrtuValue)) {
+            showErrorField(inputEmailOrtu, errorEmailOrtu, 'Format email tidak valid (contoh: user@mail.com)');
+            isValid = false;
+        } else {
+            clearError(inputEmailOrtu, errorEmailOrtu);
+        }
+
         // Validasi Password & Konfirmasi Password
         const password = inputPassword.value;
         const confirmPassword = inputConfirmPassword.value;
@@ -184,4 +198,5 @@ document.addEventListener('DOMContentLoaded', () => {
     inputNama.addEventListener('input', () => clearError(inputNama, errorNama));
     inputEmail.addEventListener('input', () => clearError(inputEmail, errorEmail));
     inputNoTelepon.addEventListener('input', () => clearError(inputNoTelepon, errorNoTelepon));
+    inputEmailOrtu.addEventListener('input', () => clearError(inputEmailOrtu, errorEmailOrtu));
 });
