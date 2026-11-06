@@ -1,7 +1,8 @@
 "use client";
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { api } from "../api";
+import { AppLayout } from "@/components/layout";
+import { ApiError, checkoutPembayaran } from "@/lib/api";
 
 function CheckoutForm() {
   const router = useRouter();
@@ -14,39 +15,43 @@ function CheckoutForm() {
     setLoading(true);
     setPesan("");
     try {
-      const trx = await api<{ id_transaksi: number }>("/pembayaran/checkout", {
-        method: "POST",
-        body: JSON.stringify({ id_listing: idListing, jumlah }),
-      });
+      const trx = await checkoutPembayaran(idListing, jumlah);
       router.push(`/pembayaran/${trx.id_transaksi}`);
     } catch (e) {
-      setPesan((e as Error).message);
+      setPesan(e instanceof ApiError ? e.message : "Terjadi kesalahan");
       setLoading(false);
     }
   }
 
   return (
-    <main className="p-6 max-w-md mx-auto">
-      <h1 className="text-xl font-bold">Checkout</h1>
-      <label className="block mt-4">
+    <AppLayout
+      role="buyer"
+      isAuthenticated
+      title="Checkout"
+      showHeader
+      headerClassName="bg-[#1bb0c7] px-5 pb-5 pt-8"
+      bodyClassName="bg-[#e6e0c8] px-4 py-5"
+    >
+      <label className="block text-lg font-medium">
         Jumlah porsi
         <input
           type="number"
           min={1}
           value={jumlah}
           onChange={(e) => setJumlah(Number(e.target.value))}
-          className="border p-2 w-full"
+          className="mt-2 w-full rounded-md border border-[#d7d0b4] bg-[#f7f0dc] p-3"
         />
       </label>
-      {pesan && <p className="text-red-600 mt-2">{pesan}</p>}
+      {pesan && <p className="mt-3 text-red-600">{pesan}</p>}
       <button
+        type="button"
         disabled={loading}
         onClick={submit}
-        className="mt-4 px-4 py-2 bg-green-600 text-white rounded"
+        className="mt-6 w-full rounded-md bg-[#f25f4b] px-4 py-4 text-xl font-black text-white shadow-sm disabled:opacity-60"
       >
         {loading ? "Memproses..." : "Lanjut ke pembayaran"}
       </button>
-    </main>
+    </AppLayout>
   );
 }
 

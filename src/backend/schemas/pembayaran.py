@@ -10,6 +10,7 @@ class ItemOut(BaseModel):
     id_listing: int
     jumlah: int
     harga_satuan: int
+    nama_makanan: str
 
 class TransaksiOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
