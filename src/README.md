@@ -70,6 +70,7 @@ src/
       components/         # komponen bersama dari Figma (Tombol, IsianTeks, Banner, ...)
       theme/              # token desain: warna, font, gaya teks, jarak, sudut
       api/                # klien HTTP ke backend
+    test/                 # unit test Vitest (vitest.config.mts)
   backend/                # Cloudflare Worker (Hono + D1): REST API dan cron
     .env.example          # contoh CLOUDFLARE_* dan KUNCI_TOKEN
     .dev.vars             # rahasia lokal (tidak di-commit)
@@ -204,7 +205,10 @@ Pemeriksaan kode:
 ```bash
 npx tsc --noEmit   # cek tipe TypeScript
 npx expo lint      # ESLint
+npm test           # unit test Vitest (test/)
 ```
+
+Unit test di `src/mobile/test/` menguji logika TypeScript murni, seperti klien API (`client.test.ts`): URL dan header `Authorization`, amplop galat menjadi `ApiError`, *callback* 401, serta kode `JARINGAN_GAGAL`, `BATAS_WAKTU`, dan `KONFIGURASI_TIDAK_VALID`. `fetch` diganti tiruan, sehingga tidak perlu backend yang berjalan. Layar dan komponen tidak dirender di test; keduanya diperiksa langsung di Expo Go.
 
 Selama pengembangan, layar masuk sementara berisi tombol untuk membuka navigasi Mahasiswa, navigasi Administrator, dan galeri komponen (`/komponen`).
 
