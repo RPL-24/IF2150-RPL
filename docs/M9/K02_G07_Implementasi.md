@@ -196,29 +196,27 @@ Tabel B.1. Perubahan dari DPPL
 
 ## B.2 Bukti Penerapan Best Practices
 
+## B.2 Bukti Penerapan Best Practices
+
 Tabel B.2. Bukti Best Practices
 
 | Praktik | Bukti | Keterangan |
 | :--- | :--- | :--- |
-| Branching | *[Tautan ke daftar branch / graph commit]* | *[Skema yang dipakai]* |
-| Semantic commit | *[Tautan ke riwayat commit]* | *[Ringkasan]* |
-| Track tasks | *[Tautan ke Issues/Projects]* | *[Jumlah issue, pembagian]* |
-| Pull request dan review | *[Tautan ke 2-3 PR representatif]* | *[Siapa me-review siapa]* |
-| Pengujian | *[Tautan ke `src/tests/` dan hasil test]* | *[Apa yang diuji, cara menjalankan]* |
+| Branching | [feat/search-and-trend](https://github.com/rafeldzin/IF2150-RPL-K02-G07/tree/feat/search-and-trend) | Menggunakan skema Gitflow sederhana dengan branch fitur spesifik sebelum di-merge melalui PR. |
+| Semantic commit | [Commit History](https://github.com/rafeldzin/IF2150-RPL-K02-G07/commits/feat/search-and-trend) | Menggunakan prefix `feat(search):`, `feat(trend):`, dan `refactor:` untuk setiap perubahan. |
+| Track tasks | [Issue #12](https://github.com/rafeldzin/IF2150-RPL-K02-G07/issues) | Pembagian tugas fitur Search dan Tren Harga. |
+| Pull request dan review | [PR #8 (Kuri)](https://github.com/rafeldzin/IF2150-RPL-K02-G07/pull/8) | Saya (Fathir) mereview dan approve implementasi notifikasi milik Kuri (Fakhriyan). |
+| Pengujian | `src/tests/` | Unit test pada fungsi logika filter waktu dan formatting harga rupiah. |
 
 ### B.2.1 Profiling dan Optimasi
 
-Pilih minimal satu fitur yang diprofil.
-
 | Informasi | Keterangan |
 | :--- | :--- |
-| Fitur / proses yang diprofil | *[Nama fitur]* |
-| Alat | *[mis. Chrome DevTools, cProfile, EXPLAIN]* |
-| Temuan (sebelum) | *[Bottleneck yang ditemukan, sertakan angka/tangkapan layar]* |
-| Perbaikan | *[Yang diubah]* |
-| Hasil (sesudah) | *[Perbandingan dengan sebelumnya]* |
-
-Jika tidak ada perbaikan yang perlu dilakukan, jelaskan hasil profiling dan alasan kenapa fitur tersebut sudah memadai.
+| Fitur / proses yang diprofil | UC08 (Memantau Tren Harga Bahan Baku) |
+| Alat | Chrome DevTools (Performance & Network tab) |
+| Temuan (sebelum) | Waktu respons cukup lambat (*bottleneck*) saat menampilkan *chart* karena seluruh data historis dari *database* (ratusan baris riwayat harga) ditarik ke aplikasi (*client*), kemudian baru di-*filter* array-nya secara manual menggunakan fungsi `filter()` biasa. |
+| Perbaikan | Mengoptimasi *query* pada `TrenBahanBakuController.ts` agar pemfilteran waktu (`rentang`) langsung diproses di *database* Supabase menggunakan fungsi `.gte` (Greater Than or Equal), sehingga data yang dikirim ke aplikasi sudah bersih. Selain itu, menggunakan `Set` dan restrukturisasi *map* data *Line Chart* agar langsung sesuai dengan properti `react-native-chart-kit` secara modular. |
+| Hasil (sesudah) | Beban memori di perangkat *mobile/client* berkurang drastis dan *chart* langsung tampil tanpa ada waktu tunggu (lag) yang panjang karena data di-*filter* langsung oleh sisi *server* Supabase. |
 
 ## B.3 Kendala dan Catatan Penting
 
@@ -242,9 +240,11 @@ Tabel B.5. Traceability Kelas Perancangan ke Implementasi
 | ID Kelas | Nama Kelas Perancangan | Bentuk Implementasi | Lokasi (File dan Nama) | Keterangan |
 | :--- | :--- | :--- | :--- | :--- |
 | *[C01]* | *[Nama kelas pada DPPL]* | *[mis. Kelas / Fungsi / Komponen / Route / Tabel]* | *[mis. `src/models/user.py` - `User`]* | *[Cara atribut dan operasi kelas diwujudkan; "-" jika tidak ada penjelasan tambahan]* |
-| *[C02]* | *[Nama kelas pada DPPL]* | *[Bentuk implementasi]* | *[mis. `src/components/LoginForm.tsx` - `LoginForm`]* | *[mis. atribut menjadi *state*, operasi menjadi *handler*]* |
-| *[C03]* | *[Nama kelas pada DPPL]* | *[Bentuk implementasi]* | *[mis. `src/routes/auth.js` - `POST /login`]* | *[Keterangan]* |
-| *...* | *...* | *...* | *...* | *...* |
+| *C14* | *RiwayatHargaBahanBaku* | *Antarmuka (Interface) TypeScript* | *`src/controllers/TrenBahanBakuController.ts` - `RiwayatHarga`* | *Diwujudkan sebagai interface TypeScript yang dipetakan langsung dari tabel Supabase.* |
+| *C15* | *TrenBahanBakuPage* | *Komponen React Native* | *`src/views/TrenBahanBakuPage.tsx` - `TrenBahanBakuPage`* | *Atribut diwujudkan sebagai state hook, operasi diwujudkan sebagai handler aksi tekan dan load grafik.* |
+| *C16* | *TrenBahanBakuController* | *Class Singleton* | *`src/controllers/TrenBahanBakuController.ts` - `TrenBahanBakuController`* | *Operasi pengambilan riwayat dan filter dilakukan lewat query Supabase dan method `formatUntukChart()`.* |
+| *C21* | *SearchProductPage* | *Komponen React Native* | *`src/views/SearchProductPage.tsx` - `SearchProductPage`* | *Diimplementasikan dengan kustomisasi custom hook `useProductSearch` untuk menangani debounce agar tidak terjadi race condition saat mengetik.* |
+| *C22* | *ProductSearchController* | *Class Singleton* | *`src/controllers/ProductSearchController.ts` - `ProductSearchController`* | *Method `search()` mengambil kata kunci, menerapkan filter tag/nama, dan mengembalikan array `Product`.* |
 
 Catatan:
 - Satu kelas perancangan boleh diwujudkan oleh beberapa file/unit, dan satu file/unit boleh mewujudkan beberapa kelas perancangan. Tuliskan semuanya.
