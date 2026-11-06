@@ -4,4 +4,7 @@ export type RootStackParamList = {
   ResetPassword: undefined;
   Home: undefined;
   AddProduct: undefined;
+  Notifikasi: undefined;
+  IzinNotifikasi: undefined;
+  ProductDetail: { idProduk: string };
 };
