@@ -3,6 +3,7 @@ from . import models
 from . import database
 from .database import engine, Base
 
+app.include_router(pembayaran_routes.router)
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
