@@ -103,7 +103,7 @@ body{
     background-color: #E2E8F0;     
     border-radius: 8px;
     font-size: 14px;
-    color: #8F98A3;
+    color: #2A3A3F;
     outline: none;                
     transition: background-color 0.2s ease;
 }
@@ -125,14 +125,6 @@ label {
   color: #2A3A3F;
 }
 
-input, select {
-  padding: 12px;
-  background-color: #E2E8F0;
-  border-radius: 12px;
-  font-size: 18px;
-  outline: none;
-  transition: border-color 0.2s;
-}
 
 .date-group-inputs {
   display: flex;
@@ -146,9 +138,14 @@ input, select {
   border-radius: 8px;
   font-size: 14px;
   background-color: #E2E8F0;
-  color: #8F98A3;
+  color: #2A3A3F;
   text-align: left;
   outline: none;
+}
+
+.form-group input::placeholder, 
+.date-group-inputs input::placeholder{
+    color: #8F98A3;
 }
 
 .date-group-inputs input:focus {
@@ -203,4 +200,13 @@ input, select {
 
 .text-highlight{
     color: #78C9C0;
+}
+
+.modal-icon{
+  width:64px;
+  height: 64px;
+  margin: 0 auto 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
