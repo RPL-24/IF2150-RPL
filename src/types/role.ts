@@ -1,0 +1,1 @@
+export type Role = "pelapor" | "petugas" | "admin";
