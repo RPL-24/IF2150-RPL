@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply sehati-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply sehati-db --remote",
+    "db:seed:local": "wrangler d1 execute sehati-db --local --file=./seed/seed.sql",
+    "db:studio:local": "DB_TARGET=local drizzle-kit studio",
+    "db:studio:remote": "DB_TARGET=remote drizzle-kit studio",
+    "cf-typegen": "wrangler types"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/bun": "latest",
+    "better-sqlite3": "^13.0.3",
+    "drizzle-kit": "^0.31.11",
+    "vitest": "^5.1.0",
+    "wrangler": "^4.157.0"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.4",
+    "hono": "^4.13.16"
+  }
+}

@@ -1,0 +1,851 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "6e7c62d9-b73e-4788-b0e3-e39f57ca1c75",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "daily_affirmation": {
+      "name": "daily_affirmation",
+      "columns": {
+        "id_affirmation": {
+          "name": "id_affirmation",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id_mahasiswa": {
+          "name": "id_mahasiswa",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "konten": {
+          "name": "konten",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "waktu_kirim": {
+          "name": "waktu_kirim",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_affirmation_mhs": {
+          "name": "idx_affirmation_mhs",
+          "columns": [
+            "id_mahasiswa"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "daily_affirmation_id_mahasiswa_mahasiswa_id_pengguna_fk": {
+          "name": "daily_affirmation_id_mahasiswa_mahasiswa_id_pengguna_fk",
+          "tableFrom": "daily_affirmation",
+          "tableTo": "mahasiswa",
+          "columnsFrom": [
+            "id_mahasiswa"
+          ],
+          "columnsTo": [
+            "id_pengguna"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "faq": {
+      "name": "faq",
+      "columns": {
+        "id_faq": {
+          "name": "id_faq",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "pertanyaan": {
+          "name": "pertanyaan",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "jawaban": {
+          "name": "jawaban",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "jadwal_konsultasi": {
+      "name": "jadwal_konsultasi",
+      "columns": {
+        "id_jadwal": {
+          "name": "id_jadwal",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id_konsultan": {
+          "name": "id_konsultan",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "waktu": {
+          "name": "waktu",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "waktu_selesai": {
+          "name": "waktu_selesai",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'tersedia'"
+        },
+        "id_mahasiswa": {
+          "name": "id_mahasiswa",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_jadwal_waktu": {
+          "name": "idx_jadwal_waktu",
+          "columns": [
+            "id_konsultan",
+            "waktu",
+            "waktu_selesai"
+          ],
+          "isUnique": false
+        },
+        "idx_jadwal_mhs": {
+          "name": "idx_jadwal_mhs",
+          "columns": [
+            "id_mahasiswa"
+          ],
+          "isUnique": false
+        },
+        "jadwal_konsultan_waktu_unique": {
+          "name": "jadwal_konsultan_waktu_unique",
+          "columns": [
+            "id_konsultan",
+            "waktu"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "jadwal_konsultasi_id_konsultan_konsultan_id_konsultan_fk": {
+          "name": "jadwal_konsultasi_id_konsultan_konsultan_id_konsultan_fk",
+          "tableFrom": "jadwal_konsultasi",
+          "tableTo": "konsultan",
+          "columnsFrom": [
+            "id_konsultan"
+          ],
+          "columnsTo": [
+            "id_konsultan"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "jadwal_konsultasi_id_mahasiswa_mahasiswa_id_pengguna_fk": {
+          "name": "jadwal_konsultasi_id_mahasiswa_mahasiswa_id_pengguna_fk",
+          "tableFrom": "jadwal_konsultasi",
+          "tableTo": "mahasiswa",
+          "columnsFrom": [
+            "id_mahasiswa"
+          ],
+          "columnsTo": [
+            "id_pengguna"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "jadwal_status_check": {
+          "name": "jadwal_status_check",
+          "value": "\"jadwal_konsultasi\".\"status\" IN ('tersedia', 'terpesan')"
+        },
+        "jadwal_waktu_check": {
+          "name": "jadwal_waktu_check",
+          "value": "\"jadwal_konsultasi\".\"waktu_selesai\" > \"jadwal_konsultasi\".\"waktu\""
+        },
+        "jadwal_status_mahasiswa_check": {
+          "name": "jadwal_status_mahasiswa_check",
+          "value": "(\"jadwal_konsultasi\".\"status\" = 'terpesan') = (\"jadwal_konsultasi\".\"id_mahasiswa\" IS NOT NULL)"
+        }
+      }
+    },
+    "konsultan": {
+      "name": "konsultan",
+      "columns": {
+        "id_konsultan": {
+          "name": "id_konsultan",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nama": {
+          "name": "nama",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "spesialisasi": {
+          "name": "spesialisasi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "mahasiswa": {
+      "name": "mahasiswa",
+      "columns": {
+        "id_pengguna": {
+          "name": "id_pengguna",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nim": {
+          "name": "nim",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "mahasiswa_nim_unique": {
+          "name": "mahasiswa_nim_unique",
+          "columns": [
+            "nim"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "mahasiswa_id_pengguna_pengguna_id_pengguna_fk": {
+          "name": "mahasiswa_id_pengguna_pengguna_id_pengguna_fk",
+          "tableFrom": "mahasiswa",
+          "tableTo": "pengguna",
+          "columnsFrom": [
+            "id_pengguna"
+          ],
+          "columnsTo": [
+            "id_pengguna"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "notifikasi": {
+      "name": "notifikasi",
+      "columns": {
+        "id_notifikasi": {
+          "name": "id_notifikasi",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id_mahasiswa": {
+          "name": "id_mahasiswa",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id_affirmation": {
+          "name": "id_affirmation",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id_reminder": {
+          "name": "id_reminder",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "isi": {
+          "name": "isi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "waktu_kirim": {
+          "name": "waktu_kirim",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_notifikasi_mhs": {
+          "name": "idx_notifikasi_mhs",
+          "columns": [
+            "id_mahasiswa"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "notifikasi_id_mahasiswa_mahasiswa_id_pengguna_fk": {
+          "name": "notifikasi_id_mahasiswa_mahasiswa_id_pengguna_fk",
+          "tableFrom": "notifikasi",
+          "tableTo": "mahasiswa",
+          "columnsFrom": [
+            "id_mahasiswa"
+          ],
+          "columnsTo": [
+            "id_pengguna"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "notifikasi_id_affirmation_daily_affirmation_id_affirmation_fk": {
+          "name": "notifikasi_id_affirmation_daily_affirmation_id_affirmation_fk",
+          "tableFrom": "notifikasi",
+          "tableTo": "daily_affirmation",
+          "columnsFrom": [
+            "id_affirmation"
+          ],
+          "columnsTo": [
+            "id_affirmation"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "notifikasi_id_reminder_reminder_id_reminder_fk": {
+          "name": "notifikasi_id_reminder_reminder_id_reminder_fk",
+          "tableFrom": "notifikasi",
+          "tableTo": "reminder",
+          "columnsFrom": [
+            "id_reminder"
+          ],
+          "columnsTo": [
+            "id_reminder"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "notifikasi_sumber_check": {
+          "name": "notifikasi_sumber_check",
+          "value": "(\"notifikasi\".\"id_affirmation\" IS NOT NULL) + (\"notifikasi\".\"id_reminder\" IS NOT NULL) = 1"
+        }
+      }
+    },
+    "pengajuan_pertanyaan": {
+      "name": "pengajuan_pertanyaan",
+      "columns": {
+        "id_pertanyaan": {
+          "name": "id_pertanyaan",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id_mahasiswa": {
+          "name": "id_mahasiswa",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "isi_pertanyaan": {
+          "name": "isi_pertanyaan",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "pengajuan_pertanyaan_id_mahasiswa_mahasiswa_id_pengguna_fk": {
+          "name": "pengajuan_pertanyaan_id_mahasiswa_mahasiswa_id_pengguna_fk",
+          "tableFrom": "pengajuan_pertanyaan",
+          "tableTo": "mahasiswa",
+          "columnsFrom": [
+            "id_mahasiswa"
+          ],
+          "columnsTo": [
+            "id_pengguna"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "pengguna": {
+      "name": "pengguna",
+      "columns": {
+        "id_pengguna": {
+          "name": "id_pengguna",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nama": {
+          "name": "nama",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "google_id": {
+          "name": "google_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "peran": {
+          "name": "peran",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "pengguna_email_unique": {
+          "name": "pengguna_email_unique",
+          "columns": [
+            "email"
+          ],
+          "isUnique": true
+        },
+        "pengguna_google_id_unique": {
+          "name": "pengguna_google_id_unique",
+          "columns": [
+            "google_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "pengguna_peran_check": {
+          "name": "pengguna_peran_check",
+          "value": "\"pengguna\".\"peran\" IN ('mahasiswa', 'administrator')"
+        }
+      }
+    },
+    "reminder": {
+      "name": "reminder",
+      "columns": {
+        "id_reminder": {
+          "name": "id_reminder",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id_mahasiswa": {
+          "name": "id_mahasiswa",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "jenis": {
+          "name": "jenis",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "waktu": {
+          "name": "waktu",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_reminder_mhs": {
+          "name": "idx_reminder_mhs",
+          "columns": [
+            "id_mahasiswa"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "reminder_id_mahasiswa_mahasiswa_id_pengguna_fk": {
+          "name": "reminder_id_mahasiswa_mahasiswa_id_pengguna_fk",
+          "tableFrom": "reminder",
+          "tableTo": "mahasiswa",
+          "columnsFrom": [
+            "id_mahasiswa"
+          ],
+          "columnsTo": [
+            "id_pengguna"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "reminder_jenis_check": {
+          "name": "reminder_jenis_check",
+          "value": "\"reminder\".\"jenis\" IN ('makan', 'tidur', 'olahraga')"
+        }
+      }
+    },
+    "sesi_autentikasi": {
+      "name": "sesi_autentikasi",
+      "columns": {
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id_pengguna": {
+          "name": "id_pengguna",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "waktu_login": {
+          "name": "waktu_login",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "token_push": {
+          "name": "token_push",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_sesi_pengguna": {
+          "name": "idx_sesi_pengguna",
+          "columns": [
+            "id_pengguna"
+          ],
+          "isUnique": false
+        },
+        "idx_sesi_push": {
+          "name": "idx_sesi_push",
+          "columns": [
+            "token_push"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "sesi_autentikasi_id_pengguna_pengguna_id_pengguna_fk": {
+          "name": "sesi_autentikasi_id_pengguna_pengguna_id_pengguna_fk",
+          "tableFrom": "sesi_autentikasi",
+          "tableTo": "pengguna",
+          "columnsFrom": [
+            "id_pengguna"
+          ],
+          "columnsTo": [
+            "id_pengguna"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "sesi_status_check": {
+          "name": "sesi_status_check",
+          "value": "\"sesi_autentikasi\".\"status\" IN ('aktif', 'berakhir')"
+        }
+      }
+    },
+    "status_server": {
+      "name": "status_server",
+      "columns": {
+        "id_status": {
+          "name": "id_status",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "jenis": {
+          "name": "jenis",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status_uptime": {
+          "name": "status_uptime",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "waktu_cek": {
+          "name": "waktu_cek",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_status_jenis_waktu": {
+          "name": "idx_status_jenis_waktu",
+          "columns": [
+            "jenis",
+            "waktu_cek"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "status_jenis_check": {
+          "name": "status_jenis_check",
+          "value": "\"status_server\".\"jenis\" IN ('website', 'server')"
+        },
+        "status_uptime_check": {
+          "name": "status_uptime_check",
+          "value": "\"status_server\".\"status_uptime\" IN (0, 1)"
+        }
+      }
+    },
+    "token_google": {
+      "name": "token_google",
+      "columns": {
+        "id_pengguna": {
+          "name": "id_pengguna",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "kedaluwarsa": {
+          "name": "kedaluwarsa",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "token_google_id_pengguna_pengguna_id_pengguna_fk": {
+          "name": "token_google_id_pengguna_pengguna_id_pengguna_fk",
+          "tableFrom": "token_google",
+          "tableTo": "pengguna",
+          "columnsFrom": [
+            "id_pengguna"
+          ],
+          "columnsTo": [
+            "id_pengguna"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "umpan_balik": {
+      "name": "umpan_balik",
+      "columns": {
+        "id_umpan_balik": {
+          "name": "id_umpan_balik",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id_mahasiswa": {
+          "name": "id_mahasiswa",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "isi": {
+          "name": "isi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tanggapan": {
+          "name": "tanggapan",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id_administrator": {
+          "name": "id_administrator",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_umpan_balik_mhs": {
+          "name": "idx_umpan_balik_mhs",
+          "columns": [
+            "id_mahasiswa"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "umpan_balik_id_mahasiswa_mahasiswa_id_pengguna_fk": {
+          "name": "umpan_balik_id_mahasiswa_mahasiswa_id_pengguna_fk",
+          "tableFrom": "umpan_balik",
+          "tableTo": "mahasiswa",
+          "columnsFrom": [
+            "id_mahasiswa"
+          ],
+          "columnsTo": [
+            "id_pengguna"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "umpan_balik_id_administrator_pengguna_id_pengguna_fk": {
+          "name": "umpan_balik_id_administrator_pengguna_id_pengguna_fk",
+          "tableFrom": "umpan_balik",
+          "tableTo": "pengguna",
+          "columnsFrom": [
+            "id_administrator"
+          ],
+          "columnsTo": [
+            "id_pengguna"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}
