@@ -5,7 +5,8 @@ const path = require('path');
 const db = require('../config/db');
 
 async function main() {
-  const skema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
+  // BOM (U+FEFF) dari editor yang menyimpan "UTF-8 with BOM" ditolak PostgreSQL, jadi dibuang.
+  const skema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8').replace(/^﻿/, '');
   await db.query(skema);
   console.log('Skema basis data berhasil dibuat.');
 }
