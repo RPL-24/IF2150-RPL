@@ -64,36 +64,36 @@ body{
 }
 
 .role-tabs {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 25px;
-  background-color: #E2E8F0;
-  padding: 5px;
-  border-radius: 10px;
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    background-color: #E2E8F0;
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .tab-btn {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  background-color: #CDD7E5;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  color: #2A3A3F;
-  transition: all 0.2s ease;
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background-color: #CDD7E5;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #2A3A3F;
+    transition: all 0.2s ease;
 }
 
 .tab-btn.active {
-  background-color: #FFFDF7; 
-  border: 1px solid #2A3A3F;
-  color: #2A3A3F;
+    background-color: #FFFDF7; 
+    border: 1px solid #2A3A3F;
+    color: #2A3A3F;
 }
 
 .form-group {
-  margin-bottom: 16px;
-  display: flex;
-  flex-direction: column;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-group input{
@@ -110,37 +110,37 @@ body{
 
 
 .form-group-row {
-  display: flex;
-  gap: 20px;
+    display: flex;
+    gap: 20px;
 }
 
 .form-group-row .form-group {
-  flex: 1;
+    flex: 1;
 }
 
 label {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #2A3A3F;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #2A3A3F;
 }
 
 
 .date-group-inputs {
-  display: flex;
-  gap: 10px;
+    display: flex;
+    gap: 10px;
 }
 
 .date-group-inputs input {
-  flex: 1; 
-  padding: 12px;
-  border: 1px solid #E2E8F0;
-  border-radius: 8px;
-  font-size: 14px;
-  background-color: #E2E8F0;
-  color: #2A3A3F;
-  text-align: left;
-  outline: none;
+    flex: 1; 
+    padding: 12px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #E2E8F0;
+    color: #2A3A3F;
+    text-align: left;
+    outline: none;
 }
 
 .form-group input::placeholder, 
@@ -149,65 +149,65 @@ label {
 }
 
 .date-group-inputs input:focus {
-  border-color: #F6AD55;
-  background-color: #FFFFFF;
+    border-color: #F6AD55;
+    background-color: #FFFFFF;
 }
 
 .hint-text {
-  font-size: 16px;
-  color: #DD6B20;
-  margin-top: 4px;
+    font-size: 16px;
+    color: #DD6B20;
+    margin-top: 4px;
 }
 
 .error-msg {
-  color: #E53E3E;
-  font-size: 12px;
-  margin-top: 4px;
-  min-height: 16px;
+    color: #E53E3E;
+    font-size: 12px;
+    margin-top: 4px;
+    min-height: 16px;
 }
 
 .form-group input.is-invalid{
-  border: 1px solid #E53E3E !important;
-  background-color: #FFF5F5;
+    border: 1px solid #E53E3E !important;
+    background-color: #FFF5F5;
 }
 
 .btn-primary {
-  width: 100%;
-  padding: 12px;
-  background-color: #F8C16F;
-  color: #2A3A3F;
-  border: none;
-  border-radius: 16px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background 0.2s;
+    width: 100%;
+    padding: 12px;
+    background-color: #F8C16F;
+    color: #2A3A3F;
+    border: none;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
 }
 
 .btn-primary:hover {
-  background-color: #ffa70e;
+    background-color: #ffa70e;
 }
 
 .alert-box {
-  padding: 10px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  margin-bottom: 15px;
-  background-color: #FED7D7;
-  color: #C53030;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 15px;
+    background-color: #FED7D7;
+    color: #C53030;
 }
 
 .login-link {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
 }
 
 .login-link a {
-  color: #2A3A3F;
-  text-decoration: none;
-  font-weight: 600;
+    color: #2A3A3F;
+    text-decoration: none;
+    font-weight: 600;
 }
 
 .text-highlight{
