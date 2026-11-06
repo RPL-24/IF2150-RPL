@@ -116,5 +116,5 @@ export const api = {
   post: <T>(jalur: string, isi?: unknown) => minta<T>('POST', jalur, isi),
   put: <T>(jalur: string, isi?: unknown) => minta<T>('PUT', jalur, isi),
   patch: <T>(jalur: string, isi?: unknown) => minta<T>('PATCH', jalur, isi),
-  hapus: <T>(jalur: string) => minta<T>('DELETE', jalur),
+  delete: <T>(jalur: string) => minta<T>('DELETE', jalur),
 };
