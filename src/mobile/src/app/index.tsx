@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { ApiError, masukDenganGoogle, type Peran } from '@/api';
 import { Banner, Teks, Tombol } from '@/components';
 import { jarak, sudut, ukuran, warna } from '@/theme';
 
@@ -16,16 +17,29 @@ const MODE_DEMO = process.env.EXPO_PUBLIC_MODE_DEMO === '1';
 export default function Masuk() {
   const router = useRouter();
   const { top, bottom } = useSafeAreaInsets();
-  // I-01-06: set when Google validation fails (UC-11 alternative scenario 1).
-  const [gagal] = useState(false);
+  const [memuat, setMemuat] = useState(false);
+  // I-01-06: message shown when Google validation fails (UC-11 alternative scenario 1).
+  const [galat, setGalat] = useState<string | null>(null);
 
-  // TODO(#3): open Google authorization, send the code to POST /api/auth/google
-  // (LoginView.isiLoginPage -> AuthController.kirimData), then route by `peran`.
-  const masukGoogle = () => {};
+  const keBeranda = (peran: Peran) => router.replace(peran === 'mahasiswa' ? '/beranda' : '/admin');
+
+  // LoginView.isiLoginPage -> AuthController.kirimData (POST /api/auth/google).
+  const masukGoogle = async () => {
+    setGalat(null);
+    setMemuat(true);
+    try {
+      const pengguna = await masukDenganGoogle();
+      if (pengguna) keBeranda(pengguna.peran);
+    } catch (e) {
+      // Network problems keep their own message; anything Google/backend rejects gets I-01-06.
+      setGalat(e instanceof ApiError && e.status === 0 ? e.pesan : 'Masuk dengan Google gagal. Silakan coba lagi.');
+    } finally {
+      setMemuat(false);
+    }
+  };
 
   // TODO(#3): log in as the seeded account through the backend's demo mode.
-  const masukDemo = (peran: 'mahasiswa' | 'administrator') =>
-    router.replace(peran === 'mahasiswa' ? '/beranda' : '/admin');
+  const masukDemo = keBeranda;
 
   return (
     <View style={[styles.layar, { paddingTop: top + jarak.md, paddingBottom: bottom + jarak.md }]}>
@@ -47,8 +61,8 @@ export default function Masuk() {
       </View>
 
       <View style={styles.bawah}>
-        {gagal && <Banner jenis="galat">Masuk dengan Google gagal. Silakan coba lagi.</Banner>}
-        <Tombol judul="Masuk dengan Google" varian="google" onPress={masukGoogle} />
+        {galat && <Banner jenis="galat">{galat}</Banner>}
+        <Tombol judul="Masuk dengan Google" varian="google" onPress={masukGoogle} memuat={memuat} />
         <Teks gaya="keterangan" style={styles.rataTengah}>
           Gunakan akun Google kampus (std.stei.itb.ac.id atau mahasiswa.itb.ac.id). Akun dibuat otomatis saat
           pertama kali masuk.

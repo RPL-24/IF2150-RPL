@@ -15,10 +15,52 @@ import { bacaConfig, nimDariEmail } from "../config";
 import { enkripsiAES256GCM } from "../lib/crypto";
 import { permintaanTidakValid, gagalAuth, gagalValidasi } from "../lib/errors";
 import { validasiTokenPush } from "../lib/validasi";
-import { validasiKodeOtorisasi } from "../lib/google";
+import { buatUrlOtorisasi, validasiKodeOtorisasi } from "../lib/google";
 import { auth, type AppEnv } from "../middleware/auth";
 
 export const authRoutes = new Hono<AppEnv>();
+
+/**
+ * App deep-link schemes the login may return to: `sehati:` for the built APK,
+ * `exp:`/`exps:` for Expo Go during development. Anything else is refused so the
+ * callback cannot be used as an open redirect that leaks the authorization code.
+ */
+const SKEMA_KEMBALI = ["sehati:", "exp:", "exps:"];
+
+function urlKembaliValid(kembali: unknown): URL | null {
+  if (typeof kembali !== "string") return null;
+  try {
+    const url = new URL(kembali);
+    return SKEMA_KEMBALI.includes(url.protocol) ? url : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Starts the Google login for the mobile app (LoginView.isiLoginPage).
+ * Google only redirects to http(s) URIs, so the app opens this route in an auth
+ * browser with `?kembali=<app deep link>`; the deep link travels in `state`.
+ */
+authRoutes.get("/google/mulai", (c) => {
+  const kembali = urlKembaliValid(c.req.query("kembali"));
+  if (!kembali) throw permintaanTidakValid("Parameter kembali harus berupa deep link aplikasi");
+  return c.redirect(buatUrlOtorisasi(bacaConfig(c.env), kembali.toString()));
+});
+
+/**
+ * `GOOGLE_REDIRECT_URI` points here. Forwards Google's `code` (or `error`) to the
+ * app's deep link, which then calls `POST /api/auth/google` with the code.
+ */
+authRoutes.get("/google/callback", (c) => {
+  const kembali = urlKembaliValid(c.req.query("state"));
+  if (!kembali) throw permintaanTidakValid("State login Google tidak valid");
+
+  const kode = c.req.query("code");
+  if (kode) kembali.searchParams.set("code", kode);
+  else kembali.searchParams.set("error", c.req.query("error") ?? "tidak_ada_kode");
+  return c.redirect(kembali.toString());
+});
 /** Mounted at `/api`, so this router owns `GET /api/me`. */
 export const meRoutes = new Hono<AppEnv>();
 

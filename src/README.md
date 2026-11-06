@@ -152,7 +152,7 @@ Rahasia lokal dibaca `wrangler dev` dari `src/backend/.dev.vars` (tidak di-*comm
 KUNCI_TOKEN=<hasil openssl rand -base64 32>
 GOOGLE_CLIENT_ID=<oauth client id>
 GOOGLE_CLIENT_SECRET=<oauth client secret>
-GOOGLE_REDIRECT_URI=http://localhost:8787/api/auth/google
+GOOGLE_REDIRECT_URI=http://localhost:8787/api/auth/google/callback
 API_BASE_URL=http://localhost:8787
 ```
 
@@ -161,7 +161,7 @@ API_BASE_URL=http://localhost:8787
 | `KUNCI_TOKEN` | Kunci AES-256-GCM untuk mengenkripsi *access/refresh token* Google di basis data (Algo-001, Algo-009). Wajib berukuran **tepat 32 byte** setelah di-*decode*. Bila hilang, token Google tersimpan tidak dapat dibaca sehingga pengguna harus login ulang. |
 | `GOOGLE_CLIENT_ID` | Client id OAuth, dikirim saat penukaran kode dan penyegaran token (Algo-027). Bukan rahasia. |
 | `GOOGLE_CLIENT_SECRET` | Client secret OAuth, diminta Google pada kedua alur tersebut. Karena itu penukaran kode dilakukan di server — nilai ini tidak boleh sampai ke aplikasi *mobile*. |
-| `GOOGLE_REDIRECT_URI` | Harus **sama persis** dengan yang didaftarkan di Google Cloud Console dan yang dikirim aplikasi. Bila berbeda, Google membalas `redirect_uri_mismatch`. |
+| `GOOGLE_REDIRECT_URI` | URL rute `/api/auth/google/callback` milik backend ini. Harus **sama persis** dengan yang didaftarkan di Google Cloud Console. Bila berbeda, Google membalas `redirect_uri_mismatch`. |
 | `API_BASE_URL` | Alamat dasar yang diperiksa tugas *cron uptime* (Algo-021). Opsional; tanpa nilai ini pemeriksaan tercatat `down`. |
 
 Untuk `.env` (dipakai `drizzle.config.ts`, bukan Worker) isi `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_DATABASE_ID`, dan `CLOUDFLARE_D1_TOKEN` — lihat `.env.example`. Variabel ini diperlukan untuk perintah yang lewat HTTP (Drizzle Studio *remote*, `db:migrate:remote`), terpisah dari sesi `wrangler login`.
@@ -360,6 +360,8 @@ Rujukan lengkap: [`backend/README.md`](./backend/README.md).
 
 | Method | Path | Peran |
 |---|---|---|
+| `GET` | `/api/auth/google/mulai?kembali=<deep link>` | publik |
+| `GET` | `/api/auth/google/callback` | publik (dipanggil Google) |
 | `POST` | `/api/auth/google` | publik |
 | `POST` | `/api/auth/logout` | semua |
 | `POST` | `/api/auth/device` | semua |
@@ -386,7 +388,7 @@ Rujukan lengkap: [`backend/README.md`](./backend/README.md).
 | `GET` | `/api/status/:jenis` | semua |
 | `GET` | `/health` | publik |
 
-Selain `/api/auth/google` dan `/health`, semua rute memerlukan `Authorization: Bearer <token>`. Galat memakai satu amplop:
+Selain `/api/auth/google*` dan `/health`, semua rute memerlukan `Authorization: Bearer <token>`. Galat memakai satu amplop:
 
 ```json
 { "error": { "kode": "VALIDASI_GAGAL", "pesan": "...", "detail": null } }

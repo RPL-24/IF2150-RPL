@@ -39,7 +39,7 @@ Create `src/backend/.dev.vars`:
 KUNCI_TOKEN=<32-byte base64 key>
 GOOGLE_CLIENT_ID=<oauth client id>
 GOOGLE_CLIENT_SECRET=<oauth client secret>
-GOOGLE_REDIRECT_URI=http://localhost:8787/api/auth/google
+GOOGLE_REDIRECT_URI=http://localhost:8787/api/auth/google/callback
 API_BASE_URL=http://localhost:8787
 ```
 
@@ -54,7 +54,7 @@ openssl rand -base64 32
 | `KUNCI_TOKEN` | AES-256-GCM key that encrypts Google access/refresh tokens at rest (Algo-001, Algo-009). Must decode to **exactly 32 bytes**. Losing it makes stored Google tokens unreadable, so users must log in again. |
 | `GOOGLE_CLIENT_ID` | OAuth client id, sent in the code exchange and refresh grant (Algo-027). Not secret. |
 | `GOOGLE_CLIENT_SECRET` | OAuth client secret, required by Google at both grants. This is why the exchange happens server-side — it must never reach the mobile app. |
-| `GOOGLE_REDIRECT_URI` | Must **exactly** match the redirect URI registered in Google Cloud Console and the one the app sends. A mismatch yields `redirect_uri_mismatch`. |
+| `GOOGLE_REDIRECT_URI` | This backend's `/api/auth/google/callback` URL. Must **exactly** match the redirect URI registered in Google Cloud Console. A mismatch yields `redirect_uri_mismatch`. |
 | `API_BASE_URL` | Base URL the uptime cron probes (Algo-021). Optional; without it probes record `down`. |
 
 Only `KUNCI_TOKEN`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and
