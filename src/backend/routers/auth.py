@@ -18,7 +18,7 @@ class LoginRequest(BaseModel):
 
 
 def _ambil_pengguna_dari_sesi(token: str):
-    conn = sqlite3.connect(DATABASE_NAME)
+    conn = sqlite3.connect(DATABASE_NAME, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
@@ -90,8 +90,8 @@ def login(req: LoginRequest):
     errors = Validasi.validasiKredensial(req.email, req.password)
     if errors:
         raise HTTPException(status_code=400, detail=", ".join(errors))
-    
-    conn = sqlite3.connect(DATABASE_NAME)
+
+    conn = sqlite3.connect(DATABASE_NAME, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 

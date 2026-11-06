@@ -1,8 +1,8 @@
 import re
-from typing import List
+from typing import Any, Dict, List
 from datetime import datetime
-from typing import List, Dict, Any
-from schemas.listing_schema import DataListing
+
+from .schemas.listing_schema import DataListing
 
 class Validasi:
     @staticmethod
