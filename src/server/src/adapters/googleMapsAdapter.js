@@ -5,7 +5,7 @@
  * Pemilik: P1.
  *
  * Mode:
- *   - GOOGLE_MAPS_API_KEY terisi -> Google Geocoding API (TODO P1).
+ *   - GOOGLE_MAPS_API_KEY terisi -> Google Geocoding API (fallback offline bila gagal).
  *   - kosong (default)          -> offline: kecamatan Bandung terdekat (wilayahBandung.js).
  *
  * Kontrak (dipakai P2, P5):
@@ -13,7 +13,7 @@
  *   jarakMeter(a, b) -> number   // haversine, a/b = { lat, lng }
  */
 import { config } from '../config.js';
-import { KECAMATAN_BANDUNG } from './wilayahBandung.js';
+import { KECAMATAN_BANDUNG, SEMUA_WILAYAH } from './wilayahBandung.js';
 
 const RADIUS_BUMI_M = 6_371_000;
 const BATAS_KOTA_M = 12_000;
@@ -26,7 +26,7 @@ export function jarakMeter(a, b) {
   return 2 * RADIUS_BUMI_M * Math.asin(Math.sqrt(h));
 }
 
-function wilayahOffline(lat, lng) {
+export function wilayahOffline(lat, lng) {
   let terdekat = KECAMATAN_BANDUNG[0];
   let min = Infinity;
   for (const k of KECAMATAN_BANDUNG) {
@@ -40,11 +40,43 @@ function wilayahOffline(lat, lng) {
   return { wilayah: terdekat.nama, alamat: `Kec. ${terdekat.nama}, Kota Bandung` };
 }
 
-// TODO(P1): panggil https://maps.googleapis.com/maps/api/geocode/json?latlng=..&key=..&language=id
-// ambil administrative_area_level_3 (kecamatan) sebagai wilayah dan formatted_address sebagai alamat.
-// Jika gagal / di luar kuota, jatuh kembali ke wilayahOffline().
-async function wilayahGoogle(lat, lng) {
-  return wilayahOffline(lat, lng);
+const URL_GEOCODING = 'https://maps.googleapis.com/maps/api/geocode/json';
+const TIMEOUT_GEOCODING_MS = 3000;
+
+/** "Kecamatan Coblong" / "Kec. Coblong" / "coblong" -> "Coblong" bila ada di daftar kecamatan Bandung. */
+function normalisasiKecamatan(nama) {
+  if (!nama) return null;
+  const bersih = nama.replace(/^(kecamatan|kec\.?)\s+/i, '').trim().toLowerCase();
+  return SEMUA_WILAYAH.find((w) => w.toLowerCase() === bersih) ?? null;
+}
+
+/**
+ * Google Geocoding API (reverse geocoding). Kecamatan diambil dari komponen
+ * administrative_area_level_3 (atau _4/locality sebagai cadangan), alamat dari formatted_address.
+ * Gagal, kuota habis, atau kecamatan tidak dikenali -> wilayah dari fallback offline,
+ * agar nilai filter wilayah (KF19, UC04) selalu konsisten dengan daftar kecamatan.
+ * `opsi` disediakan untuk pengujian.
+ */
+export async function wilayahGoogle(lat, lng, { apiKey = config.googleMapsApiKey, fetchFn = fetch } = {}) {
+  const cadangan = wilayahOffline(lat, lng);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_GEOCODING_MS);
+  try {
+    const url = `${URL_GEOCODING}?latlng=${lat},${lng}&language=id&key=${encodeURIComponent(apiKey)}`;
+    const res = await fetchFn(url, { signal: controller.signal });
+    const data = await res.json();
+    if (data.status !== 'OK' || !data.results?.length) return cadangan;
+
+    const komponen = data.results.flatMap((r) => r.address_components ?? []);
+    const calon = ['administrative_area_level_3', 'administrative_area_level_4', 'locality', 'sublocality']
+      .flatMap((tipe) => komponen.filter((k) => k.types?.includes(tipe)).map((k) => k.long_name));
+    const wilayah = calon.map(normalisasiKecamatan).find(Boolean) ?? cadangan.wilayah;
+    return { wilayah, alamat: data.results[0].formatted_address ?? cadangan.alamat };
+  } catch {
+    return cadangan;
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export async function getWilayahFromCoordinates(lat, lng) {
