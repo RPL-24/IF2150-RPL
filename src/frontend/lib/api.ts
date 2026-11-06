@@ -56,6 +56,86 @@ export function ambilDetailKatalog(idListing: number | string): Promise<ListingK
   return getJson<ListingKatalog>(`/api/katalog/${encodeURIComponent(String(idListing))}`);
 }
 
+export type DataListingPayload = {
+  nama_makanan: string;
+  deskripsi?: string | null;
+  porsi: string;
+  kondisi: string;
+  harga: number;
+  stok: number;
+  batas_kedaluwarsa: string;
+  foto?: string | null;
+};
+
+// Mengambil detail listing milik penjual
+export function ambilDetailListingPenjual(idListing: number | string): Promise<ListingKatalog> {
+  return getJson<ListingKatalog>(`/api/listing/${encodeURIComponent(String(idListing))}`);
+}
+
+// Upload Foto Listing (Maks 10MB, JPG/PNG)
+export async function uploadFotoListing(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch("/api/listing/upload-foto", {
+    method: "POST",
+    body: formData,
+    credentials: "same-origin",
+  });
+
+  if (!res.ok) {
+    let pesan = "Gagal mengunggah foto makanan";
+    try {
+      const body = await res.json();
+      if (typeof body?.detail === "string") pesan = body.detail;
+    } catch {}
+    throw new ApiError(res.status, pesan);
+  }
+
+  const data = await res.json();
+  return data.foto; // Mengembalikan path berkas (misal: /uploads/foto.jpg)
+}
+
+// Tambah Listing Baru (UC01)
+export async function tambahListing(data: DataListingPayload): Promise<ListingKatalog> {
+  const res = await fetch("/api/listing/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+    credentials: "same-origin",
+  });
+
+  if (!res.ok) {
+    let pesan = "Gagal menambah listing makanan";
+    try {
+      const body = await res.json();
+      if (typeof body?.detail === "string") pesan = body.detail;
+    } catch {}
+    throw new ApiError(res.status, pesan);
+  }
+
+  return res.json();
+}
+
+// Ubah Listing (UC06)
+export async function ubahListing(idListing: number | string, data: DataListingPayload): Promise<ListingKatalog> {
+  const res = await fetch(`/api/listing/${encodeURIComponent(String(idListing))}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+    credentials: "same-origin",
+  });
+
+  if (!res.ok) {
+    let pesan = "Gagal memperbarui listing makanan";
+    try {
+      const body = await res.json();
+      if (typeof body?.detail === "string") pesan = body.detail;
+    } catch {}
+    throw new ApiError(res.status, pesan);
+  }
+
+  return res.json();
 // ---------- Cari & filter katalog (P3: UC04) ----------
 
 export type ParamPencarian = {
