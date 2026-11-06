@@ -252,12 +252,20 @@ Pemetaan dari **setiap kelas perancangan** pada DPPL (Tabel 4.1) ke wujud implem
 
 Tabel B.5. Traceability Kelas Perancangan ke Implementasi
 
-| ID Kelas | Nama Kelas Perancangan   | Bentuk Implementasi                                | Lokasi (File dan Nama)                                | Keterangan                                                                            |
-| -------- | ------------------------ | -------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| _[C01]_  | _[Nama kelas pada DPPL]_ | _[mis. Kelas / Fungsi / Komponen / Route / Tabel]_ | _[mis. `src/models/user.py` - `User`]_                | _[Cara atribut dan operasi kelas diwujudkan; "-" jika tidak ada penjelasan tambahan]_ |
-| _[C02]_  | _[Nama kelas pada DPPL]_ | _[Bentuk implementasi]_                            | _[mis. `src/components/LoginForm.tsx` - `LoginForm`]_ | _[mis. atribut menjadi *state*, operasi menjadi *handler*]_                           |
-| _[C03]_  | _[Nama kelas pada DPPL]_ | _[Bentuk implementasi]_                            | _[mis. `src/routes/auth.js` - `POST /login`]_         | _[Keterangan]_                                                                        |
-| _..._    | _..._                    | _..._                                              | _..._                                                 | _..._                                                                                 |
+Kelas _View_ (C-16 sampai C-24 dan C-36) diwujudkan sebagai layar Expo Router di `src/mobile/src/app/`. Kerangka navigasi dan berkas layarnya dibuat pada issue #2; isi tiap layar dikerjakan pada issue yang tercantum di kolom Keterangan.
+
+| ID Kelas | Nama Kelas Perancangan | Bentuk Implementasi | Lokasi (File dan Nama) | Keterangan |
+| -------- | ---------------------- | ------------------- | ---------------------- | ---------- |
+| C-16 | `LoginView` | Komponen layar (_route_) | `src/mobile/src/app/index.tsx` - `Masuk` | Layar I-01. Saat ini berupa layar masuk sementara; diimplementasikan pada issue #3. |
+| C-17 | `AffirmationView` | Komponen layar (_route_) | `src/mobile/src/app/(mahasiswa)/afirmasi.tsx` - `Afirmasi` | Layar I-04, dibuka dari Beranda (tanpa tombol tab). Diimplementasikan pada issue #7. |
+| C-18 | `ReminderView` | Komponen layar (_route_) | `src/mobile/src/app/(mahasiswa)/pengingat.tsx` - `Pengingat` | Layar I-05, tab Pengingat. Diimplementasikan pada issue #8. |
+| C-19 | `CalendarView` | Komponen layar (_route_) | `src/mobile/src/app/(mahasiswa)/kalender.tsx` - `Kalender` | Layar I-06, tab Kalender. Diimplementasikan pada issue #11. |
+| C-20 | `ConsultationBookingView` | Komponen layar (_route_), dua layar | `src/mobile/src/app/(mahasiswa)/konsultasi.tsx` - `Konsultasi`; `src/mobile/src/app/(mahasiswa)/sesi.tsx` - `PilihSesi` | Layar I-07 (tab Konsultasi) dan I-08. Diimplementasikan pada issue #12. |
+| C-21 | `ConsultationManagementView` | Komponen layar (_route_) | `src/mobile/src/app/admin/jadwal.tsx` - `KelolaJadwal` | Layar I-12 pada _stack_ Administrator. Diimplementasikan pada issue #13. |
+| C-22 | `FAQView` | Komponen layar (_route_), tiga layar | `src/mobile/src/app/(mahasiswa)/faq.tsx` - `Faq`; `src/mobile/src/app/(mahasiswa)/pertanyaan.tsx` - `Pertanyaan`; `src/mobile/src/app/admin/faq.tsx` - `KelolaFaq` | Layar I-09 (tab FAQ), I-10, dan I-13. Diimplementasikan pada issue #10. |
+| C-23 | `FeedbackView` | Komponen layar (_route_), dua layar | `src/mobile/src/app/(mahasiswa)/umpan-balik.tsx` - `UmpanBalik`; `src/mobile/src/app/admin/umpan-balik.tsx` - `TanggapiUmpanBalik` | Layar I-11 dan I-14. Diimplementasikan pada issue #15. |
+| C-24 | `ServerStatusView` | Komponen layar (_route_) | `src/mobile/src/app/admin/status.tsx` - `StatusServer` | Layar I-15 pada _stack_ Administrator. Diimplementasikan pada issue #14. |
+| C-36 | `HomeView` | Komponen layar (_route_), dua layar | `src/mobile/src/app/(mahasiswa)/beranda.tsx` - `BerandaMahasiswa`; `src/mobile/src/app/admin/index.tsx` - `BerandaAdministrator` | Layar I-02 (tab Beranda) dan I-03 (awal _stack_ Administrator). Operasi `bukaMenu(menu)` diwujudkan oleh navigasi Expo Router (`TabBar` dan `MenuTile`). Diimplementasikan pada issue #4. |
 
 Catatan:
 

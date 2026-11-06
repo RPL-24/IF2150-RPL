@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "Sehati",
+    "slug": "rpl",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/sehati-logo.png",
+          "imageWidth": 160,
+          "backgroundColor": "#FFFFFF"
+        }
+      ]
+    ],
+    "scheme": "sehati",
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "14d2b505-284f-4946-b122-0aaf27c1c836"
+      }
+    },
+    "owner": "tszcodess-team"
+  }
+}
