@@ -3,6 +3,7 @@
 const crypto = require('crypto');
 const db = require('../config/db');
 const Kriptografi = require('../pendukung/Kriptografi');
+const DOKUMEN_LEGAL = require('./seedDokumenLegal');
 
 // Kata sandi seluruh akun uji. Data fiktif, boleh dicantumkan di README.
 const KATA_SANDI_UJI = 'ujicoba123';
@@ -29,7 +30,28 @@ async function seedAkun() {
   console.log(`Akun uji siap (${AKUN_UJI.length} akun, kata sandi: ${KATA_SANDI_UJI}).`);
 }
 
-seedAkun()
+// Dijalankan ulang akan memperbarui isi dokumen dengan versi yang sama.
+async function seedDokumenLegal() {
+  for (const d of DOKUMEN_LEGAL) {
+    await db.query(
+      `INSERT INTO dokumen_legal (id_dokumen, jenis_dokumen, judul, isi, klausa_privasi_pesan,
+                                  versi, tanggal_berlaku, status_publikasi, tautan)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, true, $8)
+       ON CONFLICT (jenis_dokumen, versi) DO UPDATE
+       SET judul = EXCLUDED.judul, isi = EXCLUDED.isi, klausa_privasi_pesan = EXCLUDED.klausa_privasi_pesan,
+           tanggal_berlaku = EXCLUDED.tanggal_berlaku, tautan = EXCLUDED.tautan`,
+      [crypto.randomUUID(), d.jenis, d.judul, d.isi, d.klausa, d.versi, d.tanggalBerlaku, d.tautan],
+    );
+  }
+  console.log(`Dokumen legal siap (${DOKUMEN_LEGAL.length} dokumen).`);
+}
+
+async function main() {
+  await seedAkun();
+  await seedDokumenLegal();
+}
+
+main()
   .catch((galat) => {
     console.error('Gagal mengisi data uji:', galat.message);
     process.exitCode = 1;

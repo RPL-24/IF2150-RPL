@@ -1,4 +1,4 @@
-﻿-- Skema basis data ITBELI.
+-- Skema basis data ITBELI.
 -- Setiap tabel diturunkan dari atribut kelas Model pada Tabel 4.1 DPPL.
 -- Aman dijalankan berulang (npm run db:init).
 
@@ -47,6 +47,21 @@ CREATE TABLE IF NOT EXISTS token_verifikasi (
 );
 
 CREATE INDEX IF NOT EXISTS token_verifikasi_id_akun ON token_verifikasi (id_akun, status_pakai);
+
+-- C40 DokumenLegal: Kebijakan Privasi dan Ketentuan Penggunaan (KF13, KF38, KF39)
+CREATE TABLE IF NOT EXISTS dokumen_legal (
+  id_dokumen           UUID PRIMARY KEY,
+  jenis_dokumen        VARCHAR(30)  NOT NULL
+                       CHECK (jenis_dokumen IN ('kebijakan-privasi', 'ketentuan-penggunaan')),
+  judul                VARCHAR(150) NOT NULL,
+  isi                  TEXT         NOT NULL,
+  klausa_privasi_pesan TEXT,
+  versi                VARCHAR(10)  NOT NULL,
+  tanggal_berlaku      DATE         NOT NULL,
+  status_publikasi     BOOLEAN      NOT NULL DEFAULT TRUE,
+  tautan               VARCHAR(200) NOT NULL,
+  UNIQUE (jenis_dokumen, versi)
+);
 
 -- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Modul E: Laporan & Moderasi â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
