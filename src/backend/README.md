@@ -181,6 +181,18 @@ Notes:
   the API.
 - Sessions expire after `BATAS_SESI` (30 days); re-run `bun run db:seed:local` to reset them.
 
+### Demo login
+
+With `MODE_DEMO=1`, `POST /api/auth/demo` signs in as one of the seeded accounts and
+returns a fresh session, in the same shape as `POST /api/auth/google`. The mobile app
+uses it for its "Mode demo" buttons. Without the flag the route answers 404.
+
+```bash
+curl -X POST http://localhost:8787/api/auth/demo \
+  -H 'Content-Type: application/json' -d '{"peran":"administrator"}'
+# {"token":"…","waktuLogin":"…","pengguna":{"idPengguna":"seed-usr-adm",…,"peran":"administrator"}}
+```
+
 ### Seed contents
 
 | Table | What you get |

@@ -63,13 +63,14 @@ src/
     src/
       app/                # rute Expo Router (satu file = satu layar)
         _layout.tsx       # root: font, splash, Stack
-        index.tsx         # layar masuk (sementara, diganti di #3)
+        index.tsx         # I-01 Masuk (login Google dan mode demo)
         komponen.tsx      # galeri komponen untuk pengembangan
         (mahasiswa)/      # tab bar Mahasiswa: beranda, kalender, konsultasi, pengingat, faq (+ layar tersembunyi)
         admin/            # stack Administrator: index, jadwal, faq, umpan-balik, status
       components/         # komponen bersama dari Figma (Tombol, IsianTeks, Banner, ...)
       theme/              # token desain: warna, font, gaya teks, jarak, sudut
-      api/                # klien HTTP ke backend
+      api/                # klien HTTP ke backend, login, dan sesi (SecureStore)
+      lib/                # sesi pengguna bersama (useSesi)
   backend/                # Cloudflare Worker (Hono + D1): REST API dan cron
     .env.example          # contoh CLOUDFLARE_* dan KUNCI_TOKEN
     .dev.vars             # rahasia lokal (tidak di-commit)
@@ -132,6 +133,7 @@ cp .env.example .env
 | Variabel | Keterangan |
 |---|---|
 | `EXPO_PUBLIC_API_URL` | Alamat dasar backend tanpa `/` di akhir. |
+| `EXPO_PUBLIC_MODE_DEMO` | Isi `1` untuk menampilkan tombol "Mode demo" di layar Masuk (lihat bagian 6). Backend juga harus berjalan dengan `MODE_DEMO=1`. |
 
 Nilai `EXPO_PUBLIC_API_URL` bergantung pada tempat aplikasi berjalan, karena `localhost` di ponsel berarti ponsel itu sendiri:
 
@@ -175,6 +177,7 @@ bunx wrangler secret put KUNCI_TOKEN
 bunx wrangler secret put GOOGLE_CLIENT_ID
 bunx wrangler secret put GOOGLE_CLIENT_SECRET
 bunx wrangler secret put GOOGLE_REDIRECT_URI
+bunx wrangler secret put MODE_DEMO   # opsional, isi 1 untuk login demo
 ```
 
 ## 5. Menjalankan Aplikasi
@@ -208,7 +211,7 @@ npx tsc --noEmit   # cek tipe TypeScript
 npx expo lint      # ESLint
 ```
 
-Selama pengembangan, layar masuk sementara berisi tombol untuk membuka navigasi Mahasiswa, navigasi Administrator, dan galeri komponen (`/komponen`).
+Layar pertama adalah I-01 Masuk. Untuk mencoba aplikasi tanpa akun Google, gunakan tombol "Mode demo" (bagian 6).
 
 ### Backend
 
@@ -270,9 +273,26 @@ Catatan:
 
 Data lain yang ikut dibuat: 3 konsultan, deretan slot mendatang (`seed-jdw-*`, sebagian sudah terpesan), dan 3 entri FAQ.
 
-### Mobile
+### Mobile (login demo)
 
-**TODO (#3, Iqi):** akun uji Mahasiswa dan Administrator (login demo tanpa akun Google pribadi).
+Login Google memerlukan OAuth client milik kelompok, sehingga untuk menguji aplikasi disediakan **login demo** yang masuk sebagai kedua akun *seed* di atas tanpa Google:
+
+| Tombol di layar Masuk | Masuk sebagai | Diarahkan ke |
+|---|---|---|
+| **Mahasiswa** | `seed-usr-mhs` — Mahasiswa Uji (NIM 13599001) | I-02 Beranda Mahasiswa |
+| **Administrator** | `seed-usr-adm` — Administrator Uji | I-03 Beranda Administrator |
+
+Langkah:
+
+1. Backend: isi `MODE_DEMO=1` di `src/backend/.dev.vars`, jalankan migrasi dan *seed* (`bun run db:migrate:local`, `bun run db:seed:local`), lalu jalankan `bun run dev -- --ip 0.0.0.0` agar dapat diakses dari ponsel.
+2. Mobile: isi `EXPO_PUBLIC_MODE_DEMO=1` dan `EXPO_PUBLIC_API_URL=http://<IP-LAN-komputer>:8787` di `src/mobile/.env`, lalu jalankan ulang `npx expo start`.
+3. Di layar Masuk, tekan **Mahasiswa** atau **Administrator** di bawah tulisan "Mode demo".
+
+Catatan:
+
+- Setiap login demo membuat sesi baru melalui `POST /api/auth/demo`, bukan memakai token `dev-token-*`. Sesi tersimpan di perangkat (`expo-secure-store`), sehingga aplikasi langsung membuka Beranda saat dibuka kembali sampai pengguna keluar atau sesi melewati 30 hari.
+- Bila backend berjalan tanpa `MODE_DEMO=1`, rute login demo membalas 404 dan layar Masuk menampilkan pesan galat.
+- Login Google sungguhan memerlukan `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, dan `GOOGLE_REDIRECT_URI` (bagian 4). Google tidak menerima alamat IP LAN sebagai *redirect URI*, sehingga login Google dari ponsel memerlukan backend yang sudah di-*deploy* atau *tunnel* ber-HTTPS.
 
 ## 7. Modul dan Pembagian Tugas
 
