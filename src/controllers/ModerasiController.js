@@ -6,6 +6,10 @@ const BuktiLaporan = require('../models/BuktiLaporan');
 const LogAudit = require('../models/LogAudit');
 const LogAdmin = require('../models/LogAdmin');
 const Akun = require('../models/Akun');
+const Barang = require('../models/Barang');
+const FotoBarang = require('../models/FotoBarang');
+const NotifikasiController = require('./NotifikasiController');
+const PenyimpananBerkas = require('../penyimpanan/PenyimpananBerkas');
 
 class ModerasiController {
   // Validasi token dan memastikan peran pengguna adalah Admin (KF56)
@@ -95,7 +99,12 @@ class ModerasiController {
 
   // Menyimpan rekaman riwayat tindak lanjut penanganan laporan ke LogAudit (KF48, KF49)
   static async catatLogAudit(idLaporan, idAdmin, tindakan, client = db) {
-    await LogAudit.catatPerubahanStatusLaporan(idLaporan, idAdmin, tindakan, client);
+    if (tindakan && tindakan.startsWith('Penghapusan listing:')) {
+      const idBarang = tindakan.replace('Penghapusan listing:', '').trim();
+      await LogAudit.catatPenghapusanListing(idLaporan, idAdmin, idBarang, client);
+    } else {
+      await LogAudit.catatPerubahanStatusLaporan(idLaporan, idAdmin, tindakan, client);
+    }
   }
 
   // Menyimpan rekaman tindakan moderasi admin ke LogAdmin (KF55)
@@ -103,14 +112,69 @@ class ModerasiController {
     await LogAdmin.catatTindakan(idAdmin, jenisTindakan, objekDitindak, alasan, client);
   }
 
-  // --- Stubs untuk implementasi lanjutan UC22-UC24 ---
+  // Algo-022: Menghapus listing yang melanggar ketentuan, menghapus foto terkait dari penyimpanan,
+  // mengirim surel peringatan kepada penjual, dan mencatat log (KF50, KF52, KF55, KF56)
   static async hapusListingDilaporkan(token, idLaporan, idBarang, alasan) {
-    // TODO(UC22): Hapus listing, kirim notifikasi surel, dan catat log
     const idAdmin = await this.otorisasiAdmin(token);
-    if (!idAdmin) return false;
+    if (!idAdmin) {
+      return false; // hak akses ditolak bila bukan admin (KF56)
+    }
+
+    if (!alasan || typeof alasan !== 'string' || !alasan.trim()) {
+      return false; // alasan wajib diisi (KF55)
+    }
+
+    const barang = await Barang.cariById(idBarang);
+    if (!barang) {
+      return false;
+    }
+
+    const akunPenjual = await Akun.cariById(barang.idPenjual);
+    const daftarFoto = await FotoBarang.getGaleri(idBarang);
+
+    const client = await db.pool.connect();
+    try {
+      await client.query('BEGIN');
+
+      await FotoBarang.hapus(idBarang, client);
+      await Barang.hapus(idBarang, client); // listing dihapus permanen (KF50)
+
+      // Perbarui status laporan terkait menjadi "Selesai" jika idLaporan ada
+      if (idLaporan) {
+        await Laporan.updateStatusPenanganan(idLaporan, 'Selesai', new Date(), client);
+        await this.catatLogAudit(idLaporan, idAdmin, `Penghapusan listing: ${idBarang}`, client);
+      }
+
+      await this.catatLogAdmin(idAdmin, 'HAPUS_LISTING', idBarang, alasan.trim(), client); // KF55
+
+      await client.query('COMMIT');
+    } catch (galat) {
+      await client.query('ROLLBACK');
+      throw galat;
+    } finally {
+      client.release();
+    }
+
+    // Hapus berkas fisik foto pada folder penyimpanan
+    if (daftarFoto && daftarFoto.length > 0) {
+      const pathArray = daftarFoto.map((f) => f.pathBerkas || f.path_berkas).filter(Boolean);
+      await PenyimpananBerkas.hapus(pathArray);
+    }
+
+    // Kirim surel pemberitahuan penghapusan kepada pemilik listing (KF52)
+    if (akunPenjual && akunPenjual.email) {
+      await NotifikasiController.kirimPeringatanPenghapusan(
+        barang.idPenjual,
+        akunPenjual.email,
+        barang.judul,
+        alasan.trim(),
+      );
+    }
+
     return true;
   }
 
+  // --- Stubs untuk implementasi lanjutan UC23-UC24 ---
   static async blokirAkun(token, idLaporan, idAkun, alasan) {
     // TODO(UC23): Blokir akun, putus sesi, nonaktifkan listing, dan catat log
     const idAdmin = await this.otorisasiAdmin(token);

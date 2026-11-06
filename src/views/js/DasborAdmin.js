@@ -1,4 +1,4 @@
-// C11 DasborAdmin – View & Boundary untuk Dasbor Moderasi Admin (I-13 & I-14).
+﻿// C11 DasborAdmin â€“ View & Boundary untuk Dasbor Moderasi Admin (I-13 & I-14).
 // Bergantung pada api.js (objek Api).
 
 class DasborAdmin {
@@ -136,7 +136,7 @@ class DasborAdmin {
               </div>
             </td>
             <td>${this.escapeHtml(lap.jenisPelanggaran || '-')}</td>
-            <td><span class="mono" style="font-size:12px">${this.escapeHtml(String(lap.idPelapor).slice(0, 8))}…</span></td>
+            <td><span class="mono" style="font-size:12px">${this.escapeHtml(String(lap.idPelapor).slice(0, 8))}â€¦</span></td>
             <td class="mono">${tglStr}</td>
             <td><span class="${badgeClass}">${lap.statusPenanganan || 'Baru'}</span></td>
             <td>
@@ -177,7 +177,7 @@ class DasborAdmin {
     const elBadge = document.getElementById('detail-badge');
 
     if (elJudul) elJudul.textContent = `Laporan ${idPendek}`;
-    if (elBreadcrumb) elBreadcrumb.textContent = `Daftar Laporan · ${idPendek}`;
+    if (elBreadcrumb) elBreadcrumb.textContent = `Daftar Laporan Â· ${idPendek}`;
     if (elBadge) {
       elBadge.textContent = laporan.statusPenanganan || 'Baru';
       elBadge.className =
@@ -357,7 +357,7 @@ class DasborAdmin {
     // Modal & Konfirmasi Tindakan Moderasi lanjutan (UC22-UC24)
     const btnHapus = document.getElementById('btn-hapus-listing');
     if (btnHapus) {
-      btnHapus.addEventListener('click', () => this.onClickHapusListing());
+      btnHapus.addEventListener('click', () => { const idB = this.detailLaporan?.laporan?.objekDilaporkan; this.onClickHapusListing(idB); });
     }
 
     const btnBlokir = document.getElementById('btn-blokir-akun');

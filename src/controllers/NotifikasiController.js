@@ -1,6 +1,5 @@
-// C19 NotifikasiController – milik modul D.
-// Sementara baru berisi kirimEmailVerifikasi yang dibutuhkan modul A.
-// TODO(modul-D): kirimNotifikasi, kirimPushNotifikasi, kirimPeringatanPenghapusan, kirimPesanPenangguhan
+// C19 NotifikasiController - milik modul D.
+// TODO(modul-D): kirimNotifikasi, kirimPushNotifikasi, kirimPesanPenangguhan
 const config = require('../config/env');
 const SurelAdapter = require('../integrasi/SurelAdapter');
 
@@ -16,6 +15,21 @@ class NotifikasiController {
       'Jangan bagikan kode ini kepada siapa pun. Abaikan surel ini bila Anda tidak mendaftar di ITBELI.',
     ].join('\n');
     return SurelAdapter.kirimSurel(email, 'Kode Verifikasi ITBELI', isi);
+  }
+
+  // KF52: Menyusun surel pemberitahuan penghapusan listing yang melanggar aturan beserta alasannya dan mengirimkannya ke pemilik listing
+  static async kirimPeringatanPenghapusan(idPemilik, email, judulBarang, alasan) {
+    const isi = [
+      'Halo,',
+      '',
+      `Listing barang Anda "${judulBarang || 'Tanpa Judul'}" telah dihapus oleh Tim Moderasi ITBELI karena terbukti melanggar ketentuan layanan.`,
+      '',
+      'Alasan penghapusan:',
+      `${alasan}`,
+      '',
+      'Apabila Anda merasa ada kekeliruan atau ingin mengajukan banding, silakan hubungi tim bantuan ITBELI.',
+    ].join('\n');
+    return SurelAdapter.kirimSurel(email, 'Peringatan Penghapusan Listing ITBELI', isi);
   }
 }
 
