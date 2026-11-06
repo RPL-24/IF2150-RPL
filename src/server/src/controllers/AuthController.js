@@ -6,10 +6,11 @@
  */
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
+import { googleSignInAktif, verifikasiIdTokenGoogle } from '../adapters/googleAuthAdapter.js';
 import { pool } from '../db/pool.js';
 import { buatToken } from '../middleware/autentikasi.js';
 import { Pengguna } from '../models/index.js';
-import { HttpError, belumDiimplementasi } from '../utils/http.js';
+import { HttpError } from '../utils/http.js';
 
 export const skemaLogin = z.object({
   email: z.string().trim().min(1, 'Email wajib diisi'),
@@ -32,11 +33,19 @@ export async function me(req, res) {
   res.json({ pengguna: Pengguna.toProfil(pengguna) });
 }
 
+export const skemaLoginGoogle = z.object({
+  idToken: z.string().min(1, 'ID token Google wajib diisi'),
+});
+
 /**
  * POST /api/auth/google  body: { idToken } -> { token, pengguna }   (SKPL 2.4, gap G5)
- * TODO(P1): verifikasi idToken dengan google-auth-library (audience = config.googleClientIds),
- * cari/buat pengguna peran PELAPOR berdasarkan google_sub. Balas 503 bila GOOGLE_CLIENT_IDS kosong.
+ * 503 bila Google Sign-In belum dikonfigurasi (GOOGLE_CLIENT_IDS kosong), 401 bila token tidak sah.
  */
-export async function loginGoogle() {
-  throw belumDiimplementasi('P1', 'POST /api/auth/google (Google Sign-In)');
+export async function loginGoogle(req, res) {
+  if (!googleSignInAktif()) {
+    throw new HttpError(503, 'Login Google belum dikonfigurasi. Gunakan email dan kata sandi.');
+  }
+  const akunGoogle = await verifikasiIdTokenGoogle(req.valid.body.idToken);
+  const pengguna = await Pengguna.cariAtauBuatPenggunaGoogle(pool, akunGoogle);
+  res.json({ token: buatToken(pengguna), pengguna: Pengguna.toProfil(pengguna) });
 }
