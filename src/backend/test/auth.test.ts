@@ -3,6 +3,7 @@ import app from "../src/index";
 import { buatDbUji, buatSesiUji, envUji, KUNCI_UJI } from "./harness";
 import { json, jwtPalsu, minta } from "./util";
 import { dekripsiAES256GCM } from "../src/lib/crypto";
+import { BATAS_SESI_MS } from "../src/config";
 
 describe("Algo-002 verifikasiToken", () => {
   let ctx: ReturnType<typeof buatDbUji>;
@@ -59,6 +60,23 @@ describe("Algo-002 verifikasiToken", () => {
       .prepare("SELECT status FROM sesi_autentikasi WHERE token = ?")
       .get(token) as { status: string };
     expect(sesi.status).toBe("berakhir");
+  });
+
+  test("masih menerima sesi yang belum melewati BATAS_SESI", async () => {
+    const hampir = new Date(Date.now() - BATAS_SESI_MS + 60_000).toISOString();
+    const token = buatSesiUji(ctx.raw, {
+      idPengguna: "u1",
+      peran: "mahasiswa",
+      token: "tok-hampir",
+      waktuLogin: hampir,
+    });
+
+    const res = await minta(app, ctx.D1, { path: "/api/me", token });
+    expect(res.status).toBe(200);
+    const sesi = ctx.raw
+      .prepare("SELECT status FROM sesi_autentikasi WHERE token = ?")
+      .get(token) as { status: string };
+    expect(sesi.status).toBe("aktif");
   });
 
   test("menerima sesi aktif dan mengembalikan identitas", async () => {
@@ -290,6 +308,48 @@ describe("Algo-001 autentikasiPengguna (login Google)", () => {
       .prepare("SELECT nim FROM mahasiswa WHERE id_pengguna = ?")
       .get(body.pengguna.idPengguna) as { nim: string | null };
     expect(mhs.nim).toBeNull();
+    ctx.tutup();
+  });
+
+  test("email mahasiswa.itb.ac.id juga menghasilkan nim", async () => {
+    const ctx = buatDbUji();
+    tiruGoogle({ sub: "g-4", email: "18222001@mahasiswa.itb.ac.id", name: "Mahasiswa ITB" });
+
+    const body = await json(
+      await minta(app, ctx.D1, {
+        method: "POST",
+        path: "/api/auth/google",
+        body: { kodeOtorisasi: "k" },
+      }),
+    );
+    const mhs = ctx.raw
+      .prepare("SELECT nim FROM mahasiswa WHERE id_pengguna = ?")
+      .get(body.pengguna.idPengguna) as { nim: string | null };
+    expect(mhs.nim).toBe("18222001");
+    ctx.tutup();
+  });
+
+  test("akun administrator yang sudah ada tidak didaftarkan ulang sebagai mahasiswa", async () => {
+    const ctx = buatDbUji();
+    ctx.raw
+      .prepare(
+        "INSERT INTO pengguna (id_pengguna, nama, email, google_id, peran) VALUES (?,?,?,?,?)",
+      )
+      .run("adm-1", "Admin", "admin@itb.ac.id", "g-adm", "administrator");
+    tiruGoogle({ sub: "g-adm", email: "admin@itb.ac.id", name: "Admin" });
+
+    const res = await minta(app, ctx.D1, {
+      method: "POST",
+      path: "/api/auth/google",
+      body: { kodeOtorisasi: "k" },
+    });
+    expect(res.status).toBe(200);
+    expect((await json(res)).pengguna).toMatchObject({ idPengguna: "adm-1", peran: "administrator" });
+
+    const jumlah = ctx.raw.prepare("SELECT COUNT(*) AS n FROM pengguna").get() as { n: number };
+    expect(jumlah.n).toBe(1);
+    const mhs = ctx.raw.prepare("SELECT * FROM mahasiswa WHERE id_pengguna = 'adm-1'").get();
+    expect(mhs).toBeUndefined();
     ctx.tutup();
   });
 
