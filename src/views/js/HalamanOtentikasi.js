@@ -123,7 +123,10 @@ class HalamanOtentikasi {
     const centang = document.getElementById('setuju-kebijakan');
     const tombol = document.getElementById('tombol-daftar');
 
-    this.tampilkanKebijakanPrivasi(HalamanOtentikasi.TAUTAN_KEBIJAKAN);
+    // I02-O06: tautan diambil dari AkunController.getTautanDokumenLegal(); bawaan dipakai bila gagal
+    Api.kirim('GET', '/api/akun/tautan-kebijakan').then((hasil) => {
+      this.tampilkanKebijakanPrivasi(hasil.sukses ? hasil.data.tautan : HalamanOtentikasi.TAUTAN_KEBIJAKAN);
+    });
 
     // I02-O05: tombol "Buat Akun" nonaktif selama kebijakan belum disetujui (KF13)
     centang.addEventListener('change', () => { tombol.disabled = !centang.checked; });

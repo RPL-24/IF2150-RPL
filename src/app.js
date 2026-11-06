@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const akunRoutes = require('./routes/akunRoutes');
+const dokumenLegalRoutes = require('./routes/dokumenLegalRoutes');
 const laporanRoutes = require('./routes/laporanRoutes');
 const moderasiRoutes = require('./routes/moderasiRoutes');
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // ───────────── API (satu baris per modul) ─────────────
 app.use('/api/akun', akunRoutes);
+app.use('/api/dokumen-legal', dokumenLegalRoutes);
 app.use('/api/laporan', laporanRoutes);
 app.use('/api/admin', moderasiRoutes);
 
