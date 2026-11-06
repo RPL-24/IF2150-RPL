@@ -82,9 +82,30 @@ bun run test             # vitest run
 bun run test:watch
 bun run typecheck        # tsc --noEmit
 bun run db:generate      # regenerate migrations from src/db/schema.ts
-bun run db:migrate:local # / db:seed:local / db:studio:local
+bun run db:migrate:local # / db:seed:local
+bun run db:studio:local  # browse local D1, no auth
+bun run db:studio:remote # browse remote D1, needs .env + wrangler login
 bun run deploy
 ```
+
+### Database
+
+Local D1 lives in `.wrangler/state/` and is gitignored:
+
+```bash
+bun run db:migrate:local && bun run db:seed:local
+bun run db:studio:local        # table UI over the local sqlite file
+```
+
+Remote (production D1) needs two separate things:
+
+1. **Wrangler login** — `bunx wrangler login` (one time), for `wrangler d1 …` commands.
+2. **API token** — `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_DATABASE_ID`, and
+   `CLOUDFLARE_D1_TOKEN` in `src/backend/.env` (copy `.env.example`), for anything
+   going over HTTP such as Drizzle Studio remote and `db:migrate:remote`.
+
+`CLOUDFLARE_D1_TOKEN` is a Cloudflare API token with **D1 Edit**, not the wrangler
+session. Remote Studio writes to production immediately.
 
 ### Tests
 

@@ -101,6 +101,40 @@ bun run db:generate        # drizzle-kit: schema.ts -> migrations/*.sql
 
 ---
 
+## 3b. Drizzle Studio
+
+Browse and edit rows in a table UI.
+
+**Local** reads `.wrangler/state` directly — no login, no credentials:
+
+```bash
+bun run db:studio:local
+```
+
+**Remote** talks to Cloudflare D1 over HTTP, so it needs three values in
+`src/backend/.env` (copy `.env.example`):
+
+```ini
+CLOUDFLARE_ACCOUNT_ID=<from `bunx wrangler whoami`>
+CLOUDFLARE_DATABASE_ID=2061ca01-6f0f-4e31-a2e7-5da3889d89ec
+CLOUDFLARE_D1_TOKEN=<API token with D1 Edit permission>
+```
+
+```bash
+bunx wrangler login          # first time only
+bunx wrangler whoami         # prints your account id
+bun run db:studio:remote
+```
+
+`CLOUDFLARE_D1_TOKEN` is a **Cloudflare API token**, not your wrangler login
+session. Create it at *My Profile → API Tokens → Create Token* with **D1 Edit**.
+`drizzle.config.ts` reads it from `.env` (gitignored), independently of the
+wrangler CLI login used by `wrangler d1 ...`.
+
+> Remote Studio writes to production D1 immediately — there is no review step.
+
+---
+
 ## 4. Run the dev server
 
 ```bash
@@ -210,8 +244,8 @@ There is no formatter wired up in this package; match the surrounding style.
 | `bun run db:migrate:local` | apply migrations to local D1 |
 | `bun run db:migrate:remote` | apply migrations to remote D1 |
 | `bun run db:seed:local` | seed local D1 |
-| `bun run db:studio:local` | Drizzle Studio against local D1 |
-| `bun run db:studio:remote` | Drizzle Studio against remote D1 |
+| `bun run db:studio:local` | Drizzle Studio against local D1, no auth |
+| `bun run db:studio:remote` | Drizzle Studio against remote D1; needs `CLOUDFLARE_*` in `.env` |
 | `bun run cf-typegen` | regenerate `worker-configuration.d.ts` |
 
 ---
@@ -250,4 +284,6 @@ test/                   vitest suites + D1 harness
 | `redirect_uri_mismatch` from Google | `GOOGLE_REDIRECT_URI` differs from the console registration or from what the app sends. |
 | `401` on every call | Token is not a seeded dev token, or the session passed `BATAS_SESI` — re-run `bun run db:seed:local`. |
 | `no such table` | Migrations not applied: `bun run db:migrate:local`. |
+| Studio remote: `needs CLOUDFLARE_ACCOUNT_ID` | `.env` missing or not loaded — copy `.env.example` and fill it. |
+| Studio remote: auth/permission error | Run `bunx wrangler login`, and check the API token has **D1 Edit**. |
 | Calendar returns `peringatan` | Google tokens missing/expired or Google unreachable; the endpoint intentionally degrades to slots only. |
