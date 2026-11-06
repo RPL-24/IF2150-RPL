@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ambilDetailKatalog, ApiError, type ListingKatalog } from "@/lib/api";
 import DaftarListing from "./DaftarListing";
+import EmptyState from "./EmptyState";
 import FotoListing from "./FotoListing";
 import PesanKatalog, { perluLogin, PesanPerluLogin } from "./PesanKatalog";
 import TombolBeli from "./TombolBeli";
@@ -46,11 +47,17 @@ export default function DetailListing() {
   if (state.status === "perluLogin") return <PesanPerluLogin />;
 
   if (state.status === "error") {
-    // Skenario alternatif UC03: listing sudah dihapus/habis → tampilkan pesan lalu daftar listing
+    if (!state.tidakTersedia) return <PesanKatalog jenis="error">{state.pesan}</PesanKatalog>;
+    // UC03 Alt 1 (Algo-C11-02): listing sudah dihapus/habis → pesan, lalu kembali ke daftar listing
     return (
       <div className="flex flex-col gap-6">
-        <PesanKatalog jenis="error">{state.pesan}</PesanKatalog>
-        {state.tidakTersedia && <DaftarListing />}
+        <EmptyState jenis="error" judul={state.pesan} aksi={{ href: "/katalog", label: "Kembali ke katalog" }}>
+          Listing ini mungkin sudah dihapus penjual, stoknya habis, atau sudah melewati batas kedaluwarsa.
+        </EmptyState>
+        <section className="flex flex-col gap-4">
+          <h2 className="text-lg font-semibold">Makanan surplus lain yang masih tersedia</h2>
+          <DaftarListing />
+        </section>
       </div>
     );
   }

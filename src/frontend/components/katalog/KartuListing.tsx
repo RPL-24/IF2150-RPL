@@ -1,21 +1,54 @@
 import Link from "next/link";
 import type { ListingKatalog } from "@/lib/api";
 import FotoListing from "./FotoListing";
-import { formatRupiah, formatWaktu } from "./format";
+import { formatRupiah } from "./format";
 
-/** Kartu listing di daftar katalog: foto, nama, harga, stok, batas kedaluwarsa (UC02). */
 export default function KartuListing({ listing }: { listing: ListingKatalog }) {
   return (
     <Link
       href={`/katalog/${listing.id_listing}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white transition hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
+      className="group flex flex-col overflow-hidden rounded-[18px] border border-[#d7cfb5] bg-[#f7f0dc] p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
     >
-      <FotoListing foto={listing.foto} alt={listing.nama_makanan} className="aspect-[4/3] w-full" />
-      <div className="flex flex-1 flex-col gap-1 p-4">
-        <h2 className="font-semibold group-hover:underline">{listing.nama_makanan}</h2>
-        <p className="text-lg font-bold text-emerald-700 dark:text-emerald-400">{formatRupiah(listing.harga)}</p>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">Stok: {listing.stok}</p>
-        <p className="mt-auto pt-2 text-xs text-zinc-500">Ambil sebelum {formatWaktu(listing.batas_kedaluwarsa)}</p>
+      <div className="overflow-hidden rounded-[14px] border border-[#d7cfb5] bg-[#f5d7aa]">
+        <FotoListing
+          foto={listing.foto}
+          alt={listing.nama_makanan}
+          className="aspect-[4/3] w-full object-cover"
+        />
+      </div>
+
+      <div className="mt-3 flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h2 className="text-[1.1rem] font-extrabold tracking-[-0.04em] text-[#0a8ea8] group-hover:text-[#0d7b96]">
+            {listing.nama_makanan}
+          </h2>
+          <p className="mt-1 text-sm text-[#5c6460]">{listing.deskripsi || "Food surplus available now"}</p>
+        </div>
+
+        <div className="flex items-center gap-2 rounded-md bg-[#ff4d57] px-2 py-1 text-white shadow-sm">
+          <button
+            type="button"
+            aria-label={`Decrease quantity for ${listing.nama_makanan}`}
+            className="flex h-7 w-7 items-center justify-center text-lg font-bold leading-none"
+          >
+            −
+          </button>
+          <span className="text-sm font-bold">1</span>
+          <button
+            type="button"
+            aria-label={`Increase quantity for ${listing.nama_makanan}`}
+            className="flex h-7 w-7 items-center justify-center text-lg font-bold leading-none"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <p className="text-lg font-extrabold text-[#1a1a1a]">{formatRupiah(listing.harga)}</p>
+        <span className="text-xs font-semibold uppercase tracking-[0.08em] text-[#5e6a61]">
+          stok {listing.stok}
+        </span>
       </div>
     </Link>
   );

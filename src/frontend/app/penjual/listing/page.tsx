@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AppLayout } from "@/components/layout";
 import KartuListingPenjual, {
     ListingMakananPenjual,
 } from "@/components/penjual/KartuListingPenjual";
@@ -33,8 +34,9 @@ export default function ListingPenjualPage() {
 
         const data = await res.json();
         setListings(data);
-        } catch (err: any) {
-        setPesanError(err.message || "Terjadi kesalahan sistem");
+        } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Terjadi kesalahan sistem";
+        setPesanError(message);
         } finally {
         setLoading(false);
         }
@@ -62,8 +64,9 @@ export default function ListingPenjualPage() {
 
         setSelectedListing(null);
         await ambilDaftarListing();
-        } catch (err: any) {
-        alert(err.message || "Gagal menghapus listing");
+        } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Gagal menghapus listing";
+        alert(message);
         } finally {
         setIsDeleting(false);
         }

@@ -1,107 +1,180 @@
 "use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { AppLayout } from "@/components/layout";
+import { IMAGES } from "@/constants/assets"; // <-- 1. Import your assets
 
-export default function LoginView() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  
+export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMsg('');
-    setIsLoading(true);
+  const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setErrorMessage("");
+    setIsSubmitting(true);
 
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("http://localhost:8000/api/auth/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      const data = await response.json().catch(() => null);
 
-      if (!res.ok) {
-        setErrorMsg(data.detail || 'Terjadi kesalahan sistem');
-        setPassword(''); 
-      } else {
-        document.cookie = `role=${data.peran}; path=/; max-age=86400`;
-        document.cookie = `id_pengguna=${data.id_pengguna}; path=/; max-age=86400`;
-        
-        if (data.peran === 'PENJUAL') {
-          router.push('/penjual');
-        } else if (data.peran === 'PEMBELI') {
-          router.push('/katalog');
-        }
+      if (!response.ok) {
+        const message = data?.detail || "Login gagal. Silakan coba lagi.";
+        setErrorMessage(message);
+        return;
       }
-    } catch (err) {
-      setErrorMsg('Gagal terhubung ke server. Silakan coba lagi.');
+
+      const role = data?.peran;
+      if (role === "PENJUAL") {
+        router.push("/penjual/listing");
+        return;
+      }
+
+      router.push("/katalog");
+    } catch {
+      setErrorMessage("Login gagal. Silakan coba lagi.");
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-        
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Login ke SaveBite</h1>
-          <p className="text-sm text-gray-500 mt-1">Silakan masuk untuk melanjutkan</p>
+    <AppLayout
+      showHeader
+      showBottomNav={false}
+      title={
+        <div className="flex w-full items-center justify-center py-1">
+          <Image
+            src={IMAGES.logo}
+            alt="Surplus Logo"
+            width={140}  // Increased base width
+            height={45}  // Increased base height
+            className="h-40 md:h-50 w-auto object-contain" // Tailwind classes for sizing and scaling
+            priority
+          />
         </div>
-        
-        {errorMsg && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg">
-            {errorMsg}
+      }
+      headerClassName="bg-[#f4b61a] px-5 pb-5 pt-8"
+      bodyClassName="bg-[#e6e0c8] px-5 pb-10 pt-4"
+    >
+      <div className="flex min-h-full flex-col justify-center">
+        <h2 className="mb-8 text-center text-[2.3rem] font-black tracking-[-0.06em] text-[#f15d69]">
+          Log In Your Account
+        </h2>
+
+        {errorMessage ? (
+          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            {errorMessage}
           </div>
-        )}
+        ) : null}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input 
-              id="email"
-              type="email" 
+          <label className="flex items-center gap-3 rounded-lg bg-[#e8e0ca] px-4 py-3 text-[#5f675c] shadow-inner">
+            <svg viewBox="0 0 24 24" className="h-6 w-6 fill-none stroke-current stroke-[1.8]" aria-hidden="true">
+              <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z" />
+              <path d="m5 7 7 5 7-5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <input
+              type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="nama@email.com"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-              required 
+              onChange={handleEmailChange}
+              placeholder="Enter Your Email"
+              className="w-full bg-transparent text-base text-[#211f1d] placeholder:text-[#6d7268] focus:outline-none"
+              aria-label="Email"
+              required
             />
-          </div>
-          
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input 
-              id="password"
-              type="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-              required 
-            />
-          </div>
+          </label>
 
-          <button 
-            type="submit" 
-            disabled={isLoading}
-            className="w-full mt-2 bg-blue-600 text-white font-medium py-2.5 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          <label className="flex items-center gap-3 rounded-lg bg-[#e8e0ca] px-4 py-3 text-[#5f675c] shadow-inner">
+            <svg viewBox="0 0 24 24" className="h-6 w-6 fill-none stroke-current stroke-[1.8]" aria-hidden="true">
+              <rect x="5" y="10" width="14" height="10" rx="2" />
+              <path d="M8 10V7.5A4 4 0 0 1 12 3.5a4 4 0 0 1 4 4V10" strokeLinecap="round" />
+            </svg>
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={handlePasswordChange}
+              placeholder="Enter Your Password"
+              className="w-full bg-transparent text-base text-[#211f1d] placeholder:text-[#6d7268] focus:outline-none"
+              aria-label="Password"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((value) => !value)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              className="text-[#5f675c] hover:text-[#39423c]"
+            >
+              {showPassword ? (
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-5 w-5 fill-none stroke-current stroke-[1.8]"
+                  aria-hidden="true"
+                >
+                  <path d="M3 3l18 18" strokeLinecap="round" />
+                  <path
+                    d="M10.6 10.6a2 2 0 0 0 2.8 2.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M9.9 5.3A10.6 10.6 0 0 1 12 5c5.6 0 9.2 4.8 9.8 6-.3.7-1.8 3-4.2 4.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M6.3 7.1C4.1 8.7 2.6 10.9 2.2 11.8 2.8 13 6.4 17.8 12 17.8c.8 0 1.6-.1 2.3-.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-5 w-5 fill-none stroke-current stroke-[1.8]"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M2.2 12C2.8 10.8 6.4 6 12 6s9.2 4.8 9.8 6-.6 1.2-4.2 6-9.8 6s-9.2-4.8-9.8-6Z"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              )}
+            </button>
+          </label>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="mt-4 w-full rounded-lg bg-[#1dbf75] px-5 py-4 text-2xl font-black text-white transition hover:bg-[#17a366] disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {isLoading ? 'Memproses...' : 'Masuk'}
+            {isSubmitting ? "Logging in..." : "Log In"}
           </button>
         </form>
-
       </div>
-    </div>
+    </AppLayout>
   );
 }

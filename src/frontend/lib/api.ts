@@ -136,4 +136,20 @@ export async function ubahListing(idListing: number | string, data: DataListingP
   }
 
   return res.json();
+// ---------- Cari & filter katalog (P3: UC04) ----------
+
+export type ParamPencarian = {
+  kataKunci?: string | null;
+  hargaMin?: number | null;
+  hargaMaks?: number | null;
+};
+
+/** GET /api/katalog?kata_kunci=&harga_min=&harga_maks= — parameter kosong tidak dikirim. */
+export function cariKatalog({ kataKunci, hargaMin, hargaMaks }: ParamPencarian): Promise<ListingKatalog[]> {
+  const q = new URLSearchParams();
+  if (kataKunci?.trim()) q.set("kata_kunci", kataKunci.trim());
+  if (hargaMin != null) q.set("harga_min", String(hargaMin));
+  if (hargaMaks != null) q.set("harga_maks", String(hargaMaks));
+  const qs = q.toString();
+  return getJson<ListingKatalog[]>(qs ? `/api/katalog?${qs}` : "/api/katalog");
 }
