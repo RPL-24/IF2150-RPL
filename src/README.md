@@ -154,6 +154,7 @@ GOOGLE_CLIENT_ID=<oauth client id>
 GOOGLE_CLIENT_SECRET=<oauth client secret>
 GOOGLE_REDIRECT_URI=http://localhost:8787/api/auth/google/callback
 API_BASE_URL=http://localhost:8787
+MODE_DEMO=1
 ```
 
 | Variabel | Keterangan |
@@ -163,6 +164,7 @@ API_BASE_URL=http://localhost:8787
 | `GOOGLE_CLIENT_SECRET` | Client secret OAuth, diminta Google pada kedua alur tersebut. Karena itu penukaran kode dilakukan di server — nilai ini tidak boleh sampai ke aplikasi *mobile*. |
 | `GOOGLE_REDIRECT_URI` | URL rute `/api/auth/google/callback` milik backend ini. Harus **sama persis** dengan yang didaftarkan di Google Cloud Console. Bila berbeda, Google membalas `redirect_uri_mismatch`. |
 | `API_BASE_URL` | Alamat dasar yang diperiksa tugas *cron uptime* (Algo-021). Opsional; tanpa nilai ini pemeriksaan tercatat `down`. |
+| `MODE_DEMO` | Isi `1` untuk mengaktifkan `POST /api/auth/demo`, yaitu login sebagai akun Mahasiswa atau Administrator hasil *seed* tanpa Google (untuk asisten yang menguji APK). Opsional; nilai lain atau kosong menonaktifkan rute (404). Basis data harus sudah di-*seed*. |
 
 Untuk `.env` (dipakai `drizzle.config.ts`, bukan Worker) isi `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_DATABASE_ID`, dan `CLOUDFLARE_D1_TOKEN` — lihat `.env.example`. Variabel ini diperlukan untuk perintah yang lewat HTTP (Drizzle Studio *remote*, `db:migrate:remote`), terpisah dari sesi `wrangler login`.
 
@@ -363,6 +365,7 @@ Rujukan lengkap: [`backend/README.md`](./backend/README.md).
 | `GET` | `/api/auth/google/mulai?kembali=<deep link>` | publik |
 | `GET` | `/api/auth/google/callback` | publik (dipanggil Google) |
 | `POST` | `/api/auth/google` | publik |
+| `POST` | `/api/auth/demo` | publik (hanya bila `MODE_DEMO=1`) |
 | `POST` | `/api/auth/logout` | semua |
 | `POST` | `/api/auth/device` | semua |
 | `GET` | `/api/me` | semua |

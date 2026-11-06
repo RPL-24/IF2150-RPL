@@ -41,6 +41,7 @@ GOOGLE_CLIENT_ID=<oauth client id>
 GOOGLE_CLIENT_SECRET=<oauth client secret>
 GOOGLE_REDIRECT_URI=http://localhost:8787/api/auth/google/callback
 API_BASE_URL=http://localhost:8787
+MODE_DEMO=1
 ```
 
 Generate `KUNCI_TOKEN` with:
@@ -56,6 +57,7 @@ openssl rand -base64 32
 | `GOOGLE_CLIENT_SECRET` | OAuth client secret, required by Google at both grants. This is why the exchange happens server-side — it must never reach the mobile app. |
 | `GOOGLE_REDIRECT_URI` | This backend's `/api/auth/google/callback` URL. Must **exactly** match the redirect URI registered in Google Cloud Console. A mismatch yields `redirect_uri_mismatch`. |
 | `API_BASE_URL` | Base URL the uptime cron probes (Algo-021). Optional; without it probes record `down`. |
+| `MODE_DEMO` | Set to `1` to enable `POST /api/auth/demo`, which signs in as the seeded Mahasiswa or Administrator account without Google (for assistants testing the APK). Optional; any other value or unset keeps the route disabled (404). Requires the seed to have been run on that database. |
 
 Only `KUNCI_TOKEN`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and
 `GOOGLE_REDIRECT_URI` are mandatory — the worker throws on first use if one is missing.

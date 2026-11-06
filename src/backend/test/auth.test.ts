@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import app from "../src/index";
-import { buatDbUji, buatSesiUji, KUNCI_UJI } from "./harness";
+import { buatDbUji, buatSesiUji, envUji, KUNCI_UJI } from "./harness";
 import { json, jwtPalsu, minta } from "./util";
 import { dekripsiAES256GCM } from "../src/lib/crypto";
 
@@ -394,5 +394,64 @@ describe("login Google dari aplikasi (mulai + callback)", () => {
       path: `/api/auth/google/callback?code=kode-123&state=${encodeURIComponent("https://jahat.example")}`,
     });
     expect(res.status).toBe(400);
+  });
+});
+
+describe("login demo (MODE_DEMO)", () => {
+  let ctx: ReturnType<typeof buatDbUji>;
+
+  beforeEach(() => {
+    ctx = buatDbUji();
+    // Same accounts as seed/seed.sql, without their dev sessions.
+    for (const [idPengguna, peran] of [
+      ["seed-usr-mhs", "mahasiswa"],
+      ["seed-usr-adm", "administrator"],
+    ] as const) {
+      buatSesiUji(ctx.raw, { idPengguna, peran, token: `lama-${idPengguna}` });
+    }
+  });
+  afterEach(() => ctx.tutup());
+
+  const demo = (body: unknown, modeDemo: string | null = "1") =>
+    app.fetch(
+      new Request("http://sehati.test/api/auth/demo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }),
+      envUji(ctx.D1, modeDemo === null ? {} : { MODE_DEMO: modeDemo }),
+      {} as ExecutionContext,
+    );
+
+  test.each([null, "0", "true"])("tidak tersedia saat MODE_DEMO = %j", async (mode) => {
+    const res = await demo({ peran: "mahasiswa" }, mode);
+    expect(res.status).toBe(404);
+  });
+
+  test.each([
+    ["mahasiswa", "seed-usr-mhs"],
+    ["administrator", "seed-usr-adm"],
+  ])("masuk sebagai akun seed %s dengan sesi baru yang bisa dipakai", async (peran, idPengguna) => {
+    const res = await demo({ peran });
+    expect(res.status).toBe(200);
+    const body = await json(res);
+    expect(body.pengguna).toMatchObject({ idPengguna, peran });
+    expect(body.token).toMatch(/^[0-9a-f]{64}$/);
+
+    const me = await minta(app, ctx.D1, { path: "/api/me", token: body.token });
+    expect(me.status).toBe(200);
+    expect((await json(me)).idPengguna).toBe(idPengguna);
+  });
+
+  test("menolak peran yang tidak dikenal", async () => {
+    const res = await demo({ peran: "konsultan" });
+    expect(res.status).toBe(422);
+  });
+
+  test("404 bila akun seed belum ada", async () => {
+    ctx.raw.prepare("DELETE FROM pengguna WHERE id_pengguna = 'seed-usr-adm'").run();
+    const res = await demo({ peran: "administrator" });
+    expect(res.status).toBe(404);
+    expect((await json(res)).error.pesan).toContain("seed");
   });
 });

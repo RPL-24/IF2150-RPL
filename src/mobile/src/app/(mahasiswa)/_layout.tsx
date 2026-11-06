@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import Bell from 'lucide-react-native/icons/bell';
 import Calendar from 'lucide-react-native/icons/calendar';
 import CircleQuestionMark from 'lucide-react-native/icons/circle-question-mark';
@@ -6,6 +6,7 @@ import House from 'lucide-react-native/icons/house';
 import Users from 'lucide-react-native/icons/users';
 
 import { TabBar } from '@/components';
+import { useSesi } from '@/lib/sesi';
 
 /**
  * Mahasiswa navigation: the five tabs from DPPL BAB 6 (Beranda, Kalender,
@@ -13,6 +14,10 @@ import { TabBar } from '@/components';
  * with `href: null`, so they keep the tab bar but get no tab button.
  */
 export default function MahasiswaLayout() {
+  const { pengguna } = useSesi();
+  // Signed out, or an Administrator: I-01 sends them to the right place.
+  if (pengguna?.peran !== 'mahasiswa') return <Redirect href="/" />;
+
   return (
     <Tabs screenOptions={{ headerShown: false }} tabBar={(props) => <TabBar {...props} />}>
       <Tabs.Screen name="beranda" options={{ title: 'Beranda', tabBarIcon: (p) => <House {...p} /> }} />

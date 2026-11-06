@@ -11,9 +11,9 @@ import {
   simpanTokenGoogle,
   type Db,
 } from "../db/queries";
-import { bacaConfig, nimDariEmail } from "../config";
+import { AKUN_DEMO, bacaConfig, modeDemoAktif, nimDariEmail, type Peran } from "../config";
 import { enkripsiAES256GCM } from "../lib/crypto";
-import { permintaanTidakValid, gagalAuth, gagalValidasi } from "../lib/errors";
+import { permintaanTidakValid, gagalAuth, gagalValidasi, tidakDitemukan } from "../lib/errors";
 import { validasiTokenPush } from "../lib/validasi";
 import { buatUrlOtorisasi, validasiKodeOtorisasi } from "../lib/google";
 import { auth, type AppEnv } from "../middleware/auth";
@@ -127,6 +127,33 @@ authRoutes.post("/google", async (c) => {
     waktuLogin,
     pengguna: { idPengguna: pengguna.idPengguna, nama, email, peran: pengguna.peran },
   });
+});
+
+/**
+ * Demo login (not in the DPPL; see M9 report B.1). Signs in as a seeded account
+ * without Google. Disabled unless `MODE_DEMO=1`, and then answers 404 like any
+ * unknown route so it does not exist on a normal deployment.
+ */
+authRoutes.post("/demo", async (c) => {
+  if (!modeDemoAktif(c.env)) throw tidakDitemukan("Rute tidak ditemukan");
+
+  const body = await bacaBody(c);
+  const peran = body.peran;
+  if (peran !== "mahasiswa" && peran !== "administrator") {
+    throw gagalValidasi("peran harus 'mahasiswa' atau 'administrator'");
+  }
+
+  const db: Db = c.get("db");
+  const [pengguna] = await peranPengguna(db, AKUN_DEMO[peran as Peran]);
+  if (!pengguna || pengguna.peran !== peran) {
+    throw tidakDitemukan("Akun demo belum ada. Jalankan seed basis data terlebih dahulu.");
+  }
+
+  const token = randomBytes(32).toString("hex");
+  const waktuLogin = new Date().toISOString();
+  await buatSesi(db, { token, idPengguna: pengguna.idPengguna, waktuLogin }); // Q-031
+
+  return c.json({ token, waktuLogin, pengguna });
 });
 
 /** `logout()` — Q-003. */

@@ -1,9 +1,9 @@
-import { Redirect, useRouter } from 'expo-router';
+import { Redirect } from 'expo-router';
 import { useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { ApiError, masukDenganGoogle, type Peran } from '@/api';
+import { ApiError, masukDemo, masukDenganGoogle, type Pengguna, type Peran } from '@/api';
 import { Banner, Teks, Tombol } from '@/components';
 import { useSesi } from '@/lib/sesi';
 import { jarak, sudut, ukuran, warna } from '@/theme';
@@ -16,32 +16,42 @@ const MODE_DEMO = process.env.EXPO_PUBLIC_MODE_DEMO === '1';
 
 /** I-01 Masuk (`LoginView`). */
 export default function Masuk() {
-  const router = useRouter();
   const { pengguna, masuk } = useSesi();
   const { top, bottom } = useSafeAreaInsets();
-  const [memuat, setMemuat] = useState(false);
+  // Which button is waiting for the backend, so only that one shows a spinner.
+  const [memuat, setMemuat] = useState<'google' | Peran | null>(null);
   // I-01-06: message shown when Google validation fails (UC-11 alternative scenario 1).
   const [galat, setGalat] = useState<string | null>(null);
 
   const beranda = (peran: Peran) => (peran === 'mahasiswa' ? '/beranda' : '/admin');
 
-  // LoginView.isiLoginPage -> AuthController.kirimData (POST /api/auth/google).
-  const masukGoogle = async () => {
+  const coba = async (
+    tombol: NonNullable<typeof memuat>,
+    login: () => Promise<Pengguna | null>,
+    pesanGagal: (e: unknown) => string,
+  ) => {
     setGalat(null);
-    setMemuat(true);
+    setMemuat(tombol);
     try {
-      const baru = await masukDenganGoogle();
+      const baru = await login();
       if (baru) masuk(baru); // re-renders into the <Redirect> below
     } catch (e) {
-      // Network problems keep their own message; anything Google/backend rejects gets I-01-06.
-      setGalat(e instanceof ApiError && e.status === 0 ? e.pesan : 'Masuk dengan Google gagal. Silakan coba lagi.');
+      // Network problems keep their own message.
+      setGalat(e instanceof ApiError && e.status === 0 ? e.pesan : pesanGagal(e));
     } finally {
-      setMemuat(false);
+      setMemuat(null);
     }
   };
 
-  // TODO(#3): log in as the seeded account through the backend's demo mode.
-  const masukDemo = (peran: Peran) => router.replace(beranda(peran));
+  // LoginView.isiLoginPage -> AuthController.kirimData (POST /api/auth/google).
+  const masukGoogle = () =>
+    coba('google', masukDenganGoogle, () => 'Masuk dengan Google gagal. Silakan coba lagi.');
+
+  // POST /api/auth/demo; the backend must run with MODE_DEMO=1 and a seeded database.
+  const masukSebagai = (peran: Peran) =>
+    coba(peran, () => masukDemo(peran), (e) =>
+      `Login demo gagal${e instanceof ApiError ? `: ${e.pesan}` : '.'} Pastikan backend berjalan dengan MODE_DEMO=1.`,
+    );
 
   // Already signed in (restored at start or just logged in): go to I-02 or I-03.
   if (pengguna) return <Redirect href={beranda(pengguna.peran)} />;
@@ -67,7 +77,7 @@ export default function Masuk() {
 
       <View style={styles.bawah}>
         {galat && <Banner jenis="galat">{galat}</Banner>}
-        <Tombol judul="Masuk dengan Google" varian="google" onPress={masukGoogle} memuat={memuat} />
+        <Tombol judul="Masuk dengan Google" varian="google" onPress={masukGoogle} memuat={memuat === 'google'} disabled={memuat !== null} />
         <Teks gaya="keterangan" style={styles.rataTengah}>
           Gunakan akun Google kampus (std.stei.itb.ac.id atau mahasiswa.itb.ac.id). Akun dibuat otomatis saat
           pertama kali masuk.
@@ -82,13 +92,17 @@ export default function Masuk() {
               <Tombol
                 judul="Mahasiswa"
                 varian="sekunder"
-                onPress={() => masukDemo('mahasiswa')}
+                onPress={() => masukSebagai('mahasiswa')}
+                memuat={memuat === 'mahasiswa'}
+                disabled={memuat !== null}
                 style={styles.tombolDemo}
               />
               <Tombol
                 judul="Administrator"
                 varian="sekunder"
-                onPress={() => masukDemo('administrator')}
+                onPress={() => masukSebagai('administrator')}
+                memuat={memuat === 'administrator'}
+                disabled={memuat !== null}
                 style={styles.tombolDemo}
               />
             </View>

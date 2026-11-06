@@ -11,7 +11,7 @@ import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 
 import { api, ApiError, KODE_KLIEN } from './client';
-import { simpanSesi, type Pengguna } from './sesi';
+import { simpanSesi, type Pengguna, type Peran } from './sesi';
 
 type ResponsMasuk = { token: string; waktuLogin: string; pengguna: Pengguna };
 
@@ -42,6 +42,16 @@ export async function masukDenganGoogle(): Promise<Pengguna | null> {
   }
 
   const respons = await api.post<ResponsMasuk>('/api/auth/google', { kodeOtorisasi: kode });
+  await simpanSesi(respons.token, respons.pengguna);
+  return respons.pengguna;
+}
+
+/**
+ * Demo login: signs in as the seeded account for `peran` without Google.
+ * Only works when the backend runs with `MODE_DEMO=1` (404 otherwise).
+ */
+export async function masukDemo(peran: Peran): Promise<Pengguna> {
+  const respons = await api.post<ResponsMasuk>('/api/auth/demo', { peran });
   await simpanSesi(respons.token, respons.pengguna);
   return respons.pengguna;
 }
