@@ -159,6 +159,18 @@ label {
   margin-top: 4px;
 }
 
+.error-msg {
+  color: #E53E3E;
+  font-size: 12px;
+  margin-top: 4px;
+  min-height: 16px;
+}
+
+.form-group input.is-invalid{
+  border: 1px solid #E53E3E !important;
+  background-color: #FFF5F5;
+}
+
 .btn-primary {
   width: 100%;
   padding: 12px;

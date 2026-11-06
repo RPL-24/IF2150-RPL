@@ -2,25 +2,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('Form_Registration');
     const roleInput = document.getElementById('Input_Role');
     const tabBtns = document.querySelectorAll('.tab-btn');
-    const groupKontakOrtu = document.getElementById('Group_KontakOrangTua');
-    const alertError = document.getElementById('Alert_Error');
+    
+    // Input Fields
+    const inputNama = document.getElementById('Input_Nama');
+    const inputEmail = document.getElementById('Input_Email');
+    const inputNoTelepon = document.getElementById('Input_NomorTelp');
+    const inputPassword = document.getElementById('Input_KataSandi');
+    const inputConfirmPassword = document.getElementById('Input_KonfirmasiKataSandi');
+    const inputEmailOrtu = document.getElementById('Input_EmailOrangTua');
 
+    // Error Elements
+    const errorNama = document.getElementById('Error_Nama');
+    const errorEmail = document.getElementById('Error_Email');
+    const errorNoTelepon = document.getElementById('Error_NoTelepon');
+    const hintError = document.getElementById('Hint_TglError');
+    const alertError = document.getElementById('Alert_Error');
+    
+    // Containers
+    const groupKontakOrtu = document.getElementById('Group_KontakOrangTua');
+
+    // Pemilihan Role
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
 
-        const selectedRole = btn.getAttribute('data-role');
-        roleInput.value = selectedRole;
+            const selectedRole = btn.getAttribute('data-role');
+            roleInput.value = selectedRole;
 
-        if (selectedRole === 'pelajar') {
-            groupKontakOrtu.style.display = 'flex';
-        } else {
-            groupKontakOrtu.style.display = 'none';
-        }
+            if (selectedRole === 'pelajar') {
+                groupKontakOrtu.style.display = 'flex';
+            } else {
+                groupKontakOrtu.style.display = 'none';
+            }
         });
     });
 
+    // Helper untuk Error
+    const clearError = (input, errorEl) => {
+        input.classList.remove('is-invalid');
+        errorEl.innerText = '';
+    };
+
+    const showErrorField = (input, errorEl, message) => {
+        input.classList.add('is-invalid');
+        errorEl.innerText = message;
+    };
+
+    const showGlobalError = (msg) => {
+        alertError.innerText = msg;
+        alertError.style.display = 'block';
+    };
+
+    // Validasi Format Tanggal Lahir
     function isValidDate(day, month, year) {
         const d = parseInt(day, 10);
         const m = parseInt(month, 10);
@@ -38,88 +72,116 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    const hintError = document.getElementById('Hint_TglError');
+    // Logika Utama Saat Submit Form
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        alertError.style.display = 'none';
+        let isValid = true;
 
-    form.addEventListener('submit', (e) => {
+        // Validasi Nama
+        const namaValue = inputNama.value.trim();
+        const nameRegex = /^[a-zA-Z\s]+$/;
+        if (namaValue === '') {
+            showErrorField(inputNama, errorNama, 'Nama wajib diisi');
+            isValid = false;
+        } else if (namaValue.length < 2) {
+            showErrorField(inputNama, errorNama, 'Nama minimal terdiri dari 2 karakter');
+            isValid = false;
+        } else if (!nameRegex.test(namaValue)) {
+            showErrorField(inputNama, errorNama, 'Nama hanya boleh berisi huruf');
+            isValid = false;
+        } else {
+            clearError(inputNama, errorNama);
+        }
+
+        // Validasi Email
+        const emailValue = inputEmail.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailValue === '') {
+            showErrorField(inputEmail, errorEmail, 'Email wajib diisi');
+            isValid = false;
+        } else if (!emailRegex.test(emailValue)) {
+            showErrorField(inputEmail, errorEmail, 'Format email tidak valid (contoh: user@mail.com)');
+            isValid = false;
+        } else {
+            clearError(inputEmail, errorEmail);
+        }
+
+        // Validasi Nomor Telepon
+        const phoneValue = inputNoTelepon.value.trim();
+        const phoneRegex = /^08[0-9]{8,12}$/;
+        if (phoneValue === '') {
+            showErrorField(inputNoTelepon, errorNoTelepon, 'Nomor telepon wajib diisi');
+            isValid = false;
+        } else if (!phoneRegex.test(phoneValue)) {
+            showErrorField(inputNoTelepon, errorNoTelepon, 'Nomor telepon harus diawali 08 dan terdiri dari 10-14 digit angka');
+            isValid = false;
+        } else {
+            clearError(inputNoTelepon, errorNoTelepon);
+        }
+
+        // Validasi Tanggal Lahir
         const tgl = document.getElementById('Input_TanggalLahir').value;
         const bln = document.getElementById('Input_BulanLahir').value;
         const thn = document.getElementById('Input_TahunLahir').value;
 
         if (!isValidDate(tgl, bln, thn)) {
-            e.preventDefault(); 
-            hintError.innerText = "Tanggal lahir tidak valid (periksa kembali tanggal, bulan, dan tahun).";
+            hintError.innerText = "Tanggal lahir tidak valid (periksa kembali tanggal, bulan, dan tahun)";
             hintError.style.display = "block";
-            return;
+            isValid = false;
+        } else {
+            hintError.style.display = "none";
         }
 
-        hintError.style.display = "none";
-        
-        const formattedDate = `${thn}-${bln.padStart(2, '0')}-${tgl.padStart(2, '0')}`;
-        console.log("Tanggal: ", formattedDate);
+        // Validasi Password & Konfirmasi Password
+        const password = inputPassword.value;
+        const confirmPassword = inputConfirmPassword.value;
 
-        window.location.href = 'RegistrationSuccessPage.html';
-
-    });
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        alertError.style.display = 'none';
-
-        const nama = document.getElementById('Input_Nama').value.trim();
-        const email = document.getElementById('Input_Email').value.trim();
-        const telepon = document.getElementById('Input_Telepon').value.trim();
-        const password = document.getElementById('Input_Password').value;
-        const confirmPassword = document.getElementById('Input_ConfirmPassword').value;
-        const role = roleInput.value;
-
-        if (password !== confirmPassword) {
-        showError("Konfirmasi kata sandi tidak cocok!");
-        return;
-        }
         if (password.length < 8) {
-        showError("Kata sandi minimal harus 8 karakter.");
-        return;
+            showGlobalError("Kata sandi minimal harus 8 karakter");
+            isValid = false;
+        } else if (password !== confirmPassword) {
+            showGlobalError("Konfirmasi kata sandi tidak cocok!");
+            isValid = false;
         }
 
+        if (!isValid) return;
+
+        // Siapkan Payload Data untuk Dikirim ke Backend
+        const formattedDate = `${thn}-${bln.padStart(2, '0')}-${tgl.padStart(2, '0')}`;
         const payload = {
-        nama,
-        email,
-        telepon,
-        role,
-        tanggal_lahir: `${selectThn.value}-${selectBlnPad(document.getElementById('Select_Bln').value)}-${selectBlnPad(selectTgl.value)}`,
-        email_orang_tua: role === 'pelajar' ? document.getElementById('Input_EmailOrangTua').value : null,
-        password
+            nama: namaValue,
+            email: emailValue,
+            telepon: phoneValue,
+            role: roleInput.value,
+            tanggal_lahir: formattedDate,
+            email_orang_tua: roleInput.value === 'pelajar' ? inputEmailOrtu.value : null,
+            password: password
         };
 
         try {
-        const response = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
 
-        const result = await response.json();
+            const result = await response.json();
 
-        if (!response.ok) {
-            throw new Error(result.message || 'Registrasi gagal.');
-        }
+            if (!response.ok) {
+                throw new Error(result.message || 'Registrasi gagal');
+            }
 
-        alert("Registrasi berhasil! Silakan cek email/masuk ke akun Anda.");
-        window.location.href = '/views/login.html';
+            window.location.href = 'RegistrationSuccessPage.html';
 
         } catch (err) {
-        showError(err.message);
+            showGlobalError(err.message);
         }
     });
 
-    function showError(msg) {
-        alertError.innerText = msg;
-        alertError.style.display = 'block';
-    }
-
-    function selectBlnPad(val) {
-        return val.padStart(2, '0');
-    }
+    inputNama.addEventListener('input', () => clearError(inputNama, errorNama));
+    inputEmail.addEventListener('input', () => clearError(inputEmail, errorEmail));
+    inputNoTelepon.addEventListener('input', () => clearError(inputNoTelepon, errorNoTelepon));
 });
