@@ -1,8 +1,8 @@
--- Skema basis data ITBELI.
+﻿-- Skema basis data ITBELI.
 -- Setiap tabel diturunkan dari atribut kelas Model pada Tabel 4.1 DPPL.
 -- Aman dijalankan berulang (npm run db:init).
 
--- ───────────── Modul A: Akun & Otentikasi ─────────────
+-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Modul A: Akun & Otentikasi â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 -- C23 Akun (beserta spesialisasi C24 Pembeli, C25 Penjual, C26 Admin melalui kolom peran)
 CREATE TABLE IF NOT EXISTS akun (
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS token_verifikasi (
 
 CREATE INDEX IF NOT EXISTS token_verifikasi_id_akun ON token_verifikasi (id_akun, status_pakai);
 
--- ───────────── Modul E: Laporan & Moderasi ─────────────
+-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Modul E: Laporan & Moderasi â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 -- C36 Laporan
 CREATE TABLE IF NOT EXISTS laporan (
@@ -100,3 +100,36 @@ CREATE TABLE IF NOT EXISTS log_admin (
 );
 
 CREATE INDEX IF NOT EXISTS log_admin_id_admin ON log_admin (id_admin);
+
+-- ── Modul B: Katalog & Listing ──────────────────────────────
+
+-- C29 Barang (KF16, KF17, KF21, KF50)
+CREATE TABLE IF NOT EXISTS barang (
+  id_barang         UUID PRIMARY KEY,
+  id_penjual        UUID          NOT NULL REFERENCES akun (id_akun) ON DELETE CASCADE,
+  judul             VARCHAR(150)  NOT NULL,
+  harga             NUMERIC(12,2) NOT NULL,
+  deskripsi_kondisi TEXT          NOT NULL,
+  id_kategori       VARCHAR(50),
+  id_lokasi         VARCHAR(50),
+  status            VARCHAR(20)   NOT NULL DEFAULT 'Tersedia'
+                    CHECK (status IN ('Tersedia', 'Terjual', 'Dinonaktifkan')),
+  waktu_unggah      TIMESTAMPTZ   NOT NULL DEFAULT now(),
+  waktu_ubah        TIMESTAMPTZ   NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS barang_id_penjual ON barang (id_penjual);
+CREATE INDEX IF NOT EXISTS barang_status ON barang (status);
+
+-- C30 FotoBarang (KF17, KF21, KF23, KF50)
+CREATE TABLE IF NOT EXISTS foto_barang (
+  id_foto     UUID PRIMARY KEY,
+  id_barang   UUID         NOT NULL REFERENCES barang (id_barang) ON DELETE CASCADE,
+  nama_berkas VARCHAR(255) NOT NULL,
+  format      VARCHAR(10)  NOT NULL,
+  ukuran      BIGINT       NOT NULL,
+  urutan      INT          NOT NULL,
+  path_berkas VARCHAR(500) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS foto_barang_id_barang ON foto_barang (id_barang);

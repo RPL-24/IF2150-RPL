@@ -4,9 +4,15 @@ const Otorisasi = require('../../pendukung/Otorisasi');
 const Laporan = require('../../models/Laporan');
 const BuktiLaporan = require('../../models/BuktiLaporan');
 const LogAudit = require('../../models/LogAudit');
+const LogAdmin = require('../../models/LogAdmin');
 const Akun = require('../../models/Akun');
+const Barang = require('../../models/Barang');
+const FotoBarang = require('../../models/FotoBarang');
+const NotifikasiController = require('../../controllers/NotifikasiController');
+const PenyimpananBerkas = require('../../penyimpanan/PenyimpananBerkas');
+const db = require('../../config/db');
 
-describe('ModerasiController Unit Test (UC20)', () => {
+describe('ModerasiController Unit Test (UC20, UC22)', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -194,6 +200,195 @@ describe('ModerasiController Unit Test (UC20)', () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       const sukses = await ModerasiController.ubahStatusLaporan('token-admin', 'lap-1', 'StatusPalsu');
       expect(sukses).toBe(false);
+    });
+  });
+
+  describe('hapusListingDilaporkan (KF50, KF52, KF55, KF56, Algo-022)', () => {
+    let mockClient;
+
+    beforeEach(() => {
+      mockClient = {
+        query: jest.fn().mockResolvedValue({ rowCount: 1, rows: [] }),
+        release: jest.fn(),
+      };
+      jest.spyOn(db.pool, 'connect').mockResolvedValue(mockClient);
+    });
+
+    test('berhasil menghapus listing dilaporkan, galeri foto, ubah status laporan, catat log audit & admin, serta kirim surel peringatan', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+
+      const barangMock = new Barang({
+        idBarang: 'brg-101',
+        idPenjual: 'penjual-99',
+        judul: 'Kalkulator Casio KW',
+        harga: 75000,
+        deskripsiKondisi: 'Kondisi bekas',
+        status: 'Tersedia',
+      });
+      jest.spyOn(Barang, 'cariById').mockResolvedValue(barangMock);
+      jest.spyOn(Barang, 'hapus').mockResolvedValue(true);
+
+      const akunPenjualMock = new Akun({
+        idAkun: 'penjual-99',
+        nama: 'Asep Suparman',
+        email: 'asep@std.stei.itb.ac.id',
+      });
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(akunPenjualMock);
+
+      const fotoMock = [
+        new FotoBarang({
+          idFoto: 'f-1',
+          idBarang: 'brg-101',
+          namaBerkas: 'foto1.jpg',
+          pathBerkas: '/uploads/brg-101/foto1.jpg',
+        }),
+      ];
+      jest.spyOn(FotoBarang, 'getGaleri').mockResolvedValue(fotoMock);
+      jest.spyOn(FotoBarang, 'hapus').mockResolvedValue(true);
+
+      jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
+      jest.spyOn(ModerasiController, 'catatLogAudit').mockResolvedValue();
+      jest.spyOn(ModerasiController, 'catatLogAdmin').mockResolvedValue();
+      jest.spyOn(PenyimpananBerkas, 'hapus').mockResolvedValue(true);
+      jest.spyOn(NotifikasiController, 'kirimPeringatanPenghapusan').mockResolvedValue(true);
+
+      const hasil = await ModerasiController.hapusListingDilaporkan(
+        'token-admin',
+        'lap-201',
+        'brg-101',
+        'Barang tiruan/palsu melanggar aturan ITBELI',
+      );
+
+      expect(hasil).toBe(true);
+      expect(mockClient.query).toHaveBeenCalledWith('BEGIN');
+      expect(FotoBarang.hapus).toHaveBeenCalledWith('brg-101', mockClient);
+      expect(Barang.hapus).toHaveBeenCalledWith('brg-101', mockClient);
+      expect(Laporan.updateStatusPenanganan).toHaveBeenCalledWith('lap-201', 'Selesai', expect.any(Date), mockClient);
+      expect(ModerasiController.catatLogAudit).toHaveBeenCalledWith(
+        'lap-201',
+        'admin-id-123',
+        'Penghapusan listing: brg-101',
+        mockClient,
+      );
+      expect(ModerasiController.catatLogAdmin).toHaveBeenCalledWith(
+        'admin-id-123',
+        'HAPUS_LISTING',
+        'brg-101',
+        'Barang tiruan/palsu melanggar aturan ITBELI',
+        mockClient,
+      );
+      expect(mockClient.query).toHaveBeenCalledWith('COMMIT');
+      expect(mockClient.release).toHaveBeenCalled();
+      expect(PenyimpananBerkas.hapus).toHaveBeenCalledWith(['/uploads/brg-101/foto1.jpg']);
+      expect(NotifikasiController.kirimPeringatanPenghapusan).toHaveBeenCalledWith(
+        'penjual-99',
+        'asep@std.stei.itb.ac.id',
+        'Kalkulator Casio KW',
+        'Barang tiruan/palsu melanggar aturan ITBELI',
+      );
+    });
+
+    test('menolak jika pemohon bukan admin (KF56)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
+
+      const hasil = await ModerasiController.hapusListingDilaporkan(
+        'token-user',
+        'lap-1',
+        'brg-1',
+        'Alasan',
+      );
+
+      expect(hasil).toBe(false);
+      expect(db.pool.connect).not.toHaveBeenCalled();
+    });
+
+    test('menolak jika alasan penghapusan kosong atau hanya spasi (KF55)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+
+      const hasil1 = await ModerasiController.hapusListingDilaporkan('token-admin', 'lap-1', 'brg-1', '');
+      const hasil2 = await ModerasiController.hapusListingDilaporkan('token-admin', 'lap-1', 'brg-1', '   ');
+
+      expect(hasil1).toBe(false);
+      expect(hasil2).toBe(false);
+      expect(db.pool.connect).not.toHaveBeenCalled();
+    });
+
+    test('mengembalikan false jika listing barang tidak ditemukan (404)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+      jest.spyOn(Barang, 'cariById').mockResolvedValue(null);
+
+      const hasil = await ModerasiController.hapusListingDilaporkan(
+        'token-admin',
+        'lap-1',
+        'brg-tidak-ada',
+        'Alasan valid',
+      );
+
+      expect(hasil).toBe(false);
+      expect(db.pool.connect).not.toHaveBeenCalled();
+    });
+
+    test('berhasil menghapus listing jika idLaporan null/kosong (tanpa pembaruan laporan)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+
+      const barangMock = new Barang({
+        idBarang: 'brg-102',
+        idPenjual: 'penjual-88',
+        judul: 'Barang Pelanggaran Langsung',
+      });
+      jest.spyOn(Barang, 'cariById').mockResolvedValue(barangMock);
+      jest.spyOn(Barang, 'hapus').mockResolvedValue(true);
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(null);
+      jest.spyOn(FotoBarang, 'getGaleri').mockResolvedValue([]);
+      jest.spyOn(FotoBarang, 'hapus').mockResolvedValue(true);
+      jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
+      jest.spyOn(ModerasiController, 'catatLogAudit').mockResolvedValue();
+      jest.spyOn(ModerasiController, 'catatLogAdmin').mockResolvedValue();
+
+      const hasil = await ModerasiController.hapusListingDilaporkan(
+        'token-admin',
+        null,
+        'brg-102',
+        'Dihapus langsung oleh admin',
+      );
+
+      expect(hasil).toBe(true);
+      expect(Laporan.updateStatusPenanganan).not.toHaveBeenCalled();
+      expect(ModerasiController.catatLogAudit).not.toHaveBeenCalled();
+      expect(ModerasiController.catatLogAdmin).toHaveBeenCalledWith(
+        'admin-id-123',
+        'HAPUS_LISTING',
+        'brg-102',
+        'Dihapus langsung oleh admin',
+        mockClient,
+      );
+    });
+
+    test('melakukan rollback jika transaksi database mengalami kegagalan', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+
+      const barangMock = new Barang({
+        idBarang: 'brg-103',
+        idPenjual: 'penjual-77',
+        judul: 'Buku',
+      });
+      jest.spyOn(Barang, 'cariById').mockResolvedValue(barangMock);
+      jest.spyOn(FotoBarang, 'getGaleri').mockResolvedValue([]);
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(null);
+
+      mockClient.query.mockImplementation((sql) => {
+        if (sql === 'BEGIN') return Promise.resolve();
+        if (sql.includes('DELETE FROM foto_barang')) return Promise.reject(new Error('DB Connection Lost'));
+        if (sql === 'ROLLBACK') return Promise.resolve();
+        return Promise.resolve();
+      });
+
+      await expect(
+        ModerasiController.hapusListingDilaporkan('token-admin', 'lap-1', 'brg-103', 'Alasan error'),
+      ).rejects.toThrow('DB Connection Lost');
+
+      expect(mockClient.query).toHaveBeenCalledWith('ROLLBACK');
+      expect(mockClient.release).toHaveBeenCalled();
     });
   });
 });

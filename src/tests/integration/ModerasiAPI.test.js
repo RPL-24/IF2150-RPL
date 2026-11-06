@@ -3,8 +3,9 @@ const request = require('supertest');
 const app = require('../../app');
 const Otorisasi = require('../../pendukung/Otorisasi');
 const ModerasiController = require('../../controllers/ModerasiController');
+const Barang = require('../../models/Barang');
 
-describe('API Moderasi Dasbor Admin Integration Test (UC20)', () => {
+describe('API Moderasi Dasbor Admin Integration Test (UC20, UC22)', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -183,6 +184,90 @@ describe('API Moderasi Dasbor Admin Integration Test (UC20)', () => {
         .send({ status: 'StatusNgawur' });
 
       expect(res.status).toBe(400);
+      expect(res.body.sukses).toBe(false);
+    });
+  });
+
+  describe('DELETE /api/admin/laporan/:id/barang/:idBarang (KF50, KF52, KF55, KF56)', () => {
+    beforeEach(() => {
+      jest.spyOn(Otorisasi, 'verifikasiToken').mockResolvedValue({
+        getIdAkun: () => 'admin-id-123',
+      });
+      jest.spyOn(Otorisasi, 'verifikasiAdmin').mockResolvedValue({
+        getIdAkun: () => 'admin-id-123',
+      });
+    });
+
+    test('berhasil menghapus listing yang dilaporkan (200)', async () => {
+      const mockBarang = new Barang({
+        idBarang: 'brg-999',
+        idPenjual: 'penjual-1',
+        judul: 'Barang Pelanggaran',
+      });
+      jest.spyOn(Barang, 'cariById').mockResolvedValue(mockBarang);
+      jest.spyOn(ModerasiController, 'hapusListingDilaporkan').mockResolvedValue(true);
+
+      const res = await request(app)
+        .delete('/api/admin/laporan/lap-101/barang/brg-999')
+        .set('Authorization', 'Bearer token-admin-valid')
+        .send({ alasan: 'Terbukti melakukan penipuan pada pembeli' });
+
+      expect(res.status).toBe(200);
+      expect(res.body.sukses).toBe(true);
+      expect(res.body.pesan).toMatch(/berhasil dihapus/i);
+      expect(ModerasiController.hapusListingDilaporkan).toHaveBeenCalledWith(
+        'token-admin-valid',
+        'lap-101',
+        'brg-999',
+        'Terbukti melakukan penipuan pada pembeli',
+      );
+    });
+
+    test('gagal 400 jika alasan penghapusan tidak diisi', async () => {
+      const res = await request(app)
+        .delete('/api/admin/laporan/lap-101/barang/brg-999')
+        .set('Authorization', 'Bearer token-admin-valid')
+        .send({ alasan: '' });
+
+      expect(res.status).toBe(400);
+      expect(res.body.sukses).toBe(false);
+      expect(res.body.pesan).toMatch(/alasan.*wajib diisi/i);
+    });
+
+    test('gagal 404 jika listing barang tidak ditemukan', async () => {
+      jest.spyOn(Barang, 'cariById').mockResolvedValue(null);
+
+      const res = await request(app)
+        .delete('/api/admin/laporan/lap-101/barang/brg-tidak-ada')
+        .set('Authorization', 'Bearer token-admin-valid')
+        .send({ alasan: 'Alasan valid' });
+
+      expect(res.status).toBe(404);
+      expect(res.body.sukses).toBe(false);
+      expect(res.body.pesan).toMatch(/tidak ditemukan/i);
+    });
+
+    test('gagal 401 jika tanpa token otorisasi', async () => {
+      jest.spyOn(Otorisasi, 'verifikasiToken').mockResolvedValue(null);
+
+      const res = await request(app)
+        .delete('/api/admin/laporan/lap-101/barang/brg-999')
+        .send({ alasan: 'Alasan valid' });
+
+      expect(res.status).toBe(401);
+      expect(res.body.sukses).toBe(false);
+      expect(res.body.pesan).toMatch(/masuk/i);
+    });
+
+    test('gagal 403 jika akun bukan admin', async () => {
+      jest.spyOn(Otorisasi, 'verifikasiAdmin').mockResolvedValue(null);
+
+      const res = await request(app)
+        .delete('/api/admin/laporan/lap-101/barang/brg-999')
+        .set('Authorization', 'Bearer token-user-bukan-admin')
+        .send({ alasan: 'Alasan valid' });
+
+      expect(res.status).toBe(403);
       expect(res.body.sukses).toBe(false);
     });
   });

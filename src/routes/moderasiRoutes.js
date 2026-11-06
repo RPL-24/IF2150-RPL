@@ -2,6 +2,7 @@
 const express = require('express');
 const ModerasiController = require('../controllers/ModerasiController');
 const Otorisasi = require('../pendukung/Otorisasi');
+const Barang = require('../models/Barang');
 
 const router = express.Router();
 
@@ -119,6 +120,54 @@ router.patch('/laporan/:id/status', async (req, res) => {
     res.status(500).json({
       sukses: false,
       pesan: 'Terjadi galat pada server saat memperbarui status laporan.',
+    });
+  }
+});
+
+// DELETE /api/admin/laporan/:id/barang/:idBarang - Menghapus listing yang dilaporkan (KF50, KF52, KF55, KF56)
+router.delete('/laporan/:id/barang/:idBarang', async (req, res) => {
+  try {
+    const { id, idBarang } = req.params;
+    const { alasan } = req.body || {};
+
+    if (!alasan || typeof alasan !== 'string' || !alasan.trim()) {
+      return res.status(400).json({
+        sukses: false,
+        pesan: 'Alasan penghapusan wajib diisi.',
+      });
+    }
+
+    const barang = await Barang.cariById(idBarang);
+    if (!barang) {
+      return res.status(404).json({
+        sukses: false,
+        pesan: 'Listing barang tidak ditemukan.',
+      });
+    }
+
+    const berhasil = await ModerasiController.hapusListingDilaporkan(
+      req.token,
+      id,
+      idBarang,
+      alasan.trim(),
+    );
+
+    if (!berhasil) {
+      return res.status(400).json({
+        sukses: false,
+        pesan: 'Gagal menghapus listing yang dilaporkan.',
+      });
+    }
+
+    res.json({
+      sukses: true,
+      pesan: 'Listing berhasil dihapus dan tindakan moderasi telah dicatat.',
+    });
+  } catch (galat) {
+    console.error(`Galat route DELETE /api/admin/laporan/${req.params.id}/barang/${req.params.idBarang}:`, galat);
+    res.status(500).json({
+      sukses: false,
+      pesan: 'Terjadi galat pada server saat menghapus listing.',
     });
   }
 });
