@@ -39,7 +39,8 @@
           "photosPermission": "SILEMBUR membutuhkan akses galeri untuk melampirkan foto kerusakan.",
           "cameraPermission": "SILEMBUR membutuhkan kamera untuk memotret kerusakan fasilitas."
         }
-      ]
+      ],
+      "expo-web-browser"
     ]
   }
 }
