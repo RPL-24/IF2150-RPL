@@ -17,15 +17,14 @@ export default function ListingPenjualPage() {
     const [selectedListing, setSelectedListing] = useState<ListingMakananPenjual | null>(null);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
-    // Fetch daftar listing penjual (tampilkanMenuListing)
+    // Fetch daftar listing penjual
     const ambilDaftarListing = async () => {
         setLoading(true);
         setPesanError(null);
         try {
-        const res = await fetch("http://localhost:8000/api/listing/penjual", {
-            headers: {
-            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-            },
+        const res = await fetch("/api/listing/penjual", {
+            credentials: "same-origin",
+            cache: "no-store",
         });
 
         if (!res.ok) {
@@ -49,23 +48,18 @@ export default function ListingPenjualPage() {
     const handleKonfirmasiHapus = async () => {
         if (!selectedListing) return;
 
+        const idTarget = selectedListing.id_listing || (selectedListing as any).idListing;
         setIsDeleting(true);
         try {
-        const res = await fetch(
-            `http://localhost:8000/api/listing/${selectedListing.id_listing}`,
-            {
+        const res = await fetch(`/api/listing/${idTarget}`, {
             method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-            },
-            }
-        );
+            credentials: "same-origin",
+        });
 
         if (!res.ok) {
             throw new Error("Gagal menghapus listing.");
         }
 
-        // Refresh list setelah berhasil dihapus
         setSelectedListing(null);
         await ambilDaftarListing();
         } catch (err: any) {
@@ -86,7 +80,7 @@ export default function ListingPenjualPage() {
                 </p>
             </div>
             <button
-                onClick={() => router.push("/penjual/tambah")}
+                onClick={() => router.push("/penjual/listing/tambah")}
                 className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700"
             >
                 + Tambah Listing
@@ -107,7 +101,7 @@ export default function ListingPenjualPage() {
             </div>
             )}
 
-            {/* State Kosong (Toko belum punya listing) */}
+            {/* State Kosong */}
             {!loading && !pesanError && listings.length === 0 && (
             <div className="py-16 text-center">
                 <h3 className="text-lg font-medium text-gray-900">Belum ada listing makanan</h3>
@@ -115,7 +109,7 @@ export default function ListingPenjualPage() {
                 Mulai jual makanan penyelamatan Anda dengan menambahkan listing baru.
                 </p>
                 <button
-                onClick={() => router.push("/penjual/tambah")}
+                onClick={() => router.push("/penjual/listing/tambah")}
                 className="mt-4 rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
                 >
                 Tambah Makanan Pertama
@@ -126,21 +120,24 @@ export default function ListingPenjualPage() {
             {/* Grid Listing Makanan */}
             {!loading && !pesanError && listings.length > 0 && (
             <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {listings.map((item) => (
-                <KartuListingPenjual
-                    key={item.id_listing}
+                {listings.map((item, index) => {
+                const keyId = item.id_listing || (item as any).idListing || index;
+                return (
+                    <KartuListingPenjual
+                    key={keyId}
                     listing={item}
-                    onEdit={(id) => router.push(`/penjual/edit/${id}`)}
-                    onHapus={(listing) => setSelectedListing(listing)}
-                />
-                ))}
+                    onEdit={(id) => id != null && router.push(`/penjual/listing/${id}/edit`)}
+                    onHapus={(listingItem) => setSelectedListing(listingItem)}
+                    />
+                );
+                })}
             </div>
             )}
 
             {/* Pop-up Dialog Hapus */}
             <DialogKonfirmasiHapus
             isOpen={!!selectedListing}
-            namaMakanan={selectedListing?.nama_makanan || ""}
+            namaMakanan={selectedListing?.nama_makanan || (selectedListing as any)?.namaMakanan || ""}
             isDeleting={isDeleting}
             onConfirm={handleKonfirmasiHapus}
             onCancel={() => setSelectedListing(null)}
