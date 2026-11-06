@@ -46,3 +46,13 @@ export function sapaan(sekarang: Date = new Date()): string {
   if (jam >= 15 && jam < 18) return 'Selamat sore';
   return 'Selamat malam';
 }
+
+/** "baru saja", "5 menit yang lalu", "3 jam yang lalu", or the date when older than a day. */
+export function formatRelatif(iso: string, sekarang: Date = new Date()): string {
+  const menit = Math.floor((sekarang.getTime() - new Date(iso).getTime()) / 60_000);
+  if (menit < 1) return 'baru saja';
+  if (menit < 60) return `${menit} menit yang lalu`;
+  const jam = Math.floor(menit / 60);
+  if (jam < 24) return `${jam} jam yang lalu`;
+  return `pada ${formatTanggal(iso)}`;
+}
