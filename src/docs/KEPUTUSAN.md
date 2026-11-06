@@ -1,0 +1,24 @@
+# Keputusan Desain & Penyesuaian terhadap SKPL/DPPL
+
+Temuan saat menurunkan SKPL (docs/M5) dan DPPL2 (docs/M8) menjadi kode. SKPL/DPPL **tidak diubah**
+(asisten meminta SKPL tidak banyak direvisi); semua penyesuaian dicatat di sini dan disalin ke
+`docs/M9/K02_G03_Implementasi.md` bagian **B.1**. Kalau kamu menemukan penyimpangan baru, tambahkan baris di sini
+dan di B.1 dalam PR yang sama.
+
+| # | Urgensi | Temuan pada dokumen | Keputusan implementasi | Pemilik |
+| :--- | :--- | :--- | :--- | :--- |
+| G1 | Tinggi | Kelas Laporan tidak punya atribut yang menautkan ke Pelapor, Fasilitas, atau laporan induk, padahal Q-006/Q-009/Q-013 memakai `id_fasilitas` dan `id_laporan_induk`. Cara laporan terhubung ke fasilitas tidak dijelaskan. | Kolom FK `id_pelapor`, `id_fasilitas`, `id_laporan_induk` di tabel `laporan`. Saat laporan dibuat, sistem mencari fasilitas berkategori sama dalam radius 30 m; jika tidak ada, fasilitas baru dibuat otomatis. | P2 (pencocokan), starter (skema) |
+| G2 | Tinggi | Nilai status tidak konsisten: "Disetujui", "Disetejui" (salah ketik di Algo-002), "Terverifikasi", "Ditolak", "Digabung"; status "Perlu Revisi" tidak ada; "Diproses/Selesai" hanya muncul di rancangan layar. | Satu enum `STATUS` + tabel transisi `TRANSISI_STATUS` di `shared/constants.js`, ditegakkan `ubahStatus()` dan CHECK di DB. Keputusan admin memakai `KEPUTUSAN` (Disetujui/Ditolak/Revisi). | starter |
+| G3 | Tinggi | I-06 memakai slider skor yang diisi admin dan hanya tombol Setuju/Tolak, padahal KF16 + Algo-009 menghitung skor otomatis dan KF05/KF07 mewajibkan opsi minta revisi beserta catatan alasan. | Slider diganti tampilan skor read-only (pratinjau Algo-009). Tambah tombol **Minta Revisi** dan isian catatan (wajib untuk Tolak/Revisi). | P4 |
+| G4 | Tinggi | Platform bertentangan: "aplikasi web mobile" (SKPL 1.2, DPPL 1.2) vs "Mobile App Android/iOS" (SKPL 2.4–2.5, APL). | Aplikasi mobile React Native (Expo) untuk Android & iOS. | starter |
+| G5 | Sedang | I-01 memakai email + kata sandi, sedangkan SKPL 2.4 mewajibkan Google Sign-In. | Dua jalur: Google Sign-In (aktif bila client ID diisi; butuh development build) dan akun email + kata sandi untuk akun uji (M9 A.2 butir 3: bisa dijalankan tanpa akun pribadi). | P1 |
+| G6 | Sedang | Google Maps, Google Cloud Storage, dan Google Sign-In butuh kunci/akun pribadi. | Pola adapter: layanan Google dipakai bila kunci tersedia, selain itu fallback lokal (foto di disk server, wilayah dari daftar kecamatan Bandung offline, peta bawaan `react-native-maps`). | P1 |
+| G7 | Sedang | Opsi "minta revisi" (KF05) dan kalimat SKPL 2.1 "pengguna dapat melakukan revisi" tidak punya use case atau layar. | Layar I-04 dipakai ulang dalam mode revisi untuk laporan berstatus Perlu Revisi; endpoint `PUT /laporan/:id/revisi`. | P2 |
+| G8 | Sedang | Tidak ada KF/UC yang menyebut siapa mengubah status menjadi Diproses/Selesai; hanya ada tombol "Perbarui status" di I-10. | Pemda memperbarui status laporan terverifikasi (Diproses → Selesai) disertai keterangan, tercatat sebagai riwayat (memenuhi KF12, KF22). | P5 |
+| G9 | Sedang | I-10 menampilkan nama pelapor ("oleh S. Jenkins"), bertentangan dengan KNF02. I-08–I-10 juga memuat elemen di luar lingkup (regu lapangan, telemetri, SPK, skor kesehatan). | Identitas pelapor hanya terlihat oleh Admin; publik dan Pemda tidak. Elemen di luar DPPL tidak diimplementasi. | P3, P5 |
+| G10 | Sedang | Tidak ada rancangan layar admin untuk UC06/UC08. Q-004 hanya memilih status "Terverifikasi", sehingga laporan "Diproses" hilang dari daftar pemda. | Admin memakai layar I-09/I-10 yang sama dengan pemda; I-05 diberi bagian "Fasilitas kerusakan berulang". Daftar prioritas memuat Terverifikasi + Diproses. | P4, P5 |
+| G11 | Rendah | Ambang batas KF14 tidak disebutkan angkanya. | `ATURAN.AMBANG_BERULANG = 3` laporan dalam `PERIODE_BERULANG_HARI = 90` (periode dari Algo-007). | starter |
+| G12 | Rendah | Skenario UC04/UC05 menyebut "judul" laporan, tetapi kelas Laporan tidak punya atribut judul. | Judul tampilan diturunkan dari kategori + alamat (`judulLaporan()` di `mobile/src/utils/format.js`); tidak ada kolom baru. | P3 |
+| G13 | Rendah | SKPL 4.2 mencantumkan KF05 pada UC01 (seharusnya UC02); nama file APL `K03_G02_APL.md`; gaya visual I-05–I-07 berbeda dengan I-01–I-04. | Dokumen milestone lama tidak diubah (aturan repo). Seluruh layar memakai satu token desain bergaya I-01–I-04. | P3 |
+| G14 | Rendah | Algo-005 mengurutkan dengan bubble sort di aplikasi. | Diwujudkan dengan `ORDER BY skor DESC` pada Q-004 (lebih efisien); nama operasi tetap dipakai untuk traceability. | P5 |
+| G15 | Rendah | Algo-012 menggabungkan laporan dari daftar kandidat tanpa aturan kategori/fasilitas. | Laporan yang digabung wajib berkategori sama dan berstatus aktif; laporan anak ikut dipindah ke fasilitas induk. | P1 |
