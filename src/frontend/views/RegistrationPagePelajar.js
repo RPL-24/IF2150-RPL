@@ -25,16 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Pemilihan Role
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            tabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
             const selectedRole = btn.getAttribute('data-role');
-            roleInput.value = selectedRole;
-
+            
             if (selectedRole === 'pelajar') {
-                groupKontakOrtu.style.display = 'flex';
-            } else {
-                groupKontakOrtu.style.display = 'none';
+                window.location.href = 'RegistrationPagePelajar.html'; // Sesuaikan nama file pelajar Anda
+            } else if (selectedRole === 'orangtuawali') {
+                window.location.href = 'RegistrationPageOrangTuaWali.html';
+            } else if (selectedRole === 'tenagakesehatan') {
+                window.location.href = 'RegistrationPageTenagaKesehatan.html'; // Buat jika ada
             }
         });
     });
@@ -161,6 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!isValid) return;
 
+        window.location.href = 'RegistrationSuccessPelajarPage.html';
+    });
+
         // Siapkan Payload Data untuk Dikirim ke Backend
         const formattedDate = `${thn}-${bln.padStart(2, '0')}-${tgl.padStart(2, '0')}`;
         const payload = {
@@ -173,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
             password: password
         };
 
-        try {
+        /*try {
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {
@@ -182,7 +183,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(payload)
             });
 
-            const result = await response.json();
+            const contentType = response.headers.get("content-type");
+            let result;
+            
+            if (contentType && contentType.includes("application/json")) {
+                result = await response.json();
+            } else {
+                const textResult = await response.text();
+                throw new Error(textResult || 'Terjadi kesalahan pada server');
+            }
 
             if (!response.ok) {
                 throw new Error(result.message || 'Registrasi gagal');
@@ -194,6 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showGlobalError(err.message);
         }
     });
+    */
 
     inputNama.addEventListener('input', () => clearError(inputNama, errorNama));
     inputEmail.addEventListener('input', () => clearError(inputEmail, errorEmail));

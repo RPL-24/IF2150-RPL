@@ -213,12 +213,3 @@ label {
 .text-highlight{
     color: #78C9C0;
 }
-
-.modal-icon{
-  width:64px;
-  height: 64px;
-  margin: 0 auto 16px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
