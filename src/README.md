@@ -350,7 +350,7 @@ Ringkasan konvensi untuk anggota yang mengerjakan layar:
   }
   ```
 
-  Klien otomatis mengirim `Authorization: Bearer <token>` setelah `aturToken(token)` dipanggil saat login, dan mengubah respons galat backend `{ error: { kode, pesan, detail } }` menjadi `ApiError`. Galat jaringan menghasilkan `kode` `JARINGAN_GAGAL` atau `BATAS_WAKTU`.
+  Klien otomatis mengirim `Authorization: Bearer <token>` setelah `aturToken(token)` dipanggil saat login, dan mengubah respons galat backend `{ error: { kode, pesan, detail } }` menjadi `ApiError`. Galat jaringan menghasilkan `kode` `JARINGAN_GAGAL` atau `BATAS_WAKTU`, sedangkan `EXPO_PUBLIC_API_URL` yang belum diatur menghasilkan `KONFIGURASI_TIDAK_VALID` (tanpa permintaan ke server). Ketiganya memiliki `status` 0.
 
 ## 10. Panduan Pengembangan Backend
 
