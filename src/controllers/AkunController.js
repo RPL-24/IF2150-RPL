@@ -2,6 +2,7 @@
 const crypto = require('crypto');
 const config = require('../config/env');
 const Akun = require('../models/Akun');
+const DokumenLegal = require('../models/DokumenLegal');
 const SesiLogin = require('../models/SesiLogin');
 const TokenVerifikasi = require('../models/TokenVerifikasi');
 const Kriptografi = require('../pendukung/Kriptografi');
@@ -100,6 +101,12 @@ class AkunController {
     const waktuKedaluwarsa = new Date(waktuBuat.getTime() + config.durasiKodeMenit * 60 * 1000);
     await TokenVerifikasi.simpan(idAkun, kode, waktuBuat, waktuKedaluwarsa, TokenVerifikasi.STATUS_PAKAI.AKTIF);
     return kode;
+  }
+
+  // KF13: tautan Kebijakan Privasi yang berlaku untuk formulir pendaftaran (I02-O06)
+  static async getTautanDokumenLegal() {
+    const kebijakan = await DokumenLegal.getVersiTerbaru(DokumenLegal.JENIS.KEBIJAKAN_PRIVASI);
+    return kebijakan === null ? null : kebijakan.getTautan();
   }
 
   // ───────────── UC02 Memverifikasi Surel ─────────────

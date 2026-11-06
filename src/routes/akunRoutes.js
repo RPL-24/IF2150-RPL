@@ -44,6 +44,14 @@ router.post('/daftar', async (req, res) => {
 });
 
 // Verifikasi berhasil langsung membuat sesi, supaya I-03 dapat menuju beranda tanpa login ulang.
+router.get('/tautan-kebijakan', async (req, res) => {
+  const tautan = await AkunController.getTautanDokumenLegal();
+  if (tautan === null) {
+    return res.status(404).json({ sukses: false, pesan: 'Kebijakan Privasi belum tersedia.' });
+  }
+  res.json({ sukses: true, data: { tautan } });
+});
+
 router.post('/verifikasi', async (req, res) => {
   const { email, kode } = req.body ?? {};
   const hasil = await AkunController.verifikasiAkun(email, kode);
