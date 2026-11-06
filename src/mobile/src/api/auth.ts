@@ -10,16 +10,8 @@
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 
-import { api, ApiError, aturToken, KODE_KLIEN } from './client';
-
-export type Peran = 'mahasiswa' | 'administrator';
-
-export type Pengguna = {
-  idPengguna: string;
-  nama: string;
-  email: string;
-  peran: Peran;
-};
+import { api, ApiError, KODE_KLIEN } from './client';
+import { simpanSesi, type Pengguna } from './sesi';
 
 type ResponsMasuk = { token: string; waktuLogin: string; pengguna: Pengguna };
 
@@ -50,7 +42,6 @@ export async function masukDenganGoogle(): Promise<Pengguna | null> {
   }
 
   const respons = await api.post<ResponsMasuk>('/api/auth/google', { kodeOtorisasi: kode });
-  // TODO(#3): persist the token so the session survives an app restart.
-  aturToken(respons.token);
+  await simpanSesi(respons.token, respons.pengguna);
   return respons.pengguna;
 }
