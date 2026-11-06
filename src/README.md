@@ -71,6 +71,22 @@ Alternatifnya, jalankan Docker Engine langsung di Ubuntu WSL. PostgreSQL tetap b
    ```
    Lalu lanjutkan `npm run db:migrate`, `npm run db:seed`, dan `npm test` seperti biasa.
 
+### Menguji di PC dengan emulator Android (tanpa Android Studio)
+
+Butuh ±5 GB ruang disk dan virtualisasi aktif (Windows Hypervisor Platform).
+
+1. Unduh *command line tools* dari [developer.android.com/studio](https://developer.android.com/studio#command-tools), ekstrak ke `<SDK>\cmdline-tools\latest` (mis. `D:\Android\sdk`), lalu set `ANDROID_HOME=<SDK>`.
+2. Pasang paket (nama paket berisi `;`, jadi tulis di file lalu pakai `--package_file`):
+   ```bash
+   sdkmanager --licenses
+   ```
+   ```bash
+   sdkmanager platform-tools emulator --package_file=paket.txt
+   ```
+   dengan `paket.txt` berisi `system-images;android-35;google_apis;x86_64`.
+3. Buat AVD (`avdmanager create avd -n silembur -k "system-images;android-35;google_apis;x86_64" -d pixel_7`), lalu jalankan `emulator -avd silembur`.
+4. Jalankan server, lalu di `src/mobile` jalankan `npx expo start --android`. Bila Expo Go belum terpasang otomatis, pasang APK Expo Go SDK 58 dengan `adb install`, lalu buka `exp://127.0.0.1:8081` setelah `adb reverse tcp:8081 tcp:8081` dan `adb reverse tcp:3000 tcp:3000`.
+
 ## Integrasi Google (opsional)
 
 Tanpa konfigurasi apa pun aplikasi berjalan penuh dengan fallback lokal. Isi variabel berikut bila ingin memakai layanan Google:
