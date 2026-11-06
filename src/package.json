@@ -1,0 +1,29 @@
+{
+  "name": "silembur",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SILEMBUR - Sistem Informasi Lembur (pelaporan kerusakan fasilitas umum)",
+  "workspaces": [
+    "shared",
+    "server",
+    "mobile"
+  ],
+  "scripts": {
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "db:up:wsl": "wsl docker compose up -d db",
+    "db:down:wsl": "wsl docker compose down",
+    "db:migrate": "npm run db:migrate -w server",
+    "db:seed": "npm run db:seed -w server",
+    "db:reset": "npm run db:reset -w server",
+    "dev:server": "npm run dev -w server",
+    "dev:mobile": "npm run start -w mobile",
+    "test": "npm test -w server"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "overrides": {
+    "react": "19.3.0"
+  }
+}

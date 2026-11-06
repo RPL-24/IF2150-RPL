@@ -1,0 +1,39 @@
+# Dependensi & hasil build
+node_modules/
+dist/
+build/
+coverage/
+web-build/
+.expo/
+expo-env.d.ts
+*.tsbuildinfo
+
+# Rahasia (gunakan .env.example)
+.env
+.env.*
+!.env.example
+*.pem
+*.p8
+*.p12
+*.key
+*.jks
+*.keystore
+google-services.json
+GoogleService-Info.plist
+service-account*.json
+
+# Foto unggahan lokal
+server/uploads/
+
+# Native project hasil prebuild Expo
+mobile/android/
+mobile/ios/
+
+# Sistem/editor
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.idea/
+.vscode/*
+!.vscode/extensions.json
