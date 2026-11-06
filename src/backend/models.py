@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS auth_session (
 
 def init_db(db_path: str = DATABASE_NAME):
     """Menginisialisasi basis data SQLite dan membuat seluruh tabel."""
-    with sqlite3.connect(db_path) as conn:
+    with sqlite3.connect(db_path, check_same_thread=False) as conn:
         conn.execute("PRAGMA foreign_keys = ON;")
         conn.executescript(CREATE_TABLES_SQL)
         conn.commit()

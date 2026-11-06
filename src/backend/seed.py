@@ -20,6 +20,7 @@ conn.execute("PRAGMA foreign_keys = ON;")
 cursor = conn.cursor()
 
 # 2. Skema Tabel (Pengguna, Penjual, Pembeli, Reward, Listing)
+# Pastikan seeding mengikuti skema yang dipakai aplikasi utama.
 cursor.executescript("""
 CREATE TABLE IF NOT EXISTS pengguna (
     id_pengguna INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,24 +42,35 @@ CREATE TABLE IF NOT EXISTS pembeli (
     FOREIGN KEY (id_pengguna) REFERENCES pengguna(id_pengguna) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS reward_login (
-    id_pembeli INTEGER PRIMARY KEY,
-    poin_terkumpul INTEGER DEFAULT 0,
-    FOREIGN KEY (id_pembeli) REFERENCES pembeli(id_pengguna) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS listing (
+CREATE TABLE IF NOT EXISTS listing_makanan (
     id_listing INTEGER PRIMARY KEY AUTOINCREMENT,
     id_penjual INTEGER NOT NULL,
     nama_makanan TEXT NOT NULL,
+    deskripsi TEXT,
     porsi TEXT NOT NULL,
     kondisi TEXT NOT NULL,
-    harga INTEGER NOT NULL,
-    stok INTEGER NOT NULL,
-    batas_kedaluwarsa TEXT NOT NULL,
     foto TEXT,
-    aktif INTEGER DEFAULT 1,
+    harga INTEGER NOT NULL CHECK (harga >= 0),
+    stok INTEGER NOT NULL CHECK (stok >= 0),
+    batas_kedaluwarsa DATETIME NOT NULL,
+    aktif BOOLEAN NOT NULL DEFAULT 1,
     FOREIGN KEY (id_penjual) REFERENCES penjual(id_pengguna) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS reward_login (
+    id_reward INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_pembeli INTEGER UNIQUE NOT NULL,
+    poin_terkumpul INTEGER NOT NULL DEFAULT 0 CHECK (poin_terkumpul >= 0),
+    tanggal_login_terakhir DATE,
+    FOREIGN KEY (id_pembeli) REFERENCES pembeli(id_pengguna) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS auth_session (
+    token TEXT PRIMARY KEY,
+    id_pengguna INTEGER NOT NULL,
+    dibuat_pada DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    kedaluwarsa_pada DATETIME NOT NULL,
+    FOREIGN KEY (id_pengguna) REFERENCES pengguna(id_pengguna) ON DELETE CASCADE
 );
 """)
 
@@ -109,23 +121,23 @@ try:
         print("ℹ Akun pembeli@test.com sudah ada.")
 
     # 5. Seeding Data Dummy Listing Makanan
-    cursor.execute("SELECT COUNT(*) FROM listing WHERE id_penjual = ?", (id_penjual,))
+    cursor.execute("SELECT COUNT(*) FROM listing_makanan WHERE id_penjual = ?", (id_penjual,))
     jumlah_listing = cursor.fetchone()[0]
 
     if jumlah_listing == 0:
         cursor.execute(
             """
-            INSERT INTO listing (id_penjual, nama_makanan, porsi, kondisi, harga, stok, batas_kedaluwarsa, foto, aktif)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO listing_makanan (id_penjual, nama_makanan, deskripsi, porsi, kondisi, harga, stok, batas_kedaluwarsa, foto, aktif)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
-            (id_penjual, "Roti Tawar Penyelamatan", "1 Pack", "Sangat Baik", 12000, 5, "2026-12-31T23:59:00", None, 1)
+            (id_penjual, "Roti Tawar Penyelamatan", "Roti tawar yang masih enak untuk disantap", "1 Pack", "Sangat Baik", 12000, 5, "2026-12-31T23:59:00", None, 1)
         )
         cursor.execute(
             """
-            INSERT INTO listing (id_penjual, nama_makanan, porsi, kondisi, harga, stok, batas_kedaluwarsa, foto, aktif)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO listing_makanan (id_penjual, nama_makanan, deskripsi, porsi, kondisi, harga, stok, batas_kedaluwarsa, foto, aktif)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
-            (id_penjual, "Nasi Goreng Spesial Late-Night", "1 Porsi", "Hangat", 15000, 3, "2026-12-31T23:59:00", None, 1)
+            (id_penjual, "Nasi Goreng Spesial Late-Night", "Masih hangat dan siap dinikmati", "1 Porsi", "Hangat", 15000, 3, "2026-12-31T23:59:00", None, 1)
         )
         print("✓ Data dummy listing makanan berhasil ditambahkan.")
     else:
