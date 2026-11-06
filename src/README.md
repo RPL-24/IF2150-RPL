@@ -71,6 +71,29 @@ Alternatifnya, jalankan Docker Engine langsung di Ubuntu WSL. PostgreSQL tetap b
    ```
    Lalu lanjutkan `npm run db:migrate`, `npm run db:seed`, dan `npm test` seperti biasa.
 
+## Integrasi Google (opsional)
+
+Tanpa konfigurasi apa pun aplikasi berjalan penuh dengan fallback lokal. Isi variabel berikut bila ingin memakai layanan Google:
+
+| Layanan | Konfigurasi | Tanpa konfigurasi |
+| :--- | :--- | :--- |
+| Google Geocoding (wilayah & alamat laporan) | `GOOGLE_MAPS_API_KEY` di `server/.env` | Kecamatan Bandung terdekat (offline) |
+| Google Cloud Storage (foto laporan) | `STORAGE_DRIVER=gcs`, `GCS_BUCKET`, `GOOGLE_APPLICATION_CREDENTIALS` (path file service account, di luar repo). Bucket harus bisa dibaca publik. | Foto disimpan di `server/uploads/` |
+| Google Sign-In (masyarakat) | `GOOGLE_CLIENT_IDS` di `server/.env` + `EXPO_PUBLIC_GOOGLE_*_CLIENT_ID` di `mobile/.env`. Butuh development build (`npx expo run:android`), tidak jalan di Expo Go. | Tombol Google nonaktif; masuk dengan email + kata sandi |
+| Google Maps di APK Android | `GOOGLE_MAPS_ANDROID_API_KEY` saat build | Expo Go memakai kunci bawaannya; iOS memakai Apple Maps |
+
+## Build APK (opsional)
+
+Butuh akun Expo (gratis). Dari folder `src/mobile`, isi `EXPO_PUBLIC_API_URL` dengan alamat server yang bisa dijangkau HP, lalu:
+```bash
+npx eas-cli@latest build -p android --profile preview
+```
+Profil build ada di `mobile/eas.json`. Unduh APK dari tautan yang diberikan, lalu lampirkan di GitHub Release.
+
+## Continuous Integration
+
+Setiap push ke `main` dan setiap pull request menjalankan `.github/workflows/ci.yml`: test server dengan PostgreSQL 18, lalu bundle aplikasi Android dan iOS.
+
 ## Akun uji
 
 Kata sandi semua akun: `silembur123` (data fiktif dari seed).
@@ -85,7 +108,7 @@ Kata sandi semua akun: `silembur123` (data fiktif dari seed).
 
 | Kode | Modul / fitur | Use case | Anggota |
 | :--- | :--- | :--- | :--- |
-| P1 | Fondasi, autentikasi, integrasi Google, gabung duplikat | UC07 | *(isi nama)* |
+| P1 | Fondasi, autentikasi, integrasi Google, gabung duplikat, CI | UC07 | Mochamad Fachri Alfaridzi (13525128) |
 | P2 | Membuat & merevisi laporan | UC01 | *(isi nama)* |
 | P3 | Laporan publik, laporan saya, notifikasi, UI kit | UC04, UC05 | *(isi nama)* |
 | P4 | Verifikasi admin, skor prioritas | UC02 | *(isi nama)* |
