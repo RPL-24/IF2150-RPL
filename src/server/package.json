@@ -1,0 +1,33 @@
+{
+  "name": "@silembur/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env src/server.js",
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "db:migrate": "node --env-file-if-exists=.env src/db/migrate.js",
+    "db:reset": "node --env-file-if-exists=.env src/db/migrate.js --reset",
+    "db:seed": "node --env-file-if-exists=.env src/db/seed.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@silembur/shared": "*",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.5.0",
+    "pg": "^8.23.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.1",
+    "vitest": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
