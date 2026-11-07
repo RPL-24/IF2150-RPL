@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { gagal, ok, type ActionResult } from "@/lib/action-result";
 import { BERANDA_ROLE } from "@/lib/constants";
+import { muatProfil } from "@/server/entities/User";
 import type { Enums } from "@/types/database";
 
 // Hanya untuk kode server (Server Component, Server Action, Route Handler).
@@ -17,11 +18,7 @@ export const getCurrentUser = cache(async (): Promise<UserAktif | null> => {
   const id = data?.claims.sub;
   if (!id) return null;
 
-  const { data: profil } = await supabase
-    .from("profiles")
-    .select("id, nama, role")
-    .eq("id", id)
-    .maybeSingle();
+  const { data: profil } = await muatProfil(supabase, id);
   return profil;
 });
 
