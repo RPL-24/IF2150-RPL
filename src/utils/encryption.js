@@ -8,7 +8,10 @@ const IV_LENGTH = 16;
  * Jika panjang kunci tidak tepat 32 byte, dilakukan derivasi SHA-256 agar selalu valid 256-bit.
  */
 function getSecretKey() {
-  const rawKey = process.env.AES_SECRET_KEY || '12345678901234567890123456789012';
+  const rawKey = process.env.AES_SECRET_KEY;
+  if (!rawKey) {
+    throw new Error('AES_SECRET_KEY belum diatur pada file .env.');
+  }
   return crypto.createHash('sha256').update(String(rawKey)).digest();
 }
 
