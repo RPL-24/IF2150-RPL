@@ -10,26 +10,25 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Menyajikan aset statis Frontend (View MVC: HTML, CSS, JS)
+// Menyajikan aset statis Frontend (View MVC): /views/*.html dan /assets/*
+app.use(express.static(path.join(__dirname, 'frontend')));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
 
 // Mount seluruh route API di bawah /api
 app.use('/api', apiRoutes);
 
-// Route halaman utama (Redirect ke halaman login / dashboard)
-app.get('/', (req, res) => {
-  const indexPath = path.join(__dirname, 'public', 'index.html');
-  res.sendFile(indexPath, (err) => {
-    if (err) {
-      res.status(200).json({
-        success: true,
-        message: 'MahaSehat Server aktif. Antarmuka web tersedia di folder src/public.',
-      });
-    }
-  });
-});
+function arahkanKeHalaman(halaman) {
+  return (req, res) => {
+    const posisiQuery = req.originalUrl.indexOf('?');
+    const query = posisiQuery === -1 ? '' : req.originalUrl.slice(posisiQuery);
+    res.redirect(`/views/${halaman}${query}`);
+  };
+}
+
+// Halaman utama dan tautan pada e-mail
+app.get('/', arahkanKeHalaman('LoginPage.html'));
+app.get('/konfirmasi-registrasi', arahkanKeHalaman('KonfirmasiRegistrasiPage.html'));
+app.get('/reset-password', arahkanKeHalaman('ResetPasswordPage.html'));
 
 // Penanganan endpoint API yang tidak ditemukan (404)
 app.use('/api/*', (req, res) => {
@@ -41,10 +40,14 @@ app.use('/api/*', (req, res) => {
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error('[Server Error]:', err.message);
-  res.status(err.status || 500).json({
+  const status = err.status || 500;
+  if (status >= 500) {
+    console.error('[Server Error]:', err);
+  }
+  // Galat internal, misalnya dari basis data, tidak dikirim apa adanya ke klien
+  res.status(status).json({
     success: false,
-    message: err.message || 'Terjadi kesalahan internal pada server.',
+    message: status >= 500 ? 'Terjadi kesalahan internal pada server.' : err.message,
   });
 });
 

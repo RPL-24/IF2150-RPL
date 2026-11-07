@@ -1,6 +1,9 @@
-const { Pool } = require('pg');
+const { Pool, types } = require('pg');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+// Kolom DATE tetap berupa teks 'YYYY-MM-DD' agar tidak bergeser karena zona waktu server
+types.setTypeParser(1082, (nilai) => nilai);
 
 const poolConfig = process.env.DATABASE_URL
   ? {
@@ -38,9 +41,29 @@ async function getClient() {
   return pool.connect();
 }
 
+/**
+ * Menjalankan fungsi di dalam satu transaksi. Fungsi menerima client sebagai pengganti db.query.
+ * ROLLBACK otomatis bila fungsi melempar galat.
+ */
+async function withTransaction(fn) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const hasil = await fn(client);
+    await client.query('COMMIT');
+    return hasil;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 module.exports = {
   pool,
   query,
   getClient,
+  withTransaction,
 };
 
