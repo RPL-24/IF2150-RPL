@@ -487,6 +487,19 @@ export type Database = {
     }
     Functions: {
       boleh_dukung: { Args: { p_id: string }; Returns: boolean }
+      cari_laporan_duplikat: {
+        Args: {
+          p_kategori: Database["public"]["Enums"]["kategori_kerusakan"]
+          p_lat: number
+          p_lng: number
+        }
+        Returns: {
+          id_tiket: string
+          jarak_m: number
+          status: Database["public"]["Enums"]["status_laporan"]
+        }[]
+      }
+      dari_service_role: { Args: never; Returns: boolean }
       format_tiket: { Args: { n: number }; Returns: string }
       laporan_terbuka: { Args: { p_id: string }; Returns: boolean }
       peran_saya: {
