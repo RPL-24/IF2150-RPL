@@ -159,51 +159,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!isValid) return;
 
-        window.location.href = 'RegistrationSuccessPelajarPage.html';
-    });
-
-        // Siapkan Payload Data untuk Dikirim ke Backend
-        const formattedDate = `${thn}-${bln.padStart(2, '0')}-${tgl.padStart(2, '0')}`;
         const payload = {
             nama: namaValue,
             email: emailValue,
             telepon: phoneValue,
             role: roleInput.value,
-            tanggal_lahir: formattedDate,
-            email_orang_tua: roleInput.value === 'pelajar' ? inputEmailOrtu.value : null,
-            password: password
+            password,
+            confirm_password: confirmPassword,
+            tanggal_lahir: `${thn}-${bln.padStart(2, '0')}-${tgl.padStart(2, '0')}`,
+            email_orang_tua: emailOrtuValue,
+            riwayat_kesehatan: document.getElementById('Input_RiwayatKesehatan').value.trim(),
         };
 
-        /*try {
+        try {
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
             });
-
-            const contentType = response.headers.get("content-type");
-            let result;
-            
-            if (contentType && contentType.includes("application/json")) {
-                result = await response.json();
-            } else {
-                const textResult = await response.text();
-                throw new Error(textResult || 'Terjadi kesalahan pada server');
-            }
+            const result = await response.json().catch(() => ({}));
 
             if (!response.ok) {
                 throw new Error(result.message || 'Registrasi gagal');
             }
 
-            window.location.href = 'RegistrationSuccessPage.html';
-
+            window.location.href = 'RegistrationSuccessPelajarPage.html';
         } catch (err) {
             showGlobalError(err.message);
         }
     });
-    */
 
     inputNama.addEventListener('input', () => clearError(inputNama, errorNama));
     inputEmail.addEventListener('input', () => clearError(inputEmail, errorEmail));
