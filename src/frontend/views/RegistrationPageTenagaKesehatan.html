@@ -1,99 +1,157 @@
 <!DOCTYPE html>
 <html lang="id">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MahaSehat - Registrasi Orang Tua/Wali</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MahaSehat - Registrasi Tenaga Kesehatan</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="RegistrationPage.css">
-    </head>
-    <body>
-        <div class="auth-container">
-            <aside class="panel-left" id=""Panel_Left>
-                <div class="logo-container" id="Logo_App">
-                    <img src="..\assets\logo-mahasehat.png" alt="Logo MahaSehat" class="logo-img">
-                </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="RegistrationPage.css" />
+  </head>
+  <body>
+    <div class="auth-container">
+      <aside class="panel-left">
+        <a class="wordmark" href="LoginPage.html">
+          <img class="wordmark-mark" src="../assets/logo-mahasehat-mark.png" alt="" />
+          <span>MahaSehat</span>
+        </a>
 
-                <div class="greeting-box">
-                    <h1 id="Text_Greeting">Selamat Datang!</h1>
-                </div>
-            </aside>
-
-            <main class="panel-right" id="Panel_Right">
-                <div class="form-card">
-                    <h1 id="Title_Registrasi">Daftarkan Akun Anda</h1>
-                </div>
-
-                <div class="role-tabs" id="Tab_RoleGroup">
-                    <button type="button" class="tab-btn" id="Tab_Role_Pelajar" data-role="pelajar">Pelajar</button>
-                    <button type="button" class="tab-btn" id="Tab_Role_OrangTuaWali" data-role="orangtuawali">Orang Tua/Wali</button>
-                    <button type="button" class="tab-btn active" id="Tab_Role_TenagaKesehatan" data-role="tenagakesehatan">Tenaga Kesehatan</button>
-                </div>
-
-                <form id="Form_Registration" novalidate>
-                    <input type="hidden" id="Input_Role" name="role" value="tenagakesehatan">
-
-                    <div class="form-group">
-                        <label id="Label_Nama" for="Input_Nama">Nama</label>
-                        <input type="text" id="Input_Nama" name="nama" placeholder="Nama" required>
-                        <small class="error-msg" id="Error_Nama"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <label id="Label_Email" for="Input_Email">Email</label>
-                        <input type="email" id="Input_Email" name="email" placeholder="Email" required>
-                        <small class="error-msg" id="Error_Email"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <label id="Label_NomorTelp" for="Input_NomorTelp">Nomor Telepon</label>
-                        <input type="tel" id="Input_NomorTelp" name="nomor_telp" placeholder="Nomor Telepon" required>
-                        <small class="error-msg" id="Error_NoTelepon"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <label id="Label_JenisTenagaKesehatan" for="Input_JenisTenagaKesehatan">Jenis Tenaga Kesehatan</label>
-                        <input type="text" id="Input_JenisTenagaKesehatan" name="jenis_nakes" placeholder="Jenis Tenaga Kesehatan" list="list-nakes" required>
-
-                        <datalist id="list-nakes">
-                            <option value="Psikolog Klinis">
-                            <option value="Psikolog Anak dan Remaja">
-                            <option value="Psikolog Pendidikan">
-                            <option value="Psikolog Industri dan Organisasi">
-                            <option value="Psikolog Forensik">
-                            <option value="Psikolog Olahraga">
-                        </datalist>
-                        <small class="error-msg" id="Error_JenisTenagaKesehatan"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <label id="Label_Lokasi" for="Input_Lokasi">Lokasi</label>
-                        <input type="text" id="Input_Lokasi" name="lokasi" placeholder="Lokasi" required>
-                        <small class="error-msg" id="Error_Lokasi"></small>
-                    </div>
-
-                    <div class="form-group-row">
-                        <div class="form-group">
-                            <label for="Input_KataSandi">Kata Sandi</label>
-                            <input type="password" id="Input_KataSandi" name="password" placeholder="Kata Sandi (Min. 8 karakter)" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="Input_KonfirmasiKataSandi">Konfirmasi Kata Sandi</label>
-                            <input type="password" id="Input_KonfirmasiKataSandi" name="confirm_password" placeholder="Konfirmasi Kata Sandi" required>
-                        </div>
-                    </div>
-
-                    <div id="Alert_Error" class="alert-box alert-danger" style="display: none;"></div>
-
-                    <button type="submit" class="btn-primary" id="Btn_Daftar">Daftar</button>
-                </form>
-
-                <p class="login-link">Sudah punya akun? <a href=login.html><span class="text-highlight">Masuk</span></a></p>
-            </main>
+        <div class="narrative">
+          <h1>Kelola konsultasi pelajar.</h1>
+          <p class="lede">
+            Fokus pada pelajar, bukan pada administrasinya.
+          </p>
         </div>
-        <script src="C:\Users\Lenovo\OneDrive\Documents\GitHub\IF2150-RPL-K03-G04\src\frontend\views\RegistrationPageOrangTuaWali.js"></script>
-    </body>
+
+        <a class="help-link" href="#">Butuh bantuan? Hubungi kami</a>
+      </aside>
+
+      <main class="panel-right">
+        <div class="form-shell">
+          <p class="eyebrow">Registrasi</p>
+          <h2 id="Title_Registrasi">Buat akun tenaga kesehatan</h2>
+          <div class="role-tabs" id="Tab_RoleGroup" role="tablist">
+            <button type="button" class="tab-btn" id="Tab_Role_Pelajar" data-role="pelajar">
+              Pelajar
+            </button>
+            <button type="button" class="tab-btn" id="Tab_Role_OrangTuaWali" data-role="orangtuawali">
+              Orang tua/wali
+            </button>
+            <button type="button" class="tab-btn active" id="Tab_Role_TenagaKesehatan" data-role="tenagakesehatan">
+              Tenaga kesehatan
+            </button>
+          </div>
+
+          <div class="divider"></div>
+
+          <form id="Form_Registration" novalidate>
+            <input type="hidden" id="Input_Role" name="role" value="tenagakesehatan" />
+
+            <section class="form-section">
+              <h3>Identitas</h3>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="Input_Nama">Nama <span class="req">*</span></label>
+                  <input type="text" id="Input_Nama" name="nama" placeholder="Nama lengkap dan gelar" required />
+                  <small class="error-msg" id="Error_Nama"></small>
+                </div>
+
+                <div class="field">
+                  <label for="Input_Email">Email <span class="req">*</span></label>
+                  <input type="email" id="Input_Email" name="email" placeholder="nama@praktik.com" required />
+                  <small class="error-msg" id="Error_Email"></small>
+                </div>
+
+                <div class="field">
+                  <label for="Input_NomorTelp">Nomor telepon <span class="req">*</span></label>
+                  <input type="tel" id="Input_NomorTelp" name="nomor_telp" placeholder="08xxxxxxxxxx" required />
+                  <small class="error-msg" id="Error_NoTelepon"></small>
+                </div>
+
+                <div class="field">
+                  <label for="Input_JenisTenagaKesehatan">Jenis tenaga kesehatan <span class="req">*</span></label>
+                  <div class="select-shell">
+                    <input type="text" id="Input_JenisTenagaKesehatan" name="jenis_nakes" placeholder="Pilih jenis" list="list-nakes" required />
+                    <span class="chevron" aria-hidden="true"></span>
+                  </div>
+                  <datalist id="list-nakes">
+                    <option value="Psikolog Klinis"></option>
+                    <option value="Psikolog Anak dan Remaja"></option>
+                    <option value="Psikolog Pendidikan"></option>
+                    <option value="Psikolog Industri dan Organisasi"></option>
+                    <option value="Psikolog Forensik"></option>
+                    <option value="Psikolog Olahraga"></option>
+                  </datalist>
+                  <small class="error-msg" id="Error_JenisTenagaKesehatan"></small>
+                </div>
+
+                <div class="field field--full">
+                  <label for="Input_Lokasi">Lokasi <span class="req">*</span></label>
+                  <input type="text" id="Input_Lokasi" name="lokasi" placeholder="Kota atau klinik" required />
+                  <small class="error-msg" id="Error_Lokasi"></small>
+                  <p class="field-hint">Kota atau klinik tempat kamu praktik.</p>
+                </div>
+              </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section class="form-section form-section--full">
+              <h3>Keamanan</h3>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="Input_KataSandi">Kata sandi <span class="req">*</span></label>
+                  <div class="field-control">
+                    <input type="password" id="Input_KataSandi" name="password" placeholder="Minimal 8 karakter" required />
+                    <button type="button" class="reveal" id="Toggle_KataSandi" aria-label="Tampilkan kata sandi">
+                      Tampilkan
+                    </button>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="Input_KonfirmasiKataSandi">Konfirmasi kata sandi <span class="req">*</span></label>
+                  <input type="password" id="Input_KonfirmasiKataSandi" name="confirm_password" placeholder="Ulangi kata sandi" required />
+                </div>
+              </div>
+              <p class="helper">
+                Minimal 8 karakter, gunakan kombinasi huruf dan angka.
+              </p>
+            </section>
+
+            <div id="Alert_Error" class="alert-box" role="alert"></div>
+
+            <button type="submit" class="btn-primary" id="Btn_Daftar">Buat akun</button>
+          </form>
+
+          <p class="login-link">
+            Sudah punya akun? <a href="LoginPage.html">Masuk</a>
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="Success_Modal" hidden>
+      <div class="success-modal" role="dialog" aria-modal="true" aria-labelledby="Success_Title">
+        <div class="success-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#2A3A3F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12l4 4L19 6" />
+          </svg>
+        </div>
+        <h2 id="Success_Title">Akun berhasil dibuat.</h2>
+        <p class="success-message" id="Success_Message"></p>
+        <button type="button" class="btn-primary" id="Success_Login">Masuk ke akun</button>
+        <button type="button" class="success-close" id="Success_Close">Tutup</button>
+      </div>
+    </div>
+
+    <script src="RegistrationPageTenagaKesehatan.js"></script>
+  </body>
 </html>
