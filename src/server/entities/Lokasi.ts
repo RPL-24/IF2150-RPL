@@ -42,3 +42,8 @@ export function hitungJarak(a: Koordinat, b: Koordinat): number {
     Math.sin(dLat / 2) ** 2 + Math.cos(a.latitude * rad) * Math.cos(b.latitude * rad) * Math.sin(dLng / 2) ** 2;
   return 2 * RADIUS_BUMI_M * Math.asin(Math.sqrt(h));
 }
+
+/** Operasi DPPL C03: pasangan [latitude, longitude] (urutan yang dipakai Leaflet). */
+export function getKoordinat(lokasi: Koordinat): [number, number] {
+  return [lokasi.latitude, lokasi.longitude];
+}
