@@ -3,12 +3,7 @@
 -- Mengacu pada Dokumen DPPL (M8) Kelas C01 s.d. C29
 -- =============================================================================
 
--- Hapus view & tabel lama jika ada (urutan memperhatikan foreign key)
-DROP VIEW IF EXISTS tbl_tenaga_kesehatan CASCADE;
-DROP VIEW IF EXISTS tbl_fasilitas_kesehatan CASCADE;
-DROP VIEW IF EXISTS tbl_pelajar CASCADE;
-DROP VIEW IF EXISTS tbl_pengguna CASCADE;
-
+-- Hapus tabel lama jika ada (urutan memperhatikan foreign key)
 DROP TABLE IF EXISTS notifikasi_darurat CASCADE;
 DROP TABLE IF EXISTS jadwal_konsultasi CASCADE;
 DROP TABLE IF EXISTS check_in CASCADE;
@@ -26,7 +21,8 @@ CREATE TABLE pengguna (
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     role VARCHAR(30) NOT NULL CHECK (role IN ('Pelajar', 'OrangTuaWali', 'TenagaKesehatan')),
-    status_akun VARCHAR(30) NOT NULL DEFAULT 'Aktif' CHECK (status_akun IN ('Aktif', 'Belum Terverifikasi', 'Ditolak', 'PENDING', 'AKTIF')),
+    status_akun VARCHAR(30) NOT NULL CHECK (status_akun IN ('Aktif', 'Belum Terverifikasi', 'Ditolak')),
+    versi_token INTEGER NOT NULL DEFAULT 0,
     token_konfirmasi VARCHAR(255) NULL,
     reset_token VARCHAR(255) NULL,
     reset_token_expires TIMESTAMP NULL,
@@ -51,6 +47,7 @@ CREATE TABLE pelajar (
     tanggal_lahir DATE NOT NULL,
     nomor_telepon VARCHAR(30) NOT NULL,
     nomor_telepon_wali VARCHAR(30) NULL,
+    email_wali VARCHAR(100) NULL,
     lokasi_saat_ini VARCHAR(100) NULL,
     status_darurat BOOLEAN NOT NULL DEFAULT FALSE
 );
@@ -102,8 +99,8 @@ CREATE TABLE check_in (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Indeks untuk mempercepat agregasi grafik & laporan sesuai Q-C02-01 & KNF04 (< 1500 ms)
-CREATE INDEX idx_check_in_pelajar_tanggal ON check_in (id_pelajar, tanggal_check_in DESC);
+-- Satu pelajar satu check-in per hari. Indeks ini juga mempercepat grafik & laporan (Q-C02-01, KNF04)
+CREATE UNIQUE INDEX idx_check_in_pelajar_tanggal ON check_in (id_pelajar, tanggal_check_in DESC);
 
 -- 8. Tabel Jadwal Konsultasi (Kelas C09 - JadwalKonsultasi)
 CREATE TABLE jadwal_konsultasi (
@@ -126,18 +123,19 @@ CREATE INDEX idx_jadwal_nakes_tanggal_waktu ON jadwal_konsultasi (id_tenaga_kese
 CREATE TABLE notifikasi_darurat (
     id VARCHAR(50) PRIMARY KEY,
     id_pelajar VARCHAR(50) NOT NULL REFERENCES pelajar(id_pelajar) ON DELETE CASCADE,
-    id_wali VARCHAR(50) NOT NULL REFERENCES orang_tua_wali(id_wali) ON DELETE CASCADE,
+    id_wali VARCHAR(50) NULL REFERENCES orang_tua_wali(id_wali) ON DELETE SET NULL,
+    email_tujuan VARCHAR(100) NULL,
     ringkasan_kondisi TEXT NOT NULL,
-    status VARCHAR(30) NOT NULL DEFAULT 'Terkirim',
-    waktu_kirim TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(30) NOT NULL DEFAULT 'Menunggu Pengiriman'
+        CHECK (status IN ('Menunggu Pengiriman', 'Terkirim', 'Gagal Terkirim', 'Diterima')),
+    jumlah_percobaan INTEGER NOT NULL DEFAULT 0,
+    waktu_kirim TIMESTAMP NULL,
     waktu_konfirmasi TIMESTAMP NULL,
     status_tindak_lanjut VARCHAR(50) NOT NULL DEFAULT 'Belum Ditindaklanjuti',
-    waktu_tindak_lanjut TIMESTAMP NULL
+    waktu_tindak_lanjut TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- View kompatibilitas untuk query C11-C20 yang menggunakan prefix tbl_
-CREATE VIEW tbl_pengguna AS SELECT id_pengguna, username, email, password_hash AS password, role, status_akun, token_konfirmasi FROM pengguna;
-CREATE VIEW tbl_pelajar AS SELECT * FROM pelajar;
-CREATE VIEW tbl_tenaga_kesehatan AS SELECT * FROM tenaga_kesehatan;
-CREATE VIEW tbl_fasilitas_kesehatan AS SELECT * FROM fasilitas_kesehatan;
-
+-- Satu pelajar hanya punya satu notifikasi darurat yang belum ditindaklanjuti
+CREATE UNIQUE INDEX idx_notifikasi_aktif_per_pelajar ON notifikasi_darurat (id_pelajar)
+    WHERE status_tindak_lanjut = 'Belum Ditindaklanjuti';

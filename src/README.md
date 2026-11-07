@@ -20,7 +20,7 @@ Aplikasi berbasis web responsif (*Model-View-Controller*) untuk pemantauan berka
 ## 2. Prasyarat dan Instalasi
 
 ### Prasyarat
-1. **Node.js** versi 18 atau 20 LTS (`node -v`).
+1. **Node.js** versi 20 LTS atau lebih baru (`node -v`).
 2. **PostgreSQL** versi 15+ yang sedang berjalan secara lokal (atau URI PostgreSQL cloud seperti Supabase/Neon).
 
 ### Langkah Instalasi
@@ -28,8 +28,8 @@ Aplikasi berbasis web responsif (*Model-View-Controller*) untuk pemantauan berka
 # 1. Masuk ke direktori kode sumber
 cd src
 
-# 2. Instal seluruh dependensi
-npm install
+# 2. Instal seluruh dependensi sesuai package-lock.json
+npm ci
 ```
 
 ---
@@ -44,8 +44,12 @@ npm install
    ```env
    PORT=3000
    DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mahasehat_db
-   JWT_SECRET=mahasehat_super_secret_jwt_key_2026
-   AES_SECRET_KEY=12345678901234567890123456789012
+   JWT_SECRET=isi_dengan_teks_acak_minimal_32_karakter
+   AES_SECRET_KEY=isi_dengan_teks_acak_32_karakter
+   ```
+   `JWT_SECRET` dan `AES_SECRET_KEY` wajib diisi; aplikasi menolak membuat token atau mengenkripsi data tanpa keduanya. Nilai acak dapat dibuat dengan:
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
    ```
 3. Buat database `mahasehat_db` di PostgreSQL (jika belum ada), lalu jalankan inisialisasi skema beserta *seed data* awal:
    ```bash
@@ -64,9 +68,11 @@ npm start
 # Menjalankan server dalam mode pengembangan (auto-reload)
 npm run dev
 
-# Menjalankan unit & integration test
+# Menjalankan unit test
 npm test
 ```
+
+Halaman dibuka lewat server, misalnya `http://localhost:3000/views/LoginPage.html`. Alamat `/` diarahkan ke halaman masuk.
 
 Setelah server berjalan, buka peramban di: **`http://localhost:3000`**
 
@@ -79,10 +85,12 @@ Seluruh akun uji pada `seed.sql` menggunakan kata sandi yang sama: **`Password12
 | Peran (Role) | Email / Username | Password | Status Akun | Keterangan Skenario Uji |
 | :--- | :--- | :--- | :--- | :--- |
 | **Pelajar (Dewasa)** | `budi.pelajar@mahasehat.id` | `Password123!` | `Aktif` | Memiliki riwayat check-in 5 hari, terhubung ke Wali `WALI-001` |
-| **Pelajar (< 18 Thn)** | `andi.siswa@mahasehat.id` | `Password123!` | `Belum Terverifikasi` | Menunggu konfirmasi wali (`TOKEN-WALI-ANDI-2026` untuk uji UC02) |
+| **Pelajar (Skenario Darurat)** | `citra.pelajar@mahasehat.id` | `Password123!` | `Aktif` | Mood rendah 3 hari beruntun lalu 4 hari tidak check-in, terhubung ke Wali `WALI-002` (UC08) |
+| **Pelajar (< 18 Thn)** | `andi.siswa@mahasehat.id` | `Password123!` | `Belum Terverifikasi` | Menunggu konfirmasi wali (`TOKEN-WALI-ANDI-2026` untuk uji UC02), belum terhubung ke wali |
 | **Orang Tua / Wali** | `santoso.wali@mahasehat.id` | `Password123!` | `Aktif` | Memantau laporan Budi tanpa melihat teks jurnal pribadi (KNF02) |
-| **Tenaga Kesehatan (Psikolog)** | `siti.psikolog@mahasehat.id` | `Password123!` | `Aktif` | Klinik Kesehatan Mental Ganesha (memiliki pengajuan `JDW-003` untuk uji UC07) |
-| **Tenaga Kesehatan (Psikiater)** | `hendra.psikiater@mahasehat.id` | `Password123!` | `Aktif` | Unit Psikiatri RS Santo Borromeus |
+| **Orang Tua / Wali (Skenario Darurat)** | `ratna.wali@mahasehat.id` | `Password123!` | `Aktif` | Wali Citra, penerima notifikasi darurat (UC08) |
+| **Tenaga Kesehatan (Psikolog)** | `siti.psikolog@mahasehat.id` | `Password123!` | `Aktif` | Klinik Kesehatan Mental Tenang (memiliki pengajuan `JDW-003` untuk uji UC07) |
+| **Tenaga Kesehatan (Psikiater)** | `hendra.psikiater@mahasehat.id` | `Password123!` | `Aktif` | Unit Psikiatri RS Harapan Sehat |
 
 ---
 
@@ -91,11 +99,11 @@ Seluruh akun uji pada `seed.sql` menggunakan kata sandi yang sama: **`Password12
 ```text
 src/
 ├── config/
-│   ├── db.js                  # Pool koneksi PostgreSQL & helper transaksi
+│   ├── db.js                  # Pool koneksi PostgreSQL & helper transaksi (withTransaction)
 │   ├── schema.sql             # Definisi DDL 9 tabel utama & indeks (C01-C09)
 │   ├── seed.sql               # Data uji fiktif untuk seluruh role
 │   └── initDb.js              # Skrip migrasi & seeder otomatis
-├── models/                    # Komponen Model (<<entity>> C01 - C09)
+├── models/                    # Komponen Model (<<entity>> C01 - C09, NotifikasiDarurat)
 ├── controllers/               # Komponen Controller (<<control>> C11, C14, C15, C17, C20, C22, C23, C24, C27)
 ├── routes/                    # Definisi endpoint REST API per modul
 │   └── index.js               # Router utama (/api/*)
@@ -103,8 +111,12 @@ src/
 │   └── authMiddleware.js      # Verifikasi JWT & otorisasi berbasis Role (KNF02)
 ├── utils/
 │   ├── encryption.js          # Enkripsi & dekripsi AES-256-CBC (KNF01)
-│   └── distance.js            # Validasi koordinat & Haversine Formula (UC05)
-├── public/                    # Komponen View (<<boundary>> HTML, CSS, JS)
+│   ├── distance.js            # Validasi koordinat & Haversine Formula (UC05)
+│   ├── waktu.js               # Tanggal zona Asia/Jakarta
+│   ├── respon.js              # Bentuk respons API seragam { success, message, data }
+│   └── AppError.js            # Galat dengan kode status HTTP
+├── frontend/                  # Komponen View (<<boundary>>): views/*.html, css, js, dan assets/
+├── public/                    # Berkas statis tambahan
 ├── tests/                     # Pengujian otomatis (Jest & Supertest)
 ├── app.js                     # Konfigurasi aplikasi Express
 └── server.js                  # Entrypoint HTTP server
@@ -140,15 +152,15 @@ src/
 
 | ID Kelas DPPL | Nama Kelas Model | Nama Tabel PostgreSQL | Atribut Utama |
 | :--- | :--- | :--- | :--- |
-| **C01** | `Pengguna` | `pengguna` | `id_pengguna` (PK), `username`, `email`, `password_hash`, `role`, `status_akun`, `token_konfirmasi`, `reset_token` |
-| **C02** | `Pelajar` | `pelajar` | `id_pelajar` (PK), `id_pengguna` (FK), `id_wali` (FK), `nama`, `tanggal_lahir`, `nomor_telepon`, `lokasi_saat_ini`, `status_darurat` |
+| **C01** | `Pengguna` | `pengguna` | `id_pengguna` (PK), `username`, `email`, `password_hash`, `role`, `status_akun`, `versi_token`, `token_konfirmasi`, `reset_token`, `reset_token_expires` |
+| **C02** | `Pelajar` | `pelajar` | `id_pelajar` (PK), `id_pengguna` (FK), `id_wali` (FK), `nama`, `tanggal_lahir`, `nomor_telepon`, `nomor_telepon_wali`, `email_wali`, `lokasi_saat_ini`, `status_darurat` |
 | **C03** | `OrangTuaWali` | `orang_tua_wali` | `id_wali` (PK), `id_pengguna` (FK), `nama`, `email`, `nomor_telepon` |
-| **C04** | `TenagaKesehatan` | `tenaga_kesehatan` | `id_tenaga_kesehatan` (PK), `id_pengguna` (FK), `id_fasilitas` (FK), `nama`, `email`, `nomor_telepon`, `jenis_tenaga_kesehatan`, `lokasi` |
+| **C04** | `TenagaKesehatan` | `tenaga_kesehatan` | `id_tenaga_kesehatan` (PK), `id_pengguna` (FK), `id_fasilitas` (FK), `nama`, `email`, `nomor_telepon`, `jenis_tenaga_kesehatan`, `nomor_str`, `lokasi` |
 | **C05** | `RiwayatKesehatan` | `riwayat_kesehatan` | `id_riwayat` (PK), `id_pelajar` (FK), `riwayat_kesehatan` (Terenkripsi AES-256) |
-| **C06** | `CheckIn` | `check_in` | `id_check_in` (PK), `id_pelajar` (FK), `tanggal_check_in`, `skala_mood`, `jam_tidur`, `jam_bangun`, `pola_makan`, `pemicu_stres`, `catatan_refleksi` (AES-256) |
+| **C06** | `CheckIn` | `check_in` | `id_check_in` (PK), `id_pelajar` (FK), `tanggal_check_in` (unik per pelajar), `skala_mood`, `jam_tidur`, `jam_bangun`, `pola_makan`, `pemicu_stres`, `catatan_refleksi` (AES-256) |
 | **C07** | `LaporanKesehatan` | *(Objek Komputasi)* | Dihitung dinamis dari agregasi tabel `check_in` melalui `evaluateThreshold()` & `detectEmergency()` (sesuai DPPL BAB 5.7) |
 | **C08** | `FasilitasKesehatan` | `fasilitas_kesehatan` | `id_fasilitas` (PK), `nama_fasilitas`, `alamat`, `lokasi` (`lat,lng`), `estimasi_biaya` |
 | **C09** | `JadwalKonsultasi` | `jadwal_konsultasi` | `id_jadwal` (PK), `id_tenaga_kesehatan` (FK), `id_pelajar` (FK), `tanggal`, `waktu`, `status_ketersediaan`, `status_pengajuan`, `keluhan` |
-| **C24** | `NotifikasiDaruratController` | `notifikasi_darurat` | `id` (PK), `id_pelajar` (FK), `id_wali` (FK), `ringkasan_kondisi`, `status`, `waktu_konfirmasi`, `status_tindak_lanjut`, `waktu_tindak_lanjut` |
+| **C24** | `NotifikasiDarurat` | `notifikasi_darurat` | `id` (PK), `id_pelajar` (FK), `id_wali` (FK, boleh kosong), `email_tujuan`, `ringkasan_kondisi`, `status`, `jumlah_percobaan`, `waktu_kirim`, `waktu_konfirmasi`, `status_tindak_lanjut`, `waktu_tindak_lanjut` |
 
 
