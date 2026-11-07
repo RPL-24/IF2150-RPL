@@ -40,7 +40,24 @@
           "cameraPermission": "SILEMBUR membutuhkan kamera untuk memotret kerusakan fasilitas."
         }
       ],
-      "expo-web-browser"
-    ]
+      "expo-web-browser",
+      [
+        "expo-build-properties",
+        {
+          "android": { "usesCleartextTraffic": true, "enableMinifyInReleaseBuilds": false }
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "0a344add-5c0c-4eff-a560-7841342bbd91"
+      }
+    },
+    "owner": "laksamada"
   }
 }
