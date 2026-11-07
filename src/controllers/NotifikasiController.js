@@ -1,5 +1,4 @@
 // C19 NotifikasiController - milik modul D.
-// TODO(modul-D): kirimNotifikasi, kirimPushNotifikasi, kirimPesanPenangguhan
 const config = require('../config/env');
 const SurelAdapter = require('../integrasi/SurelAdapter');
 
@@ -30,6 +29,21 @@ class NotifikasiController {
       'Apabila Anda merasa ada kekeliruan atau ingin mengajukan banding, silakan hubungi tim bantuan ITBELI.',
     ].join('\n');
     return SurelAdapter.kirimSurel(email, 'Peringatan Penghapusan Listing ITBELI', isi);
+  }
+
+  // KF52: Menyusun surel pemberitahuan penangguhan/pemblokiran akun beserta rincian pelanggaran dan mengirimkannya ke alamat surel terdaftar pengguna
+  static async kirimPesanPenangguhan(idAkun, email, alasan) {
+    const isi = [
+      'Halo,',
+      '',
+      'Akun ITBELI Anda telah ditangguhkan (diblokir) oleh Tim Moderasi karena pelanggaran ketentuan layanan.',
+      '',
+      'Alasan penangguhan:',
+      `${alasan}`,
+      '',
+      'Seluruh listing aktif Anda telah dinonaktifkan dan sesi login Anda telah diakhiri. Jika Anda merasa ini merupakan kekeliruan, silakan hubungi tim bantuan ITBELI.',
+    ].join('\n');
+    return SurelAdapter.kirimSurel(email, 'Pemberitahuan Penangguhan Akun ITBELI', isi);
   }
 }
 

@@ -3,6 +3,7 @@ const express = require('express');
 const ModerasiController = require('../controllers/ModerasiController');
 const Otorisasi = require('../pendukung/Otorisasi');
 const Barang = require('../models/Barang');
+const Akun = require('../models/Akun');
 
 const router = express.Router();
 
@@ -168,6 +169,102 @@ router.delete('/laporan/:id/barang/:idBarang', async (req, res) => {
     res.status(500).json({
       sukses: false,
       pesan: 'Terjadi galat pada server saat menghapus listing.',
+    });
+  }
+});
+
+// POST /api/admin/akun/:idAkun/blokir - Memblokir akun pengguna (KF51, KF52, KF53, KF54, KF55, KF56, Algo-023)
+router.post('/akun/:idAkun/blokir', async (req, res) => {
+  try {
+    const { idAkun } = req.params;
+    const { idLaporan, alasan } = req.body || {};
+
+    if (!alasan || typeof alasan !== 'string' || !alasan.trim()) {
+      return res.status(400).json({
+        sukses: false,
+        pesan: 'Alasan pemblokiran wajib diisi.',
+      });
+    }
+
+    const akunSasaran = await Akun.cariById(idAkun);
+    if (!akunSasaran) {
+      return res.status(404).json({
+        sukses: false,
+        pesan: 'Akun sasaran tidak ditemukan.',
+      });
+    }
+
+    const berhasil = await ModerasiController.blokirAkun(
+      req.token,
+      idLaporan || null,
+      idAkun,
+      alasan.trim(),
+    );
+
+    if (!berhasil) {
+      return res.status(400).json({
+        sukses: false,
+        pesan: 'Gagal memblokir akun pengguna.',
+      });
+    }
+
+    res.json({
+      sukses: true,
+      pesan: 'Akun berhasil diblokir, seluruh listing dinonaktifkan, dan sesi pengguna telah dicabut.',
+    });
+  } catch (galat) {
+    console.error(`Galat route POST /api/admin/akun/${req.params.idAkun}/blokir:`, galat);
+    res.status(500).json({
+      sukses: false,
+      pesan: 'Terjadi galat pada server saat memblokir akun.',
+    });
+  }
+});
+
+// POST /api/admin/laporan/:id/akun/:idAkun/blokir - Memblokir akun dari konteks laporan
+router.post('/laporan/:id/akun/:idAkun/blokir', async (req, res) => {
+  try {
+    const { id, idAkun } = req.params;
+    const { alasan } = req.body || {};
+
+    if (!alasan || typeof alasan !== 'string' || !alasan.trim()) {
+      return res.status(400).json({
+        sukses: false,
+        pesan: 'Alasan pemblokiran wajib diisi.',
+      });
+    }
+
+    const akunSasaran = await Akun.cariById(idAkun);
+    if (!akunSasaran) {
+      return res.status(404).json({
+        sukses: false,
+        pesan: 'Akun sasaran tidak ditemukan.',
+      });
+    }
+
+    const berhasil = await ModerasiController.blokirAkun(
+      req.token,
+      id,
+      idAkun,
+      alasan.trim(),
+    );
+
+    if (!berhasil) {
+      return res.status(400).json({
+        sukses: false,
+        pesan: 'Gagal memblokir akun pengguna.',
+      });
+    }
+
+    res.json({
+      sukses: true,
+      pesan: 'Akun berhasil diblokir, seluruh listing dinonaktifkan, dan sesi pengguna telah dicabut.',
+    });
+  } catch (galat) {
+    console.error(`Galat route POST /api/admin/laporan/${req.params.id}/akun/${req.params.idAkun}/blokir:`, galat);
+    res.status(500).json({
+      sukses: false,
+      pesan: 'Terjadi galat pada server saat memblokir akun.',
     });
   }
 });
