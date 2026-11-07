@@ -1,5 +1,7 @@
 import { PenugasanPage } from "@/client/views/PenugasanPage";
+import { doSorting } from "@/server/controllers/PenugasanController";
 
-export default function Page() {
-  return <PenugasanPage />;
+export default async function Page() {
+  const hasilAwal = await doSorting();
+  return <PenugasanPage hasilAwal={hasilAwal}/>;
 }
