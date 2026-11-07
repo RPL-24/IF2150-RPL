@@ -76,4 +76,6 @@ def test_tambah_listing_sukses():
     response = client.post("/api/listing/", json=payload)
     
     assert response.status_code == 201
-    assert "message" in response.json()
+    disimpan = response.json()
+    assert disimpan["nama_makanan"] == payload["nama_makanan"]
+    assert disimpan["harga"] == payload["harga"]
