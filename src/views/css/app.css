@@ -6,6 +6,12 @@ body { width: auto; height: auto; min-height: 100vh; overflow: auto; }
 .page { width: auto; height: auto; max-width: 1440px; margin: 0 auto; }
 .hero { height: auto; min-height: 640px; }
 
+/* Kerangka topbar + rail + konten: tinggi mengikuti isi, tidak lagi dikunci 1043px */
+.shell { height: auto; min-height: calc(100vh - var(--topbar-h)); }
+.rail, .content { overflow: visible; }
+.rail .navlist a.is-active, .navlist a:hover { background: var(--green-50); }
+.brand { text-decoration: none; color: inherit; }
+
 [hidden] { display: none !important; }
 
 a.btn { text-decoration: none; }
@@ -53,6 +59,8 @@ input.field__input.is-error { border-color: var(--danger); background: var(--dan
   .authform__title { font-size: 32px; line-height: 40px; }
   .hero__media { display: none; }
   .footerlinks { padding: var(--sp-6) var(--sp-4); flex-wrap: wrap; }
+  .shell .rail { display: none; }
+  .content { padding: var(--sp-6) var(--sp-4); min-width: 0; }
   .verif { padding: var(--sp-6); }
   .otp { gap: var(--sp-2); }
   .otp input { height: 56px; font-size: 22px; }
