@@ -501,6 +501,23 @@ export type Database = {
       }
       dari_service_role: { Args: never; Returns: boolean }
       format_tiket: { Args: { n: number }; Returns: string }
+      kirim_hasil_perbaikan: {
+        Args: { p_catatan: string; p_id_laporan: string; p_media: Json }
+        Returns: string
+      }
+      kirim_laporan: {
+        Args: {
+          p_deskripsi: string
+          p_kategori: Database["public"]["Enums"]["kategori_kerusakan"]
+          p_latitude: number
+          p_longitude: number
+          p_media: Json
+        }
+        Returns: {
+          id: string
+          id_tiket: string
+        }[]
+      }
       laporan_terbuka: { Args: { p_id: string }; Returns: boolean }
       peran_saya: {
         Args: never
