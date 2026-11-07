@@ -136,6 +136,8 @@ export async function ubahListing(idListing: number | string, data: DataListingP
   }
 
   return res.json();
+}
+
 // ---------- Cari & filter katalog (P3: UC04) ----------
 
 export type ParamPencarian = {
