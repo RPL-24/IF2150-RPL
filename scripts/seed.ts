@@ -156,7 +156,7 @@ function tambahJam(iso: string, jam: number): string {
 
 const ms = (iso: string): number => Date.parse(iso);
 
-// Rumus sementara; rumus final ada di migration L7. Satu tempat supaya mudah diganti.
+// Sama dengan trigger tambah_upvote (migration L7): least(100, jumlah_upvote * 10).
 const hitungSkor = (n: number): number => Math.min(100, n * 10);
 
 // ── DATA LAPORAN ─────────────────────────────────────────────────────────
@@ -275,6 +275,9 @@ const SPEC_LAPORAN: readonly SpecLaporan[] = [
 const ID_LAPORAN_SEED: readonly string[] = SPEC_LAPORAN.map((s) => uuidSeed(1, s.n));
 
 // Satu perubahan status/tahap: jadi satu baris riwayat_status + satu notifikasi ke pelapor.
+// Teks catatan & pesan SAMA dengan trigger catat_perubahan_status (migration L7): catatan hanya
+// berisi alasan penolakan; catatan evaluasi hanya dikirim ke eksekutor lewat notifikasi. Trigger dilewati
+// untuk service_role (secret key), jadi seed menulis riwayat & notifikasi sendiri.
 type Kejadian = {
   status: Status;
   tahap: Tahap | null;
@@ -306,23 +309,23 @@ function bangunLaporan(s: SpecLaporan): DataLaporan {
 
   const kejadian: Kejadian[] = [
     { status: "diterima", tahap: null, catatan: null, waktu: masuk,
-      pesan: (t) => `Laporan ${t} diterima dan menunggu validasi petugas.` },
+      pesan: (t) => `Laporan Anda (${t}) diterima dan menunggu validasi petugas.` },
   ];
   let hasil: DataLaporan["hasil"] = null;
   let evaluasi: DataLaporan["evaluasi"] = null;
 
   if (a.jenis === "ditolak") {
     kejadian.push({ status: "ditolak", tahap: null, catatan: a.alasan, waktu: t1,
-      pesan: (t) => `Laporan ${t} ditolak. Alasan: ${a.alasan}` });
+      pesan: (t) => `Laporan Anda (${t}) ditolak dengan alasan: ${a.alasan}` });
   }
   if (a.jenis !== "diterima" && a.jenis !== "ditolak") {
     kejadian.push({ status: "dikerjakan", tahap: "menunggu_eksekusi", catatan: null, waktu: t1,
-      pesan: (t) => `Laporan ${t} disetujui dan menunggu pengerjaan oleh petugas lapangan.` });
+      pesan: (t) => `Laporan Anda (${t}) telah divalidasi dan diteruskan ke tim lapangan.` });
   }
   if (a.jenis === "menunggu_evaluasi" || a.jenis === "dikembalikan" || a.jenis === "berhasil") {
     hasil = { id_hasil: uuidSeed(2, s.n), id_laporan: id, id_eksekutor: ID_EKSEKUTOR, catatan: a.hasil, waktu_unggah: t2 };
     kejadian.push({ status: "dikerjakan", tahap: "menunggu_evaluasi", catatan: null, waktu: t2,
-      pesan: (t) => `Perbaikan laporan ${t} sudah dikerjakan dan sedang dievaluasi.` });
+      pesan: (t) => `Perbaikan laporan Anda (${t}) sudah dikerjakan dan sedang dievaluasi.` });
   }
   if (hasil && (a.jenis === "dikembalikan" || a.jenis === "berhasil")) {
     const keputusan: Keputusan = a.jenis === "berhasil" ? "selesai" : a.keputusan;
@@ -330,10 +333,10 @@ function bangunLaporan(s: SpecLaporan): DataLaporan {
       keputusan, catatan: a.catatan, waktu_evaluasi: t3 };
     kejadian.push(
       a.jenis === "berhasil"
-        ? { status: "berhasil", tahap: null, catatan: a.catatan, waktu: t3,
-            pesan: (t) => `Laporan ${t} selesai diperbaiki. Terima kasih atas laporan Anda.` }
-        : { status: "dikerjakan", tahap: "menunggu_eksekusi", catatan: a.catatan, waktu: t3,
-            pesan: (t) => `Hasil perbaikan laporan ${t} belum diterima, laporan dikerjakan ulang.` },
+        ? { status: "berhasil", tahap: null, catatan: null, waktu: t3,
+            pesan: (t) => `Laporan kerusakan fasilitas publik Anda (${t}) telah selesai diperbaiki.` }
+        : { status: "dikerjakan", tahap: "menunggu_eksekusi", catatan: null, waktu: t3,
+            pesan: (t) => `Perbaikan laporan Anda (${t}) belum dapat diterima dan dikerjakan ulang oleh tim lapangan.` },
     );
   }
 
@@ -341,7 +344,6 @@ function bangunLaporan(s: SpecLaporan): DataLaporan {
   const waktuSelesai = akhir.status === "berhasil" ? akhir.waktu : null;
 
   // Pendukung: warga selain pelapor, digilir per laporan supaya tersebar.
-  // Trigger L7 belum ada; setelah L7, cek ulang agar tidak terhitung dua kali.
   const pendukung = ID_WARGA.filter((u) => u !== pelapor);
   const upvote = Array.from({ length: s.upvote }, (_, i) => ({
     id_upvote: uuidSeed(4, s.n * 10 + i),
@@ -362,7 +364,7 @@ function bangunLaporan(s: SpecLaporan): DataLaporan {
       longitude: s.longitude,
       status: akhir.status,
       tahap: akhir.tahap,
-      // Trigger L7 belum ada; setelah L7, cek ulang agar tidak terhitung dua kali.
+      // Trigger tambah_upvote dilewati untuk service_role, jadi counter diisi di sini (tidak dobel).
       jumlah_upvote: upvote.length,
       skor_prioritas: hitungSkor(upvote.length),
       alasan_penolakan: a.jenis === "ditolak" ? a.alasan : null,
@@ -466,6 +468,16 @@ function cek(label: string, error: { message: string } | null): void {
   if (error) throw new Error(`Gagal menulis ${label}: ${error.message}`);
 }
 
+const JUDUL_EVALUASI: Record<Keputusan, string> = {
+  selesai: "Perbaikan dinyatakan selesai",
+  belum_selesai: "Perbaikan belum selesai",
+  minta_ulang_bukti: "Unggah ulang bukti kerja",
+};
+const pesanEksekutor = (tiket: string, e: Lengkap<"evaluasi">): string =>
+  kosong(e.catatan)
+    ? `${JUDUL_EVALUASI[e.keputusan]} (${tiket}).`
+    : `${JUDUL_EVALUASI[e.keputusan]} (${tiket}): ${e.catatan}`;
+
 const nomorTiket = (tiket: string): number => Number(tiket.replace(/^LK-/, ""));
 
 // Hapus HANYA laporan seed; hasil, evaluasi, upvote, riwayat, notifikasi, foto, video ikut terhapus
@@ -479,6 +491,9 @@ async function hapusLaporanSeed(): Promise<void> {
 
 async function siapkanLaporan(data: DataLaporan[]): Promise<void> {
   console.log("\n[laporan]");
+  // Semua trigger L7 (transisi status, hasil, evaluasi, upvote, riwayat, notifikasi) langsung return
+  // untuk service_role (dari_service_role()), jadi laporan bisa di-insert di status akhir dan
+  // riwayat/notifikasi/counter di bawah tidak tercatat dua kali.
   const opsi = { ignoreDuplicates: true };
 
   // Insert hanya laporan yang belum ada: default id_tiket (nextval) tetap dievaluasi walau
@@ -503,10 +518,8 @@ async function siapkanLaporan(data: DataLaporan[]): Promise<void> {
   const evaluasi = data.flatMap((d) => (d.evaluasi ? [d.evaluasi] : []));
   cek("evaluasi", (await supabase.from("evaluasi").upsert(evaluasi, opsi)).error);
 
-  // Trigger L7 belum ada; setelah L7, cek ulang agar tidak terhitung dua kali.
   cek("upvote", (await supabase.from("upvote").upsert(data.flatMap((d) => d.upvote), opsi)).error);
 
-  // Trigger L7 belum ada; setelah L7, cek ulang agar tidak terhitung dua kali.
   const riwayat: Lengkap<"riwayat_status">[] = data.flatMap((d) =>
     d.kejadian.map((k, i) => ({
       id: uuidSeed(5, d.n * 10 + i),
@@ -538,13 +551,8 @@ async function siapkanLaporan(data: DataLaporan[]): Promise<void> {
     });
     const kePelapor = d.kejadian.map((k, i) => keNotif(i, d.laporan.id_pelapor, k.pesan(t), k.waktu));
     const e = d.evaluasi;
-    // Notifikasi ke eksekutor untuk evaluasi yang mengembalikan hasil perbaikan (n = 9).
-    const keEksekutor =
-      e && e.keputusan !== "selesai"
-        ? [keNotif(9, ID_EKSEKUTOR,
-            `Hasil perbaikan laporan ${t} dikembalikan (${e.keputusan.replaceAll("_", " ")}). Catatan: ${e.catatan ?? "-"}`,
-            e.waktu_evaluasi)]
-        : [];
+    // Notifikasi ke eksekutor untuk SEMUA keputusan evaluasi (n = 9), sama dengan trigger terapkan_evaluasi.
+    const keEksekutor = e ? [keNotif(9, ID_EKSEKUTOR, pesanEksekutor(t, e), e.waktu_evaluasi)] : [];
     return [...kePelapor, ...keEksekutor];
   });
   cek("notifikasi", (await supabase.from("notifikasi").upsert(notifikasi, opsi)).error);
