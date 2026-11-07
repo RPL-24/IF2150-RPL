@@ -156,7 +156,7 @@ function tambahJam(iso: string, jam: number): string {
 
 const ms = (iso: string): number => Date.parse(iso);
 
-// Sama dengan trigger tambah_upvote (migration L7): least(100, jumlah_upvote * 10).
+// Sama dengan trigger tambah_upvote (migration trigger_status): least(100, jumlah_upvote * 10).
 const hitungSkor = (n: number): number => Math.min(100, n * 10);
 
 // ── DATA LAPORAN ─────────────────────────────────────────────────────────
@@ -275,7 +275,7 @@ const SPEC_LAPORAN: readonly SpecLaporan[] = [
 const ID_LAPORAN_SEED: readonly string[] = SPEC_LAPORAN.map((s) => uuidSeed(1, s.n));
 
 // Satu perubahan status/tahap: jadi satu baris riwayat_status + satu notifikasi ke pelapor.
-// Teks catatan & pesan SAMA dengan trigger catat_perubahan_status (migration L7): catatan hanya
+// Teks catatan & pesan SAMA dengan trigger catat_perubahan_status (migration trigger_status): catatan hanya
 // berisi alasan penolakan; catatan evaluasi hanya dikirim ke eksekutor lewat notifikasi. Trigger dilewati
 // untuk service_role (secret key), jadi seed menulis riwayat & notifikasi sendiri.
 type Kejadian = {
@@ -491,7 +491,7 @@ async function hapusLaporanSeed(): Promise<void> {
 
 async function siapkanLaporan(data: DataLaporan[]): Promise<void> {
   console.log("\n[laporan]");
-  // Semua trigger L7 (transisi status, hasil, evaluasi, upvote, riwayat, notifikasi) langsung return
+  // Semua trigger di migration trigger_status (transisi status, hasil, evaluasi, upvote, riwayat, notifikasi) langsung return
   // untuk service_role (dari_service_role()), jadi laporan bisa di-insert di status akhir dan
   // riwayat/notifikasi/counter di bawah tidak tercatat dua kali.
   const opsi = { ignoreDuplicates: true };
