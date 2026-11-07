@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { LoncengNotifikasi } from "@/client/components/shared/LoncengNotifikasi";
 import { TombolKeluar } from "@/client/components/shared/TombolKeluar";
 import { getCurrentUser } from "@/lib/auth";
 
@@ -30,7 +31,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         {user && (
           <header className="flex items-center justify-between border-b border-gray-200 px-4 py-2 text-sm">
             <span className="truncate">{user.nama}</span>
-            <TombolKeluar />
+            <div className="flex items-center gap-2">
+              {/* Admin tidak pernah menerima notifikasi (trigger hanya ke pelapor & eksekutor). */}
+              {user.role !== "admin" && <LoncengNotifikasi userId={user.id} role={user.role} />}
+              <TombolKeluar />
+            </div>
           </header>
         )}
         {children}
