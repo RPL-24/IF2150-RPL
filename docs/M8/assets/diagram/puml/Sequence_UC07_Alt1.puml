@@ -1,0 +1,17 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC07 — Alternatif 1: Isian Formulir Tidak Lengkap
+actor "Penjual" as User
+boundary ":FormulirBarang" as UI
+
+User -> UI: kirimFormulir(data, fotoBaru)
+UI -> UI: validasiIsianWajib(data, fotoBaru)
+note right of UI: Judul, harga, kategori, atau foto kosong;\nformulir tidak dikirim ke server (KF18)
+UI -> UI: tandaiIsianKosong()
+UI -> UI: tampilkanNotifikasi("Isian wajib belum lengkap.")
+@enduml

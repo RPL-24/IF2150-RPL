@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-03 Verifikasi Surel</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  .verif-wrap { display: grid; place-items: center; height: calc(1043px - var(--topbar-h)); }
+  .verif { width: 520px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+    padding: var(--sp-8); display: flex; flex-direction: column; gap: var(--sp-5); }
+  .otp { display: flex; gap: var(--sp-3); }
+  .otp span { width: 64px; height: 72px; border: 1px solid var(--border);
+    border-radius: var(--radius-md); background: var(--surface);
+    display: grid; place-items: center; font: 700 28px/1 var(--font-sans); }
+  .otp span.is-filled { border-color: var(--green-500); background: var(--green-50); color: var(--green-900); }
+  .otp span.is-focus { border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(46,125,85,.15); }
+  .verif__icon { width: 56px; height: 56px; border-radius: var(--radius-full);
+    background: var(--green-50); display: grid; place-items: center; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar="otentikasi"></div>
+
+  <div class="verif-wrap">
+    <section class="verif">
+
+      <div class="verif__icon"><span class="ic ic--lock" style="width:26px;height:26px"></span></div>
+
+      <div>
+        <h1 class="t-display-sm">Verifikasi surel Anda</h1>
+        <p class="muted mt-2" style="font-size:15px;line-height:23px">
+          Kode verifikasi telah dikirim ke <strong style="color:var(--text-900)">sulthan@itb.ac.id</strong>.
+          Masukkan enam digit kode tersebut untuk mengaktifkan akun.
+        </p>
+      </div>
+
+      <div class="otp">
+        <span class="is-filled">4</span>
+        <span class="is-filled">7</span>
+        <span class="is-filled">2</span>
+        <span class="is-focus">&nbsp;</span>
+        <span>&nbsp;</span>
+        <span>&nbsp;</span>
+      </div>
+
+      <div class="row">
+        <span class="muted">Kode berlaku <strong style="color:var(--text-900)">14:59</strong></span>
+        <button class="btn btn--teks btn--sm ml-auto is-disabled" disabled>Kirim ulang kode</button>
+      </div>
+
+      <button class="btn btn--primer btn--blok">Verifikasi</button>
+
+      <div class="infobox--netral infobox">
+        Belum menerima kode? Tombol kirim ulang akan aktif setelah hitung mundur habis.
+        Periksa juga folder spam pada surel institusi Anda.
+      </div>
+
+    </section>
+  </div>
+
+  <div class="toast">✓ Kode verifikasi baru telah dikirim.</div>
+</div>
+</body>
+</html>

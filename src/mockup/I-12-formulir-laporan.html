@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-12 Formulir Laporan</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  .dialog { width: 560px; gap: var(--sp-4); }
+  .konteks { display: flex; gap: var(--sp-3); align-items: center;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: var(--sp-3); }
+  .konteks__thumb { width: 48px; height: 48px; border-radius: var(--radius-sm);
+    overflow: hidden; border: 1px solid var(--border); flex: none; }
+  .bukti { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-3); }
+  .bukti > div { height: 84px; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); overflow: hidden; background: var(--surface); }
+  .bukti .kosong { border-style: dashed; display: grid; place-items: center; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar></div>
+
+  <div class="shell">
+    <aside data-rail="katalog"></aside>
+    <main class="content">
+      <div class="content__inner col gap-6">
+        <div>
+          <h1 class="h-page">Barang Tersedia</h1>
+          <p class="muted mt-2">128 listing aktif dari sivitas ITB</p>
+        </div>
+        <div class="grid" data-cards="8"></div>
+      </div>
+    </main>
+  </div>
+
+  <div class="scrim"></div>
+
+  <section class="dialog">
+    <div>
+      <div class="dialog__title">Laporkan listing</div>
+      <p class="dialog__text mt-2">
+        Laporan Anda ditinjau admin. Isi percakapan pribadi tidak ikut terkirim.
+      </p>
+    </div>
+
+    <div class="konteks">
+      <div class="konteks__thumb"><div class="ph ph--jas"></div></div>
+      <div>
+        <div style="font-weight:600;font-size:14px">Jas Praktikum Kimia Ukuran M</div>
+        <div class="t-caption muted">Rp120.000 · Rani Permatasari</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field__label">Kategori pelanggaran</div>
+      <div class="col gap-2">
+        <label class="radio is-selected"><span class="radio__dot"></span>Penipuan</label>
+        <label class="radio"><span class="radio__dot"></span>Konten tidak pantas</label>
+        <label class="radio"><span class="radio__dot"></span>Bug atau masalah teknis</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field__label">Alasan</div>
+      <div class="field__area" style="min-height:76px">
+        Penjual meminta transfer di muka padahal kesepakatan awal COD, lalu memblokir saya
+        setelah pembayaran dikirim.
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field__label">Bukti tangkapan layar</div>
+      <div class="bukti">
+        <div><div class="ph ph--bukti"></div></div>
+        <div><div class="ph ph--bukti"></div></div>
+        <div class="kosong"><span class="ic ic--plus"></span></div>
+        <div class="kosong"><span class="ic ic--plus"></span></div>
+      </div>
+      <div class="field__hint">Minimal satu tangkapan layar. JPG atau PNG, maksimum 5 MB per berkas.</div>
+    </div>
+
+    <div class="dialog__actions">
+      <button class="btn btn--sekunder">Batal</button>
+      <button class="btn btn--primer">Kirim Laporan</button>
+    </div>
+  </section>
+</div>
+</body>
+</html>

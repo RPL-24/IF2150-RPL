@@ -1,0 +1,19 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC01 — Alternatif 1: Domain Email Tidak Valid
+actor "Calon Pengguna" as User
+boundary ":HalamanOtentikasi" as UIo
+control ":AkunController" as AC
+User -> UIo: kirimFormulirPendaftaran(nama, nim, email, kataSandi, setujuKebijakan)
+UIo -> AC: daftarAkun(nama, nim, email, kataSandi, setujuKebijakan)
+AC -> AC: validasiKelengkapanFormulir(nama, nim, email, kataSandi, setujuKebijakan)
+AC -> AC: validasiDomainEmail(email)
+note right of AC: Domain bukan @itb.ac.id,\npendaftaran dibatalkan (KF05)
+AC --> UIo: false (domain tidak valid)
+UIo -> UIo: tampilkanPesanGalat("Harap gunakan email berdomain @itb.ac.id")
+@enduml

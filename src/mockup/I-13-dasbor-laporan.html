@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-13 Dasbor Admin: Daftar Laporan</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  .stat { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-5); }
+  .stat .panel { display: flex; flex-direction: column; gap: 4px; }
+  .stat .angka { font: 700 30px/38px var(--font-sans); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar="admin"></div>
+
+  <div class="shell">
+    <aside data-rail="admin" data-aktif="Daftar Laporan"></aside>
+
+    <main class="content">
+      <div class="content__inner col gap-6">
+
+        <div>
+          <h1 class="h-page">Daftar Laporan</h1>
+          <p class="muted mt-2">Tinjau laporan pengguna terhadap listing dan akun</p>
+        </div>
+
+        <div class="stat">
+          <div class="panel">
+            <span class="t-caption muted">Baru</span>
+            <span class="angka" style="color:var(--green-700)">6</span>
+          </div>
+          <div class="panel">
+            <span class="t-caption muted">Sedang ditinjau</span>
+            <span class="angka" style="color:var(--warning)">3</span>
+          </div>
+          <div class="panel">
+            <span class="t-caption muted">Selesai bulan ini</span>
+            <span class="angka">24</span>
+          </div>
+          <div class="panel">
+            <span class="t-caption muted">Akun diblokir</span>
+            <span class="angka" style="color:var(--danger)">2</span>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <a href="#" class="is-active">Semua (33)</a>
+          <a href="#">Baru (6)</a>
+          <a href="#">Sedang Ditinjau (3)</a>
+          <a href="#">Selesai (24)</a>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width:112px">ID</th>
+              <th>Objek dilaporkan</th>
+              <th style="width:150px">Kategori</th>
+              <th style="width:170px">Pelapor</th>
+              <th style="width:110px">Tanggal</th>
+              <th style="width:150px">Status</th>
+              <th style="width:120px"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="is-active">
+              <td class="mono">LP-0033</td>
+              <td><strong>Jas Praktikum Kimia Ukuran M</strong><div class="t-caption muted">Listing · Rani Permatasari</div></td>
+              <td>Penipuan</td>
+              <td>Dinda Ayu Lestari</td>
+              <td class="mono">28/10/2026</td>
+              <td><span class="badge">Baru</span></td>
+              <td><button class="btn btn--sekunder btn--sm">Lihat Detail</button></td>
+            </tr>
+            <tr>
+              <td class="mono">LP-0032</td>
+              <td><strong>@anonim22</strong><div class="t-caption muted">Akun · 4 listing aktif</div></td>
+              <td>Konten tidak pantas</td>
+              <td>Fajar Ramadhan</td>
+              <td class="mono">28/10/2026</td>
+              <td><span class="badge">Baru</span></td>
+              <td><button class="btn btn--sekunder btn--sm">Lihat Detail</button></td>
+            </tr>
+            <tr>
+              <td class="mono">LP-0031</td>
+              <td><strong>Powerbank 20000mAh Murah</strong><div class="t-caption muted">Listing · Bagas Adi Nugroho</div></td>
+              <td>Penipuan</td>
+              <td>Rani Permatasari</td>
+              <td class="mono">27/10/2026</td>
+              <td><span class="badge badge--tinjau">Sedang Ditinjau</span></td>
+              <td><button class="btn btn--sekunder btn--sm">Lihat Detail</button></td>
+            </tr>
+            <tr>
+              <td class="mono">LP-0030</td>
+              <td><strong>Galat saat unggah foto</strong><div class="t-caption muted">Bug · Halaman formulir listing</div></td>
+              <td>Bug</td>
+              <td>Sulthan Dhiyazka S.</td>
+              <td class="mono">27/10/2026</td>
+              <td><span class="badge badge--tinjau">Sedang Ditinjau</span></td>
+              <td><button class="btn btn--sekunder btn--sm">Lihat Detail</button></td>
+            </tr>
+            <tr>
+              <td class="mono">LP-0029</td>
+              <td><strong>Jaket Himpunan HMIF 2023</strong><div class="t-caption muted">Listing · Fajar Ramadhan</div></td>
+              <td>Konten tidak pantas</td>
+              <td>Dinda Ayu Lestari</td>
+              <td class="mono">26/10/2026</td>
+              <td><span class="badge badge--selesai">Selesai</span></td>
+              <td><button class="btn btn--sekunder btn--sm">Lihat Detail</button></td>
+            </tr>
+            <tr>
+              <td class="mono">LP-0028</td>
+              <td><strong>@jualcepat_itb</strong><div class="t-caption muted">Akun · diblokir 26/10/2026</div></td>
+              <td>Penipuan</td>
+              <td>Bagas Adi Nugroho</td>
+              <td class="mono">25/10/2026</td>
+              <td><span class="badge badge--selesai">Selesai</span></td>
+              <td><button class="btn btn--sekunder btn--sm">Lihat Detail</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

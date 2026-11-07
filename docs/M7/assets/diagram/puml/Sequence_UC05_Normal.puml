@@ -1,0 +1,45 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC05 — Normal
+actor "Pengguna" as User
+
+boundary ":HalamanProfil" as UI
+boundary ":KartuProduk" as Kartu
+control ":AkunController" as AC
+control ":Otorisasi" as Oto
+entity ":SesiLogin" as Sesi
+entity ":Akun" as Akun
+entity ":Barang" as Barang
+entity ":DokumenLegal" as Dok
+User -> UI: muatProfil()
+UI -> AC: getProfil(token)
+AC -> AC: getIdAkunDariSesi(token)
+AC -> Oto: verifikasiToken(token)
+Oto -> Sesi: cariSesiAktif(token)
+Sesi --> Oto: sesiLogin
+Oto --> AC: sesiLogin
+AC -> Sesi: getIdAkun()
+Sesi --> AC: idAkun
+AC -> Akun: getDataIdentitas()
+Akun --> AC: dataIdentitas (nama, NIM, surel)
+AC -> AC: getDaftarBarangAkun(idAkun)
+AC -> Barang: getListingPenjual(idAkun)
+Barang --> AC: daftarBarang
+AC --> UI: {dataIdentitas, daftarBarang}
+UI -> UI: tampilkanProfil(dataAkun)
+UI -> UI: tampilkanDaftarListing(daftarBarang)
+loop setiap barang
+  UI -> Kartu: render(barang)
+end
+User -> UI: bukaPengaturanAkun()
+UI -> AC: getTautanDokumenLegal()
+AC -> Dok: getTautan()
+Dok --> AC: tautanDokumen
+AC --> UI: tautanDokumen
+UI -> UI: tampilkanTautanKebijakan(tautanDokumen)
+@enduml

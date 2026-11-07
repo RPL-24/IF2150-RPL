@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verifikasi Surel · ITBELI</title>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/app.css">
+<script src="/js/api.js" defer></script>
+<script src="/js/HalamanOtentikasi.js" defer></script>
+</head>
+<body data-halaman="verifikasi">
+<div class="page">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand__mark">IT</div>
+      <div>
+        <div class="brand__name">ITBELI</div>
+        <div class="brand__tag">Marketplace preloved sivitas ITB</div>
+      </div>
+    </div>
+    <div class="topbar__right">
+      <a class="btn btn--sekunder btn--sm" href="/masuk">Masuk</a>
+      <a class="btn btn--primer btn--sm" href="/daftar">Daftar</a>
+    </div>
+  </header>
+
+  <main class="verif-wrap">
+    <section class="verif">
+
+      <div class="verif__icon"><span class="ic ic--lock" style="width:26px;height:26px"></span></div>
+
+      <div>
+        <h1 class="t-display-sm">Verifikasi surel Anda</h1>
+        <p class="muted mt-2" style="font-size:15px;line-height:23px">
+          Kode verifikasi telah dikirim ke <strong id="email-tujuan" style="color:var(--text-900)"></strong>.
+          Masukkan enam digit kode tersebut untuk mengaktifkan akun.
+        </p>
+      </div>
+
+      <div id="pesan-galat" class="infobox infobox--galat" role="alert" hidden></div>
+
+      <form id="formulir-verifikasi" class="authform" style="padding-top:0" novalidate>
+        <div class="otp" aria-label="Kode verifikasi enam digit">
+          <input type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 3">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 5">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 6">
+        </div>
+
+        <div class="row">
+          <span id="label-berlaku" class="muted" hidden>Kode berlaku <strong id="sisa-waktu" style="color:var(--text-900)">15:00</strong></span>
+          <button id="tombol-kirim-ulang" class="btn btn--teks btn--sm ml-auto" type="button" disabled>Kirim ulang kode</button>
+        </div>
+
+        <button id="tombol-verifikasi" class="btn btn--primer btn--blok" type="submit">Verifikasi</button>
+      </form>
+
+      <div class="infobox--netral infobox">
+        Belum menerima kode? Tombol kirim ulang akan aktif setelah hitung mundur habis.
+        Periksa juga folder spam pada surel institusi Anda.
+      </div>
+
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+</div>
+</body>
+</html>

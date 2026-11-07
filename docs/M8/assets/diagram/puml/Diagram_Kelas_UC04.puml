@@ -1,0 +1,64 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanOtentikasi" as C01 {
+  - nama: String
+  - nim: String
+  - email: String
+  - kataSandi: String
+  - setujuKebijakan: Boolean
+  - kodeVerifikasi: String
+  - sisaWaktu: Integer
+  - token: String
+  + tampilkanTombolKeluar(): void
+  + kirimPermintaanLogout(token: String): void
+  + hapusTokenLokal(): void
+  + arahkanKeHalamanLogin(): void
+}
+class "AkunController" as C13 {
+  + logout(token: String): Boolean
+  + cabutSesi(token: String): void
+}
+class "Akun" as C23 {
+  - idAkun: String
+  - nama: String
+  - nim: String
+  - email: String
+  - kataSandiHash: String
+  - statusAkun: String
+  - statusBlokir: Boolean
+  - peran: String
+  - setujuKebijakan: Boolean
+  - waktuDaftar: DateTime
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+  + nonaktifkan(token: String): void
+}
+class "Otorisasi" as C41 {
+  + verifikasiToken(token: String): SesiLogin
+}
+C01 --> C13
+C13 ..> C28
+C13 ..> C41
+C41 ..> C28
+C23 "1" -- "0..*" C28
+@enduml

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-07 Formulir Listing</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  .form-wrap { display: grid; grid-template-columns: 1fr 340px; gap: var(--sp-10);
+    padding: var(--sp-8) var(--sp-16); }
+  .dropzone { height: 150px; border: 1.5px dashed var(--border); border-radius: var(--radius-md);
+    background: var(--surface); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: var(--sp-2); }
+  .fotos { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sp-3); }
+  .fotos > div { position: relative; height: 104px; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); overflow: hidden; background: var(--surface); }
+  .fotos .tag { position: absolute; left: 4px; bottom: 4px; }
+  .fotos .kosong { border-style: dashed; display: grid; place-items: center; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+  .preview { position: sticky; top: 0; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar></div>
+
+  <div class="form-wrap">
+
+    <section class="col gap-5">
+
+      <div>
+        <p class="t-caption muted">Listing Saya · Buat listing baru</p>
+        <h1 class="h-page mt-2">Jual Barang</h1>
+      </div>
+
+      <div class="field">
+        <div class="field__label">Foto barang <span class="muted">(maksimum 5, JPG atau PNG, maksimum 5 MB)</span></div>
+        <div class="fotos">
+          <div><div class="ph ph--jas"></div><span class="badge badge--baru tag">Utama</span></div>
+          <div><div class="ph ph--jas"></div></div>
+          <div><div class="ph ph--lab"></div></div>
+          <div class="kosong"><span class="ic ic--plus"></span></div>
+          <div class="kosong"><span class="ic ic--plus"></span></div>
+        </div>
+        <div class="field__hint">Seret foto untuk mengubah urutan. Foto pertama dipakai sebagai foto utama pada katalog.</div>
+      </div>
+
+      <div class="field">
+        <div class="field__label">Judul barang</div>
+        <div class="field__input">Jas Praktikum Kimia Ukuran M</div>
+        <div class="field__hint">28 / 80 karakter</div>
+      </div>
+
+      <div class="two">
+        <div class="field">
+          <div class="field__label">Harga (Rp)</div>
+          <div class="field__input">120.000</div>
+        </div>
+        <div class="field">
+          <div class="field__label">Kategori</div>
+          <div class="field__input select">Jas praktikum</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field__label">Lokasi titik temu COD</div>
+        <div class="field__input select is-error is-placeholder">Pilih lokasi titik temu</div>
+        <div class="field__error">Lokasi titik temu COD wajib dipilih.</div>
+      </div>
+
+      <div class="field">
+        <div class="field__label">Deskripsi kondisi</div>
+        <div class="field__area">
+          Dipakai satu semester untuk Praktikum Kimia Dasar. Tidak ada noda bahan kimia,
+          kancing lengkap, jahitan masih rapat. Nama pemilik lama sudah dilepas.
+        </div>
+        <div class="field__hint">183 / 1000 karakter</div>
+      </div>
+
+      <div class="row gap-3">
+        <button class="btn btn--primer">Publikasikan</button>
+        <button class="btn btn--sekunder">Batal</button>
+      </div>
+
+    </section>
+
+    <aside class="preview col gap-3">
+      <div class="rail__title">Pratinjau di katalog</div>
+      <article class="card">
+        <div class="card__media"><div class="ph ph--jas"></div></div>
+        <div class="card__body">
+          <div class="card__price">Rp120.000</div>
+          <div class="card__title">Jas Praktikum Kimia Ukuran M</div>
+          <div class="card__meta">Pilih lokasi · Jas praktikum</div>
+        </div>
+      </article>
+      <div class="infobox--netral infobox">
+        Beginilah tampilan listing Anda pada halaman katalog. Judul yang melebihi dua baris
+        akan dipotong secara otomatis.
+      </div>
+    </aside>
+
+  </div>
+</div>
+</body>
+</html>

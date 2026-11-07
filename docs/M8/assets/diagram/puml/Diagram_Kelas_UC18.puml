@@ -1,0 +1,74 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanPercakapan" as C08 {
+  - percakapanAktif: Percakapan
+  - daftarPercakapan: List<Map<String, Any>>
+  - isiTeksInput: String
+  + bukaDaftarPercakapan(): void
+  + showDaftarPercakapan(daftar: List<Map<String, Any>>): void
+}
+class "PercakapanController" as C18 {
+  + dekripsiPesan(daftarPesan: List<Pesan>): List<String>
+  + getDaftarPercakapan(token: String): List<Map<String, Any>>
+  + ambilCuplikanPesanTerakhir(idPercakapan: String): String
+  + hitungPesanBelumDibaca(idPercakapan: String, idAkun: String): Integer
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+}
+class "Percakapan" as C33 {
+  - idPercakapan: String
+  - idPembeli: String
+  - idPenjual: String
+  - idBarang: String
+  - waktuDibuat: DateTime
+  - waktuPembaruanTerakhir: DateTime
+  + getDaftarPercakapanByPengguna(idAkun: String): List<Percakapan>
+  + getLawanBicara(idAkun: String): Map<String, String>
+}
+class "Pesan" as C34 {
+  - idPesan: String
+  - idPercakapan: String
+  - idPengirim: String
+  - isiPesanTerenkripsi: String
+  - waktuKirim: DateTime
+  - statusBaca: Boolean
+  + getCuplikanPesanTerakhir(idPercakapan: String): Pesan
+  + hitungPesanBelumDibaca(idPercakapan: String, idAkun: String): Integer
+}
+class "Otorisasi" as C41 {
+  + verifikasiToken(token: String): SesiLogin
+}
+class "Kriptografi" as C42 {
+  - saltRounds: Integer
+  - kunciEnkripsi: String
+  + dekripsi(isiPesanTerenkripsi: String): String
+}
+C08 --> C18
+C18 ..> C28
+C18 ..> C33
+C18 ..> C34
+C18 ..> C41
+C18 ..> C42
+C41 ..> C28
+C33 "1" *-- "0..*" C34
+@enduml

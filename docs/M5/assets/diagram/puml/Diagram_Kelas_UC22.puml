@@ -1,0 +1,35 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC22 - Menghapus Listing yang Dilaporkan
+class "C11 DasborAdmin" as C11
+class "C19 NotifikasiController" as C19
+class "C21 ModerasiController" as C21
+class "C26 Admin" as C26
+class "C29 Barang" as C29
+class "C35 Notifikasi" as C35
+class "C38 LogAudit" as C38
+class "C39 LogAdmin" as C39
+C11 --> C21
+C19 ..> C35
+C21 ..> C26
+C21 ..> C29
+C21 ..> C38
+C21 ..> C39
+C21 ..> C19
+C26 "1" -- "0..*" C39
+@enduml

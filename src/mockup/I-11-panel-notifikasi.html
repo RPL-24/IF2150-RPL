@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-11 Panel Notifikasi</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  .notif { position: absolute; top: 72px; right: 108px; width: 380px; z-index: 5; }
+  .notif__head { display: flex; align-items: center; padding: var(--sp-4);
+    border-bottom: 1px solid var(--border); }
+  .notif__item { display: flex; gap: var(--sp-3); padding: var(--sp-4);
+    border-bottom: 1px solid var(--border); }
+  .notif__item:last-child { border-bottom: none; }
+  .notif__item.is-baru { background: var(--green-50); }
+  .notif__ic { width: 36px; height: 36px; flex: none; border-radius: var(--radius-full);
+    background: var(--bg); display: grid; place-items: center; }
+  .notif__item.is-baru .notif__ic { background: var(--surface); }
+  .notif__dot { width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green-700); flex: none; align-self: center; }
+  .dim { position: absolute; inset: 0; background: rgba(20,24,26,.12); z-index: 4; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar></div>
+
+  <div class="shell">
+    <aside data-rail="katalog"></aside>
+    <main class="content">
+      <div class="content__inner col gap-6">
+        <div>
+          <h1 class="h-page">Barang Tersedia</h1>
+          <p class="muted mt-2">128 listing aktif dari sivitas ITB</p>
+        </div>
+        <div class="grid" data-cards="8"></div>
+      </div>
+    </main>
+  </div>
+
+  <div class="dim"></div>
+
+  <section class="notif popover">
+    <div class="notif__head">
+      <span class="h-sec" style="font-size:17px">Notifikasi</span>
+      <button class="btn btn--teks btn--sm ml-auto">Tandai semua dibaca</button>
+    </div>
+
+    <div class="notif__item is-baru">
+      <div class="notif__ic"><span class="ic ic--chat"></span></div>
+      <div class="grow">
+        <div style="font-size:13px;line-height:19px">
+          <strong>Pesan baru dari Rani Permatasari</strong> tentang Jas Praktikum Kimia Ukuran M.
+        </div>
+        <div class="t-caption faint mt-2">5 menit lalu</div>
+      </div>
+      <span class="notif__dot"></span>
+    </div>
+
+    <div class="notif__item is-baru">
+      <div class="notif__ic"><span class="ic ic--chat"></span></div>
+      <div class="grow">
+        <div style="font-size:13px;line-height:19px">
+          <strong>Bagas Adi Nugroho</strong> menanyakan Kalkulator Casio FX-991EX.
+        </div>
+        <div class="t-caption faint mt-2">2 jam lalu</div>
+      </div>
+      <span class="notif__dot"></span>
+    </div>
+
+    <div class="notif__item is-baru">
+      <div class="notif__ic"><span class="ic ic--flag"></span></div>
+      <div class="grow">
+        <div style="font-size:13px;line-height:19px">
+          Listing <strong>“Powerbank 20000mAh”</strong> dihapus admin.
+          Alasan: foto tidak sesuai dengan barang yang dijual.
+        </div>
+        <div class="t-caption faint mt-2">Kemarin, 19:40</div>
+      </div>
+      <span class="notif__dot"></span>
+    </div>
+
+    <div class="notif__item">
+      <div class="notif__ic"><span class="ic ic--bell"></span></div>
+      <div class="grow">
+        <div style="font-size:13px;line-height:19px">
+          Laporan Anda terhadap akun <strong>@anonim22</strong> telah selesai ditinjau.
+        </div>
+        <div class="t-caption faint mt-2">3 hari lalu</div>
+      </div>
+    </div>
+
+    <div class="notif__item">
+      <div class="notif__ic"><span class="ic ic--lock"></span></div>
+      <div class="grow">
+        <div style="font-size:13px;line-height:19px">
+          Akun Anda berhasil diverifikasi dengan surel institusi.
+        </div>
+        <div class="t-caption faint mt-2">1 minggu lalu</div>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

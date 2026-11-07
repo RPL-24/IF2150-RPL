@@ -1,0 +1,26 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC13 - Melihat Katalog Listing
+class "C05 HalamanKatalog" as C05
+class "C06 KartuProduk" as C06
+class "C15 KatalogController" as C15
+class "C29 Barang" as C29
+C05 --> C15
+C05 "1" *-- "0..*" C06
+C15 ..> C29
+@enduml

@@ -1,0 +1,58 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC22 — Normal
+actor "Admin" as User
+boundary ":DasborAdmin" as Dash
+control ":ModerasiController" as MC
+control ":Otorisasi" as Oto
+entity ":SesiLogin" as Sesi
+entity ":Admin" as Adm
+entity ":Barang" as Barang
+entity ":Akun" as Akun
+entity ":FotoBarang" as Foto
+participant ":PenyimpananBerkas" as Store
+control ":NotifikasiController" as NC
+entity ":Notifikasi" as Notif
+participant ":SurelAdapter" as Surel
+entity ":LogAdmin" as LogA
+entity ":LogAudit" as Audit
+User -> Dash: onClickHapusListing(idBarang)
+Dash -> Dash: tampilkanModalKonfirmasi("Hapus Listing")
+User -> Dash: konfirmasiTindakan(alasan)
+Dash -> MC: hapusListingDilaporkan(token, idLaporan, idBarang, alasan)
+MC -> MC: otorisasiAdmin(token)
+MC -> Oto: verifikasiAdmin(token)
+Oto -> Sesi: cariSesiAktif(token)
+Sesi --> Oto: sesiLogin
+Oto -> Sesi: getIdAkun()
+Sesi --> Oto: idAkun
+Oto -> Adm: verifikasiPeran(idAkun)
+Adm --> Oto: true
+Oto --> MC: sesiLogin
+MC -> Sesi: getIdAkun()
+Sesi --> MC: idAdmin
+MC -> Barang: cariById(idBarang)
+Barang --> MC: barang (idPenjual, judul)
+MC -> Akun: cariById(idPenjual)
+Akun --> MC: pemilik (surel)
+MC -> Foto: getGaleri(idBarang)
+Foto --> MC: daftarFoto
+MC -> Foto: hapus(idBarang)
+MC -> Barang: hapus(idBarang)
+MC -> Store: hapus(daftarPathBerkas)
+MC -> NC: kirimPeringatanPenghapusan(idPenjual, email, judul, alasan)
+NC -> Notif: simpan(idPenjual, "Penghapusan Listing", isi, waktuKirim, false)
+NC -> Surel: kirimSurel(email, "Listing Anda dihapus", isi)
+NC --> MC: true
+MC -> MC: catatLogAdmin(idAdmin, "Hapus Listing", idBarang, alasan)
+MC -> LogA: catatTindakan(idAdmin, "Hapus Listing", idBarang, alasan)
+MC -> MC: catatLogAudit(idLaporan, idAdmin, "Hapus Listing")
+MC -> Audit: catatPenghapusanListing(idLaporan, idAdmin, idBarang)
+MC --> Dash: true
+Dash -> Dash: tampilkanStatusTerbaru("Listing dihapus")
+@enduml

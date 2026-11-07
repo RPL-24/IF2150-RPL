@@ -1,0 +1,32 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC02 - Memverifikasi Surel
+class "C01 HalamanOtentikasi" as C01
+class "C13 AkunController" as C13
+class "C19 NotifikasiController" as C19
+class "C23 Akun" as C23
+class "C27 TokenVerifikasi" as C27
+class "C35 Notifikasi" as C35
+C01 --> C13
+C13 ..> C23
+C13 ..> C27
+C13 ..> C19
+C19 ..> C35
+C23 "1" -- "0..*" C27
+C23 "1" -- "0..*" C35
+@enduml

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dokumen Legal · ITBELI</title>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/app.css">
+<style>
+  .legal { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: var(--sp-10);
+    padding: var(--sp-8) var(--sp-16); }
+  .toc { position: sticky; top: var(--sp-6); align-self: start;
+    display: flex; flex-direction: column; gap: var(--sp-2); }
+  .toc nav { display: flex; flex-direction: column; gap: var(--sp-2); }
+  .toc a { font-size: 13px; color: var(--text-600); text-decoration: none;
+    padding: 6px var(--sp-3); border-left: 2px solid var(--border); }
+  .toc a.is-active { color: var(--green-700); font-weight: 600; border-left-color: var(--green-700); }
+  .doc { max-width: 720px; display: flex; flex-direction: column; gap: var(--sp-5); }
+  .doc section { display: flex; flex-direction: column; scroll-margin-top: var(--sp-6); }
+  .doc section + section { margin-top: var(--sp-5); }
+  .doc h3 { font: 600 17px/24px var(--font-sans); }
+  .doc p { font-size: 15px; line-height: 24px; color: var(--text-600); }
+  .tabs a { cursor: pointer; }
+  .brand { text-decoration: none; color: inherit; }
+
+  @media (max-width: 960px) {
+    .legal { grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); padding: var(--sp-6) var(--sp-4); }
+    .toc { position: static; }
+  }
+  @media (max-width: 600px) {
+    .toc { display: none; }
+  }
+</style>
+<script src="/js/api.js" defer></script>
+<script src="/js/HalamanDokumenLegal.js" defer></script>
+</head>
+<body>
+<div class="page">
+  <header class="topbar">
+    <a class="brand" href="/">
+      <div class="brand__mark">IT</div>
+      <div>
+        <div class="brand__name">ITBELI</div>
+        <div class="brand__tag">Marketplace preloved sivitas ITB</div>
+      </div>
+    </a>
+    <div class="topbar__right">
+      <a class="btn btn--sekunder btn--sm" href="/masuk" data-tamu>Masuk</a>
+      <a class="btn btn--primer btn--sm" href="/daftar" data-tamu>Daftar</a>
+      <a class="btn btn--sekunder btn--sm" href="/" data-pengguna hidden>Beranda</a>
+    </div>
+  </header>
+
+  <main class="legal">
+
+    <!-- I15-O05 -->
+    <aside class="toc">
+      <div class="rail__title" style="margin-bottom:var(--sp-2)">Daftar isi</div>
+      <nav id="daftar-isi" aria-label="Daftar isi dokumen"></nav>
+    </aside>
+
+    <article class="doc">
+
+      <!-- I15-O01 -->
+      <div class="tabs" role="tablist">
+        <a href="/legal?jenis=kebijakan-privasi" data-jenis="kebijakan-privasi" role="tab">Kebijakan Privasi</a>
+        <a href="/legal?jenis=ketentuan-penggunaan" data-jenis="ketentuan-penggunaan" role="tab">Ketentuan Penggunaan</a>
+      </div>
+
+      <div id="pesan-galat" class="infobox infobox--galat" role="alert" hidden></div>
+
+      <div id="dokumen" class="doc" hidden>
+        <!-- I15-O02 -->
+        <div>
+          <h1 id="judul-dokumen" class="h-page"></h1>
+          <p id="info-versi" class="muted mt-2" style="font-size:13px"></p>
+        </div>
+
+        <!-- I15-O04 -->
+        <div id="klausa-privasi" class="infobox" hidden></div>
+
+        <!-- I15-O03 -->
+        <div id="isi-dokumen"></div>
+      </div>
+
+    </article>
+  </main>
+</div>
+</body>
+</html>

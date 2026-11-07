@@ -1,0 +1,31 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC02 — Normal
+actor "Pengguna" as User
+boundary ":HalamanOtentikasi" as UIo
+control ":AkunController" as AC
+entity ":Akun" as Akun
+entity ":TokenVerifikasi" as Tok
+User -> UIo: kirimKodeVerifikasi(email, kode)
+UIo -> AC: verifikasiAkun(email, kode)
+AC -> Akun: cariByEmail(email)
+Akun --> AC: akun
+AC -> Tok: cariTokenAktif(idAkun)
+Tok --> AC: tokenVerifikasi
+AC -> AC: validasiKodeVerifikasi(kode)
+AC -> Tok: cocokkanKode(kode)
+Tok --> AC: true
+AC -> AC: cekKedaluwarsaKode(idToken)
+AC -> Tok: sudahKedaluwarsa()
+Tok --> AC: false
+AC -> Tok: tandaiTerpakai()
+AC -> Akun: perbaruiStatusAkun("Terverifikasi")
+Akun --> AC: true
+AC --> UIo: true
+UIo -> UIo: arahkanKeBeranda()
+@enduml

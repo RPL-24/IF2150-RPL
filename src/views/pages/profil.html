@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profil Akun · ITBELI</title>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/app.css">
+<style>
+  .profil { display: flex; gap: var(--sp-6); align-items: center; flex-wrap: wrap; }
+  .profil__avatar { width: 96px; height: 96px; border-radius: var(--radius-full); flex: none;
+    background: var(--green-200); color: var(--green-900);
+    display: grid; place-items: center; font: 700 32px/1 var(--font-sans); }
+  .profil__stat { display: flex; gap: var(--sp-8); }
+  .profil__stat div span { display: block; }
+  .menu { display: flex; flex-direction: column; gap: 2px; }
+  .menu a { display: flex; align-items: center; padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--radius-sm); color: var(--text-900); text-decoration: none; font-size: 14px; }
+  .menu a:hover { background: var(--green-50); }
+  .menu a.keluar { color: var(--danger); }
+  .dua { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--sp-8); align-items: start; }
+  a.card { color: inherit; text-decoration: none; }
+  a.card:hover { box-shadow: var(--shadow-md); }
+  .card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .kosong { padding: var(--sp-8); text-align: center; color: var(--text-600); }
+
+  @media (max-width: 960px) {
+    .dua { grid-template-columns: minmax(0, 1fr); }
+    .grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .profil__stat { margin-left: 0; }
+  }
+</style>
+<script src="/js/api.js" defer></script>
+<script src="/js/HalamanOtentikasi.js" defer></script>
+<script src="/js/HalamanProfil.js" defer></script>
+</head>
+<body data-halaman="profil">
+<div class="page">
+  <header class="topbar">
+    <a class="brand" href="/">
+      <div class="brand__mark">IT</div>
+      <div>
+        <div class="brand__name">ITBELI</div>
+        <div class="brand__tag">Marketplace preloved sivitas ITB</div>
+      </div>
+    </a>
+  </header>
+
+  <div class="shell">
+    <aside class="rail">
+      <a class="btn btn--primer btn--blok" href="/listing-form">+ Jual Barang</a>
+      <div class="rail__group">
+        <div class="rail__title">Akun Saya</div>
+        <nav class="navlist">
+          <a href="/katalog"><span class="dot"></span>Katalog</a>
+          <a href="/listing-saya"><span class="dot"></span>Listing Saya</a>
+          <a href="/percakapan"><span class="dot"></span>Percakapan</a>
+          <a href="/notifikasi"><span class="dot"></span>Notifikasi</a>
+          <a href="/profil" class="is-active"><span class="dot"></span>Profil Akun</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="content__inner col gap-6">
+
+        <div id="pesan-galat" class="infobox infobox--galat" role="alert" hidden></div>
+
+        <div id="profil" class="col gap-6" hidden>
+
+          <!-- I09-O01 -->
+          <div class="panel">
+            <div class="profil">
+              <div id="inisial" class="profil__avatar" aria-hidden="true"></div>
+              <div class="col gap-1">
+                <h1 id="nama-akun" class="h-page" style="font-size:28px;line-height:36px"></h1>
+                <div id="identitas-akun" class="muted"></div>
+                <div class="row gap-2 mt-2">
+                  <span id="status-akun" class="badge"></span>
+                  <span id="badge-admin" class="badge badge--tinjau" hidden>Admin</span>
+                  <!-- I09-O06 -->
+                  <span id="badge-diblokir" class="badge badge--bahaya" hidden>Akun diblokir</span>
+                </div>
+              </div>
+              <div class="profil__stat ml-auto">
+                <div>
+                  <span id="jumlah-tersedia" class="t-price-lg">0</span>
+                  <span class="t-caption muted">Listing tersedia</span>
+                </div>
+                <div>
+                  <span id="jumlah-terjual" class="t-price-lg">0</span>
+                  <span class="t-caption muted">Barang terjual</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dua">
+
+            <!-- I09-O02 -->
+            <section class="col gap-4">
+              <div class="row">
+                <h2 class="h-sec">Listing saya</h2>
+                <a class="btn btn--teks btn--sm ml-auto" href="/listing-saya">Lihat semua</a>
+              </div>
+              <div id="daftar-listing" class="grid grid--3"></div>
+              <div id="listing-kosong" class="panel kosong" hidden>
+                Anda belum memiliki listing.
+                <div class="mt-4"><a class="btn btn--primer btn--sm" href="/listing-form">+ Jual Barang</a></div>
+              </div>
+            </section>
+
+            <!-- I09-O03 -->
+            <aside class="panel col gap-3">
+              <div class="rail__title">Pengaturan akun</div>
+              <nav class="menu">
+                <!-- I09-O04 -->
+                <a id="tautan-kebijakan" href="/legal?jenis=kebijakan-privasi">Kebijakan Privasi</a>
+                <a href="/legal?jenis=ketentuan-penggunaan">Ketentuan Penggunaan</a>
+                <div class="divider mt-2"></div>
+                <!-- I09-O05 -->
+                <a id="tombol-keluar" href="/masuk" class="keluar mt-2">Keluar</a>
+              </nav>
+            </aside>
+
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

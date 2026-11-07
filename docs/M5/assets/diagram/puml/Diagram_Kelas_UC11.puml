@@ -1,0 +1,28 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC11 - Menandai Listing Terjual
+class "C03 HalamanListingPenjual" as C03
+class "C14 BarangController" as C14
+class "C25 Penjual" as C25
+class "C28 SesiLogin" as C28
+class "C29 Barang" as C29
+C03 --> C14
+C14 ..> C28
+C14 ..> C29
+C25 "1" *-- "0..*" C29
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC03 — Normal
+actor "Pengguna" as User
+boundary ":HalamanOtentikasi" as UIo
+control ":AkunController" as AC
+control ":Kriptografi" as Kr
+entity ":Akun" as Akun
+entity ":SesiLogin" as Sesi
+User -> UIo: kirimFormulirLogin(email, kataSandi)
+UIo -> AC: login(email, kataSandi)
+AC -> AC: cariAkunByEmail(email)
+AC -> Akun: cariByEmail(email)
+Akun --> AC: akun (idAkun, kataSandiHash, statusAkun, statusBlokir, peran)
+AC -> AC: verifikasiKataSandi(kataSandi, kataSandiHash)
+AC -> Kr: cocokkanHash(kataSandi, kataSandiHash)
+Kr --> AC: true
+AC -> AC: cekStatusAkun(idAkun)
+AC -> Akun: getStatusAkun()
+Akun --> AC: "Terverifikasi", tidak diblokir
+AC -> AC: buatSesiLogin(idAkun)
+AC -> Sesi: buatToken(idAkun)
+Sesi --> AC: token
+AC -> Sesi: simpan(idAkun, token, waktuMulai, waktuKedaluwarsa)
+Sesi --> AC: true
+note right of Sesi: Masa berlaku sesi paling lama 24 jam (KF11)
+AC --> UIo: {token, peran}
+UIo -> UIo: arahkanKeBeranda()
+@enduml

@@ -1,0 +1,28 @@
+# Layanan pendukung ITBELI untuk pengembangan lokal.
+#   docker compose up -d
+# Kredensial dibaca dari .env (lihat .env.example).
+
+name: itbeli
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER:-itbeli}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Isi DB_PASSWORD di .env}
+      POSTGRES_DB: ${DB_NAME:-itbeli}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - itbeli-db:/var/lib/postgresql/data
+
+  # SMTP lokal untuk menangkap surel (kode verifikasi, pemberitahuan moderasi).
+  # Kotak masuk dapat dilihat di http://localhost:8025
+  mailpit:
+    image: axllent/mailpit:v1.21
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  itbeli-db:

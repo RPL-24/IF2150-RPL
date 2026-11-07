@@ -1,0 +1,39 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC17 - Mengirim Pesan dalam Percakapan
+class "C08 HalamanPercakapan" as C08
+class "C09 PanelNotifikasi" as C09
+class "C18 PercakapanController" as C18
+class "C19 NotifikasiController" as C19
+class "C23 Akun" as C23
+class "C28 SesiLogin" as C28
+class "C33 Percakapan" as C33
+class "C34 Pesan" as C34
+class "C35 Notifikasi" as C35
+C08 --> C18
+C09 --> C19
+C18 ..> C28
+C18 ..> C33
+C18 ..> C34
+C18 ..> C19
+C19 ..> C35
+C23 "1" -- "0..*" C28
+C23 "1" -- "0..*" C35
+C33 "1" *-- "0..*" C34
+C23 "1" -- "0..*" C34
+@enduml
