@@ -74,6 +74,28 @@ router.post('/login', async (req, res) => {
   res.json({ sukses: true, data: { token: hasil.token, peran: hasil.peran } });
 });
 
+router.get('/profil', Otorisasi.wajibLogin, async (req, res) => {
+  const profil = await AkunController.getProfil(req.token);
+  if (profil === null) {
+    return res.status(401).json({ sukses: false, pesan: 'Silakan masuk terlebih dahulu.' });
+  }
+  res.json({
+    sukses: true,
+    data: {
+      ...profil,
+      daftarBarang: profil.daftarBarang.map((b) => ({
+        idBarang: b.idBarang,
+        judul: b.judul,
+        harga: b.harga,
+        status: b.getStatus(),
+        fotoUtama: b.fotoUtama,
+        idKategori: b.idKategori,
+        idLokasi: b.idLokasi,
+      })),
+    },
+  });
+});
+
 router.post('/logout', async (req, res) => {
   const berhasil = await AkunController.logout(Otorisasi.ambilToken(req));
   if (!berhasil) {

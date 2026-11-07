@@ -2,6 +2,7 @@
 const crypto = require('crypto');
 const config = require('../config/env');
 const Akun = require('../models/Akun');
+const Barang = require('../models/Barang');
 const DokumenLegal = require('../models/DokumenLegal');
 const SesiLogin = require('../models/SesiLogin');
 const TokenVerifikasi = require('../models/TokenVerifikasi');
@@ -220,6 +221,29 @@ class AkunController {
   static async getIdAkunDariSesi(token) {
     const sesi = await Otorisasi.verifikasiToken(token);
     return sesi === null ? null : sesi.getIdAkun();
+  }
+
+  // ───────────── UC05 Melihat Profil Akun ─────────────
+
+  // KF04: identitas dan daftar listing akun yang sedang masuk; null bila sesi tidak valid
+  static async getProfil(token) {
+    const idAkun = await AkunController.getIdAkunDariSesi(token);
+    if (idAkun === null) return null;
+
+    const akun = await Akun.cariById(idAkun);
+    if (akun === null) return null;
+
+    return {
+      ...akun.getDataIdentitas(),
+      statusAkun: akun.getStatusAkun(),
+      statusBlokir: akun.statusBlokir,
+      peran: akun.peran,
+      daftarBarang: await AkunController.getDaftarBarangAkun(idAkun),
+    };
+  }
+
+  static async getDaftarBarangAkun(idAkun) {
+    return Barang.getListingPenjual(idAkun);
   }
 }
 
