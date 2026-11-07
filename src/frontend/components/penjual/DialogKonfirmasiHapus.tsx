@@ -23,7 +23,7 @@ interface DialogKonfirmasiHapusProps {
             <h3 className="text-lg font-bold text-gray-900">Konfirmasi Hapus Listing</h3>
             <p className="mt-2 text-sm text-gray-600">
             Apakah Anda yakin ingin menghapus listing makanan{" "}
-            <span className="font-semibold text-gray-900">"{namaMakanan}"</span>? Tindakan ini akan menonaktifkan listing dari katalog pembeli.
+            <span className="font-semibold text-gray-900">&ldquo;{namaMakanan}&rdquo;</span>? Tindakan ini akan menonaktifkan listing dari katalog pembeli.
             </p>
 
             <div className="mt-6 flex justify-end gap-3">
