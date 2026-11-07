@@ -3,7 +3,7 @@ const Barang = require('../../models/Barang');
 const FotoBarang = require('../../models/FotoBarang');
 const db = require('../../config/db');
 
-describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22)', () => {
+describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -59,19 +59,19 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22)', () => {
       jest.spyOn(db, 'query').mockResolvedValue({
         rows: [
           {
-            id_barang: 'b-123',
-            id_penjual: 'p-1',
-            judul: 'Sepeda Gunung',
+            id_barang: 'b-01',
+            id_penjual: 'p-01',
+            judul: 'Kalkulator Casio',
             harga: '500000',
-            deskripsi_kondisi: 'Siap pakai',
+            deskripsi_kondisi: 'Bagus',
             status: 'Tersedia',
           },
         ],
       });
 
-      const res = await Barang.cariById('b-123');
-      expect(res.idBarang).toBe('b-123');
-      expect(res.judul).toBe('Sepeda Gunung');
+      const res = await Barang.cariById('b-01');
+      expect(res).not.toBeNull();
+      expect(res.judul).toBe('Kalkulator Casio');
       expect(res.harga).toBe(500000);
     });
 
@@ -85,6 +85,32 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22)', () => {
       expect(mockClient.query).toHaveBeenCalledWith(
         'DELETE FROM barang WHERE id_barang = $1',
         ['b-123'],
+      );
+    });
+
+    test('nonaktifkanByPemilik() mengubah status seluruh barang Tersedia menjadi Dinonaktifkan (KF54)', async () => {
+      const mockClient = {
+        query: jest.fn().mockResolvedValue({ rowCount: 3 }),
+      };
+
+      const sukses = await Barang.nonaktifkanByPemilik('penjual-123', mockClient);
+      expect(sukses).toBe(true);
+      expect(mockClient.query).toHaveBeenCalledWith(
+        expect.stringContaining('WHERE id_penjual = $2 AND status = $3'),
+        [Barang.STATUS.DINONAKTIFKAN, 'penjual-123', Barang.STATUS.TERSEDIA],
+      );
+    });
+
+    test('pulihkanKatalog() memulihkan status barang Dinonaktifkan menjadi Tersedia (UC24)', async () => {
+      const mockClient = {
+        query: jest.fn().mockResolvedValue({ rowCount: 3 }),
+      };
+
+      const sukses = await Barang.pulihkanKatalog('penjual-123', mockClient);
+      expect(sukses).toBe(true);
+      expect(mockClient.query).toHaveBeenCalledWith(
+        expect.stringContaining('WHERE id_penjual = $2 AND status = $3'),
+        [Barang.STATUS.TERSEDIA, 'penjual-123', Barang.STATUS.DINONAKTIFKAN],
       );
     });
   });

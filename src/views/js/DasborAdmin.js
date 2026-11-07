@@ -1,4 +1,4 @@
-﻿// C11 DasborAdmin â€“ View & Boundary untuk Dasbor Moderasi Admin (I-13 & I-14).
+// C11 DasborAdmin – View & Boundary untuk Dasbor Moderasi Admin (I-13 & I-14).
 // Bergantung pada api.js (objek Api).
 
 class DasborAdmin {
@@ -9,6 +9,8 @@ class DasborAdmin {
     this.statusBaru = '';
     this.alasanTindakan = '';
     this.tindakanAktif = null; // 'HAPUS_LISTING' | 'BLOKIR_AKUN' | 'BUKA_BLOKIR'
+    this.targetIdAkun = null;
+    this.targetIdBarang = null;
   }
 
   // Inisialisasi tampilan berdasarkan elemen halaman yang ada
@@ -136,7 +138,7 @@ class DasborAdmin {
               </div>
             </td>
             <td>${this.escapeHtml(lap.jenisPelanggaran || '-')}</td>
-            <td><span class="mono" style="font-size:12px">${this.escapeHtml(String(lap.idPelapor).slice(0, 8))}â€¦</span></td>
+            <td><span class="mono" style="font-size:12px">${this.escapeHtml(String(lap.idPelapor).slice(0, 8))}…</span></td>
             <td class="mono">${tglStr}</td>
             <td><span class="${badgeClass}">${lap.statusPenanganan || 'Baru'}</span></td>
             <td>
@@ -177,7 +179,7 @@ class DasborAdmin {
     const elBadge = document.getElementById('detail-badge');
 
     if (elJudul) elJudul.textContent = `Laporan ${idPendek}`;
-    if (elBreadcrumb) elBreadcrumb.textContent = `Daftar Laporan Â· ${idPendek}`;
+    if (elBreadcrumb) elBreadcrumb.textContent = `Daftar Laporan · ${idPendek}`;
     if (elBadge) {
       elBadge.textContent = laporan.statusPenanganan || 'Baru';
       elBadge.className =
@@ -354,15 +356,21 @@ class DasborAdmin {
       });
     }
 
-    // Modal & Konfirmasi Tindakan Moderasi lanjutan (UC22-UC24)
+    // Modal & Konfirmasi Tindakan Moderasi (UC22-UC24)
     const btnHapus = document.getElementById('btn-hapus-listing');
     if (btnHapus) {
-      btnHapus.addEventListener('click', () => { const idB = this.detailLaporan?.laporan?.objekDilaporkan; this.onClickHapusListing(idB); });
+      btnHapus.addEventListener('click', () => {
+        const idB = this.detailLaporan?.laporan?.objekDilaporkan;
+        this.onClickHapusListing(idB);
+      });
     }
 
     const btnBlokir = document.getElementById('btn-blokir-akun');
     if (btnBlokir) {
-      btnBlokir.addEventListener('click', () => this.onClickBlokirAkun());
+      btnBlokir.addEventListener('click', () => {
+        const idAkun = this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
+        this.onClickBlokirAkun(idAkun);
+      });
     }
 
     const btnBukaBlokir = document.getElementById('btn-buka-blokir');
@@ -371,29 +379,107 @@ class DasborAdmin {
     }
   }
 
-  // Operasi stub tindakan moderasi lanjutan untuk UC22-UC24
+  // Tindakan moderasi hapus listing (UC22)
   onClickHapusListing(idBarang) {
+    this.targetIdBarang = idBarang;
     this.tampilkanModalKonfirmasi('HAPUS_LISTING');
   }
 
+  // Tindakan moderasi blokir akun (UC23)
   onClickBlokirAkun(idAkun) {
+    this.targetIdAkun = idAkun || this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
     this.tampilkanModalKonfirmasi('BLOKIR_AKUN');
   }
 
+  // Tindakan moderasi buka blokir akun (UC24)
   onClickBukaBlokir(idAkun) {
+    this.targetIdAkun = idAkun || this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
     this.tampilkanModalKonfirmasi('BUKA_BLOKIR');
   }
 
   tampilkanModalKonfirmasi(aksi) {
     this.tindakanAktif = aksi;
     const modal = document.getElementById('modal-konfirmasi-moderasi');
+    const judul = modal?.querySelector('h3');
+    const desc = modal?.querySelector('p');
+    const textarea = document.getElementById('modal-alasan-tindakan');
+
+    if (textarea) textarea.value = '';
+
+    if (aksi === 'BLOKIR_AKUN') {
+      if (judul) judul.textContent = 'Konfirmasi Pemblokiran Akun';
+      if (desc) {
+        desc.textContent =
+          'Akun pengguna akan diblokir, seluruh listing akan dinonaktifkan dari katalog, dan seluruh sesi aktif akan dicabut segera. Masukkan alasan pemblokiran:';
+      }
+      if (textarea) textarea.placeholder = 'Contoh: Terbukti melakukan penipuan berulang pada transaksi COD.';
+    } else if (aksi === 'HAPUS_LISTING') {
+      if (judul) judul.textContent = 'Konfirmasi Penghapusan Listing';
+      if (desc) desc.textContent = 'Listing dan foto barang akan dihapus permanen. Masukkan alasan penghapusan:';
+      if (textarea) textarea.placeholder = 'Contoh: Barang terbukti tiruan/palsu.';
+    } else if (aksi === 'BUKA_BLOKIR') {
+      if (judul) judul.textContent = 'Konfirmasi Pembukaan Blokir Akun';
+      if (desc) desc.textContent = 'Status akun akan dipulihkan dan listing akan kembali aktif di katalog:';
+    }
+
     if (modal) modal.hidden = false;
   }
 
-  konfirmasiTindakan(alasan) {
-    this.tampilkanStatusTerbaru('Tindakan moderasi berhasil dijalankan.');
-    const modal = document.getElementById('modal-konfirmasi-moderasi');
-    if (modal) modal.hidden = true;
+  async konfirmasiTindakan(alasan) {
+    if (!alasan || !alasan.trim()) {
+      this.tampilkanPesanGalat('Alasan tindakan moderasi wajib diisi.');
+      return;
+    }
+
+    if (this.tindakanAktif === 'BLOKIR_AKUN') {
+      const idAkun = this.targetIdAkun || this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
+      if (!idAkun) {
+        this.tampilkanPesanGalat('ID Akun yang akan diblokir tidak ditemukan.');
+        return;
+      }
+
+      const idLaporan = this.detailLaporan?.laporan?.idLaporan || null;
+      const res = await Api.kirim('POST', `/api/admin/akun/${idAkun}/blokir`, {
+        idLaporan,
+        alasan: alasan.trim(),
+      });
+
+      if (!res.sukses) {
+        this.tampilkanPesanGalat(res.pesan || 'Gagal memblokir akun pengguna.');
+        return;
+      }
+
+      this.tampilkanStatusTerbaru(res.pesan || 'Akun berhasil diblokir.');
+      const modal = document.getElementById('modal-konfirmasi-moderasi');
+      if (modal) modal.hidden = true;
+
+      if (idLaporan) {
+        this.bukaDetailLaporan(idLaporan);
+      }
+    } else if (this.tindakanAktif === 'HAPUS_LISTING') {
+      const idBarang = this.targetIdBarang;
+      const idLaporan = this.detailLaporan?.laporan?.idLaporan || null;
+      const res = await Api.kirim('DELETE', `/api/admin/laporan/${idLaporan}/barang/${idBarang}`, {
+        alasan: alasan.trim(),
+      });
+
+      if (!res.sukses) {
+        this.tampilkanPesanGalat(res.pesan || 'Gagal menghapus listing.');
+        return;
+      }
+
+      this.tampilkanStatusTerbaru(res.pesan || 'Listing berhasil dihapus.');
+      const modal = document.getElementById('modal-konfirmasi-moderasi');
+      if (modal) modal.hidden = true;
+
+      if (idLaporan) {
+        this.bukaDetailLaporan(idLaporan);
+      }
+    } else {
+      this.tampilkanStatusTerbaru('Tindakan moderasi berhasil dijalankan.');
+      const modal = document.getElementById('modal-konfirmasi-moderasi');
+      if (modal) modal.hidden = true;
+    }
   }
 
   escapeHtml(str) {

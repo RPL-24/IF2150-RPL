@@ -60,8 +60,8 @@ class SesiLogin {
   }
 
   // Algo-031: cabut seluruh sesi akun yang diblokir (KF51, KF53)
-  static async nonaktifkanByAkun(idAkun) {
-    await db.query(
+  static async nonaktifkanByAkun(idAkun, client = db) {
+    await client.query(
       'UPDATE sesi_login SET status_aktif = false WHERE id_akun = $1 AND status_aktif = true',
       [idAkun],
     );

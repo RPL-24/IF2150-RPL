@@ -6,6 +6,7 @@ const BuktiLaporan = require('../models/BuktiLaporan');
 const LogAudit = require('../models/LogAudit');
 const LogAdmin = require('../models/LogAdmin');
 const Akun = require('../models/Akun');
+const SesiLogin = require('../models/SesiLogin');
 const Barang = require('../models/Barang');
 const FotoBarang = require('../models/FotoBarang');
 const NotifikasiController = require('./NotifikasiController');
@@ -102,6 +103,9 @@ class ModerasiController {
     if (tindakan && tindakan.startsWith('Penghapusan listing:')) {
       const idBarang = tindakan.replace('Penghapusan listing:', '').trim();
       await LogAudit.catatPenghapusanListing(idLaporan, idAdmin, idBarang, client);
+    } else if (tindakan && tindakan.startsWith('Pemblokiran akun:')) {
+      const idAkun = tindakan.replace('Pemblokiran akun:', '').trim();
+      await LogAudit.catatPemblokiranAkun(idLaporan, idAdmin, idAkun, client);
     } else {
       await LogAudit.catatPerubahanStatusLaporan(idLaporan, idAdmin, tindakan, client);
     }
@@ -174,14 +178,67 @@ class ModerasiController {
     return true;
   }
 
-  // --- Stubs untuk implementasi lanjutan UC23-UC24 ---
+  // Algo-023: Memblokir akun pengguna yang terbukti melanggar, menonaktifkan seluruh listing miliknya,
+  // memutus seluruh sesi aktifnya, mengirim surel penangguhan, dan mencatat log (KF51, KF52, KF53, KF54, KF55, KF56)
   static async blokirAkun(token, idLaporan, idAkun, alasan) {
-    // TODO(UC23): Blokir akun, putus sesi, nonaktifkan listing, dan catat log
     const idAdmin = await this.otorisasiAdmin(token);
-    if (!idAdmin) return false;
+    if (!idAdmin) {
+      return false; // hak akses ditolak bila bukan admin (KF56)
+    }
+
+    if (!alasan || typeof alasan !== 'string' || !alasan.trim()) {
+      return false; // alasan penangguhan wajib disertakan (KF55)
+    }
+
+    const akunSasaran = await Akun.cariById(idAkun);
+    if (!akunSasaran) {
+      return false;
+    }
+
+    const client = await db.pool.connect();
+    try {
+      await client.query('BEGIN');
+
+      // 1. Ubah status akun menjadi diblokir dan status_blokir = true (KF51)
+      await akunSasaran.blokir(client);
+
+      // 2. Nonaktifkan seluruh listing milik pengguna dari katalog (KF54)
+      await this.nonaktifkanListingPengguna(idAkun, client);
+
+      // 3. Putus seluruh sesi aktif pengguna segera (KF53)
+      await SesiLogin.nonaktifkanByAkun(idAkun, client);
+
+      // 4. Jika ada idLaporan terkait, perbarui status menjadi "Selesai" dan catat ke LogAudit (KF48, KF49)
+      if (idLaporan) {
+        await Laporan.updateStatusPenanganan(idLaporan, 'Selesai', new Date(), client);
+        await this.catatLogAudit(idLaporan, idAdmin, `Pemblokiran akun: ${idAkun}`, client);
+      }
+
+      // 5. Catat tindakan pemblokiran ke LogAdmin (KF55)
+      await this.catatLogAdmin(idAdmin, 'BLOKIR_AKUN', idAkun, alasan.trim(), client);
+
+      await client.query('COMMIT');
+    } catch (galat) {
+      await client.query('ROLLBACK');
+      throw galat;
+    } finally {
+      client.release();
+    }
+
+    // 6. Kirim surel pemberitahuan penangguhan resmi kepada pengguna (KF52)
+    if (akunSasaran.email) {
+      await NotifikasiController.kirimPesanPenangguhan(idAkun, akunSasaran.email, alasan.trim());
+    }
+
     return true;
   }
 
+  // Mengubah status seluruh barang milik pengguna yang diblokir menjadi tidak aktif (KF54)
+  static async nonaktifkanListingPengguna(idAkun, client = db) {
+    return Barang.nonaktifkanByPemilik(idAkun, client);
+  }
+
+  // --- Stubs untuk implementasi lanjutan UC24 ---
   static async bukaBlokirAkun(token, idAkun) {
     // TODO(UC24): Buka blokir akun dan pulihkan listing di katalog
     const idAdmin = await this.otorisasiAdmin(token);
@@ -189,14 +246,9 @@ class ModerasiController {
     return true;
   }
 
-  static async nonaktifkanListingPengguna(idAkun) {
-    // TODO(UC23): Mengubah status listing pengguna yang diblokir
-    return true;
-  }
-
-  static async pulihkanListingPengguna(idAkun) {
+  static async pulihkanListingPengguna(idAkun, client = db) {
     // TODO(UC24): Memulihkan status listing pengguna
-    return true;
+    return Barang.pulihkanKatalog(idAkun, client);
   }
 }
 

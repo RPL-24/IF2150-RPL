@@ -86,8 +86,8 @@ class Akun {
   }
 
   // KF07, KF51
-  async perbaruiStatusAkun(status) {
-    const { rowCount } = await db.query('UPDATE akun SET status_akun = $1 WHERE id_akun = $2', [status, this.idAkun]);
+  async perbaruiStatusAkun(status, client = db) {
+    const { rowCount } = await client.query('UPDATE akun SET status_akun = $1 WHERE id_akun = $2', [status, this.idAkun]);
     if (rowCount > 0) this.statusAkun = status;
     return rowCount > 0;
   }
@@ -102,8 +102,8 @@ class Akun {
   }
 
   // KF51
-  async blokir() {
-    const { rowCount } = await db.query(
+  async blokir(client = db) {
+    const { rowCount } = await client.query(
       'UPDATE akun SET status_akun = $1, status_blokir = true WHERE id_akun = $2',
       [STATUS.DIBLOKIR, this.idAkun],
     );
@@ -115,8 +115,8 @@ class Akun {
   }
 
   // KF51
-  async bukaBlokir() {
-    const { rowCount } = await db.query(
+  async bukaBlokir(client = db) {
+    const { rowCount } = await client.query(
       'UPDATE akun SET status_akun = $1, status_blokir = false WHERE id_akun = $2',
       [STATUS.TERVERIFIKASI, this.idAkun],
     );

@@ -6,13 +6,14 @@ const BuktiLaporan = require('../../models/BuktiLaporan');
 const LogAudit = require('../../models/LogAudit');
 const LogAdmin = require('../../models/LogAdmin');
 const Akun = require('../../models/Akun');
+const SesiLogin = require('../../models/SesiLogin');
 const Barang = require('../../models/Barang');
 const FotoBarang = require('../../models/FotoBarang');
 const NotifikasiController = require('../../controllers/NotifikasiController');
 const PenyimpananBerkas = require('../../penyimpanan/PenyimpananBerkas');
 const db = require('../../config/db');
 
-describe('ModerasiController Unit Test (UC20, UC22)', () => {
+describe('ModerasiController Unit Test (UC20, UC22, UC23)', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -386,6 +387,173 @@ describe('ModerasiController Unit Test (UC20, UC22)', () => {
       await expect(
         ModerasiController.hapusListingDilaporkan('token-admin', 'lap-1', 'brg-103', 'Alasan error'),
       ).rejects.toThrow('DB Connection Lost');
+
+      expect(mockClient.query).toHaveBeenCalledWith('ROLLBACK');
+      expect(mockClient.release).toHaveBeenCalled();
+    });
+  });
+
+  describe('blokirAkun (KF51, KF52, KF53, KF54, KF55, KF56, Algo-023)', () => {
+    let mockClient;
+
+    beforeEach(() => {
+      mockClient = {
+        query: jest.fn().mockResolvedValue({ rowCount: 1, rows: [] }),
+        release: jest.fn(),
+      };
+      jest.spyOn(db.pool, 'connect').mockResolvedValue(mockClient);
+    });
+
+    test('berhasil memblokir akun sasaran, menonaktifkan seluruh listing, mencabut seluruh sesi, update laporan, catat log audit & admin, serta kirim surel penangguhan', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+
+      const akunSasaranMock = new Akun({
+        idAkun: 'akun-penipu-1',
+        nama: 'Akun Penipu',
+        email: 'penipu@std.stei.itb.ac.id',
+        statusAkun: 'Terverifikasi',
+        statusBlokir: false,
+      });
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(akunSasaranMock);
+      jest.spyOn(akunSasaranMock, 'blokir').mockResolvedValue(true);
+      jest.spyOn(ModerasiController, 'nonaktifkanListingPengguna').mockResolvedValue(true);
+      jest.spyOn(SesiLogin, 'nonaktifkanByAkun').mockResolvedValue();
+      jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
+      jest.spyOn(ModerasiController, 'catatLogAudit').mockResolvedValue();
+      jest.spyOn(ModerasiController, 'catatLogAdmin').mockResolvedValue();
+      jest.spyOn(NotifikasiController, 'kirimPesanPenangguhan').mockResolvedValue(true);
+
+      const hasil = await ModerasiController.blokirAkun(
+        'token-admin',
+        'lap-301',
+        'akun-penipu-1',
+        'Terbukti melakukan transaksi fiktif berulang',
+      );
+
+      expect(hasil).toBe(true);
+      expect(mockClient.query).toHaveBeenCalledWith('BEGIN');
+      expect(akunSasaranMock.blokir).toHaveBeenCalledWith(mockClient);
+      expect(ModerasiController.nonaktifkanListingPengguna).toHaveBeenCalledWith('akun-penipu-1', mockClient);
+      expect(SesiLogin.nonaktifkanByAkun).toHaveBeenCalledWith('akun-penipu-1', mockClient);
+      expect(Laporan.updateStatusPenanganan).toHaveBeenCalledWith('lap-301', 'Selesai', expect.any(Date), mockClient);
+      expect(ModerasiController.catatLogAudit).toHaveBeenCalledWith(
+        'lap-301',
+        'admin-id-123',
+        'Pemblokiran akun: akun-penipu-1',
+        mockClient,
+      );
+      expect(ModerasiController.catatLogAdmin).toHaveBeenCalledWith(
+        'admin-id-123',
+        'BLOKIR_AKUN',
+        'akun-penipu-1',
+        'Terbukti melakukan transaksi fiktif berulang',
+        mockClient,
+      );
+      expect(mockClient.query).toHaveBeenCalledWith('COMMIT');
+      expect(mockClient.release).toHaveBeenCalled();
+      expect(NotifikasiController.kirimPesanPenangguhan).toHaveBeenCalledWith(
+        'akun-penipu-1',
+        'penipu@std.stei.itb.ac.id',
+        'Terbukti melakukan transaksi fiktif berulang',
+      );
+    });
+
+    test('menolak jika pemohon bukan admin (KF56)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
+
+      const hasil = await ModerasiController.blokirAkun(
+        'token-user',
+        'lap-1',
+        'akun-1',
+        'Alasan blokir',
+      );
+
+      expect(hasil).toBe(false);
+      expect(db.pool.connect).not.toHaveBeenCalled();
+    });
+
+    test('menolak jika alasan pemblokiran kosong atau hanya spasi (KF55)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+
+      const hasil1 = await ModerasiController.blokirAkun('token-admin', 'lap-1', 'akun-1', '');
+      const hasil2 = await ModerasiController.blokirAkun('token-admin', 'lap-1', 'akun-1', '   ');
+
+      expect(hasil1).toBe(false);
+      expect(hasil2).toBe(false);
+      expect(db.pool.connect).not.toHaveBeenCalled();
+    });
+
+    test('mengembalikan false jika akun sasaran tidak ditemukan (404)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(null);
+
+      const hasil = await ModerasiController.blokirAkun(
+        'token-admin',
+        'lap-1',
+        'akun-tidak-ada',
+        'Alasan valid',
+      );
+
+      expect(hasil).toBe(false);
+      expect(db.pool.connect).not.toHaveBeenCalled();
+    });
+
+    test('berhasil memblokir akun jika idLaporan null/kosong (tanpa pembaruan laporan)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+
+      const akunSasaranMock = new Akun({
+        idAkun: 'akun-penipu-2',
+        nama: 'Akun Penipu 2',
+        email: 'penipu2@std.stei.itb.ac.id',
+      });
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(akunSasaranMock);
+      jest.spyOn(akunSasaranMock, 'blokir').mockResolvedValue(true);
+      jest.spyOn(ModerasiController, 'nonaktifkanListingPengguna').mockResolvedValue(true);
+      jest.spyOn(SesiLogin, 'nonaktifkanByAkun').mockResolvedValue();
+      jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
+      jest.spyOn(ModerasiController, 'catatLogAudit').mockResolvedValue();
+      jest.spyOn(ModerasiController, 'catatLogAdmin').mockResolvedValue();
+      jest.spyOn(NotifikasiController, 'kirimPesanPenangguhan').mockResolvedValue(true);
+
+      const hasil = await ModerasiController.blokirAkun(
+        'token-admin',
+        null,
+        'akun-penipu-2',
+        'Pemblokiran langsung',
+      );
+
+      expect(hasil).toBe(true);
+      expect(Laporan.updateStatusPenanganan).not.toHaveBeenCalled();
+      expect(ModerasiController.catatLogAudit).not.toHaveBeenCalled();
+      expect(ModerasiController.catatLogAdmin).toHaveBeenCalledWith(
+        'admin-id-123',
+        'BLOKIR_AKUN',
+        'akun-penipu-2',
+        'Pemblokiran langsung',
+        mockClient,
+      );
+    });
+
+    test('melakukan rollback jika transaksi database mengalami kegagalan', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+
+      const akunSasaranMock = new Akun({
+        idAkun: 'akun-penipu-3',
+        nama: 'Akun Error',
+        email: 'error@std.stei.itb.ac.id',
+      });
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(akunSasaranMock);
+      jest.spyOn(akunSasaranMock, 'blokir').mockRejectedValue(new Error('Database lock timeout'));
+
+      mockClient.query.mockImplementation((sql) => {
+        if (sql === 'BEGIN') return Promise.resolve();
+        if (sql === 'ROLLBACK') return Promise.resolve();
+        return Promise.resolve();
+      });
+
+      await expect(
+        ModerasiController.blokirAkun('token-admin', 'lap-1', 'akun-penipu-3', 'Alasan error'),
+      ).rejects.toThrow('Database lock timeout');
 
       expect(mockClient.query).toHaveBeenCalledWith('ROLLBACK');
       expect(mockClient.release).toHaveBeenCalled();

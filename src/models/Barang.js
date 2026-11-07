@@ -105,6 +105,28 @@ class Barang {
     return rowCount > 0;
   }
 
+  // Mengubah status seluruh barang milik pengguna yang diblokir menjadi "Dinonaktifkan" (KF54)
+  static async nonaktifkanByPemilik(idPenjual, client = db) {
+    const { rowCount } = await client.query(
+      `UPDATE barang
+       SET status = $1, waktu_ubah = now()
+       WHERE id_penjual = $2 AND status = $3`,
+      [STATUS.DINONAKTIFKAN, idPenjual, STATUS.TERSEDIA],
+    );
+    return rowCount >= 0;
+  }
+
+  // Memulihkan status barang milik pengguna yang blokirnya dibuka (UC24)
+  static async pulihkanKatalog(idPenjual, client = db) {
+    const { rowCount } = await client.query(
+      `UPDATE barang
+       SET status = $1, waktu_ubah = now()
+       WHERE id_penjual = $2 AND status = $3`,
+      [STATUS.TERSEDIA, idPenjual, STATUS.DINONAKTIFKAN],
+    );
+    return rowCount >= 0;
+  }
+
   // Mengembalikan status barang
   getStatus() {
     return this.status;
