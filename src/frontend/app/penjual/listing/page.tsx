@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AppLayout } from "@/components/layout";
 import KartuListingPenjual, {
     ListingMakananPenjual,
 } from "@/components/penjual/KartuListingPenjual";
@@ -20,8 +19,6 @@ export default function ListingPenjualPage() {
 
     // Fetch daftar listing penjual
     const ambilDaftarListing = async () => {
-        setLoading(true);
-        setPesanError(null);
         try {
         const res = await fetch("/api/listing/penjual", {
             credentials: "same-origin",
@@ -34,6 +31,7 @@ export default function ListingPenjualPage() {
 
         const data = await res.json();
         setListings(data);
+        setPesanError(null);
         } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "Terjadi kesalahan sistem";
         setPesanError(message);
@@ -43,14 +41,34 @@ export default function ListingPenjualPage() {
     };
 
     useEffect(() => {
-        ambilDaftarListing();
+        let aktif = true;
+        fetch("/api/listing/penjual", { credentials: "same-origin", cache: "no-store" })
+        .then((res) => {
+            if (!res.ok) throw new Error("Gagal mengambil daftar listing makanan.");
+            return res.json();
+        })
+        .then((data) => {
+            if (!aktif) return;
+            setListings(data);
+            setPesanError(null);
+        })
+        .catch((err: unknown) => {
+            if (!aktif) return;
+            setPesanError(err instanceof Error ? err.message : "Terjadi kesalahan sistem");
+        })
+        .finally(() => {
+            if (aktif) setLoading(false);
+        });
+        return () => {
+            aktif = false;
+        };
     }, []);
 
     // Eksekusi Soft Delete (UC09)
     const handleKonfirmasiHapus = async () => {
         if (!selectedListing) return;
 
-        const idTarget = selectedListing.id_listing || (selectedListing as any).idListing;
+        const idTarget = selectedListing.id_listing;
         setIsDeleting(true);
         try {
         const res = await fetch(`/api/listing/${idTarget}`, {
@@ -124,7 +142,7 @@ export default function ListingPenjualPage() {
             {!loading && !pesanError && listings.length > 0 && (
             <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {listings.map((item, index) => {
-                const keyId = item.id_listing || (item as any).idListing || index;
+                const keyId = item.id_listing || index;
                 return (
                     <KartuListingPenjual
                     key={keyId}
@@ -140,7 +158,7 @@ export default function ListingPenjualPage() {
             {/* Pop-up Dialog Hapus */}
             <DialogKonfirmasiHapus
             isOpen={!!selectedListing}
-            namaMakanan={selectedListing?.nama_makanan || (selectedListing as any)?.namaMakanan || ""}
+            namaMakanan={selectedListing?.nama_makanan || ""}
             isDeleting={isDeleting}
             onConfirm={handleKonfirmasiHapus}
             onCancel={() => setSelectedListing(null)}
