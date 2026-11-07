@@ -114,8 +114,9 @@ interface FormListingProps {
 
         await onSubmit(payload);
         setIsDirty(false);
-        } catch (err: any) {
-        setErrors([err.message || "Terjadi kesalahan saat menyimpan data."]);
+        } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Terjadi kesalahan saat menyimpan data.";
+        setErrors([message]);
         } finally {
         setIsSubmitting(false);
         }
