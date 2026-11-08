@@ -6,6 +6,11 @@ exports.tampilLogin = (req, res) => {
   res.render('auth/login');
 };
 
+exports.tampilLoginMasyarakat = (req, res) => {
+  if (req.session.user) return res.redirec('/' + req.session.user.peran);
+  res.render('auth/login-masyarakat');
+}
+
 exports.prosesLogin = (req, res) => {
   const { email, kataSandi } = req.body;
   const akun = Akun.cariByEmail(email);

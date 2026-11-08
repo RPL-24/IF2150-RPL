@@ -12,8 +12,8 @@ db.prepare(
 ).run('Admin Uji', 'admin@lawhub.test', hash('admin123'));
 
 db.prepare(
-  'INSERT OR IGNORE INTO Masyarakat (nama, nomorInduk, email, sandi) VALUES (?, ?, ?, ?)'
-).run('Sisi Masyarakat', '3275000000000001', 'sisi@lawhub.test', hash('sisi947'));
+  'INSERT OR IGNORE INTO Masyarakat (nama, username, noHp, email, sandi) VALUES (?, ?, ?, ?, ?)'
+).run('Sisi Masyarakat', 'sisi', '+6281234567890', 'sisi@lawhub.test', hash('sisi947'));
 
 db.prepare(
   `INSERT OR IGNORE INTO MitraPengacara

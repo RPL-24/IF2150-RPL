@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS Masyarakat (          -- C40
   idMasyarakat INTEGER PRIMARY KEY AUTOINCREMENT,
   nama         TEXT NOT NULL,
-  nomorInduk   TEXT NOT NULL UNIQUE,
+  username     TEXT NOT NULL UNIQUE,
+  nohp         TEXT NOT NULL,
   email        TEXT NOT NULL UNIQUE,
   sandi        TEXT NOT NULL,                  
   statusAkun   TEXT NOT NULL DEFAULT 'aktif' CHECK (statusAkun IN ('aktif', 'diblokir'))
