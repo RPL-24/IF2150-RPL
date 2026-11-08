@@ -204,3 +204,7 @@ export function checkoutPembayaran(idListing: number, jumlah: number): Promise<T
 export function ambilTransaksi(id: number | string): Promise<TransaksiPembayaran> {
   return getJson<TransaksiPembayaran>(`/api/pembayaran/${encodeURIComponent(String(id))}`);
 }
+
+export function bayarTransaksi(id: number | string): Promise<TransaksiPembayaran> {
+  return postJson<TransaksiPembayaran>(`/api/pembayaran/${encodeURIComponent(String(id))}/bayar`);
+}
