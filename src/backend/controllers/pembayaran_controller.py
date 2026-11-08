@@ -3,10 +3,9 @@ from datetime import datetime, timedelta
 
 from ..errors import PembayaranError
 from ..models import ItemTransaksi, ListingMakanan, Transaksi
-from ..adapters.metode_pembayaran import MetodePembayaran
 
-BATAS_WAKTU_BAYAR = timedelta(minutes=15)
-FORMAT_WAKTU = "%Y-%m-%d %H:%M:%S"   # same format as the rest of models.py
+BATAS_WAKTU_BAYAR = timedelta(minutes=15)   # DPPL names the constant but not the value; confirm with your team
+FORMAT_WAKTU = "%Y-%m-%d %H:%M:%S"
 
 
 def ambil_transaksi(conn: sqlite3.Connection, id_transaksi: int):
@@ -28,9 +27,6 @@ def ambil_transaksi(conn: sqlite3.Connection, id_transaksi: int):
 
 
 class PembayaranController:
-    def __init__(self, metode: MetodePembayaran):
-        self.metode = metode
-
     def checkout(self, conn: sqlite3.Connection, id_pembeli: int, id_listing: int, jumlah: int):
         if jumlah <= 0:
             raise PembayaranError("Jumlah porsi tidak valid")
@@ -57,12 +53,11 @@ class PembayaranController:
             )
             conn.execute(
                 "UPDATE transaksi SET total_harga = ? WHERE id_transaksi = ?",
-                (item.hitung_subtotal(), id_transaksi),     # total = sum of subtotals
+                (item.hitung_subtotal(), id_transaksi),
             )
             conn.commit()        # Transaksi + Item + total in ONE commit
         except Exception:
             conn.rollback()
             raise
 
-            trx, items, nama = ambil_transaksi(conn, id_transaksi)
-            return trx, items, nama, self.metode.buat_tagihan(trx)      # after commit, as in Algo-C18-01
+        return ambil_transaksi(conn, id_transaksi)    # (trx, items, nama)

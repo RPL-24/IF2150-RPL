@@ -6,7 +6,6 @@ from ..models import DATABASE_NAME
 from ..errors import PembayaranError
 from ..routers.auth import require_roles
 from ..schemas.pembayaran import CheckoutRequest, ItemOut, TransaksiOut
-from ..adapters.payment_gateway_adapter import PaymentGatewayAdapter
 from ..controllers.pembayaran_controller import PembayaranController, ambil_transaksi
 
 router = APIRouter(prefix="/api/pembayaran", tags=["pembayaran"])
@@ -23,7 +22,7 @@ def get_conn():
 
 
 def get_controller() -> PembayaranController:
-    return PembayaranController(PaymentGatewayAdapter())
+    return PembayaranController()
 
 
 def _keluaran(trx, items, nama, kode_qris=None) -> TransaksiOut:
@@ -33,29 +32,19 @@ def _keluaran(trx, items, nama, kode_qris=None) -> TransaksiOut:
         kode_qris=kode_qris,
     )
 
-# checkout route:
-    trx, items, nama, kode_qris = ctl.checkout(conn, user["id_pengguna"], body.id_listing, body.jumlah)
-    return _keluaran(trx, items, nama, kode_qris)
-
-# detail route:
-    trx, items, nama = ambil_transaksi(conn, id_transaksi)
-    ...
-    return _keluaran(trx, items, nama, ctl.metode.buat_tagihan(trx))
-
 
 @router.post("/checkout", response_model=TransaksiOut)
 def checkout(body: CheckoutRequest, conn=Depends(get_conn),
              ctl: PembayaranController = Depends(get_controller),
              user=Depends(require_roles(["PEMBELI"]))):
-    trx, items, kode_qris = ctl.checkout(conn, user["id_pengguna"], body.id_listing, body.jumlah)
-    return _keluaran(trx, items, kode_qris)
+    trx, items, nama = ctl.checkout(conn, user["id_pengguna"], body.id_listing, body.jumlah)
+    return _keluaran(trx, items, nama)
 
 
 @router.get("/{id_transaksi}", response_model=TransaksiOut)
 def detail(id_transaksi: int, conn=Depends(get_conn),
-           ctl: PembayaranController = Depends(get_controller),
            user=Depends(require_roles(["PEMBELI"]))):
-    trx, items = ambil_transaksi(conn, id_transaksi)
+    trx, items, nama = ambil_transaksi(conn, id_transaksi)
     if trx is None or trx.id_pembeli != user["id_pengguna"]:
         raise PembayaranError("Transaksi tidak ditemukan", 404)
-    return _keluaran(trx, items, ctl.metode.buat_tagihan(trx))
+    return _keluaran(trx, items, nama)
