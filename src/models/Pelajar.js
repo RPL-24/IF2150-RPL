@@ -160,22 +160,30 @@ class Pelajar extends Pengguna {
   /** Algo-C02-02, Q-C02-02 */
   async setCheckIn(checkIn) {
     const data = checkIn.getCheckInData();
-    await db.query(
-      `INSERT INTO check_in (id_check_in, id_pelajar, tanggal_check_in, skala_mood, jam_tidur,
-         jam_bangun, pola_makan, pemicu_stres, catatan_refleksi)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-      [
-        data.idCheckIn,
-        this.idPelajar,
-        data.tanggalCheckIn,
-        data.skalaMood,
-        data.jamTidur,
-        data.jamBangun,
-        data.polaMakan,
-        data.pemicuStres,
-        data.catatanRefleksi,
-      ]
-    );
+    try {
+      await db.query(
+        `INSERT INTO check_in (id_check_in, id_pelajar, tanggal_check_in, skala_mood, jam_tidur,
+           jam_bangun, pola_makan, pemicu_stres, catatan_refleksi)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+        [
+          data.idCheckIn,
+          this.idPelajar,
+          data.tanggalCheckIn,
+          data.skalaMood,
+          data.jamTidur,
+          data.jamBangun,
+          data.polaMakan,
+          data.pemicuStres,
+          data.catatanRefleksi,
+        ]
+      );
+    } catch (err) {
+      // Indeks unik (id_pelajar, tanggal_check_in): satu check-in per hari
+      if (err.code === '23505') {
+        throw new AppError(409, 'Anda sudah melakukan check-in hari ini.');
+      }
+      throw err;
+    }
   }
 
   getLokasiSaatIni() {
