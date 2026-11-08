@@ -1,13 +1,16 @@
+import { MapView } from "@/client/components/shared/MapView";
+import type { Koordinat } from "@/server/entities/Lokasi";
 // I01-11 (tombol lokasi), I01-12 (peta), I01-13 (alert luar wilayah).
-// Peta masih PLACEHOLDER. nanti diganti <MapView> dari components/shared setelah tersedia
-// <MapViewr> dari shared, dan dilarang membuat sendiri. Komponen itu tunggu dibikin dipta
 // Menampilkan Bagian Status, Tombol “Gunakan Lokasi Saat Ini”, Kotak “Click peta untuk pilih lokasi”, Alert merah
+
 type Props = {
+  lokasi: Koordinat | null;
   diLuarWilayah: boolean;
   onGunakanLokasi: () => void;
+  onPilihTitik: (koordinat: Koordinat) => void;
 };
 
-export function AreaLokasi({ diLuarWilayah, onGunakanLokasi }: Props) {
+export function AreaLokasi({ lokasi, diLuarWilayah, onGunakanLokasi, onPilihTitik }: Props) {
   return (
     <div className="space-y-2">
       <span className="block text-sm font-semibold">Lokasi</span>
@@ -19,11 +22,7 @@ export function AreaLokasi({ diLuarWilayah, onGunakanLokasi }: Props) {
         <IkonTarget />
         Gunakan Lokasi Saat Ini
       </button>
-      <div className="relative h-28 rounded-lg border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-800">
-        <span className="absolute right-2 top-2 rounded-full bg-background px-2 py-0.5 text-xs text-gray-600 dark:text-gray-300 shadow-sm">
-          Click peta untuk pilih lokasi
-        </span>
-      </div>
+      <MapView titikTerpilih={lokasi} onPilihTitik={onPilihTitik} tinggi="220px" />
       {diLuarWilayah && (
         <p
           role="alert"

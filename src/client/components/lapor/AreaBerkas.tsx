@@ -1,32 +1,22 @@
-// I01-05 sampe I01-10. MASIH PLACEHOLDER. nanti diganti <MediaUploader> dari components/shared setelah tersedia
-// sekarang: hanya menggambar dua kotak bergaris putus-putus untuk foto dan video
-// <MediaUploader> dari shared, dan dilarang membuat uploader sendiri. Komponen itu tunggu dibikin dipta
-export function AreaBerkas() {
-  return (
-    <div className="space-y-5">
-      <SlotBerkas
-        label="Foto"
-        format="JPG/PNG, maks. 10 MB"
-        petunjuk="Unggah minimal satu foto atau video."
-      />
-      <SlotBerkas label="Video (opsional)" format="MP4/MOV/MKV, maks. 10 MB" />
-    </div>
-  );
-}
+import { MediaUploader } from "@/client/components/shared/MediaUploader";
+// I01-05 sampe I01-10. MediaUploader (shared) menangani pilih berkas, validasi format/ukuran
+// pratinjau, dan tombol hapus. Daftar berkas disimpan di LaporPage (atribut berkasFoto/berkasVideo).
 
-type PropsSlot = { label: string; format: string; petunjuk?: string };
+type Props = {
+  foto: File[];
+  video: File[];
+  onUbahFoto: (files: File[]) => void;
+  onUbahVideo: (files: File[]) => void;
+  /** Garis merah saat submit tanpa berkas sama sekali. */
+  kosong: boolean;
+};
 
-function SlotBerkas({ label, format, petunjuk }: PropsSlot) {
+export function AreaBerkas({ foto, video, onUbahFoto, onUbahVideo, kosong }: Props) {
   return (
-    <div>
-      <div className="flex items-baseline justify-between gap-2">
-        <span className="text-sm font-semibold">{label}</span>
-        <span className="text-xs text-gray-500 dark:text-gray-400">{format}</span>
-      </div>
-      {petunjuk && <p className="text-xs text-gray-500 dark:text-gray-400">{petunjuk}</p>}
-      <div className="mt-1.5 flex h-16 items-center justify-center rounded-lg border border-dashed border-gray-300 text-sm text-gray-400 dark:border-gray-700 dark:text-gray-500">
-        Menunggu MediaUploader
-      </div>
+    <div className="space-y-3">
+      <p className="text-xs text-gray-500 dark:text-gray-400">Unggah minimal satu foto atau video.</p>
+      <MediaUploader tipe="foto" label="Foto" value={foto} onChange={onUbahFoto} invalid={kosong} />
+      <MediaUploader tipe="video" label="Video (opsional)" value={video} onChange={onUbahVideo} invalid={kosong} />
     </div>
   );
 }
