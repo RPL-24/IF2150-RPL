@@ -104,6 +104,16 @@ p  { margin: 0 0 14px; }
 .profil-menu a:hover { text-decoration: underline; }
 
 /* ---------- Footer ---------- */
+.isian-telepon {
+  display: flex; margin-bottom: 14px;
+  border: 1px solid var(--cokelat);
+}
+.isian-telepon .kode-negara {
+  display: flex; align-items: center; padding: 0 16px;
+  font-size: 20px; color: var(--cokelat);
+  border-right: 1px solid var(--cokelat);
+}
+.isian-telepon input { border: 0; flex: 1; min-width: 0; }
 .footer { background: var(--kuning); color: var(--cokelat); margin-top: auto; }
 .footer-isi {
   max-width: 1150px; margin: 0 auto; padding: 26px 0 30px;
@@ -212,3 +222,24 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--cokelat-tua
 .login-bagian p { font-size: 20px; line-height: 1.3; max-width: 380px; margin-bottom: 18px; }
 .login-bagian .isian { width: 300px; display: block; margin-bottom: 18px; }
 .login-bagian .tombol { width: 300px; }
+
+/* ---------- Landing page ---------- */
+.landing-hero { text-align: center; padding: 48px 0 32px; }
+.landing-hero h1 { font-size: 48px; margin: 0 0 14px; }
+.landing-hero p { font-size: 22px; max-width: 640px; margin: 0 auto; line-height: 1.4; }
+
+.landing-pilihan {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+  margin: 16px 0 40px;
+}
+.kartu-peran { display: flex; flex-direction: column; gap: 14px; }
+.kartu-peran h2 { font-size: 30px; margin: 0; }
+.kartu-peran p { font-size: 20px; line-height: 1.3; margin: 0 0 8px; flex: 1; }
+
+.landing-tamu { text-align: center; padding-bottom: 48px; }
+.landing-tamu p { font-size: 20px; margin-bottom: 14px; }
+
+@media (max-width: 720px) {
+  .landing-pilihan { grid-template-columns: 1fr; }
+  .landing-hero h1 { font-size: 34px; }
+}
