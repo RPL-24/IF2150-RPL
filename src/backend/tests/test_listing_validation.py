@@ -1,7 +1,14 @@
+import sys
+from pathlib import Path
+
 import pytest
 from datetime import datetime, timedelta
-from validation import Validasi
-from schemas.listing_schema import DataListing
+
+# validation.py memakai import paket "backend.*", jadi folder src/ harus ada di sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from backend.validation import Validasi  # noqa: E402
+from backend.schemas.listing_schema import DataListing  # noqa: E402
 
 # -------------------------------------------------------------------
 # Test Schema Pydantic (DataListing)
