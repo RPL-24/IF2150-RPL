@@ -1,0 +1,112 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'DM Sans', sans-serif;
+}
+
+body {
+    background-color: #FFFDF7;
+    color: #2A3A3F;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notif-container {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notif-card {
+    background-color: #E2E8F0; 
+    padding: 32px 24px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.darurat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin: 0 auto 16px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#Title_Darurat {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2A3A3F;
+    margin-bottom: 12px;
+}
+
+#Desc_Darurat {
+    font-family: 'DM Sans', sans-serif;
+    color: #2A3A3F;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.button-group {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.btn-action {
+    flex: 1;
+    max-width: 210px;
+    padding: 10px 14px;
+    background-color: #F8C16F; 
+    color: #2A3A3F;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-action:hover {
+    background-color: #ffa70e;
+}
+
+.btn-action:disabled {
+    background-color: #CBD5E1;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+@media (max-width: 480px) {
+    .modal-card {
+        padding: 28px 20px 24px 20px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn-action {
+        max-width: 100%;
+        width: 100%;
+    }
+}
