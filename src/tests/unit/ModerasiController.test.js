@@ -13,7 +13,7 @@ const NotifikasiController = require('../../controllers/NotifikasiController');
 const PenyimpananBerkas = require('../../penyimpanan/PenyimpananBerkas');
 const db = require('../../config/db');
 
-describe('ModerasiController Unit Test (UC20, UC22, UC23)', () => {
+describe('ModerasiController Unit Test (UC20, UC22, UC23, UC24)', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -559,4 +559,131 @@ describe('ModerasiController Unit Test (UC20, UC22, UC23)', () => {
       expect(mockClient.release).toHaveBeenCalled();
     });
   });
+
+  describe('bukaBlokirAkun (KF51, KF54, KF55, KF56, Algo-024)', () => {
+    let mockClient;
+
+    beforeEach(() => {
+      mockClient = {
+        query: jest.fn().mockResolvedValue({ rows: [] }),
+        release: jest.fn(),
+      };
+      jest.spyOn(db.pool, 'connect').mockResolvedValue(mockClient);
+    });
+
+    test('berhasil membuka blokir akun, memulihkan listing, dan mencatat log admin (KF51, KF54, KF55)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+
+      const akunSasaranMock = new Akun({
+        idAkun: 'akun-terblokir-1',
+        nama: 'Pengguna Insyaf',
+        email: 'insyaf@std.stei.itb.ac.id',
+        statusAkun: 'Dinonaktifkan',
+        statusBlokir: true,
+      });
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(akunSasaranMock);
+      jest.spyOn(akunSasaranMock, 'bukaBlokir').mockResolvedValue(true);
+      jest.spyOn(ModerasiController, 'pulihkanListingPengguna').mockResolvedValue(true);
+      jest.spyOn(ModerasiController, 'catatLogAdmin').mockResolvedValue();
+
+      const hasil = await ModerasiController.bukaBlokirAkun(
+        'token-admin',
+        'akun-terblokir-1',
+        'Banding diterima setelah verifikasi data',
+      );
+
+      expect(hasil).toBe(true);
+      expect(akunSasaranMock.bukaBlokir).toHaveBeenCalledWith(mockClient);
+      expect(ModerasiController.pulihkanListingPengguna).toHaveBeenCalledWith('akun-terblokir-1', mockClient);
+      expect(ModerasiController.catatLogAdmin).toHaveBeenCalledWith(
+        'admin-id-123',
+        'BUKA_BLOKIR',
+        'akun-terblokir-1',
+        'Banding diterima setelah verifikasi data',
+        mockClient,
+      );
+      expect(mockClient.query).toHaveBeenCalledWith('COMMIT');
+      expect(mockClient.release).toHaveBeenCalled();
+    });
+
+    test('menolak akses dan mengembalikan false jika bukan admin (KF56)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
+
+      const hasil = await ModerasiController.bukaBlokirAkun('token-invalid', 'akun-1', 'Alasan');
+
+      expect(hasil).toBe(false);
+      expect(db.pool.connect).not.toHaveBeenCalled();
+    });
+
+    test('mengembalikan false jika akun sasaran tidak ditemukan', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(null);
+
+      const hasil = await ModerasiController.bukaBlokirAkun('token-admin', 'akun-tidak-ada', 'Alasan');
+
+      expect(hasil).toBe(false);
+      expect(db.pool.connect).not.toHaveBeenCalled();
+    });
+
+    test('menggunakan alasan default jika parameter alasan kosong', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+
+      const akunSasaranMock = new Akun({
+        idAkun: 'akun-terblokir-2',
+        nama: 'Pengguna Dua',
+        email: 'dua@std.stei.itb.ac.id',
+      });
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(akunSasaranMock);
+      jest.spyOn(akunSasaranMock, 'bukaBlokir').mockResolvedValue(true);
+      jest.spyOn(ModerasiController, 'pulihkanListingPengguna').mockResolvedValue(true);
+      jest.spyOn(ModerasiController, 'catatLogAdmin').mockResolvedValue();
+
+      const hasil = await ModerasiController.bukaBlokirAkun('token-admin', 'akun-terblokir-2', '   ');
+
+      expect(hasil).toBe(true);
+      expect(ModerasiController.catatLogAdmin).toHaveBeenCalledWith(
+        'admin-id-123',
+        'BUKA_BLOKIR',
+        'akun-terblokir-2',
+        'Pembukaan blokir akun oleh admin',
+        mockClient,
+      );
+    });
+
+    test('melakukan rollback jika transaksi database mengalami kegagalan', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+
+      const akunSasaranMock = new Akun({
+        idAkun: 'akun-terblokir-3',
+        nama: 'Pengguna Tiga',
+        email: 'tiga@std.stei.itb.ac.id',
+      });
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(akunSasaranMock);
+      jest.spyOn(akunSasaranMock, 'bukaBlokir').mockRejectedValue(new Error('Koneksi terputus saat unblock'));
+
+      mockClient.query.mockImplementation((sql) => {
+        if (sql === 'BEGIN') return Promise.resolve();
+        if (sql === 'ROLLBACK') return Promise.resolve();
+        return Promise.resolve();
+      });
+
+      await expect(
+        ModerasiController.bukaBlokirAkun('token-admin', 'akun-terblokir-3', 'Alasan rollback'),
+      ).rejects.toThrow('Koneksi terputus saat unblock');
+
+      expect(mockClient.query).toHaveBeenCalledWith('ROLLBACK');
+      expect(mockClient.release).toHaveBeenCalled();
+    });
+  });
+
+  describe('pulihkanListingPengguna (KF54)', () => {
+    test('memanggil Barang.pulihkanKatalog dengan idAkun dan client', async () => {
+      jest.spyOn(Barang, 'pulihkanKatalog').mockResolvedValue(3);
+
+      const hasil = await ModerasiController.pulihkanListingPengguna('id-penjual-1', 'client-dummy');
+      expect(hasil).toBe(3);
+      expect(Barang.pulihkanKatalog).toHaveBeenCalledWith('id-penjual-1', 'client-dummy');
+    });
+  });
+
 });

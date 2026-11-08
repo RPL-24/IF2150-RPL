@@ -238,16 +238,50 @@ class ModerasiController {
     return Barang.nonaktifkanByPemilik(idAkun, client);
   }
 
-  // --- Stubs untuk implementasi lanjutan UC24 ---
-  static async bukaBlokirAkun(token, idAkun) {
-    // TODO(UC24): Buka blokir akun dan pulihkan listing di katalog
+  // Algo-024: Membuka blokir akun pengguna yang ditangguhkan, memulihkan visibilitas listing-nya di katalog,
+  // dan mencatat tindakan ke log admin (KF51, KF54, KF55, KF56)
+  static async bukaBlokirAkun(token, idAkun, alasan = 'Pembukaan blokir akun oleh admin') {
     const idAdmin = await this.otorisasiAdmin(token);
-    if (!idAdmin) return false;
+    if (!idAdmin) {
+      return false; // KF56
+    }
+
+    const akunSasaran = await Akun.cariById(idAkun);
+    if (!akunSasaran) {
+      return false;
+    }
+
+    const teksAlasan =
+      alasan && typeof alasan === 'string' && alasan.trim()
+        ? alasan.trim()
+        : 'Pembukaan blokir akun oleh admin';
+
+    const client = await db.pool.connect();
+    try {
+      await client.query('BEGIN');
+
+      // 1. Ubah status akun menjadi Terverifikasi dan status_blokir = false (KF51)
+      await akunSasaran.bukaBlokir(client);
+
+      // 2. Pulihkan seluruh listing milik pengguna menjadi "Tersedia" di katalog (KF54)
+      await this.pulihkanListingPengguna(idAkun, client);
+
+      // 3. Catat tindakan ke LogAdmin (KF55)
+      await this.catatLogAdmin(idAdmin, 'BUKA_BLOKIR', idAkun, teksAlasan, client);
+
+      await client.query('COMMIT');
+    } catch (galat) {
+      await client.query('ROLLBACK');
+      throw galat;
+    } finally {
+      client.release();
+    }
+
     return true;
   }
 
+  // Memulihkan status seluruh barang milik pengguna yang blokirnya dibuka (UC24)
   static async pulihkanListingPengguna(idAkun, client = db) {
-    // TODO(UC24): Memulihkan status listing pengguna
     return Barang.pulihkanKatalog(idAkun, client);
   }
 }

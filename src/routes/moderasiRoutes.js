@@ -269,4 +269,84 @@ router.post('/laporan/:id/akun/:idAkun/blokir', async (req, res) => {
   }
 });
 
+// POST /api/admin/akun/:idAkun/buka-blokir - Membuka blokir akun pengguna (KF51, KF54, KF55, KF56, Algo-024)
+router.post('/akun/:idAkun/buka-blokir', async (req, res) => {
+  try {
+    const { idAkun } = req.params;
+    const { alasan } = req.body || {};
+
+    const akunSasaran = await Akun.cariById(idAkun);
+    if (!akunSasaran) {
+      return res.status(404).json({
+        sukses: false,
+        pesan: 'Akun sasaran tidak ditemukan.',
+      });
+    }
+
+    const berhasil = await ModerasiController.bukaBlokirAkun(
+      req.token,
+      idAkun,
+      alasan || 'Pembukaan blokir akun oleh admin',
+    );
+
+    if (!berhasil) {
+      return res.status(400).json({
+        sukses: false,
+        pesan: 'Gagal membuka blokir akun pengguna.',
+      });
+    }
+
+    res.json({
+      sukses: true,
+      pesan: 'Blokir akun berhasil dibuka dan seluruh listing telah dipulihkan ke katalog.',
+    });
+  } catch (galat) {
+    console.error(`Galat route POST /api/admin/akun/${req.params.idAkun}/buka-blokir:`, galat);
+    res.status(500).json({
+      sukses: false,
+      pesan: 'Terjadi galat pada server saat membuka blokir akun.',
+    });
+  }
+});
+
+// POST /api/admin/laporan/:id/akun/:idAkun/buka-blokir - Membuka blokir akun dari konteks laporan
+router.post('/laporan/:id/akun/:idAkun/buka-blokir', async (req, res) => {
+  try {
+    const { idAkun } = req.params;
+    const { alasan } = req.body || {};
+
+    const akunSasaran = await Akun.cariById(idAkun);
+    if (!akunSasaran) {
+      return res.status(404).json({
+        sukses: false,
+        pesan: 'Akun sasaran tidak ditemukan.',
+      });
+    }
+
+    const berhasil = await ModerasiController.bukaBlokirAkun(
+      req.token,
+      idAkun,
+      alasan || 'Pembukaan blokir akun oleh admin',
+    );
+
+    if (!berhasil) {
+      return res.status(400).json({
+        sukses: false,
+        pesan: 'Gagal membuka blokir akun pengguna.',
+      });
+    }
+
+    res.json({
+      sukses: true,
+      pesan: 'Blokir akun berhasil dibuka dan seluruh listing telah dipulihkan ke katalog.',
+    });
+  } catch (galat) {
+    console.error(`Galat route POST /api/admin/laporan/${req.params.id}/akun/${req.params.idAkun}/buka-blokir:`, galat);
+    res.status(500).json({
+      sukses: false,
+      pesan: 'Terjadi galat pada server saat membuka blokir akun.',
+    });
+  }
+});
+
 module.exports = router;
