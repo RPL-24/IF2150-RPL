@@ -243,3 +243,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--cokelat-tua
   .landing-pilihan { grid-template-columns: 1fr; }
   .landing-hero h1 { font-size: 34px; }
 }
+
+/* ---------- Registrasi mitra ---------- */
+.judul-seksi { font-size: 24px; margin: 22px 0 12px; }
+input[type="file"] { width: 100%; font-size: 18px; margin-bottom: 8px; }
