@@ -1,53 +1,99 @@
 <!DOCTYPE html>
 <html lang="id">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MahaSehat - Masuk Akun</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Masuk ke akun</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="LoginPage.css">
-    </head>
-    <body>
-        <div class="auth-container">
-            <aside class="panel-left" id="Panel_Left">
-                <div class="logo-container" id="Logo_App">
-                    <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="logo-img">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="LoginPage.css">
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Panel Kiri (Hero Panel) -->
+        <aside class="panel-left" id="Panel_Left">
+            <div class="brand-header" id="Logo_App">
+                <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo">
+                <span class="brand-name">MahaSehat</span>
+            </div>
+
+            <div class="hero-content">
+                <h1 class="hero-title" id="Text_Greeting">Kembali ke catatanmu.</h1>
+                <p class="hero-subtitle">Satu langkah kecil hari ini tetap berarti.</p>
+            </div>
+
+            <div class="hero-footer">
+                <a href="mailto:support@mahasehat.id" class="help-link">Butuh bantuan? Hubungi kami</a>
+            </div>
+        </aside>
+
+        <!-- Panel Kanan (Form Login) -->
+        <main class="panel-right" id="Panel_Right">
+            <div class="form-wrapper">
+                <div class="form-header">
+                    <span class="eyebrow">Masuk</span>
+                    <h1 class="form-title" id="Title_Login">Masuk ke akun</h1>
                 </div>
 
-                <div class="greeting-box">
-                    <h1 id="Text_Greeting">Selamat Datang!</h1>
-                </div>
-            </aside>
-
-            <main class="panel-right" id="Panel_Right">
-                <div class="form-card">
-                    <h1 id="Title_Login">Masuk Akun</h1>
-                </div>
+                <div id="Alert_Error" class="alert-box alert-danger" style="display: none;"></div>
 
                 <form id="Form_Registration" novalidate>
-
+                    <!-- Field Email / Username -->
                     <div class="form-group">
-                        <label id="Label_Email" for="Input_Email">Email</label>
-                        <input type="email" id="Input_Email" name="email" placeholder="Email" required>
+                        <label id="Label_Email" for="Input_Email">Email atau username *</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                id="Input_Email" 
+                                name="identifier" 
+                                placeholder="nama@kampus.ac.id" 
+                                autocomplete="username"
+                                required
+                            >
+                        </div>
                         <small class="error-msg" id="Error_Email"></small>
                     </div>
 
+                    <!-- Field Kata Sandi -->
                     <div class="form-group">
-                        <label id="Label_KataSandi" for="Input_KataSandi">Kata Sandi</label>
-                        <input type="password" id="Input_KataSandi" name="password" placeholder="Kata Sandi (Min. 8 karakter)" required>
+                        <label id="Label_KataSandi" for="Input_KataSandi">Kata sandi *</label>
+                        <div class="input-wrapper password-wrapper">
+                            <input 
+                                type="password" 
+                                id="Input_KataSandi" 
+                                name="password" 
+                                placeholder="Kata sandi" 
+                                autocomplete="current-password"
+                                required
+                            >
+                            <button type="button" id="Toggle_Password" class="btn-toggle-password" aria-label="Tampilkan kata sandi">
+                                Tampilkan
+                            </button>
+                        </div>
+                        <small class="error-msg" id="Error_KataSandi"></small>
                     </div>
-                    <a href="ResetPasswordPage.html" id="Link_LupaPass">Lupa kata sandi?</a>
-                    <div id="Alert_Error" class="alert-box alert-danger" style="display: none;"></div>
 
+                    <!-- Link Lupa Kata Sandi -->
+                    <div class="forgot-wrapper">
+                        <a href="ResetPasswordPage.html" id="Link_LupaPass" class="link-forgot">Lupa kata sandi?</a>
+                    </div>
+
+                    <!-- Tombol Masuk -->
                     <button type="submit" class="btn-primary" id="Btn_Masuk">Masuk</button>
                 </form>
 
-                <p class="registration-link" id="Link_Daftar">Belum memiliki akun? <a href=RegistrationPagePelajar.html><span class="text-highlight">Daftar</span></a></p>
-            </main>
-        </div>
-        <script src="LoginPage.js"></script>
-    </body>
+                <!-- Tautan Pendaftaran -->
+                <p class="registration-link" id="Link_Daftar">
+                    Belum punya akun? <a href="RegistrationPagePelajar.html"><span class="text-highlight">Daftar</span></a>
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script src="LoginPage.js"></script>
+</body>
 </html>
