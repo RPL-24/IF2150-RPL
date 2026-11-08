@@ -1,5 +1,5 @@
+import { randomUUID } from 'crypto';
 import prisma from '../database/prisma';
-import { generateEntityId, ID_PREFIX } from '../utils/idGenerator';
 
 export interface KategoriJasaInput {
   idKategoriJasa?: string;
@@ -78,7 +78,7 @@ export class KategoriJasa {
   }
 
   public async saveKategoriJasa(dataJasa: KategoriJasaInput): Promise<KategoriJasaRecord> {
-    this.idKategoriJasa = dataJasa.idKategoriJasa || generateEntityId(ID_PREFIX.KATEGORI_JASA);
+    this.idKategoriJasa = dataJasa.idKategoriJasa || randomUUID();
     this.jenisJasa = dataJasa.jenisJasa.trim();
     this.deskripsiJasa = dataJasa.deskripsiJasa.trim();
     this.tarif = Number(dataJasa.tarif);
