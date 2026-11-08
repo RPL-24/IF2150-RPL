@@ -1,113 +1,202 @@
 <!DOCTYPE html>
 <html lang="id">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MahaSehat - Dashboard</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Dashboard Orang Tua / Wali</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="DashboardPageOrangTuaWali.css">
-    </head>
-    <body>
-        <div class="app-container">
-            <aside class="sidebar" id="Sidebar">
-                <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="logo-img" id="Logo_App">
-
-                <nav class="menu-group" aria-label="Menu utama">
-                    <p class="menu-label">Menu</p>
-                    <a href="#" class="menu-item active" id="Menu_Dashboard">
-                        <img src="../assets/icon-dashboard.png" alt="" class="icon">
-                        Dashboard
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="DashboardPageOrangTuaWali.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Floating Sidebar Navigasi (Sesuai Node 3960 & 4073 FigCraft) -->
+        <aside class="app-sidebar" id="Sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-header">
+                    <a href="DashboardPageOrangTuaWali.html" class="brand-link">
+                        <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                        <span class="brand-title">MahaSehat</span>
                     </a>
-                    <a href="#" class="menu-item" id="Menu_Laporan">
-                        <img src="../assets/icon-laporankesehatan.png" alt="" class="icon">
-                        Laporan Kesehatan
+                </div>
+
+                <!-- Kolom Pencarian di Atas Menu (Node 4076 FigCraft) -->
+                <div class="sidebar-search">
+                    <span class="search-icon" aria-hidden="true">⌕</span>
+                    <input type="text" class="search-input" placeholder="Cari" aria-label="Cari menu">
+                </div>
+
+                <!-- Menu Navigasi Utama -->
+                <nav class="nav-menu" aria-label="Menu utama">
+                    <a href="DashboardPageOrangTuaWali.html" class="nav-item active" id="Menu_Dashboard">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="ReportPage.html" class="nav-item" id="Menu_Laporan">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span class="nav-label">Laporan Kesehatan</span>
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="SettingPage.html" class="nav-item" id="Menu_Setelan">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="nav-label">Setelan</span>
+                    </a>
+                    <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span class="nav-label">Keluar</span>
                     </a>
                 </nav>
-
-                <nav class="menu-group" aria-label="Menu umum">
-                    <p class="menu-label">Umum</p>
-                    <a href="#" class="menu-item" id="Menu_Setelan">
-                        <img src="../assets/icon-setelan.png" alt="" class="icon">
-                        Setelan
-                    </a>
-                    <a href="#" class="menu-item" id="Menu_Keluar">
-                        <img src="../assets/icon-keluar.png" alt="" class="icon">
-                        Keluar
-                    </a>
-                </nav>
-            </aside>
-
-            <div class="content-area">
-                <header class="topbar" id="Topbar">
-                    <div class="user-info" id="Info_User">
-                        <svg class="user-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="10" r="3"/><path d="M6.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5"/></svg>
-                        <div>
-                            <p class="user-name" id="Text_NamaUser">-</p>
-                            <p class="user-role" id="Text_RoleUser">-</p>
-                        </div>
-                    </div>
-                </header>
-
-                <main class="main-panel" id="Panel_Dashboard">
-                    <h1 id="Title_Dashboard">Dashboard</h1>
-                    <p class="subtitle" id="Text_Subjudul">Pantau kondisi pelajar yang kamu dampingi dan tanggapi hal penting dengan cepat.</p>
-
-                    <section class="card banner-card" id="Card_Registrasi" hidden>
-                        <div>
-                            <h2>Konfirmasi Registrasi</h2>
-                            <p id="Text_DetailRegistrasi"></p>
-                        </div>
-                        <a href="KonfirmasiRegistrasiPage.html" class="btn btn-gelap btn-link" id="Link_TinjauRegistrasi">Tinjau Registrasi</a>
-                    </section>
-
-                    <section class="card" id="Card_AkunPelajar">
-                        <h3>Pelajar yang Dipantau</h3>
-                        <div class="akun-item">
-                            <span class="jadwal-avatar" aria-hidden="true"></span>
-                            <div>
-                                <p class="jadwal-nama" id="Text_NamaPelajar">-</p>
-                                <p id="Text_UsiaPelajar">-</p>
-                            </div>
-                            <span class="badge" id="Badge_StatusAkun">-</span>
-                        </div>
-                    </section>
-
-                    <section class="stats-grid stats-grid-ortu" id="Grid_Ringkasan">
-                        <article class="card" id="Card_HariTidakCheckIn">
-                            <h3>Tidak Check-In</h3>
-                            <p class="stat-value"><span id="Value_HariTidakCheckIn">-</span><small>Hari</small></p>
-                            <p class="stat-note">Sejak check-in terakhir</p>
-                        </article>
-                        <article class="card" id="Card_RerataMood">
-                            <h3>Rerata Mood</h3>
-                            <p class="stat-value"><span id="Value_RerataMood">-</span><small>/ 5</small></p>
-                            <p class="stat-note">Rata-rata skala suasana hati</p>
-                        </article>
-                        <article class="card" id="Card_RerataTidur">
-                            <h3>Rerata Tidur</h3>
-                            <p class="stat-value"><span id="Value_RerataTidur">-</span><small>Jam</small></p>
-                            <p class="stat-note">Rata-rata durasi tidur</p>
-                        </article>
-                        <article class="card" id="Card_Risiko">
-                            <h3>Indikator Risiko</h3>
-                            <p class="stat-value"><span id="Value_Risiko">-</span></p>
-                            <p class="stat-note">Berdasarkan data check-in</p>
-                        </article>
-                    </section>
-
-                    <section class="card" id="Card_Ringkasan">
-                        <h3>Ringkasan Kondisi</h3>
-                        <p class="ringkasan" id="Text_RingkasanKondisi"></p>
-                        <p class="empty-msg" id="Text_RingkasanKosong" hidden>Ringkasan muncul setelah data check-in cukup.</p>
-                        <a href="ReportPage.html" class="btn btn-gelap btn-link" id="Link_LaporanLengkap">Lihat Laporan Lengkap</a>
-                    </section>
-                </main>
             </div>
-        </div>
 
-        <script src="DashboardPageOrangTuaWali.js"></script>
-    </body>
+            <!-- Profil Wali Bawah Sidebar (Node 4120-4123 FigCraft) -->
+            <div class="sidebar-user" id="Info_User">
+                <div class="user-avatar" id="User_Avatar">H</div>
+                <div class="user-meta">
+                    <p class="user-name" id="Text_NamaUser">Hermann Einstein</p>
+                    <p class="user-role" id="Text_RoleUser">Orang Tua / Wali</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Area Konten Utama -->
+        <main class="main-viewport" id="Panel_Dashboard">
+            <header class="page-header">
+                <h1 class="page-title" id="Title_Dashboard">Dashboard</h1>
+                <p class="page-subtitle" id="Text_Subjudul">Pantau kondisi pelajar yang kamu dampingi dan tanggapi hal penting dengan cepat.</p>
+            </header>
+
+            <!-- Banner Konfirmasi Registrasi (Jika Ada Permintaan) -->
+            <section class="banner-card banner-warning" id="Card_Registrasi">
+                <div class="banner-icon-wrapper">
+                    <div class="banner-icon-circle">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
+                    </div>
+                </div>
+                <div class="banner-text">
+                    <h2 class="banner-heading">Konfirmasi Registrasi</h2>
+                    <p class="banner-message" id="Text_DetailRegistrasi">
+                        Albert Einstein mengajukan registrasi pada 6 November 2026. Mohon konfirmasi sebagai wali.
+                    </p>
+                </div>
+                <div class="banner-cta">
+                    <a href="KonfirmasiRegistrasiPage.html" class="btn-primary-pill" id="Link_TinjauRegistrasi">Tinjau Registrasi</a>
+                </div>
+            </section>
+
+            <!-- 4 Grid Metrik Pantauan Pelajar -->
+            <section class="stats-grid" id="Grid_Ringkasan">
+                <article class="stat-card" id="Card_HariTidakCheckIn">
+                    <h3 class="stat-title">Tidak Check-In</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value" id="Value_HariTidakCheckIn">2</span>
+                        <span class="stat-unit">Hari</span>
+                    </div>
+                    <p class="stat-note">Sejak check-in terakhir</p>
+                </article>
+
+                <article class="stat-card" id="Card_RerataMood">
+                    <h3 class="stat-title">Rerata Mood</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value" id="Value_RerataMood">3.2</span>
+                        <span class="stat-unit">/ 5</span>
+                    </div>
+                    <p class="stat-note">Rata-rata skala suasana hati</p>
+                </article>
+
+                <article class="stat-card" id="Card_RerataTidur">
+                    <h3 class="stat-title">Rerata Tidur</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value" id="Value_RerataTidur">7.5</span>
+                        <span class="stat-unit">Jam</span>
+                    </div>
+                    <p class="stat-note">Rata-rata durasi tidur</p>
+                </article>
+
+                <article class="stat-card" id="Card_Risiko">
+                    <h3 class="stat-title">Indikator Risiko</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value stat-value-text" id="Value_Risiko">Sedang</span>
+                    </div>
+                    <p class="stat-note">Berdasarkan data check-in</p>
+                </article>
+            </section>
+
+            <!-- Grid Bawah (Ringkasan Kondisi & Akun Pelajar yang Dipantau) -->
+            <div class="bottom-grid">
+                <!-- Kartu Ringkasan Kondisi Pelajar -->
+                <section class="card-box" id="Card_Ringkasan">
+                    <div class="card-box-header">
+                        <h3 class="card-box-title">Ringkasan Kondisi</h3>
+                        <span class="status-badge status-stabil">Laporan Aktif</span>
+                    </div>
+                    
+                    <p class="ringkasan-text" id="Text_RingkasanKondisi">
+                        Kondisi pelajar cukup stabil, namun durasi tidur sedikit menurun di akhir pekan. Tetap jaga komunikasi hangat.
+                    </p>
+                    <p class="empty-msg" id="Text_RingkasanKosong" style="display: none;">Ringkasan muncul setelah data check-in cukup.</p>
+
+                    <div class="card-box-footer">
+                        <a href="ReportPage.html" class="btn-primary-pill" id="Link_LaporanLengkap">Lihat Laporan Lengkap</a>
+                    </div>
+                </section>
+
+                <!-- Kartu Pelajar yang Dipantau -->
+                <section class="card-box" id="Card_AkunPelajar">
+                    <div class="card-box-header">
+                        <h3 class="card-box-title">Pelajar yang Dipantau</h3>
+                    </div>
+
+                    <div class="pelajar-profile-box">
+                        <div class="pelajar-avatar" id="Avatar_Pelajar">A</div>
+                        <div class="pelajar-meta">
+                            <h4 class="pelajar-name" id="Text_NamaPelajar">Albert Einstein</h4>
+                            <p class="pelajar-sub" id="Text_UsiaPelajar">16 tahun</p>
+                        </div>
+                        <span class="status-badge badge-belum" id="Badge_StatusAkun">Belum Terverifikasi</span>
+                    </div>
+
+                    <div class="pelajar-guidance-note">
+                        <svg class="guidance-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <p class="guidance-text">Catatan refleksi pribadi pelajar dijaga kerahasiaannya. Anda memantau tren kesehatan agregat.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="DashboardPageOrangTuaWali.js"></script>
+</body>
 </html>
