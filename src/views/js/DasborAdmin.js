@@ -140,13 +140,7 @@ class DasborAdmin {
             <td>${this.escapeHtml(lap.jenisPelanggaran || '-')}</td>
             <td><span class="mono" style="font-size:12px">${this.escapeHtml(String(lap.idPelapor).slice(0, 8))}…</span></td>
             <td class="mono">${tglStr}</td>
-            <td>
-              <select class="select-status-baris ${badgeClass}" onchange="window.dasborAdmin.onClickUbahStatus('${lap.idLaporan}', this.value)" style="border-radius: var(--radius-sm); padding: 2px 6px; font-size: 12px; cursor: pointer;">
-                <option value="Baru" ${lap.statusPenanganan === 'Baru' ? 'selected' : ''}>Baru</option>
-                <option value="Diproses" ${lap.statusPenanganan === 'Diproses' ? 'selected' : ''} ${lap.statusPenanganan === 'Selesai' ? 'disabled' : ''}>Diproses</option>
-                <option value="Selesai" ${lap.statusPenanganan === 'Selesai' ? 'selected' : ''}>Selesai</option>
-              </select>
-            </td>
+            <td><span class="${badgeClass}">${lap.statusPenanganan || 'Baru'}</span></td>
             <td>
               <a href="/admin-detail?id=${encodeURIComponent(lap.idLaporan)}" class="btn btn--sekunder btn--sm" style="text-decoration:none; display:inline-block">
                 Lihat Detail
@@ -227,9 +221,6 @@ class DasborAdmin {
     const selectStatus = document.getElementById('select-status-penanganan');
     if (selectStatus) {
       selectStatus.value = laporan.statusPenanganan || 'Baru';
-      Array.from(selectStatus.options).forEach((opt) => {
-        opt.disabled = !this.validasiTransisiStatus(laporan.statusPenanganan, opt.value);
-      });
     }
 
     // Render bukti lampiran tangkapan layar
@@ -279,26 +270,10 @@ class DasborAdmin {
     }
   }
 
-  // Validasi transisi status laporan secara tertib: "Baru" → "Diproses" → "Selesai" (KF47)
-  validasiTransisiStatus(statusLama, statusBaru) {
-    if (!statusLama || !statusBaru) return false;
-    if (!['Baru', 'Diproses', 'Selesai'].includes(statusBaru)) return false;
-    if (statusLama === statusBaru) return true;
-    if (statusLama === 'Baru') return statusBaru === 'Diproses' || statusBaru === 'Selesai';
-    if (statusLama === 'Diproses') return statusBaru === 'Selesai';
-    return false;
-  }
-
   // Mengubah status penanganan laporan (KF47, KF48)
   async onClickUbahStatus(idLaporan, statusBaru) {
     if (!['Baru', 'Diproses', 'Selesai'].includes(statusBaru)) {
       this.tampilkanPesanGalat('Status penanganan tidak valid.');
-      return;
-    }
-
-    const statusSaatIni = this.detailLaporan?.laporan?.statusPenanganan;
-    if (statusSaatIni && !this.validasiTransisiStatus(statusSaatIni, statusBaru)) {
-      this.tampilkanPesanGalat(`Transisi status dari "${statusSaatIni}" ke "${statusBaru}" tidak diperbolehkan. Alur status: Baru → Diproses → Selesai.`);
       return;
     }
 
@@ -310,12 +285,7 @@ class DasborAdmin {
 
     this.tampilkanStatusTerbaru(`Status laporan berhasil diubah menjadi ${statusBaru}.`);
     // Muat ulang data detail
-    if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
-      this.bukaDetailLaporan(idLaporan);
-    } else {
-      this.memuatStatistik();
-      this.filterLaporan(this.filterStatus);
-    }
+    this.bukaDetailLaporan(idLaporan);
   }
 
   // Menampilkan peringatan Akses Ditolak dan mengalihkan pengguna bukan admin (KF56)
@@ -491,12 +461,7 @@ class DasborAdmin {
       if (modal) modal.hidden = true;
 
       if (idLaporan) {
-        if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
-      this.bukaDetailLaporan(idLaporan);
-    } else {
-      this.memuatStatistik();
-      this.filterLaporan(this.filterStatus);
-    }
+        this.bukaDetailLaporan(idLaporan);
       }
     } else if (this.tindakanAktif === 'HAPUS_LISTING') {
       const idBarang = this.targetIdBarang;
@@ -515,12 +480,7 @@ class DasborAdmin {
       if (modal) modal.hidden = true;
 
       if (idLaporan) {
-        if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
-      this.bukaDetailLaporan(idLaporan);
-    } else {
-      this.memuatStatistik();
-      this.filterLaporan(this.filterStatus);
-    }
+        this.bukaDetailLaporan(idLaporan);
       }
     } else if (this.tindakanAktif === 'BUKA_BLOKIR') {
       const idAkun = this.targetIdAkun || this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
@@ -544,12 +504,7 @@ class DasborAdmin {
       if (modal) modal.hidden = true;
 
       if (idLaporan) {
-        if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
-      this.bukaDetailLaporan(idLaporan);
-    } else {
-      this.memuatStatistik();
-      this.filterLaporan(this.filterStatus);
-    }
+        this.bukaDetailLaporan(idLaporan);
       }
     } else {
       this.tampilkanStatusTerbaru('Tindakan moderasi berhasil dijalankan.');
