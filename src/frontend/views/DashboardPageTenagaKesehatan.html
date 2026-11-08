@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MahaSehat - Dashboard</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="DashboardPageTenagaKesehatan.css">
+    </head>
+    <body>
+        <div class="app-container">
+            <aside class="sidebar" id="Sidebar">
+                <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="logo-img" id="Logo_App">
+
+                <nav class="menu-group" aria-label="Menu utama">
+                    <p class="menu-label">Menu</p>
+                    <a href="#" class="menu-item active" id="Menu_Dashboard">
+                        <img src="../assets/icon-dashboard.png" alt="" class="icon">
+                        Dashboard
+                    </a>
+                    <a href="#" class="menu-item" id="Menu_Konsultasi">
+                        <img src="../assets/icon-konsultasi.png" alt="" class="icon">
+                        Konsultasi
+                    </a>
+                </nav>
+
+                <nav class="menu-group" aria-label="Menu umum">
+                    <p class="menu-label">Umum</p>
+                    <a href="#" class="menu-item" id="Menu_Setelan">
+                        <img src="../assets/icon-setelan.png" alt="" class="icon">
+                        Setelan
+                    </a>
+                    <a href="#" class="menu-item" id="Menu_Keluar">
+                        <img src="../assets/icon-keluar.png" alt="" class="icon">
+                        Keluar
+                    </a>
+                </nav>
+            </aside>
+
+            <div class="content-area">
+                <header class="topbar" id="Topbar">
+                    <div class="user-info" id="Info_User">
+                        <svg class="user-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="10" r="3"/><path d="M6.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5"/></svg>
+                        <div>
+                            <p class="user-name" id="Text_NamaUser">-</p>
+                            <p class="user-role" id="Text_RoleUser">-</p>
+                        </div>
+                    </div>
+                </header>
+
+                <main class="main-panel" id="Panel_Dashboard">
+                    <h1 id="Title_Dashboard">Dashboard</h1>
+                    <p class="subtitle" id="Text_Subjudul">Kelola pengajuan konsultasi dan jadwal ketersediaanmu dengan mudah.</p>
+
+                    <section class="card" id="Card_Profil">
+                        <h3>Profil Saya</h3>
+                        <div class="jadwal-item" id="Item_Profil">
+                            <span class="jadwal-avatar" aria-hidden="true"></span>
+                            <div>
+                                <p class="jadwal-nama" id="Text_NamaNakes">-</p>
+                                <p id="Text_JenisNakes">-</p>
+                            </div>
+                            <p class="jadwal-detail" id="Text_DetailProfil"></p>
+                        </div>
+                    </section>
+
+                    <section class="stats-grid" id="Grid_Ringkasan">
+                        <article class="card" id="Card_Diajukan">
+                            <h3>Pengajuan Baru</h3>
+                            <p class="stat-value"><span id="Value_Diajukan">-</span><small>Pengajuan</small></p>
+                            <p class="stat-note">Menunggu tanggapanmu</p>
+                        </article>
+                        <article class="card" id="Card_Disetujui">
+                            <h3>Disetujui</h3>
+                            <p class="stat-value"><span id="Value_Disetujui">-</span><small>Pengajuan</small></p>
+                            <p class="stat-note">Konsultasi terjadwal</p>
+                        </article>
+                        <article class="card" id="Card_DijadwalUlang">
+                            <h3>Dijadwal Ulang</h3>
+                            <p class="stat-value"><span id="Value_DijadwalUlang">-</span><small>Pengajuan</small></p>
+                            <p class="stat-note">Menunggu jawaban pelajar</p>
+                        </article>
+                        <article class="card" id="Card_SlotKosong">
+                            <h3>Slot Kosong</h3>
+                            <p class="stat-value"><span id="Value_SlotKosong">-</span><small>Slot</small></p>
+                            <p class="stat-note">Masih tersedia</p>
+                        </article>
+                    </section>
+
+                    <div class="bottom-grid">
+                        <section class="card" id="Card_Pengajuan">
+                            <h3>Pengajuan Konsultasi Terbaru</h3>
+                            <div class="list" id="List_Pengajuan"></div>
+                            <p class="empty-msg" id="Text_PengajuanKosong" hidden>Belum ada pengajuan konsultasi.</p>
+                            <a href="PengajuanKonsultasiPage.html" class="btn btn-gelap btn-link" id="Link_KelolaPengajuan">Kelola Pengajuan</a>
+                        </section>
+
+                        <section class="card" id="Card_Ketersediaan">
+                            <h3>Jadwal Ketersediaan</h3>
+                            <div class="list" id="List_Ketersediaan"></div>
+                            <p class="empty-msg" id="Text_KetersediaanKosong" hidden>Belum ada slot ketersediaan.</p>
+                        </section>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <script src="DashboardPageTenagaKesehatan.js"></script>
+    </body>
+</html>
