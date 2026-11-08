@@ -131,6 +131,7 @@ async function bukaDokumen(idDokumen: string): Promise<void> {
 export async function verifikasiRestoranPage(ctx: RouteCtx): Promise<void> {
   let daftar: any[] = await api.get('/admin/pengajuan');
   let dipilih: string | null = daftar.find((p) => p.status === 'MENUNGGU')?.id_pengajuan ?? daftar[0]?.id_pengajuan ?? null;
+  let filterStatus = '';
 
   const render = async () => {
     const detail = dipilih ? await api.get(`/admin/pengajuan/${dipilih}`) : null;
@@ -140,7 +141,10 @@ export async function verifikasiRestoranPage(ctx: RouteCtx): Promise<void> {
       html`<header class="panel-kepala"><div><h1>Verifikasi pengajuan mitra</h1>
         <p class="redup">${daftar.filter((p) => p.status === 'MENUNGGU').length} pengajuan menunggu verifikasi</p></div></header>
         ${daftar.length === 0 ? kosong('Belum ada pengajuan mitra') : html`<div class="dua-kolom">
-          <section class="kartu"><ul class="list">${daftar.map((p) => html`<li><button class="list-item tautan ${p.id_pengajuan === dipilih ? 'dipilih' : ''}" data-pengajuan="${p.id_pengajuan}">
+          <section class="kartu"><div class="chips chips-kecil">${[['', 'Semua'], ['MENUNGGU', 'Menunggu'], ['DISETUJUI', 'Disetujui'], ['DITOLAK', 'Ditolak']]
+            .map(([k, l]) => html`<button class="chip ${filterStatus === k ? 'aktif' : ''}" data-filter-status="${k}">${l} (${
+              daftar.filter((p) => !k || p.status === k).length})</button>`)}</div>
+          <ul class="list">${daftar.filter((p) => !filterStatus || p.status === filterStatus).map((p) => html`<li><button class="list-item tautan ${p.id_pengajuan === dipilih ? 'dipilih' : ''}" data-pengajuan="${p.id_pengajuan}">
               <span class="tumbuh"><strong>${p.nama_restoran}</strong><small>${tanggal(p.tgl_pengajuan, { dateStyle: 'medium' })}</small></span>${st(p.status)}</button></li>`)}</ul></section>
           ${detail ? html`<section class="kartu">
             <div class="baris-antara"><h2>${detail.nama_restoran}</h2>${st(detail.status)}</div>
@@ -170,6 +174,10 @@ export async function verifikasiRestoranPage(ctx: RouteCtx): Promise<void> {
   };
   await render();
 
+  on(ctx.root, 'click', '[data-filter-status]', (_e, t) => {
+    filterStatus = t.dataset.filterStatus ?? '';
+    void render().catch(tampilkanGalat);
+  });
   on(ctx.root, 'click', '[data-pengajuan]', (_e, t) => {
     dipilih = t.dataset.pengajuan!;
     void render().catch(tampilkanGalat);

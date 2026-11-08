@@ -54,3 +54,12 @@ test('validasi format dokumen mitra (Algo-063)', () => {
   assert.match(DokumenVerifikasi.validasiFormat('foto', 'application/pdf', 1000)!, /format/);
   assert.match(DokumenVerifikasi.validasiFormat('izinUsaha', 'image/png', 6 * 1024 * 1024)!, /5 MB/);
 });
+
+test('akun pengaju mendapat notifikasi saat pengajuan disetujui (iterasi 2)', async () => {
+  const pengajuan = await app.controllers.mitra.daftarPengajuan();
+  const surabi = pengajuan.find((p) => p.nama_restoran === 'Surabi Enhaii' && p.status === 'MENUNGGU')!;
+  await app.controllers.mitra.setujui(surabi.id_pengajuan);
+  const user = await loginSebagai(app, 'surabi@antri.in', 'restoran123');
+  const { items } = await app.controllers.notifikasi.daftar(user);
+  assert.match(items[0].judul, /disetujui/);
+});
