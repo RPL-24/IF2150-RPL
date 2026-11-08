@@ -4,7 +4,6 @@ const ModerasiController = require('../controllers/ModerasiController');
 const Otorisasi = require('../pendukung/Otorisasi');
 const Barang = require('../models/Barang');
 const Akun = require('../models/Akun');
-const Laporan = require('../models/Laporan');
 
 const router = express.Router();
 
@@ -102,21 +101,6 @@ router.patch('/laporan/:id/status', async (req, res) => {
       return res.status(400).json({
         sukses: false,
         pesan: 'Status penanganan tidak valid. Pilih: Baru, Diproses, atau Selesai.',
-      });
-    }
-
-    const laporan = await Laporan.getDetailLaporan(id);
-    if (!laporan) {
-      return res.status(404).json({
-        sukses: false,
-        pesan: 'Laporan tidak ditemukan.',
-      });
-    }
-
-    if (!Laporan.validasiTransisiStatus(laporan.statusPenanganan, status)) {
-      return res.status(400).json({
-        sukses: false,
-        pesan: `Transisi status penanganan tidak valid dari "${laporan.statusPenanganan}" menjadi "${status}". Alur status: Baru → Diproses → Selesai.`,
       });
     }
 

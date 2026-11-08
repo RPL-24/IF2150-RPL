@@ -40,9 +40,7 @@ class LogAudit {
   static async catatPerubahanStatusLaporan(idLaporan, idAdmin, statusBaru, client = db) {
     const idBaru = crypto.randomUUID();
     const waktuSekarang = new Date();
-    const teksTindakan = String(statusBaru).startsWith('Perubahan status')
-      ? statusBaru
-      : `Perubahan status laporan menjadi ${statusBaru}`;
+    const teksTindakan = `Perubahan status laporan menjadi ${statusBaru}`;
     await client.query(
       `INSERT INTO log_audit (id_log, id_laporan, waktu, identitas_aktor, tindakan)
        VALUES ($1, $2, $3, $4, $5)`,

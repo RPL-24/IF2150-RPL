@@ -91,15 +91,6 @@ class ModerasiController {
       return false;
     }
 
-    const laporanSaatIni = await Laporan.getDetailLaporan(idLaporan);
-    if (!laporanSaatIni) {
-      return false;
-    }
-
-    if (!Laporan.validasiTransisiStatus(laporanSaatIni.statusPenanganan, statusBaru)) {
-      return false;
-    }
-
     const berhasil = await Laporan.updateStatusPenanganan(idLaporan, statusBaru);
     if (berhasil) {
       await this.catatLogAudit(idLaporan, idAdmin, `Perubahan status laporan menjadi ${statusBaru}`);

@@ -6,6 +6,7 @@ const akunRoutes = require('./routes/akunRoutes');
 const dokumenLegalRoutes = require('./routes/dokumenLegalRoutes');
 const laporanRoutes = require('./routes/laporanRoutes');
 const moderasiRoutes = require('./routes/moderasiRoutes');
+const barangRoutes = require('./routes/barangRoutes');
 
 const DIR_VIEWS = path.join(__dirname, 'views');
 const DIR_HALAMAN = path.join(DIR_VIEWS, 'pages');
@@ -19,16 +20,17 @@ app.use('/api/akun', akunRoutes);
 app.use('/api/dokumen-legal', dokumenLegalRoutes);
 app.use('/api/laporan', laporanRoutes);
 app.use('/api/admin', moderasiRoutes);
+app.use('/api/barang', barangRoutes);
 
 app.use('/api', (req, res) => {
   res.status(404).json({ sukses: false, pesan: 'Endpoint tidak ditemukan.' });
 });
 
 // ───────────── View & Berkas Statis ─────────────
-// Beranda adalah katalog (modul C); selama katalog belum ada, arahkan ke halaman masuk.
+// Beranda adalah katalog (modul C); selama katalog belum ada, arahkan ke profil (profil menangani sesi login).
 app.get('/', (req, res) => {
   const adaKatalog = fs.existsSync(path.join(DIR_HALAMAN, 'katalog.html'));
-  res.redirect(adaKatalog ? '/katalog' : '/masuk');
+  res.redirect(adaKatalog ? '/katalog' : '/profil');
 });
 
 app.use('/uploads', express.static(DIR_UPLOADS));
