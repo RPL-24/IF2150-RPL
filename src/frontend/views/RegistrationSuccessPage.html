@@ -1,28 +1,40 @@
 <!DOCTYPE html>
 <html lang="id">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MahaSehat - Registrasi Berhasil</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MahaSehat - Akun Berhasil Dibuat</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="RegistrationSuccessPage.css">
-    </head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="RegistrationSuccessPage.css" />
+  </head>
+  <body>
+    <a class="brand" href="LoginPage.html">
+      <img src="../assets/logo-mahasehat-mark.png" alt="" />
+      <span>MahaSehat</span>
+    </a>
 
-    <body>
-        <main class="success-container">
-            <div class="success-card" id="Card_Success">
-                <div class="success-icon" id="Icon_Success">
-                    <img src="..\assets\check.png" alt="Success Icon"/>
-                </div>
+    <main class="success-container">
+      <div class="success-card" id="Card_Success">
+        <div class="success-icon" id="Icon_Success" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2A3A3F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12l4 4L19 6" />
+          </svg>
+        </div>
 
-                <p id="Title_Success">Akun Berhasil Dibuat!</p>
-                <p id="Desc_Success">Akun Anda telah berhasil dibuat dan siap digunakan. Silakan masuk untuk mulai menjelajah.</p>
+        <h1 id="Title_Success">Akun Berhasil Dibuat!</h1>
+        <p class="success-desc" id="Desc_Success">
+          Akun Anda telah berhasil dibuat dan siap digunakan. Silakan masuk
+          untuk mulai menjelajah.
+        </p>
 
-                <a href="RegistrationPagePelajar.html" id="Btn_Mengerti" class="success-btn">Masuk</a>
-            </div>
-        </main>
-    </body>
+        <a class="success-btn" id="Btn_Masuk" href="LoginPage.html">Masuk</a>
+      </div>
+    </main>
+  </body>
 </html>

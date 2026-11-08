@@ -40,7 +40,9 @@ h3,
 .panel-left {
   display: flex;
   flex-direction: column;
-  padding: 56px;
+  margin: 24px;
+  padding: 40px;
+  border-radius: 24px;
   background: var(--teal);
 }
 
@@ -58,8 +60,7 @@ h3,
 }
 
 .wordmark-mark {
-  width: auto;
-  height: 40px;
+  display: none;
 }
 
 .narrative {
@@ -97,7 +98,7 @@ h3,
 }
 
 .panel-right {
-  padding: 64px 80px;
+  padding: 64px 80px 64px 56px;
   overflow-y: auto;
   background: var(--cream);
 }
@@ -160,6 +161,7 @@ h3,
 .divider {
   height: 1px;
   margin: 24px 0;
+  border-radius: 999px;
   background: var(--mist);
 }
 
@@ -379,73 +381,6 @@ h3,
   color: var(--ink);
   font-weight: 700;
   text-decoration: none;
-}
-
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(42, 58, 63, 0.4);
-}
-
-.modal-backdrop[hidden] {
-  display: none;
-}
-
-.success-modal {
-  width: 100%;
-  max-width: 440px;
-  padding: 32px;
-  border-radius: 16px;
-  background: var(--cream);
-  box-shadow: 0 16px 40px rgba(42, 58, 63, 0.16);
-  text-align: center;
-}
-
-.success-mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  margin: 0 auto 20px;
-  border-radius: 999px;
-  background: var(--teal);
-}
-
-.success-modal h2 {
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 40px;
-  letter-spacing: -0.02em;
-}
-
-.success-message {
-  margin-top: 8px;
-  color: var(--ink-75);
-  font-size: 16px;
-  line-height: 24px;
-}
-
-.success-modal .btn-primary {
-  margin-top: 24px;
-}
-
-.success-close {
-  display: block;
-  width: 100%;
-  margin-top: 8px;
-  border: 0;
-  background: none;
-  color: var(--ink-75);
-  font: inherit;
-  font-size: 14px;
-  line-height: 20px;
-  cursor: pointer;
 }
 
 .select-shell {

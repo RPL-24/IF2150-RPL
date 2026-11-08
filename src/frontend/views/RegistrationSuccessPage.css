@@ -1,82 +1,161 @@
+:root {
+  --teal: #78c9c0;
+  --cream: #fffdf7;
+  --amber: #f8c16f;
+  --ink: #2a3a3f;
+  --mist: #e2e8f0;
+  --ink-75: rgba(42, 58, 63, 0.75);
+}
+
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'DM Sans', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: #FFFDF7; 
-    color: #2A3A3F;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 120px 24px 48px;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "DM Sans", sans-serif;
+}
+
+.brand {
+  position: absolute;
+  top: 40px;
+  left: 80px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.brand img {
+  width: auto;
+  height: 32px;
 }
 
 .success-container {
-    width: 100%;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .success-card {
-    background-color: #E2E8F0; 
-    padding: 40px 30px;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 450px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  min-height: 400px;
+  padding: 32px;
+  border: 1px solid var(--mist);
+  border-radius: 16px;
+  background: var(--cream);
+  box-shadow: 0 8px 24px rgba(42, 58, 63, 0.1);
+  text-align: center;
 }
 
 .success-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    margin: 0 auto 20px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 20px;
+  border-radius: 999px;
+  background: var(--teal);
 }
 
-.success-icon img {
-    width: 28pxpx;
-    height: auto;
+.success-icon svg {
+  width: 24px;
+  height: 24px;
 }
 
-#Title_Success {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: #2A3A3F;
-    margin-bottom: 20px;
+.success-card h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.02em;
 }
 
-#Desc_Success {
-    font-family: 'DM Sans', sans-serif;
-    color: #2A3A3F;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.6;
-    margin-bottom: 24px;
+.success-desc {
+  max-width: 440px;
+  margin-top: 8px;
+  color: var(--ink-75);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.success-note {
+  margin-top: 12px;
+  color: var(--ink-75);
+  font-size: 12px;
+  line-height: 20px;
 }
 
 .success-btn {
-    display: inline-block;
-    background-color: #F8C16F;
-    color: #2A3A3F;
-    text-decoration: none;
-    padding: 12px 32px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 16px;
-    transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  height: 52px;
+  margin-top: 32px;
+  border: 1px solid rgba(42, 58, 63, 0.6);
+  border-radius: 999px;
+  background: var(--amber);
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 28px;
+  text-decoration: none;
 }
 
 .success-btn:hover {
-    background-color: #ffa70e;
+  background: #e9a94f;
+}
+
+.success-btn:active {
+  background: #d99a42;
+}
+
+.brand:focus-visible,
+.success-btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 104px 24px 40px;
+  }
+
+  .brand {
+    top: 24px;
+    left: 24px;
+  }
+
+  .success-card {
+    min-height: 0;
+    padding: 28px 24px;
+  }
+
+  .success-card h1 {
+    font-size: 24px;
+    line-height: 32px;
+  }
 }

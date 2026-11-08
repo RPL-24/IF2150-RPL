@@ -129,7 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.message || 'Registrasi gagal');
             }
 
-            showSuccess(result);
+            const pending = result && result.data && result.data.status_akun === 'Belum Terverifikasi';
+            window.location.href = pending
+                ? 'RegistrationSuccessPelajarPage.html'
+                : 'RegistrationSuccessPage.html';
         } catch (err) {
             showGlobalError(err.message);
         }
@@ -149,32 +152,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const successModal = document.getElementById('Success_Modal');
-    const successTitle = document.getElementById('Success_Title');
-    const successMessage = document.getElementById('Success_Message');
-    const successLogin = document.getElementById('Success_Login');
-    const successClose = document.getElementById('Success_Close');
-
-    function hideSuccess() {
-        successModal.hidden = true;
-        document.body.style.overflow = '';
-    }
-
-    function showSuccess(result) {
-        const pending = result && result.data && result.data.status_akun === 'Belum Terverifikasi';
-        successTitle.textContent = pending ? 'Registrasi terkirim.' : 'Akun berhasil dibuat.';
-        successMessage.textContent = pending
-            ? 'Menunggu konfirmasi orang tua/wali. Cek email wali untuk menyelesaikan konfirmasi.'
-            : 'Akunmu sudah aktif. Silakan masuk untuk melanjutkan.';
-        successModal.hidden = false;
-        document.body.style.overflow = 'hidden';
-        successLogin.focus();
-    }
-
-    successClose.addEventListener('click', hideSuccess);
-    successLogin.addEventListener('click', () => { window.location.href = 'LoginPage.html'; });
-    successModal.addEventListener('click', (e) => { if (e.target === successModal) hideSuccess(); });
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !successModal.hidden) hideSuccess();
-    });
 });
