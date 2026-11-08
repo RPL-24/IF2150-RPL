@@ -6,7 +6,7 @@ const ModerasiController = require('../../controllers/ModerasiController');
 const Barang = require('../../models/Barang');
 const Akun = require('../../models/Akun');
 
-describe('API Moderasi Dasbor Admin Integration Test (UC20, UC22, UC23)', () => {
+describe('API Moderasi Dasbor Admin Integration Test (UC20, UC22, UC23, UC24)', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -390,4 +390,109 @@ describe('API Moderasi Dasbor Admin Integration Test (UC20, UC22, UC23)', () => 
       expect(res.body.sukses).toBe(false);
     });
   });
+
+  describe('POST /api/admin/akun/:idAkun/buka-blokir (UC24, KF51, KF54, KF55, KF56)', () => {
+    beforeEach(() => {
+      jest.spyOn(Otorisasi, 'verifikasiToken').mockResolvedValue({
+        getIdAkun: () => 'admin-id-123',
+      });
+      jest.spyOn(Otorisasi, 'verifikasiAdmin').mockResolvedValue({
+        getIdAkun: () => 'admin-id-123',
+      });
+    });
+
+    test('berhasil membuka blokir akun pengguna via POST /api/admin/akun/:idAkun/buka-blokir (200)', async () => {
+      const mockAkun = new Akun({
+        idAkun: 'akun-terblokir-1',
+        nama: 'Pengguna Insyaf',
+        email: 'insyaf@std.stei.itb.ac.id',
+        statusAkun: 'Dinonaktifkan',
+        statusBlokir: true,
+      });
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(mockAkun);
+      jest.spyOn(ModerasiController, 'bukaBlokirAkun').mockResolvedValue(true);
+
+      const res = await request(app)
+        .post('/api/admin/akun/akun-terblokir-1/buka-blokir')
+        .set('Authorization', 'Bearer token-admin-valid')
+        .send({
+          alasan: 'Banding diterima dan identitas telah diverifikasi',
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body.sukses).toBe(true);
+      expect(res.body.pesan).toMatch(/berhasil dibuka/i);
+      expect(ModerasiController.bukaBlokirAkun).toHaveBeenCalledWith(
+        'token-admin-valid',
+        'akun-terblokir-1',
+        'Banding diterima dan identitas telah diverifikasi',
+      );
+    });
+
+    test('berhasil membuka blokir akun pengguna dari konteks laporan POST /api/admin/laporan/:id/akun/:idAkun/buka-blokir (200)', async () => {
+      const mockAkun = new Akun({
+        idAkun: 'akun-terblokir-2',
+        nama: 'Pengguna Dua',
+        email: 'dua@std.stei.itb.ac.id',
+      });
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(mockAkun);
+      jest.spyOn(ModerasiController, 'bukaBlokirAkun').mockResolvedValue(true);
+
+      const res = await request(app)
+        .post('/api/admin/laporan/lap-102/akun/akun-terblokir-2/buka-blokir')
+        .set('Authorization', 'Bearer token-admin-valid')
+        .send({
+          alasan: 'Kesalahpahaman telah diselesaikan',
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body.sukses).toBe(true);
+      expect(res.body.pesan).toMatch(/berhasil dibuka/i);
+      expect(ModerasiController.bukaBlokirAkun).toHaveBeenCalledWith(
+        'token-admin-valid',
+        'akun-terblokir-2',
+        'Kesalahpahaman telah diselesaikan',
+      );
+    });
+
+    test('gagal 404 jika akun sasaran tidak ditemukan', async () => {
+      jest.spyOn(Akun, 'cariById').mockResolvedValue(null);
+
+      const res = await request(app)
+        .post('/api/admin/akun/akun-tidak-ada/buka-blokir')
+        .set('Authorization', 'Bearer token-admin-valid')
+        .send({
+          alasan: 'Alasan pembukaan blokir',
+        });
+
+      expect(res.status).toBe(404);
+      expect(res.body.sukses).toBe(false);
+      expect(res.body.pesan).toMatch(/tidak ditemukan/i);
+    });
+
+    test('gagal 401 jika tanpa token otorisasi', async () => {
+      jest.spyOn(Otorisasi, 'verifikasiToken').mockResolvedValue(null);
+
+      const res = await request(app)
+        .post('/api/admin/akun/akun-1/buka-blokir')
+        .send({ alasan: 'Alasan' });
+
+      expect(res.status).toBe(401);
+      expect(res.body.sukses).toBe(false);
+      expect(res.body.pesan).toMatch(/masuk/i);
+    });
+
+    test('gagal 403 jika akun bukan admin', async () => {
+      jest.spyOn(Otorisasi, 'verifikasiAdmin').mockResolvedValue(null);
+
+      const res = await request(app)
+        .post('/api/admin/akun/akun-1/buka-blokir')
+        .set('Authorization', 'Bearer token-user-bukan-admin')
+        .send({ alasan: 'Alasan' });
+
+      expect(res.status).toBe(403);
+      expect(res.body.sukses).toBe(false);
+    });
+  });
+
 });

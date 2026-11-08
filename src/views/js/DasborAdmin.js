@@ -375,7 +375,10 @@ class DasborAdmin {
 
     const btnBukaBlokir = document.getElementById('btn-buka-blokir');
     if (btnBukaBlokir) {
-      btnBukaBlokir.addEventListener('click', () => this.onClickBukaBlokir());
+      btnBukaBlokir.addEventListener('click', () => {
+        const idAkun = this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
+        this.onClickBukaBlokir(idAkun);
+      });
     }
   }
 
@@ -419,7 +422,11 @@ class DasborAdmin {
       if (textarea) textarea.placeholder = 'Contoh: Barang terbukti tiruan/palsu.';
     } else if (aksi === 'BUKA_BLOKIR') {
       if (judul) judul.textContent = 'Konfirmasi Pembukaan Blokir Akun';
-      if (desc) desc.textContent = 'Status akun akan dipulihkan dan listing akan kembali aktif di katalog:';
+      if (desc) {
+        desc.textContent =
+          'Status akun akan dipulihkan dan seluruh listing akan kembali aktif di katalog. Masukkan alasan pembukaan blokir:';
+      }
+      if (textarea) textarea.placeholder = 'Contoh: Banding pengguna disetujui setelah verifikasi identitas.';
     }
 
     if (modal) modal.hidden = false;
@@ -469,6 +476,30 @@ class DasborAdmin {
       }
 
       this.tampilkanStatusTerbaru(res.pesan || 'Listing berhasil dihapus.');
+      const modal = document.getElementById('modal-konfirmasi-moderasi');
+      if (modal) modal.hidden = true;
+
+      if (idLaporan) {
+        this.bukaDetailLaporan(idLaporan);
+      }
+    } else if (this.tindakanAktif === 'BUKA_BLOKIR') {
+      const idAkun = this.targetIdAkun || this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
+      if (!idAkun) {
+        this.tampilkanPesanGalat('ID Akun yang akan dibuka blokirnya tidak ditemukan.');
+        return;
+      }
+
+      const idLaporan = this.detailLaporan?.laporan?.idLaporan || null;
+      const res = await Api.kirim('POST', `/api/admin/akun/${idAkun}/buka-blokir`, {
+        alasan: alasan.trim(),
+      });
+
+      if (!res.sukses) {
+        this.tampilkanPesanGalat(res.pesan || 'Gagal membuka blokir akun pengguna.');
+        return;
+      }
+
+      this.tampilkanStatusTerbaru(res.pesan || 'Blokir akun berhasil dibuka dan seluruh listing telah dipulihkan.');
       const modal = document.getElementById('modal-konfirmasi-moderasi');
       if (modal) modal.hidden = true;
 
