@@ -17,9 +17,9 @@ db.prepare(
 
 db.prepare(
   `INSERT OR IGNORE INTO MitraPengacara
-   (nama, email, sandiMitra, validitas, statusVerifikasi, tagKeahlian, spesialisasi, rekeningPencairan)
-   VALUES (?, ?, ?, 1, 'terverifikasi', ?, ?, ?)`
-).run('Ami Pengacara', 'ami@lawhub.test', hash('ami657'),
+   (nama, username, namaFirma, email, sandiMitra, validitas, statusVerifikasi, tagKeahlian, spesialisasi, rekeningPencairan)
+   VALUES (?, ?, ?, ?, ?, 1, 'terverifikasi', ?, ?, ?)`
+).run('Ami Pengacara', 'ami', 'Firma Ami', 'ami@lawhub.test', hash('ami657'),
       'pidana,perdata', 'Hukum Pidana', 'BCA 1234567890');
 
 // dummy SearchLaw

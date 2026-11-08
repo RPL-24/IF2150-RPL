@@ -11,7 +11,9 @@ CREATE TABLE IF NOT EXISTS Masyarakat (          -- C40
 CREATE TABLE IF NOT EXISTS MitraPengacara (      -- C41
   idMitra           INTEGER PRIMARY KEY AUTOINCREMENT,
   nama              TEXT NOT NULL,
-  email             TEXT NOT NULL UNIQUE,       
+  email             TEXT NOT NULL UNIQUE,  
+  username          TEXT NOT NULL UNIQUE,  
+  namaFirma         TEXT,   
   sandiMitra        TEXT NOT NULL,              
   validitas         INTEGER NOT NULL DEFAULT 0 CHECK (validitas IN (0, 1)),
   statusVerifikasi  TEXT NOT NULL DEFAULT 'menunggu'
@@ -24,6 +26,15 @@ CREATE TABLE IF NOT EXISTS MitraPengacara (      -- C41
   saldo             REAL NOT NULL DEFAULT 0,
   rekeningPencairan TEXT,
   statusAkun        TEXT NOT NULL DEFAULT 'aktif' CHECK (statusAkun IN ('aktif', 'diblokir'))  
+);
+
+CREATE TABLE IF NOT EXISTS DokumenLegalitas (
+  idDokumen     INTEGER PRIMARY KEY AUTOINCREMENT,
+  idMitra       INTEGER NOT NULL REFERENCES MitraPengacara(idMitra),
+  jenisDokumen  TEXT NOT NULL, -- ijazah, KTA, SIPA, dsb
+  validitas     INTEGER NOT NULL DEFAULT 0 CHECK (validitas IN (0, 1)),
+  namaBerkas    TEXT,
+  lokasiBerkas  TEXT
 );
 
 CREATE TABLE IF NOT EXISTS Admin (               -- C42
