@@ -83,24 +83,30 @@ class NotifikasiDarurat {
     this.status = status;
   }
 
-  /** Q-C24-01 */
-  async tandaiDiterima() {
-    await db.query(
-      `UPDATE notifikasi_darurat SET status = 'Diterima', waktu_konfirmasi = NOW() WHERE id = $1;`,
+  /** Q-C24-01. Konfirmasi ulang tidak menimpa waktu konfirmasi pertama. */
+  async tandaiDiterima(executor = db) {
+    await executor.query(
+      `UPDATE notifikasi_darurat
+       SET status = 'Diterima', waktu_konfirmasi = COALESCE(waktu_konfirmasi, NOW())
+       WHERE id = $1;`,
       [this.id]
     );
     this.status = 'Diterima';
   }
 
-  /** Q-C24-02 */
+  /** Q-C24-02. Tindak lanjut juga mencatat konfirmasi bila wali belum menekan "Diterima". */
   async tandaiDitindaklanjuti(executor = db) {
     await executor.query(
       `UPDATE notifikasi_darurat
-       SET status_tindak_lanjut = 'Sudah Ditindaklanjuti', waktu_tindak_lanjut = NOW()
+       SET status_tindak_lanjut = 'Sudah Ditindaklanjuti',
+           waktu_tindak_lanjut = COALESCE(waktu_tindak_lanjut, NOW()),
+           status = 'Diterima',
+           waktu_konfirmasi = COALESCE(waktu_konfirmasi, NOW())
        WHERE id = $1;`,
       [this.id]
     );
     this.statusTindakLanjut = 'Sudah Ditindaklanjuti';
+    this.status = 'Diterima';
   }
 }
 

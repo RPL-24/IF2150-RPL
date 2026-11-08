@@ -45,22 +45,33 @@ class NotifikasiDaruratController {
       return null;
     }
 
-    const tanggalTerakhir = riwayat[0].tanggalCheckIn;
+    const tanggalTerakhir = riwayat
+      .map((checkIn) => checkIn.tanggalCheckIn)
+      .reduce((terbaru, tanggal) => (tanggal > terbaru ? tanggal : terbaru));
     if (await NotifikasiDarurat.sudahDilaporkanSejak(pelajar.idPelajar, tanggalTerakhir)) {
       return null;
     }
 
     const emailTujuan = await NotifikasiDaruratController.tentukanEmailTujuan(pelajar);
-    const notifikasi = await db.withTransaction(async (client) => {
-      const baru = await NotifikasiDarurat.tambah(client, {
-        idPelajar: pelajar.idPelajar,
-        idWali: pelajar.idWali,
-        emailTujuan,
-        ringkasanKondisi: hasil.ringkasanKondisi,
+    let notifikasi;
+    try {
+      notifikasi = await db.withTransaction(async (client) => {
+        const baru = await NotifikasiDarurat.tambah(client, {
+          idPelajar: pelajar.idPelajar,
+          idWali: pelajar.idWali,
+          emailTujuan,
+          ringkasanKondisi: hasil.ringkasanKondisi,
+        });
+        await pelajar.updateEmergencyStatus(true, client);
+        return baru;
       });
-      await pelajar.updateEmergencyStatus(true, client);
-      return baru;
-    });
+    } catch (err) {
+      // Indeks unik notifikasi aktif: evaluasi lain yang berjalan bersamaan sudah membuatnya
+      if (err.code === '23505') {
+        return null;
+      }
+      throw err;
+    }
     notifikasi.namaPelajar = pelajar.nama;
     await NotifikasiDaruratController.sendEmergencyNotification(notifikasi);
     return notifikasi;
@@ -92,14 +103,16 @@ class NotifikasiDaruratController {
       }
     }
     const belumDirespons = await NotifikasiDarurat.findBelumDirespons(BATAS_JAM_BELUM_DIRESPONS);
+    let jumlahDikirimUlang = 0;
     for (const notifikasi of belumDirespons) {
-      await NotifikasiDaruratController.sendEmergencyNotification(notifikasi);
+      try {
+        await NotifikasiDaruratController.sendEmergencyNotification(notifikasi);
+        jumlahDikirimUlang += 1;
+      } catch (err) {
+        console.error(`[Darurat] Gagal mengirim ulang ${notifikasi.id}:`, err.message);
+      }
     }
-    return {
-      jumlahPelajar: daftar.length,
-      jumlahDarurat,
-      jumlahDikirimUlang: belumDirespons.length,
-    };
+    return { jumlahPelajar: daftar.length, jumlahDarurat, jumlahDikirimUlang };
   }
 
   /** Algo-C24-01. Bila gagal, dikirim ulang otomatis hingga 3 kali (KNF06). */
@@ -149,9 +162,16 @@ class NotifikasiDaruratController {
     return true;
   }
 
-  /** Algo-C24-04, Q-C24-02, Q-C02-04 */
+  /**
+   * Algo-C24-04, Q-C24-02, Q-C02-04. Tindak lanjut sekaligus menandai notifikasi diterima.
+   * Notifikasi yang sudah ditindaklanjuti tidak diubah lagi, agar status darurat dari
+   * notifikasi lain yang masih aktif tidak ikut terhapus.
+   */
   static async markFollowUp(idPengguna, idNotifikasi) {
     const notifikasi = await ambilMilikWali(idPengguna, idNotifikasi);
+    if (notifikasi.statusTindakLanjut === 'Sudah Ditindaklanjuti') {
+      return true;
+    }
     const pelajar = await Pelajar.findById(notifikasi.idPelajar);
     await db.withTransaction(async (client) => {
       await notifikasi.tandaiDitindaklanjuti(client);
