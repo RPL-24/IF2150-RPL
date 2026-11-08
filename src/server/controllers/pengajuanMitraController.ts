@@ -7,6 +7,7 @@ import path from 'node:path';
 import type { AppContext, SessionUser } from '../context.js';
 import { DokumenVerifikasi, JENIS_DOKUMEN, PengajuanMitra, type JenisDokumen, type MenuPengajuan } from '../models/mitra.js';
 import { Restoran } from '../models/restoran.js';
+import { Notifikasi } from '../models/notifikasi.js';
 import { Menu } from '../models/menu.js';
 import { badRequest, conflict, forbidden, notFound } from '../utils/errors.js';
 import { EMAIL_RE, NO_HP_RE, bilanganCacah, normalisasiNoHp, teks } from '../utils/validasi.js';
@@ -169,6 +170,14 @@ export class PengajuanMitraController {
         });
       }
       await PengajuanMitra.tautkanRestoran(q, idPengajuan, restoranId);
+      // Iterasi 2: foto restoran dari pengajuan langsung dipakai sebagai foto profil restoran.
+      const foto = (await DokumenVerifikasi.daftar(q, idPengajuan)).find((d) => d.jenis_dokumen === 'foto');
+      if (foto) await q.query(`UPDATE restoran SET foto_path = $2 WHERE restoran_id = $1`, [restoranId, foto.path_file]);
+      await Notifikasi.kirim(q, p.id_pengguna, {
+        judul: 'Pendaftaran mitra disetujui 🎉',
+        isi: `${p.nama_restoran} sudah tampil di antri.in. Atur stok menu dan kuota antrean sekarang.`,
+        tautan: '#/resto/menu',
+      });
       return { pengajuan: p, restoranId };
     });
     await this.ctx.email.kirimEmail({
@@ -189,6 +198,11 @@ export class PengajuanMitraController {
     });
     const p = await PengajuanMitra.tolak(this.ctx.db, idPengajuan, alasan);
     if (!p) throw conflict('Pengajuan sudah diproses sebelumnya');
+    await Notifikasi.kirim(this.ctx.db, p.id_pengguna, {
+      judul: 'Pendaftaran mitra ditolak',
+      isi: `Alasan: ${alasan}`,
+      tautan: '#/mitra/daftar',
+    });
     await this.ctx.email.kirimEmail({
       penerima: p.email_kontak,
       jenis: 'MITRA_DITOLAK',
