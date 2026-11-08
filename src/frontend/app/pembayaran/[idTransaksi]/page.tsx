@@ -31,21 +31,31 @@ export default function PembayaranPage() {
       {!trx ? (
         <p className="text-[#5d625b]">{pesan || "Memuat..."}</p>
       ) : (
-        <div className="rounded-[18px] border border-[#d7d0b4] bg-[#f7f0dc] p-4 shadow-sm">
-          {trx.items.map((i) => (
-            <div key={i.id_listing} className="flex items-start justify-between gap-3 py-1">
-              <div>
-                <p className="font-bold text-[#1b8ca3]">{i.nama_makanan}</p>
-                <p className="text-sm text-[#5d625b]">{i.jumlah} porsi × {rupiah(i.harga_satuan)}</p>
+        <>
+          {/* the summary <div> from #14 */}
+          <div className="rounded-[18px] border border-[#d7d0b4] bg-[#f7f0dc] p-4 shadow-sm">
+            {trx.items.map((i) => (
+              <div key={i.id_listing} className="flex items-start justify-between gap-3 py-1">
+                <div>
+                  <p className="font-bold text-[#1b8ca3]">{i.nama_makanan}</p>
+                  <p className="text-sm text-[#5d625b]">{i.jumlah} porsi × {rupiah(i.harga_satuan)}</p>
+                </div>
+                <p className="font-bold">{rupiah(i.jumlah * i.harga_satuan)}</p>
               </div>
-              <p className="font-bold">{rupiah(i.jumlah * i.harga_satuan)}</p>
+            ))}
+            <div className="mt-3 flex justify-between border-t border-[#d6cebb] pt-3 text-lg font-bold">
+              <span>Total</span>
+              <span>{rupiah(trx.total_harga)}</span>
             </div>
-          ))}
-          <div className="mt-3 flex justify-between border-t border-[#d6cebb] pt-3 text-lg font-bold">
-            <span>Total</span>
-            <span>{rupiah(trx.total_harga)}</span>
           </div>
-        </div>
+
+          {/* the QRIS card from #15 */}
+          {trx.kode_qris && (
+            <div className="mt-4 rounded-[18px] border border-[#d7d0b4] bg-[#f7f0dc] p-4 text-center shadow-sm">
+              <img src={trx.kode_qris} alt="QRIS dummy" className="mx-auto w-56" />
+            </div>
+          )}
+        </>
       )}
     </AppLayout>
   );

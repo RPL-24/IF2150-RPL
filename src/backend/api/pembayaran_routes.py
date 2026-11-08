@@ -33,29 +33,20 @@ def _keluaran(trx, items, nama, kode_qris=None) -> TransaksiOut:
         kode_qris=kode_qris,
     )
 
-# checkout route:
-    trx, items, nama, kode_qris = ctl.checkout(conn, user["id_pengguna"], body.id_listing, body.jumlah)
-    return _keluaran(trx, items, nama, kode_qris)
-
-# detail route:
-    trx, items, nama = ambil_transaksi(conn, id_transaksi)
-    ...
-    return _keluaran(trx, items, nama, ctl.metode.buat_tagihan(trx))
-
 
 @router.post("/checkout", response_model=TransaksiOut)
 def checkout(body: CheckoutRequest, conn=Depends(get_conn),
              ctl: PembayaranController = Depends(get_controller),
              user=Depends(require_roles(["PEMBELI"]))):
-    trx, items, kode_qris = ctl.checkout(conn, user["id_pengguna"], body.id_listing, body.jumlah)
-    return _keluaran(trx, items, kode_qris)
+    trx, items, nama, kode_qris = ctl.checkout(conn, user["id_pengguna"], body.id_listing, body.jumlah)
+    return _keluaran(trx, items, nama, kode_qris)
 
 
 @router.get("/{id_transaksi}", response_model=TransaksiOut)
 def detail(id_transaksi: int, conn=Depends(get_conn),
            ctl: PembayaranController = Depends(get_controller),
            user=Depends(require_roles(["PEMBELI"]))):
-    trx, items = ambil_transaksi(conn, id_transaksi)
+    trx, items, nama = ambil_transaksi(conn, id_transaksi)
     if trx is None or trx.id_pembeli != user["id_pengguna"]:
         raise PembayaranError("Transaksi tidak ditemukan", 404)
-    return _keluaran(trx, items, ctl.metode.buat_tagihan(trx))
+    return _keluaran(trx, items, nama, ctl.metode.buat_tagihan(trx))
