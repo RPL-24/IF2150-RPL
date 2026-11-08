@@ -8,6 +8,7 @@
     "dev": "nodemon server.js",
     "db:init": "node config/initDb.js",
     "db:seed": "node config/initDb.js --seed",
+    "job:darurat": "node jobs/jalankanEvaluasiDarurat.js",
     "test": "jest --runInBand"
   },
   "keywords": [
@@ -28,6 +29,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "node-cron": "^4.6.0",
     "nodemailer": "^10.3.1",
     "pg": "^8.12.0"
   },
