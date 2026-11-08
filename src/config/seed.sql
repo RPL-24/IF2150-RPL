@@ -5,7 +5,7 @@
 -- =============================================================================
 
 -- 1. Akun Pengguna (pengguna)
--- Hash bcrypt di bawah merupakan hash untuk password: Password123!
+-- Hash di bawah hanya penanda akun uji; initDb.js menggantinya dengan hash bcrypt untuk Password123!
 INSERT INTO pengguna (id_pengguna, username, email, password_hash, role, status_akun, token_konfirmasi)
 VALUES
   (1, 'budi.pelajar@mahasehat.id', 'budi.pelajar@mahasehat.id', '$2a$10$CwTycUXWue0Thq9StjUM0uJ8D0R6V5u4n2M1x0v8z5e7a9K1b2c3d', 'Pelajar', 'Aktif', NULL),
