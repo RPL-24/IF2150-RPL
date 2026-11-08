@@ -11,6 +11,7 @@ const request = require('supertest');
 const db = require('../config/db');
 const { kirimEmailKonfirmasiWali } = require('../utils/mailer');
 const app = require('../app');
+const { hariIni, tambahHari } = require('../utils/waktu');
 
 function dataPelajar(ubahan = {}) {
   return {
@@ -179,5 +180,70 @@ describe('POST /api/auth/register (UC01, Algo-C11-01, Algo-C11-02)', () => {
 
     expect(res.status).toBe(409);
     expect(res.body.message).toMatch(/sudah terdaftar/i);
+  });
+});
+
+describe('Validasi nama, tanggal lahir, dan penautan wali', () => {
+  function walinyaSudahPunyaAkun() {
+    const asli = client.query.getMockImplementation();
+    client.query.mockImplementation(async (sql, params) => {
+      if (/SELECT id_wali FROM orang_tua_wali/i.test(sql)) {
+        return { rows: [{ id_wali: 'WALI-9' }], rowCount: 1 };
+      }
+      return asli(sql, params);
+    });
+  }
+
+  function idWaliYangDisimpan() {
+    const insert = client.query.mock.calls.find(([sql]) => /INSERT INTO pelajar/.test(sql));
+    return insert[1][2];
+  }
+
+  test.each(['dr. Andi Pratama, Sp.KJ', "Nur'aini", 'Siti Aisyah-Putri'])(
+    'menerima nama bergelar atau berapostrof: %s',
+    async (nama) => {
+      const res = await request(app).post('/api/auth/register').send(dataPelajar({ nama }));
+      expect(res.status).toBe(201);
+    }
+  );
+
+  test.each(['Andi123', '.Andi', '<script>', 'Andi_Pratama'])('tetap menolak nama %s', async (nama) => {
+    const res = await request(app).post('/api/auth/register').send(dataPelajar({ nama }));
+    expect(res.status).toBe(400);
+    expect(res.body.message).toMatch(/nama/i);
+    expect(db.withTransaction).not.toHaveBeenCalled();
+  });
+
+  test('menolak tanggal lahir setelah hari ini', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send(dataPelajar({ tanggal_lahir: tambahHari(hariIni(), 1) }));
+    expect(res.status).toBe(400);
+    expect(res.body.message).toMatch(/tanggal lahir/i);
+    expect(db.withTransaction).not.toHaveBeenCalled();
+  });
+
+  test('pelajar dewasa langsung terhubung ke wali yang sudah punya akun', async () => {
+    walinyaSudahPunyaAkun();
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send(dataPelajar({ tanggal_lahir: '2000-01-01', email_orang_tua: 'WALI@example.com' }));
+    expect(res.status).toBe(201);
+    expect(idWaliYangDisimpan()).toBe('WALI-9');
+  });
+
+  test('pelajar dewasa tanpa akun wali tetap tersimpan tanpa wali', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send(dataPelajar({ tanggal_lahir: '2000-01-01' }));
+    expect(res.status).toBe(201);
+    expect(idWaliYangDisimpan()).toBeNull();
+  });
+
+  test('pelajar di bawah umur belum dihubungkan sebelum wali menyetujui', async () => {
+    walinyaSudahPunyaAkun();
+    const res = await request(app).post('/api/auth/register').send(dataPelajar());
+    expect(res.status).toBe(201);
+    expect(idWaliYangDisimpan()).toBeNull();
   });
 });

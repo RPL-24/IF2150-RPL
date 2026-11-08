@@ -17,7 +17,8 @@ const PERAN = {
   tenagakesehatan: 'TenagaKesehatan',
 };
 
-const POLA_NAMA = /^[a-zA-Z\s]+$/;
+// Huruf di awal, lalu boleh spasi, titik, koma, apostrof, dan tanda hubung (gelar: "dr. Andi, Sp.KJ")
+const POLA_NAMA = /^[a-zA-Z][a-zA-Z\s.,'-]*$/;
 const POLA_TELEPON = /^08[0-9]{8,12}$/;
 const MIN_PANJANG_SANDI = 8;
 const USIA_DEWASA = 18;
@@ -51,7 +52,7 @@ function validasiRegistrasi(body) {
     throw new AppError(400, 'Nama minimal terdiri dari 2 karakter.');
   }
   if (!POLA_NAMA.test(data.nama)) {
-    throw new AppError(400, 'Nama hanya boleh berisi huruf.');
+    throw new AppError(400, 'Nama hanya boleh berisi huruf, spasi, titik, koma, apostrof, atau tanda hubung.');
   }
   if (!Pengguna.POLA_EMAIL.test(data.email)) {
     throw new AppError(400, 'Format email tidak valid.');
@@ -69,6 +70,9 @@ function validasiRegistrasi(body) {
   if (peran === 'Pelajar') {
     if (!tanggalValid(data.tanggalLahir)) {
       throw new AppError(400, 'Tanggal lahir tidak valid.');
+    }
+    if (data.tanggalLahir > hariIni()) {
+      throw new AppError(400, 'Tanggal lahir tidak boleh melebihi hari ini.');
     }
     if (data.riwayatKesehatan === '') {
       throw new AppError(400, 'Riwayat kesehatan wajib diisi.');
@@ -119,8 +123,13 @@ async function daftar(req, res) {
       });
 
       if (data.peran === 'Pelajar') {
+        // Pelajar dewasa langsung terhubung bila wali sudah punya akun. Pelajar di bawah umur
+        // baru dihubungkan setelah wali menyetujui registrasi (UC02).
+        const idWali =
+          !perluKonfirmasi && data.emailWali ? await OrangTuaWali.findIdByEmail(data.emailWali, client) : null;
         const idPelajar = await Pelajar.tambah(client, {
           idPengguna: id,
+          idWali,
           nama: data.nama,
           tanggalLahir: data.tanggalLahir,
           nomorTelepon: data.telepon,
