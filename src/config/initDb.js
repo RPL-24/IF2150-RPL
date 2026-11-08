@@ -4,6 +4,23 @@ const bcrypt = require('bcryptjs');
 const db = require('./db');
 const { encryptAES256 } = require('../utils/encryption');
 
+// Penanda hash pada seed.sql untuk akun uji. Hanya akun dengan penanda ini yang passwordnya diatur ulang.
+const HASH_PENANDA_SEED = '$2a$10$CwTycUXWue0Thq9StjUM0uJ8D0R6V5u4n2M1x0v8z5e7a9K1b2c3d';
+
+/**
+ * Mengganti penanda hash akun uji dengan hash bcrypt valid untuk 'Password123!'
+ * (cost factor 12 sesuai Algo-C01-04). Akun lain tidak tersentuh.
+ * @returns {Promise<number>} jumlah akun uji yang diperbarui
+ */
+async function aturPasswordAkunUji(executor = db) {
+  const passwordHash = await bcrypt.hash('Password123!', 12);
+  const { rowCount } = await executor.query(
+    'UPDATE pengguna SET password_hash = $1 WHERE password_hash = $2;',
+    [passwordHash, HASH_PENANDA_SEED]
+  );
+  return rowCount;
+}
+
 async function initializeDatabase() {
   const shouldSeed = process.argv.includes('--seed');
 
@@ -20,9 +37,7 @@ async function initializeDatabase() {
       const seedSql = fs.readFileSync(seedPath, 'utf8');
       await db.query(seedSql);
 
-      // Pastikan seluruh akun uji memiliki hash bcrypt valid (cost factor 12 sesuai Algo-C01-04) untuk 'Password123!'
-      const defaultPasswordHash = await bcrypt.hash('Password123!', 12);
-      await db.query('UPDATE pengguna SET password_hash = $1;', [defaultPasswordHash]);
+      await aturPasswordAkunUji();
 
       // Tambahkan contoh riwayat kesehatan & catatan refleksi terenkripsi AES-256 (KNF01)
       const encryptedRiwayat = encryptAES256('Pernah mengalami kecemasan akademik ringan saat semester 1.');
@@ -54,4 +69,6 @@ if (require.main === module) {
 }
 
 module.exports = initializeDatabase;
+module.exports.aturPasswordAkunUji = aturPasswordAkunUji;
+module.exports.HASH_PENANDA_SEED = HASH_PENANDA_SEED;
 
