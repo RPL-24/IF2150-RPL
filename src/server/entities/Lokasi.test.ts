@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BATAS_WILAYAH } from "@/lib/batas-wilayah";
-import { dalamWilayah, hitungJarak } from "@/server/entities/Lokasi";
+import { dalamWilayah, getKoordinat, hitungJarak } from "@/server/entities/Lokasi";
 
 const KOTAK: ReadonlyArray<readonly [number, number]> = [
   [0, 0],
@@ -83,5 +83,11 @@ describe("hitungJarak", () => {
   it("0.0001° lintang di khatulistiwa ≈ 11.12 m", () => {
     const jarak = hitungJarak({ latitude: 0, longitude: 0 }, { latitude: 0.0001, longitude: 0 });
     expect(Math.abs(jarak - 11.12)).toBeLessThanOrEqual(0.2);
+  });
+});
+
+describe("getKoordinat", () => {
+  it("mengembalikan [lat, lng]", () => {
+    expect(getKoordinat({ latitude: -6.8915, longitude: 107.6107 })).toEqual([-6.8915, 107.6107]);
   });
 });

@@ -33,6 +33,17 @@ export const STATUS_WARNA = {
   berhasil: "bg-green-100 text-green-800",
 } as const satisfies Record<Enums<"status_laporan">, string>;
 
+// Warna penanda peta (hex, untuk CircleMarker Leaflet), senada dengan STATUS_WARNA (I02-11, I02-12).
+export const STATUS_WARNA_PETA = {
+  diterima: "#2563eb",
+  ditolak: "#dc2626",
+  dikerjakan: "#eab308",
+  berhasil: "#16a34a",
+} as const satisfies Record<Enums<"status_laporan">, string>;
+
+// Pusat peta awal: Kota Bandung (Alun-alun).
+export const PUSAT_PETA: [number, number] = [-6.9175, 107.6191];
+
 export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB (I01-05, I01-08)
 
 export const FORMAT_FOTO = {
