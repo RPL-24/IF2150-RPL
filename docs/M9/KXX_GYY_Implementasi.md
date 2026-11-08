@@ -240,10 +240,19 @@ Tabel B.5. Traceability Kelas Perancangan ke Implementasi
 
 | ID Kelas | Nama Kelas Perancangan | Bentuk Implementasi | Lokasi (File dan Nama) | Keterangan |
 | :--- | :--- | :--- | :--- | :--- |
-| *[C01]* | *[Nama kelas pada DPPL]* | *[mis. Kelas / Fungsi / Komponen / Route / Tabel]* | *[mis. `src/models/user.py` - `User`]* | *[Cara atribut dan operasi kelas diwujudkan; "-" jika tidak ada penjelasan tambahan]* |
-| *[C02]* | *[Nama kelas pada DPPL]* | *[Bentuk implementasi]* | *[mis. `src/components/LoginForm.tsx` - `LoginForm`]* | *[mis. atribut menjadi *state*, operasi menjadi *handler*]* |
-| *[C03]* | *[Nama kelas pada DPPL]* | *[Bentuk implementasi]* | *[mis. `src/routes/auth.js` - `POST /login`]* | *[Keterangan]* |
-| *...* | *...* | *...* | *...* | *...* |
+| C11 | DasborAdmin | Komponen UI & Skrip Client-side | `src/views/pages/admin-laporan.html`, `src/views/pages/admin-detail.html`, `src/views/js/DasborAdmin.js` - `DasborAdmin` | Antarmuka dasbor admin untuk melihat/menyaring daftar laporan (I-13) dan melihat rincian laporan (I-14), termasuk dropdown pengubah status penanganan (UC21) dan tombol tindakan moderasi |
+| C19 | NotifikasiController | Kelas Controller | `src/controllers/NotifikasiController.js` - `NotifikasiController` | Mengorkestrasikan pengiriman notifikasi/surel peringatan moderasi dan penangguhan akun |
+| C21 | ModerasiController | Kelas Controller | `src/controllers/ModerasiController.js` - `ModerasiController` | Mengorkestrasikan moderasi laporan, otorisasi peran admin (KF56), penyaringan laporan (UC20), perubahan status penanganan laporan (UC21), penghapusan listing (UC22), pemblokiran akun (UC23), dan pembukaan blokir akun (UC24) |
+| C23 | Akun | Kelas Model (Entity) & Tabel DB | `src/models/Akun.js` - `Akun`, `src/database/schema.sql` (tabel `akun`) | Entitas akun pengguna dengan status akun, status blokir, serta operasi pemblokiran dan pembukaan blokir |
+| C26 | Admin | Kelas Model (Entity Turunan) | Diwarisi dari `src/models/Akun.js`, diverifikasi melalui `src/pendukung/Otorisasi.js` - `verifikasiAdmin` | Entitas pengguna berhak akses admin yang diverifikasi melalui token sesi login |
+| C28 | SesiLogin | Kelas Model (Entity) & Tabel DB | `src/models/SesiLogin.js` - `SesiLogin`, `src/database/schema.sql` (tabel `sesi_login`) | Entitas sesi login aktif pengguna/admin yang dapat dicabut/dinonaktifkan saat pemblokiran akun |
+| C29 | Barang | Kelas Model (Entity) & Tabel DB | `src/models/Barang.js` - `Barang`, `src/database/schema.sql` (tabel `barang`) | Entitas katalog barang dengan penonaktifan dan pemulihan listing |
+| C30 | FotoBarang | Kelas Model (Entity) & Tabel DB | `src/models/FotoBarang.js` - `FotoBarang`, `src/database/schema.sql` (tabel `foto_barang`) | Entitas foto barang yang terhubung ke penyimpanan berkas lokal |
+| C36 | Laporan | Kelas Model (Entity) & Tabel DB | `src/models/Laporan.js` - `Laporan`, `src/database/schema.sql` (tabel `laporan`) | Entitas laporan pelanggaran pengguna dengan pelacakan status penanganan ("Baru", "Diproses", "Selesai"), validasi transisi tertib, dan waktu perubahannya (KF47) |
+| C37 | BuktiLaporan | Kelas Model (Entity) & Tabel DB | `src/models/BuktiLaporan.js` - `BuktiLaporan`, `src/database/schema.sql` (tabel `bukti_laporan`) | Entitas berkas tangkapan layar bukti pelanggaran |
+| C38 | LogAudit | Kelas Model (Entity) & Tabel DB | `src/models/LogAudit.js` - `LogAudit`, `src/database/schema.sql` (tabel `log_audit`) | Rekam jejak audit penanganan laporan bersifat append-only tanpa operasi UPDATE atau DELETE untuk menjamin immutabilitas bukti audit (KF48, KF49) |
+| C39 | LogAdmin | Kelas Model (Entity) & Tabel DB | `src/models/LogAdmin.js` - `LogAdmin`, `src/database/schema.sql` (tabel `log_admin`) | Rekam jejak audit tindakan moderasi administratif (penghapusan listing, pemblokiran akun, pembukaan blokir) |
+| C41 | Otorisasi | Modul Pendukung | `src/pendukung/Otorisasi.js` - `Otorisasi` | Memverifikasi token JWT dan peran akun (Admin vs Pengguna) untuk melindungi endpoint moderasi (KF56) |
 
 Catatan:
 - Satu kelas perancangan boleh diwujudkan oleh beberapa file/unit, dan satu file/unit boleh mewujudkan beberapa kelas perancangan. Tuliskan semuanya.

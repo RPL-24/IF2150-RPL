@@ -13,7 +13,7 @@ const NotifikasiController = require('../../controllers/NotifikasiController');
 const PenyimpananBerkas = require('../../penyimpanan/PenyimpananBerkas');
 const db = require('../../config/db');
 
-describe('ModerasiController Unit Test (UC20, UC22, UC23, UC24)', () => {
+describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -184,6 +184,9 @@ describe('ModerasiController Unit Test (UC20, UC22, UC23, UC24)', () => {
 
     test('berhasil memperbarui status laporan dan mencatat ke audit log (KF47, KF48)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
+        new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Baru' }),
+      );
       jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
       jest.spyOn(ModerasiController, 'catatLogAudit').mockResolvedValue();
 
@@ -200,6 +203,44 @@ describe('ModerasiController Unit Test (UC20, UC22, UC23, UC24)', () => {
     test('menolak pembaruan jika status baru tidak sah', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       const sukses = await ModerasiController.ubahStatusLaporan('token-admin', 'lap-1', 'StatusPalsu');
+      expect(sukses).toBe(false);
+    });
+
+    test('berhasil memperbarui status laporan dari Diproses ke Selesai', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
+        new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Diproses' }),
+      );
+      jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
+      jest.spyOn(ModerasiController, 'catatLogAudit').mockResolvedValue();
+
+      const sukses = await ModerasiController.ubahStatusLaporan('token-admin', 'lap-1', 'Selesai');
+      expect(sukses).toBe(true);
+      expect(Laporan.updateStatusPenanganan).toHaveBeenCalledWith('lap-1', 'Selesai');
+    });
+
+    test('menolak jika laporan sasaran tidak ditemukan', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(null);
+
+      const sukses = await ModerasiController.ubahStatusLaporan('token-admin', 'lap-tidak-ada', 'Diproses');
+      expect(sukses).toBe(false);
+    });
+
+    test('menolak transisi status mundur (misalnya Selesai -> Diproses)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
+        new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Selesai' }),
+      );
+
+      const sukses = await ModerasiController.ubahStatusLaporan('token-admin', 'lap-1', 'Diproses');
+      expect(sukses).toBe(false);
+    });
+
+    test('menolak pembaruan status jika pengguna bukan admin (KF56)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
+
+      const sukses = await ModerasiController.ubahStatusLaporan('token-non-admin', 'lap-1', 'Diproses');
       expect(sukses).toBe(false);
     });
   });
@@ -247,6 +288,9 @@ describe('ModerasiController Unit Test (UC20, UC22, UC23, UC24)', () => {
       jest.spyOn(FotoBarang, 'getGaleri').mockResolvedValue(fotoMock);
       jest.spyOn(FotoBarang, 'hapus').mockResolvedValue(true);
 
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
+        new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Baru' }),
+      );
       jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
       jest.spyOn(ModerasiController, 'catatLogAudit').mockResolvedValue();
       jest.spyOn(ModerasiController, 'catatLogAdmin').mockResolvedValue();
@@ -342,6 +386,9 @@ describe('ModerasiController Unit Test (UC20, UC22, UC23, UC24)', () => {
       jest.spyOn(Akun, 'cariById').mockResolvedValue(null);
       jest.spyOn(FotoBarang, 'getGaleri').mockResolvedValue([]);
       jest.spyOn(FotoBarang, 'hapus').mockResolvedValue(true);
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
+        new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Baru' }),
+      );
       jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
       jest.spyOn(ModerasiController, 'catatLogAudit').mockResolvedValue();
       jest.spyOn(ModerasiController, 'catatLogAdmin').mockResolvedValue();
@@ -418,6 +465,9 @@ describe('ModerasiController Unit Test (UC20, UC22, UC23, UC24)', () => {
       jest.spyOn(akunSasaranMock, 'blokir').mockResolvedValue(true);
       jest.spyOn(ModerasiController, 'nonaktifkanListingPengguna').mockResolvedValue(true);
       jest.spyOn(SesiLogin, 'nonaktifkanByAkun').mockResolvedValue();
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
+        new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Baru' }),
+      );
       jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
       jest.spyOn(ModerasiController, 'catatLogAudit').mockResolvedValue();
       jest.spyOn(ModerasiController, 'catatLogAdmin').mockResolvedValue();
@@ -510,6 +560,9 @@ describe('ModerasiController Unit Test (UC20, UC22, UC23, UC24)', () => {
       jest.spyOn(akunSasaranMock, 'blokir').mockResolvedValue(true);
       jest.spyOn(ModerasiController, 'nonaktifkanListingPengguna').mockResolvedValue(true);
       jest.spyOn(SesiLogin, 'nonaktifkanByAkun').mockResolvedValue();
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
+        new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Baru' }),
+      );
       jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
       jest.spyOn(ModerasiController, 'catatLogAudit').mockResolvedValue();
       jest.spyOn(ModerasiController, 'catatLogAdmin').mockResolvedValue();

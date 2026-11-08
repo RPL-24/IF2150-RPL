@@ -98,6 +98,21 @@ class Laporan {
     return this.dariBaris(rows[0]);
   }
 
+  // Validasi transisi status penanganan laporan secara tertib: "Baru" → "Diproses" → "Selesai" (KF47)
+  static validasiTransisiStatus(statusLama, statusBaru) {
+    if (!statusLama || !statusBaru) return false;
+    if (!['Baru', 'Diproses', 'Selesai'].includes(statusBaru)) return false;
+    if (statusLama === statusBaru) return true;
+    if (statusLama === 'Baru') {
+      return statusBaru === 'Diproses' || statusBaru === 'Selesai';
+    }
+    if (statusLama === 'Diproses') {
+      return statusBaru === 'Selesai';
+    }
+    // Status 'Selesai' adalah status akhir sehingga tidak dapat diubah kembali ke 'Baru' atau 'Diproses'
+    return false;
+  }
+
   // Algo-055: memperbarui status penanganan beserta waktu perubahannya (KF47)
   static async updateStatusPenanganan(idLaporan, statusBaru, waktuPerubahan = new Date(), client = db) {
     if (!['Baru', 'Diproses', 'Selesai'].includes(statusBaru)) {
