@@ -1,7 +1,7 @@
 /**
  * MahaSehat - LoginPage.js
  * Logika autentikasi dan interaksi antarmuka LoginPage.
- * Keterlacakan DPPL: UC01 (Autentikasi Pengguna), C01 (Pengguna)
+ * Keterlacakan DPPL: UC09 (Masuk Akun), C01 (Pengguna)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -90,18 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let isValid = true;
 
-            // Validasi Identifier (Email atau Username)
+            // Validasi Email (login hanya memakai email)
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!identifierValue) {
-                showErrorField(inputIdentifier, errorIdentifier, 'Email atau username wajib diisi.');
+                showErrorField(inputIdentifier, errorIdentifier, 'Email wajib diisi.');
                 isValid = false;
-            } else if (identifierValue.includes('@')) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(identifierValue)) {
-                    showErrorField(inputIdentifier, errorIdentifier, 'Format email tidak valid (contoh: nama@kampus.ac.id).');
-                    isValid = false;
-                }
-            } else if (identifierValue.length < 3) {
-                showErrorField(inputIdentifier, errorIdentifier, 'Username minimal 3 karakter.');
+            } else if (!emailRegex.test(identifierValue)) {
+                showErrorField(inputIdentifier, errorIdentifier, 'Format email tidak valid (contoh: nama@kampus.ac.id).');
                 isValid = false;
             }
 
@@ -123,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                // Coba panggil API backend jika server sedang berjalan
                 const response = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: {
@@ -135,32 +129,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                 });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.token) {
-                        localStorage.setItem('mahasehat_token', data.token);
-                    }
-                    if (data.user) {
-                        localStorage.setItem('mahasehat_user', JSON.stringify(data.user));
-                    }
+                const hasil = await response.json().catch(() => ({}));
+
+                // Respons API: { success, message, data: { token, pengguna } }
+                if (response.ok && hasil.data && hasil.data.token) {
+                    const { token, pengguna } = hasil.data;
+                    localStorage.setItem('mahasehat_token', token);
+                    localStorage.setItem('mahasehat_user', JSON.stringify(pengguna));
+                    // DashboardPage memilih halaman sesuai role yang tersimpan
+                    localStorage.setItem('role', pengguna.role);
                     window.location.href = 'DashboardPage.html';
                     return;
                 }
 
-                // Jika server merespons dengan status error (400/401/500)
-                const errorData = await response.json().catch(() => ({}));
-                showGlobalError(errorData.message || 'Email/username atau kata sandi tidak cocok.');
+                // 400/401/403: pesan dari server, misalnya akun belum dikonfirmasi wali
+                showGlobalError(hasil.message || 'Email atau kata sandi salah.');
             } catch (err) {
-                // Fallback untuk mode pengujian statis / prototipe frontend tanpa backend live
-                console.info('Backend endpoint tidak aktif, beralih ke navigasi prototipe:', err.message);
-                
-                // Simpan sesi mock sederhana
-                localStorage.setItem('mahasehat_mock_session', JSON.stringify({
-                    identifier: identifierValue,
-                    loggedInAt: new Date().toISOString()
-                }));
-
-                window.location.href = 'DashboardPage.html';
+                // Server tidak bisa dihubungi: tetap di halaman login
+                showGlobalError('Tidak dapat terhubung ke server. Coba lagi beberapa saat lagi.');
             } finally {
                 if (btnSubmit) {
                     btnSubmit.disabled = false;
