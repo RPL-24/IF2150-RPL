@@ -32,7 +32,7 @@ berjalan di server Node.js; data di PostgreSQL; foto di Cloud Storage (atau disk
 | FasilitasController | Controller | `server/src/controllers/FasilitasController.js` | P5 |
 | DuplikatController | Controller | `server/src/controllers/DuplikatController.js` | P1 |
 | Pengguna, Laporan, Lokasi, Fasilitas, Verifikasi, SkorPrioritas, RiwayatStatus, Notifikasi, KonfirmasiDuplikat | Model | `server/src/models/index.js` (peta kelas → fungsi) + `models/<kelas>/<fitur>.js` | lihat header file |
-| Autentikasi | Pendukung | `server/src/middleware/autentikasi.js`, `mobile/src/auth/AuthContext.js` | P1 |
+| Autentikasi | Pendukung | `server/src/middleware/autentikasi.js`, `server/src/adapters/googleAuthAdapter.js`, `mobile/src/auth/AuthContext.js`, `mobile/src/auth/TombolMasukGoogle.js` | P1 |
 | Validasi | Pendukung | `server/src/middleware/validasi.js` (zod) | P1 |
 | GoogleMapsAdapter | Integrasi | `mobile/src/components/map/Peta.js` (peta), `server/src/adapters/googleMapsAdapter.js` (wilayah) | P1 |
 | CloudStorageAdapter | Integrasi | `server/src/adapters/cloudStorageAdapter.js` | P1 |
@@ -63,5 +63,5 @@ Tambahan pendukung (bukan komponen DPPL): `AuthController`, `NotifikasiControlle
 | :--- | :--- | :--- |
 | Google Cloud Storage | `STORAGE_DRIVER=gcs`, `GCS_BUCKET`, `GOOGLE_APPLICATION_CREDENTIALS` | Foto disimpan ke `server/uploads/`, dilayani di `/uploads/...` |
 | Google Geocoding | `GOOGLE_MAPS_API_KEY` | Wilayah = kecamatan Bandung terdekat (`adapters/wilayahBandung.js`) |
-| Google Maps (peta di HP) | kunci di app config untuk build sendiri | Android di Expo Go: Google Maps bawaan Expo Go; iOS: Apple Maps |
-| Google Sign-In | `GOOGLE_CLIENT_IDS` (server), `EXPO_PUBLIC_GOOGLE_*` (mobile) | Tombol Google nonaktif; masuk memakai akun uji |
+| Google Maps (peta di HP) | `GOOGLE_MAPS_ANDROID_API_KEY` saat build APK (`mobile/app.config.js`) | Android di Expo Go: Google Maps bawaan Expo Go; iOS: Apple Maps |
+| Google Sign-In | `GOOGLE_CLIENT_IDS` (server, `adapters/googleAuthAdapter.js`), `EXPO_PUBLIC_GOOGLE_*` (mobile, `auth/TombolMasukGoogle.js`) | Tombol Google nonaktif; masuk memakai akun uji |

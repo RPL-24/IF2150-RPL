@@ -24,7 +24,7 @@ const r = Router();
 // ---- Umum ---------------------------------------------------------------- P1
 r.get('/health', (_req, res) => res.json({ status: 'ok', waktu: new Date().toISOString() }));
 r.post('/auth/login', validasi(Auth.skemaLogin), Auth.login);
-r.post('/auth/google', Auth.loginGoogle);
+r.post('/auth/google', validasi(Auth.skemaLoginGoogle), Auth.loginGoogle);
 r.get('/auth/me', wajibLogin, Auth.me);
 r.get('/referensi', wajibLogin, referensi);
 

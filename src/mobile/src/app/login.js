@@ -4,12 +4,13 @@
  *
  * O-0101 tab peran (Masyarakat/Petugas) hanya membantu tampilan; tujuan setelah login
  * ditentukan peran akun dari server (lihat GerbangPeran di _layout.js).
- * O-0103 Google Sign-In (SKPL 2.4) = tugas stretch P1, tombol tampil nonaktif bila belum dikonfigurasi.
+ * Google Sign-In (SKPL 2.4) untuk Masyarakat: TombolMasukGoogle, nonaktif bila belum dikonfigurasi (gap G5).
  */
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useAuth } from '../auth/AuthContext';
+import TombolMasukGoogle from '../auth/TombolMasukGoogle';
 import { Isian, Kartu, Layar, Tombol } from '../components/ui';
 import { huruf, jarak, radius, warna } from '../theme/tokens';
 
@@ -17,7 +18,6 @@ const TAB = [
   { kunci: 'masyarakat', label: 'Masyarakat', ikon: 'person-outline' },
   { kunci: 'petugas', label: 'Petugas', ikon: 'shield-checkmark-outline' },
 ];
-const googleAktif = Boolean(process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID);
 
 export default function Login() {
   const { masuk } = useAuth();
@@ -91,16 +91,7 @@ export default function Login() {
         {error ? <Text style={s.error}>{error}</Text> : null}
         <Tombol judul="Masuk" ikon="log-in-outline" onPress={kirim} nonaktif={!lengkap} memuat={memuat} />
 
-        {tab === 'masyarakat' ? (
-          <Tombol
-            judul={googleAktif ? 'Masuk dengan Google' : 'Masuk dengan Google (belum dikonfigurasi)'}
-            ikon="logo-google"
-            varian="sekunder"
-            nonaktif={!googleAktif}
-            style={{ marginTop: jarak.m }}
-            onPress={() => {}}
-          />
-        ) : null}
+        {tab === 'masyarakat' ? <TombolMasukGoogle onError={setError} style={{ marginTop: jarak.m }} /> : null}
       </Kartu>
 
       {__DEV__ ? (

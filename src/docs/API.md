@@ -77,7 +77,7 @@ Pada detail (`/laporan/saya/:id`) ditambah `"riwayat": Riwayat[]` urut **terawal
 | `GET /health` | - | - | `{ status: "ok", waktu }` |
 | `POST /auth/login` | - | `{ email, password }` | `{ token, pengguna: Profil }` · 400, 401 |
 | `GET /auth/me` | semua | - | `{ pengguna: Profil }` |
-| `POST /auth/google` | - | `{ idToken }` | `{ token, pengguna }` · **stub 501 (stretch P1)** |
+| `POST /auth/google` | - | `{ idToken }` (ID token Google dari aplikasi) | `{ token, pengguna }` · 400 idToken kosong, 401 token tidak sah, 503 Google Sign-In belum dikonfigurasi. Akun baru dibuat sebagai PELAPOR; email yang sudah terdaftar ditautkan (G16). |
 | `GET /referensi` | semua | - | `{ wilayah: string[], kategori: string[], status: string[] }` |
 
 `Profil` = `{ id, email, nama, peran, namaInstansi, wilayahKerja, jumlahLaporan }`.
@@ -146,11 +146,14 @@ Ditolak→Ditolak, Revisi→Perlu Revisi) → bila Disetujui: `buatSkorAwal` (Q-
 | Method & path | Peran | Query / body | Response |
 | :--- | :--- | :--- | :--- |
 | `GET /admin/duplikat/kandidat` | ADMIN | - | `{ data: [{ fasilitas: Fasilitas, kandidat: boolean, laporan: LaporanAdmin[] }] }` — semua laporan **aktif** dikelompokkan per fasilitas; `kandidat = laporan.length >= 2` (KF20, KF21); kelompok kandidat diurutkan paling atas |
-| `POST /admin/duplikat/gabung` | ADMIN | `{ idLaporan: number[] }` (≥ 2, sudah divalidasi di route) | `{ idLaporanInduk, digabung: number[], skor: number\|null }` · 400 bila kategori berbeda, 409 bila ada laporan tidak aktif |
+| `POST /admin/duplikat/gabung` | ADMIN | `{ idLaporan: number[] }` (≥ 2, sudah divalidasi di route) | `{ idLaporanInduk, digabung: number[], skor: number\|null }` · 400 bila < 2 laporan berbeda atau kategori berbeda, 404 bila ada id tidak ditemukan, 409 bila ada laporan tidak aktif |
 
-Aturan gabung (Algo-012): induk = `tanggal_laporan` paling awal; laporan lain → status `Digabung` +
-`id_laporan_induk = induk` (+ `id_fasilitas` ikut induk); lalu `hitungSkor(induk)` (KF17). Jumlah pelapor
-induk = 1 + jumlah laporan dengan `id_laporan_induk = induk` (KF15, Q-009).
+Aturan gabung (Algo-012, sudah diimplementasikan): induk = `tanggal_laporan` paling awal (seri: id terkecil);
+laporan lain → status `Digabung` + `id_laporan_induk = induk` (+ `id_fasilitas` ikut induk). Laporan yang dulu
+sudah digabung ke salah satu anak ikut dialihkan ke induk baru. Riwayat induk mencatat penggabungan, jumlah
+kerusakan fasilitas diperbarui, lalu `hitungSkor(induk)` (KF17; bernilai `null` selama induk belum diverifikasi).
+Jumlah pelapor induk = 1 + jumlah laporan dengan `id_laporan_induk = induk` (KF15, Q-009).
+Kelompok laporan tanpa fasilitas (`fasilitas: null`) tetap ditampilkan agar bisa dipilih manual.
 
 <a id="uc03"></a>
 ## UC03 Prioritas, UC06 Fasilitas berulang, UC08 Riwayat fasilitas — P5

@@ -3,7 +3,7 @@
  * Token disimpan lewat penyimpananToken.js (SecureStore di HP, localStorage di mode web).
  * Pemilik: P1.
  *
- *   const { pengguna, masuk, keluar, memuat } = useAuth();
+ *   const { pengguna, masuk, masukDenganGoogle, keluar, memuat } = useAuth();
  */
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { api, setTokenApi } from '../api/client';
@@ -34,13 +34,23 @@ export function AuthProvider({ children }) {
     })();
   }, []);
 
-  const masuk = useCallback(async (email, password) => {
-    const { token, pengguna: p } = await api.post('/auth/login', { email, password });
+  const terapkanSesi = useCallback(async ({ token, pengguna: p }) => {
     setTokenApi(token);
     await simpanToken(KUNCI_TOKEN, token);
     setPengguna(p);
     return p;
   }, []);
+
+  const masuk = useCallback(
+    async (email, password) => terapkanSesi(await api.post('/auth/login', { email, password })),
+    [terapkanSesi],
+  );
+
+  /** Login Google: kirim ID token ke server untuk diverifikasi (POST /auth/google). */
+  const masukDenganGoogle = useCallback(
+    async (idToken) => terapkanSesi(await api.post('/auth/google', { idToken })),
+    [terapkanSesi],
+  );
 
   const keluar = useCallback(async () => {
     setTokenApi(null);
@@ -48,7 +58,10 @@ export function AuthProvider({ children }) {
     setPengguna(null);
   }, []);
 
-  const nilai = useMemo(() => ({ pengguna, memuat, masuk, keluar }), [pengguna, memuat, masuk, keluar]);
+  const nilai = useMemo(
+    () => ({ pengguna, memuat, masuk, masukDenganGoogle, keluar }),
+    [pengguna, memuat, masuk, masukDenganGoogle, keluar],
+  );
   return <AuthContext.Provider value={nilai}>{children}</AuthContext.Provider>;
 }
 

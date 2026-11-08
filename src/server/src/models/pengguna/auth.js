@@ -28,4 +28,23 @@ export function toProfil(p) {
   };
 }
 
-// TODO(P1, stretch): cariAtauBuatPenggunaGoogle(db, { googleSub, email, nama }) untuk POST /api/auth/google.
+/**
+ * Login Google: cari berdasarkan google_sub; jika belum ada, tautkan ke akun dengan email yang sama;
+ * jika tetap tidak ada, buat akun baru berperan PELAPOR (petugas tidak bisa mendaftar sendiri).
+ */
+export async function cariAtauBuatPenggunaGoogle(db, { googleSub, email, nama }) {
+  const lewatSub = await db.query(`SELECT ${KOLOM} FROM pengguna WHERE google_sub = $1`, [googleSub]);
+  if (lewatSub.rows[0]) return lewatSub.rows[0];
+
+  const tertaut = await db.query(
+    `UPDATE pengguna SET google_sub = $1 WHERE lower(email) = lower($2) AND google_sub IS NULL RETURNING ${KOLOM}`,
+    [googleSub, email],
+  );
+  if (tertaut.rows[0]) return tertaut.rows[0];
+
+  const baru = await db.query(
+    `INSERT INTO pengguna (email, nama, google_sub, peran) VALUES ($1, $2, $3, 'PELAPOR') RETURNING ${KOLOM}`,
+    [email, nama, googleSub],
+  );
+  return baru.rows[0];
+}
