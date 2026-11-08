@@ -1,60 +1,86 @@
 <!DOCTYPE html>
 <html lang="id">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MahaSehat - Persetujuan Orang Tua/Wali</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Persetujuan Akun Pelajar</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="KonfirmasiRegistrasiPage.css">
-    </head>
-    <body>
-        <div class="approval-container">
-            <aside class="panel-left" id=""Panel_Left>
-                <div class="logo-container" id="Logo_App">
-                    <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="logo-img">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="KonfirmasiRegistrasiPage.css">
+</head>
+<body>
+    <div class="approval-container">
+        <!-- Panel Kiri (Hero Panel) -->
+        <aside class="panel-left" id="Panel_Left">
+            <div class="brand-header" id="Logo_App">
+                <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo">
+                <span class="brand-name">MahaSehat</span>
+            </div>
+
+            <div class="hero-content">
+                <h1 class="hero-title" id="Text_Greeting">Konfirmasi akun pelajar.</h1>
+                <p class="hero-subtitle">Satu persetujuan membuka akses pendampingan.</p>
+            </div>
+
+            <div class="hero-footer">
+                <a href="mailto:support@mahasehat.id" class="help-link">Butuh bantuan? Hubungi kami</a>
+            </div>
+        </aside>
+
+        <!-- Panel Kanan (Konten Persetujuan) -->
+        <main class="panel-right" id="Panel_Right">
+            <div class="content-wrapper">
+                <div class="content-header">
+                    <span class="eyebrow">Konfirmasi</span>
+                    <h1 class="page-title" id="Title_Persetujuan">Setujui akun</h1>
+                    <p class="page-subtitle">Kamu diundang untuk menyetujui akun berikut:</p>
                 </div>
 
-                <div class="greeting-box">
-                    <h1 id="Text_Greeting">Selamat Datang!</h1>
-                </div>
-            </aside>
+                <!-- Notifikasi / Feedback Box -->
+                <div id="Alert_Notif" class="alert-box" style="display: none;"></div>
 
-            <main class="panel-right" id="Panel_Right">
-                <div class="form-content">
-                    <h1 id="Title_Persetujuan">Persetujuan Orang Tua/Wali</h1>
-
-                    <div class="data-grid">
-                        <div class="data-row">
-                            <span class="data-label" id="Label_NamaPelajar">Nama Pelajar</span>
-                            <span class="data-value" id="Text_ValNamaPelajar">Budi Santoso</span>
-                        </div>
-                        <div class="data-row">
-                            <span class="data-label" id="Label_EmailPelajar">Email Pelajar</span>
-                            <span class="data-value" id="Text_ValEmailPelajar">Budi Santoso89@gmail.com</span>
-                        </div>
-                        <div class="data-row">
-                            <span class="data-label" id="Label_NomorTelpPelajar">Nomor Telepon Pelajar</span>
-                            <span class="data-value" id="Text_ValueNomorTelpPelajar">081939326802</span>
-                        </div>
+                <!-- Kartu Data Pelajar -->
+                <div class="info-card">
+                    <div class="info-row">
+                        <span class="info-label" id="Label_NamaPelajar">Nama</span>
+                        <span class="info-value" id="Text_ValNamaPelajar">Andi Pratama</span>
                     </div>
 
-                    <div class="note-section">
-                        <p class="note-title" id="Label_Catatan">Catatan:</p>
-                        <p class="note-desc" id="Text_Catatan">Orang tua/wali dapat mengelola status persetujuan akun, tetapi catatan pribadi pelajar dijaga kerahasiaannya</p>
+                    <div class="info-divider"></div>
+
+                    <div class="info-row">
+                        <span class="info-label" id="Label_EmailPelajar">Email pelajar</span>
+                        <span class="info-value" id="Text_ValEmailPelajar">andi.siswa@mahasehat.id</span>
                     </div>
 
-                    <div class="button-group">
-                        <button type="button" class="btn-secondary" id="Btn_TidakSetuju">Tidak setuju</button>
-                        <button type="button" class="btn-primary" id="Btn_Setuju">Setuju</button>
+                    <div class="info-divider"></div>
+
+                    <div class="info-row">
+                        <span class="info-label" id="Label_Diminta">Diminta</span>
+                        <span class="info-value" id="Text_ValDiminta">7 November 2026</span>
                     </div>
                 </div>
-            </main>
-        </div>
 
-        <script src="KonfirmasiRegistrasiPage.js"></script>
-    </body>
+                <!-- Catatan / Keterangan -->
+                <div class="note-section" id="Label_Catatan">
+                    <p class="note-desc" id="Text_Catatan">
+                        Dengan menyetujui, akun pelajar aktif dan kamu bisa melihat ringkasan kondisinya.
+                    </p>
+                </div>
+
+                <!-- Kelompok Tombol Aksi -->
+                <div class="action-group">
+                    <button type="button" class="btn-primary" id="Btn_Setuju">Setujui akun</button>
+                    <button type="button" class="btn-link-danger" id="Btn_TidakSetuju">Tolak permintaan</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="KonfirmasiRegistrasiPage.js"></script>
+</body>
 </html>
-                    
