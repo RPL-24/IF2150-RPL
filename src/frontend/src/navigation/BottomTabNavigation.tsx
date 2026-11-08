@@ -1,0 +1,38 @@
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+import { RootTabParamList } from './types';
+import { BerandaScreen } from '../views/BerandaScreen';
+import { RiwayatScreen } from '../views/RiwayatScreen';
+import { ChatScreen } from '../views/ChatScreen';
+
+const Tab = createBottomTabNavigator<RootTabParamList>();
+
+export const BottomTabNavigator: React.FC = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: true,
+        tabBarActiveTintColor: '#2E7D32',
+        tabBarInactiveTintColor: '#757575',
+        tabBarIcon: ({ color, size, focused }) => {
+          let iconName: keyof typeof Ionicons.glyphMap = 'ellipse';
+
+          if (route.name === 'Beranda') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Riwayat') {
+            iconName = focused ? 'time' : 'time-outline';
+          } else if (route.name === 'Chat') {
+            iconName = focused ? 'chatbubble-ellipses' : 'chatbubble-ellipses-outline';
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <Tab.Screen name="Beranda" component={BerandaScreen} />
+      <Tab.Screen name="Riwayat" component={RiwayatScreen} />
+      <Tab.Screen name="Chat" component={ChatScreen} />
+    </Tab.Navigator>
+  );
+};
