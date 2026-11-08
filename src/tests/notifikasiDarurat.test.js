@@ -14,6 +14,8 @@ const db = require('../config/db');
 const mailer = require('../utils/kirimEmail');
 const { generateToken } = require('../middleware/authMiddleware');
 const NotifikasiDaruratController = require('../controllers/NotifikasiDaruratController');
+const NotifikasiDarurat = require('../models/NotifikasiDarurat');
+const Pelajar = require('../models/Pelajar');
 
 const adaDatabase = Boolean(process.env.TEST_DATABASE_URL);
 
@@ -21,6 +23,8 @@ beforeEach(() => {
   mailer.kirimEmail.mockReset();
   mailer.kirimEmail.mockResolvedValue(undefined);
 });
+
+afterEach(() => jest.restoreAllMocks());
 
 describe('Pengiriman ulang notifikasi darurat (KNF06)', () => {
   function notifikasiPalsu(emailTujuan = 'wali@contoh.test') {
@@ -33,7 +37,6 @@ describe('Pengiriman ulang notifikasi darurat (KNF06)', () => {
   }
 
   beforeEach(() => jest.spyOn(console, 'error').mockImplementation(() => {}));
-  afterEach(() => console.error.mockRestore());
 
   test('berhasil pada percobaan ketiga dan mencatat jumlah percobaan', async () => {
     mailer.kirimEmail
@@ -81,6 +84,8 @@ describe('Pengiriman ulang notifikasi darurat (KNF06)', () => {
   const statusDarurat = async (idPelajar) =>
     (await db.query('SELECT status_darurat FROM pelajar WHERE id_pelajar = $1;', [idPelajar])).rows[0]
       .status_darurat;
+  const barisNotifikasi = async (id) =>
+    (await db.query('SELECT * FROM notifikasi_darurat WHERE id = $1;', [id])).rows[0];
   let idNotifikasi;
 
   beforeAll(async () => {
@@ -132,31 +137,61 @@ describe('Pengiriman ulang notifikasi darurat (KNF06)', () => {
     expect(hasil.jumlahDarurat).toBe(0);
   });
 
+  test('tanggal check-in terakhir diambil dari yang terbaru walau urutan riwayat acak', async () => {
+    const pelajar = await Pelajar.findById('PLJ-003');
+    const riwayat = await pelajar.getCheckInHistory(7);
+    const terbaru = riwayat[0].tanggalCheckIn;
+    const cek = jest.spyOn(NotifikasiDarurat, 'sudahDilaporkanSejak');
+
+    await NotifikasiDaruratController.evaluasiPelajar(pelajar, [...riwayat].reverse());
+    expect(cek).toHaveBeenCalledWith('PLJ-003', terbaru);
+  });
+
+  test('evaluasi yang berjalan bersamaan tidak membuat galat atau notifikasi ganda', async () => {
+    jest.spyOn(NotifikasiDarurat, 'sudahDilaporkanSejak').mockResolvedValue(false);
+    const pelajar = await Pelajar.findById('PLJ-003');
+    const riwayat = await pelajar.getCheckInHistory(7);
+
+    expect(await NotifikasiDaruratController.evaluasiPelajar(pelajar, riwayat)).toBeNull();
+    const { rows } = await db.query(
+      "SELECT COUNT(*)::int AS n FROM notifikasi_darurat WHERE id_pelajar = 'PLJ-003';"
+    );
+    expect(rows[0].n).toBe(1);
+  });
+
   test('wali melihat notifikasi aktif pelajarnya', async () => {
     const res = await request(app).get('/api/emergency/wali').set(pakai(tokenRatna()));
 
     expect(res.status).toBe(200);
     expect(res.body.data).toHaveLength(1);
     expect(res.body.data[0].nama_pelajar).toBe('Citra Lestari');
+    expect(res.body.data[0].ringkasan_kondisi).toContain('Rata-rata mood');
     idNotifikasi = res.body.data[0].id;
   });
 
-  test('wali lain dan pelajar tidak bisa mengonfirmasi', async () => {
+  test('wali lain, pelajar, dan tanpa login tidak bisa mengonfirmasi', async () => {
     await request(app).put(`/api/emergency/${idNotifikasi}/confirm`).set(pakai(tokenSantoso())).expect(403);
     await request(app).put(`/api/emergency/${idNotifikasi}/confirm`).set(pakai(tokenBudi())).expect(403);
     await request(app).put(`/api/emergency/${idNotifikasi}/confirm`).expect(401);
     await request(app).put('/api/emergency/TIDAK-ADA/confirm').set(pakai(tokenRatna())).expect(404);
   });
 
-  test('konfirmasi dan tindak lanjut tercatat, status darurat kembali normal', async () => {
+  test('konfirmasi kedua tidak menimpa waktu konfirmasi pertama', async () => {
     await request(app).put(`/api/emergency/${idNotifikasi}/confirm`).set(pakai(tokenRatna())).expect(200);
+    const pertama = (await barisNotifikasi(idNotifikasi)).waktu_konfirmasi;
+    await request(app).put(`/api/emergency/${idNotifikasi}/confirm`).set(pakai(tokenRatna())).expect(200);
+
+    const baris = await barisNotifikasi(idNotifikasi);
+    expect(baris.status).toBe('Diterima');
+    expect(baris.waktu_konfirmasi).toEqual(pertama);
+  });
+
+  test('tindak lanjut tercatat dan status darurat kembali normal', async () => {
     await request(app).put(`/api/emergency/${idNotifikasi}/follow-up`).set(pakai(tokenRatna())).expect(200);
 
-    const { rows } = await db.query('SELECT * FROM notifikasi_darurat WHERE id = $1;', [idNotifikasi]);
-    expect(rows[0].status).toBe('Diterima');
-    expect(rows[0].waktu_konfirmasi).not.toBeNull();
-    expect(rows[0].status_tindak_lanjut).toBe('Sudah Ditindaklanjuti');
-    expect(rows[0].waktu_tindak_lanjut).not.toBeNull();
+    const baris = await barisNotifikasi(idNotifikasi);
+    expect(baris.status_tindak_lanjut).toBe('Sudah Ditindaklanjuti');
+    expect(baris.waktu_tindak_lanjut).not.toBeNull();
     expect(await statusDarurat('PLJ-003')).toBe(false);
 
     const sisa = await request(app).get('/api/emergency/wali').set(pakai(tokenRatna()));
@@ -167,5 +202,54 @@ describe('Pengiriman ulang notifikasi darurat (KNF06)', () => {
     const hasil = await NotifikasiDaruratController.jalankanEvaluasiHarian();
     expect(hasil.jumlahDarurat).toBe(0);
     expect(await statusDarurat('PLJ-003')).toBe(false);
+  });
+
+  test('tindak lanjut tanpa menekan "Diterima" juga mencatat konfirmasi', async () => {
+    await db.query("UPDATE pelajar SET id_wali = 'WALI-002' WHERE id_pelajar = 'PLJ-LAMA';");
+    await db.query("UPDATE notifikasi_darurat SET id_wali = 'WALI-002' WHERE id_pelajar = 'PLJ-LAMA';");
+    const { rows } = await db.query("SELECT id FROM notifikasi_darurat WHERE id_pelajar = 'PLJ-LAMA';");
+
+    await request(app).put(`/api/emergency/${rows[0].id}/follow-up`).set(pakai(tokenRatna())).expect(200);
+    const baris = await barisNotifikasi(rows[0].id);
+    expect(baris.status).toBe('Diterima');
+    expect(baris.waktu_konfirmasi).not.toBeNull();
+    expect(baris.status_tindak_lanjut).toBe('Sudah Ditindaklanjuti');
+  });
+
+  test('menindaklanjuti ulang notifikasi lama tidak menghapus status darurat notifikasi yang masih aktif', async () => {
+    await db.query("UPDATE pelajar SET status_darurat = TRUE WHERE id_pelajar = 'PLJ-003';");
+    await NotifikasiDarurat.tambah(db, {
+      idPelajar: 'PLJ-003',
+      idWali: 'WALI-002',
+      emailTujuan: 'ratna.wali@mahasehat.id',
+      ringkasanKondisi: 'Kasus baru',
+    });
+
+    await request(app).put(`/api/emergency/${idNotifikasi}/follow-up`).set(pakai(tokenRatna())).expect(200);
+    expect(await statusDarurat('PLJ-003')).toBe(true);
+  });
+
+  test('notifikasi yang belum direspons lebih dari 24 jam dikirim ulang', async () => {
+    await db.query(
+      `UPDATE notifikasi_darurat SET status = 'Terkirim', waktu_kirim = NOW() - INTERVAL '25 hours'
+       WHERE id_pelajar = 'PLJ-003' AND status_tindak_lanjut = 'Belum Ditindaklanjuti';`
+    );
+
+    const hasil = await NotifikasiDaruratController.jalankanEvaluasiHarian();
+    expect(hasil.jumlahDikirimUlang).toBe(1);
+    expect(mailer.kirimEmail.mock.calls.some(([isi]) => isi.text.includes('Kasus baru'))).toBe(true);
+  });
+
+  test('kegagalan saat mengirim ulang satu notifikasi tidak menghentikan job', async () => {
+    await db.query(
+      `UPDATE notifikasi_darurat SET waktu_kirim = NOW() - INTERVAL '25 hours'
+       WHERE id_pelajar = 'PLJ-003' AND status_tindak_lanjut = 'Belum Ditindaklanjuti';`
+    );
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(NotifikasiDarurat.prototype, 'catatPengiriman').mockRejectedValue(new Error('basis data sibuk'));
+
+    const hasil = await NotifikasiDaruratController.jalankanEvaluasiHarian();
+    expect(hasil.jumlahDikirimUlang).toBe(0);
+    expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Gagal mengirim ulang'), 'basis data sibuk');
   });
 });
