@@ -19,11 +19,14 @@ export function badgeRestoran(r: any): SafeHtml {
 }
 
 export function kartuRestoran(r: any, tautan = true): SafeHtml {
-  const isi = html`<div class="kartu-foto warna-${r.warna}">${ikon('mangkuk', 56)}</div>
+  const isi = html`<div class="kartu-foto warna-${r.warna}">${r.foto_path
+      ? html`<img src="/api/restoran/${r.restoran_id}/foto?v=${encodeURIComponent(r.foto_path)}" alt="" loading="lazy">`
+      : ikon('mangkuk', 56)}</div>
     <div class="kartu-badan">
       <h3>${r.nama_restoran}</h3>
       <p class="redup">${r.kategori} · ${r.lokasi}</p>
-      <p class="rating">${ikon('bintang', 16)} ${Number(r.rating_rerata).toFixed(1)}</p>
+      <p class="rating">${ikon('bintang', 16)} ${Number(r.rating_rerata).toFixed(1)}
+        <small class="redup">(${Number(r.jumlah_ulasan).toLocaleString('id-ID')})</small></p>
       <div class="badge-baris">${badgeRestoran(r)}</div>
     </div>`;
   return tautan

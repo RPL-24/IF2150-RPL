@@ -8,12 +8,14 @@ import { keranjang } from '../models/keranjang.js';
 import { navigasi, type RouteCtx } from '../main.js';
 import { badgeRestoran, kartuRestoran } from './komponen.js';
 import { perbaruiBadgeKeranjang } from './layout.js';
+import { daftarUlasan } from './ulasanView.js';
 
 /** PencarianRestoPage (I-05): beranda, pencarian, filter, dan kartu antrean aktif. */
 export async function pencarianRestoPage(ctx: RouteCtx): Promise<void> {
   const state = {
     q: ctx.query.get('q') ?? '',
     chip: ctx.query.get('f') ?? 'semua',
+    lokasi: ctx.query.get('lokasi') ?? '',
   };
   const antreanSaya: any[] = ctx.user?.role === 'PELANGGAN' ? await api.get('/antrean-saya').catch(() => []) : [];
   const aktif = antreanSaya.find((a) => a.tiket.status_antrean !== 'TERJADWAL');
@@ -29,7 +31,8 @@ export async function pencarianRestoPage(ctx: RouteCtx): Promise<void> {
               value="${state.q}" aria-label="Kata kunci"></label>
             <button class="btn btn-utama btn-besar" type="submit">Cari</button>
           </form>
-          <div class="chips" id="chips"></div>
+          <div class="baris-filter"><div class="chips" id="chips"></div>
+            <label class="pilih-lokasi">Area <select id="lokasi" aria-label="Filter area"><option value="">Semua area</option></select></label></div>
         </div>
         ${aktif
           ? html`<a class="kartu-antreanmu" href="#/antrean/${aktif.tiket.id_tiket}">
@@ -59,9 +62,15 @@ export async function pencarianRestoPage(ctx: RouteCtx): Promise<void> {
     if (state.chip === 'rating') p.set('minRating', '4.5');
     else if (state.chip === 'pendek') p.set('antreanPendek', 'true');
     else if (state.chip !== 'semua') p.set('kategori', state.chip);
+    if (state.lokasi) p.set('lokasi', state.lokasi);
     hasilEl.innerHTML = '<div class="memuat-halaman"><span class="spinner"></span></div>';
     const data = await api.get(`/restoran?${p}`);
-    if (!kategori.length) kategori = data.kategori;
+    if (!kategori.length) {
+      kategori = data.kategori;
+      const sel = $<HTMLSelectElement>('#lokasi', ctx.root);
+      for (const l of data.lokasi as string[]) sel.add(new Option(l, l, false, l === state.lokasi));
+    }
+    $('#judul-daftar', ctx.root).textContent = state.lokasi ? `Lagi viral di ${state.lokasi}` : 'Lagi viral di Bandung';
     renderChips();
     if (data.hasil.length) {
       mount(hasilEl, html`<div class="grid-resto">${data.hasil.map((r: any) => kartuRestoran(r))}</div>`);
@@ -87,10 +96,16 @@ export async function pencarianRestoPage(ctx: RouteCtx): Promise<void> {
     state.chip = t.dataset.chip ?? 'semua';
     void muat();
   });
+  $<HTMLSelectElement>('#lokasi', ctx.root).addEventListener('change', (e) => {
+    state.lokasi = (e.target as HTMLSelectElement).value;
+    void muat();
+  });
   $('#lihat-semua', ctx.root).addEventListener('click', (e) => {
     e.preventDefault();
     state.q = '';
     state.chip = 'semua';
+    state.lokasi = '';
+    ($('#lokasi', ctx.root) as HTMLSelectElement).value = '';
     ($('#form-cari input', ctx.root) as HTMLInputElement).value = '';
     void muat();
   });
@@ -113,7 +128,9 @@ export async function detailRestoranPage(ctx: RouteCtx): Promise<void> {
       ctx.root,
       html`<div class="wadah bagian">
         <nav class="breadcrumb"><a href="#/">Beranda</a> › <span>${r.lokasi}</span> › <span>${r.nama_restoran}</span></nav>
-        <div class="banner warna-${r.warna}">${ikon('mangkuk', 72)}</div>
+        <div class="banner warna-${r.warna}">${r.foto_path
+          ? html`<img src="/api/restoran/${r.restoran_id}/foto?v=${encodeURIComponent(r.foto_path)}" alt="Foto ${r.nama_restoran}">`
+          : ikon('mangkuk', 72)}</div>
         <div class="detail-grid">
           <div>
             <div class="detail-kepala">
@@ -134,12 +151,15 @@ export async function detailRestoranPage(ctx: RouteCtx): Promise<void> {
                 const n = milikIni ? krj.jumlahItem(m.menu_id) : 0;
                 const habis = m.stok <= 0;
                 return html`<article class="kartu-menu ${habis ? 'habis' : ''}">
-                  <div class="menu-foto warna-${r.warna}">${ikon('mangkuk', 32)}</div>
+                  <div class="menu-foto warna-${r.warna}">${m.foto_path
+                    ? html`<img src="/api/menu/${m.menu_id}/foto?v=${encodeURIComponent(m.foto_path)}" alt="${m.nama_menu}" loading="lazy">`
+                    : ikon('mangkuk', 32)}</div>
                   <div class="menu-badan">
                     <h3>${m.nama_menu} ${habis ? html`<span class="badge badge-abu">Habis</span>` : ''}</h3>
                     <p class="redup">${m.deskripsi_menu}</p>
                     <div class="baris-antara"><strong>${rupiah(m.harga)}</strong>
                       ${habis ? html`<small class="redup">Stok habis</small>`
+                        : ctx.user && ctx.user.role !== 'PELANGGAN' ? ''
                         : n > 0
                           ? html`<div class="stepper" aria-label="Jumlah ${m.nama_menu}">
                               <button data-kurang="${m.menu_id}" aria-label="Kurangi">−</button><span>${n}</span>
@@ -151,6 +171,7 @@ export async function detailRestoranPage(ctx: RouteCtx): Promise<void> {
               })}
             </div>
             ${menuTampil.length ? '' : kosong('Belum ada menu')}
+            <section class="kartu mt"><h3>Ulasan pelanggan</h3><div id="ulasan"><span class="spinner"></span></div></section>
           </div>
           <aside class="kartu ringkasan-keranjang">
             <h3>Pesananmu</h3>
@@ -168,6 +189,8 @@ export async function detailRestoranPage(ctx: RouteCtx): Promise<void> {
           </aside>
         </div></div>`,
     );
+    const ulasanEl = ctx.root.querySelector<HTMLElement>('#ulasan');
+    if (ulasanEl) void daftarUlasan(ulasanEl, id).catch(() => (ulasanEl.textContent = 'Ulasan gagal dimuat.'));
   };
 
   render();

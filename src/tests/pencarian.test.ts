@@ -27,3 +27,10 @@ describe('UC01 pencarian', () => {
     assert.ok(hasil.saran.length > 0);
   });
 });
+
+test('filter area/lokasi (iterasi 2)', async () => {
+  const dago = await app.controllers.pencarian.cariRestoran({ lokasi: 'Dago' });
+  assert.ok(dago.hasil.length >= 2);
+  assert.ok(dago.hasil.every((r) => r.lokasi === 'Dago'));
+  assert.ok(dago.lokasi.includes('Braga'));
+});
