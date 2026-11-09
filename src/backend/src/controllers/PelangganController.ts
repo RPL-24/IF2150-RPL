@@ -37,6 +37,20 @@ export class PelangganController extends PenggunaController {
 
             const pelangganBaru = Pelanggan.makePelanggan({namaPengguna,username,email,nomorTelepon,passwordHash,avatarUrl,});
             const savedPelanggan = await pelangganBaru.simpanKeDb();
+            res.status(201).json({
+                success: true,
+                message: 'Registrasi pelanggan berhasil.',
+                data: {
+                    idPengguna: savedPelanggan.idPengguna,
+                    namaPengguna: savedPelanggan.namaPengguna,
+                    username: savedPelanggan.username,
+                    email: savedPelanggan.email,
+                    nomorTelpon: savedPelanggan.nomorTelepon,
+                    role: savedPelanggan.role,
+                    avatarUrl: savedPelanggan.avatarUrl,
+                },
+            });
+            return;
         } catch (error) {
             console.error('[PelangganController.registrasiPelanggan] Error:', error);
             res.status(500).json({success: false,message: 'Terjadi kesalahan internal saat memproses registrasi pelanggan.',});
