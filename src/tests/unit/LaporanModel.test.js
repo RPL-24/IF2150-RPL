@@ -95,6 +95,52 @@ describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
       expect(model.identitasAktor).toBe('usr-1');
       expect(model.tindakan).toBe('Penerimaan laporan');
     });
+
+    test('tidak menyediakan metode untuk mengubah atau menghapus catatan audit (immutable KF48, KF49)', () => {
+      // Tidak ada fungsi update/edit baik statis maupun pada instance
+      expect(LogAudit.prototype.update).toBeUndefined();
+      expect(LogAudit.prototype.edit).toBeUndefined();
+      expect(LogAudit.prototype.hapus).toBeUndefined();
+      expect(LogAudit.prototype.delete).toBeUndefined();
+      expect(LogAudit.update).toBeUndefined();
+      expect(LogAudit.edit).toBeUndefined();
+      expect(LogAudit.hapus).toBeUndefined();
+      expect(LogAudit.delete).toBeUndefined();
+    });
+
+    test('seluruh operasi pencatatan bertambah secara append-only menggunakan query INSERT', async () => {
+      const mockClient = {
+        query: jest.fn().mockResolvedValue({ rowCount: 1 }),
+      };
+
+      // 1. Catat penerimaan laporan
+      await LogAudit.catatPenerimaanLaporan('lap-1', 'user-1', mockClient);
+      expect(mockClient.query).toHaveBeenLastCalledWith(
+        expect.stringMatching(/INSERT INTO log_audit/i),
+        expect.arrayContaining(['lap-1', 'user-1']),
+      );
+
+      // 2. Catat perubahan status laporan
+      await LogAudit.catatPerubahanStatusLaporan('lap-1', 'admin-1', 'Diproses', mockClient);
+      expect(mockClient.query).toHaveBeenLastCalledWith(
+        expect.stringMatching(/INSERT INTO log_audit/i),
+        expect.arrayContaining(['lap-1', 'admin-1', 'Perubahan status laporan menjadi Diproses']),
+      );
+
+      // 3. Catat penghapusan listing
+      await LogAudit.catatPenghapusanListing('lap-1', 'admin-1', 'brg-101', mockClient);
+      expect(mockClient.query).toHaveBeenLastCalledWith(
+        expect.stringMatching(/INSERT INTO log_audit/i),
+        expect.arrayContaining(['lap-1', 'admin-1', 'Penghapusan listing: brg-101']),
+      );
+
+      // 4. Catat pemblokiran akun
+      await LogAudit.catatPemblokiranAkun('lap-1', 'admin-1', 'akun-99', mockClient);
+      expect(mockClient.query).toHaveBeenLastCalledWith(
+        expect.stringMatching(/INSERT INTO log_audit/i),
+        expect.arrayContaining(['lap-1', 'admin-1', 'Pemblokiran akun: akun-99']),
+      );
+    });
   });
 
   describe('PenyimpananBerkas (C45)', () => {

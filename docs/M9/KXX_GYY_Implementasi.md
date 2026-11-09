@@ -1,4 +1,4 @@
-﻿<h1>
+<h1>
 IF2150 REKAYASA PERANGKAT LUNAK
 <br>
 TUGAS 9
@@ -203,7 +203,7 @@ Tabel B.2. Bukti Best Practices
 | Semantic commit | *[Tautan ke riwayat commit]* | *[Ringkasan]* |
 | Track tasks | *[Tautan ke Issues/Projects]* | *[Jumlah issue, pembagian]* |
 | Pull request dan review | *[Tautan ke 2-3 PR representatif]* | *[Siapa me-review siapa]* |
-| Pengujian | *[Tautan ke `src/tests/` dan hasil test]* | *[Apa yang diuji, cara menjalankan]* |
+| Pengujian | [Suite Pengujian Modul E](src/tests/) · 106 tests passed | Pengujian unit dan integrasi otomatis (Jest & Supertest) untuk Modul E (Laporan & Moderasi): validasi formulir & privasi percakapan (UC19), peninjauan & penyaringan laporan (UC20), transisi status & audit log (UC21), penghapusan listing (UC22), pemblokiran akun (UC23), pembukaan blokir akun (UC24), serta 3 skenario integrasi end-to-end. Dijalankan dengan `npm test` di dalam direktori `src/`. |
 
 ### B.2.1 Profiling dan Optimasi
 
