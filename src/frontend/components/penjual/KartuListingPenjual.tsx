@@ -1,16 +1,8 @@
 "use client";
 
-export interface ListingMakananPenjual {
-  id_listing: number;
-  nama_makanan: string;
-  porsi: string;
-  kondisi: string;
-  harga: number;
-  stok: number;
-  batas_kedaluwarsa: string;
-  foto?: string | null;
-  aktif: boolean;
-}
+import { ListingPenjual, urlFoto } from "@/lib/api";
+
+export type ListingMakananPenjual = ListingPenjual;
 
 interface KartuListingPenjualProps {
   listing: ListingMakananPenjual;
@@ -23,15 +15,15 @@ export default function KartuListingPenjual({
   onEdit,
   onHapus,
 }: KartuListingPenjualProps) {
-  const isExpired = new Date(listing.batas_kedaluwarsa) <= new Date();
+  const fotoUrl = urlFoto(listing.foto);
 
   return (
     <div className="flex flex-col overflow-hidden rounded-[18px] border border-[#d8cfb4] bg-[#f7f0dc] p-3 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <div className="relative h-[90px] w-[112px] overflow-hidden rounded-xl border border-[#d8cfb4] bg-[#f4d7ab]">
-          {listing.foto ? (
+          {fotoUrl ? (
             <img
-              src={`http://localhost:8000${listing.foto}`}
+              src={fotoUrl}
               alt={listing.nama_makanan}
               className="h-full w-full object-cover"
             />
@@ -61,37 +53,21 @@ export default function KartuListingPenjual({
             Rp. {listing.harga.toLocaleString("id-ID")}
           </p>
 
-          <div className="flex items-center">
-            <button
-              type="button"
-              className="flex h-8 w-8 items-center justify-center rounded-l-md bg-[#ff4d57] text-lg font-bold text-white"
-              aria-label={`Decrease stock for ${listing.nama_makanan}`}
-            >
-              −
-            </button>
-            <span className="flex h-8 w-9 items-center justify-center bg-[#ff4d57] text-sm font-bold text-white">
-              {listing.stok}
-            </span>
-            <button
-              type="button"
-              className="flex h-8 w-8 items-center justify-center rounded-r-md bg-[#ff4d57] text-lg font-bold text-white"
-              aria-label={`Increase stock for ${listing.nama_makanan}`}
-            >
-              +
-            </button>
-          </div>
+          <p className="text-sm font-semibold text-[#58635b]">
+            Stok: {listing.stok}
+          </p>
         </div>
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-2 border-t border-[#d9d1b5] pt-3">
         <span
           className={`rounded-full px-2.5 py-1 text-[0.7rem] font-bold uppercase ${
-            listing.aktif && listing.stok > 0 && !isExpired
+            listing.tersedia
               ? "bg-green-100 text-green-700"
               : "bg-red-100 text-red-700"
           }`}
         >
-          {listing.aktif && listing.stok > 0 && !isExpired ? "Tersedia" : "Tidak Tersedia"}
+          {listing.tersedia ? "Tersedia" : "Tidak Tersedia"}
         </span>
 
         <button
