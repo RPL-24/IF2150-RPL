@@ -1048,7 +1048,7 @@ Tabel 5.12.1. Query Operasi [Nama Operasi]
 
 # BAB 6: Perancangan Antarmuka
 
-## 6.1 Rancangan Antarmuka [ID Layar 1]
+## 6.1 Rancangan Antarmuka [I-01]
 
 **Antarmuka:** *I-01*  
 **Nama Layar:** *Layar Utama*
@@ -1088,7 +1088,7 @@ Tabel 6.2. Spesifikasi Objek Antarmuka I-02
 | *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem atau nama file terkait beserta deskripsi ringkasnya]* |
 | *...* | *...* | *...* | *...* |
 
-## 6.3 Rancangan Antarmuka [ID Layar 3]
+## 6.3 Rancangan Antarmuka [I-03]
 
 **Antarmuka:** *I-03*  
 **Nama Layar:** *Detail Layanan*
@@ -1104,7 +1104,7 @@ Tabel 6.3. Spesifikasi Objek Antarmuka I-03
 
 | Id_Objek | Jenis | Konten | Keterangan |
 | :--- | :--- | :--- | :--- |
-| *[ID objek]* | *[Jenis objek, misalnya Button, RTF Box, dll]* | *[String yang tampil pada layar]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
+| *O-05* | *[Jenis objek, misalnya Button, RTF Box, dll]* | *[String yang tampil pada layar]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
 | *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem atau nama file terkait beserta deskripsi ringkasnya]* |
 | *...* | *...* | *...* | *...* |
 
