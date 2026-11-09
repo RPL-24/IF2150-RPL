@@ -257,23 +257,26 @@
                                 </div>
                             </div>
 
-                            <!-- Pemilihan Slot Jam Praktik -->
                             <div class="form-group">
-                                <label class="form-label">Slot Waktu Tersedia (60 Menit / Sesi)</label>
-                                <div class="time-slots-grid" id="Group_SlotWaktu" role="group" aria-label="Pilih slot jam">
-                                    <label class="slot-chip">
-                                        <input type="checkbox" name="slot" value="10.00-11.00" checked>
-                                        <span>10.00 - 11.00 WIB</span>
-                                    </label>
-                                    <label class="slot-chip">
-                                        <input type="checkbox" name="slot" value="13.00-14.00" checked>
-                                        <span>13.00 - 14.00 WIB</span>
-                                    </label>
-                                    <label class="slot-chip">
-                                        <input type="checkbox" name="slot" value="15.30-16.30" checked>
-                                        <span>15.30 - 16.30 WIB</span>
-                                    </label>
-                                </div>
+                                <label class="form-label">Rentang Jam Praktik</label>
+                                <div class="range-list" id="Group_RentangJam" role="group" aria-label="Rentang jam praktik"></div>
+                                <button type="button" class="btn-text-action" id="Btn_TambahRentang">+ Tambah rentang jam</button>
+                                <p class="form-error" id="Text_ErrorJam" role="alert" hidden></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="Select_DurasiSesi">Durasi per Sesi</label>
+                                <select class="form-input" id="Select_DurasiSesi">
+                                    <option value="30">30 menit</option>
+                                    <option value="45">45 menit</option>
+                                    <option value="60" selected>60 menit</option>
+                                    <option value="90">90 menit</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Slot yang Akan Tersedia</label>
+                                <div class="time-slots-grid" id="Group_SlotWaktu" aria-live="polite"></div>
                             </div>
 
                             <div class="form-actions">
