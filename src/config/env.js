@@ -32,4 +32,11 @@ module.exports = {
   durasiSesiJam: angka('DURASI_SESI_JAM', 24),
   durasiKodeMenit: angka('DURASI_KODE_MENIT', 15),
   kunciEnkripsiPesan: process.env.KUNCI_ENKRIPSI_PESAN,
+
+  // Kunci VAPID untuk Web Push (C44 PushNotifikasiAdapter, KF34)
+  vapid: {
+    publicKey: process.env.VAPID_PUBLIC_KEY,
+    privateKey: process.env.VAPID_PRIVATE_KEY,
+    subject: process.env.VAPID_SUBJECT || 'mailto:admin@itbeli.local',
+  },
 };
