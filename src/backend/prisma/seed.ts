@@ -1,12 +1,13 @@
 import prisma from '../src/database/prisma';
 import { Role } from '@prisma/client';
-import { ID_PREFIX, generateEntityId } from '../src/utils/idGenerator';
 
 async function main() {
+  console.log('🌱 Memulai proses seeding database CariUang dengan format UUID...');
 
+  // 1. Seed Kategori Jasa (UUID)
   const kategoriList = [
     {
-      idKategoriJasa: generateEntityId(ID_PREFIX.KATEGORI_JASA, 1), // 005001
+      idKategoriJasa: '550e8400-e29b-41d4-a716-446655440001',
       jenisJasa: 'Jasa Kebersihan Rumah',
       deskripsiJasa: 'Layanan bersih-bersih rumah, kos, dan apartemen menyeluruh.',
       tarif: 75000,
@@ -14,7 +15,7 @@ async function main() {
       daerahKerja: 'Coblong, Dago, Bandung Utara',
     },
     {
-      idKategoriJasa: generateEntityId(ID_PREFIX.KATEGORI_JASA, 2), // 005002
+      idKategoriJasa: '550e8400-e29b-41d4-a716-446655440002',
       jenisJasa: 'Perbaikan Elektronik & AC',
       deskripsiJasa: 'Servis cuci AC, perbaikan kulkas, mesin cuci, dan instalasi listrik.',
       tarif: 120000,
@@ -22,7 +23,7 @@ async function main() {
       daerahKerja: 'Seluruh Kota Bandung',
     },
     {
-      idKategoriJasa: generateEntityId(ID_PREFIX.KATEGORI_JASA, 3), // 005003
+      idKategoriJasa: '550e8400-e29b-41d4-a716-446655440003',
       jenisJasa: 'Tukang Ledeng & Pipa',
       deskripsiJasa: 'Perbaikan pipa bocor, saluran mampet, dan pemasangan pompa air.',
       tarif: 95000,
@@ -39,8 +40,8 @@ async function main() {
     });
   }
 
-  // 2. Seed Pengguna: Pelanggan (Pola id_pengguna 001XXX)
-  const idPelanggan = generateEntityId(ID_PREFIX.PENGGUNA, 1); // 001001
+  // 2. Seed Pengguna: Pelanggan (UUID)
+  const idPelanggan = '111e8400-e29b-41d4-a716-446655440001';
   await prisma.pengguna.upsert({
     where: { username: 'budi_pelanggan' },
     update: {},
@@ -57,10 +58,10 @@ async function main() {
     },
   });
 
-  // 3. Seed Pengguna & Pemberi Jasa (Pola id_pemberi_jasa 002XXX)
+  // 3. Seed Pengguna & Pemberi Jasa (UUID + koordinat GPS sekitar Bandung)
   const providers = [
     {
-      idPemberiJasa: generateEntityId(ID_PREFIX.PEMBERI_JASA, 1), // 002001
+      idPemberiJasa: '222e8400-e29b-41d4-a716-446655440001',
       namaPengguna: 'Ahmad Teknik',
       username: 'ahmad_teknik',
       email: 'ahmad@cariuang.id',
@@ -68,13 +69,13 @@ async function main() {
       akumulasiRating: 4.9,
       riwayatRating: [5.0, 4.8, 4.9],
       namaToko: 'Ahmad Jaya AC & Elektronik',
-      idKategoriJasa: generateEntityId(ID_PREFIX.KATEGORI_JASA, 2), // 005002
+      idKategoriJasa: '550e8400-e29b-41d4-a716-446655440002',
       jenisJasa: 'Perbaikan Elektronik & AC',
       latitude: -6.8915, // Sekitar ITB Ganesha / Dago (dekat)
       longitude: 107.6107,
     },
     {
-      idPemberiJasa: generateEntityId(ID_PREFIX.PEMBERI_JASA, 2), // 002002
+      idPemberiJasa: '222e8400-e29b-41d4-a716-446655440002',
       namaPengguna: 'Siti Bersih',
       username: 'siti_clean',
       email: 'siti@cariuang.id',
@@ -82,13 +83,13 @@ async function main() {
       akumulasiRating: 4.7,
       riwayatRating: [4.7],
       namaToko: 'Kinclong Home Cleaning',
-      idKategoriJasa: generateEntityId(ID_PREFIX.KATEGORI_JASA, 1), // 005001
+      idKategoriJasa: '550e8400-e29b-41d4-a716-446655440001',
       jenisJasa: 'Jasa Kebersihan Rumah',
       latitude: -6.8850, // Sekitar Cisitu / Coblong
       longitude: 107.6135,
     },
     {
-      idPemberiJasa: generateEntityId(ID_PREFIX.PEMBERI_JASA, 3), // 002003
+      idPemberiJasa: '222e8400-e29b-41d4-a716-446655440003',
       namaPengguna: 'Kang Dedi Pipa',
       username: 'dedi_ledeng',
       email: 'dedi@cariuang.id',
@@ -96,7 +97,7 @@ async function main() {
       akumulasiRating: 4.5,
       riwayatRating: [4.5],
       namaToko: 'Dedi Plumbing Bandung',
-      idKategoriJasa: generateEntityId(ID_PREFIX.KATEGORI_JASA, 3), // 005003
+      idKategoriJasa: '550e8400-e29b-41d4-a716-446655440003',
       jenisJasa: 'Tukang Ledeng & Pipa',
       latitude: -6.9430, // Sekitar Buah Batu (lebih jauh)
       longitude: 107.6335,
@@ -145,8 +146,8 @@ async function main() {
     });
   }
 
-  // 4. Seed Pengguna & Layanan Pelanggan (Pola id_layanan_pelanggan 004XXX)
-  const idLayananPelanggan = generateEntityId(ID_PREFIX.LAYANAN_PELANGGAN, 1); // 004001
+  // 4. Seed Pengguna & Layanan Pelanggan (UUID)
+  const idLayananPelanggan = '444e8400-e29b-41d4-a716-446655440001';
   await prisma.pengguna.upsert({
     where: { username: 'cs_cariuang' },
     update: {},

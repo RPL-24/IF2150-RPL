@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import prisma from '../src/database/prisma';
 import { calculateHaversineDistance } from '../src/utils/haversine';
@@ -5,7 +6,16 @@ import { KategoriJasa, KategoriJasaInput, KategoriJasaRecord } from '../src/mode
 import { PemberiJasa, PemberiJasaDetail, SearchServiceFilter } from '../src/models/PemberiJasa';
 import { KategoriJasaController } from '../src/controllers/KategoriJasaController';
 import { PemberiJasaController } from '../src/controllers/PemberiJasaController';
-import { generateEntityId, ID_PREFIX } from '../src/utils/idGenerator';
+
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const KAT_CLEAN_ID = '550e8400-e29b-41d4-a716-446655440001';
+const KAT_AC_ID = '550e8400-e29b-41d4-a716-446655440002';
+const KAT_PIPE_ID = '550e8400-e29b-41d4-a716-446655440003';
+
+const PJ_AHMAD_ID = '222e8400-e29b-41d4-a716-446655440001';
+const PJ_SITI_ID = '222e8400-e29b-41d4-a716-446655440002';
+const PJ_DEDI_ID = '222e8400-e29b-41d4-a716-446655440003';
 
 /**
  * Helper pembuat mock Express Request & Response
@@ -41,12 +51,12 @@ function createMockReqRes(options: {
 }
 
 /**
- * In-Memory Mock untuk KategoriJasa (C13) dengan pola ID 005XXX
+ * In-Memory Mock untuk KategoriJasa (C13) dengan UUID
  */
 class MockKategoriJasa extends KategoriJasa {
   public store: KategoriJasaRecord[] = [
     {
-      idKategoriJasa: '005002',
+      idKategoriJasa: KAT_AC_ID,
       jenisJasa: 'Perbaikan Elektronik & AC',
       deskripsiJasa: 'Servis cuci AC dan perbaikan elektronik rumah tangga',
       tarif: 120000,
@@ -54,7 +64,7 @@ class MockKategoriJasa extends KategoriJasa {
       daerahKerja: 'Seluruh Kota Bandung',
     },
     {
-      idKategoriJasa: '005001',
+      idKategoriJasa: KAT_CLEAN_ID,
       jenisJasa: 'Jasa Kebersihan Rumah',
       deskripsiJasa: 'Bersih-bersih rumah dan kos menyeluruh',
       tarif: 75000,
@@ -62,7 +72,7 @@ class MockKategoriJasa extends KategoriJasa {
       daerahKerja: 'Coblong, Dago',
     },
     {
-      idKategoriJasa: '005003',
+      idKategoriJasa: KAT_PIPE_ID,
       jenisJasa: 'Tukang Ledeng & Pipa',
       deskripsiJasa: 'Perbaikan pipa bocor dan saluran air mampet',
       tarif: 95000,
@@ -73,7 +83,7 @@ class MockKategoriJasa extends KategoriJasa {
 
   public override async saveKategoriJasa(dataJasa: KategoriJasaInput): Promise<KategoriJasaRecord> {
     const record: KategoriJasaRecord = {
-      idKategoriJasa: dataJasa.idKategoriJasa || generateEntityId(ID_PREFIX.KATEGORI_JASA, this.store.length + 1),
+      idKategoriJasa: dataJasa.idKategoriJasa || randomUUID(),
       jenisJasa: dataJasa.jenisJasa.trim(),
       deskripsiJasa: dataJasa.deskripsiJasa.trim(),
       tarif: Number(dataJasa.tarif),
@@ -98,19 +108,19 @@ class MockKategoriJasa extends KategoriJasa {
 }
 
 /**
- * In-Memory Mock untuk PemberiJasa (C04) dengan pola ID 002XXX
+ * In-Memory Mock untuk PemberiJasa (C04) dengan UUID
  */
 class MockPemberiJasa extends PemberiJasa {
   public providers: PemberiJasaDetail[] = [
     {
-      idPemberiJasa: '002001',
+      idPemberiJasa: PJ_AHMAD_ID,
       namaPengguna: 'Ahmad Teknik',
       namaToko: 'Ahmad Jaya AC',
       nomorTelpon: '081298765431',
       email: 'ahmad@cariuang.id',
       avatarUrl: null,
       akumulasiRating: 4.9,
-      idKategoriJasa: '005002',
+      idKategoriJasa: KAT_AC_ID,
       jenisJasa: 'Perbaikan Elektronik & AC',
       deskripsiJasa: 'Servis cuci AC dan perbaikan elektronik rumah tangga',
       tarif: 120000,
@@ -122,14 +132,14 @@ class MockPemberiJasa extends PemberiJasa {
       isOnline: true,
     },
     {
-      idPemberiJasa: '002002',
+      idPemberiJasa: PJ_SITI_ID,
       namaPengguna: 'Siti Bersih',
       namaToko: 'Kinclong Home Cleaning',
       nomorTelpon: '081298765432',
       email: 'siti@cariuang.id',
       avatarUrl: null,
       akumulasiRating: 4.7,
-      idKategoriJasa: '005001',
+      idKategoriJasa: KAT_CLEAN_ID,
       jenisJasa: 'Jasa Kebersihan Rumah',
       deskripsiJasa: 'Bersih-bersih rumah dan kos menyeluruh',
       tarif: 75000,
@@ -141,14 +151,14 @@ class MockPemberiJasa extends PemberiJasa {
       isOnline: true,
     },
     {
-      idPemberiJasa: '002003',
+      idPemberiJasa: PJ_DEDI_ID,
       namaPengguna: 'Kang Dedi Pipa',
       namaToko: 'Dedi Plumbing Bandung',
       nomorTelpon: '081298765433',
       email: 'dedi@cariuang.id',
       avatarUrl: null,
       akumulasiRating: 4.5,
-      idKategoriJasa: '005003',
+      idKategoriJasa: KAT_PIPE_ID,
       jenisJasa: 'Tukang Ledeng & Pipa',
       deskripsiJasa: 'Perbaikan pipa bocor dan saluran air mampet',
       tarif: 95000,
@@ -226,8 +236,9 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
 
   describe('2. Kelas C13 KategoriJasa & C15 KategoriJasaController', () => {
     it('mengimplementasikan getter dan setter sesuai ALGO-022 s.d. ALGO-029', () => {
+      const sampleId = randomUUID();
       const kategori = new KategoriJasa({
-        idKategoriJasa: '005099',
+        idKategoriJasa: sampleId,
         jenisJasa: 'Servis Komputer',
         deskripsiJasa: 'Instal ulang dan perbaikan laptop',
         tarif: 100000,
@@ -235,7 +246,7 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
         daerahKerja: 'Bandung',
       });
 
-      expect(kategori.getIDKategoriJasa()).toBe('005099');
+      expect(kategori.getIDKategoriJasa()).toBe(sampleId);
       expect(kategori.getJenisJasa()).toBe('Servis Komputer');
       expect(kategori.getDeskripsiJasa()).toBe('Instal ulang dan perbaikan laptop');
       expect(kategori.getTarif()).toBe(100000);
@@ -260,7 +271,7 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
         'Perbaikan Elektronik & AC',
         'Tukang Ledeng & Pipa',
       ]);
-      expect(categories[0].idKategoriJasa).toMatch(/^005\d{3}$/);
+      expect(categories[0].idKategoriJasa).toMatch(UUID_REGEX);
     });
 
     it('[Acceptance Criteria #3] menolak tarif negatif atau field kosong pada validateKategoriJasa (ALGO-033)', () => {
@@ -297,7 +308,7 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
       ).toBe(true);
     });
 
-    it('menyimpan kategori baru dengan pola ID 005XXX dan memperbarui data PemberiJasa (ALGO-034 & ALGO-035)', async () => {
+    it('menyimpan kategori baru dengan UUID otomatis dan memperbarui data PemberiJasa (ALGO-034 & ALGO-035)', async () => {
       const mockKategori = new MockKategoriJasa();
       const mockPemberi = new MockPemberiJasa();
       const pCtrl = new PemberiJasaController(mockPemberi);
@@ -309,11 +320,11 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
         tarif: 200000,
         jamKerja: '08:00 - 21:00',
         daerahKerja: 'Bandung Raya',
-        idPemberiJasa: '002001',
+        idPemberiJasa: PJ_AHMAD_ID,
         namaToko: 'Ahmad Express Transport',
       });
 
-      expect(submitted.kategori.idKategoriJasa).toMatch(/^005\d{3}$/);
+      expect(submitted.kategori.idKategoriJasa).toMatch(UUID_REGEX);
       expect(submitted.pemberiJasa?.idKategoriJasa).toBe(submitted.kategori.idKategoriJasa);
       expect(submitted.pemberiJasa?.namaToko).toBe('Ahmad Express Transport');
       expect(kCtrl.confirmDataTersimpan()).toBe(true);
@@ -331,9 +342,9 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
       });
 
       expect(nearest).toHaveLength(3);
-      expect(nearest[0].idPemberiJasa).toBe('002001'); // Ahmad Teknik (ITB)
-      expect(nearest[1].idPemberiJasa).toBe('002002'); // Siti Bersih (Cisitu)
-      expect(nearest[2].idPemberiJasa).toBe('002003'); // Kang Dedi (Buah Batu)
+      expect(nearest[0].idPemberiJasa).toBe(PJ_AHMAD_ID); // Ahmad Teknik (ITB)
+      expect(nearest[1].idPemberiJasa).toBe(PJ_SITI_ID); // Siti Bersih (Cisitu)
+      expect(nearest[2].idPemberiJasa).toBe(PJ_DEDI_ID); // Kang Dedi (Buah Batu)
       expect(nearest[0].jarakKm!).toBeLessThan(nearest[1].jarakKm!);
       expect(nearest[1].jarakKm!).toBeLessThan(nearest[2].jarakKm!);
     });
@@ -342,15 +353,15 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
       const pCtrl = new PemberiJasaController(new MockPemberiJasa());
 
       const bestRated = await pCtrl.searchServices({ sortBy: 'rating' });
-      expect(bestRated.map((p) => p.idPemberiJasa)).toEqual(['002001', '002002', '002003']);
+      expect(bestRated.map((p) => p.idPemberiJasa)).toEqual([PJ_AHMAD_ID, PJ_SITI_ID, PJ_DEDI_ID]);
 
       const cheapest = await pCtrl.searchServices({ sortBy: 'cheapest' });
-      expect(cheapest.map((p) => p.idPemberiJasa)).toEqual(['002002', '002003', '002001']);
+      expect(cheapest.map((p) => p.idPemberiJasa)).toEqual([PJ_SITI_ID, PJ_DEDI_ID, PJ_AHMAD_ID]);
     });
 
     it('mengambil detail profil lengkap PemberiJasa berdasarkan ID (ALGO-002, Q-002)', async () => {
       const pCtrl = new PemberiJasaController(new MockPemberiJasa());
-      const detail = await pCtrl.fetchPemberiJasaById('002001');
+      const detail = await pCtrl.fetchPemberiJasaById(PJ_AHMAD_ID);
 
       expect(detail).not.toBeNull();
       expect(detail?.namaPengguna).toBe('Ahmad Teknik');
@@ -368,10 +379,10 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
       jest.restoreAllMocks();
     });
 
-    it('GET /api/services/categories mengembalikan 200 beserta daftar kategori terurut alfabetis dengan pola ID 005XXX', async () => {
+    it('GET /api/services/categories mengembalikan 200 beserta daftar kategori terurut alfabetis dengan UUID', async () => {
       jest.spyOn(prisma.kategoriJasa, 'findMany').mockResolvedValue([
         {
-          idKategoriJasa: '005001',
+          idKategoriJasa: KAT_CLEAN_ID,
           jenisJasa: 'Jasa Kebersihan Rumah',
           deskripsiJasa: 'Bersih-bersih rumah',
           tarif: 75000,
@@ -379,7 +390,7 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
           daerahKerja: 'Bandung Utara',
         },
         {
-          idKategoriJasa: '005002',
+          idKategoriJasa: KAT_AC_ID,
           jenisJasa: 'Perbaikan Elektronik & AC',
           deskripsiJasa: 'Servis AC',
           tarif: 120000,
@@ -394,7 +405,7 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
       expect(resObj.statusCode).toBe(200);
       expect(resObj.body.success).toBe(true);
       expect(resObj.body.data).toHaveLength(2);
-      expect(resObj.body.data[0].idKategoriJasa).toBe('005001');
+      expect(resObj.body.data[0].idKategoriJasa).toBe(KAT_CLEAN_ID);
       expect(resObj.body.data[0].jenisJasa).toBe('Jasa Kebersihan Rumah');
     });
 
@@ -429,9 +440,9 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
     it('GET /api/services/search mengembalikan penyedia jasa terurut terdekat berdasarkan koordinat user', async () => {
       jest.spyOn(prisma.pemberiJasa, 'findMany').mockResolvedValue([
         {
-          idPemberiJasa: '002003',
+          idPemberiJasa: PJ_DEDI_ID,
           namaToko: 'Plumbing Jauh',
-          idKategoriJasa: '005003',
+          idKategoriJasa: KAT_PIPE_ID,
           jenisJasa: 'Tukang Ledeng',
           latitude: -6.9430,
           longitude: 107.6335,
@@ -439,7 +450,7 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
           isOnline: true,
           version: 1,
           pengguna: {
-            idPengguna: '002003',
+            idPengguna: PJ_DEDI_ID,
             namaPengguna: 'Kang Dedi',
             username: 'dedi',
             password: 'pw',
@@ -451,7 +462,7 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
             riwayatRating: [4.5],
           },
           kategoriJasa: {
-            idKategoriJasa: '005003',
+            idKategoriJasa: KAT_PIPE_ID,
             jenisJasa: 'Tukang Ledeng',
             deskripsiJasa: 'Perbaikan pipa',
             tarif: 95000,
@@ -460,9 +471,9 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
           },
         },
         {
-          idPemberiJasa: '002001',
+          idPemberiJasa: PJ_AHMAD_ID,
           namaToko: 'AC Dekat ITB',
-          idKategoriJasa: '005002',
+          idKategoriJasa: KAT_AC_ID,
           jenisJasa: 'Perbaikan AC',
           latitude: -6.8915,
           longitude: 107.6107,
@@ -470,7 +481,7 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
           isOnline: true,
           version: 1,
           pengguna: {
-            idPengguna: '002001',
+            idPengguna: PJ_AHMAD_ID,
             namaPengguna: 'Ahmad Teknik',
             username: 'ahmad',
             password: 'pw',
@@ -482,7 +493,7 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
             riwayatRating: [4.9],
           },
           kategoriJasa: {
-            idKategoriJasa: '005002',
+            idKategoriJasa: KAT_AC_ID,
             jenisJasa: 'Perbaikan AC',
             deskripsiJasa: 'Servis AC',
             tarif: 120000,
@@ -500,8 +511,8 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
       expect(resObj.statusCode).toBe(200);
       expect(resObj.body.success).toBe(true);
       expect(resObj.body.data).toHaveLength(2);
-      expect(resObj.body.data[0].idPemberiJasa).toBe('002001');
-      expect(resObj.body.data[1].idPemberiJasa).toBe('002003');
+      expect(resObj.body.data[0].idPemberiJasa).toBe(PJ_AHMAD_ID);
+      expect(resObj.body.data[1].idPemberiJasa).toBe(PJ_DEDI_ID);
       expect(resObj.body.data[0].jarakKm).toBeLessThan(resObj.body.data[1].jarakKm);
     });
   });
