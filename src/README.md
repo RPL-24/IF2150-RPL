@@ -17,6 +17,7 @@ Arsitektur mengikuti DPPL (`docs/M8/K01_G04_DPPL2.md`): Client-Server + MVC, den
 7. [Modul dan Pembagian Tugas](#7-modul-dan-pembagian-tugas)
 8. [Basis Data](#8-basis-data)
 9. [Panduan Pengembangan Mobile](#9-panduan-pengembangan-mobile)
+10. [Panduan Pengembangan Backend](#10-panduan-pengembangan-backend)
 
 ## 1. Teknologi
 
@@ -24,8 +25,8 @@ Arsitektur mengikuti DPPL (`docs/M8/K01_G04_DPPL2.md`): Client-Server + MVC, den
 
 | Komponen | Versi |
 |---|---|
-| Node.js | 22.13+ (atau 24.3+, 26+) |
-| npm | 10+ |
+| Node.js | 22.13+ (atau 24.3+, 26+); Expo CLI dan Metro tetap berjalan di Node |
+| [Bun](https://bun.com) | 1.4.x (pengelola paket, `bun.lock`) |
 | Expo SDK | 58 (`expo ~58.0.23`) |
 | React Native | 0.88.1 |
 | React | 19.3.0 |
@@ -34,10 +35,22 @@ Arsitektur mengikuti DPPL (`docs/M8/K01_G04_DPPL2.md`): Client-Server + MVC, den
 | Plus Jakarta Sans | `@expo-google-fonts/plus-jakarta-sans` ^0.4.2 |
 | Ikon | `lucide-react-native` ^1.69.0 + `react-native-svg` 15.16.0 |
 | Linter | ESLint 9 + `eslint-config-expo` |
+| Test | Vitest ^5.1.0 |
 
-### Backend
+### Backend (`src/backend`)
 
-**TODO (#1, Dan):** Hono, Cloudflare Workers, D1 (SQLite), Drizzle ORM, bun, beserta versinya.
+| Komponen | Versi |
+|---|---|
+| [Bun](https://bun.com) | 1.4.x |
+| Hono | ^4.13.16 (routing) |
+| Drizzle ORM | ^0.45.4 |
+| Drizzle Kit | ^0.31.11 (migrasi) |
+| Cloudflare Workers | runtime (`wrangler` ^4.157.0) |
+| Cloudflare D1 | SQLite terdistribusi di *edge* |
+| Vitest | 5.1.0 (test) |
+| Node.js | 20+ (hanya untuk `better-sqlite3`, dipakai harness test) |
+
+> **Mobile dan backend sama-sama memakai `bun`, bukan `npm`.** Keduanya *pin* ke Bun 1.4.x dengan `bun.lock` masing-masing; `npm` mengabaikan lockfile itu dan dapat menghasilkan pohon dependensi berbeda. Jangan membuat `package-lock.json`. Kedua direktori tetap punya lockfile sendiri — jangan disatukan.
 
 ## 2. Struktur Folder
 
@@ -58,28 +71,55 @@ src/
       components/         # komponen bersama dari Figma (Tombol, IsianTeks, Banner, ...)
       theme/              # token desain: warna, font, gaya teks, jarak, sudut
       api/                # klien HTTP ke backend
-  backend/                # TODO (#1, Dan)
+    bun.lock              # lockfile Bun
+    test/                 # unit test Vitest (vitest.config.mts)
+  backend/                # Cloudflare Worker (Hono + D1): REST API dan cron
+    .env.example          # contoh CLOUDFLARE_* dan KUNCI_TOKEN
+    .dev.vars             # rahasia lokal (tidak di-commit)
+    wrangler.jsonc        # konfigurasi Worker, binding D1, cron
+    drizzle.config.ts     # konfigurasi drizzle-kit dan Drizzle Studio
+    migrations/           # SQL migrasi
+    seed/seed.sql         # data uji lokal
+    src/
+      index.ts            # perakitan app, error envelope, /health, handler scheduled
+      config.ts           # pembacaan env, konstanta, turunan nim
+      db/
+        schema.ts         # skema Drizzle (DPPL 5.37)
+        queries.ts        # Q-001..Q-042
+      lib/                # crypto, errors, google, http, validasi
+      middleware/         # auth (verifikasiToken + requireRole)
+      routes/             # satu file per sumber daya
+      jobs/               # tugas cron (notifikasi, status)
+    test/                 # suite Vitest dan harness D1
 ```
 
 ## 3. Prasyarat dan Instalasi
 
 Prasyarat:
 
-- Node.js 22.13 atau lebih baru, dan npm.
+- Node.js 22.13 atau lebih baru.
 - Git.
 - Untuk mencoba di ponsel: aplikasi **Expo Go** (App Store / Play Store). Ponsel dan komputer berada di jaringan Wi-Fi yang sama.
 - Opsional: Android Studio (emulator Android). Simulator iOS hanya tersedia di macOS.
+- **Bun 1.4.x** untuk mobile dan backend (`curl -fsSL https://bun.sh/install | bash`).
 
 Instalasi dependensi mobile:
 
 ```bash
 cd src/mobile
-npm install
+bun install
 ```
 
-Gunakan `npx expo install <paket>` (bukan `npm install <paket>`) saat menambah paket agar versinya cocok dengan Expo SDK 58.
+Gunakan `bunx expo install <paket>` (bukan `bun add <paket>`) saat menambah paket agar versinya cocok dengan Expo SDK 58. Untuk paket pengembangan: `bunx expo install <paket> -- --dev`.
 
-**TODO (#1, Dan):** instalasi backend.
+Instalasi dependensi backend:
+
+```bash
+cd src/backend
+bun install
+```
+
+Tidak perlu memasang `wrangler` secara global; ia tersedia lewat `node_modules` dengan `bun run`.
 
 ## 4. Konfigurasi
 
@@ -105,11 +145,38 @@ Nilai `EXPO_PUBLIC_API_URL` bergantung pada tempat aplikasi berjalan, karena `lo
 | Web atau simulator iOS di komputer yang sama | `http://localhost:8787` |
 | Backend yang sudah di-*deploy* | `https://<nama-worker>.<subdomain>.workers.dev` |
 
-File `.env` tidak di-*commit* (sudah ada di `.gitignore`). Variabel `EXPO_PUBLIC_*` ikut tertanam di aplikasi, jadi jangan isi rahasia apa pun di sana. Setelah mengubah `.env`, jalankan ulang `npx expo start`.
+File `.env` tidak di-*commit* (sudah ada di `.gitignore`). Variabel `EXPO_PUBLIC_*` ikut tertanam di aplikasi, jadi jangan isi rahasia apa pun di sana. Setelah mengubah `.env`, jalankan ulang `bunx expo start`.
 
 ### Backend
 
-**TODO (#1, Dan):** variabel lingkungan (`wrangler`), pembuatan D1 lokal, migrasi, dan seed.
+Rahasia lokal dibaca `wrangler dev` dari `src/backend/.dev.vars` (tidak di-*commit*). Buat berkas itu berisi:
+
+```ini
+KUNCI_TOKEN=<hasil openssl rand -base64 32>
+GOOGLE_CLIENT_ID=<oauth client id>
+GOOGLE_CLIENT_SECRET=<oauth client secret>
+GOOGLE_REDIRECT_URI=http://localhost:8787/api/auth/google
+API_BASE_URL=http://localhost:8787
+```
+
+| Variabel | Keterangan |
+|---|---|
+| `KUNCI_TOKEN` | Kunci AES-256-GCM untuk mengenkripsi *access/refresh token* Google di basis data (Algo-001, Algo-009). Wajib berukuran **tepat 32 byte** setelah di-*decode*. Bila hilang, token Google tersimpan tidak dapat dibaca sehingga pengguna harus login ulang. |
+| `GOOGLE_CLIENT_ID` | Client id OAuth, dikirim saat penukaran kode dan penyegaran token (Algo-027). Bukan rahasia. |
+| `GOOGLE_CLIENT_SECRET` | Client secret OAuth, diminta Google pada kedua alur tersebut. Karena itu penukaran kode dilakukan di server — nilai ini tidak boleh sampai ke aplikasi *mobile*. |
+| `GOOGLE_REDIRECT_URI` | Harus **sama persis** dengan yang didaftarkan di Google Cloud Console dan yang dikirim aplikasi. Bila berbeda, Google membalas `redirect_uri_mismatch`. |
+| `API_BASE_URL` | Alamat dasar yang diperiksa tugas *cron uptime* (Algo-021). Opsional; tanpa nilai ini pemeriksaan tercatat `down`. |
+
+Untuk `.env` (dipakai `drizzle.config.ts`, bukan Worker) isi `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_DATABASE_ID`, dan `CLOUDFLARE_D1_TOKEN` — lihat `.env.example`. Variabel ini diperlukan untuk perintah yang lewat HTTP (Drizzle Studio *remote*, `db:migrate:remote`), terpisah dari sesi `wrangler login`.
+
+Untuk produksi, rahasia dipasang lewat Wrangler, bukan `.dev.vars`:
+
+```bash
+bunx wrangler secret put KUNCI_TOKEN
+bunx wrangler secret put GOOGLE_CLIENT_ID
+bunx wrangler secret put GOOGLE_CLIENT_SECRET
+bunx wrangler secret put GOOGLE_REDIRECT_URI
+```
 
 ## 5. Menjalankan Aplikasi
 
@@ -119,7 +186,7 @@ Jalankan dari terminal interaktif (QR code tidak muncul jika terminal tidak inte
 
 ```bash
 cd src/mobile
-npx expo start
+bunx expo start
 ```
 
 Lalu pilih salah satu:
@@ -132,27 +199,82 @@ Lalu pilih salah satu:
 Jika ponsel tidak dapat terhubung (misalnya jaringan kampus memblokir antarperangkat), gunakan mode *tunnel*:
 
 ```bash
-npx expo start --tunnel
+bunx expo start --tunnel
 ```
 
 Pemeriksaan kode:
 
 ```bash
-npx tsc --noEmit   # cek tipe TypeScript
-npx expo lint      # ESLint
+bunx tsc --noEmit  # cek tipe TypeScript
+bunx expo lint     # ESLint
+bun run test       # unit test Vitest (test/)
 ```
+
+Unit test di `src/mobile/test/` menguji logika TypeScript murni, seperti klien API (`client.test.ts`): URL dan header `Authorization`, amplop galat menjadi `ApiError`, *callback* 401, serta kode `JARINGAN_GAGAL`, `BATAS_WAKTU`, dan `KONFIGURASI_TIDAK_VALID`. `fetch` diganti tiruan, sehingga tidak perlu backend yang berjalan. Layar dan komponen tidak dirender di test; keduanya diperiksa langsung di Expo Go.
 
 Selama pengembangan, layar masuk sementara berisi tombol untuk membuka navigasi Mahasiswa, navigasi Administrator, dan galeri komponen (`/komponen`).
 
 ### Backend
 
-**TODO (#1, Dan):** menjalankan server lokal (`wrangler dev`, port 8787) dan test.
+Siapkan basis data lokal D1 (tersimpan di `.wrangler/state/`, tidak di-*commit*), lalu jalankan server:
+
+```bash
+cd src/backend
+bun run db:migrate:local   # terapkan migrasi ke D1 lokal
+bun run db:seed:local      # isi data uji (idempoten, aman diulang)
+bun run dev                # wrangler dev di http://localhost:8787
+```
+
+Pemeriksaan cepat:
+
+```bash
+curl http://localhost:8787/health
+# {"ok":true,"latest":null}
+```
+
+Perintah lain:
+
+```bash
+bun run test             # vitest run
+bun run test:watch
+bun run typecheck        # tsc --noEmit (termasuk test/)
+bun run db:generate      # drizzle-kit: schema.ts -> migrations/*.sql
+bun run db:studio:local  # jelajahi D1 lokal (tanpa autentikasi)
+bun run db:studio:remote # jelajahi D1 remote (butuh CLOUDFLARE_* di .env)
+bun run deploy
+```
+
+Test berjalan terhadap basis data SQLite sungguhan: `test/harness.ts` menyediakan adaptor D1 in-process di atas `better-sqlite3` dan memutar ulang migrasi asli, sehingga batasan `CHECK`/`UNIQUE`/`FOREIGN KEY` benar-benar diuji. Panggilan Google dan Expo di-*stub*. Tidak perlu `.dev.vars`, jaringan, atau server yang berjalan.
 
 ### Rilis (APK)
 
 **TODO (#6, Iqi):** cara membangun dan mengunduh APK rilis `v9.0`.
 
 ## 6. Akun dan Data Uji
+
+### Backend
+
+`seed/seed.sql` membuat dua akun dengan **token sesi siap pakai**, sehingga rute terautentikasi bisa dipanggil tanpa login Google:
+
+| Akun | Peran | Header `Authorization` |
+|---|---|---|
+| `seed-usr-mhs` — Mahasiswa Uji | `mahasiswa` | `Bearer dev-token-mahasiswa` |
+| `seed-usr-adm` — Administrator Uji | `administrator` | `Bearer dev-token-administrator` |
+
+```bash
+curl http://localhost:8787/api/me \
+  -H 'Authorization: Bearer dev-token-mahasiswa'
+```
+
+Catatan:
+
+- Token ini hanya untuk pengembangan dan tidak pernah berlaku pada Worker yang sudah di-*deploy*; keduanya hanya ada di `seed/seed.sql`.
+- Akun hasil *seed* memakai `google_id` palsu, sehingga login Google sungguhan akan membuat akun **terpisah**. Gunakan token di atas bila hanya ingin mencoba API.
+- Sesi kedaluwarsa setelah `BATAS_SESI` (30 hari); jalankan ulang `bun run db:seed:local` untuk menyegarkan.
+
+Data lain yang ikut dibuat: 3 konsultan, deretan slot mendatang (`seed-jdw-*`, sebagian sudah terpesan), dan 3 entri FAQ.
+
+### Mobile
 
 **TODO (#3, Iqi):** akun uji Mahasiswa dan Administrator (login demo tanpa akun Google pribadi).
 
@@ -178,9 +300,25 @@ Selama pengembangan, layar masuk sementara berisi tombol untuk membuka navigasi 
 
 ## 8. Basis Data
 
-Skema D1 mengikuti DPPL bagian 5.37 (`docs/M8/K01_G04_DPPL2.md`).
+Skema D1 mengikuti DPPL bagian 5.37 (`docs/M8/K01_G04_DPPL2.md`). Definisi Drizzle ada di `src/backend/src/db/schema.ts`, SQL migrasi di `src/backend/migrations/`.
 
-**TODO (#1, Dan):** daftar tabel beserta atributnya, atau tautan ke file migrasi.
+| Tabel | Isi | Kelas DPPL |
+|---|---|---|
+| `pengguna` | Akun; kolom `peran` membedakan `mahasiswa` dan `administrator` | C-01 `Pengguna`, C-03 `Administrator` |
+| `mahasiswa` | `nim` (turunan email kampus, `NULL` bila bukan email kampus) | C-02 `Mahasiswa` |
+| `sesi_autentikasi` | Token sesi, status `aktif`/`berakhir`, `token_push` perangkat | C-04 `SesiAutentikasi` |
+| `token_google` | *Access/refresh token* Google, terenkripsi AES-256-GCM | C-34, C-08 |
+| `daily_affirmation` | Konten afirmasi dan `waktu_kirim` (`HH:MM`) | C-05 `DailyAffirmation` |
+| `reminder` | `jenis` (`makan`/`tidur`/`olahraga`) dan `waktu` (`HH:MM`) | C-06 `Reminder` |
+| `notifikasi` | Riwayat notifikasi; tepat satu dari `id_affirmation`/`id_reminder` terisi | C-07 `Notifikasi` |
+| `konsultan` | Nama dan spesialisasi konsultan | C-10 `Konsultan` |
+| `jadwal_konsultasi` | Slot (`waktu`, `waktu_selesai`, `status`, `id_mahasiswa`) | C-11 `JadwalKonsultasi` |
+| `faq` | Pasangan pertanyaan dan jawaban | C-12 `FAQ` |
+| `pengajuan_pertanyaan` | Pertanyaan di luar FAQ | C-13 `PengajuanPertanyaan` |
+| `umpan_balik` | Umpan balik, `tanggapan`, `id_administrator` | C-14 `UmpanBalik` |
+| `status_server` | Satu baris per pemeriksaan, dibedakan `jenis` | C-15 `StatusServer` |
+
+Konvensi: kunci utama `TEXT` (kecuali `status_server` yang `INTEGER` autoincrement), `DateTime` disimpan sebagai teks ISO 8601, `Time` sebagai `HH:MM`, boolean sebagai `INTEGER` 0/1. `KalenderGabungan` tidak punya tabel — dihitung saat dipakai dari event Google dan `jadwal_konsultasi`.
 
 ## 9. Panduan Pengembangan Mobile
 
@@ -218,4 +356,66 @@ Ringkasan konvensi untuk anggota yang mengerjakan layar:
   }
   ```
 
-  Klien otomatis mengirim `Authorization: Bearer <token>` setelah `aturToken(token)` dipanggil saat login, dan mengubah respons galat backend `{ error: { kode, pesan, detail } }` menjadi `ApiError`. Galat jaringan menghasilkan `kode` `JARINGAN_GAGAL` atau `BATAS_WAKTU`.
+  Klien otomatis mengirim `Authorization: Bearer <token>` setelah `aturToken(token)` dipanggil saat login, dan mengubah respons galat backend `{ error: { kode, pesan, detail } }` menjadi `ApiError`. Galat jaringan menghasilkan `kode` `JARINGAN_GAGAL` atau `BATAS_WAKTU`, sedangkan `EXPO_PUBLIC_API_URL` yang belum diatur menghasilkan `KONFIGURASI_TIDAK_VALID` (tanpa permintaan ke server). Ketiganya memiliki `status` 0.
+
+## 10. Panduan Pengembangan Backend
+
+Rujukan lengkap: [`backend/README.md`](./backend/README.md).
+
+### Permukaan API
+
+| Method | Path | Peran |
+|---|---|---|
+| `POST` | `/api/auth/google` | publik |
+| `POST` | `/api/auth/logout` | semua |
+| `POST` | `/api/auth/device` | semua |
+| `GET` | `/api/me` | semua |
+| `GET` | `/api/affirmation` | mahasiswa |
+| `PUT` | `/api/affirmation/time` | mahasiswa |
+| `GET` | `/api/reminders` | mahasiswa |
+| `PUT` | `/api/reminders/:jenis` | mahasiswa |
+| `GET` | `/api/calendar` | mahasiswa |
+| `GET` | `/api/consultants` | semua |
+| `GET` | `/api/consultants/:id/slots` | semua |
+| `GET` | `/api/sessions/next` | mahasiswa |
+| `POST` | `/api/slots/:id/book` | mahasiswa |
+| `POST` | `/api/slots` | administrator |
+| `PATCH` | `/api/slots/:id` | administrator |
+| `GET` | `/api/faq?q=` | semua |
+| `POST` | `/api/faq` | administrator |
+| `PUT` | `/api/faq/:id` | administrator |
+| `DELETE` | `/api/faq/:id` | administrator |
+| `POST` | `/api/questions` | mahasiswa |
+| `POST` | `/api/feedback` | mahasiswa |
+| `GET` | `/api/feedback` | administrator |
+| `PUT` | `/api/feedback/:id/response` | administrator |
+| `GET` | `/api/status/:jenis` | semua |
+| `GET` | `/health` | publik |
+
+Selain `/api/auth/google` dan `/health`, semua rute memerlukan `Authorization: Bearer <token>`. Galat memakai satu amplop:
+
+```json
+{ "error": { "kode": "VALIDASI_GAGAL", "pesan": "...", "detail": null } }
+```
+
+Status: `400` body tidak valid · `401` belum terautentikasi · `403` peran salah · `404` tidak ditemukan · `409` konflik (slot terambil / jadwal bentrok) · `422` validasi gagal · `502` kegagalan layanan eksternal.
+
+### Tugas terjadwal
+
+Satu *cron trigger* `* * * * *` menjalankan:
+
+- pengiriman afirmasi dan pengingat, mencatat notifikasi dan mengirim *push* Expo dalam batch maksimal 100 pesan, serta mengosongkan token yang dilaporkan `DeviceNotRegistered`
+- pemeriksaan *uptime* `website` dan `server` (memerlukan `API_BASE_URL`)
+
+Semua ini ada di handler `scheduled()`, bukan rute HTTP.
+
+### Menambah endpoint
+
+1. Tambahkan SQL baru di `src/backend/src/db/queries.ts` dengan anotasi id `Q-xxx` dari DPPL.
+2. Tambahkan handler di `src/backend/src/routes/`, dijaga `auth` dan `requireRole(...)`.
+3. Daftarkan di `src/backend/src/index.ts`.
+4. Tambahkan suite di `src/backend/test/` lalu jalankan `bun run test`.
+
+### Format commit
+
+Repositori memakai [Conventional Commits](https://www.conventionalcommits.org/), dengan lingkup `mobile`, `backend`, `docs`, atau `chore`, misalnya `feat(backend): add auth routes`.

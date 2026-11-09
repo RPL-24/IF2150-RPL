@@ -22,6 +22,8 @@ export const KODE_KLIEN = {
   batasWaktu: 'BATAS_WAKTU',
   /** Response was not the expected JSON envelope. */
   respons: 'RESPONS_TIDAK_VALID',
+  /** The app itself is misconfigured (e.g. EXPO_PUBLIC_API_URL missing); no request was sent. */
+  konfigurasi: 'KONFIGURASI_TIDAK_VALID',
 } as const;
 
 export class ApiError extends Error {
@@ -58,7 +60,7 @@ export function aturSaatTidakTerautentikasi(fn: (() => void) | null) {
 function urlDasar(): string {
   const url = process.env.EXPO_PUBLIC_API_URL;
   if (!url) {
-    throw new ApiError(0, KODE_KLIEN.jaringan, 'EXPO_PUBLIC_API_URL belum diatur. Salin .env.example ke .env.');
+    throw new ApiError(0, KODE_KLIEN.konfigurasi, 'EXPO_PUBLIC_API_URL belum diatur. Salin .env.example ke .env.');
   }
   return url.replace(/\/+$/, '');
 }
@@ -116,5 +118,5 @@ export const api = {
   post: <T>(jalur: string, isi?: unknown) => minta<T>('POST', jalur, isi),
   put: <T>(jalur: string, isi?: unknown) => minta<T>('PUT', jalur, isi),
   patch: <T>(jalur: string, isi?: unknown) => minta<T>('PATCH', jalur, isi),
-  hapus: <T>(jalur: string) => minta<T>('DELETE', jalur),
+  delete: <T>(jalur: string) => minta<T>('DELETE', jalur),
 };
