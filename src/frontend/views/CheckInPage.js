@@ -17,10 +17,10 @@
   const TOTAL = 5, MAX_NOTE = 500;
 
   const state = {
-    step: 0, // 0 sapaan, 1-6 wizard, 7 sukses
+    step: 0, // 0 sapaan, 1-4 isian, 5 ringkasan, 6 sukses
     returnToSummary: false,
     mood: null, bed: "22:30", wake: "06:00",
-    meal: null, triggers: [], note: "",
+    meal: null, note: "",
     saving: false, error: ""
   };
   let cfg = {}, app;
@@ -112,7 +112,7 @@
         ["Mood", mood ? `${mood.v} / 5 - ${mood.label}` : "-", 1],
         ["Tidur", `${state.bed} - ${state.wake} (${fmtHours(sleepHours(state.bed, state.wake))})`, 2],
         ["Pola makan", meal ? meal.label : "-", 3],
-        ["Refleksi", state.note.trim() || "Tidak ada catatan", 5]
+        ["Refleksi", state.note.trim() || "Tidak ada catatan", 4]
       ];
       return head("Cek lagi sebelum simpan.", "Kamu bisa mengubah bagian mana pun.") + `
         <dl class="card summary-card">
@@ -143,12 +143,12 @@
   /* ---------- render & aksi ---------- */
   function render(focusTitle = true) {
     app.innerHTML = views[state.step]();
-    document.getElementById("btn-close").hidden = state.step === 7;
+    document.getElementById("btn-close").hidden = state.step === 6;
     if (focusTitle) { const t = app.querySelector(".page-title"); if (t) t.focus({ preventScroll: true }); }
     window.scrollTo({ top: 0 });
   }
   const go = (s) => { state.step = s; render(); };
-  const advance = () => go(state.returnToSummary ? 6 : state.step + 1);
+  const advance = () => go(state.returnToSummary ? 5 : state.step + 1);
 
   async function save() {
     state.saving = true; state.error = ""; render(false);
@@ -158,10 +158,10 @@
         date: new Date().toISOString(),
         mood: state.mood,
         sleep: { bed: state.bed, wake: state.wake, hours: sleepHours(state.bed, state.wake) },
-        meal: state.meal, triggers: state.triggers,
+        meal: state.meal,
         note // { cipher, iv, key } atau null
       }));
-      state.saving = false; go(7);
+      state.saving = false; go(6);
     } catch (e) {
       state.saving = false;
       state.error = "Check-in belum tersimpan. Periksa koneksimu lalu coba lagi.";
@@ -172,18 +172,12 @@
   const actions = {
     start: () => go(1),
     next: advance,
-    back: () => go(state.returnToSummary ? 6 : state.step - 1),
-    "back-summary": () => { state.returnToSummary = false; go(5); },
+    back: () => go(state.returnToSummary ? 5 : state.step - 1),
+    "back-summary": () => { state.returnToSummary = false; go(4); },
     skip: () => { state.note = ""; advance(); },
     edit: (v) => { state.returnToSummary = true; go(Number(v)); },
     mood: (v) => { state.mood = Number(v); render(false); },
     meal: (v) => { state.meal = v; render(false); },
-    trigger: (v) => {
-      const t = state.triggers;
-      state.triggers = v === "Tidak ada" ? (t.includes(v) ? [] : [v])
-        : t.includes(v) ? t.filter((x) => x !== v) : t.filter((x) => x !== "Tidak ada").concat(v);
-      render(false);
-    },
     save,
     done: () => cfg.onDone && cfg.onDone()
   };
