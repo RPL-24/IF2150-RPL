@@ -7,6 +7,8 @@ const dokumenLegalRoutes = require('./routes/dokumenLegalRoutes');
 const laporanRoutes = require('./routes/laporanRoutes');
 const moderasiRoutes = require('./routes/moderasiRoutes');
 const barangRoutes = require('./routes/barangRoutes');
+const percakapanRoutes = require('./routes/percakapanRoutes');
+const notifikasiRoutes = require('./routes/notifikasiRoutes');
 const katalogRoutes = require('./routes/katalogRoutes');
 
 const DIR_VIEWS = path.join(__dirname, 'views');
@@ -22,6 +24,8 @@ app.use('/api/dokumen-legal', dokumenLegalRoutes);
 app.use('/api/laporan', laporanRoutes);
 app.use('/api/admin', moderasiRoutes);
 app.use('/api/barang', barangRoutes);
+app.use('/api/percakapan', percakapanRoutes);
+app.use('/api/notifikasi', notifikasiRoutes);
 app.use('/api/katalog', katalogRoutes);
 
 app.use('/api', (req, res) => {

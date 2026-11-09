@@ -1,6 +1,7 @@
 // C19 NotifikasiController - milik modul D.
 const config = require('../config/env');
 const SurelAdapter = require('../integrasi/SurelAdapter');
+const Notifikasi = require('../models/Notifikasi');
 
 class NotifikasiController {
   // KF06
@@ -14,6 +15,16 @@ class NotifikasiController {
       'Jangan bagikan kode ini kepada siapa pun. Abaikan surel ini bila Anda tidak mendaftar di ITBELI.',
     ].join('\n');
     return SurelAdapter.kirimSurel(email, 'Kode Verifikasi ITBELI', isi);
+  }
+
+  // Algo-020 (KF34). TODO(modul-D, feat/notif-push): hitung belum dibaca + picu Web Push
+  static async kirimNotifikasi(idPenerima, jenis, isi) {
+    return Notifikasi.simpan(idPenerima, jenis, isi, new Date(), false);
+  }
+
+  // KF34. TODO(modul-D, feat/notif-push): kirim lewat PushNotifikasiAdapter.kirimPush()
+  static async kirimPushNotifikasi(idPenerima, isi) {
+    return false;
   }
 
   // KF52: Menyusun surel pemberitahuan penghapusan listing yang melanggar aturan beserta alasannya dan mengirimkannya ke pemilik listing

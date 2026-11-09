@@ -148,3 +148,56 @@ CREATE TABLE IF NOT EXISTS foto_barang (
 );
 
 CREATE INDEX IF NOT EXISTS foto_barang_id_barang ON foto_barang (id_barang);
+
+-- ── Modul D: Percakapan & Notifikasi ──────────────────────────
+
+-- C33 Percakapan: satu ruang per kombinasi (barang, pembeli, penjual) (KF31)
+CREATE TABLE IF NOT EXISTS percakapan (
+  id_percakapan            UUID PRIMARY KEY,
+  id_pembeli               UUID        NOT NULL REFERENCES akun (id_akun) ON DELETE CASCADE,
+  id_penjual               UUID        NOT NULL REFERENCES akun (id_akun) ON DELETE CASCADE,
+  -- Percakapan tetap tersimpan walaupun listing dihapus (lihat konfirmasi hapus di I-08)
+  id_barang                UUID        REFERENCES barang (id_barang) ON DELETE SET NULL,
+  waktu_dibuat             TIMESTAMPTZ NOT NULL DEFAULT now(),
+  waktu_pembaruan_terakhir TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (id_barang, id_pembeli, id_penjual)
+);
+
+CREATE INDEX IF NOT EXISTS percakapan_id_pembeli ON percakapan (id_pembeli, waktu_pembaruan_terakhir DESC);
+CREATE INDEX IF NOT EXISTS percakapan_id_penjual ON percakapan (id_penjual, waktu_pembaruan_terakhir DESC);
+
+-- C34 Pesan: isi disimpan terenkripsi AES-256-GCM (KF36)
+CREATE TABLE IF NOT EXISTS pesan (
+  id_pesan              UUID PRIMARY KEY,
+  id_percakapan         UUID        NOT NULL REFERENCES percakapan (id_percakapan) ON DELETE CASCADE,
+  id_pengirim           UUID        NOT NULL REFERENCES akun (id_akun) ON DELETE CASCADE,
+  isi_pesan_terenkripsi TEXT        NOT NULL,
+  waktu_kirim           TIMESTAMPTZ NOT NULL DEFAULT now(),
+  status_baca           BOOLEAN     NOT NULL DEFAULT FALSE
+);
+
+CREATE INDEX IF NOT EXISTS pesan_id_percakapan ON pesan (id_percakapan, waktu_kirim);
+
+-- C35 Notifikasi (KF34)
+CREATE TABLE IF NOT EXISTS notifikasi (
+  id_notifikasi UUID PRIMARY KEY,
+  id_akun       UUID        NOT NULL REFERENCES akun (id_akun) ON DELETE CASCADE,
+  jenis         VARCHAR(30) NOT NULL,
+  isi           TEXT        NOT NULL,
+  waktu_kirim   TIMESTAMPTZ NOT NULL DEFAULT now(),
+  status_baca   BOOLEAN     NOT NULL DEFAULT FALSE
+);
+
+CREATE INDEX IF NOT EXISTS notifikasi_id_akun ON notifikasi (id_akun, status_baca);
+
+-- Langganan Web Push per peramban, dibutuhkan C44 PushNotifikasiAdapter.
+-- Tidak punya kelas sendiri di DPPL (dicatat di B.1).
+CREATE TABLE IF NOT EXISTS langganan_push (
+  id       UUID PRIMARY KEY,
+  id_akun  UUID         NOT NULL REFERENCES akun (id_akun) ON DELETE CASCADE,
+  endpoint VARCHAR(500) NOT NULL UNIQUE,
+  p256dh   VARCHAR(200) NOT NULL,
+  auth     VARCHAR(100) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS langganan_push_id_akun ON langganan_push (id_akun);
