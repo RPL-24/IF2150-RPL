@@ -3,6 +3,7 @@ export type RootStackParamList = {
   Register: undefined;
   ResetPassword: undefined;
   Home: undefined;
+  Profile: undefined;
   AddProduct: undefined;
   Notifikasi: undefined;
   IzinNotifikasi: undefined;
