@@ -109,7 +109,7 @@ class HalamanDetailBarang {
     }
 
     const lapor = ListingUI.el('a', 'btn btn--sekunder', 'Laporkan');
-    lapor.href = `${URL_FORM_LAPORAN}?objek=listing&id=${encodeURIComponent(b.idBarang)}`;
+    lapor.href = `${URL_FORM_LAPORAN}?${new URLSearchParams({ objek: b.idBarang, jenis: 'Listing' })}`;
     aksi.append(lapor);
   }
 
