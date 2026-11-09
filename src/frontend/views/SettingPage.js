@@ -53,6 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ambil data akun tersimpan atau default peran
     const storedUser = JSON.parse(localStorage.getItem('mahasehat_user') || '{}');
     const role = kanonikRole(localStorage.getItem('role') || storedUser.role || 'pelajar');
+
+    if (role === 'orangtuawali') {
+        window.location.replace('SettingPageOrangTuaWali.html' + window.location.search);
+        return;
+    }
+    if (role === 'tenagakesehatan') {
+        window.location.replace('SettingPageTenagaKesehatan.html' + window.location.search);
+        return;
+    }
     const dummy = DATA_DUMMY[role] || DATA_DUMMY.pelajar;
 
     const akun = {
