@@ -5,6 +5,7 @@ Kriteria "tersedia" tidak ditulis di sini; semuanya lewat ListingMakanan
 (ambilSemuaTersedia / cariById + is_tersedia).
 """
 import sqlite3
+from dataclasses import asdict
 from typing import Iterator, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -36,6 +37,26 @@ router = APIRouter(
 def ambilListingTersedia(conn: sqlite3.Connection) -> List[ListingMakanan]:
     """Algo-C16-01"""
     return ListingMakanan.ambilSemuaTersedia(conn)
+
+
+def daftar_toko(conn: sqlite3.Connection) -> dict[int, tuple[str, str]]:
+    """Nama & alamat setiap toko (id_penjual → (nama_toko, alamat_toko))."""
+    rows = conn.execute("SELECT id_pengguna, nama_toko, alamat_toko FROM penjual").fetchall()
+    return {r["id_pengguna"]: (r["nama_toko"], r["alamat_toko"]) for r in rows}
+
+
+def _dengan_toko(conn: sqlite3.Connection, listings: List[ListingMakanan]) -> List[ListingKatalog]:
+    """Melengkapi tiap listing dengan nama toko & alamatnya untuk katalog pembeli."""
+    toko = daftar_toko(conn)
+    hasil = []
+    for listing in listings:
+        nama_toko, alamat_toko = toko.get(listing.id_penjual, ("", ""))
+        hasil.append(
+            ListingKatalog.model_validate(
+                {**asdict(listing), "nama_toko": nama_toko, "alamat_toko": alamat_toko}
+            )
+        )
+    return hasil
 
 
 def ambilDetail(conn: sqlite3.Connection, id_listing: int) -> ListingMakanan:
@@ -72,10 +93,10 @@ def get_daftar_listing(
 ):
     # Tanpa parameter pencarian → UC02 (semua listing tersedia); selain itu → UC04
     if kata_kunci is None and harga_min is None and harga_maks is None:
-        return ambilListingTersedia(conn)
-    return cariListing(conn, kata_kunci, harga_min, harga_maks)
+        return _dengan_toko(conn, ambilListingTersedia(conn))
+    return _dengan_toko(conn, cariListing(conn, kata_kunci, harga_min, harga_maks))
 
 
 @router.get("/{id_listing}", response_model=ListingKatalog)
 def get_detail_listing(id_listing: int, conn: sqlite3.Connection = Depends(get_conn)):
-    return ambilDetail(conn, id_listing)
+    return _dengan_toko(conn, [ambilDetail(conn, id_listing)])[0]

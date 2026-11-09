@@ -38,6 +38,8 @@ async function getJson<T>(path: string): Promise<T> {
 export type ListingKatalog = {
   id_listing: number;
   id_penjual: number;
+  nama_toko: string;
+  alamat_toko: string;
   nama_makanan: string;
   deskripsi: string | null;
   porsi: string;
@@ -48,7 +50,8 @@ export type ListingKatalog = {
   batas_kedaluwarsa: string;
 };
 
-export type ListingPenjual = ListingKatalog & {
+// Listing milik penjual (endpoint /api/listing/penjual) tidak memuat nama/alamat toko
+export type ListingPenjual = Omit<ListingKatalog, "nama_toko" | "alamat_toko"> & {
   aktif: boolean;
   tersedia: boolean;
 };
@@ -223,8 +226,11 @@ async function postJson<T>(path: string, body?: unknown): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-export function checkoutPembayaran(idListing: number, jumlah: number): Promise<TransaksiPembayaran> {
-  return postJson<TransaksiPembayaran>("/api/pembayaran/checkout", { id_listing: idListing, jumlah });
+export type ItemCheckout = { id_listing: number; jumlah: number };
+
+// Checkout seluruh isi keranjang → satu transaksi berisi semua item (UC05).
+export function checkoutPembayaran(items: ItemCheckout[]): Promise<TransaksiPembayaran> {
+  return postJson<TransaksiPembayaran>("/api/pembayaran/checkout", { items });
 }
 
 export function ambilTransaksi(id: number | string): Promise<TransaksiPembayaran> {
@@ -233,4 +239,91 @@ export function ambilTransaksi(id: number | string): Promise<TransaksiPembayaran
 
 export function bayarTransaksi(id: number | string): Promise<TransaksiPembayaran> {
   return postJson<TransaksiPembayaran>(`/api/pembayaran/${encodeURIComponent(String(id))}/bayar`);
+}
+
+// ---------- Profil toko penjual (P2) ----------
+
+export type ProfilToko = {
+  nama_akun: string;
+  nama_toko: string;
+  alamat_toko: string;
+};
+
+// Profil toko milik penjual yang sedang login
+export function ambilProfilToko(): Promise<ProfilToko> {
+  return getJson<ProfilToko>("/api/toko");
+}
+
+export async function ubahProfilToko(data: {
+  nama_toko: string;
+  alamat_toko: string;
+}): Promise<ProfilToko> {
+  const res = await fetch("/api/toko", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+    credentials: "same-origin",
+  });
+
+  if (!res.ok) {
+    let pesan = "Gagal memperbarui profil toko";
+    try {
+      const body = await res.json();
+      if (typeof body?.detail === "string") pesan = body.detail;
+    } catch {}
+    throw new ApiError(res.status, pesan);
+  }
+
+  return res.json();
+}
+
+// ---------- Penjualan penjual (pesanan terbayar & pengambilan) ----------
+
+export type ItemPesananPenjual = {
+  id_listing: number;
+  nama_makanan: string;
+  porsi: string;
+  foto: string | null;
+  jumlah: number;
+  harga_satuan: number;
+};
+
+export type PesananPenjual = {
+  id_transaksi: number;
+  tanggal: string;
+  total_harga: number;
+  subtotal: number;
+  kode_pengambilan: string | null;
+  waktu_diambil: string | null;
+  items: ItemPesananPenjual[];
+};
+
+// Pesanan milik toko ini yang SUDAH DIBAYAR pembeli (status LUNAS).
+// Menunggu bayar / batal tidak dikirim backend.
+export function ambilPesananPenjual(): Promise<PesananPenjual[]> {
+  return getJson<PesananPenjual[]>("/api/penjualan/pesanan");
+}
+
+// Tandai pesanan "Sudah diambil / Selesai" saat pembeli mengambil di toko.
+export async function tandaiPesananDiambil(idTransaksi: number | string): Promise<void> {
+  const res = await fetch(
+    `/api/penjualan/${encodeURIComponent(String(idTransaksi))}/ambil`,
+    { method: "POST", credentials: "same-origin" },
+  );
+
+  if (!res.ok) {
+    let pesan = "Gagal menandai pesanan sudah diambil";
+    try {
+      const body = await res.json();
+      if (typeof body?.detail === "string") pesan = body.detail;
+    } catch {}
+    throw new ApiError(res.status, pesan);
+  }
+}
+
+// ---------- Sesi akun (P1) ----------
+
+// Keluar: hapus sesi httpOnly di backend; cookie session_token & role dihapus otomatis oleh respons.
+export async function logoutSesi(): Promise<void> {
+  await postJson<{ message: string }>("/api/auth/logout");
 }

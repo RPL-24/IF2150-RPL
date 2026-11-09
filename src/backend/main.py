@@ -11,6 +11,8 @@ from .api import routes as api_routes
 from .controllers.katalog_controller import router as katalog_router
 from .api.listing_routes import router as listing_router
 from .api.pembayaran_routes import router as pembayaran_router
+from .api.penjualan_routes import router as penjualan_router
+from .api.toko_routes import router as toko_router
 
 BASE_DIR = Path(__file__).resolve().parent
 UPLOADS_DIR = BASE_DIR / "uploads" / "listing"
@@ -47,6 +49,8 @@ app.include_router(api_routes.router, prefix="/api", tags=["API"])
 app.include_router(katalog_router)  # P3: UC02/UC03 katalog
 app.include_router(listing_router) #P2 : idk ini uc berapa antara 1 6 9
 app.include_router(pembayaran_router)   # P4: UC05 pembayaran
+app.include_router(penjualan_router)    # P2: pesanan terbayar & pengambilan oleh penjual
+app.include_router(toko_router)         # P2: profil toko penjual (nama & alamat)
 
 @app.get("/")
 def read_root():
