@@ -25,6 +25,7 @@ export default function PageEditListing({ params }: { params: Promise<{ id: stri
             stok: data.stok,
             batas_kedaluwarsa: data.batas_kedaluwarsa,
             foto: data.foto ?? "",
+            draft: data.draft,
             });
         })
         .catch((err) => {
@@ -35,8 +36,8 @@ export default function PageEditListing({ params }: { params: Promise<{ id: stri
         });
     }, [resolvedParams.id]);
 
-    const handleEdit = async (data: DataListingPayload) => {
-        await ubahListing(resolvedParams.id, data);
+    const handleEdit = async (data: DataListingPayload, draft: boolean) => {
+        await ubahListing(resolvedParams.id, { ...data, draft });
         router.push("/penjual/listing");
     };
 

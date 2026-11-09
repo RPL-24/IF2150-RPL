@@ -48,11 +48,13 @@ export type ListingKatalog = {
   harga: number;
   stok: number;
   batas_kedaluwarsa: string;
+  draft?: boolean;
 };
 
 // Listing milik penjual (endpoint /api/listing/penjual) tidak memuat nama/alamat toko
 export type ListingPenjual = Omit<ListingKatalog, "nama_toko" | "alamat_toko"> & {
   aktif: boolean;
+  draft: boolean;
   tersedia: boolean;
 };
 
@@ -77,6 +79,7 @@ export type DataListingPayload = {
   stok: number;
   batas_kedaluwarsa: string;
   foto: string;
+  draft?: boolean;
 };
 
 // Mengambil detail listing milik penjual
@@ -110,7 +113,7 @@ export async function uploadFotoListing(file: File): Promise<string> {
 
 // Tambah Listing Baru (UC01)
 export async function tambahListing(data: DataListingPayload): Promise<ListingKatalog> {
-  const res = await fetch("/api/listing/", {
+  const res = await fetch("/api/listing", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -200,6 +203,7 @@ export type TransaksiPembayaran = {
   batas_waktu_bayar: string;
   kode_pengambilan: string | null;
   kode_qris: string | null;
+  url_scan: string | null;
   items: ItemPembayaran[];
 };
 

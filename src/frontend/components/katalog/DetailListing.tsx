@@ -10,6 +10,7 @@ import FotoListing from "./FotoListing";
 import PesanKatalog, { perluLogin, PesanPerluLogin } from "./PesanKatalog";
 import PengaturJumlah from "./PengaturJumlah";
 import { formatRupiah, formatWaktu } from "./format";
+import NotifikasiGagal from "@/components/NotifikasiGagal";
 
 function StoreIcon({ className = "" }: { className?: string }) {
   return (
@@ -30,6 +31,7 @@ type State =
 export default function DetailListing() {
   const { id } = useParams<{ id: string }>();
   const [hasil, setHasil] = useState<State | null>(null);
+  const [notifikasi, setNotifikasi] = useState<string | null>(null);
   // Hasil milik id lain (mis. pindah listing) dianggap masih memuat
   const state = hasil?.untukId === id ? hasil : { status: "memuat" as const };
 
@@ -47,6 +49,7 @@ export default function DetailListing() {
           pesan: status === 404 || status === 422 ? "Listing sudah tidak tersedia" : e instanceof ApiError ? e.message : "Gagal memuat detail listing",
           tidakTersedia: status === 404 || status === 422,
         });
+        if (status === 404 || status === 422) setNotifikasi("Listing sudah tidak tersedia karena stok habis, dinonaktifkan, dihapus, atau melewati batas kedaluwarsa.");
       });
     return () => {
       aktif = false;
@@ -60,6 +63,8 @@ export default function DetailListing() {
     if (!state.tidakTersedia) return <PesanKatalog jenis="error">{state.pesan}</PesanKatalog>;
     // UC03 Alt 1 (Algo-C11-02): listing sudah dihapus/habis → pesan, lalu kembali ke daftar listing
     return (
+      <>
+      <NotifikasiGagal pesan={notifikasi} onClose={() => setNotifikasi(null)} />
       <div className="flex flex-col gap-6">
         <EmptyState jenis="error" judul={state.pesan} aksi={{ href: "/katalog", label: "Kembali ke katalog" }}>
           Listing ini mungkin sudah dihapus penjual, stoknya habis, atau sudah melewati batas kedaluwarsa.
@@ -69,6 +74,7 @@ export default function DetailListing() {
           <DaftarListing />
         </section>
       </div>
+      </>
     );
   }
 

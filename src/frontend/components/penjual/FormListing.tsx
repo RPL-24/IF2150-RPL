@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { DataListingPayload, uploadFotoListing, urlFoto } from "@/lib/api";
 import { AppLayout } from "@/components/layout";
 import DialogKonfirmasiKeluar from "./DialogKonfirmasiKeluar";
+import NotifikasiGagal from "@/components/NotifikasiGagal";
 
 interface FormListingProps {
     initialData?: DataListingPayload;
-    onSubmit: (data: DataListingPayload) => Promise<void>;
+    onSubmit: (data: DataListingPayload, draft: boolean) => Promise<void>;
     isEditing?: boolean;
     }
 
@@ -33,6 +34,7 @@ interface FormListingProps {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDirty, setIsDirty] = useState(false);
     const [showExitModal, setShowExitModal] = useState(false);
+    const [notifikasi, setNotifikasi] = useState<string | null>(null);
 
     // Mencegah navigasi tab/reload tidak sengaja jika form sudah diubah
     useEffect(() => {
@@ -60,8 +62,8 @@ interface FormListingProps {
         if (deskripsi.length > 3000) errs.push("Deskripsi maksimal 3000 karakter.");
         if (!porsi.trim()) errs.push("Informasi porsi wajib diisi.");
         if (!kondisi.trim()) errs.push("Kondisi makanan wajib diisi.");
-        if (harga === "" || Number(harga) < 0) errs.push("Harga harus bernilai non-negatif.");
-        if (stok === "" || Number(stok) < 0) errs.push("Stok harus bernilai non-negatif.");
+        if (harga === "" || Number(harga) < 0 || !Number.isInteger(Number(harga))) errs.push("Harga harus berupa bilangan bulat non-negatif.");
+        if (stok === "" || Number(stok) < 0 || !Number.isInteger(Number(stok))) errs.push("Stok harus berupa bilangan bulat non-negatif.");
         if (!fotoPath && !fileFoto) errs.push("Foto makanan wajib diunggah.");
         if (!batasKedaluwarsa) {
         errs.push("Batas kedaluwarsa wajib diisi.");
@@ -81,10 +83,12 @@ interface FormListingProps {
         // Validasi Ukuran (Maks 10 MB) dan Ekstensi
         if (file.size > 10 * 1024 * 1024) {
         setErrors(["Ukuran foto berkas maksimal 10 MB"]);
+        setNotifikasi("Ukuran foto berkas maksimal 10 MB.");
         return;
         }
         if (!["image/jpeg", "image/jpg", "image/png"].includes(file.type)) {
         setErrors(["Format foto harus berupa PNG atau JPG"]);
+        setNotifikasi("Format foto harus berupa PNG atau JPG.");
         return;
         }
 
@@ -99,6 +103,7 @@ interface FormListingProps {
         const validationErrors = validasiListing();
         if (validationErrors.length > 0) {
         setErrors(validationErrors);
+        setNotifikasi(validationErrors.join(" "));
         return;
         }
 
@@ -114,6 +119,8 @@ interface FormListingProps {
             throw new Error("Foto makanan wajib diunggah.");
         }
 
+        const submitter = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+        const simpanSebagaiDraft = submitter?.value === "draft";
         const payload: DataListingPayload = {
             nama_makanan: namaMakanan.trim(),
             deskripsi: deskripsi.trim(),
@@ -123,13 +130,15 @@ interface FormListingProps {
             stok: Number(stok),
             batas_kedaluwarsa: new Date(batasKedaluwarsa).toISOString(),
             foto: finalFotoPath,
+            draft: simpanSebagaiDraft,
         };
 
-        await onSubmit(payload);
+        await onSubmit(payload, simpanSebagaiDraft);
         setIsDirty(false);
         } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "Terjadi kesalahan saat menyimpan data.";
         setErrors([message]);
+        setNotifikasi(message);
         } finally {
         setIsSubmitting(false);
         }
@@ -253,6 +262,7 @@ interface FormListingProps {
                 min="0"
                 value={harga}
                 onChange={(e) => { setHarga(e.target.value === "" ? "" : Number(e.target.value)); setIsDirty(true); }}
+                onBlur={() => { if (harga !== "" && (Number(harga) < 0 || !Number.isInteger(Number(harga)))) setNotifikasi("Harga harus berupa bilangan bulat non-negatif."); }}
                 className="mt-1 w-full rounded-xl border border-[#d8cfb4] bg-white/80 px-4 py-3 text-[#264b4d] shadow-sm focus:border-[#1a8ca1] focus:outline-none focus:ring-2 focus:ring-[#1a8ca1]/20"
                 required
                 />
@@ -266,6 +276,7 @@ interface FormListingProps {
                 min="0"
                 value={stok}
                 onChange={(e) => { setStok(e.target.value === "" ? "" : Number(e.target.value)); setIsDirty(true); }}
+                onBlur={() => { if (stok !== "" && (Number(stok) < 0 || !Number.isInteger(Number(stok)))) setNotifikasi("Stok harus berupa bilangan bulat non-negatif."); }}
                 className="mt-1 w-full rounded-xl border border-[#d8cfb4] bg-white/80 px-4 py-3 text-[#264b4d] shadow-sm focus:border-[#1a8ca1] focus:outline-none focus:ring-2 focus:ring-[#1a8ca1]/20"
                 required
                 />
@@ -297,6 +308,7 @@ interface FormListingProps {
                 type="datetime-local"
                 value={batasKedaluwarsa}
                 onChange={(e) => { setBatasKedaluwarsa(e.target.value); setIsDirty(true); }}
+                onBlur={() => { if (batasKedaluwarsa && new Date(batasKedaluwarsa) <= new Date()) setNotifikasi("Batas kedaluwarsa harus di waktu mendatang. Perbarui tanggalnya sebelum menyimpan atau menampilkan listing."); }}
                 className="mt-1 w-full rounded-xl border border-[#d8cfb4] bg-white/80 px-4 py-3 text-[#264b4d] shadow-sm focus:border-[#1a8ca1] focus:outline-none focus:ring-2 focus:ring-[#1a8ca1]/20"
                 required
             />
@@ -314,10 +326,21 @@ interface FormListingProps {
             </button>
             <button
                 type="submit"
+                name="aksi-listing"
+                value="draft"
+                disabled={isSubmitting || !isFormValid}
+                className="rounded-xl border border-[#1a8ca1] bg-white px-5 py-3 text-sm font-bold text-[#1a8ca1] hover:bg-[#e7f5f6] disabled:cursor-not-allowed disabled:opacity-50"
+            >
+                {isSubmitting ? "Saving..." : "Save Draft"}
+            </button>
+            <button
+                type="submit"
+                name="aksi-listing"
+                value="show"
                 disabled={isSubmitting || !isFormValid}
                 className="rounded-xl bg-[#1a8ca1] px-5 py-3 text-sm font-bold text-white hover:bg-[#14798b] disabled:cursor-not-allowed disabled:opacity-50"
             >
-                {isSubmitting ? "Saving..." : isEditing ? "Save Changes" : "Show"}
+                {isSubmitting ? "Saving..." : isEditing ? "Save Changes / Show" : "Show"}
             </button>
             </div>
         </form>
@@ -327,6 +350,7 @@ interface FormListingProps {
             onConfirm={() => router.push("/penjual/listing")}
             onCancel={() => setShowExitModal(false)}
         />
+        <NotifikasiGagal pesan={notifikasi} onClose={() => setNotifikasi(null)} />
         </AppLayout>
     );
 }
