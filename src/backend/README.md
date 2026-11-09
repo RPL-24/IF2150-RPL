@@ -39,8 +39,9 @@ Create `src/backend/.dev.vars`:
 KUNCI_TOKEN=<32-byte base64 key>
 GOOGLE_CLIENT_ID=<oauth client id>
 GOOGLE_CLIENT_SECRET=<oauth client secret>
-GOOGLE_REDIRECT_URI=http://localhost:8787/api/auth/google
+GOOGLE_REDIRECT_URI=http://localhost:8787/api/auth/google/callback
 API_BASE_URL=http://localhost:8787
+MODE_DEMO=1
 ```
 
 Generate `KUNCI_TOKEN` with:
@@ -54,8 +55,9 @@ openssl rand -base64 32
 | `KUNCI_TOKEN` | AES-256-GCM key that encrypts Google access/refresh tokens at rest (Algo-001, Algo-009). Must decode to **exactly 32 bytes**. Losing it makes stored Google tokens unreadable, so users must log in again. |
 | `GOOGLE_CLIENT_ID` | OAuth client id, sent in the code exchange and refresh grant (Algo-027). Not secret. |
 | `GOOGLE_CLIENT_SECRET` | OAuth client secret, required by Google at both grants. This is why the exchange happens server-side — it must never reach the mobile app. |
-| `GOOGLE_REDIRECT_URI` | Must **exactly** match the redirect URI registered in Google Cloud Console and the one the app sends. A mismatch yields `redirect_uri_mismatch`. |
+| `GOOGLE_REDIRECT_URI` | This backend's `/api/auth/google/callback` URL. Must **exactly** match the redirect URI registered in Google Cloud Console. A mismatch yields `redirect_uri_mismatch`. |
 | `API_BASE_URL` | Base URL the uptime cron probes (Algo-021). Optional; without it probes record `down`. |
+| `MODE_DEMO` | Set to `1` to enable `POST /api/auth/demo`, which signs in as the seeded Mahasiswa or Administrator account without Google (for assistants testing the APK). Optional; any other value or unset keeps the route disabled (404). Requires the seed to have been run on that database. |
 
 Only `KUNCI_TOKEN`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and
 `GOOGLE_REDIRECT_URI` are mandatory — the worker throws on first use if one is missing.
@@ -178,6 +180,18 @@ Notes:
   will create *separate* accounts. Use the tokens above if you just want to exercise
   the API.
 - Sessions expire after `BATAS_SESI` (30 days); re-run `bun run db:seed:local` to reset them.
+
+### Demo login
+
+With `MODE_DEMO=1`, `POST /api/auth/demo` signs in as one of the seeded accounts and
+returns a fresh session, in the same shape as `POST /api/auth/google`. The mobile app
+uses it for its "Mode demo" buttons. Without the flag the route answers 404.
+
+```bash
+curl -X POST http://localhost:8787/api/auth/demo \
+  -H 'Content-Type: application/json' -d '{"peran":"administrator"}'
+# {"token":"…","waktuLogin":"…","pengguna":{"idPengguna":"seed-usr-adm",…,"peran":"administrator"}}
+```
 
 ### Seed contents
 

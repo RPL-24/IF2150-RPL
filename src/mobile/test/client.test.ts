@@ -1,6 +1,8 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { api, ApiError, aturSaatTidakTerautentikasi, aturToken, KODE_KLIEN } from '@/api';
+// Imported from the module itself, not the `@/api` barrel: the barrel also exports the
+// login/session modules, which pull in Expo native modules that cannot load in Node.
+import { api, ApiError, aturSaatTidakTerautentikasi, aturToken, KODE_KLIEN } from '@/api/client';
 
 const URL_API = 'http://sehati.test';
 
