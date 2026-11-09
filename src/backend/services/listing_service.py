@@ -3,6 +3,7 @@ from pathlib import Path
 from fastapi import UploadFile, HTTPException, status
 
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB dalam bytes
+UPLOADS_DIR = Path(__file__).resolve().parent.parent / "uploads" / "listing"
 
 MAGIC_BYTES_PNG = b"\x89PNG\r\n\x1a\n"
 MAGIC_BYTES_JPG = b"\xff\xd8\xff"
@@ -32,7 +33,7 @@ async def simpan_foto_listing(file: UploadFile) -> str:
         )
 
     # 2. Baca Konten File untuk Pengecekan Ukuran & Magic Bytes
-    content = await file.read()
+    content = await file.read(MAX_FILE_SIZE + 1)
 
     if len(content) > MAX_FILE_SIZE:
         raise HTTPException(
@@ -54,11 +55,9 @@ async def simpan_foto_listing(file: UploadFile) -> str:
     file_ext = "png" if is_png else "jpg"
     filename = f"{uuid.uuid4()}.{file_ext}"
 
-    base_dir = Path(__file__).resolve().parent.parent
-    upload_dir = base_dir / "uploads" / "listing"
-    upload_dir.mkdir(parents=True, exist_ok=True)
+    UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
-    file_path = upload_dir / filename
+    file_path = UPLOADS_DIR / filename
     with open(file_path, "wb") as f:
         f.write(content)
 

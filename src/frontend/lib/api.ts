@@ -48,6 +48,15 @@ export type ListingKatalog = {
   batas_kedaluwarsa: string;
 };
 
+export type ListingPenjual = ListingKatalog & {
+  aktif: boolean;
+  tersedia: boolean;
+};
+
+export function ambilDaftarListingPenjual(): Promise<ListingPenjual[]> {
+  return getJson<ListingPenjual[]>("/api/listing/penjual");
+}
+
 export function ambilDaftarKatalog(): Promise<ListingKatalog[]> {
   return getJson<ListingKatalog[]>("/api/katalog");
 }
@@ -58,13 +67,13 @@ export function ambilDetailKatalog(idListing: number | string): Promise<ListingK
 
 export type DataListingPayload = {
   nama_makanan: string;
-  deskripsi?: string | null;
+  deskripsi: string;
   porsi: string;
   kondisi: string;
   harga: number;
   stok: number;
   batas_kedaluwarsa: string;
-  foto?: string | null;
+  foto: string;
 };
 
 // Mengambil detail listing milik penjual
@@ -137,6 +146,23 @@ export async function ubahListing(idListing: number | string, data: DataListingP
 
   return res.json();
 }
+
+export async function hapusListingPenjual(idListing: number | string): Promise<void> {
+  const res = await fetch(`/api/listing/${encodeURIComponent(String(idListing))}`, {
+    method: "DELETE",
+    credentials: "same-origin",
+  });
+
+  if (!res.ok) {
+    let pesan = "Gagal menghapus listing";
+    try {
+      const body = await res.json();
+      if (typeof body?.detail === "string") pesan = body.detail;
+    } catch {}
+    throw new ApiError(res.status, pesan);
+  }
+}
+
 // ---------- Cari & filter katalog (P3: UC04) ----------
 
 export type ParamPencarian = {
