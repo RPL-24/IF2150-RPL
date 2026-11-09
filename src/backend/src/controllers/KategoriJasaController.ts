@@ -10,10 +10,7 @@ export interface SubmitKategoriJasaPayload extends KategoriJasaInput {
   longitude?: number;
 }
 
-/**
- * Kelas C15 - KategoriJasaController
- * Mengatur logika program kategori jasa dan pendaftaran layanan (UC01, UC02)
- */
+
 export class KategoriJasaController {
   private kategoriJasa: KategoriJasa;
   private pemberiJasaController: PemberiJasaController;
@@ -27,9 +24,7 @@ export class KategoriJasaController {
     this.pemberiJasaController = pemberiJasaCtrl ?? new PemberiJasaController();
   }
 
-  /**
-   * ALGO-032: Menyiapkan struktur data kosong untuk formulir pendaftaran kategori jasa
-   */
+
   public showFormKategoriJasa(): KategoriJasaInput {
     return {
       jenisJasa: '',
@@ -40,10 +35,7 @@ export class KategoriJasaController {
     };
   }
 
-  /**
-   * ALGO-033: Memvalidasi kelengkapan data kategori jasa serta memastikan tarif bernilai >= 0
-   * Menolak tarif negatif atau field kosong
-   */
+
   public validateKategoriJasa(dataJasa: Partial<KategoriJasaInput> | null | undefined): boolean {
     if (!dataJasa || typeof dataJasa !== 'object') {
       return false;
@@ -51,7 +43,7 @@ export class KategoriJasaController {
 
     const { jenisJasa, deskripsiJasa, tarif, jamKerja, daerahKerja } = dataJasa;
 
-    // Pastikan semua field teks ada dan tidak kosong
+
     if (
       typeof jenisJasa !== 'string' ||
       jenisJasa.trim() === '' ||
@@ -65,7 +57,6 @@ export class KategoriJasaController {
       return false;
     }
 
-    // Pastikan tarif ada, bertipe angka yang valid, dan tidak negatif
     if (
       tarif === null ||
       tarif === undefined ||
@@ -96,10 +87,7 @@ export class KategoriJasaController {
     );
   }
 
-  /**
-   * ALGO-034: Memvalidasi masukan form, menyimpan kategori jasa baru,
-   * dan memperbarui data pemberi jasa jika idPemberiJasa disertakan
-   */
+
   public async submitFormKategoriJasa(dataJasa: SubmitKategoriJasaPayload): Promise<{
     kategori: KategoriJasaRecord;
     pemberiJasa: PemberiJasaDetail | null;
@@ -228,24 +216,32 @@ export class KategoriJasaController {
   };
 
   /**
-   * Express Handler: POST /api/services/categories (atau POST /api/services/register)
+   * Membentuk objek payload dari request body Express
+   */
+  private buildPayload(req: Request): SubmitKategoriJasaPayload {
+    return {
+      idKategoriJasa: req.body.idKategoriJasa,
+      jenisJasa: req.body.jenisJasa,
+      deskripsiJasa: req.body.deskripsiJasa,
+      tarif:
+        typeof req.body.tarif === 'string' && req.body.tarif.trim() !== ''
+          ? Number(req.body.tarif)
+          : req.body.tarif,
+      jamKerja: req.body.jamKerja,
+      daerahKerja: req.body.daerahKerja,
+      idPemberiJasa: req.body.idPemberiJasa,
+      namaToko: req.body.namaToko,
+      latitude: req.body.latitude !== undefined ? Number(req.body.latitude) : undefined,
+      longitude: req.body.longitude !== undefined ? Number(req.body.longitude) : undefined,
+    };
+  }
+
+  /**
+   * Express Handler: POST /api/services/categories
    */
   public createCategoryAndBindServiceHandler = async (req: Request, res: Response): Promise<void> => {
     try {
-      const payload: SubmitKategoriJasaPayload = {
-        idKategoriJasa: req.body.idKategoriJasa,
-        jenisJasa: req.body.jenisJasa,
-        deskripsiJasa: req.body.deskripsiJasa,
-        tarif: typeof req.body.tarif === 'string' && req.body.tarif.trim() !== ''
-          ? Number(req.body.tarif)
-          : req.body.tarif,
-        jamKerja: req.body.jamKerja,
-        daerahKerja: req.body.daerahKerja,
-        idPemberiJasa: req.body.idPemberiJasa,
-        namaToko: req.body.namaToko,
-        latitude: req.body.latitude !== undefined ? Number(req.body.latitude) : undefined,
-        longitude: req.body.longitude !== undefined ? Number(req.body.longitude) : undefined,
-      };
+      const payload = this.buildPayload(req);
 
       if (!this.validateKategoriJasa(payload)) {
         res.status(400).json({
@@ -265,6 +261,57 @@ export class KategoriJasaController {
       res.status(400).json({
         success: false,
         message: error.message || 'Gagal menyimpan kategori layanan jasa',
+      });
+    }
+  };
+
+  /**
+   * Express Handler: POST /api/services/register (UC01, KF04, KF05)
+   */
+  public registerServiceProviderHandler = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload = this.buildPayload(req);
+
+      if (
+        typeof payload.idPemberiJasa !== 'string' ||
+        payload.idPemberiJasa.trim() === '' ||
+        typeof payload.namaToko !== 'string' ||
+        payload.namaToko.trim() === ''
+      ) {
+        res.status(400).json({
+          success: false,
+          message: 'idPemberiJasa dan namaToko wajib diisi',
+        });
+        return;
+      }
+
+      if (!this.validateKategoriJasa(payload)) {
+        res.status(400).json({
+          success: false,
+          message: 'Data kategori jasa tidak valid: semua field wajib diisi dan tarif tidak boleh negatif',
+        });
+        return;
+      }
+
+      const result = await this.submitFormKategoriJasa({
+        ...payload,
+        namaToko: payload.namaToko.trim(),
+      });
+
+      res.status(201).json({
+        success: true,
+        message: 'Pendaftaran penyedia jasa berhasil',
+        data: {
+          kategori: result.kategori,
+          pemberiJasa: result.pemberiJasa,
+          role: 'PEMBERI_JASA',
+        },
+      });
+    } catch (error: any) {
+      const status = error?.message === 'Pengguna tidak ditemukan' ? 404 : 400;
+      res.status(status).json({
+        success: false,
+        message: error.message || 'Gagal menyimpan pendaftaran penyedia jasa',
       });
     }
   };

@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client';
 import prisma from '../database/prisma';
 
 export interface PemberiJasaDetail {
@@ -6,6 +7,7 @@ export interface PemberiJasaDetail {
   namaToko: string;
   nomorTelpon: string;
   email: string;
+  role?: string;
   avatarUrl: string | null;
   akumulasiRating: number;
   idKategoriJasa: string | null;
@@ -26,10 +28,6 @@ export interface SearchServiceFilter {
   idKategoriJasa?: string;
 }
 
-/**
- * Kelas C04 - PemberiJasa
- * Menyimpan titik lokasi, akumulasi rating, identitas pemberi jasa, dan kategori keahlian (UC01, UC02)
- */
 export class PemberiJasa {
   private idPemberiJasa: string = '';
   public idKategoriJasa: string = '';
@@ -88,6 +86,7 @@ export class PemberiJasa {
       namaToko: row.namaToko,
       nomorTelpon: row.pengguna.nomorTelpon,
       email: row.pengguna.email,
+      role: row.pengguna.role,
       avatarUrl: row.pengguna.avatarUrl,
       akumulasiRating: row.pengguna.akumulasiRating,
       idKategoriJasa: row.idKategoriJasa,
@@ -129,6 +128,7 @@ export class PemberiJasa {
       namaToko: row.namaToko,
       nomorTelpon: row.pengguna.nomorTelpon,
       email: row.pengguna.email,
+      role: row.pengguna.role,
       avatarUrl: row.pengguna.avatarUrl,
       akumulasiRating: row.pengguna.akumulasiRating,
       idKategoriJasa: row.idKategoriJasa,
@@ -144,14 +144,6 @@ export class PemberiJasa {
     }));
   }
 
-  /**
-   * ALGO-004 & Q-004: Memperbarui data kategori jasa dan jenis jasa pada tabel pemberi_jasa
-   * Query:
-   * UPDATE pemberi_jasa
-   * SET id_kategori_jasa = $1,
-   *     jenis_jasa = (SELECT jenis_jasa FROM kategori_jasa WHERE id_kategori_jasa = $1)
-   * WHERE id_pemberi_jasa = $2;
-   */
   public async savePemberiJasa(
     idPemberiJasa?: string,
     idKategoriJasa?: string,
@@ -172,28 +164,46 @@ export class PemberiJasa {
       throw new Error('Kategori jasa tidak ditemukan');
     }
 
+    const pengguna = await prisma.pengguna.findUnique({
+      where: { idPengguna: targetIdPemberiJasa },
+    });
+
+    if (!pengguna) {
+      throw new Error('Pengguna tidak ditemukan');
+    }
+
+    if (pengguna.role === Role.LAYANAN_PELANGGAN) {
+      throw new Error('Akun layanan pelanggan tidak dapat didaftarkan sebagai penyedia jasa');
+    }
+
     this.idPemberiJasa = targetIdPemberiJasa;
     this.idKategoriJasa = targetIdKategoriJasa;
     this.jenisJasa = kategori.jenisJasa;
 
-    await prisma.pemberiJasa.upsert({
-      where: { idPemberiJasa: targetIdPemberiJasa },
-      update: {
-        idKategoriJasa: targetIdKategoriJasa,
-        jenisJasa: kategori.jenisJasa,
-        ...(extraData?.namaToko !== undefined ? { namaToko: extraData.namaToko } : {}),
-        ...(extraData?.latitude !== undefined ? { latitude: extraData.latitude } : {}),
-        ...(extraData?.longitude !== undefined ? { longitude: extraData.longitude } : {}),
-      },
-      create: {
-        idPemberiJasa: targetIdPemberiJasa,
-        idKategoriJasa: targetIdKategoriJasa,
-        jenisJasa: kategori.jenisJasa,
-        namaToko: extraData?.namaToko ?? '',
-        latitude: extraData?.latitude ?? null,
-        longitude: extraData?.longitude ?? null,
-      },
-    });
+    await prisma.$transaction([
+      prisma.pemberiJasa.upsert({
+        where: { idPemberiJasa: targetIdPemberiJasa },
+        update: {
+          idKategoriJasa: targetIdKategoriJasa,
+          jenisJasa: kategori.jenisJasa,
+          ...(extraData?.namaToko !== undefined ? { namaToko: extraData.namaToko } : {}),
+          ...(extraData?.latitude !== undefined ? { latitude: extraData.latitude } : {}),
+          ...(extraData?.longitude !== undefined ? { longitude: extraData.longitude } : {}),
+        },
+        create: {
+          idPemberiJasa: targetIdPemberiJasa,
+          idKategoriJasa: targetIdKategoriJasa,
+          jenisJasa: kategori.jenisJasa,
+          namaToko: extraData?.namaToko ?? '',
+          latitude: extraData?.latitude ?? null,
+          longitude: extraData?.longitude ?? null,
+        },
+      }),
+      prisma.pengguna.update({
+        where: { idPengguna: targetIdPemberiJasa },
+        data: { role: Role.PEMBERI_JASA },
+      }),
+    ]);
 
     return this.getPemberiJasaByID(targetIdPemberiJasa);
   }
@@ -243,6 +253,7 @@ export class PemberiJasa {
       namaToko: row.namaToko,
       nomorTelpon: row.pengguna.nomorTelpon,
       email: row.pengguna.email,
+      role: row.pengguna.role,
       avatarUrl: row.pengguna.avatarUrl,
       akumulasiRating: row.pengguna.akumulasiRating,
       idKategoriJasa: row.idKategoriJasa,
