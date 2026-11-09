@@ -31,4 +31,11 @@ router.get(
   tangani((req) => PercakapanController.bukaPercakapan(req.akun.idAkun, req.params.id)),
 );
 
+// UC17 (KF32, KF34, KF35, KF36)
+router.post(
+  '/:id/pesan',
+  Otorisasi.wajibLogin,
+  tangani((req) => PercakapanController.kirimPesan(req.akun.idAkun, req.params.id, req.body?.isi)),
+);
+
 module.exports = router;
