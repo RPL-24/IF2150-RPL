@@ -7,7 +7,6 @@ import { requireRole } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getByStatus } from "@/server/entities/Laporan";
 import { ListTugas, type TugasLaporan } from "@/server/entities/ListTugas";
-import { create } from "domain";
 
 const PESAN_TANPA_AKSES = "Anda tidak memiliki akses ke daftar tugas Eksekutor Lapangan.";
 const PESAN_GAGAL_LOAD = "Gagal memuat daftar tugas. Coba muat ulang halaman!";
