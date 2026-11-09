@@ -6,23 +6,31 @@ import type { Koordinat } from "@/server/entities/Lokasi";
 type Props = {
   lokasi: Koordinat | null;
   diLuarWilayah: boolean;
+  mendeteksi: boolean;
+  pesanGps: string | null;
   onGunakanLokasi: () => void;
   onPilihTitik: (koordinat: Koordinat) => void;
 };
 
-export function AreaLokasi({ lokasi, diLuarWilayah, onGunakanLokasi, onPilihTitik }: Props) {
+export function AreaLokasi({ lokasi, diLuarWilayah, mendeteksi, pesanGps, onGunakanLokasi, onPilihTitik }: Props) {
   return (
     <div className="space-y-2">
       <span className="block text-sm font-semibold">Lokasi</span>
       <button
         type="button"
         onClick={onGunakanLokasi}
-        className="flex w-full items-center justify-center gap-2 rounded-lg border border-blue-600 py-2.5 text-sm font-medium text-blue-600 dark:border-blue-400 dark:text-blue-400"
+        disabled={mendeteksi}
+        className="flex w-full items-center justify-center gap-2 rounded-lg border border-blue-600 py-2.5 text-sm font-medium text-blue-600 disabled:opacity-60 dark:border-blue-400 dark:text-blue-400"
       >
         <IkonTarget />
-        Gunakan Lokasi Saat Ini
+        {mendeteksi ? "Mendeteksi lokasi..." : "Gunakan Lokasi Saat Ini"}
       </button>
       <MapView titikTerpilih={lokasi} onPilihTitik={onPilihTitik} tinggi="220px" />
+      {pesanGps && (
+        <p role="status" className="text-sm text-amber-700 dark:text-amber-400">
+          {pesanGps}
+        </p>
+      )}
       {diLuarWilayah && (
         <p
           role="alert"

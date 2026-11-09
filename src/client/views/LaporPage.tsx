@@ -1,7 +1,7 @@
 "use client";
 // C11 · LaporPage (kelas boundary DPPL). Pemilik: Peran A (lihat AGENTS.md bagian 4).
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { KATEGORI } from "@/lib/constants";
 import type { Enums } from "@/types/database";
@@ -18,6 +18,23 @@ const KELAS_INPUT =
 // Sementara: dipakai sebelum tersambung ke LaporanController.kirimLaporan.
 const ID_TIKET_DUMMY = "LK-0123";
 
+const PESAN_GPS_GAGAL = "Lokasi tidak terdeteksi, tandai lokasi secara manual pada peta";
+
+// Membungkus Geolocation API (berbasis callback) menjadi Promise. Batas 3 detik sesuai Algo-020.
+function ambilPosisiGps(): Promise<Koordinat> {
+  return new Promise((resolve, reject) => {
+    if (!("geolocation" in navigator)) {
+      reject(new Error("Geolocation tidak didukung browser"));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (posisi) => resolve({ latitude: posisi.coords.latitude, longitude: posisi.coords.longitude }),
+      reject,
+      { enableHighAccuracy: true, timeout: 3000, maximumAge: 0 },
+    );
+  });
+}
+
 export function LaporPage() {
   const router = useRouter();
   // Atribut DPPL C11.
@@ -28,6 +45,8 @@ export function LaporPage() {
   const [lokasi, setLokasi] = useState<Koordinat | null>(null);
   const [pesanError, setPesanError] = useState<string | null>(null);
   const [idTiketTerkirim, setIdTiketTerkirim] = useState<string | null>(null);
+  const [mendeteksiLokasi, setMendeteksiLokasi] = useState(true);
+  const [pesanLokasi, setPesanLokasi] = useState<string | null>(null);
 
   // I01-13: dihitung dari lokasi, bukan disimpan terpisah, supaya selalu sinkron dengan titik di peta.
   const diLuarWilayah = lokasi !== null && !dalamWilayah(lokasi);
@@ -38,12 +57,42 @@ export function LaporPage() {
     router.back();
   }
 
-  // DPPL kunciLokasi() (I01-11). Diisi di branch feat/lapor-kunci-gps.
-  function kunciLokasi() {}
+  // DPPL bukaForm(): kunci lokasi otomatis saat formulir dibuka (Algo-020).
+  useEffect(() => {
+    let aktif = true;
+    ambilPosisiGps()
+      .then((posisi) => {
+        // Jangan menimpa titik yang sudah dipilih manual selama GPS masih mencari.
+        if (aktif) setLokasi((lama) => lama ?? posisi);
+      })
+      .catch(() => {
+        if (aktif) setPesanLokasi(PESAN_GPS_GAGAL);
+      })
+      .finally(() => {
+        if (aktif) setMendeteksiLokasi(false);
+      });
+    return () => {
+      aktif = false;
+    };
+  }, []);
+
+  // DPPL kunciLokasi() (I01-11): dipanggil tombol "Gunakan Lokasi Saat Ini".
+  async function kunciLokasi() {
+    setMendeteksiLokasi(true);
+    setPesanLokasi(null);
+    try {
+      setLokasi(await ambilPosisiGps());
+    } catch {
+      setPesanLokasi(PESAN_GPS_GAGAL);
+    } finally {
+      setMendeteksiLokasi(false);
+    }
+  }
 
   // DPPL tandaiLokasiManual(latitude, longitude) (I01-12). Cek wilayah lewat diLuarWilayah di atas.
   function tandaiLokasiManual(latitude: number, longitude: number) {
     setLokasi({ latitude, longitude });
+    setPesanLokasi(null);
   }
 
   // DPPL submitForm() (Algo-021). Kategori & deskripsi sudah dijaga atribut `required`.
@@ -105,6 +154,8 @@ export function LaporPage() {
           <AreaLokasi
             lokasi={lokasi}
             diLuarWilayah={diLuarWilayah}
+            mendeteksi={mendeteksiLokasi}
+            pesanGps={pesanLokasi}
             onGunakanLokasi={kunciLokasi}
             onPilihTitik={(k) => tandaiLokasiManual(k.latitude, k.longitude)}
           />
