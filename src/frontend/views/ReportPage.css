@@ -2,11 +2,13 @@
    MahaSehat - ReportPage.css
    Komponen khusus Laporan Kesehatan. Dimuat SETELAH DashboardPage*.css,
    sehingga memakai token warna, sidebar, kartu, dan responsif dari file itu.
+   Palet: Teal #78C9C0, Cream #FFFDF7, Ink #2A3A3F, Amber #F8C16F, Mist #E2E8F0
    ========================================================================== */
 
 :root {
-    --chart-green: #1A6B4F;
-    --chart-green-dark: #0F4A37;
+    --chart-teal: #78C9C0;
+    --chart-teal-deep: #55B5A8;
+    --chart-teal-dark: #2F7C73;
     --color-track: #EEECE6;
 }
 
@@ -119,8 +121,8 @@
 
 .bar-low { background-color: var(--color-amber); color: var(--color-ink); }
 .bar-mid { background-color: var(--color-teal); color: var(--color-ink); }
-.bar-high { background-color: var(--chart-green); color: #FFFFFF; }
-.bar-top { background-color: var(--chart-green-dark); color: #FFFFFF; }
+.bar-high { background-color: var(--chart-teal-deep); color: #FFFFFF; }
+.bar-top { background-color: var(--chart-teal-dark); color: #FFFFFF; }
 
 .xlabels {
     display: grid;
@@ -157,6 +159,59 @@
     border-radius: 999px;
 }
 
+/* Kontrol Pemilih Kalender pada Card Catatan */
+.calendar-picker-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.calendar-native-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
+
+.btn-calendar-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background-color: var(--color-mist-light);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-calendar-trigger:hover {
+    background-color: var(--color-mist);
+    border-color: var(--color-ink-subtle);
+    transform: translateY(-1px);
+}
+
+.calendar-icon {
+    width: 15px;
+    height: 15px;
+    stroke: var(--color-ink);
+}
+
+.catatan-date-info {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink-subtle);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .date-strip {
     display: flex;
     gap: 4px;
@@ -167,30 +222,63 @@
 }
 
 .date-btn {
+    position: relative;
     flex: 1;
-    padding: 6px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 2px 8px 2px;
     border: none;
     border-radius: 999px;
     background: transparent;
     color: var(--color-ink);
     font-family: var(--font-body);
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
     cursor: pointer;
+    transition: background-color 0.15s ease;
 }
 
 .date-btn.active {
     background-color: var(--color-amber);
+    color: var(--color-ink);
+}
+
+.date-btn-sub {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-ink-subtle);
+    margin-top: 1px;
+}
+
+.date-btn.active .date-btn-sub {
+    color: var(--color-ink);
+    font-weight: 600;
+}
+
+.date-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--color-teal);
+    position: absolute;
+    bottom: 3px;
+}
+
+.date-btn.active .date-dot {
+    background-color: var(--color-ink);
 }
 
 .note-box {
     min-height: 110px;
-    padding: 14px;
+    padding: 16px;
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: 14px;
     background-color: var(--color-mist-light);
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
+    color: var(--color-ink);
 }
 
 .risk-badge {

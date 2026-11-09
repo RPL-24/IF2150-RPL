@@ -57,16 +57,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const CATATAN = ['', 'Presentasi cukup lancar.', '', 'Sulit fokus karena kurang tidur.', '', '', 'Hari ini cukup tenang, tapi tugas besar masih menumpuk.'];
-    const WARNA_STRES = { Akademik: '#DC2626', Keluarga: '#F8C16F', Relasi: '#78C9C0', 'Lain-lain': '#2563EB' };
+    // Database dummy catatan refleksi harian (terindeks berdasarkan format YYYY-MM-DD)
+    const formatIso = (d) => {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+    };
+
+    // Peta catatan berdasarkan tanggal ISO
+    const MAP_CATATAN = {};
+    const DUMMY_NOTES_POOL = [
+        "Presentasi kelompok cukup lancar, namun masih perlu revisi bab implementasi.",
+        "Sulit fokus belajar karena begadang semalam. Mood agak menurun.",
+        "Hari ini cukup tenang dan stabil. Berhasil menyelesaikan target tugas tepat waktu.",
+        "Merasa sedikit cemas menjelang jadwal asistensi, tapi diskusi dengan teman membantu.",
+        "Pola tidur membaik setelah mengurangi screen-time sebelum tidur."
+    ];
+
+    // Isi beberapa tanggal dengan catatan bermakna
+    tanggal7.forEach((d, idx) => {
+        const iso = formatIso(d);
+        if (idx === 1) MAP_CATATAN[iso] = DUMMY_NOTES_POOL[0];
+        else if (idx === 3) MAP_CATATAN[iso] = DUMMY_NOTES_POOL[1];
+        else if (idx === 6) MAP_CATATAN[iso] = DUMMY_NOTES_POOL[2];
+    });
+
+    const WARNA_STRES = { Akademik: '#B5453B', Keluarga: '#F8C16F', Relasi: '#78C9C0', 'Lain-lain': '#64748B' };
 
     const gridLaporan = document.getElementById('Grid_Laporan');
     const alertKosong = document.getElementById('Alert_DataKosong');
-    const stripTanggal = document.getElementById('Strip_Tanggal');
-    const boxCatatan = document.getElementById('Box_Catatan');
+    const stripTanggal = document.getElementById('Picker_TanggalCatatan') || document.getElementById('Strip_Tanggal');
+    const boxCatatan = document.getElementById('Text_CatatanRefleksi') || document.getElementById('Box_Catatan');
+    const inputKalender = document.getElementById('Input_KalenderCatatan');
+    const btnKalender = document.getElementById('Btn_BukaKalender');
+    const labelTanggalAktif = document.getElementById('Label_TanggalAktif');
 
     function displayStres(stres) {
         const list = document.getElementById('List_Stres');
+        if (!list) return;
         list.innerHTML = '';
         Object.entries(stres).forEach(([nama, persen]) => {
             const li = document.createElement('li');
@@ -90,24 +119,98 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayNotes() {
+        if (!stripTanggal || !boxCatatan) return;
         stripTanggal.innerHTML = '';
-        const pilih = (i) => {
-            stripTanggal.querySelectorAll('.date-btn').forEach((b, j) => {
-                b.classList.toggle('active', i === j);
-                b.setAttribute('aria-pressed', String(i === j));
+
+        const renderCatatanUntukTanggal = (tanggalObj) => {
+            const iso = formatIso(tanggalObj);
+            const namaHariLengkap = tanggalObj.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
             });
-            boxCatatan.textContent = CATATAN[i] || 'Tidak ada catatan pada tanggal ini.';
+
+            // Update label tanggal aktif
+            if (labelTanggalAktif) {
+                labelTanggalAktif.textContent = namaHariLengkap;
+            }
+
+            // Update input kalender value
+            if (inputKalender) {
+                inputKalender.value = iso;
+            }
+
+            // Periksa kecocokan pada strip 7 hari
+            stripTanggal.querySelectorAll('.date-btn').forEach((b) => {
+                const isMatch = b.dataset.iso === iso;
+                b.classList.toggle('active', isMatch);
+                b.setAttribute('aria-pressed', String(isMatch));
+            });
+
+            // Tampilkan isi catatan refleksi
+            const isi = MAP_CATATAN[iso];
+            if (isi) {
+                boxCatatan.textContent = isi;
+                boxCatatan.style.color = 'var(--color-ink)';
+                boxCatatan.style.fontStyle = 'normal';
+            } else {
+                boxCatatan.textContent = 'Belum ada catatan refleksi untuk tanggal ini.';
+                boxCatatan.style.color = 'var(--color-ink-subtle)';
+                boxCatatan.style.fontStyle = 'italic';
+            }
         };
-        tanggal7.forEach((d, i) => {
+
+        // Render tombol 7 hari pada date-strip
+        tanggal7.forEach((d) => {
+            const iso = formatIso(d);
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'date-btn';
-            btn.textContent = d.getDate();
+            btn.dataset.iso = iso;
+
+            const tglSpan = document.createElement('span');
+            tglSpan.textContent = d.getDate();
+            btn.append(tglSpan);
+
+            const daySpan = document.createElement('span');
+            daySpan.className = 'date-btn-sub';
+            daySpan.textContent = d.toLocaleDateString('id-ID', { weekday: 'short' });
+            btn.append(daySpan);
+
+            // Jika ada catatan pada tanggal ini, berikan penanda dot aksen
+            if (MAP_CATATAN[iso]) {
+                const dot = document.createElement('span');
+                dot.className = 'date-dot';
+                dot.setAttribute('title', 'Ada catatan refleksi');
+                btn.append(dot);
+            }
+
             btn.setAttribute('aria-label', d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' }));
-            btn.addEventListener('click', () => pilih(i));
+            btn.addEventListener('click', () => renderCatatanUntukTanggal(d));
             stripTanggal.append(btn);
         });
-        pilih(tanggal7.length - 1);
+
+        // Event listener pemilih kalender
+        if (btnKalender && inputKalender) {
+            btnKalender.addEventListener('click', () => {
+                if (typeof inputKalender.showPicker === 'function') {
+                    inputKalender.showPicker();
+                } else {
+                    inputKalender.click();
+                }
+            });
+
+            inputKalender.addEventListener('change', (e) => {
+                if (!e.target.value) return;
+                const [thn, bln, tgl] = e.target.value.split('-').map(Number);
+                const dipilih = new Date(thn, bln - 1, tgl);
+                renderCatatanUntukTanggal(dipilih);
+            });
+        }
+
+        // Default pilih hari terakhir (hari ini)
+        renderCatatanUntukTanggal(tanggal7[tanggal7.length - 1]);
     }
 
     function showPage(periode) {

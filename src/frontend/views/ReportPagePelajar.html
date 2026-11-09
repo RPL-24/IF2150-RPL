@@ -70,7 +70,8 @@
                 <p class="page-subtitle" id="Text_Subjudul">Pantau perkembangan kondisimu dari data daily check-in.</p>
             </header>
 
-            <section class="card-box periode-card report-block" id="Card_Periode">
+            <!-- Filter Periode (DPPL: Filter_Periode) -->
+            <section class="card-box periode-card report-block" id="Filter_Periode" data-legacy-id="Card_Periode">
                 <h3 class="card-box-title">Periode</h3>
                 <div class="segmented" id="Group_Periode" role="group" aria-label="Pilih periode">
                     <button type="button" class="seg-btn active" id="Btn_Periode7" data-periode="7" aria-pressed="true">7 Hari</button>
@@ -90,30 +91,48 @@
             </section>
 
             <div class="report-grid" id="Grid_Laporan">
-                <section class="card-box" id="Card_Mood">
+                <section class="card-box" id="Card_DataMood">
                     <div class="card-box-header"><h3 class="card-box-title">Data Mood</h3></div>
                     <div class="chart" id="Chart_Mood"></div>
                 </section>
-                <section class="card-box" id="Card_Tidur">
+                <section class="card-box" id="Card_DataTidur">
                     <div class="card-box-header"><h3 class="card-box-title">Data Tidur</h3></div>
                     <div class="chart" id="Chart_Tidur"></div>
                 </section>
-                <section class="card-box" id="Card_FrekuensiMakan">
+                <section class="card-box" id="Card_DataFrekuensiMakan">
                     <div class="card-box-header"><h3 class="card-box-title">Data Frekuensi Makan</h3></div>
                     <div class="chart" id="Chart_FrekuensiMakan"></div>
                 </section>
-                <section class="card-box" id="Card_JenisMakan">
+                <section class="card-box" id="Card_DataJenisMakan">
                     <div class="card-box-header"><h3 class="card-box-title">Data Jenis Makan</h3></div>
                     <div class="chart" id="Chart_JenisMakan"></div>
                 </section>
-                <section class="card-box" id="Card_PemicuStres">
+                <section class="card-box" id="Card_FaktorPemicuStress">
                     <div class="card-box-header"><h3 class="card-box-title">Faktor Pemicu Stress</h3></div>
                     <ul class="stres-list" id="List_Stres"></ul>
                 </section>
                 <section class="card-box" id="Card_Catatan">
-                    <div class="card-box-header"><h3 class="card-box-title">Catatan</h3></div>
-                    <div class="date-strip" id="Strip_Tanggal" role="group" aria-label="Pilih tanggal catatan"></div>
-                    <p class="note-box" id="Box_Catatan" aria-live="polite"></p>
+                    <div class="card-box-header">
+                        <h3 class="card-box-title">Catatan</h3>
+                        <!-- Tombol Cek Kalender Terintegrasi -->
+                        <div class="calendar-picker-wrapper">
+                            <input type="date" id="Input_KalenderCatatan" class="calendar-native-input" aria-label="Pilih tanggal catatan di kalender">
+                            <button type="button" class="btn-calendar-trigger" id="Btn_BukaKalender" title="Buka Kalender Catatan">
+                                <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span class="calendar-label" id="Label_Kalender">Kalender</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Pemilih Tanggal Harian (DPPL: Picker_TanggalCatatan) -->
+                    <div class="date-strip" id="Picker_TanggalCatatan" role="group" aria-label="Pilih tanggal catatan"></div>
+                    <div class="catatan-date-info" id="Label_TanggalAktif"></div>
+                    <!-- Kotak Teks Jurnal Refleksi (DPPL: Text_CatatanRefleksi) -->
+                    <p class="note-box" id="Text_CatatanRefleksi" aria-live="polite"></p>
                 </section>
             </div>
         </main>
