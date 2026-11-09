@@ -72,6 +72,12 @@ npm run dev
 npm test
 ```
 
+Evaluasi notifikasi darurat (UC08) berjalan otomatis setiap hari sesuai `EMERGENCY_CRON`. Untuk menjalankannya sekali tanpa menunggu jadwal, misalnya saat uji dengan akun `citra.pelajar@mahasehat.id` dan wali `ratna.wali@mahasehat.id`:
+
+```bash
+npm run job:darurat
+```
+
 Halaman dibuka lewat server, misalnya `http://localhost:3000/views/LoginPage.html`. Alamat `/` diarahkan ke halaman masuk.
 
 Setelah server berjalan, buka peramban di: **`http://localhost:3000`**
@@ -107,6 +113,7 @@ src/
 ├── controllers/               # Komponen Controller (<<control>> C11, C14, C15, C17, C20, C22, C23, C24, C27)
 ├── routes/                    # Definisi endpoint REST API per modul
 │   └── index.js               # Router utama (/api/*)
+├── jobs/                      # Job terjadwal: evaluasi notifikasi darurat harian (node-cron)
 ├── middleware/
 │   └── authMiddleware.js      # Verifikasi JWT & otorisasi berbasis Role (KNF02)
 ├── utils/
@@ -114,6 +121,7 @@ src/
 │   ├── distance.js            # Validasi koordinat & Haversine Formula (UC05)
 │   ├── waktu.js               # Tanggal zona Asia/Jakarta
 │   ├── respon.js              # Bentuk respons API seragam { success, message, data }
+│   ├── kirimEmail.js          # Pengiriman e-mail, atau cetak ke log bila SMTP_HOST kosong
 │   └── AppError.js            # Galat dengan kode status HTTP
 ├── frontend/                  # Komponen View (<<boundary>>): views/*.html, css, js, dan assets/
 ├── public/                    # Berkas statis tambahan
