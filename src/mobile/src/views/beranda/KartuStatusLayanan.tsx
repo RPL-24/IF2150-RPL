@@ -3,24 +3,13 @@ import Server from 'lucide-react-native/icons/server';
 import type { LucideIcon } from 'lucide-react-native';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 
+import type { StatusLayanan } from '@/api/status';
 import { Lencana, Teks, Tombol } from '@/components';
 import type { Muatan } from '@/lib/muatan';
 import { formatRelatif } from '@/lib/waktu';
 import { jarak, warna } from '@/theme';
 
 import { gayaKartu } from './gaya';
-
-/** Latest check of one service (`StatusServer`); `null` if never checked. */
-export type CekStatus = {
-  statusUptime: boolean;
-  /** ISO 8601 */
-  waktuCek: string;
-} | null;
-
-export type StatusLayanan = {
-  website: CekStatus;
-  server: CekStatus;
-};
 
 type Props = {
   status: Muatan<StatusLayanan>;
