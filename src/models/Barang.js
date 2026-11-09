@@ -8,6 +8,19 @@ const STATUS = Object.freeze({
   DINONAKTIFKAN: 'Dinonaktifkan',
 });
 
+// Urutan katalog yang diizinkan (KF30). Kunci divalidasi FilterController,
+// nilai SQL hanya diambil dari daftar tetap ini sehingga aman dari injeksi.
+const URUTAN_KATALOG = Object.freeze({
+  terbaru: 'b.waktu_unggah DESC, b.id_barang',
+  termurah: 'b.harga ASC, b.waktu_unggah DESC, b.id_barang',
+  termahal: 'b.harga DESC, b.waktu_unggah DESC, b.id_barang',
+});
+
+// Meloloskan karakter khusus pola ILIKE (%, _, \) agar kata kunci dicocokkan apa adanya.
+function loloskanPolaLike(teks) {
+  return String(teks).replace(/[\\%_]/g, '\\$&');
+}
+
 class Barang {
   static STATUS = STATUS;
 
@@ -94,6 +107,92 @@ class Barang {
       barang.fotoUtama = baris.foto_utama;
       return barang;
     });
+  }
+
+  // Katalog: listing "Tersedia" dari akun yang tidak diblokir (KF42, KF54), dengan
+  // pencarian kata kunci pada judul/deskripsi (KF25, KF26), filter kategori, rentang harga,
+  // dan lokasi COD (KF27, KF29), pengurutan (KF30), serta paginasi (KF28).
+  // Hanya kolom yang dibutuhkan KartuProduk yang diambil.
+  static async getKatalog(kriteria = {}, client = db) {
+    const {
+      daftarKata = [],
+      kategori = null,
+      lokasi = null,
+      hargaMin = null,
+      hargaMaks = null,
+      urut = 'terbaru',
+      batas = 20,
+      offset = 0,
+    } = kriteria;
+
+    const nilai = [STATUS.TERSEDIA];
+    const param = (v) => {
+      nilai.push(v);
+      return `$${nilai.length}`;
+    };
+    const syarat = ['b.status = $1', 'a.status_blokir = FALSE'];
+
+    for (const kata of daftarKata) {
+      const p = param(`%${loloskanPolaLike(kata)}%`);
+      syarat.push(`(b.judul ILIKE ${p} OR b.deskripsi_kondisi ILIKE ${p})`);
+    }
+    if (kategori) syarat.push(`b.id_kategori = ${param(kategori)}`);
+    if (lokasi) syarat.push(`b.id_lokasi = ${param(lokasi)}`);
+    if (hargaMin !== null) syarat.push(`b.harga >= ${param(hargaMin)}`);
+    if (hargaMaks !== null) syarat.push(`b.harga <= ${param(hargaMaks)}`);
+
+    const dari = `FROM barang b JOIN akun a ON a.id_akun = b.id_penjual WHERE ${syarat.join(' AND ')}`;
+    const urutan = URUTAN_KATALOG[urut] || URUTAN_KATALOG.terbaru;
+
+    const hasilHitung = await client.query(`SELECT COUNT(*)::int AS total ${dari}`, [...nilai]);
+    const total = hasilHitung.rows[0].total;
+
+    const pBatas = param(batas);
+    const pOffset = param(offset);
+    const { rows } = await client.query(
+      `SELECT b.id_barang, b.id_penjual, b.judul, b.harga, b.id_kategori, b.id_lokasi,
+              b.status, b.waktu_unggah, a.nama AS nama_penjual,
+              (SELECT f.path_berkas FROM foto_barang f
+               WHERE f.id_barang = b.id_barang ORDER BY f.urutan LIMIT 1) AS foto_utama
+       ${dari}
+       ORDER BY ${urutan}
+       LIMIT ${pBatas} OFFSET ${pOffset}`,
+      nilai,
+    );
+
+    const daftar = rows.map((baris) => {
+      const barang = this.dariBaris(baris);
+      barang.fotoUtama = baris.foto_utama;
+      barang.namaPenjual = baris.nama_penjual;
+      return barang;
+    });
+    return { daftar, total };
+  }
+
+  // Detail listing untuk pembeli (KF17): seluruh foto berurutan dan identitas penjual.
+  // Listing yang dinonaktifkan atau milik akun diblokir tidak dapat dibuka.
+  static async getDetailKatalog(idBarang, client = db) {
+    const { rows } = await client.query(
+      `SELECT b.id_barang, b.id_penjual, b.judul, b.harga, b.deskripsi_kondisi,
+              b.id_kategori, b.id_lokasi, b.status, b.waktu_unggah, b.waktu_ubah,
+              a.nama AS nama_penjual,
+              COALESCE(
+                (SELECT json_agg(json_build_object('idFoto', f.id_foto, 'pathBerkas', f.path_berkas)
+                                 ORDER BY f.urutan)
+                 FROM foto_barang f WHERE f.id_barang = b.id_barang),
+                '[]'::json
+              ) AS daftar_foto
+       FROM barang b JOIN akun a ON a.id_akun = b.id_penjual
+       WHERE b.id_barang = $1 AND b.status IN ($2, $3) AND a.status_blokir = FALSE
+       LIMIT 1`,
+      [idBarang, STATUS.TERSEDIA, STATUS.TERJUAL],
+    );
+    if (!rows[0]) return null;
+
+    const barang = this.dariBaris(rows[0]);
+    barang.daftarFoto = rows[0].daftar_foto;
+    barang.penjual = { idAkun: rows[0].id_penjual, nama: rows[0].nama_penjual };
+    return barang;
   }
 
   // Menghapus baris rekaman listing barang dari tabel barang pada basis data (KF21, KF50)
