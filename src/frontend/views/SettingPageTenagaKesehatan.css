@@ -1,0 +1,468 @@
+/* ==========================================================================
+   MahaSehat - SettingPageTenagaKesehatan.css
+   Gaya Halaman Setelan Praktik & Akun Tenaga Kesehatan
+   Anti-slop & Frontend-design: Tipografi Space Grotesk + DM Sans,
+   palet Warm Cream #FFFDF7 + Charcoal #2A3A3F + Teal #78C9C0 + Amber #F8C16F,
+   dan kartu putih konsisten dengan Dashboard & Konsultasi.
+   ========================================================================== */
+
+:root {
+    --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    --color-cream: #FFFDF7;
+    --color-white: #FFFFFF;
+    --color-charcoal: #2A3A3F;
+    --color-ink: #2A3A3F;
+    --color-ink-subtle: rgba(42, 58, 63, 0.72);
+    --color-ink-muted: #64748B;
+
+    --color-teal: #78C9C0;
+    --color-teal-dark: #58A89F;
+    --color-teal-subtle: rgba(120, 201, 192, 0.18);
+
+    --color-amber: #F8C16F;
+    --color-amber-hover: #EAB361;
+    --color-amber-subtle: rgba(248, 193, 111, 0.2);
+
+    --color-mist: #E2E8F0;
+    --color-mist-light: #F8FAFC;
+    --color-border: #E2E8F0;
+    --color-border-subtle: #F1F5F9;
+
+    --color-danger: #B5453B;
+    --color-danger-subtle: #FDF2F2;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--color-cream);
+    font-family: var(--font-body);
+    color: var(--color-ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   Viewport Utama & Formulir Setelan
+   (Gaya Sidebar Dikelola Terpusat di SidebarTenagaKesehatan.css)
+   ========================================================================== */
+
+.main-viewport {
+    flex: 1;
+    min-width: 0;
+    padding: 24px 32px 32px 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-title {
+    font-family: var(--font-heading);
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 6px;
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: var(--color-ink-subtle);
+}
+
+/* Toast Notifikasi Feedback */
+.feedback-toast {
+    padding: 14px 20px;
+    background-color: #DEF7EC;
+    color: #03543F;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid rgba(3, 84, 63, 0.2);
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(3, 84, 63, 0.08);
+}
+
+/* Grid Dua Kolom Setelan Nakes */
+.settings-grid-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.settings-column-left,
+.settings-column-right {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Kartu Putih Anti-Slop (Konsisten Presisi dengan Dashboard & Konsultasi) */
+.card-box {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px rgba(42, 58, 63, 0.02);
+}
+
+.card-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.card-box-title {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+}
+
+/* Form Styles */
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+.form-input {
+    width: 100%;
+    height: 46px;
+    padding: 0 16px;
+    background-color: var(--color-mist-light);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-ink);
+    outline: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-input:focus {
+    border-color: var(--color-teal);
+    background-color: var(--color-white);
+    box-shadow: 0 0 0 3px var(--color-teal-subtle);
+}
+
+.form-textarea {
+    height: auto;
+    min-height: 90px;
+    padding: 12px 16px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.form-row-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Checkboxes (Metode Konsultasi) */
+.checkbox-group-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.custom-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background-color: var(--color-mist-light);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-ink);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.custom-checkbox-label:hover {
+    background-color: var(--color-white);
+    border-color: var(--color-teal);
+}
+
+.custom-checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-teal);
+    cursor: pointer;
+}
+
+/* Toggle Switch Ketersediaan Pasien */
+.toggle-container-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background-color: var(--color-mist-light);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    margin-bottom: 4px;
+}
+
+.toggle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.toggle-title {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-ink);
+}
+
+.toggle-desc {
+    font-size: 12px;
+    color: var(--color-teal-dark);
+    font-weight: 600;
+}
+
+.switch-control {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+    flex-shrink: 0;
+}
+
+.switch-control input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-mist);
+    transition: 0.3s;
+    border-radius: 26px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+input:checked + .slider {
+    background-color: var(--color-teal);
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+/* Day Selector Chips */
+.days-selector-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.day-chip {
+    cursor: pointer;
+}
+
+.day-chip input {
+    display: none;
+}
+
+.day-chip span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-mist-light);
+    color: var(--color-ink);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+}
+
+.day-chip:hover span {
+    background-color: var(--color-white);
+    border-color: var(--color-teal);
+}
+
+.day-chip input:checked + span {
+    background-color: var(--color-teal);
+    border-color: var(--color-teal);
+    color: var(--color-charcoal);
+    font-weight: 700;
+}
+
+/* Slot Time Chips (Pill Style Konsisten Anti-Slop) */
+.time-slots-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.slot-chip {
+    cursor: pointer;
+}
+
+.slot-chip input {
+    display: none;
+}
+
+.slot-chip span {
+    display: flex;
+    align-items: center;
+    padding: 11px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-mist-light);
+    color: var(--color-ink);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+}
+
+.slot-chip:hover span {
+    background-color: var(--color-white);
+    border-color: var(--color-teal);
+}
+
+.slot-chip input:checked + span {
+    background-color: var(--color-teal-subtle);
+    border-color: var(--color-teal);
+    color: var(--color-charcoal);
+    font-weight: 700;
+}
+
+/* Keamanan Akun Card Box */
+.security-info {
+    margin-bottom: 20px;
+}
+
+.field-label-bold {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+.field-note {
+    font-size: 13px;
+    color: var(--color-ink-muted);
+    margin-top: 2px;
+}
+
+/* Pill Buttons (Kanonikal Sesuai Dashboard & Setting MahaSehat) */
+.form-actions {
+    margin-top: 6px;
+}
+
+.btn-primary-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    padding: 0 24px;
+    border-radius: 999px;
+    background-color: var(--color-amber);
+    color: var(--color-ink);
+    border: 1px solid rgba(42, 58, 63, 0.35);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-primary-pill:hover {
+    background-color: var(--color-amber-hover);
+    transform: translateY(-1px);
+}
+
+.btn-outline-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    padding: 0 24px;
+    border-radius: 999px;
+    background-color: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.btn-outline-pill:hover {
+    border-color: var(--color-charcoal);
+    color: var(--color-charcoal);
+    background-color: var(--color-mist-light);
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* Responsivitas */
+@media (max-width: 1024px) {
+    .settings-grid-top {
+        grid-template-columns: 1fr;
+    }
+}

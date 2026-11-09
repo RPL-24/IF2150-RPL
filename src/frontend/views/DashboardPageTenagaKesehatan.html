@@ -10,21 +10,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="SidebarTenagaKesehatan.css">
     <link rel="stylesheet" href="DashboardPageTenagaKesehatan.css">
 </head>
 <body>
     <div class="app-layout">
-        <!-- Floating Sidebar Navigasi (Sesuai Node 3960 & 4073 FigCraft) -->
+        <!-- Floating Sidebar Navigasi Nakes -->
         <aside class="app-sidebar" id="Sidebar">
             <div class="sidebar-top">
                 <div class="sidebar-header">
-                    <a href="DashboardPageTenagaKesehatan.html" class="brand-link">
+                    <a href="DashboardPageTenagaKesehatan.html" class="brand-link" id="Link_Brand">
                         <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
                         <span class="brand-title">MahaSehat</span>
                     </a>
                 </div>
 
-                <!-- Kolom Pencarian di Atas Menu (Node 4076 FigCraft) -->
+                <!-- Kolom Pencarian di Atas Menu -->
                 <div class="sidebar-search">
                     <span class="search-icon" aria-hidden="true">⌕</span>
                     <input type="text" class="search-input" placeholder="Cari" aria-label="Cari menu">
@@ -32,7 +33,7 @@
 
                 <!-- Menu Navigasi Utama -->
                 <nav class="nav-menu" aria-label="Menu utama">
-                    <a href="DashboardPageTenagaKesehatan.html" class="nav-item active" id="Menu_Dashboard">
+                    <a href="DashboardPageTenagaKesehatan.html" class="nav-item active" id="Menu_Dashboard" aria-current="page">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="3" width="7" height="7"></rect>
                             <rect x="14" y="3" width="7" height="7"></rect>
@@ -41,19 +42,20 @@
                         </svg>
                         <span class="nav-label">Dashboard</span>
                     </a>
-                    <a href="PengajuanKonsultasiPage.html" class="nav-item" id="Menu_Konsultasi">
+                    <a href="ManajemenKonsultasiPage.html" class="nav-item" id="Menu_Konsultasi">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                         </svg>
                         <span class="nav-label">Konsultasi</span>
+                        <span class="nav-badge" id="Badge_PendingCount">2</span>
                     </a>
 
                     <div class="menu-divider"></div>
 
-                    <a href="SettingPage.html" class="nav-item" id="Menu_Setelan">
+                    <a href="SettingPageTenagaKesehatan.html" class="nav-item" id="Menu_Setelan">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                         </svg>
                         <span class="nav-label">Setelan</span>
                     </a>
@@ -68,7 +70,7 @@
                 </nav>
             </div>
 
-            <!-- Profil Nakes Bawah Sidebar (Node 4120-4123 FigCraft) -->
+            <!-- Profil Nakes Bawah Sidebar -->
             <div class="sidebar-user" id="Info_User">
                 <div class="user-avatar" id="User_Avatar">R</div>
                 <div class="user-meta">
@@ -151,7 +153,7 @@
                     <p class="empty-msg" id="Text_PengajuanKosong" style="display: none;">Belum ada pengajuan konsultasi.</p>
 
                     <div class="card-box-footer">
-                        <a href="PengajuanKonsultasiPage.html" class="btn-primary-pill" id="Link_KelolaPengajuan">Kelola Pengajuan</a>
+                        <a href="ManajemenKonsultasiPage.html" class="btn-primary-pill" id="Link_KelolaPengajuan">Kelola Pengajuan</a>
                     </div>
                 </section>
 
