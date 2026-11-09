@@ -7,9 +7,12 @@ const Pesan = require('../models/Pesan');
 const Barang = require('../models/Barang');
 const FotoBarang = require('../models/FotoBarang');
 const Akun = require('../models/Akun');
+const NotifikasiController = require('./NotifikasiController');
 
 const TAUTAN_KEBIJAKAN_PRIVASI = '/legal?jenis=kebijakan-privasi'; // KF39, halaman legal modul A
 const PESAN_TIDAK_TERBUKA = '[Pesan tidak dapat dibuka]';
+const PANJANG_MAKS_PESAN = 2000;
+const PANJANG_MAKS_CUPLIKAN = 80;
 // Kolom id bertipe UUID; id lain ditolak lebih awal agar tidak menjadi galat kueri
 const POLA_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -71,6 +74,59 @@ class PercakapanController {
       })),
       tautanKebijakanPrivasi: TAUTAN_KEBIJAKAN_PRIVASI,
     });
+  }
+
+  // KF36
+  static enkripsiPesan(isi) {
+    return Kriptografi.enkripsi(isi);
+  }
+
+  static potongCuplikan(isi) {
+    return isi.length > PANJANG_MAKS_CUPLIKAN ? `${isi.slice(0, PANJANG_MAKS_CUPLIKAN - 1)}…` : isi;
+  }
+
+  // Algo-018 (KF32, KF34, KF35, KF36)
+  static async kirimPesan(idAkun, idPercakapan, isi) {
+    const isiBersih = typeof isi === 'string' ? isi.trim() : '';
+    if (isiBersih === '') return gagal(400, 'Isi pesan tidak boleh kosong.');
+    if (isiBersih.length > PANJANG_MAKS_PESAN) {
+      return gagal(400, `Isi pesan maksimal ${PANJANG_MAKS_PESAN} karakter.`);
+    }
+
+    if (!POLA_UUID.test(String(idPercakapan ?? ''))) return gagal(404, 'Percakapan tidak ditemukan.');
+    const percakapan = await Percakapan.cariById(idPercakapan);
+    if (percakapan === null) return gagal(404, 'Percakapan tidak ditemukan.');
+    if (!PercakapanController.verifikasiPeserta(idAkun, percakapan)) {
+      return gagal(403, 'Anda bukan peserta percakapan ini.');
+    }
+
+    // shortcut: simpan pesan dan perbarui waktu tanpa transaksi; bila update gagal, pesan tetap tersimpan
+    // dan urutan daftar saja yang tertinggal. Pakai transaksi bila model menerima client.
+    const pesanBaru = await percakapan.addPesan(idAkun, PercakapanController.enkripsiPesan(isiBersih));
+    await percakapan.perbaruiWaktuTerakhir(pesanBaru.waktuKirim || new Date());
+
+    const idPenerima = idAkun === percakapan.idPembeli ? percakapan.idPenjual : percakapan.idPembeli;
+    await PercakapanController.beritahuPenerima(percakapan, idPenerima, isiBersih);
+
+    return sukses(201, {
+      idPesan: pesanBaru.idPesan,
+      idPengirim: idAkun,
+      isi: isiBersih,
+      waktuKirim: pesanBaru.waktuKirim,
+      dariSaya: true,
+    });
+  }
+
+  // KF34: kegagalan notifikasi hanya dicatat, pesan tetap terkirim
+  static async beritahuPenerima(percakapan, idPenerima, isi) {
+    try {
+      // Lawan bicara dari sisi penerima adalah pengirim
+      const pengirim = await percakapan.getLawanBicara(idPenerima);
+      const nama = pengirim ? pengirim.nama : 'Pengguna ITBELI';
+      await NotifikasiController.kirimNotifikasi(idPenerima, 'pesan', `${nama}: ${PercakapanController.potongCuplikan(isi)}`);
+    } catch (galat) {
+      console.error('Notifikasi pesan baru gagal dikirim:', galat);
+    }
   }
 
   // Kartu ringkas barang pada kepala ruang; null bila listing sudah dihapus (id_barang ON DELETE SET NULL)
