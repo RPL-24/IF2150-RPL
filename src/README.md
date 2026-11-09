@@ -34,6 +34,7 @@ Arsitektur mengikuti DPPL (`docs/M8/K01_G04_DPPL2.md`): Client-Server + MVC, den
 | Expo Router | ~58.0.30 (navigasi berbasis file) |
 | Plus Jakarta Sans | `@expo-google-fonts/plus-jakarta-sans` ^0.4.2 |
 | Ikon | `lucide-react-native` ^1.69.0 + `react-native-svg` 15.16.0 |
+| Notifikasi push | `expo-notifications` ~58.1.8 + `expo-device` ~58.0.5 |
 | Linter | ESLint 9 + `eslint-config-expo` |
 | Test | Vitest ^5.1.0 |
 
@@ -71,7 +72,7 @@ src/
       components/         # komponen bersama dari Figma (Tombol, IsianTeks, Banner, ...)
       theme/              # token desain: warna, font, gaya teks, jarak, sudut
       api/                # klien HTTP ke backend, login, dan sesi (SecureStore)
-      lib/                # sesi pengguna bersama (useSesi)
+      lib/                # sesi pengguna bersama (useSesi), pendaftaran notifikasi push
     bun.lock              # lockfile Bun
     test/                 # unit test Vitest (vitest.config.mts)
   backend/                # Cloudflare Worker (Hono + D1): REST API dan cron
@@ -215,9 +216,22 @@ bunx expo lint     # ESLint
 bun run test       # unit test Vitest (test/)
 ```
 
-Unit test di `src/mobile/test/` menguji logika TypeScript murni, seperti klien API (`client.test.ts`): URL dan header `Authorization`, amplop galat menjadi `ApiError`, *callback* 401, serta kode `JARINGAN_GAGAL`, `BATAS_WAKTU`, dan `KONFIGURASI_TIDAK_VALID`. `fetch` diganti tiruan, sehingga tidak perlu backend yang berjalan. Layar dan komponen tidak dirender di test; keduanya diperiksa langsung di Expo Go.
+Unit test di `src/mobile/test/` menguji logika TypeScript murni, seperti klien API (`client.test.ts`): URL dan header `Authorization`, amplop galat menjadi `ApiError`, *callback* 401, serta kode `JARINGAN_GAGAL`, `BATAS_WAKTU`, dan `KONFIGURASI_TIDAK_VALID`. `fetch` diganti tiruan, sehingga tidak perlu backend yang berjalan. Kode yang memakai modul *native* (misalnya `notifikasi.test.ts`) diuji dengan mengganti `react-native` dan modul Expo menggunakan `vi.mock`, karena modul tersebut tidak dapat dimuat di Node. Layar dan komponen tidak dirender di test; keduanya diperiksa langsung di Expo Go.
 
 Layar pertama adalah I-01 Masuk. Untuk mencoba aplikasi tanpa akun Google, gunakan tombol "Mode demo" (bagian 6).
+
+#### Notifikasi push
+
+Setelah login (Google maupun demo), aplikasi meminta izin notifikasi, mengambil Expo push token, lalu mengirimkannya ke `POST /api/auth/device` (Algo-003, `src/mobile/src/lib/notifikasi.ts`). Backend menyimpan token pada sesi aktif dan mengakhiri sesi lain yang memakai perangkat yang sama, lalu tugas *cron* mengirim afirmasi dan pengingat ke token tersebut. Pendaftaran berjalan di latar belakang: bila izin ditolak atau terjadi galat, login tetap berhasil dan perangkat hanya tidak menerima notifikasi.
+
+| Lingkungan | Notifikasi push |
+|---|---|
+| Expo Go di Android | Tidak didukung sejak Expo SDK 53; pendaftaran dilewati tanpa meminta izin. Gunakan *development build* atau APK (bagian Rilis). |
+| Expo Go di iOS | Didukung. |
+| Emulator Android / simulator iOS | Dilewati tanpa meminta izin (`Device.isDevice` bernilai `false`). Uji notifikasi di perangkat fisik. |
+| APK / *development build* di perangkat fisik | Didukung. Di Android, pengiriman memerlukan kredensial FCM V1 yang diunggah ke proyek EAS (`tszcodess-team`), lihat [panduan Expo](https://docs.expo.dev/push-notifications/fcm-credentials/). |
+
+Untuk memeriksa pendaftaran, buka `bun run db:studio:local` dan lihat kolom `token_push` pada tabel `sesi_autentikasi`. Notifikasi uji dapat dikirim ke token tersebut melalui [Expo push notifications tool](https://expo.dev/notifications).
 
 ### Backend
 
