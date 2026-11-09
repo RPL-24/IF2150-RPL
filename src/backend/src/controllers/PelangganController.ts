@@ -40,15 +40,7 @@ export class PelangganController extends PenggunaController {
             res.status(201).json({
                 success: true,
                 message: 'Registrasi pelanggan berhasil.',
-                data: {
-                    idPengguna: savedPelanggan.idPengguna,
-                    namaPengguna: savedPelanggan.namaPengguna,
-                    username: savedPelanggan.username,
-                    email: savedPelanggan.email,
-                    nomorTelpon: savedPelanggan.nomorTelepon,
-                    role: savedPelanggan.role,
-                    avatarUrl: savedPelanggan.avatarUrl,
-                },
+                data: savedPelanggan.toResponse(),
             });
             return;
         } catch (error) {

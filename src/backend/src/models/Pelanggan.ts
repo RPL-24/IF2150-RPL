@@ -37,7 +37,18 @@ export class Pelanggan extends Pengguna {
             riwayatRating: [],
             });
     }
-
+    public toResponse() {
+        return {
+            idPengguna: this.idPengguna,
+            namaPengguna: this.namaPengguna,
+            username: this.username,
+            email: this.email,
+            nomorTelpon: this.nomorTelepon,
+            nomorTelepon: this.nomorTelepon,
+            role: this.role,
+            avatarUrl: this.avatarUrl,
+        };
+    }
     public async simpanKeDb(): Promise<Pelanggan> {
     const saved = await prisma.pengguna.create({
       data: {
