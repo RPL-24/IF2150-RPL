@@ -37,7 +37,7 @@ export function AppLayout({
       <div className="flex min-h-screen w-full flex-col overflow-hidden bg-[#e6e0c8]">
         {showHeader && (
           <header
-            className={`bg-[#f56369] px-5 pb-5 pt-7 text-[#fff4f2] sm:px-6 lg:px-8 ${headerClassName}`}
+            className={`px-5 pb-5 pt-7 text-[#fff4f2] sm:px-6 lg:px-8 ${headerClassName || "bg-[#f56369]"}`}
           >
             {title ? (
               typeof title === "string" ? (

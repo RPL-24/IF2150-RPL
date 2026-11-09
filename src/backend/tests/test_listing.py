@@ -88,9 +88,6 @@ def test_tambah_dan_ambil_listing_dari_sqlite(listing_client):
 
     response = client.post("/api/listing/", json=_payload())
     assert response.status_code == 201
-<<<<<<< Updated upstream
-    assert "message" in response.json()
-=======
     created = response.json()
     assert created["nama_makanan"] == "Roti Surplus"
     assert created["tersedia"] is True
@@ -186,4 +183,3 @@ def test_upload_foto_route_memakai_service_dan_mewajibkan_auth(listing_client, m
     )
     assert response.status_code == 200
     assert response.json() == {"foto": "/uploads/listing/test.png"}
->>>>>>> Stashed changes

@@ -3,6 +3,7 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { DataListingPayload, uploadFotoListing, urlFoto } from "@/lib/api";
+import { AppLayout } from "@/components/layout";
 import DialogKonfirmasiKeluar from "./DialogKonfirmasiKeluar";
 
 interface FormListingProps {
@@ -141,12 +142,22 @@ interface FormListingProps {
         }
     };
 
+    const isFormValid = validasiListing().length === 0;
+
     return (
-        <>
-        <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-6 rounded-lg bg-white p-6 shadow-md">
-            <h2 className="text-2xl font-bold text-gray-800">
-            {isEditing ? "Edit Listing Makanan" : "Tambah Listing Makanan Baru"}
-            </h2>
+        <AppLayout
+            role="seller"
+            isAuthenticated
+            title={
+                <h1 className="text-xl font-bold tracking-normal text-white">
+                    {isEditing ? "Edit Product" : "Add Product"}
+                </h1>
+            }
+            headerClassName="bg-[#1bb0c7] px-5 pb-5 pt-8"
+            bodyClassName="bg-[#e6e0c8] px-4 py-6 sm:px-6"
+        >
+        <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-6 rounded-2xl bg-[#f7f0dc] p-5 shadow-sm sm:p-7">
+            <h2 className="text-lg font-bold text-[#264b4d]">Product details</h2>
 
             {/* Pesan Error Validasi */}
             {errors.length > 0 && (
@@ -160,31 +171,43 @@ interface FormListingProps {
             </div>
             )}
 
+            {/* Foto produk berada di bagian atas sesuai UI-06 */}
+            <div>
+            <p className="block text-sm font-bold text-[#264b4d]">
+                Product Photo* <span className="font-normal text-[#60756b]">(PNG/JPG, maks. 10 MB)</span>
+            </p>
+            <label
+                htmlFor="foto-listing"
+                className="mt-2 flex min-h-28 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#ef5a61] bg-white/60 px-4 py-5 text-center text-sm font-semibold text-[#d84b54] hover:bg-white"
+            >
+                <span className="text-2xl leading-none" aria-hidden="true">+</span>
+                <span>{fileFoto ? fileFoto.name : "Add Photo"}</span>
+                <input
+                    id="foto-listing"
+                    type="file"
+                    accept="image/png, image/jpeg, image/jpg"
+                    aria-label="Product Photo"
+                    onChange={handleFotoChange}
+                    className="sr-only"
+                />
+            </label>
+            {fotoPreview && (
+                <div className="mt-3">
+                <img src={fotoPreview} alt="Product photo preview" className="h-32 w-32 rounded-xl border border-[#d8cfb4] object-cover" />
+                </div>
+            )}
+            </div>
+
             {/* Nama Makanan */}
             <div>
-            <label className="block text-sm font-medium text-gray-700">Nama Makanan *</label>
+            <label htmlFor="nama-makanan" className="block text-sm font-bold text-[#264b4d]">Product Name *</label>
             <input
+                id="nama-makanan"
                 type="text"
                 value={namaMakanan}
                 onChange={(e) => { setNamaMakanan(e.target.value); setIsDirty(true); }}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="Contoh: Nasi Goreng Spesial"
-                required
-            />
-            </div>
-
-            {/* Deskripsi */}
-            <div>
-            <label className="block text-sm font-medium text-gray-700">
-                Deskripsi * <span className="text-gray-500">({deskripsi.length}/3000)</span>
-            </label>
-            <textarea
-                value={deskripsi}
-                onChange={(e) => { setDeskripsi(e.target.value); setIsDirty(true); }}
-                rows={3}
-                maxLength={3000}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="Deskripsi kondisi makanan atau detail porsi..."
+                className="mt-1 w-full rounded-xl border border-[#d8cfb4] bg-white/80 px-4 py-3 text-[#264b4d] shadow-sm focus:border-[#1a8ca1] focus:outline-none focus:ring-2 focus:ring-[#1a8ca1]/20"
+                placeholder="Enter product name"
                 required
             />
             </div>
@@ -192,23 +215,25 @@ interface FormListingProps {
             {/* Porsi & Kondisi */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-                <label className="block text-sm font-medium text-gray-700">Porsi *</label>
+                <label htmlFor="porsi" className="block text-sm font-bold text-[#264b4d]">Porsi *</label>
                 <input
+                id="porsi"
                 type="text"
                 value={porsi}
                 onChange={(e) => { setPorsi(e.target.value); setIsDirty(true); }}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2 shadow-sm"
+                className="mt-1 w-full rounded-xl border border-[#d8cfb4] bg-white/80 px-4 py-3 text-[#264b4d] shadow-sm focus:border-[#1a8ca1] focus:outline-none focus:ring-2 focus:ring-[#1a8ca1]/20"
                 placeholder="Contoh: 1 Porsi / 500gr"
                 required
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Kondisi *</label>
+                <label htmlFor="kondisi" className="block text-sm font-bold text-[#264b4d]">Kondisi *</label>
                 <select
+                id="kondisi"
                 value={kondisi}
                 onChange={(e) => { setKondisi(e.target.value); setIsDirty(true); }}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2 shadow-sm"
+                className="mt-1 w-full rounded-xl border border-[#d8cfb4] bg-white/80 px-4 py-3 text-[#264b4d] shadow-sm focus:border-[#1a8ca1] focus:outline-none focus:ring-2 focus:ring-[#1a8ca1]/20"
                 >
                 <option value="Sangat Baik">Sangat Baik</option>
                 <option value="Baik">Baik</option>
@@ -220,85 +245,87 @@ interface FormListingProps {
             {/* Harga & Stok */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-                <label className="block text-sm font-medium text-gray-700">Harga (Rp) *</label>
+                <label htmlFor="harga" className="block text-sm font-bold text-[#264b4d]">Price (Rp) *</label>
                 <input
+                id="harga"
                 type="number"
                 min="0"
                 value={harga}
                 onChange={(e) => { setHarga(e.target.value === "" ? "" : Number(e.target.value)); setIsDirty(true); }}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2 shadow-sm"
+                className="mt-1 w-full rounded-xl border border-[#d8cfb4] bg-white/80 px-4 py-3 text-[#264b4d] shadow-sm focus:border-[#1a8ca1] focus:outline-none focus:ring-2 focus:ring-[#1a8ca1]/20"
                 required
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Stok *</label>
+                <label htmlFor="stok" className="block text-sm font-bold text-[#264b4d]">Stock *</label>
                 <input
+                id="stok"
                 type="number"
                 min="0"
                 value={stok}
                 onChange={(e) => { setStok(e.target.value === "" ? "" : Number(e.target.value)); setIsDirty(true); }}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2 shadow-sm"
+                className="mt-1 w-full rounded-xl border border-[#d8cfb4] bg-white/80 px-4 py-3 text-[#264b4d] shadow-sm focus:border-[#1a8ca1] focus:outline-none focus:ring-2 focus:ring-[#1a8ca1]/20"
                 required
                 />
             </div>
             </div>
 
-            {/* Batas Kedaluwarsa */}
+            {/* Deskripsi */}
             <div>
-            <label className="block text-sm font-medium text-gray-700">Batas Kedaluwarsa *</label>
-            <input
-                type="datetime-local"
-                value={batasKedaluwarsa}
-                onChange={(e) => { setBatasKedaluwarsa(e.target.value); setIsDirty(true); }}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2 shadow-sm"
+            <label htmlFor="deskripsi" className="block text-sm font-bold text-[#264b4d]">
+                Description * <span className="font-normal text-[#60756b]">{deskripsi.length}/3000</span>
+            </label>
+            <textarea
+                id="deskripsi"
+                value={deskripsi}
+                onChange={(e) => { setDeskripsi(e.target.value); setIsDirty(true); }}
+                rows={3}
+                maxLength={3000}
+                className="mt-1 w-full rounded-xl border border-[#d8cfb4] bg-white/80 px-4 py-3 text-[#264b4d] shadow-sm focus:border-[#1a8ca1] focus:outline-none focus:ring-2 focus:ring-[#1a8ca1]/20"
+                placeholder="Describe the product"
                 required
             />
             </div>
 
-            {/* Upload Foto */}
+            {/* Batas Kedaluwarsa */}
             <div>
-            <label className="block text-sm font-medium text-gray-700">Foto Listing * (PNG/JPG, Maks 10MB)</label>
+            <label htmlFor="batas-kedaluwarsa" className="block text-sm font-bold text-[#264b4d]">Expiry Date *</label>
             <input
-                type="file"
-                accept="image/png, image/jpeg, image/jpg"
-                required={!fotoPath && !fileFoto}
-                onChange={handleFotoChange}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-indigo-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-indigo-700 hover:file:bg-indigo-100"
+                id="batas-kedaluwarsa"
+                type="datetime-local"
+                value={batasKedaluwarsa}
+                onChange={(e) => { setBatasKedaluwarsa(e.target.value); setIsDirty(true); }}
+                className="mt-1 w-full rounded-xl border border-[#d8cfb4] bg-white/80 px-4 py-3 text-[#264b4d] shadow-sm focus:border-[#1a8ca1] focus:outline-none focus:ring-2 focus:ring-[#1a8ca1]/20"
+                required
             />
-            {fotoPreview && (
-                <div className="mt-3">
-                <img src={fotoPreview} alt="Preview Foto" className="h-32 w-32 rounded-lg object-cover border" />
-                </div>
-            )}
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-3 pt-4 border-t">
+            <div className="flex justify-end gap-3 border-t border-[#d9d1b5] pt-5">
             <button
                 type="button"
                 onClick={handleBatalClick}
                 disabled={isSubmitting}
-                className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                className="rounded-xl border border-[#d8cfb4] bg-white px-4 py-3 text-sm font-semibold text-[#496864] hover:bg-[#f3efe6]"
             >
-                Batal
+                Cancel
             </button>
             <button
                 type="submit"
-                disabled={isSubmitting}
-                className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+                disabled={isSubmitting || !isFormValid}
+                className="rounded-xl bg-[#1a8ca1] px-5 py-3 text-sm font-bold text-white hover:bg-[#14798b] disabled:cursor-not-allowed disabled:opacity-50"
             >
-                {isSubmitting ? "Menyimpan..." : isEditing ? "Simpan Perubahan" : "Tambah Listing"}
+                {isSubmitting ? "Saving..." : isEditing ? "Save Changes" : "Show"}
             </button>
             </div>
         </form>
 
-        {/* Dialog Konfirmasi Keluar (UC01 / UC06 Alternate Scenario) */}
         <DialogKonfirmasiKeluar
             isOpen={showExitModal}
             onConfirm={() => router.push("/penjual/listing")}
             onCancel={() => setShowExitModal(false)}
         />
-        </>
+        </AppLayout>
     );
 }
