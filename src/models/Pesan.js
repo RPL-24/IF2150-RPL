@@ -55,6 +55,16 @@ class Pesan {
     return Pesan.dariBaris(rows[0]);
   }
 
+  // Algo-017 (KF34): membuka ruang menandai pesan dari lawan bicara sebagai sudah dibaca
+  static async tandaiDibaca(idPercakapan, idAkun) {
+    const { rowCount } = await db.query(
+      `UPDATE pesan SET status_baca = true
+       WHERE id_percakapan = $1 AND id_pengirim <> $2 AND status_baca = false`,
+      [idPercakapan, idAkun],
+    );
+    return rowCount;
+  }
+
   // Algo-048 (KF34)
   static async hitungPesanBelumDibaca(idPercakapan, idAkun) {
     const { rows } = await db.query(
