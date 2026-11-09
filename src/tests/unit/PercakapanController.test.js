@@ -216,3 +216,66 @@ describe('PercakapanController.kirimPesan (UC17, KF32, KF34, KF36)', () => {
     expect(console.error).toHaveBeenCalled();
   });
 });
+
+describe('PercakapanController.getDaftarPercakapan (UC18, KF33, KF34)', () => {
+  const WAKTU_PESAN = new Date('2026-11-09T09:30:00Z');
+
+  test('daftar memuat lawan bicara, judul barang, cuplikan terdekripsi, dan hitung belum dibaca', async () => {
+    const tanpaPesan = new Percakapan({
+      idPercakapan: '66666666-6666-4666-8666-666666666666',
+      idPembeli: ID_PEMBELI,
+      idPenjual: ID_PENJUAL,
+      idBarang: null,
+      waktuPembaruanTerakhir: new Date('2026-11-08T10:00:00Z'),
+    });
+    jest.spyOn(Percakapan, 'getDaftarPercakapanByPengguna').mockResolvedValue([percakapanContoh(), tanpaPesan]);
+    jest.spyOn(Percakapan.prototype, 'getLawanBicara').mockResolvedValue({ idAkun: ID_PEMBELI, nama: 'Ani' });
+    jest.spyOn(Barang, 'cariById').mockResolvedValue(barangContoh());
+    jest
+      .spyOn(Pesan, 'getCuplikanPesanTerakhir')
+      .mockImplementation(async (idPercakapan) =>
+        idPercakapan === ID_PERCAKAPAN
+          ? new Pesan({ idPengirim: ID_PEMBELI, isiPesanTerenkripsi: Kriptografi.enkripsi('Bisa COD?'), waktuKirim: WAKTU_PESAN })
+          : null,
+      );
+    jest
+      .spyOn(Pesan, 'hitungPesanBelumDibaca')
+      .mockImplementation(async (idPercakapan) => (idPercakapan === ID_PERCAKAPAN ? 3 : 0));
+
+    const hasil = await PercakapanController.getDaftarPercakapan(ID_PENJUAL);
+
+    expect(Percakapan.getDaftarPercakapanByPengguna).toHaveBeenCalledWith(ID_PENJUAL);
+    expect(Pesan.hitungPesanBelumDibaca).toHaveBeenCalledWith(ID_PERCAKAPAN, ID_PENJUAL);
+    expect(hasil).toEqual({
+      berhasil: true,
+      status: 200,
+      data: [
+        {
+          idPercakapan: ID_PERCAKAPAN,
+          idBarang: ID_BARANG,
+          judulBarang: 'Jas Lab',
+          lawanBicara: { idAkun: ID_PEMBELI, nama: 'Ani' },
+          cuplikan: { isi: 'Bisa COD?', waktuKirim: WAKTU_PESAN, dariSaya: false },
+          belumDibaca: 3,
+          waktuPembaruanTerakhir: new Date('2026-11-09T10:00:00Z'),
+        },
+        expect.objectContaining({ idBarang: null, judulBarang: null, cuplikan: null, belumDibaca: 0 }),
+      ],
+    });
+  });
+
+  test('cuplikan yang gagal didekripsi tampil sebagai teks pengganti', async () => {
+    jest.spyOn(Pesan, 'getCuplikanPesanTerakhir').mockResolvedValue(
+      new Pesan({ idPengirim: ID_PENJUAL, isiPesanTerenkripsi: 'rusak', waktuKirim: WAKTU_PESAN }),
+    );
+
+    const cuplikan = await PercakapanController.ambilCuplikanPesanTerakhir(ID_PERCAKAPAN, ID_PENJUAL);
+
+    expect(cuplikan).toEqual({ isi: '[Pesan tidak dapat dibuka]', waktuKirim: WAKTU_PESAN, dariSaya: true });
+  });
+
+  test('pengguna tanpa percakapan mendapat daftar kosong', async () => {
+    jest.spyOn(Percakapan, 'getDaftarPercakapanByPengguna').mockResolvedValue([]);
+    expect(await PercakapanController.getDaftarPercakapan(ID_ADMIN)).toEqual({ berhasil: true, status: 200, data: [] });
+  });
+});
