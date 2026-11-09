@@ -7,6 +7,7 @@ const Pesan = require('../../models/Pesan');
 const Barang = require('../../models/Barang');
 const FotoBarang = require('../../models/FotoBarang');
 const Akun = require('../../models/Akun');
+const NotifikasiController = require('../../controllers/NotifikasiController');
 
 const ID_PEMBELI = '11111111-1111-4111-8111-111111111111';
 const ID_PENJUAL = '22222222-2222-4222-8222-222222222222';
@@ -140,5 +141,83 @@ describe('PercakapanController.bukaPercakapan (UC16, KF35, KF36)', () => {
     const hasil = await PercakapanController.bukaPercakapan(ID_PENJUAL, ID_PERCAKAPAN);
 
     expect(hasil.data.barang).toBeNull();
+  });
+});
+
+describe('PercakapanController.kirimPesan (UC17, KF32, KF34, KF36)', () => {
+  const WAKTU = new Date('2026-11-09T11:00:00Z');
+
+  beforeEach(() => {
+    jest.spyOn(Percakapan, 'cariById').mockResolvedValue(percakapanContoh());
+    jest
+      .spyOn(Percakapan.prototype, 'addPesan')
+      .mockImplementation(async (idPengirim, isiPesanTerenkripsi) =>
+        new Pesan({ idPesan: 'p-baru', idPengirim, isiPesanTerenkripsi, waktuKirim: WAKTU, statusBaca: false }),
+      );
+    jest.spyOn(Percakapan.prototype, 'perbaruiWaktuTerakhir').mockResolvedValue();
+    jest.spyOn(Percakapan.prototype, 'getLawanBicara').mockResolvedValue({ idAkun: ID_PEMBELI, nama: 'Ani' });
+    jest.spyOn(NotifikasiController, 'kirimNotifikasi').mockResolvedValue({});
+  });
+
+  test.each([[''], ['   \n '], [undefined], [123]])('isi kosong atau bukan teks (%p) ditolak 400', async (isi) => {
+    const hasil = await PercakapanController.kirimPesan(ID_PEMBELI, ID_PERCAKAPAN, isi);
+
+    expect(hasil).toMatchObject({ berhasil: false, status: 400 });
+    expect(Percakapan.prototype.addPesan).not.toHaveBeenCalled();
+  });
+
+  test('isi lebih dari 2000 karakter ditolak 400, tepat 2000 diterima', async () => {
+    expect(await PercakapanController.kirimPesan(ID_PEMBELI, ID_PERCAKAPAN, 'a'.repeat(2001))).toMatchObject({
+      status: 400,
+    });
+    expect(await PercakapanController.kirimPesan(ID_PEMBELI, ID_PERCAKAPAN, 'a'.repeat(2000))).toMatchObject({
+      status: 201,
+    });
+  });
+
+  test('non-peserta ditolak 403 dan tidak ada pesan tersimpan', async () => {
+    const hasil = await PercakapanController.kirimPesan(ID_ADMIN, ID_PERCAKAPAN, 'Halo');
+
+    expect(hasil).toMatchObject({ berhasil: false, status: 403 });
+    expect(Percakapan.prototype.addPesan).not.toHaveBeenCalled();
+    expect(NotifikasiController.kirimNotifikasi).not.toHaveBeenCalled();
+  });
+
+  test('isi tersimpan terenkripsi, waktu diperbarui, dan respons berisi teks murni', async () => {
+    const hasil = await PercakapanController.kirimPesan(ID_PEMBELI, ID_PERCAKAPAN, '  Jas labnya masih ada?  ');
+
+    const [idPengirim, isiTersimpan] = Percakapan.prototype.addPesan.mock.calls[0];
+    expect(idPengirim).toBe(ID_PEMBELI);
+    expect(isiTersimpan).not.toContain('Jas labnya');
+    expect(Kriptografi.dekripsi(isiTersimpan)).toBe('Jas labnya masih ada?');
+    expect(Percakapan.prototype.perbaruiWaktuTerakhir).toHaveBeenCalledWith(WAKTU);
+    expect(hasil).toEqual({
+      berhasil: true,
+      status: 201,
+      data: { idPesan: 'p-baru', idPengirim: ID_PEMBELI, isi: 'Jas labnya masih ada?', waktuKirim: WAKTU, dariSaya: true },
+    });
+  });
+
+  test('penerima (lawan bicara) diberi notifikasi berisi nama pengirim dan cuplikan <= 80 karakter', async () => {
+    const isiPanjang = 'x'.repeat(150);
+    await PercakapanController.kirimPesan(ID_PEMBELI, ID_PERCAKAPAN, isiPanjang);
+
+    expect(Percakapan.prototype.getLawanBicara).toHaveBeenCalledWith(ID_PENJUAL);
+    const [idPenerima, jenis, isi] = NotifikasiController.kirimNotifikasi.mock.calls[0];
+    expect(idPenerima).toBe(ID_PENJUAL);
+    expect(jenis).toBe('pesan');
+    expect(isi.startsWith('Ani: ')).toBe(true);
+    expect(isi.length - 'Ani: '.length).toBeLessThanOrEqual(80);
+  });
+
+  test('kegagalan notifikasi tidak menggagalkan kirim pesan', async () => {
+    NotifikasiController.kirimNotifikasi.mockRejectedValue(new Error('db notifikasi mati'));
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    const hasil = await PercakapanController.kirimPesan(ID_PENJUAL, ID_PERCAKAPAN, 'Masih, kak');
+
+    expect(hasil).toMatchObject({ berhasil: true, status: 201 });
+    expect(NotifikasiController.kirimNotifikasi.mock.calls[0][0]).toBe(ID_PEMBELI);
+    expect(console.error).toHaveBeenCalled();
   });
 });
