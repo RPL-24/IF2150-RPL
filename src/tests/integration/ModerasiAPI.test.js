@@ -33,6 +33,31 @@ describe('API Moderasi Dasbor Admin Integration Test (UC20, UC22, UC23, UC24)', 
       expect(res.body.sukses).toBe(false);
       expect(res.body.pesan).toMatch(/admin/i);
     });
+
+    test('seluruh endpoint /api/admin/* menolak akun non-admin dengan status 403 (KF56)', async () => {
+      jest.spyOn(Otorisasi, 'verifikasiToken').mockResolvedValue({
+        getIdAkun: () => 'user-biasa-id',
+      });
+      jest.spyOn(Otorisasi, 'verifikasiAdmin').mockResolvedValue(null);
+
+      const endpoints = [
+        { method: 'get', url: '/api/admin/laporan' },
+        { method: 'get', url: '/api/admin/laporan/statistik' },
+        { method: 'get', url: '/api/admin/laporan/lap-test' },
+        { method: 'patch', url: '/api/admin/laporan/lap-test/status', body: { status: 'Diproses' } },
+        { method: 'delete', url: '/api/admin/laporan/lap-test/barang/brg-test', body: { alasan: 'Pelanggaran' } },
+        { method: 'post', url: '/api/admin/akun/usr-test/blokir', body: { alasan: 'Pelanggaran' } },
+        { method: 'post', url: '/api/admin/akun/usr-test/buka-blokir', body: { alasan: 'Buka blokir' } },
+      ];
+
+      for (const ep of endpoints) {
+        const req = request(app)[ep.method](ep.url).set('Authorization', 'Bearer token-user-bukan-admin');
+        if (ep.body) req.send(ep.body);
+        const res = await req;
+        expect(res.status).toBe(403);
+        expect(res.body.sukses).toBe(false);
+      }
+    });
   });
 
   describe('GET /api/admin/laporan & /api/admin/laporan/statistik (KF45, KF46)', () => {
