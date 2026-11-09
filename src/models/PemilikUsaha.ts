@@ -38,6 +38,32 @@ export class PemilikUsaha {
     return data === true;
   }
 
+  static async muatSaatIni(): Promise<PemilikUsaha> {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+
+    if (userError || !userData.user) {
+      throw new Error('Pengguna belum login');
+    }
+
+    const { data, error } = await supabase
+      .from('tbl_pemilik_usaha')
+      .select('username, email, nama_usaha, no_telp')
+      .eq('id', userData.user.id)
+      .single();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return new PemilikUsaha(
+      data.username,
+      data.email,
+      '',
+      data.nama_usaha ?? '',
+      data.no_telp ?? '',
+    );
+  }
+  
   getUsername(): string {
     return this.username;
   }
@@ -62,6 +88,15 @@ export class PemilikUsaha {
   async setNoTelp(nilai: string): Promise<void> {
     await this.updateKolom('no_telp', nilai);
     this.noTelp = nilai;
+  }
+
+  async setEmail(nilai: string): Promise<void> {
+    const emailBaru = nilai.trim().toLowerCase();
+    const { error } = await supabase.auth.updateUser({ email: emailBaru });
+
+    if (error) {
+      throw new Error(error.message);
+    }
   }
 
   async setPassword(passwordBaru: string): Promise<void> {

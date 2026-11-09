@@ -16,3 +16,7 @@ export function isKonfirmasiPasswordSesuai(
 ): boolean {
   return password.length > 0 && password === konfirmasi;
 }
+
+export function isNoTelpValid(noTelp: string): boolean {
+  return /^\d+$/.test(noTelp.replace(/[\s-]/g, ''));
+}
