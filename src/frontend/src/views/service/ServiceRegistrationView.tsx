@@ -1,9 +1,18 @@
+/**
+ * [Naufal Hasbialhaq] UI-16 Daftar Penyedia Jasa
+ * Traceability: UC01 Mendaftarkan Jasa (Skenario Normal & Skenario Alternatif 1), KF04, KF05,
+ * Kelas DPPL C14 KategoriJasaUI, C05 PemberiJasaUI, C15 KategoriJasaController,
+ * Antarmuka UI-16 (UI-16-01 s.d. UI-16-07) -> Pengalihan ke UI-12 (Riwayat Pekerjaan)
+ */
 
 import React, { useRef } from 'react';
 import {
   AccessibilityInfo,
+  ActivityIndicator,
+  Keyboard,
   KeyboardAvoidingView,
   LayoutChangeEvent,
+  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -28,22 +37,27 @@ import {
   isMinimalFilled,
   sanitizeJamInput,
   sanitizeTarifInput,
-  toRegisterPayload,
   useCatalogController,
 } from '../../controllers/useCatalogController';
 
 export const ServiceRegistrationView: React.FC = () => {
   const navigation = useNavigation();
   const {
-    user,
+    isPenyediaJasa,
     form,
     errors,
     isSubmitting,
     serverError,
+    successResult,
+    coordinates,
+    locationStatus,
+    detectCoordinates,
     setFieldValue,
     handleBlur,
     validateBeforeSubmit,
+    submitRegistration,
     dismissServerError,
+    dismissSuccessModal,
   } = useCatalogController();
 
   const scrollViewRef =
@@ -78,7 +92,7 @@ export const ServiceRegistrationView: React.FC = () => {
     }, 150);
   };
 
-  const handlePressSubmit = () => {
+  const handlePressSubmit = async () => {
     const validation = validateBeforeSubmit();
 
     if (!validation.isValid) {
@@ -92,8 +106,19 @@ export const ServiceRegistrationView: React.FC = () => {
       return;
     }
 
-    const payload = toRegisterPayload(form, user.idPengguna);
-    console.log('[UI-16] Payload pendaftaran penyedia jasa valid:', payload);
+    Keyboard.dismiss();
+    const result = await submitRegistration();
+    if (!result) {
+      scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+    }
+  };
+
+  const handleConfirmSuccess = () => {
+    dismissSuccessModal();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Main', params: { screen: 'Riwayat' } }],
+    });
   };
 
   return (
@@ -116,6 +141,22 @@ export const ServiceRegistrationView: React.FC = () => {
             onBackPress={() => navigation.goBack()}
             testID="ui16-header"
           />
+
+          {/* Info jika akun sudah berstatus PEMBERI_JASA */}
+          {isPenyediaJasa && !successResult ? (
+            <View style={styles.infoBanner} testID="ui16-provider-info">
+              <Ionicons
+                name="information-circle"
+                size={20}
+                color={UI_THEME.primary}
+                style={styles.infoBannerIcon}
+              />
+              <Text style={styles.infoBannerText}>
+                Akunmu sudah terdaftar sebagai penyedia jasa. Mengirim ulang
+                akan memperbarui data layananmu.
+              </Text>
+            </View>
+          ) : null}
 
           {/* Banner Error Server / Jaringan */}
           {serverError ? (
@@ -297,6 +338,83 @@ export const ServiceRegistrationView: React.FC = () => {
               testID="ui16-daerah"
             />
           </View>
+
+          {/* Status & Deteksi Koordinat GPS (latitude / longitude) */}
+          <View style={styles.gpsCard} testID="ui16-gps-status">
+            {locationStatus === 'loading' ? (
+              <View style={styles.gpsRow}>
+                <ActivityIndicator
+                  size="small"
+                  color={UI_THEME.primary}
+                  style={styles.gpsIcon}
+                />
+                <Text style={styles.gpsText}>
+                  Mendeteksi titik koordinat GPS perangkat...
+                </Text>
+              </View>
+            ) : coordinates ? (
+              <View style={styles.gpsRow}>
+                <Ionicons
+                  name="navigate-circle"
+                  size={20}
+                  color={UI_THEME.primary}
+                  style={styles.gpsIcon}
+                />
+                <View style={styles.gpsTextWrap}>
+                  <Text style={styles.gpsTitle}>Titik Koordinat Terdeteksi</Text>
+                  <Text style={styles.gpsCoordsText}>
+                    Lat: {coordinates.latitude}, Lng: {coordinates.longitude}
+                  </Text>
+                </View>
+                <Pressable
+                  onPress={detectCoordinates}
+                  style={styles.gpsButton}
+                  accessibilityRole="button"
+                  accessibilityLabel="Perbarui koordinat GPS"
+                  testID="ui16-gps-refresh"
+                >
+                  <Ionicons
+                    name="refresh"
+                    size={14}
+                    color={UI_THEME.primary}
+                  />
+                  <Text style={styles.gpsButtonText}>Perbarui</Text>
+                </Pressable>
+              </View>
+            ) : (
+              <View style={styles.gpsRow}>
+                <Ionicons
+                  name="location-outline"
+                  size={20}
+                  color={UI_THEME.textMuted}
+                  style={styles.gpsIcon}
+                />
+                <View style={styles.gpsTextWrap}>
+                  <Text style={styles.gpsText}>
+                    {locationStatus === 'denied'
+                      ? 'Izin lokasi ditolak. Aktifkan izin lokasi jika ingin menyimpan koordinat GPS.'
+                      : locationStatus === 'error'
+                      ? 'Gagal mendeteksi koordinat. Pastikan GPS aktif lalu coba lagi.'
+                      : 'Tekan "Deteksi GPS" untuk menandai koordinat lokasi saat ini (opsional).'}
+                  </Text>
+                </View>
+                <Pressable
+                  onPress={detectCoordinates}
+                  style={styles.gpsButton}
+                  accessibilityRole="button"
+                  accessibilityLabel="Deteksi koordinat GPS"
+                  testID="ui16-gps-detect"
+                >
+                  <Ionicons
+                    name="locate"
+                    size={14}
+                    color={UI_THEME.primary}
+                  />
+                  <Text style={styles.gpsButtonText}>Deteksi GPS</Text>
+                </Pressable>
+              </View>
+            )}
+          </View>
         </ScrollView>
 
         {/* UI-16-07: Tombol Ajukan Pendaftaran */}
@@ -310,6 +428,38 @@ export const ServiceRegistrationView: React.FC = () => {
           />
         </View>
       </KeyboardAvoidingView>
+
+      {/* Dialog Sukses Pendaftaran Penyedia Jasa -> Redirect ke UI-12 */}
+      <Modal
+        visible={Boolean(successResult)}
+        transparent
+        animationType="fade"
+        onRequestClose={handleConfirmSuccess}
+      >
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard} testID="ui16-success-dialog">
+            <View style={styles.successIconCircle}>
+              <Ionicons
+                name="checkmark-circle"
+                size={64}
+                color={UI_THEME.primary}
+              />
+            </View>
+            <Text style={styles.modalTitle}>Pendaftaran Berhasil</Text>
+            <Text style={styles.modalMessage}>
+              "{form.namaToko.trim()}" kini terdaftar sebagai penyedia jasa{' '}
+              {form.jenisJasa}. Kamu siap menerima pesanan!
+            </Text>
+            <View style={styles.modalButtonWrap}>
+              <Button
+                title="Lihat Riwayat Pekerjaan"
+                onPress={handleConfirmSuccess}
+                testID="ui16-success-confirm"
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -329,6 +479,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 12,
     paddingBottom: 28,
+  },
+  infoBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E8F7F4',
+    borderLeftWidth: 4,
+    borderLeftColor: UI_THEME.primary,
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginBottom: 18,
+  },
+  infoBannerIcon: {
+    marginRight: 10,
+  },
+  infoBannerText: {
+    flex: 1,
+    fontSize: 13,
+    color: UI_THEME.textTitle,
+    lineHeight: 18,
   },
   errorBanner: {
     flexDirection: 'row',
@@ -370,6 +540,58 @@ const styles = StyleSheet.create({
   timeInputContainer: {
     marginBottom: 0,
   },
+  gpsCard: {
+    backgroundColor: UI_THEME.surface,
+    borderWidth: 1,
+    borderColor: UI_THEME.border,
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginTop: -6,
+    marginBottom: 8,
+  },
+  gpsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  gpsIcon: {
+    marginRight: 10,
+  },
+  gpsTextWrap: {
+    flex: 1,
+    marginRight: 8,
+  },
+  gpsTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: UI_THEME.textTitle,
+    marginBottom: 2,
+  },
+  gpsCoordsText: {
+    fontSize: 12,
+    color: UI_THEME.primary,
+    fontWeight: '600',
+  },
+  gpsText: {
+    flex: 1,
+    fontSize: 12,
+    color: UI_THEME.textMuted,
+    lineHeight: 17,
+  },
+  gpsButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: '#E8F7F4',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+  },
+  gpsButtonText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: UI_THEME.primary,
+  },
   footer: {
     paddingHorizontal: 24,
     paddingTop: 12,
@@ -377,6 +599,41 @@ const styles = StyleSheet.create({
     backgroundColor: UI_THEME.background,
     borderTopWidth: 1,
     borderTopColor: UI_THEME.border,
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
+  modalCard: {
+    width: '100%',
+    backgroundColor: UI_THEME.surface,
+    borderRadius: 20,
+    paddingHorizontal: 24,
+    paddingVertical: 28,
+    alignItems: 'center',
+  },
+  successIconCircle: {
+    marginBottom: 14,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: UI_THEME.textTitle,
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  modalMessage: {
+    fontSize: 14,
+    color: UI_THEME.textMuted,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 24,
+  },
+  modalButtonWrap: {
+    width: '100%',
   },
 });
 

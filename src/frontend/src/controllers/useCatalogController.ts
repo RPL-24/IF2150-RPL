@@ -6,6 +6,7 @@
  */
 
 import { useCallback, useState } from 'react';
+import * as Location from 'expo-location';
 import {
   ApiError,
   SessionUser,
@@ -260,12 +261,25 @@ export function isMinimalFilled(form: PendaftaranJasaForm): boolean {
   );
 }
 
+export interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
+export type LocationStatus =
+  | 'idle'
+  | 'loading'
+  | 'granted'
+  | 'denied'
+  | 'error';
+
 /**
  * Mengonversi state formulir UI-16 menjadi payload request POST /api/services/register
  */
 export function toRegisterPayload(
   form: PendaftaranJasaForm,
-  idPemberiJasa: string
+  idPemberiJasa: string,
+  coordinates?: Coordinates | null
 ): RegisterPenyediaJasaPayload {
   return {
     idPemberiJasa: idPemberiJasa.trim(),
@@ -275,6 +289,12 @@ export function toRegisterPayload(
     tarif: Number(form.tarif.trim()),
     jamKerja: `${form.jamMulai.trim()} - ${form.jamSelesai.trim()}`,
     daerahKerja: form.daerahKerja.trim(),
+    ...(coordinates
+      ? {
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+        }
+      : {}),
   };
 }
 
@@ -283,13 +303,14 @@ export function toRegisterPayload(
  */
 export async function submitFormKategoriJasa(
   form: PendaftaranJasaForm,
-  idPemberiJasa: string
+  idPemberiJasa: string,
+  coordinates?: Coordinates | null
 ): Promise<RegisterPenyediaJasaResult> {
   const validation = validateKategoriJasa(form);
   if (!validation.isValid) {
     throw new Error('Data formulir tidak valid');
   }
-  const payload = toRegisterPayload(form, idPemberiJasa);
+  const payload = toRegisterPayload(form, idPemberiJasa, coordinates);
   return registerServiceProvider(payload);
 }
 
@@ -303,6 +324,9 @@ export interface UseCatalogControllerResult {
   isSubmitting: boolean;
   serverError: string | null;
   successResult: RegisterPenyediaJasaResult | null;
+  coordinates: Coordinates | null;
+  locationStatus: LocationStatus;
+  detectCoordinates: () => Promise<Coordinates | null>;
   setFieldValue: <K extends PendaftaranJasaField>(
     field: K,
     value: PendaftaranJasaForm[K]
@@ -316,7 +340,7 @@ export interface UseCatalogControllerResult {
 
 /**
  * Custom Hook Controller (C15 KategoriJasaController) untuk mengelola state,
- * validasi real-time, dan pengiriman formulir UI-16 Daftar Penyedia Jasa
+ * validasi real-time, deteksi koordinat GPS, dan pengiriman formulir UI-16 Daftar Penyedia Jasa
  */
 export function useCatalogController(): UseCatalogControllerResult {
   const { user, isPenyediaJasa } = useSessionUser();
@@ -332,6 +356,49 @@ export function useCatalogController(): UseCatalogControllerResult {
   const [serverError, setServerError] = useState<string | null>(null);
   const [successResult, setSuccessResult] =
     useState<RegisterPenyediaJasaResult | null>(null);
+  const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
+  const [locationStatus, setLocationStatus] =
+    useState<LocationStatus>('idle');
+
+  const detectCoordinates = useCallback(async (): Promise<Coordinates | null> => {
+    setLocationStatus('loading');
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setLocationStatus('denied');
+        return null;
+      }
+
+      const position = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+      });
+
+      const coords: Coordinates = {
+        latitude: Number(position.coords.latitude.toFixed(6)),
+        longitude: Number(position.coords.longitude.toFixed(6)),
+      };
+      setCoordinates(coords);
+      setLocationStatus('granted');
+      return coords;
+    } catch {
+      try {
+        const lastKnown = await Location.getLastKnownPositionAsync();
+        if (lastKnown) {
+          const coords: Coordinates = {
+            latitude: Number(lastKnown.coords.latitude.toFixed(6)),
+            longitude: Number(lastKnown.coords.longitude.toFixed(6)),
+          };
+          setCoordinates(coords);
+          setLocationStatus('granted');
+          return coords;
+        }
+      } catch {
+        // Abaikan jika fallback gagal
+      }
+      setLocationStatus('error');
+      return null;
+    }
+  }, []);
 
   const setFieldValue = useCallback(
     <K extends PendaftaranJasaField>(
@@ -441,7 +508,11 @@ export function useCatalogController(): UseCatalogControllerResult {
       setServerError(null);
 
       try {
-        const result = await submitFormKategoriJasa(form, user.idPengguna);
+        const result = await submitFormKategoriJasa(
+          form,
+          user.idPengguna,
+          coordinates
+        );
         setCurrentUserRole(result.role ?? 'PEMBERI_JASA');
         setSuccessResult(result);
         return result;
@@ -467,7 +538,13 @@ export function useCatalogController(): UseCatalogControllerResult {
       } finally {
         setIsSubmitting(false);
       }
-    }, [form, isSubmitting, user.idPengguna, validateBeforeSubmit]);
+    }, [
+      coordinates,
+      form,
+      isSubmitting,
+      user.idPengguna,
+      validateBeforeSubmit,
+    ]);
 
   const dismissServerError = useCallback(() => {
     setServerError(null);
@@ -487,6 +564,9 @@ export function useCatalogController(): UseCatalogControllerResult {
     isSubmitting,
     serverError,
     successResult,
+    coordinates,
+    locationStatus,
+    detectCoordinates,
     setFieldValue,
     handleBlur,
     validateBeforeSubmit,
