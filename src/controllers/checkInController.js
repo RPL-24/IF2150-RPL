@@ -1,44 +1,47 @@
 const db = require('../config/db');
+const Pelajar = require('../models/Pelajar');
+const CheckIn = require('../models/CheckIn');
+const AppError = require('../utils/AppError');
 
-exports.submitCheckIn = async (req, res) => {
+exports.submitCheckIn = async (req, res, next) => {
     try {
-        const userId = req.user.id;
-        const { kondisi_fisik, gejala, catatan } = req.body;
-
-        if (!kondisi_fisik ) {
-            return res.status(400).json({ status: 'error', message: 'Kondisi fisik wajib diisi' });
+        
+        const idPengguna = req.user.id || req.user.id_pengguna;
+        
+        const pelajar = await Pelajar.findByIdPengguna(idPengguna);
+        if (!pelajar) {
+            return res.status(404).json({ status: 'error', message: 'Profil pelajar tidak ditemukan.' });
         }
 
-        const existingCheckIn = await db.query(
-            'SELECT * FROM check_ins WHERE user_id = ? AND tanggal = ?',
-            [userId, today]
-        );
+        const { mood, sleep, meal, triggers, note } = req.body;
 
-        if (existingCheckIn.length > 0) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Anda sudah melakukan check-in hari ini!'
-            });
+        if (mood === undefined || mood === null) {
+            return res.status(400).json({ status: 'error', message: 'Skala mood wajib diisi.' });
         }
+        const today = new Date().toISOString().split('T')[0];
 
-        const newCheckIn = await db.query(
-            'INSERT INTO check_ins (user_id, tanggal, kondisi_fisik, gejala, catatan) VALUES (?, ?, ?, ?, ?)',
-            [userId, today, kondisi_fisik, gejala || '', catatan || '']
-        );
+        const checkInData = CheckIn.createCheckIn({
+            tanggalCheckIn: today,
+            skalaMood: Number(mood),
+            jamTidur: sleep?.bed || '22:30',
+            jamBangun: sleep?.wake || '06:00',
+            polaMakan: meal || 'Teratur',
+            pemicuStres: Array.isArray(triggers) ? triggers.join(', ') : (triggers || ''),
+            catatanRefleksi: note ? JSON.stringify(note) : null
+        });
+
+        await pelajar.setCheckIn(checkInData);
 
         return res.status(201).json({
             status: 'success',
             message: 'Daily check-in berhasil disimpan!',
-            data: {
-                id: newCheckIn.insertId,
-                tanggal: today,
-                kondisi_fisik,
-                gejala,
-                catatan
-            }
+            data: checkInData
         });
 
-     } catch (error) {
+    } catch (error) {
+        if (error instanceof AppError) {
+            return res.status(error.status).json({ status: 'error', message: error.message });
+        }
         console.error(error);
         return res.status(500).json({ status: 'error', message: 'Gagal memproses daily check-in' });
     }
@@ -46,33 +49,34 @@ exports.submitCheckIn = async (req, res) => {
 
 exports.getHistory = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const idPengguna = req.user.id || req.user.id_pengguna;
+        const pelajar = await Pelajar.findByIdPengguna(idPengguna);
+        if (!pelajar) {
+            return res.status(404).json({ status: 'error', message: 'Profil pelajar tidak ditemukan.' });
+        }
 
-        const history = await db.query(
-            'SELECT * FROM check_ins WHERE user_id = ? ORDER BY tanggal DESC',
-            [userId]
-        );
+        const history = await pelajar.getCheckInHistory();
 
         return res.status(200).json({
             status: 'success',
             data: history
         });
     } catch (error) {
+        console.error(error);
         return res.status(500).json({ status: 'error', message: 'Gagal mengambil riwayat daily check-in' });
     }
 };
 
-
 exports.getTodayStatus = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const idPengguna = req.user.id || req.user.id_pengguna;
+        const pelajar = await Pelajar.findByIdPengguna(idPengguna);
+        if (!pelajar) {
+            return res.status(404).json({ status: 'error', message: 'Profil pelajar tidak ditemukan.' });
+        }
+
         const today = new Date().toISOString().split('T')[0];
-
-        const checkInToday = await db.query(
-            'SELECT * FROM check_ins WHERE user_id = ? AND tanggal = ?',
-            [userId, today]
-        );
-
+        const checkInToday = await pelajar.getCheckInSejak(today);
         const hasCheckedIn = checkInToday.length > 0;
 
         return res.status(200).json({
@@ -82,6 +86,7 @@ exports.getTodayStatus = async (req, res) => {
         });
 
     } catch (error) {
+        console.error(error);
         return res.status(500).json({ status: 'error', message: 'Gagal memeriksa status daily check-in hari ini' });
     }
 };

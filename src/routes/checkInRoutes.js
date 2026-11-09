@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const checkInController = require('../controllers/checkInController');
-const verifyToken = require('../src/authMiddleware');
+const verifyToken = require('../middlewares/authMiddleware');
 
 router.post('/', verifyToken, checkInController.submitCheckIn);
 router.get('/history', verifyToken, checkInController.getHistory);
