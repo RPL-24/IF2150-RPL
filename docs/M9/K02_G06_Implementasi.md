@@ -7,24 +7,24 @@ IMPLEMENTASI PERANGKAT LUNAK
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
-### *[Logo Perangkat Lunak]*
+## *SaveBite*
+<img width="40%" alt="logo" src=".\assets\save_bite.PNG" />
 
-### Untuk: *[Nama Asisten]*
+### Untuk: *Aurelia Jennifer Gunawan*
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | *K02* |
+| Kelompok | *G06*  |
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| *13525122* | *Nadia Aulia Syafarani* |
+| *13525041* | *Renata Puspanegara Ninagan* |
+| *13525119* | *Ghina Emelia Yantes* |
+| *13525017* | *Cendra Asih Chairunnisa* |
+| *13525089* | *Sherin Felicia Danessa* |
 ---
 
 > **Petunjuk pengerjaan:** *[Silahkan hapus bagian ini setelah selesai mengerjakan]*
@@ -34,7 +34,7 @@ Dipersiapkan oleh:
 ---
 
 **Deadline:** Rabu, 11 November 2026, 21.50 WIB
-**Asistensi akbar:** *[Hari, DD Bulan YYYY, HH.MM WIB, lokasi/link]*
+**Asistensi akbar:** *[Senin, 2 November 2006, 19.00 WIB, https://teams.microsoft.com/l/message/19:BGAB6hurIuLXWy3ZVN_CgpiGR7eTfgHyMzlVJhu-dzo1@thread.tacv2/1793620051162?tenantId=db6e1183-4c65-405c-82ce-7cd53fa6e9dc&groupId=5cce5463-c3b7-4b81-9f9c-e6de1abd54c0&parentMessageId=1793620051162&teamName=2026%20IF2150%20RPL&channelName=General&createdTime=1793620051162]*
 
 ---
 
@@ -184,14 +184,22 @@ Ketentuan:
 
 ## B.1 Perubahan dari DPPL
 
-Catat semua perbedaan antara perancangan (DPPL) dan implementasi akhir. Jika tidak ada perubahan, tuliskan "Tidak ada perubahan".
-
 Tabel B.1. Perubahan dari DPPL
 
+(cek ulang)
 | No | Bagian DPPL | Rancangan Awal | Implementasi Akhir | Alasan |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | *[mis. Kelas C05, layar I-03, tabel `orders`]* | *[Yang direncanakan]* | *[Yang dibuat]* | *[Alasan perubahan]* |
-| *...* | *...* | *...* | *...* | *...* |
+| 2 | Kelas C12 ListingView | Tidak memiliki atribut. Penghapusan listing hanya melalui `tampilkanKonfirmasiHapus()` | Ditambah atribut `idListingDiedit: Integer` dan `adaPerubahan: Boolean`, serta operasi `hapusMakanan(listing)` | `idListingDiedit` membedakan mode tambah dan edit pada satu form yang sama. `adaPerubahan` dibutuhkan untuk menentukan perlu tidaknya dialog konfirmasi keluar (UC01). `hapusMakanan()` meneruskan aksi hapus ke ListingController setelah konfirmasi (UC09) |
+| 3 | Kelas C08 ItemTransaksi | Atribut: `idItem`, `idListing`, `jumlah`, `hargaSatuan` | Ditambah atribut `idTransaksi: Integer` | Atribut ini menjadi foreign key ke tabel `transaksi`, yang dibutuhkan untuk merealisasikan relasi komposisi Transaksi 1 ◆— 1..* ItemTransaksi di database |
+| 4 | Kelas C21 PaymentGatewayAdapter | `buatTagihan()` mengembalikan kode QRIS dari QRIS dummy. `cekStatus()` meneruskan status pembayaran dari gateway | `buatTagihan()` mengembalikan lokasi file gambar QRIS dummy. `cekStatus()` selalu mengembalikan `"LUNAS"` saat Pembeli menekan tombol lanjut | Pembayaran hanya disimulasikan dan tidak terhubung ke penyedia QRIS sungguhan |
+| 5 | Layar UI-01 Sign Up | Tidak ada use case maupun kelas untuk pendaftaran akun (hanya UC07 Login) | Ditambah layar Sign Up (email, password, konfirmasi password, persetujuan syarat dan ketentuan) | Akun Pembeli harus dapat dibuat sebelum pengguna bisa login |
+| 6 | Layar UI-02 Log In | LoginView hanya berisi email, password, dan tombol masuk | Ditambah tautan "Forgot Password?" dan "Register your shop" | Menyediakan jalur pemulihan password dan pendaftaran toko bagi Penjual dari layar login |
+| 7 | Kelas C04 ListingMakanan; layar UI-03 dan UI-06 | ListingMakanan tidak memiliki atribut kategori | Layar Home menampilkan kategori makanan dan form Add Product memiliki field Category | Memudahkan Pembeli menelusuri makanan berdasarkan jenisnya |
+| 8 | Kelas C07 RewardLogin; layar UI-04 | Poin bertambah `POIN_PER_LOGIN` pada login pertama setiap hari | Layar My Reward menampilkan streak harian (Mon–Sun) dan total poin | Streak memperlihatkan konsistensi login Pembeli dan mendorong Pembeli login setiap hari |
+| 9 | Kelas C09 Kupon, C18 PembayaranController; layar UI-04 dan UI-05 | Kupon hanya diterbitkan dari klaim reward dan belum dapat dipakai saat pembayaran (Revisi E DPPL) | Voucher dapat dipilih di My Reward, lalu potongannya tampil sebagai Discount di My Cart | Agar kupon hasil klaim reward memiliki kegunaan nyata bagi Pembeli |
+| 10 | Operasi `checkout()` pada C18; layar UI-05 | `checkout(idPembeli, idListing, jumlah)` untuk satu listing per transaksi | Layar My Cart menampung beberapa item, dengan jumlah per item yang dapat diubah, lalu dibayar melalui tombol Buy Now | Pembeli dapat membeli beberapa makanan dalam satu transaksi. Hal ini sesuai dengan relasi Transaksi 1..* ItemTransaksi |
+| 11 | Layar UI-06 Add Product; Kelas C20 Validasi | Form listing berisi porsi dan kondisi (wajib). Listing langsung aktif saat disimpan | Form tidak memuat field porsi dan kondisi. Ditambah tombol Save (simpan sebagai draf) dan Show (tampilkan ke katalog) | Penjual dapat menyiapkan listing terlebih dahulu sebelum ditampilkan kepada Pembeli |
+| 12 | Layar UI-07 Detail Produk | KatalogView hanya menampilkan detail listing dan tombol beli | Ditambah tombol favorit (♡) dan tombol Add to Cart | Pembeli dapat menyimpan makanan yang diminati dan memasukkannya ke keranjang sebelum membayar |
 
 ## B.2 Bukti Penerapan Best Practices
 
@@ -229,8 +237,11 @@ Tabel B.4. Kontribusi Anggota
 
 | NIM | Nama | Modul / Fitur yang Dikerjakan | Persentase Kontribusi |
 | :--- | :--- | :--- | :--- |
-| *[NIM 1]* | *[Nama]* | *[Modul/fitur]* | *[%]* |
-| *...* | *...* | *...* | *...* |
+| *13525041* | *Renata Puspanegara Ninagan* | Fondasi sistem dan Login (UC07): seluruh model basis data, autentikasi dengan bcrypt, *role guard* (penjual/pembeli), navbar | *[20%]* |
+| *13525122* | *Nadia Aulia Syafarani* | Pengelolaan Listing Penjual (UC01, UC06, UC09): tambah, ubah, hapus (*soft delete*) listing, unggah foto | *[20%]* |
+| *13525119* | *Ghina Emelia Yantes* | Katalog Pembeli (UC02, UC03, UC04): daftar listing, detail listing, pencarian, filter harga | *[20%]* |
+| *13525089* | *Sherin Felicia Danessa* | Pembayaran (UC05): *checkout*, ItemTransaksi, QRIS *dummy*, pengurangan stok secara atomik | *[20%]* |
+| *13525017* | *Cendra Asih Chairunnisa* | Reward (UC08), *seed data*, integrasi dan QA, skrip demo, perapian laporan M9 | *[20%]* |
 
 ## B.5 Traceability Kelas Perancangan ke Implementasi
 
@@ -244,6 +255,30 @@ Tabel B.5. Traceability Kelas Perancangan ke Implementasi
 | *[C02]* | *[Nama kelas pada DPPL]* | *[Bentuk implementasi]* | *[mis. `src/components/LoginForm.tsx` - `LoginForm`]* | *[mis. atribut menjadi *state*, operasi menjadi *handler*]* |
 | *[C03]* | *[Nama kelas pada DPPL]* | *[Bentuk implementasi]* | *[mis. `src/routes/auth.js` - `POST /login`]* | *[Keterangan]* |
 | *...* | *...* | *...* | *...* | *...* |
+
+| ID Kelas | Nama Kelas Perancangan | Bentuk Implementasi | Lokasi (File dan Nama) | Keterangan |
+| :--- | :--- | :--- | :--- | :--- |
+| C01 | Pengguna «abstract» | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C02 | Penjual | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C03 | Pembeli | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C04 | ListingMakanan | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C05 | MetodePembayaran «interface» | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C06 | Transaksi | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C07 | RewardLogin | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C08 | ItemTransaksi | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C09 | Kupon | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C10 | LoginView | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C11 | KatalogView | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C12 | ListingView | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C13 | PembayaranView | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C14 | RewardView | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C15 | AuthController | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C16 | KatalogController | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C17 | ListingController | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C18 | PembayaranController | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C19 | RewardController | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C20 | Validasi | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
+| C21 | PaymentGatewayAdapter | *[Bentuk implementasi]* | *[Lokasi]* | *[Keterangan]* |
 
 Catatan:
 - Satu kelas perancangan boleh diwujudkan oleh beberapa file/unit, dan satu file/unit boleh mewujudkan beberapa kelas perancangan. Tuliskan semuanya.

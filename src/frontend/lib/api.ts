@@ -145,8 +145,6 @@ export async function ubahListing(idListing: number | string, data: DataListingP
   }
 
   return res.json();
-<<<<<<< Updated upstream
-=======
 }
 
 export async function hapusListingPenjual(idListing: number | string): Promise<void> {
@@ -165,7 +163,6 @@ export async function hapusListingPenjual(idListing: number | string): Promise<v
   }
 }
 
->>>>>>> Stashed changes
 // ---------- Cari & filter katalog (P3: UC04) ----------
 
 export type ParamPencarian = {
@@ -182,4 +179,54 @@ export function cariKatalog({ kataKunci, hargaMin, hargaMaks }: ParamPencarian):
   if (hargaMaks != null) q.set("harga_maks", String(hargaMaks));
   const qs = q.toString();
   return getJson<ListingKatalog[]>(qs ? `/api/katalog?${qs}` : "/api/katalog");
+}
+
+// ---------- Pembayaran (P4: UC05) ----------
+
+export type ItemPembayaran = {
+  id_listing: number;
+  nama_makanan: string;
+  jumlah: number;
+  harga_satuan: number;
+};
+
+export type TransaksiPembayaran = {
+  id_transaksi: number;
+  status: "MENUNGGU_BAYAR" | "LUNAS" | "BATAL";
+  total_harga: number;
+  batas_waktu_bayar: string;
+  kode_pengambilan: string | null;
+  kode_qris: string | null;
+  items: ItemPembayaran[];
+};
+
+async function postJson<T>(path: string, body?: unknown): Promise<T> {
+  let res: Response;
+  try {
+    res = await fetch(path, {
+      method: "POST",
+      headers: body !== undefined ? { "Content-Type": "application/json" } : undefined,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+      credentials: "same-origin",
+    });
+  } catch {
+    throw new ApiError(0, "Tidak dapat terhubung ke server");
+  }
+  if (!res.ok) {
+    let pesan = `Terjadi kesalahan pada server (HTTP ${res.status})`;
+    try {
+      const b = await res.json();
+      if (typeof b?.detail === "string") pesan = b.detail;
+    } catch {}
+    throw new ApiError(res.status, pesan);
+  }
+  return res.json() as Promise<T>;
+}
+
+export function checkoutPembayaran(idListing: number, jumlah: number): Promise<TransaksiPembayaran> {
+  return postJson<TransaksiPembayaran>("/api/pembayaran/checkout", { id_listing: idListing, jumlah });
+}
+
+export function ambilTransaksi(id: number | string): Promise<TransaksiPembayaran> {
+  return getJson<TransaksiPembayaran>(`/api/pembayaran/${encodeURIComponent(String(id))}`);
 }
