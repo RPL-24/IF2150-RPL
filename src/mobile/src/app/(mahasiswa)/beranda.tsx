@@ -3,6 +3,7 @@ import Bell from 'lucide-react-native/icons/bell';
 import Calendar from 'lucide-react-native/icons/calendar';
 import CircleQuestionMark from 'lucide-react-native/icons/circle-question-mark';
 import Clock from 'lucide-react-native/icons/clock';
+import LogOut from 'lucide-react-native/icons/log-out';
 import MessageSquare from 'lucide-react-native/icons/message-square';
 import Sun from 'lucide-react-native/icons/sun';
 import Users from 'lucide-react-native/icons/users';
@@ -33,14 +34,22 @@ const MENU: ItemMenu[] = [
 export default function BerandaMahasiswa() {
   const router = useRouter();
   const { top } = useSafeAreaInsets();
-  const { pengguna } = useSesi();
+  const { pengguna, keluar } = useSesi();
   const [afirmasi, muatUlangAfirmasi] = useMuatan(ambilAfirmasi);
   const [sesi, muatUlangSesi] = useMuatan(ambilSesiBerikutnya);
 
   return (
     <ScrollView style={styles.layar} contentContainerStyle={[styles.isi, { paddingTop: top + jarak.md }]}>
-      {/* I-02-02: the notification list has no screen in BAB 6 yet. */}
-      <KepalaBeranda atas={`${sapaan()},`} judul={pengguna?.nama ?? ''} ikon={Bell} labelIkon="Notifikasi" />
+      <KepalaBeranda
+        atas={`${sapaan()},`}
+        judul={pengguna?.nama ?? ''}
+        aksi={[
+          // I-02-02: the notification list has no screen in BAB 6 yet (M9 B.1 no. 3).
+          { ikon: Bell, label: 'Notifikasi' },
+          // Not in BAB 6: the only logout for a Mahasiswa (M9 B.1 no. 5).
+          { ikon: LogOut, label: 'Keluar', onPress: () => void keluar() },
+        ]}
+      />
 
       <KartuAfirmasi afirmasi={afirmasi} onBuka={() => router.push('/afirmasi')} onCobaLagi={muatUlangAfirmasi} />
       <KartuSesi

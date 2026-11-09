@@ -4,7 +4,6 @@ import CircleQuestionMark from 'lucide-react-native/icons/circle-question-mark';
 import LogOut from 'lucide-react-native/icons/log-out';
 import MessageSquare from 'lucide-react-native/icons/message-square';
 import Server from 'lucide-react-native/icons/server';
-import { useRef } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -28,23 +27,17 @@ const MENU: ItemMenu[] = [
 export default function BerandaAdministrator() {
   const router = useRouter();
   const { top } = useSafeAreaInsets();
-  const sesi = useSesi();
+  const { keluar } = useSesi();
   const [status, muatUlangStatus] = useMuatan(ambilStatusLayanan);
-
-  // SesiAutentikasi.logout: ends the session on the backend, clears it on the device,
-  // and returns to I-01. The ref ignores repeated taps while the request is in flight.
-  const sedangKeluar = useRef(false);
-  const keluar = () => {
-    if (sedangKeluar.current) return;
-    sedangKeluar.current = true;
-    void sesi.keluar().finally(() => {
-      sedangKeluar.current = false;
-    });
-  };
 
   return (
     <ScrollView style={styles.layar} contentContainerStyle={[styles.isi, { paddingTop: top + jarak.md }]}>
-      <KepalaBeranda atas="Panel Administrator" judul="Halo, Admin" ikon={LogOut} labelIkon="Keluar" onIkon={keluar} />
+      {/* I-03-02: SesiAutentikasi.logout, then back to I-01. */}
+      <KepalaBeranda
+        atas="Panel Administrator"
+        judul="Halo, Admin"
+        aksi={[{ ikon: LogOut, label: 'Keluar', onPress: () => void keluar() }]}
+      />
       <KartuStatusLayanan status={status} onBuka={() => router.push('/admin/status')} onCobaLagi={muatUlangStatus} />
       <GridMenu judul="Kelola" menu={MENU} kolom={2} />
     </ScrollView>
