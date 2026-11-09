@@ -8,6 +8,8 @@ import * as Notifications from 'expo-notifications';
 import { AndroidImportance } from 'expo-notifications';
 import { Platform } from 'react-native';
 
+import { daftarkanPerangkat } from '@/api/perangkat';
+
 /**
  * Android channel the backend's pushes land in. Its messages carry no `channelId`,
  * and Expo then delivers them to the channel named "default".
@@ -36,4 +38,18 @@ export async function ambilTokenPush(): Promise<string | null> {
   const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
   const { data } = await Notifications.getExpoPushTokenAsync({ projectId });
   return data;
+}
+
+/**
+ * Algo-003 `daftarkanPerangkat`, run after every login: gets the push token and
+ * stores it on the new session. It never throws, because a failure here must not
+ * undo the login; the user simply gets no push notifications on this device.
+ */
+export async function daftarkanPerangkatIni(): Promise<void> {
+  try {
+    const token = await ambilTokenPush();
+    if (token) await daftarkanPerangkat(token);
+  } catch (e) {
+    if (__DEV__) console.warn('Pendaftaran perangkat untuk notifikasi gagal:', e);
+  }
 }
