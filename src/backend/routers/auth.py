@@ -7,7 +7,7 @@ import bcrypt
 import secrets
 from typing import Iterable
 from backend.validation import Validasi
-from backend.models import DATABASE_NAME
+from backend.models import DATABASE_NAME, RewardLogin
 
 router = APIRouter(prefix="/api/auth", tags=["Auth"])
 SESSION_DURATION_HOURS = 24
@@ -121,23 +121,23 @@ def login(req: LoginRequest):
     peran = user['peran']
     id_pengguna = user['id_pengguna']
 
-    # 3. Transaksi Reward Login khusus Pembeli
+    # 3. Transaksi Reward Login khusus Pembeli (catat login harian lewat RewardLogin)
     if peran == 'PEMBELI':
         try:
-            cursor.execute("SELECT poin_terkumpul, tanggal_login_terakhir FROM reward_login WHERE id_pembeli = ?", (id_pengguna,))
-            reward = cursor.fetchone()
-            
-            today_str = date.today().isoformat()
-            if reward:
-                last_login = reward['tanggal_login_terakhir']
-                if last_login != today_str:
-                    new_points = reward['poin_terkumpul'] + 10
-                    cursor.execute("""
-                        UPDATE reward_login 
-                        SET poin_terkumpul = ?, tanggal_login_terakhir = ? 
-                        WHERE id_pembeli = ?
-                    """, (new_points, today_str, id_pengguna))
-                    conn.commit()
+            conn.execute("BEGIN IMMEDIATE")  # pengganti FOR UPDATE di SQLite (Q-C15-02)
+            reward = RewardLogin.cariByPembeli(conn, id_pengguna)
+            if reward is None:
+                # Pembeli lama yang belum punya baris reward: buatkan dulu
+                cursor.execute("INSERT INTO reward_login (id_pembeli) VALUES (?)", (id_pengguna,))
+                reward = RewardLogin.cariByPembeli(conn, id_pengguna)
+
+            if reward.catatLogin(date.today().isoformat()):
+                cursor.execute(
+                    "UPDATE reward_login SET poin_terkumpul = ?, tanggal_login_terakhir = ? "
+                    "WHERE id_pembeli = ?",
+                    (reward.poin_terkumpul, reward.tanggal_login_terakhir, id_pengguna),
+                )  # Q-C15-03
+            conn.commit()
         except Exception:
             conn.rollback()
             conn.close()
