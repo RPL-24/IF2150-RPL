@@ -42,6 +42,33 @@ class Notifikasi {
     );
     return rows[0].jumlah;
   }
+
+  // Daftar notifikasi milik akun, terbaru dulu (KF34, PanelNotifikasi)
+  static async getDaftarByAkun(idAkun, batas = 50) {
+    const { rows } = await db.query(
+      `SELECT id_notifikasi, id_akun, jenis, isi, waktu_kirim, status_baca FROM notifikasi
+       WHERE id_akun = $1 ORDER BY waktu_kirim DESC LIMIT $2`,
+      [idAkun, batas],
+    );
+    return rows.map(Notifikasi.dariBaris);
+  }
+
+  // Hanya notifikasi milik akun yang dapat ditandai; false bila tidak ditemukan/bukan milik
+  static async tandaiDibaca(idNotifikasi, idAkun) {
+    const { rowCount } = await db.query(
+      'UPDATE notifikasi SET status_baca = true WHERE id_notifikasi = $1 AND id_akun = $2',
+      [idNotifikasi, idAkun],
+    );
+    return rowCount > 0;
+  }
+
+  static async tandaiSemuaDibaca(idAkun) {
+    const { rowCount } = await db.query(
+      'UPDATE notifikasi SET status_baca = true WHERE id_akun = $1 AND status_baca = false',
+      [idAkun],
+    );
+    return rowCount;
+  }
 }
 
 module.exports = Notifikasi;
