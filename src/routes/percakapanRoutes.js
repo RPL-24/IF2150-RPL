@@ -24,6 +24,13 @@ router.post(
   tangani((req) => PercakapanController.mulaiPercakapan(req.akun.idAkun, req.body?.idBarang)),
 );
 
+// UC18 (KF33, KF34)
+router.get(
+  '/',
+  Otorisasi.wajibLogin,
+  tangani((req) => PercakapanController.getDaftarPercakapan(req.akun.idAkun)),
+);
+
 // UC16, UC17 (KF32, KF35, KF36)
 router.get(
   '/:id',

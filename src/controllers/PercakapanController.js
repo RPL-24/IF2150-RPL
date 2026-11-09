@@ -130,6 +130,48 @@ class PercakapanController {
     }
   }
 
+  // KF33: pesan terakhir didekripsi lalu diringkas; null bila belum ada pesan
+  static async ambilCuplikanPesanTerakhir(idPercakapan, idAkun) {
+    const pesan = await Pesan.getCuplikanPesanTerakhir(idPercakapan);
+    if (pesan === null) return null;
+    const [isi] = PercakapanController.dekripsiPesan([pesan]);
+    return {
+      isi: PercakapanController.potongCuplikan(isi),
+      waktuKirim: pesan.waktuKirim,
+      dariSaya: pesan.idPengirim === idAkun,
+    };
+  }
+
+  // KF34
+  static hitungPesanBelumDibaca(idPercakapan, idAkun) {
+    return Pesan.hitungPesanBelumDibaca(idPercakapan, idAkun);
+  }
+
+  // Algo-019 (KF33, KF34). Urutan terbaru sudah dari Percakapan.getDaftarPercakapanByPengguna.
+  static async getDaftarPercakapan(idAkun) {
+    const daftar = await Percakapan.getDaftarPercakapanByPengguna(idAkun);
+    const hasil = await Promise.all(
+      daftar.map(async (p) => {
+        const [cuplikan, belumDibaca, lawanBicara, barang] = await Promise.all([
+          PercakapanController.ambilCuplikanPesanTerakhir(p.idPercakapan, idAkun),
+          PercakapanController.hitungPesanBelumDibaca(p.idPercakapan, idAkun),
+          p.getLawanBicara(idAkun),
+          p.idBarang == null ? null : Barang.cariById(p.idBarang),
+        ]);
+        return {
+          idPercakapan: p.idPercakapan,
+          idBarang: p.idBarang,
+          judulBarang: barang ? barang.judul : null,
+          lawanBicara,
+          cuplikan,
+          belumDibaca,
+          waktuPembaruanTerakhir: p.waktuPembaruanTerakhir,
+        };
+      }),
+    );
+    return sukses(200, hasil);
+  }
+
   // Kartu ringkas barang pada kepala ruang; null bila listing sudah dihapus (id_barang ON DELETE SET NULL)
   static async ambilRingkasanBarang(idBarang) {
     if (idBarang == null) return null;
