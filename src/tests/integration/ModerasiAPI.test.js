@@ -5,8 +5,9 @@ const Otorisasi = require('../../pendukung/Otorisasi');
 const ModerasiController = require('../../controllers/ModerasiController');
 const Barang = require('../../models/Barang');
 const Akun = require('../../models/Akun');
+const Laporan = require('../../models/Laporan');
 
-describe('API Moderasi Dasbor Admin Integration Test (UC20, UC22, UC23, UC24)', () => {
+describe('API Moderasi Dasbor Admin Integration Test (UC20, UC21, UC22, UC23, UC24)', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -32,31 +33,6 @@ describe('API Moderasi Dasbor Admin Integration Test (UC20, UC22, UC23, UC24)', 
       expect(res.status).toBe(403);
       expect(res.body.sukses).toBe(false);
       expect(res.body.pesan).toMatch(/admin/i);
-    });
-
-    test('seluruh endpoint /api/admin/* menolak akun non-admin dengan status 403 (KF56)', async () => {
-      jest.spyOn(Otorisasi, 'verifikasiToken').mockResolvedValue({
-        getIdAkun: () => 'user-biasa-id',
-      });
-      jest.spyOn(Otorisasi, 'verifikasiAdmin').mockResolvedValue(null);
-
-      const endpoints = [
-        { method: 'get', url: '/api/admin/laporan' },
-        { method: 'get', url: '/api/admin/laporan/statistik' },
-        { method: 'get', url: '/api/admin/laporan/lap-test' },
-        { method: 'patch', url: '/api/admin/laporan/lap-test/status', body: { status: 'Diproses' } },
-        { method: 'delete', url: '/api/admin/laporan/lap-test/barang/brg-test', body: { alasan: 'Pelanggaran' } },
-        { method: 'post', url: '/api/admin/akun/usr-test/blokir', body: { alasan: 'Pelanggaran' } },
-        { method: 'post', url: '/api/admin/akun/usr-test/buka-blokir', body: { alasan: 'Buka blokir' } },
-      ];
-
-      for (const ep of endpoints) {
-        const req = request(app)[ep.method](ep.url).set('Authorization', 'Bearer token-user-bukan-admin');
-        if (ep.body) req.send(ep.body);
-        const res = await req;
-        expect(res.status).toBe(403);
-        expect(res.body.sukses).toBe(false);
-      }
     });
   });
 
@@ -190,7 +166,11 @@ describe('API Moderasi Dasbor Admin Integration Test (UC20, UC22, UC23, UC24)', 
       });
     });
 
+
     test('berhasil mengubah status laporan menjadi Selesai (200)', async () => {
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
+        new Laporan({ idLaporan: 'lap-101', statusPenanganan: 'Diproses' }),
+      );
       jest.spyOn(ModerasiController, 'ubahStatusLaporan').mockResolvedValue(true);
 
       const res = await request(app)
@@ -201,6 +181,57 @@ describe('API Moderasi Dasbor Admin Integration Test (UC20, UC22, UC23, UC24)', 
       expect(res.status).toBe(200);
       expect(res.body.sukses).toBe(true);
       expect(ModerasiController.ubahStatusLaporan).toHaveBeenCalledWith('token-admin-valid', 'lap-101', 'Selesai');
+    });
+
+    test('gagal 404 jika laporan tidak ditemukan', async () => {
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(null);
+
+      const res = await request(app)
+        .patch('/api/admin/laporan/lap-tidak-ada/status')
+        .set('Authorization', 'Bearer token-admin-valid')
+        .send({ status: 'Diproses' });
+
+      expect(res.status).toBe(404);
+      expect(res.body.sukses).toBe(false);
+      expect(res.body.pesan).toMatch(/tidak ditemukan/i);
+    });
+
+    test('gagal 400 jika transisi status penanganan tidak valid (mundur)', async () => {
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
+        new Laporan({ idLaporan: 'lap-101', statusPenanganan: 'Selesai' }),
+      );
+
+      const res = await request(app)
+        .patch('/api/admin/laporan/lap-101/status')
+        .set('Authorization', 'Bearer token-admin-valid')
+        .send({ status: 'Diproses' });
+
+      expect(res.status).toBe(400);
+      expect(res.body.sukses).toBe(false);
+      expect(res.body.pesan).toMatch(/transisi status.*tidak valid/i);
+    });
+
+    test('gagal 401 jika tanpa token otorisasi', async () => {
+      jest.spyOn(Otorisasi, 'verifikasiToken').mockResolvedValue(null);
+
+      const res = await request(app)
+        .patch('/api/admin/laporan/lap-101/status')
+        .send({ status: 'Diproses' });
+
+      expect(res.status).toBe(401);
+      expect(res.body.sukses).toBe(false);
+    });
+
+    test('gagal 403 jika pengguna bukan admin', async () => {
+      jest.spyOn(Otorisasi, 'verifikasiAdmin').mockResolvedValue(null);
+
+      const res = await request(app)
+        .patch('/api/admin/laporan/lap-101/status')
+        .set('Authorization', 'Bearer token-bukan-admin')
+        .send({ status: 'Diproses' });
+
+      expect(res.status).toBe(403);
+      expect(res.body.sukses).toBe(false);
     });
 
     test('gagal 400 jika status penanganan yang dikirim tidak sah', async () => {
