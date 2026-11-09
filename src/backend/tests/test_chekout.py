@@ -34,7 +34,12 @@ def test_harga_satuan_disalin(client, db_path):
     assert d["items"][0]["harga_satuan"] == 12000
 
 def bayar(client, tid):
-    return client.post(f"/api/pembayaran/{tid}/bayar")
+    detail = client.get(f"/api/pembayaran/{tid}").json()
+    token = detail["url_scan"].rsplit("/", 1)[-1]
+    scan = client.post(f"/api/pembayaran/scan/{token}")
+    if scan.status_code == 200:
+        return client.get(f"/api/pembayaran/{tid}")
+    return scan
 
 def test_bayar_sukses(client, buat_trx, stok):
     tid = buat_trx([(1, 2)])
@@ -47,12 +52,14 @@ def test_multi_item_rollback(client, buat_trx, stok):
     r = bayar(client, tid)
     assert r.status_code == 409 and r.json()["detail"] == "Stok tidak mencukupi"
     assert stok(1) == 5 and stok(2) == 1         # nothing changed
-    assert client.get(f"/api/pembayaran/{tid}").json()["status"] == "MENUNGGU_BAYAR"
+    detail = client.get(f"/api/pembayaran/{tid}")
+    assert detail.status_code == 200, detail.text
+    assert detail.json()["status"] == "MENUNGGU_BAYAR"
 
 def test_bayar_dua_kali(client, buat_trx, stok):
     tid = buat_trx([(1, 2)])
     bayar(client, tid)
-    assert bayar(client, tid).status_code == 409
+    assert bayar(client, tid).json()["status"] == "LUNAS"
     assert stok(1) == 3                          # reduced only once
 
 def test_stok_terakhir_hanya_satu_berhasil(client, buat_trx, stok):

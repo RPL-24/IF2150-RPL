@@ -65,6 +65,14 @@ LISTING_DUMMY = [
     ("warung@test.com", "Es Teh Manis Jumbo", "Es teh manis racikan warung, ukuran jumbo", "1 Gelas", "Sangat Baik", 5000, 12, 3),
 ]
 
+# Fixture skenario alternatif DPPL: tidak tersedia karena stok habis,
+# sudah kedaluwarsa, atau dinonaktifkan penjual.
+LISTING_EDGE = [
+    ("penjual@test.com", "Uji Stok Habis", "Listing uji dengan stok nol", "1 Porsi", "Baik", 9000, 0, 72, 1),
+    ("kantin@test.com", "Uji Kedaluwarsa", "Listing uji yang sudah lewat batas waktu", "1 Porsi", "Baik", 11000, 4, -24, 1),
+    ("warung@test.com", "Uji Listing Nonaktif", "Listing uji yang dinonaktifkan penjual", "1 Porsi", "Baik", 8000, 3, 72, 0),
+]
+
 
 def main(reset: bool) -> None:
     conn = sqlite3.connect(DB_PATH)
@@ -231,6 +239,44 @@ def main(reset: bool) -> None:
                     ),
                 )
             print(f"✓ {len(LISTING_DUMMY)} listing dummy berhasil ditambahkan.")
+
+        # Pastikan fixture edge case tersedia juga pada basis data yang sebelumnya
+        # sudah berisi listing normal (seeding tetap idempoten).
+        for i, (email, nama, deskripsi, porsi, kondisi, harga, stok, jam, aktif) in enumerate(LISTING_EDGE):
+            id_penjual = id_per_email[email]
+            sudah_ada = cursor.execute(
+                "SELECT 1 FROM listing_makanan WHERE id_penjual = ? AND nama_makanan = ?",
+                (id_penjual, nama),
+            ).fetchone()
+            if sudah_ada:
+                continue
+            cursor.execute(
+                """
+                INSERT INTO listing_makanan
+                    (id_penjual, nama_makanan, deskripsi, porsi, kondisi, foto,
+                     harga, stok, batas_kedaluwarsa, aktif)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    id_penjual, nama, deskripsi, porsi, kondisi,
+                    "/" + FOTO_TERSEDIA[(len(LISTING_DUMMY) + i) % len(FOTO_TERSEDIA)],
+                    harga, stok, batas_kedaluwarsa(jam), aktif,
+                ),
+            )
+        print(f"✓ {len(LISTING_EDGE)} listing skenario alternatif tersedia.")
+
+        # Akun demo pembeli perlu bisa langsung menguji klaim reward (100 poin).
+        id_pembeli = id_per_email["pembeli@test.com"]
+        cursor.execute(
+            "INSERT OR IGNORE INTO reward_login (id_pembeli, poin_terkumpul) VALUES (?, 100)",
+            (id_pembeli,),
+        )
+        cursor.execute(
+            "UPDATE reward_login SET poin_terkumpul = CASE "
+            "WHEN poin_terkumpul < 100 THEN 100 ELSE poin_terkumpul END "
+            "WHERE id_pembeli = ?",
+            (id_pembeli,),
+        )
 
         conn.commit()
 

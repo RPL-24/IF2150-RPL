@@ -28,6 +28,7 @@ def get_conn() -> Iterator[sqlite3.Connection]:
 def _listing_from_row(row: sqlite3.Row) -> ListingMakanan:
     data = dict(row)
     data["aktif"] = bool(data["aktif"])
+    data["draft"] = bool(data["draft"])
     return ListingMakanan(**data)
 
 
@@ -63,7 +64,7 @@ def get_daftar_listing_penjual(
     rows = conn.execute(
         """
         SELECT id_listing, id_penjual, nama_makanan, porsi, kondisi, harga, stok,
-               batas_kedaluwarsa, deskripsi, foto, aktif
+               batas_kedaluwarsa, deskripsi, foto, aktif, draft
         FROM listing_makanan
         WHERE id_penjual = ? AND aktif = 1
         ORDER BY id_listing DESC
@@ -82,7 +83,7 @@ def get_detail_listing(
     row = conn.execute(
         """
         SELECT id_listing, id_penjual, nama_makanan, porsi, kondisi, harga, stok,
-               batas_kedaluwarsa, deskripsi, foto, aktif
+               batas_kedaluwarsa, deskripsi, foto, aktif, draft
         FROM listing_makanan
         WHERE id_listing = ? AND id_penjual = ? AND aktif = 1
         """,
@@ -93,6 +94,7 @@ def get_detail_listing(
     return _listing_response(_listing_from_row(row))
 
 
+@router.post("", status_code=status.HTTP_201_CREATED, include_in_schema=False)
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def tambah_listing(
     data: DataListing,
@@ -111,8 +113,8 @@ def tambah_listing(
         """
         INSERT INTO listing_makanan
             (id_penjual, nama_makanan, deskripsi, porsi, kondisi, foto, harga, stok,
-             batas_kedaluwarsa, aktif)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+             batas_kedaluwarsa, aktif, draft)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
         """,
         (
             current_user["id_pengguna"],
@@ -124,13 +126,14 @@ def tambah_listing(
             values["harga"],
             values["stok"],
             values["batas_kedaluwarsa"],
+            int(values["draft"]),
         ),
     )
     conn.commit()
     row = conn.execute(
         """
         SELECT id_listing, id_penjual, nama_makanan, porsi, kondisi, harga, stok,
-               batas_kedaluwarsa, deskripsi, foto, aktif
+               batas_kedaluwarsa, deskripsi, foto, aktif, draft
         FROM listing_makanan WHERE id_listing = ?
         """,
         (cursor.lastrowid,),
@@ -155,7 +158,7 @@ def ubah_listing(
         """
         UPDATE listing_makanan
         SET nama_makanan = ?, deskripsi = ?, porsi = ?, kondisi = ?, foto = ?,
-            harga = ?, stok = ?, batas_kedaluwarsa = ?
+            harga = ?, stok = ?, batas_kedaluwarsa = ?, draft = ?
         WHERE id_listing = ? AND id_penjual = ? AND aktif = 1
         """,
         (
@@ -167,6 +170,7 @@ def ubah_listing(
             data.harga,
             data.stok,
             batas_kedaluwarsa.isoformat(timespec="seconds"),
+            int(data.draft),
             id_listing,
             current_user["id_pengguna"],
         ),
@@ -177,7 +181,7 @@ def ubah_listing(
     row = conn.execute(
         """
         SELECT id_listing, id_penjual, nama_makanan, porsi, kondisi, harga, stok,
-               batas_kedaluwarsa, deskripsi, foto, aktif
+               batas_kedaluwarsa, deskripsi, foto, aktif, draft
         FROM listing_makanan WHERE id_listing = ?
         """,
         (id_listing,),

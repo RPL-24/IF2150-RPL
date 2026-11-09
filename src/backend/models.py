@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS listing_makanan (
     stok INTEGER NOT NULL CHECK (stok >= 0),
     batas_kedaluwarsa DATETIME NOT NULL,
     aktif BOOLEAN NOT NULL DEFAULT 1,
+    draft BOOLEAN NOT NULL DEFAULT 0,
     FOREIGN KEY (id_penjual) REFERENCES penjual (id_pengguna) ON DELETE CASCADE
 );
 
@@ -54,6 +55,7 @@ CREATE TABLE IF NOT EXISTS transaksi (
     status TEXT NOT NULL CHECK (status IN ('MENUNGGU_BAYAR', 'LUNAS', 'BATAL')) DEFAULT 'MENUNGGU_BAYAR',
     kode_pengambilan TEXT,
     waktu_diambil DATETIME,
+    token_bayar TEXT UNIQUE,
     FOREIGN KEY (id_pembeli) REFERENCES pembeli (id_pengguna) ON DELETE CASCADE
 );
 
@@ -103,6 +105,16 @@ def init_db(db_path: str = DATABASE_NAME):
         kolom = [baris[1] for baris in conn.execute("PRAGMA table_info(transaksi)").fetchall()]
         if "waktu_diambil" not in kolom:
             conn.execute("ALTER TABLE transaksi ADD COLUMN waktu_diambil DATETIME")
+        kolom_listing = [baris[1] for baris in conn.execute("PRAGMA table_info(listing_makanan)").fetchall()]
+        if "draft" not in kolom_listing:
+            conn.execute("ALTER TABLE listing_makanan ADD COLUMN draft BOOLEAN NOT NULL DEFAULT 0")
+        kolom_transaksi = [baris[1] for baris in conn.execute("PRAGMA table_info(transaksi)").fetchall()]
+        if "token_bayar" not in kolom_transaksi:
+            conn.execute("ALTER TABLE transaksi ADD COLUMN token_bayar TEXT")
+        conn.execute(
+            "CREATE UNIQUE INDEX IF NOT EXISTS idx_transaksi_token_bayar "
+            "ON transaksi(token_bayar)"
+        )
         conn.commit()
 
 @dataclass
@@ -162,12 +174,13 @@ class ListingMakanan:
     deskripsi: Optional[str] = None
     foto: Optional[str] = None
     aktif: bool = True
+    draft: bool = False
 
     # Satu-satunya definisi kriteria "tersedia" di level query (UC02, UC04):
     # aktif, stok > 0, dan belum melewati batas kedaluwarsa.
     # datetime() menyamakan format "YYYY-MM-DD HH:MM:SS" dan "YYYY-MM-DDTHH:MM:SS".
     KONDISI_TERSEDIA: ClassVar[str] = (
-        "aktif = 1 AND stok > 0 "
+        "aktif = 1 AND draft = 0 AND stok > 0 "
         "AND datetime(batas_kedaluwarsa) > datetime(:waktu)"
     )
 
@@ -177,6 +190,7 @@ class ListingMakanan:
         waktu = self._ke_datetime(waktu_sekarang or datetime.now())
         return (
             bool(self.aktif)
+            and not bool(self.draft)
             and self.stok > 0
             and waktu < self._ke_datetime(self.batas_kedaluwarsa)
         )
@@ -195,7 +209,7 @@ class ListingMakanan:
         """Mengambil satu listing berdasarkan id (Q-C04-01). None jika tidak ada."""
         cursor = conn.execute(
             "SELECT id_listing, id_penjual, nama_makanan, porsi, kondisi, harga, stok, "
-            "batas_kedaluwarsa, deskripsi, foto, aktif "
+            "batas_kedaluwarsa, deskripsi, foto, aktif, draft "
             "FROM listing_makanan WHERE id_listing = ?",
             (id_listing,),
         )
@@ -236,7 +250,7 @@ class ListingMakanan:
 
         query = (
             "SELECT id_listing, id_penjual, nama_makanan, porsi, kondisi, harga, stok, "
-            "batas_kedaluwarsa, deskripsi, foto, aktif "
+            "batas_kedaluwarsa, deskripsi, foto, aktif, draft "
             "FROM listing_makanan "
             f"WHERE {cls.KONDISI_TERSEDIA} "
             "AND (:pola IS NULL OR LOWER(nama_makanan) LIKE :pola ESCAPE '\\') "
@@ -266,6 +280,7 @@ class Transaksi:
     status: str = "MENUNGGU_BAYAR"
     kode_pengambilan: Optional[str] = None
     waktu_diambil: Optional[str] = None
+    token_bayar: Optional[str] = None
 
 @dataclass
 class ItemTransaksi:

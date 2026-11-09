@@ -67,7 +67,7 @@ export default function KartuListingPenjual({
               : "bg-red-100 text-red-700"
           }`}
         >
-          {listing.tersedia ? "Tersedia" : "Tidak Tersedia"}
+          {listing.draft ? "Draf" : listing.tersedia ? "Tersedia" : "Tidak Tersedia"}
         </span>
 
         <button

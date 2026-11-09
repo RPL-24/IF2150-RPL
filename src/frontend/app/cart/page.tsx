@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AppLayout } from "@/components/layout";
 import FotoListing from "@/components/katalog/FotoListing";
+import NotifikasiGagal from "@/components/NotifikasiGagal";
 import { ApiError, checkoutPembayaran } from "@/lib/api";
 import { useCart } from "@/lib/cart";
 
@@ -16,6 +17,7 @@ export default function CartPage() {
   const [pesan, setPesan] = useState("");
   const [perluLogin, setPerluLogin] = useState(false);
   const [memproses, setMemproses] = useState(false);
+  const [stokPenuhUntuk, setStokPenuhUntuk] = useState<string | null>(null);
 
   async function beliSekarang() {
     if (memproses || items.length === 0) return;
@@ -115,10 +117,9 @@ export default function CartPage() {
                         <span className="min-w-8 text-center text-sm font-bold">{jumlah}</span>
                         <button
                           type="button"
-                          disabled={jumlah >= listing.stok}
-                          onClick={() => tambah(listing, 1)}
+                          onClick={() => jumlah >= listing.stok ? setStokPenuhUntuk(listing.nama_makanan) : tambah(listing, 1)}
                           aria-label={`Tambah ${listing.nama_makanan}`}
-                          className="flex h-8 w-8 items-center justify-center text-lg font-bold leading-none transition hover:brightness-110 disabled:opacity-40"
+                          className="flex h-8 w-8 items-center justify-center text-lg font-bold leading-none transition hover:brightness-110"
                         >
                           +
                         </button>
@@ -162,6 +163,10 @@ export default function CartPage() {
           </div>
         </>
       )}
+      <NotifikasiGagal
+        pesan={stokPenuhUntuk ? `Stok ${stokPenuhUntuk} yang tersedia sudah tercapai. Kurangi jumlah untuk melanjutkan.` : pesan || null}
+        onClose={() => { setStokPenuhUntuk(null); setPesan(""); setPerluLogin(false); }}
+      />
     </AppLayout>
   );
 }

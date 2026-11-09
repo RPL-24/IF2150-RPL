@@ -63,9 +63,9 @@ class PembayaranController:
 
         try:
             cur = conn.execute(
-                "INSERT INTO transaksi (id_pembeli, tanggal, batas_waktu_bayar) VALUES (?, ?, ?)",
+                "INSERT INTO transaksi (id_pembeli, tanggal, batas_waktu_bayar, token_bayar) VALUES (?, ?, ?, ?)",
                 (id_pembeli, sekarang.strftime(FORMAT_WAKTU),
-                 (sekarang + BATAS_WAKTU_BAYAR).strftime(FORMAT_WAKTU)),
+                 (sekarang + BATAS_WAKTU_BAYAR).strftime(FORMAT_WAKTU), secrets.token_urlsafe(32)),
             )
             id_transaksi = cur.lastrowid
             total_harga = 0
@@ -90,7 +90,8 @@ class PembayaranController:
         return trx, items, nama, self.metode.buat_tagihan(trx)
 
 
-    def konfirmasi_bayar(self, conn: sqlite3.Connection, id_transaksi: int, id_pembeli: int):
+    def konfirmasi_bayar(self, conn: sqlite3.Connection, id_transaksi: int, id_pembeli: int,
+                         scan_dikonfirmasi: bool = False):
         sekarang = datetime.now()
         waktu = sekarang.strftime(FORMAT_WAKTU)
         try:
@@ -104,7 +105,7 @@ class PembayaranController:
                 conn.commit()
                 return ambil_transaksi(conn, id_transaksi)
 
-            if self.metode.cek_status(id_transaksi) != "LUNAS":
+            if not scan_dikonfirmasi and self.metode.cek_status(id_transaksi) != "LUNAS":
                 raise PembayaranError("Pembayaran belum diterima", 402)
 
             kode = "SB-" + secrets.token_hex(3).upper()

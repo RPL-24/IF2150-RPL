@@ -1,5 +1,9 @@
 from .metode_pembayaran import MetodePembayaran
 from ..errors import PembayaranError
+from io import BytesIO
+import base64
+import os
+import qrcode
 
 
 class PaymentGatewayAdapter(MetodePembayaran):
@@ -9,7 +13,16 @@ class PaymentGatewayAdapter(MetodePembayaran):
     def buat_tagihan(self, transaksi) -> str:
         if not self.url_gateway:
             raise PembayaranError("Gagal membuat tagihan pembayaran", 502)
-        return "/qris-dummy.png"
+        if not getattr(transaksi, "token_bayar", None):
+            raise PembayaranError("Token pembayaran tidak tersedia", 500)
+        web_url = os.getenv("SAVEBITE_PUBLIC_WEB_URL", "http://localhost:3000").rstrip("/")
+        url_scan = f"{web_url}/pembayaran/scan/{transaksi.token_bayar}"
+        image = qrcode.make(url_scan)
+        buffer = BytesIO()
+        image.save(buffer, format="PNG")
+        encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
+        return f"data:image/png;base64,{encoded}"
 
     def cek_status(self, id_transaksi: int) -> str:
-        return "LUNAS"
+        # QR scan/callback is the only event that confirms this dummy payment.
+        return "BELUM"

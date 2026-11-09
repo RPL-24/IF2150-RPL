@@ -2,6 +2,8 @@
 
 import type { ListingKatalog } from "@/lib/api";
 import { useCart } from "@/lib/cart";
+import { useState } from "react";
+import NotifikasiGagal from "@/components/NotifikasiGagal";
 
 type Props = {
   listing: ListingKatalog;
@@ -17,29 +19,33 @@ type Props = {
  */
 export default function PengaturJumlah({ listing, ukuran = "kecil" }: Props) {
   const { qtyDari, tambah, kurangi } = useCart();
+  const [notifikasi, setNotifikasi] = useState<string | null>(null);
   const qty = qtyDari(listing.id_listing);
   const stokHabis = listing.stok < 1;
   const besar = ukuran === "besar";
 
   if (qty === 0) {
     return (
+      <>
       <button
         type="button"
-        disabled={stokHabis}
-        onClick={() => tambah(listing, 1)}
+        onClick={() => stokHabis ? setNotifikasi("Stok makanan ini sudah habis.") : tambah(listing, 1)}
         aria-label={`Tambah ${listing.nama_makanan} ke keranjang`}
         className={
           besar
             ? "inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#ff4d57] px-8 font-bold text-white shadow-sm transition hover:brightness-110 disabled:opacity-40"
-            : "flex h-8 w-11 items-center justify-center rounded-md bg-[#ff4d57] text-xl font-bold text-white shadow-sm transition hover:brightness-110 disabled:opacity-40"
+            : "flex h-8 w-11 items-center justify-center rounded-md bg-[#ff4d57] text-xl font-bold text-white shadow-sm transition hover:brightness-110"
         }
       >
         {besar ? "+ Keranjang" : "+"}
       </button>
+      <NotifikasiGagal pesan={notifikasi} onClose={() => setNotifikasi(null)} />
+      </>
     );
   }
 
   return (
+    <>
     <div
       className={
         besar
@@ -71,17 +77,18 @@ export default function PengaturJumlah({ listing, ukuran = "kecil" }: Props) {
       </span>
       <button
         type="button"
-        disabled={qty >= listing.stok}
-        onClick={() => tambah(listing, 1)}
+        onClick={() => qty >= listing.stok ? setNotifikasi(`Stok tersedia hanya ${listing.stok} porsi. Jumlah di keranjang sudah mencapai batas tersebut.`) : tambah(listing, 1)}
         aria-label={`Tambah ${listing.nama_makanan} ke keranjang`}
         className={
           besar
-            ? "flex h-9 w-9 items-center justify-center text-2xl font-bold leading-none transition hover:brightness-110 disabled:opacity-40"
-            : "flex h-7 w-7 items-center justify-center text-lg font-bold leading-none transition hover:brightness-110 disabled:opacity-40"
+            ? "flex h-9 w-9 items-center justify-center text-2xl font-bold leading-none transition hover:brightness-110"
+            : "flex h-7 w-7 items-center justify-center text-lg font-bold leading-none transition hover:brightness-110"
         }
       >
         +
       </button>
     </div>
+      <NotifikasiGagal pesan={notifikasi} onClose={() => setNotifikasi(null)} />
+    </>
   );
 }

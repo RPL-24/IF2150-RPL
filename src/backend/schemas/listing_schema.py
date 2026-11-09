@@ -10,6 +10,8 @@ class DataListing(BaseModel):
     stok: int = Field(..., ge=0, description="Stok tidak boleh negatif")
     batas_kedaluwarsa: datetime = Field(..., description="Waktu kedaluwarsa")
     foto: str = Field(..., min_length=1, description="Foto makanan wajib diunggah")
+    draft: bool = Field(default=False, description="Simpan sebagai draf jika true")
+    draft: bool = Field(default=False, description="Simpan sebagai draf jika true")
 
     model_config = ConfigDict(
         json_schema_extra={

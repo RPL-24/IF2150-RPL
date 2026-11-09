@@ -7,8 +7,8 @@ import { tambahListing, DataListingPayload } from "@/lib/api";
 export default function PageTambahListing() {
   const router = useRouter();
 
-  const handleTambah = async (data: DataListingPayload) => {
-    await tambahListing(data);
+  const handleTambah = async (data: DataListingPayload, draft: boolean) => {
+    await tambahListing({ ...data, draft });
     router.push("/penjual/listing");
   };
 

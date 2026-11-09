@@ -40,3 +40,4 @@ class TransaksiOut(BaseModel):
     kode_pengambilan: str | None = None
     items: list[ItemOut]
     kode_qris: str | None = None
+    url_scan: str | None = None

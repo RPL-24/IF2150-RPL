@@ -141,8 +141,6 @@ def test_subtotal_hanya_item_milik_penjual_terkait(tmp_path):
     data = TestClient(app).get("/api/penjualan/pesanan").json()
     assert [(i["nama_makanan"], i["jumlah"]) for i in data[0]["items"]] == [("Roti", 1)]
     assert data[0]["subtotal"] == 12000
-    app.dependency_overrides.clear()
-
     # Penjual tanpa listing yang dibeli sama sekali tidak melihat apa pun
     app.dependency_overrides[get_current_user] = _penjual(99, "Penjual Tak Terkait")
     assert TestClient(app).get("/api/penjualan/pesanan").json() == []

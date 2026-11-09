@@ -1,25 +1,22 @@
 "use client";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { AppLayout } from "@/components/layout";
 import {
   ApiError,
   ambilTransaksi,
-  bayarTransaksi,
   type TransaksiPembayaran,
 } from "@/lib/api";
 
-const PESAN_KEDALUWARSA = "Transaksi dibatalkan karena batas waktu pembayaran telah lewat";
 const rupiah = (n: number) => `Rp. ${n.toLocaleString("id-ID")}`;
 const pesanDari = (e: unknown) => (e instanceof ApiError ? e.message : "Terjadi kesalahan");
+const PESAN_KEDALUWARSA = "Transaksi dibatalkan karena batas waktu pembayaran telah lewat";
 
 function PembayaranIsi() {
   const { idTransaksi } = useParams<{ idTransaksi: string }>();
   const router = useRouter();
   const [trx, setTrx] = useState<TransaksiPembayaran | null>(null);
   const [pesan, setPesan] = useState("");
-  const [sibuk, setSibuk] = useState(false);
-  const statusRef = useRef("");
 
   // Halaman pembayaran hanya sah untuk id transaksi yang valid (dibuat lewat "Buy Now" di keranjang).
   const idValid = Number.isInteger(Number(idTransaksi)) && Number(idTransaksi) >= 1;
@@ -27,35 +24,26 @@ function PembayaranIsi() {
   useEffect(() => {
     if (!idValid) return; // id tidak sah → tampilkan pesan tanpa memanggil API
     let dibatalkan = false;
-    ambilTransaksi(idTransaksi)
-      .then((t) => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    async function muatStatus() {
+      try {
+        const t = await ambilTransaksi(idTransaksi);
         if (dibatalkan) return;
         setTrx(t);
-        statusRef.current = t.status;
-      })
-      .catch((e) => {
-        if (!dibatalkan) setPesan(pesanDari(e));
-      });
+        setPesan(t.status === "BATAL" ? PESAN_KEDALUWARSA : "");
+        if (t.status === "MENUNGGU_BAYAR") timer = setTimeout(muatStatus, 2000);
+      } catch (e) {
+        if (dibatalkan) return;
+        setPesan(pesanDari(e));
+        timer = setTimeout(muatStatus, 3000);
+      }
+    }
+    void muatStatus();
     return () => {
       dibatalkan = true;
+      if (timer) clearTimeout(timer);
     };
   }, [idTransaksi, idValid]);
-
-  async function kirimBayar() {
-    setSibuk(true);
-    setPesan("");
-    statusRef.current = "MEMPROSES";
-    try {
-      const hasil = await bayarTransaksi(idTransaksi);
-      setTrx(hasil);
-      statusRef.current = hasil.status;
-      if (hasil.status !== "LUNAS") setPesan(PESAN_KEDALUWARSA);
-    } catch (e) {
-      statusRef.current = "MENUNGGU_BAYAR";
-      setPesan(pesanDari(e));
-      setSibuk(false);
-    }
-  }
 
   let isi;
   if (!idValid) {
@@ -112,17 +100,15 @@ function PembayaranIsi() {
         {trx.kode_qris && (
           <div className="rounded-[18px] border border-[#d7d0b4] bg-[#f7f0dc] p-4 text-center shadow-sm">
             <img src={trx.kode_qris} alt="QRIS dummy" className="mx-auto w-56" />
+            <p className="mt-3 text-sm text-[#5d625b]">Pindai QR ini dengan kamera ponsel untuk mengonfirmasi pembayaran.</p>
           </div>
         )}
         {pesan && <p className="font-medium text-red-600">{pesan}</p>}
-        <button
-          type="button"
-          disabled={sibuk}
-          onClick={kirimBayar}
-          className="w-full rounded-md bg-[#f25f4b] px-4 py-4 text-xl font-black text-white shadow-sm disabled:opacity-60"
-        >
-          {sibuk ? "Memproses..." : "Bayar"}
-        </button>
+        {trx.url_scan && (
+          <a href={trx.url_scan} className="block w-full rounded-md bg-[#f25f4b] px-4 py-4 text-center text-xl font-black text-white shadow-sm">
+            Simulasikan scan QR di perangkat ini
+          </a>
+        )}
       </div>
     );
   }

@@ -100,6 +100,13 @@ def test_tambah_dan_ambil_listing_dari_sqlite(listing_client):
     assert detail.json()["foto"] == "/uploads/listing/roti.jpg"
 
 
+def test_tambah_listing_tanpa_slash_di_akhir(listing_client):
+    client, _, _ = listing_client
+    response = client.post("/api/listing", json=_payload(draft=True))
+    assert response.status_code == 201
+    assert response.json()["draft"] is True
+
+
 def test_listing_dengan_timestamp_utc_tetap_terbaca_katalog(listing_client):
     client, current_user, _ = listing_client
     batas_kedaluwarsa = (datetime.now(timezone.utc) + timedelta(days=2)).isoformat()
@@ -113,6 +120,25 @@ def test_listing_dengan_timestamp_utc_tetap_terbaca_katalog(listing_client):
     katalog = client.get("/api/katalog")
     assert katalog.status_code == 200
     assert [item["id_listing"] for item in katalog.json()] == [created["id_listing"]]
+
+
+def test_draf_tidak_muncul_di_katalog_dan_bisa_diterbitkan(listing_client):
+    client, current_user, _ = listing_client
+    draf = client.post("/api/listing/", json=_payload(draft=True)).json()
+    assert draf["draft"] is True
+    assert draf["tersedia"] is False
+    assert client.get("/api/listing/penjual").json()[0]["draft"] is True
+
+    current_user["peran"] = "PEMBELI"
+    assert client.get("/api/katalog").json() == []
+    current_user["peran"] = "PENJUAL"
+
+    diterbitkan = client.put(
+        f"/api/listing/{draf['id_listing']}", json=_payload(draft=False)
+    )
+    assert diterbitkan.status_code == 200
+    assert diterbitkan.json()["draft"] is False
+    assert diterbitkan.json()["tersedia"] is True
 
 
 def test_listing_menolak_deskripsi_kosong_tanggal_lampau_dan_foto_kosong(listing_client):

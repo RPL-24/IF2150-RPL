@@ -7,8 +7,10 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination: 'http://localhost:8000/api/:path*',
+        // Only the QR demo confirmation is proxied from LAN/tunnel visitors.
+        // Do not expose the entire FastAPI surface through the Next dev server.
+        source: '/api/pembayaran/scan/:token',
+        destination: 'http://localhost:8000/api/pembayaran/scan/:token',
       },
     ];
   },
