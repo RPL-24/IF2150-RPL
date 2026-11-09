@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cekKelengkapan, PESAN_TAK_LENGKAP, validasiForm } from "./validasri-perbaikan";
+import { cekKelengkapan, PESAN_TAK_LENGKAP, validasiForm } from "./validasi-perbaikan";
 
 const foto = { name: "a.jpg", size: 1024 };
 const video = { name: "b.mp4", size: 1024 };
