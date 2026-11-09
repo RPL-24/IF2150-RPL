@@ -14,13 +14,7 @@
     { id: "kurang", label: "Kurang teratur", desc: "Melewatkan satu waktu makan" },
     { id: "tidak", label: "Tidak teratur", desc: "Sulit makan karena jadwal" }
   ];
-  const TRIGGERS = [
-    { id: "Akademik", desc: "Tugas, ujian, atau tenggat" },
-    { id: "Keluarga", desc: "Hubungan atau kondisi di rumah" },
-    { id: "Sosial", desc: "Pertemanan atau lingkungan" },
-    { id: "Tidak ada", desc: "Hari ini terasa ringan" }
-  ];
-  const TOTAL = 6, MAX_NOTE = 500;
+  const TOTAL = 5, MAX_NOTE = 500;
 
   const state = {
     step: 0, // 0 sapaan, 1-6 wizard, 7 sukses
@@ -106,24 +100,18 @@
       MEALS.map((m) => option({ selected: state.meal === m.id, action: "meal", value: m.id, title: m.label, desc: m.desc, role: "radio" })).join("") +
       `</div>` + nav({ disabled: state.meal === null }),
 
-    4: () => head("Apa pemicu stresmu hari ini?", "Boleh pilih lebih dari satu.") +
-      `<div class="option-list" role="group" aria-label="Pemicu stres">` +
-      TRIGGERS.map((t) => option({ selected: state.triggers.includes(t.id), action: "trigger", value: t.id, title: t.id, desc: t.desc, role: "checkbox" })).join("") +
-      `</div>` + nav({ disabled: state.triggers.length === 0 }),
-
-    5: () => head("Ada yang ingin kamu catat?", "Opsional. Hanya terlihat olehmu.") + `
+    4: () => head("Ada yang ingin kamu catat?", "Opsional. Hanya terlihat olehmu.") + `
       <textarea class="note-field" id="note" rows="7" maxlength="${MAX_NOTE}" aria-label="Catatan refleksi"
         placeholder="Apa yang paling terasa hari ini?">${esc(state.note)}</textarea>
       <p class="form-hint">Catatan ini dienkripsi. <span class="char-count" id="count">${state.note.length} / ${MAX_NOTE}</span></p>` +
       nav({ skip: true }),
 
-    6: () => {
+    5: () => {
       const mood = MOODS.find((m) => m.v === state.mood), meal = MEALS.find((m) => m.id === state.meal);
       const rows = [
         ["Mood", mood ? `${mood.v} / 5 - ${mood.label}` : "-", 1],
         ["Tidur", `${state.bed} - ${state.wake} (${fmtHours(sleepHours(state.bed, state.wake))})`, 2],
         ["Pola makan", meal ? meal.label : "-", 3],
-        ["Pemicu stres", state.triggers.join(", ") || "-", 4],
         ["Refleksi", state.note.trim() || "Tidak ada catatan", 5]
       ];
       return head("Cek lagi sebelum simpan.", "Kamu bisa mengubah bagian mana pun.") + `
@@ -143,7 +131,7 @@
         <p class="form-hint">Catatan refleksi dienkripsi dan hanya terlihat olehmu.</p>`;
     },
 
-    7: () => `
+    6: () => `
       <section class="card success-card">
         <span class="success-icon" aria-hidden="true">✓</span>
         <h1 class="page-title page-title-sm" tabindex="-1">Check-in tersimpan.</h1>
