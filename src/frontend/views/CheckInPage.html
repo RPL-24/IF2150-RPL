@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MahaSehat - Check In Harian</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="CheckInPage.css">
+</head>
+<body>
+    <div class="site-wrapper">
+        <header class="site-header">
+            <a class="brand-link" href="CheckInPage.html">
+                <span class="brand-logo" aria-hidden="true">M</span>
+                <span class="brand-title">MahaSehat</span>
+            </a>
+            <button class="btn-detail" id="btn-close" type="button">Tutup</button>
+        </header>
+
+        <main class="main-viewport" id="checkin-content" aria-live="polite"></main>
+
+        <footer class="site-footer">
+            <p>&copy; 2026 MahaSehat. Catatan refleksimu dienkripsi dan hanya terlihat olehmu.</p>
+        </footer>
+    </div>
+
+    <script src="CheckInPage.js"></script>
+    <script>
+        CheckInPage.init({
+            name: "Einstein",
+            onSubmit: async (payload) => {
+                // Ganti dengan request ke backend, mis. fetch("/api/checkins", { method: "POST", ... })
+                console.log("Payload check-in:", payload);
+            },
+            onClose: () => { window.location.href = "DashboardPage.html"; },
+            onDone: () => { window.location.href = "DashboardPage.html"; }
+        });
+    </script>
+</body>
+</html>

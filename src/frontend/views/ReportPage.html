@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Memuat Laporan...</title>
+    <script>
+        (function() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const roleParam = params.get('role');
+                const user = JSON.parse(localStorage.getItem('mahasehat_user') || '{}');
+                const rawRole = (roleParam || user.role || localStorage.getItem('role') || 'pelajar').toLowerCase();
+                
+                if (rawRole.includes('orangtua') || rawRole.includes('wali')) {
+                    window.location.replace('ReportPageOrangTuaWali.html' + window.location.search);
+                } else {
+                    window.location.replace('ReportPagePelajar.html' + window.location.search);
+                }
+            } catch (e) {
+                window.location.replace('ReportPagePelajar.html');
+            }
+        })();
+    </script>
+</head>
+<body>
+</body>
+</html>
+
