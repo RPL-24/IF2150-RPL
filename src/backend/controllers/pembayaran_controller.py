@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 
 from ..errors import PembayaranError
 from ..models import ItemTransaksi, ListingMakanan, Transaksi
-from ..adapters.metode_pembayaran import MetodePembayaran
 
 BATAS_WAKTU_BAYAR = timedelta(minutes=15)
 FORMAT_WAKTU = "%Y-%m-%d %H:%M:%S"
@@ -29,9 +28,6 @@ def ambil_transaksi(conn: sqlite3.Connection, id_transaksi: int):
 
 
 class PembayaranController:
-    def __init__(self, metode: MetodePembayaran):
-        self.metode = metode
-
     def checkout(self, conn: sqlite3.Connection, id_pembeli: int, id_listing: int, jumlah: int):
         if jumlah <= 0:
             raise PembayaranError("Jumlah porsi tidak valid")
