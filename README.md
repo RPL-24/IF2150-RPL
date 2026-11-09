@@ -8,7 +8,7 @@ Platform web pelaporan kerusakan infrastruktur publik (jalan berlubang, lampu ja
 | Tim Administrasi | desktop | I-03 Validasi laporan, I-04 Evaluasi hasil kerja |
 | Eksekutor Lapangan | mobile | I-05 Daftar tugas, I-06 Lapor hasil perbaikan |
 
-- Deploy: [TODO]
+ **Aplikasi:** https://laporkota.vercel.app
 - Anggota tim: [TODO]
 - Rancangan: [`docs/M8/K03_G07_DPPL2.md`](docs/M8/K03_G07_DPPL2.md) (DPPL), [`docs/M3/K03_G07_UC.md`](docs/M3/K03_G07_UC.md) (use case). Beda implementasi vs DPPL: [`docs/implementasi/perubahan-dppl.md`](docs/implementasi/perubahan-dppl.md).
 - Aturan kerja tim & agent AI: [`AGENTS.md`](AGENTS.md).
