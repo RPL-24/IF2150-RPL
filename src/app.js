@@ -7,6 +7,7 @@ const dokumenLegalRoutes = require('./routes/dokumenLegalRoutes');
 const laporanRoutes = require('./routes/laporanRoutes');
 const moderasiRoutes = require('./routes/moderasiRoutes');
 const barangRoutes = require('./routes/barangRoutes');
+const katalogRoutes = require('./routes/katalogRoutes');
 
 const DIR_VIEWS = path.join(__dirname, 'views');
 const DIR_HALAMAN = path.join(DIR_VIEWS, 'pages');
@@ -21,6 +22,7 @@ app.use('/api/dokumen-legal', dokumenLegalRoutes);
 app.use('/api/laporan', laporanRoutes);
 app.use('/api/admin', moderasiRoutes);
 app.use('/api/barang', barangRoutes);
+app.use('/api/katalog', katalogRoutes);
 
 app.use('/api', (req, res) => {
   res.status(404).json({ sukses: false, pesan: 'Endpoint tidak ditemukan.' });

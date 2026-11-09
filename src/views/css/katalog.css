@@ -1,0 +1,118 @@
+/* Gaya khusus Modul C (katalog, pencarian, detail listing).
+   Komponen dasar (btn, card, panel, grid, topbar, rail) memakai components.css/app.css. */
+
+/* Kotak cari di topbar yang dijadikan input sungguhan */
+.searchbar--aktif { cursor: text; }
+.searchbar__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+}
+
+/* Panel filter */
+.filter-katalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px 16px;
+  align-items: end;
+}
+.filter-katalog__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.filter-katalog__field select,
+.filter-katalog__field input {
+  font: inherit;
+  font-weight: 400;
+  padding: 8px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  min-width: 0;
+}
+.filter-katalog__aksi { display: flex; gap: 8px; }
+
+/* Kartu yang dapat diklik */
+.kartu-produk {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 12px;
+}
+.kartu-produk:hover .card,
+.kartu-produk:focus-visible .card { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); }
+.kartu-produk:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.kartu-produk__penjual { margin-top: 2px; opacity: 0.8; }
+
+/* Navigasi halaman */
+.paginasi-katalog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.paginasi-katalog[hidden] { display: none; }
+
+/* Detail listing */
+.detail-kembali { color: inherit; font-weight: 600; text-decoration: none; }
+.detail-barang {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.detail-barang[hidden] { display: none; }
+.detail-barang__foto {
+  aspect-ratio: 1 / 1;
+  max-height: 460px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.detail-barang__foto img { width: 100%; height: 100%; object-fit: contain; }
+.detail-barang__thumbs { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.detail-barang__thumbs[hidden] { display: none; }
+.detail__thumb {
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: none;
+}
+.detail__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.detail__thumb.is-active { border-color: currentColor; }
+.detail-barang__info { display: flex; flex-direction: column; gap: 16px; }
+.detail-barang__info .badge { align-self: flex-start; }
+.detail-barang__harga { font-size: 1.6rem; font-weight: 700; }
+.detail-barang__meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 16px;
+  margin: 0;
+}
+.detail-barang__meta dt { opacity: 0.7; }
+.detail-barang__meta dd { margin: 0; font-weight: 600; }
+.detail-barang__deskripsi { white-space: pre-line; }
+.detail-barang__penjual { display: flex; align-items: center; gap: 12px; }
+.detail-barang__nama { font-weight: 600; }
+.detail-barang__aksi { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.detail-barang__aksi p { flex-basis: 100%; margin: 0; }
+
+@media (max-width: 800px) {
+  .detail-barang { grid-template-columns: 1fr; }
+}
