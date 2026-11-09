@@ -15,8 +15,8 @@ class PaymentGatewayAdapter(MetodePembayaran):
             raise PembayaranError("Gagal membuat tagihan pembayaran", 502)
         if not getattr(transaksi, "token_bayar", None):
             raise PembayaranError("Token pembayaran tidak tersedia", 500)
-        api_url = os.getenv("SAVEBITE_PUBLIC_API_URL", "http://localhost:8000").rstrip("/")
-        url_scan = f"{api_url}/api/pembayaran/scan/{transaksi.token_bayar}"
+        web_url = os.getenv("SAVEBITE_PUBLIC_WEB_URL", "http://localhost:3000").rstrip("/")
+        url_scan = f"{web_url}/pembayaran/scan/{transaksi.token_bayar}"
         image = qrcode.make(url_scan)
         buffer = BytesIO()
         image.save(buffer, format="PNG")

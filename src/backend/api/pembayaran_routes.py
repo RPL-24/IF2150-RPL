@@ -3,7 +3,6 @@ import os
 import secrets
 from dataclasses import asdict
 from fastapi import APIRouter, Depends
-from fastapi.responses import RedirectResponse
 
 from ..models import DATABASE_NAME
 from ..errors import PembayaranError
@@ -29,12 +28,12 @@ def get_controller() -> PembayaranController:
 
 
 def _keluaran(trx, items, nama, kode_qris=None) -> TransaksiOut:
-    api_url = os.getenv("SAVEBITE_PUBLIC_API_URL", "http://localhost:8000").rstrip("/")
+    web_url = os.getenv("SAVEBITE_PUBLIC_WEB_URL", "http://localhost:3000").rstrip("/")
     return TransaksiOut(
         **asdict(trx),
         items=[ItemOut(**asdict(i), nama_makanan=nama.get(i.id_listing, "")) for i in items],
         kode_qris=kode_qris,
-        url_scan=f"{api_url}/api/pembayaran/scan/{trx.token_bayar}" if trx.token_bayar else None,
+        url_scan=f"{web_url}/pembayaran/scan/{trx.token_bayar}" if trx.token_bayar else None,
     )
 
 
@@ -65,20 +64,33 @@ def detail(id_transaksi: int, conn=Depends(get_conn),
     return _keluaran(trx, items, nama, ctl.metode.buat_tagihan(trx))
 
 
-@router.get("/scan/{token_bayar}", include_in_schema=False)
-def scan_qr(token_bayar: str, conn=Depends(get_conn),
-            ctl: PembayaranController = Depends(get_controller)):
-    """QRIS dummy bearer URL: opening it on a phone confirms the payment."""
+@router.post("/scan/{token_bayar}", include_in_schema=False)
+def konfirmasi_scan_qr(token_bayar: str, conn=Depends(get_conn),
+                       ctl: PembayaranController = Depends(get_controller)):
+    """Confirms only the pending transaction identified by the QR capability token."""
     row = conn.execute(
         "SELECT id_transaksi, id_pembeli, status FROM transaksi WHERE token_bayar = ?",
         (token_bayar,),
     ).fetchone()
     if row is None:
         raise PembayaranError("QR pembayaran tidak valid", 404)
-    if row["status"] == "MENUNGGU_BAYAR":
-        ctl.konfirmasi_bayar(conn, row["id_transaksi"], row["id_pembeli"], scan_dikonfirmasi=True)
-    web_url = os.getenv("SAVEBITE_PUBLIC_WEB_URL", "http://localhost:3000").rstrip("/")
-    return RedirectResponse(f"{web_url}/pembayaran/scan-sukses", status_code=303)
+    if row["status"] == "LUNAS":
+        return {"status": "LUNAS"}
+    if row["status"] != "MENUNGGU_BAYAR":
+        raise PembayaranError("Transaksi sudah tidak dapat dibayar", 409)
+    try:
+        trx, _, _ = ctl.konfirmasi_bayar(
+            conn, row["id_transaksi"], row["id_pembeli"], scan_dikonfirmasi=True
+        )
+    except PembayaranError:
+        # A repeated browser request may race with the first confirmation.
+        refreshed = conn.execute(
+            "SELECT status FROM transaksi WHERE id_transaksi = ?", (row["id_transaksi"],)
+        ).fetchone()
+        if refreshed is not None and refreshed["status"] == "LUNAS":
+            return {"status": "LUNAS"}
+        raise
+    return {"status": trx.status}
 
 @router.post("/{id_transaksi}/bayar", response_model=TransaksiOut)
 def bayar(id_transaksi: int, conn=Depends(get_conn),

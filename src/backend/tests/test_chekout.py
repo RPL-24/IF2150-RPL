@@ -35,8 +35,9 @@ def test_harga_satuan_disalin(client, db_path):
 
 def bayar(client, tid):
     detail = client.get(f"/api/pembayaran/{tid}").json()
-    scan = client.get(detail["url_scan"].replace("http://localhost:8000", ""), follow_redirects=False)
-    if scan.status_code == 303:
+    token = detail["url_scan"].rsplit("/", 1)[-1]
+    scan = client.post(f"/api/pembayaran/scan/{token}")
+    if scan.status_code == 200:
         return client.get(f"/api/pembayaran/{tid}")
     return scan
 
