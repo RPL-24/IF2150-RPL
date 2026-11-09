@@ -21,7 +21,7 @@ export function FilterKategori({nilai, onSelect, disabled = false}: Props) {
                 onChange={(e) => onSelect(e.target.value as PilihanKategori)}
                 className="mt-1 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-base disabled:opacity-60"
             >
-                <option>
+                <option value={SEMUA_KATEGORI}>
                     Semua kategori
                 </option>
                 {Object.entries(KATEGORI).map(([value, label]) => (
