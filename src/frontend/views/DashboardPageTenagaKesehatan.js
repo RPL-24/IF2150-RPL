@@ -22,11 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
             lokasi: 'Rumah Sakit ABC',
             biaya: 'Rp150.000 - Rp250.000 per sesi'
         },
-        pengajuan: [
-            { pelajar: 'Albert Einstein', waktu: 'Rabu, 11 November 2026 • 10:00 - 11:00 WIB', status: 'Diajukan' },
-            { pelajar: 'Marie Curie', waktu: 'Kamis, 12 November 2026 • 13:00 - 14:00 WIB', status: 'Disetujui' },
-            { pelajar: 'Isaac Newton', waktu: 'Jumat, 13 November 2026 • 09:00 - 10:00 WIB', status: 'Dijadwal Ulang' }
-        ],
+        pengajuan: (() => {
+            const storedConsultations = JSON.parse(localStorage.getItem('mahasehat_consultations') || 'null');
+            if (storedConsultations && Array.isArray(storedConsultations)) {
+                return storedConsultations.map(c => ({
+                    pelajar: c.namaPelajar,
+                    waktu: `${c.tanggal} • ${c.waktu}`,
+                    status: c.status === 'Menunggu' ? 'Diajukan' : c.status
+                }));
+            }
+            return [
+                { pelajar: 'Albert Einstein', waktu: 'Rabu, 11 November 2026 • 10:00 - 11:00 WIB', status: 'Diajukan' },
+                { pelajar: 'Marie Curie', waktu: 'Kamis, 12 November 2026 • 13:00 - 14:00 WIB', status: 'Disetujui' },
+                { pelajar: 'Isaac Newton', waktu: 'Jumat, 13 November 2026 • 09:00 - 10:00 WIB', status: 'Dijadwal Ulang' }
+            ];
+        })(),
         jadwal: [
             { waktu: 'Rabu, 11 November 2026 • 08:00 - 09:00 WIB', status: 'Kosong' },
             { waktu: 'Rabu, 11 November 2026 • 10:00 - 11:00 WIB', status: 'Terisi' },
