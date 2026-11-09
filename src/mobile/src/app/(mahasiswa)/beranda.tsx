@@ -9,11 +9,13 @@ import Users from 'lucide-react-native/icons/users';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import type { Muatan } from '@/lib/muatan';
+import { ambilAfirmasi } from '@/api';
+import { useMuatan, type Muatan } from '@/lib/muatan';
+import { useSesi } from '@/lib/sesi';
 import { sapaan } from '@/lib/waktu';
 import { jarak, warna } from '@/theme';
 import { GridMenu, type ItemMenu } from '@/views/beranda/GridMenu';
-import { KartuAfirmasi, type Afirmasi } from '@/views/beranda/KartuAfirmasi';
+import { KartuAfirmasi } from '@/views/beranda/KartuAfirmasi';
 import { KartuSesi, type SesiBerikutnya } from '@/views/beranda/KartuSesi';
 import { KepalaBeranda } from '@/views/beranda/KepalaBeranda';
 
@@ -27,23 +29,8 @@ const MENU: ItemMenu[] = [
   { ikon: MessageSquare, judul: 'Umpan Balik', tujuan: '/umpan-balik' },
 ];
 
-// TODO(#4): replace with data from the backend once #16 is merged:
-//   nama from login (#3), afirmasi from GET /api/affirmation,
-//   sesi from GET /api/sessions/next. Sample values follow the seed data.
-const PRATINJAU: {
-  nama: string;
-  afirmasi: Muatan<Afirmasi | null>;
-  sesi: Muatan<SesiBerikutnya | null>;
-} = {
-  nama: 'Mahasiswa Uji',
-  afirmasi: {
-    status: 'siap',
-    data: {
-      konten:
-        'Hari ini kamu sudah melakukan yang terbaik. Tarik napas, dan beri dirimu ruang untuk beristirahat.',
-      waktuKirim: '07:00',
-    },
-  },
+// TODO(#4): replace with GET /api/sessions/next. Sample values follow the seed data.
+const PRATINJAU: { sesi: Muatan<SesiBerikutnya | null> } = {
   sesi: {
     status: 'siap',
     data: {
@@ -59,20 +46,21 @@ const PRATINJAU: {
 export default function BerandaMahasiswa() {
   const router = useRouter();
   const { top } = useSafeAreaInsets();
-  const { nama, afirmasi, sesi } = PRATINJAU;
-  const muatUlang = () => {}; // TODO(#4): refetch
+  const { pengguna } = useSesi();
+  const [afirmasi, muatUlangAfirmasi] = useMuatan(ambilAfirmasi);
+  const { sesi } = PRATINJAU;
 
   return (
     <ScrollView style={styles.layar} contentContainerStyle={[styles.isi, { paddingTop: top + jarak.md }]}>
       {/* I-02-02: the notification list has no screen in BAB 6 yet. */}
-      <KepalaBeranda atas={`${sapaan()},`} judul={nama} ikon={Bell} labelIkon="Notifikasi" />
+      <KepalaBeranda atas={`${sapaan()},`} judul={pengguna?.nama ?? ''} ikon={Bell} labelIkon="Notifikasi" />
 
-      <KartuAfirmasi afirmasi={afirmasi} onBuka={() => router.push('/afirmasi')} onCobaLagi={muatUlang} />
+      <KartuAfirmasi afirmasi={afirmasi} onBuka={() => router.push('/afirmasi')} onCobaLagi={muatUlangAfirmasi} />
       <KartuSesi
         sesi={sesi}
         onBuka={() => router.push('/kalender')}
         onPesan={() => router.push('/konsultasi')}
-        onCobaLagi={muatUlang}
+        onCobaLagi={() => {}} // TODO(#4): reload once sesi comes from the backend
       />
 
       <GridMenu judul="Menu" menu={MENU} kolom={3} />
