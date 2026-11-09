@@ -1,10 +1,66 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppLayout } from "@/components/layout";
+import KartuPesananPenjual from "@/components/penjual/KartuPesananPenjual";
+import { ambilPesananPenjual, tandaiPesananDiambil, type PesananPenjual } from "@/lib/api";
 
 export default function SellerDashboardPage() {
   const router = useRouter();
+  const [pesanan, setPesanan] = useState<PesananPenjual[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [pesanError, setPesanError] = useState<string | null>(null);
+  const [idSedangDitandai, setIdSedangDitandai] = useState<number | null>(null);
+
+  const muatPesanan = useCallback(async () => {
+    setPesanError(null);
+    try {
+      const data = await ambilPesananPenjual();
+      setPesanan(data);
+    } catch (error: unknown) {
+      setPesanError(
+        error instanceof Error ? error.message : "Terjadi kesalahan sistem",
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    ambilPesananPenjual()
+      .then((data) => {
+        if (active) setPesanan(data);
+      })
+      .catch((error: unknown) => {
+        if (active) {
+          setPesanError(
+            error instanceof Error ? error.message : "Terjadi kesalahan sistem",
+          );
+        }
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const handleTandaiDiambil = async (idTransaksi: number) => {
+    setIdSedangDitandai(idTransaksi);
+    setPesanError(null);
+    try {
+      await tandaiPesananDiambil(idTransaksi);
+      await muatPesanan();
+    } catch (error: unknown) {
+      setPesanError(
+        error instanceof Error ? error.message : "Gagal menandai pesanan sudah diambil",
+      );
+    } finally {
+      setIdSedangDitandai(null);
+    }
+  };
 
   return (
     <AppLayout
@@ -13,25 +69,81 @@ export default function SellerDashboardPage() {
       title="Seller Dashboard"
       showHeader
       headerClassName="bg-[#1bb0c7] px-5 pb-5 pt-8"
-      bodyClassName="bg-[#e6e0c8] px-4 py-5"
+      bodyClassName="bg-[#e6e0c8] px-4 py-5 sm:px-6 lg:px-8"
     >
-      <div className="rounded-[18px] bg-[#f7f0dc] p-5 shadow-sm">
-        <p className="text-sm uppercase tracking-[0.12em] text-[#60756b]">
-          Kelola toko Anda
-        </p>
-        <h3 className="mt-2 text-2xl font-black text-[#1a8ca1]">
-          Listing makanan
-        </h3>
-        <p className="mt-2 text-sm text-[#60756b]">
-          Tambahkan, perbarui, dan nonaktifkan listing makanan surplus Anda.
-        </p>
-        <button
-          type="button"
-          onClick={() => router.push("/penjual/listing")}
-          className="mt-5 rounded-lg bg-[#1a8ca1] px-4 py-2 text-sm font-bold text-white hover:bg-[#14798b]"
-        >
-          Kelola Listing
-        </button>
+      <div className="mx-auto max-w-3xl">
+        <div className="rounded-[18px] bg-[#f7f0dc] p-5 shadow-sm">
+          <p className="text-sm uppercase tracking-[0.12em] text-[#60756b]">
+            Kelola toko Anda
+          </p>
+          <h3 className="mt-2 text-2xl font-black text-[#1a8ca1]">
+            Listing makanan
+          </h3>
+          <p className="mt-2 text-sm text-[#60756b]">
+            Tambahkan, perbarui, dan nonaktifkan listing makanan surplus Anda.
+          </p>
+          <button
+            type="button"
+            onClick={() => router.push("/penjual/listing")}
+            className="mt-5 rounded-lg bg-[#1a8ca1] px-4 py-2 text-sm font-bold text-white hover:bg-[#14798b]"
+          >
+            Kelola Listing
+          </button>
+        </div>
+
+        <div className="mt-6">
+          <h2 className="text-xl font-black text-[#264b4d]">Pesanan Masuk</h2>
+          <p className="mt-1 text-sm text-[#60756b]">
+            Makanan yang sudah dibayar pembeli dan siap diambil di toko Anda.
+          </p>
+        </div>
+
+        {pesanError && (
+          <div
+            role="alert"
+            className="mt-4 flex flex-col gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <p>{pesanError}</p>
+            <button
+              type="button"
+              onClick={() => void muatPesanan()}
+              className="self-start font-semibold underline sm:self-auto"
+            >
+              Coba lagi
+            </button>
+          </div>
+        )}
+
+        {loading && !pesanError && (
+          <p role="status" className="mt-6 text-center text-[#60756b]">
+            Memuat daftar pesanan...
+          </p>
+        )}
+
+        {!loading && !pesanError && pesanan.length === 0 && (
+          <section className="mt-4 rounded-[18px] bg-[#f7f0dc] px-6 py-10 text-center shadow-sm">
+            <h3 className="text-lg font-bold text-[#264b4d]">
+              Belum ada pesanan yang sudah dibayar
+            </h3>
+            <p className="mx-auto mt-2 max-w-md text-sm text-[#60756b]">
+              Pesanan pembeli akan muncul di sini setelah pembayaran mereka
+              berhasil dikonfirmasi.
+            </p>
+          </section>
+        )}
+
+        {!loading && !pesanError && pesanan.length > 0 && (
+          <div className="mt-4 flex flex-col gap-4">
+            {pesanan.map((item) => (
+              <KartuPesananPenjual
+                key={item.id_transaksi}
+                pesanan={item}
+                isMenandai={idSedangDitandai === item.id_transaksi}
+                onTandaiDiambil={handleTandaiDiambil}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </AppLayout>
   );

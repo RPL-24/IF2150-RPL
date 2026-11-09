@@ -1,4 +1,5 @@
 import { AppLayout } from "@/components/layout";
+import TombolKeluar from "@/components/akun/TombolKeluar";
 
 const streak = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -48,6 +49,8 @@ export default function RewardPage() {
             </div>
           </div>
         </div>
+
+        <TombolKeluar />
       </div>
     </AppLayout>
   );

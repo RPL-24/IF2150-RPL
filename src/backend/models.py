@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS transaksi (
     total_harga INTEGER NOT NULL DEFAULT 0 CHECK (total_harga >= 0),
     status TEXT NOT NULL CHECK (status IN ('MENUNGGU_BAYAR', 'LUNAS', 'BATAL')) DEFAULT 'MENUNGGU_BAYAR',
     kode_pengambilan TEXT,
+    waktu_diambil DATETIME,
     FOREIGN KEY (id_pembeli) REFERENCES pembeli (id_pengguna) ON DELETE CASCADE
 );
 
@@ -97,6 +98,11 @@ def init_db(db_path: str = DATABASE_NAME):
     with sqlite3.connect(db_path, check_same_thread=False) as conn:
         conn.execute("PRAGMA foreign_keys = ON;")
         conn.executescript(CREATE_TABLES_SQL)
+        # Migrasi ringan untuk basis data lama: tambahkan kolom waktu_diambil
+        # pada transaksi jika belum ada (basis data lama dibuat sebelum kolom ini).
+        kolom = [baris[1] for baris in conn.execute("PRAGMA table_info(transaksi)").fetchall()]
+        if "waktu_diambil" not in kolom:
+            conn.execute("ALTER TABLE transaksi ADD COLUMN waktu_diambil DATETIME")
         conn.commit()
 
 @dataclass
@@ -259,6 +265,7 @@ class Transaksi:
     total_harga: int = 0
     status: str = "MENUNGGU_BAYAR"
     kode_pengambilan: Optional[str] = None
+    waktu_diambil: Optional[str] = None
 
 @dataclass
 class ItemTransaksi:

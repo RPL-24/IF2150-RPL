@@ -8,8 +8,18 @@ import DaftarListing from "./DaftarListing";
 import EmptyState from "./EmptyState";
 import FotoListing from "./FotoListing";
 import PesanKatalog, { perluLogin, PesanPerluLogin } from "./PesanKatalog";
-import TombolBeli from "./TombolBeli";
+import PengaturJumlah from "./PengaturJumlah";
 import { formatRupiah, formatWaktu } from "./format";
+
+function StoreIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M3 9.5 4.5 4h15L21 9.5" />
+      <path d="M3 9.5h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0v-2Z" />
+      <path d="M5 12.6V20h14v-7.4" />
+    </svg>
+  );
+}
 
 type State =
   | { untukId: string; status: "ok"; listing: ListingKatalog }
@@ -72,6 +82,17 @@ export default function DetailListing() {
           <p className="mt-1 text-2xl font-bold text-emerald-700 dark:text-emerald-400">{formatRupiah(listing.harga)}</p>
         </div>
         {listing.deskripsi && <p className="text-zinc-700 dark:text-zinc-300">{listing.deskripsi}</p>}
+        {/* Toko penjual + lokasi pengambilan makanan (R09: pickup di tempat) */}
+        <div className="rounded-xl border border-[#d7cfb5] bg-[#f7f0dc] p-4 text-sm">
+          <p className="inline-flex items-center gap-1.5 font-bold text-[#0a8ea8]">
+            <StoreIcon className="h-4 w-4" aria-hidden="true" />
+            {listing.nama_toko}
+          </p>
+          <p className="mt-1.5 text-zinc-600 dark:text-zinc-400">
+            <span className="font-semibold text-[#264b4d]">Diambil di:</span>{" "}
+            {listing.alamat_toko || "Lokasi toko belum tersedia"}
+          </p>
+        </div>
         <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
           <dt className="text-zinc-500">Porsi</dt>
           <dd>{listing.porsi}</dd>
@@ -83,7 +104,12 @@ export default function DetailListing() {
           <dd>{formatWaktu(listing.batas_kedaluwarsa)}</dd>
         </dl>
         <div className="flex flex-wrap items-center gap-4 pt-2">
-          <TombolBeli idListing={listing.id_listing} />
+          {/* Pilih jumlah langsung di sini: + masuk ke keranjang, − mengurangi (tanpa pindah halaman).
+              Pembayaran hanya bisa dilanjutkan lewat keranjang (Buy Now). */}
+          <PengaturJumlah listing={listing} ukuran="besar" />
+          <Link href="/cart" className="text-sm text-[#0a8ea8] underline hover:text-[#0d7b96]">
+            Lihat keranjang
+          </Link>
           <Link href="/katalog" className="text-sm text-zinc-600 underline dark:text-zinc-400">
             Kembali ke katalog
           </Link>

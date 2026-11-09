@@ -21,7 +21,11 @@ function PembayaranIsi() {
   const [sibuk, setSibuk] = useState(false);
   const statusRef = useRef("");
 
+  // Halaman pembayaran hanya sah untuk id transaksi yang valid (dibuat lewat "Buy Now" di keranjang).
+  const idValid = Number.isInteger(Number(idTransaksi)) && Number(idTransaksi) >= 1;
+
   useEffect(() => {
+    if (!idValid) return; // id tidak sah → tampilkan pesan tanpa memanggil API
     let dibatalkan = false;
     ambilTransaksi(idTransaksi)
       .then((t) => {
@@ -35,7 +39,7 @@ function PembayaranIsi() {
     return () => {
       dibatalkan = true;
     };
-  }, [idTransaksi]);
+  }, [idTransaksi, idValid]);
 
   async function kirimBayar() {
     setSibuk(true);
@@ -54,7 +58,21 @@ function PembayaranIsi() {
   }
 
   let isi;
-  if (!trx) {
+  if (!idValid) {
+    // Bukan id transaksi (mis. sisa URL lama /pembayaran/checkout) → tidak ada yang bisa dibayar.
+    isi = (
+      <div className="space-y-4">
+        <p className="font-medium text-red-600">Transaksi tidak ditemukan</p>
+        <button
+          type="button"
+          onClick={() => router.push("/katalog")}
+          className="w-full rounded-md bg-[#f25f4b] px-4 py-4 text-xl font-black text-white shadow-sm"
+        >
+          Kembali ke katalog
+        </button>
+      </div>
+    );
+  } else if (!trx) {
     isi = <p className="text-[#5d625b]">{pesan || "Memuat..."}</p>;
   } else if (trx.status === "LUNAS") {
     isi = (

@@ -174,3 +174,21 @@ def login(req: LoginRequest):
         httponly=True, samesite="lax", path="/",
     )
     return response
+
+
+@router.post("/logout")
+def logout(session_token: str | None = Cookie(default=None)):
+    """Hapus sesi aktif (baris auth_session) lalu hapus cookie sesi dari peramban.
+    Dilakukan di server karena cookie session_token bertanda httpOnly."""
+    if session_token:
+        conn = sqlite3.connect(DATABASE_NAME, check_same_thread=False)
+        try:
+            conn.execute("DELETE FROM auth_session WHERE token = ?", (session_token,))
+            conn.commit()
+        finally:
+            conn.close()
+
+    response = JSONResponse({"message": "Berhasil keluar"})
+    response.delete_cookie(key="session_token", path="/")
+    response.delete_cookie(key="role", path="/")
+    return response

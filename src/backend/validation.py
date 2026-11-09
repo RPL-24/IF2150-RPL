@@ -20,6 +20,23 @@ class Validasi:
         return daftarError
 
     @staticmethod
+    def validasiToko(nama_toko: str, alamat_toko: str) -> List[str]:
+        """Validasi profil toko penjual (nama toko & alamat pengambilan)."""
+        daftar_error: List[str] = []
+
+        if not nama_toko or not nama_toko.strip():
+            daftar_error.append("Nama toko wajib diisi")
+        elif len(nama_toko.strip()) > 100:
+            daftar_error.append("Nama toko maksimal 100 karakter")
+
+        if not alamat_toko or not alamat_toko.strip():
+            daftar_error.append("Alamat toko wajib diisi")
+        elif len(alamat_toko.strip()) > 200:
+            daftar_error.append("Alamat toko maksimal 200 karakter")
+
+        return daftar_error
+
+    @staticmethod
     def validasiListing(data: Dict[str, Any] | DataListing) -> List[str]:
         daftar_error: List[str] = []
         

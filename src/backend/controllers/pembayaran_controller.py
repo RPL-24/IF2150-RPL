@@ -2,6 +2,8 @@ import sqlite3
 import secrets
 from datetime import datetime, timedelta
 
+from ..adapters.metode_pembayaran import MetodePembayaran
+from ..adapters.payment_gateway_adapter import PaymentGatewayAdapter
 from ..errors import PembayaranError
 from ..models import ItemTransaksi, ListingMakanan, Transaksi
 
@@ -28,16 +30,36 @@ def ambil_transaksi(conn: sqlite3.Connection, id_transaksi: int):
 
 
 class PembayaranController:
+    def __init__(self, metode: MetodePembayaran | None = None):
+        # Adapter metode pembayaran (default: QRIS dummy gateway).
+        self.metode = metode if metode is not None else PaymentGatewayAdapter()
+
     def checkout(self, conn: sqlite3.Connection, id_pembeli: int, id_listing: int, jumlah: int):
-        if jumlah <= 0:
+        """Membuat transaksi untuk satu listing (UC05)."""
+        return self.checkout_banyak(conn, id_pembeli, [(id_listing, jumlah)])
+
+    def checkout_banyak(self, conn: sqlite3.Connection, id_pembeli: int, pesanan: list[tuple[int, int]]):
+        """Membuat satu transaksi dari daftar pesanan [(id_listing, jumlah), ...] (UC05).
+        Mendukung satu maupun beberapa listing (dari keranjang) sekaligus."""
+        if not pesanan:
+            raise PembayaranError("Pesanan tidak boleh kosong")
+        if any(jumlah <= 0 for _, jumlah in pesanan):
             raise PembayaranError("Jumlah porsi tidak valid")
 
+        # Gabungkan jumlah untuk listing yang sama agar stok divalidasi satu kali
+        gabungan: dict[int, int] = {}
+        for id_listing, jumlah in pesanan:
+            gabungan[id_listing] = gabungan.get(id_listing, 0) + jumlah
+
         sekarang = datetime.now()
-        listing = ListingMakanan.cariById(conn, id_listing)
-        if listing is None or not listing.is_tersedia(sekarang):
-            raise PembayaranError("Listing tidak tersedia", 404)
-        if listing.stok < jumlah:
-            raise PembayaranError("Stok tidak mencukupi", 409)
+        dipilih: list[tuple[ListingMakanan, int]] = []
+        for id_listing, jumlah in gabungan.items():
+            listing = ListingMakanan.cariById(conn, id_listing)
+            if listing is None or not listing.is_tersedia(sekarang):
+                raise PembayaranError("Listing tidak tersedia", 404)
+            if listing.stok < jumlah:
+                raise PembayaranError("Stok tidak mencukupi", 409)
+            dipilih.append((listing, jumlah))
 
         try:
             cur = conn.execute(
@@ -46,15 +68,18 @@ class PembayaranController:
                  (sekarang + BATAS_WAKTU_BAYAR).strftime(FORMAT_WAKTU)),
             )
             id_transaksi = cur.lastrowid
-            item = ItemTransaksi(None, id_transaksi, id_listing, jumlah, listing.harga)
-            conn.execute(
-                "INSERT INTO item_transaksi (id_transaksi, id_listing, jumlah, harga_satuan) "
-                "VALUES (?, ?, ?, ?)",
-                (id_transaksi, id_listing, jumlah, item.harga_satuan),
-            )
+            total_harga = 0
+            for listing, jumlah in dipilih:
+                item = ItemTransaksi(None, id_transaksi, listing.id_listing, jumlah, listing.harga)
+                conn.execute(
+                    "INSERT INTO item_transaksi (id_transaksi, id_listing, jumlah, harga_satuan) "
+                    "VALUES (?, ?, ?, ?)",
+                    (id_transaksi, item.id_listing, item.jumlah, item.harga_satuan),
+                )
+                total_harga += item.hitung_subtotal()
             conn.execute(
                 "UPDATE transaksi SET total_harga = ? WHERE id_transaksi = ?",
-                (item.hitung_subtotal(), id_transaksi),
+                (total_harga, id_transaksi),
             )
             conn.commit()
         except Exception:

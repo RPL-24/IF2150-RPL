@@ -1,4 +1,11 @@
+"""Script seeding basis data dev/demo.
+
+Tidak ada argumen  : semai data hanya jika masih kosong (idempoten).
+--reset / -r       : hapus seluruh isi katalog (listing) lalu semai ulang.
+"""
+import argparse
 import sys
+from datetime import datetime, timedelta
 from pathlib import Path
 import sqlite3
 import bcrypt
@@ -15,138 +22,227 @@ except ImportError:
 
 DB_PATH = BACKEND_DIR / DATABASE_NAME
 
-conn = sqlite3.connect(DB_PATH)
-conn.execute("PRAGMA foreign_keys = ON;")
-cursor = conn.cursor()
+# 2. Data akun yang disemai: (nama, email, peran, extra_data)
+#    Penjual: (nama_toko, alamat_toko). Pembeli: (nama_akun,)
+AKUN = [
+    ("Penjual SaveBite", "penjual@test.com", "PENJUAL", ("Toko Roti Berkah", "Jl. Sudirman No. 45")),
+    ("Pembeli E2E", "pembeli@test.com", "PEMBELI", ("pembelie2e",)),
+    ("Kantin Sehat", "kantin@test.com", "PENJUAL", ("Kantin Kampus Sehat", "Jl. Ganesha No. 10")),
+    ("Warung Bu Sari", "warung@test.com", "PENJUAL", ("Warung Makan Bu Sari", "Jl. Cikutra No. 88")),
+]
 
-# 2. Skema Tabel (Pengguna, Penjual, Pembeli, Reward, Listing)
-# Pastikan seeding mengikuti skema yang dipakai aplikasi utama.
-cursor.executescript("""
-CREATE TABLE IF NOT EXISTS pengguna (
-    id_pengguna INTEGER PRIMARY KEY AUTOINCREMENT,
-    nama TEXT NOT NULL,
-    email TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL
-);
+# Foto yang pernah diunggah lewat /upload-foto; dipakai berputar agar kartu katalog memiliki gambar.
+FOTO_TERSEDIA = [
+    "uploads/listing/158ce285011340339adb5d310473c6ba.png",
+    "uploads/listing/3ab3978c-6a4c-4bfa-9c0b-4e53ba87b3e6.jpg",
+    "uploads/listing/409a0e236f8542a29aba237fa5599a80.png",
+    "uploads/listing/40c48ffa800847798ce2f0a8fe818a14.png",
+    "uploads/listing/5933eedf-022a-4b3e-9638-75d40ab20289.png",
+    "uploads/listing/64d5be7870e240439b024bb202663a00.jpg",
+    "uploads/listing/6840ea4b35dc4757b9e4a0a3660e2694.png",
+    "uploads/listing/dfda96d63b1e429eb14e9b38f421e960.jpg",
+]
 
-CREATE TABLE IF NOT EXISTS penjual (
-    id_pengguna INTEGER PRIMARY KEY,
-    nama_toko TEXT NOT NULL,
-    alamat_toko TEXT NOT NULL,
-    FOREIGN KEY (id_pengguna) REFERENCES pengguna(id_pengguna) ON DELETE CASCADE
-);
 
-CREATE TABLE IF NOT EXISTS pembeli (
-    id_pengguna INTEGER PRIMARY KEY,
-    nama_akun TEXT NOT NULL,
-    FOREIGN KEY (id_pengguna) REFERENCES pengguna(id_pengguna) ON DELETE CASCADE
-);
+def batas_kedaluwarsa(jam: int) -> str:
+    """Batas kedaluwarsa `jam` jam dari sekarang, format datetime() SQLite."""
+    return (datetime.now() + timedelta(hours=jam)).strftime("%Y-%m-%dT%H:%M:%S")
 
-CREATE TABLE IF NOT EXISTS listing_makanan (
-    id_listing INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_penjual INTEGER NOT NULL,
-    nama_makanan TEXT NOT NULL,
-    deskripsi TEXT,
-    porsi TEXT NOT NULL,
-    kondisi TEXT NOT NULL,
-    foto TEXT,
-    harga INTEGER NOT NULL CHECK (harga >= 0),
-    stok INTEGER NOT NULL CHECK (stok >= 0),
-    batas_kedaluwarsa DATETIME NOT NULL,
-    aktif BOOLEAN NOT NULL DEFAULT 1,
-    FOREIGN KEY (id_penjual) REFERENCES penjual(id_pengguna) ON DELETE CASCADE
-);
 
-CREATE TABLE IF NOT EXISTS reward_login (
-    id_reward INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_pembeli INTEGER UNIQUE NOT NULL,
-    poin_terkumpul INTEGER NOT NULL DEFAULT 0 CHECK (poin_terkumpul >= 0),
-    tanggal_login_terakhir DATE,
-    FOREIGN KEY (id_pembeli) REFERENCES pembeli(id_pengguna) ON DELETE CASCADE
-);
+# 3. Data dummy katalog: (email_penjual, nama, deskripsi, porsi, kondisi, harga, stok, jam_kedaluwarsa)
+LISTING_DUMMY = [
+    ("penjual@test.com", "Roti Tawar Penyelamatan", "Roti tawar yang masih enak untuk disantap", "1 Pack", "Sangat Baik", 12000, 5, 72),
+    ("penjual@test.com", "Nasi Goreng Spesial Late-Night", "Masih hangat dan siap dinikmati", "1 Porsi", "Hangat", 15000, 3, 8),
+    ("penjual@test.com", "Croissant Chocolate", "Croissant cokelat buatan sendiri, tekstur masih renyah", "1 Buah", "Sangat Baik", 18000, 4, 24),
+    ("penjual@test.com", "Donut Box Serenata", "Isi 6 donat campur rasa, masih lembut", "1 Box", "Baik", 25000, 2, 36),
+    ("penjual@test.com", "Muffin Blueberry", "Muffin blueberry dengan topping buah asli", "1 Buah", "Sangat Baik", 10000, 6, 48),
+    ("kantin@test.com", "Nasi Ayam Geprek", "Ayam geprek sambal bawang plus nasi hangat", "1 Porsi", "Hangat", 17000, 7, 6),
+    ("kantin@test.com", "Paket Nasi Rames", "Nasi rames lauk ayam suwir dan sayur bening", "1 Porsi", "Hangat", 14000, 5, 10),
+    ("kantin@test.com", "Sate Ayam Madang", "Sate ayam bumbu kacang, sepuluh tusuk", "10 Tusuk", "Baik", 20000, 4, 20),
+    ("kantin@test.com", "Gado-Gado Segar", "Salad Indonesia dengan saus kacang segar", "1 Porsi", "Sangat Baik", 13000, 8, 24),
+    ("warung@test.com", "Ayam Goreng Kremes", "Ayam goreng dengan kremes gurih melimpah", "1 Potong", "Hangat", 11000, 6, 12),
+    ("warung@test.com", "Tempe & Tahu Bacem", "Tempe dan tahu bacem manis, dagingnya masih kenyal", "5 Potong", "Baik", 8000, 10, 48),
+    ("warung@test.com", "Es Teh Manis Jumbo", "Es teh manis racikan warung, ukuran jumbo", "1 Gelas", "Sangat Baik", 5000, 12, 3),
+]
 
-CREATE TABLE IF NOT EXISTS auth_session (
-    token TEXT PRIMARY KEY,
-    id_pengguna INTEGER NOT NULL,
-    dibuat_pada DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    kedaluwarsa_pada DATETIME NOT NULL,
-    FOREIGN KEY (id_pengguna) REFERENCES pengguna(id_pengguna) ON DELETE CASCADE
-);
-""")
 
-# Hash Password Default untuk Pengujian
-salt = bcrypt.gensalt()
-hashed = bcrypt.hashpw("password123".encode('utf-8'), salt).decode('utf-8')
+def main(reset: bool) -> None:
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON;")
+    cursor = conn.cursor()
 
-try:
-    # 3. Seeding Akun Penjual
-    cursor.execute("SELECT id_pengguna FROM pengguna WHERE email = ?", ("penjual@test.com",))
-    row_penjual = cursor.fetchone()
+    # Skema tabel (sama dengan models.CREATE_TABLES_SQL agar bisa dijalankan berdiri sendiri).
+    cursor.executescript("""
+        CREATE TABLE IF NOT EXISTS pengguna (
+            id_pengguna INTEGER PRIMARY KEY AUTOINCREMENT,
+            nama TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL
+        );
 
-    if not row_penjual:
-        cursor.execute(
-            "INSERT INTO pengguna (nama, email, password) VALUES (?, ?, ?)",
-            ("Penjual SaveBite", "penjual@test.com", hashed)
-        )
-        id_penjual = cursor.lastrowid
-        cursor.execute(
-            "INSERT INTO penjual (id_pengguna, nama_toko, alamat_toko) VALUES (?, ?, ?)",
-            (id_penjual, "Toko Roti Berkah", "Jl. Sudirman No. 45")
-        )
-        print("✓ Akun penjual@test.com berhasil dibuat.")
-    else:
-        id_penjual = row_penjual[0]
-        print("ℹ Akun penjual@test.com sudah ada.")
+        CREATE TABLE IF NOT EXISTS penjual (
+            id_pengguna INTEGER PRIMARY KEY,
+            nama_toko TEXT NOT NULL,
+            alamat_toko TEXT NOT NULL,
+            FOREIGN KEY (id_pengguna) REFERENCES pengguna(id_pengguna) ON DELETE CASCADE
+        );
 
-    # 4. Seeding Akun Pembeli
-    cursor.execute("SELECT id_pengguna FROM pengguna WHERE email = ?", ("pembeli@test.com",))
-    row_pembeli = cursor.fetchone()
+        CREATE TABLE IF NOT EXISTS pembeli (
+            id_pengguna INTEGER PRIMARY KEY,
+            nama_akun TEXT NOT NULL,
+            FOREIGN KEY (id_pengguna) REFERENCES pengguna(id_pengguna) ON DELETE CASCADE
+        );
 
-    if not row_pembeli:
-        cursor.execute(
-            "INSERT INTO pengguna (nama, email, password) VALUES (?, ?, ?)",
-            ("Pembeli E2E", "pembeli@test.com", hashed)
-        )
-        id_pembeli = cursor.lastrowid
-        cursor.execute(
-            "INSERT INTO pembeli (id_pengguna, nama_akun) VALUES (?, ?)",
-            (id_pembeli, "pembelie2e")
-        )
-        cursor.execute(
-            "INSERT INTO reward_login (id_pembeli, poin_terkumpul) VALUES (?, ?)",
-            (id_pembeli, 0)
-        )
-        print("✓ Akun pembeli@test.com berhasil dibuat.")
-    else:
-        print("ℹ Akun pembeli@test.com sudah ada.")
+        CREATE TABLE IF NOT EXISTS listing_makanan (
+            id_listing INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_penjual INTEGER NOT NULL,
+            nama_makanan TEXT NOT NULL,
+            deskripsi TEXT,
+            porsi TEXT NOT NULL,
+            kondisi TEXT NOT NULL,
+            foto TEXT,
+            harga INTEGER NOT NULL CHECK (harga >= 0),
+            stok INTEGER NOT NULL CHECK (stok >= 0),
+            batas_kedaluwarsa DATETIME NOT NULL,
+            aktif BOOLEAN NOT NULL DEFAULT 1,
+            FOREIGN KEY (id_penjual) REFERENCES penjual(id_pengguna) ON DELETE CASCADE
+        );
 
-    # 5. Seeding Data Dummy Listing Makanan
-    cursor.execute("SELECT COUNT(*) FROM listing_makanan WHERE id_penjual = ?", (id_penjual,))
-    jumlah_listing = cursor.fetchone()[0]
+        CREATE TABLE IF NOT EXISTS reward_login (
+            id_reward INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_pembeli INTEGER UNIQUE NOT NULL,
+            poin_terkumpul INTEGER NOT NULL DEFAULT 0 CHECK (poin_terkumpul >= 0),
+            tanggal_login_terakhir DATE,
+            FOREIGN KEY (id_pembeli) REFERENCES pembeli(id_pengguna) ON DELETE CASCADE
+        );
 
-    if jumlah_listing == 0:
-        cursor.execute(
-            """
-            INSERT INTO listing_makanan (id_penjual, nama_makanan, deskripsi, porsi, kondisi, harga, stok, batas_kedaluwarsa, foto, aktif)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (id_penjual, "Roti Tawar Penyelamatan", "Roti tawar yang masih enak untuk disantap", "1 Pack", "Sangat Baik", 12000, 5, "2026-12-31T23:59:00", None, 1)
-        )
-        cursor.execute(
-            """
-            INSERT INTO listing_makanan (id_penjual, nama_makanan, deskripsi, porsi, kondisi, harga, stok, batas_kedaluwarsa, foto, aktif)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (id_penjual, "Nasi Goreng Spesial Late-Night", "Masih hangat dan siap dinikmati", "1 Porsi", "Hangat", 15000, 3, "2026-12-31T23:59:00", None, 1)
-        )
-        print("✓ Data dummy listing makanan berhasil ditambahkan.")
-    else:
-        print("ℹ Listing makanan untuk penjual ini sudah ada.")
+        CREATE TABLE IF NOT EXISTS auth_session (
+            token TEXT PRIMARY KEY,
+            id_pengguna INTEGER NOT NULL,
+            dibuat_pada DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            kedaluwarsa_pada DATETIME NOT NULL,
+            FOREIGN KEY (id_pengguna) REFERENCES pengguna(id_pengguna) ON DELETE CASCADE
+        );
+    """)
 
-    conn.commit()
+    # Hash password default untuk pengujian
+    hashed = bcrypt.hashpw("password123".encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 
-except Exception as e:
-    conn.rollback()
-    print(f"❌ Gagal menyemai data: {e}")
-finally:
-    conn.close()
+    try:
+        # 4. Reset katalog jika diminta (hapus semua listing; item terkait terhapus otomatis).
+        if reset:
+            cursor.execute("DELETE FROM listing_makanan;")
+            print("✓ Katalog dikosongkan untuk disemai ulang.")
+
+        # 5. Semai akun pengguna & perannya.
+        # SETIAP akun PENJUAL disemai bersama data toko awalnya (nama_toko, alamat_toko),
+        # yang tampil di katalog pembeli dan bisa diubah lewat halaman akun penjual.
+        id_per_email = {}
+        for nama, email, peran, extra in AKUN:
+            cursor.execute("SELECT id_pengguna FROM pengguna WHERE email = ?", (email,))
+            baris = cursor.fetchone()
+            if baris:
+                id_per_email[email] = baris[0]
+                # Sehat diri: akun sudah ada tetapi baris toko/profilnya belum ada (idempoten).
+                if peran == "PENJUAL" and not cursor.execute(
+                    "SELECT 1 FROM penjual WHERE id_pengguna = ?", (baris[0],)
+                ).fetchone():
+                    nama_toko, alamat_toko = extra
+                    cursor.execute(
+                        "INSERT INTO penjual (id_pengguna, nama_toko, alamat_toko) VALUES (?, ?, ?)",
+                        (baris[0], nama_toko, alamat_toko),
+                    )
+                    print(f"✓ Data toko awal untuk {email} dilengkapi.")
+                elif peran == "PENJUAL":
+                    nama_toko, alamat_toko = extra
+                    toko = cursor.execute(
+                        "SELECT nama_toko, alamat_toko FROM penjual WHERE id_pengguna = ?",
+                        (baris[0],),
+                    ).fetchone()
+                    # Legacy DB guard: jika profil toko ada tapi kolomnya kosong, isi dengan nilai awal seed.
+                    if toko and (not str(toko[0]).strip() or not str(toko[1]).strip()):
+                        cursor.execute(
+                            "UPDATE penjual SET nama_toko = ?, alamat_toko = ? WHERE id_pengguna = ?",
+                            (nama_toko, alamat_toko, baris[0]),
+                        )
+                        print(f"✓ Data toko awal untuk {email} diperbaiki.")
+                elif peran != "PENJUAL" and not cursor.execute(
+                    "SELECT 1 FROM pembeli WHERE id_pengguna = ?", (baris[0],)
+                ).fetchone():
+                    (nama_akun,) = extra
+                    cursor.execute(
+                        "INSERT INTO pembeli (id_pengguna, nama_akun) VALUES (?, ?)",
+                        (baris[0], nama_akun),
+                    )
+                    cursor.execute(
+                        "INSERT INTO reward_login (id_pembeli, poin_terkumpul) VALUES (?, ?)",
+                        (baris[0], 0),
+                    )
+                    print(f"✓ Data profil untuk {email} dilengkapi.")
+                continue
+
+            cursor.execute(
+                "INSERT INTO pengguna (nama, email, password) VALUES (?, ?, ?)",
+                (nama, email, hashed),
+            )
+            id_pengguna = cursor.lastrowid
+            if peran == "PENJUAL":
+                nama_toko, alamat_toko = extra
+                cursor.execute(
+                    "INSERT INTO penjual (id_pengguna, nama_toko, alamat_toko) VALUES (?, ?, ?)",
+                    (id_pengguna, nama_toko, alamat_toko),
+                )
+            else:
+                (nama_akun,) = extra
+                cursor.execute(
+                    "INSERT INTO pembeli (id_pengguna, nama_akun) VALUES (?, ?)",
+                    (id_pengguna, nama_akun),
+                )
+                cursor.execute(
+                    "INSERT INTO reward_login (id_pembeli, poin_terkumpul) VALUES (?, ?)",
+                    (id_pengguna, 0),
+                )
+            id_per_email[email] = id_pengguna
+            print(f"✓ Akun {email} berhasil dibuat.")
+
+        # 6. Semai data dummy katalog (dilewati bila katalog sudah terisi).
+        jumlah_listing = cursor.execute("SELECT COUNT(*) FROM listing_makanan").fetchone()[0]
+        if jumlah_listing > 0:
+            print(f"ℹ Katalog sudah berisi {jumlah_listing} listing; seeding katalog dilewati.")
+        else:
+            for i, (email, nama, deskripsi, porsi, kondisi, harga, stok, jam) in enumerate(LISTING_DUMMY):
+                cursor.execute(
+                    """
+                    INSERT INTO listing_makanan
+                        (id_penjual, nama_makanan, deskripsi, porsi, kondisi, foto,
+                         harga, stok, batas_kedaluwarsa, aktif)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+                    """,
+                    (
+                        id_per_email[email],
+                        nama,
+                        deskripsi,
+                        porsi,
+                        kondisi,
+                        "/" + FOTO_TERSEDIA[i % len(FOTO_TERSEDIA)],
+                        harga,
+                        stok,
+                        batas_kedaluwarsa(jam),
+                    ),
+                )
+            print(f"✓ {len(LISTING_DUMMY)} listing dummy berhasil ditambahkan.")
+
+        conn.commit()
+
+    except Exception as e:
+        conn.rollback()
+        print(f"❌ Gagal menyemai data: {e}")
+    finally:
+        conn.close()
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Seeding basis data SaveBite")
+    parser.add_argument("--reset", "-r", action="store_true", help="Hapus katalog lalu semai ulang")
+    args = parser.parse_args()
+    main(args.reset)

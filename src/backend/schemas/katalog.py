@@ -4,12 +4,16 @@ from pydantic import BaseModel, ConfigDict
 
 
 class ListingKatalog(BaseModel):
-    """Data listing yang dikirim ke KatalogView (UC02 kartu, UC03 detail)."""
+    """Data listing yang dikirim ke KatalogView (UC02 kartu, UC03 detail).
+    Nama & alamat toko asal listing ikut dikirim agar pembeli tahu toko mana
+    yang menjual dan di mana makanan diambil."""
 
     model_config = ConfigDict(from_attributes=True)
 
     id_listing: int
     id_penjual: int
+    nama_toko: str
+    alamat_toko: str
     nama_makanan: str
     deskripsi: Optional[str] = None
     porsi: str

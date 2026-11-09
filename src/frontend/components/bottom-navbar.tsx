@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, type JSX } from "react";
+import { useCart } from "@/lib/cart";
 
 export type UserRole = "guest" | "buyer" | "seller";
 
@@ -85,6 +86,7 @@ export function BottomNavbar({ items, className = "" }: BottomNavbarProps) {
 
 function BottomNavbarContent({ items, className = "" }: BottomNavbarProps) {
   const pathname = usePathname();
+  const { siap, totalItem } = useCart();
 
   return (
     <nav
@@ -107,13 +109,26 @@ function BottomNavbarContent({ items, className = "" }: BottomNavbarProps) {
                     : "text-[#d8faff] opacity-90 hover:text-white"
                 }`}
                 aria-current={isActive ? "page" : undefined}
+                aria-label={
+                  item.id === "cart" && siap && totalItem > 0
+                    ? `Cart, ${totalItem} item`
+                    : undefined
+                }
               >
                 <span
-                  className={`flex h-7 w-7 items-center justify-center ${
+                  className={`relative flex h-7 w-7 items-center justify-center ${
                     isActive ? "scale-110" : ""
                   }`}
                 >
                   {item.icon}
+                  {item.id === "cart" && siap && totalItem > 0 && (
+                    <span
+                      data-testid="cart-badge"
+                      className="absolute -right-2 -top-1.5 flex h-[1.15rem] min-w-[1.15rem] items-center justify-center rounded-full bg-[#f25f4b] px-1 text-[0.65rem] font-bold text-white"
+                    >
+                      {totalItem > 99 ? "99+" : totalItem}
+                    </span>
+                  )}
                 </span>
                 <span>{item.label}</span>
               </Link>
