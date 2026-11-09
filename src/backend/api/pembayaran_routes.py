@@ -6,7 +6,6 @@ from ..models import DATABASE_NAME
 from ..errors import PembayaranError
 from ..routers.auth import require_roles
 from ..schemas.pembayaran import CheckoutRequest, ItemOut, TransaksiOut
-from ..adapters.payment_gateway_adapter import PaymentGatewayAdapter
 from ..controllers.pembayaran_controller import PembayaranController, ambil_transaksi
 
 router = APIRouter(prefix="/api/pembayaran", tags=["pembayaran"])
@@ -23,7 +22,7 @@ def get_conn():
 
 
 def get_controller() -> PembayaranController:
-    return PembayaranController(PaymentGatewayAdapter())
+    return PembayaranController()
 
 
 def _keluaran(trx, items, nama, kode_qris=None) -> TransaksiOut:
@@ -44,7 +43,6 @@ def checkout(body: CheckoutRequest, conn=Depends(get_conn),
 
 @router.get("/{id_transaksi}", response_model=TransaksiOut)
 def detail(id_transaksi: int, conn=Depends(get_conn),
-           ctl: PembayaranController = Depends(get_controller),
            user=Depends(require_roles(["PEMBELI"]))):
     trx, items, nama = ambil_transaksi(conn, id_transaksi)
     if trx is None or trx.id_pembeli != user["id_pengguna"]:

@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AppLayout } from "@/components/layout";
 import KartuListingPenjual, {
     ListingMakananPenjual,
 } from "@/components/penjual/KartuListingPenjual";
 import DialogKonfirmasiHapus from "@/components/penjual/DialogKonfirmasiHapus";
+import { ambilDaftarListingPenjual, hapusListingPenjual } from "@/lib/api";
 
 export default function ListingPenjualPage() {
     const router = useRouter();
@@ -18,68 +20,56 @@ export default function ListingPenjualPage() {
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
     // Fetch daftar listing penjual
+<<<<<<< Updated upstream
     const ambilDaftarListing = async () => {
-        try {
-        const res = await fetch("/api/listing/penjual", {
-            credentials: "same-origin",
-            cache: "no-store",
-        });
-
-        if (!res.ok) {
-            throw new Error("Gagal mengambil daftar listing makanan.");
-        }
-
-        const data = await res.json();
-        setListings(data);
+        setLoading(true);
         setPesanError(null);
+=======
+    const ambilDaftarListing = useCallback(async () => {
+>>>>>>> Stashed changes
+        try {
+        const data = await ambilDaftarListingPenjual();
+        setListings(data);
         } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "Terjadi kesalahan sistem";
         setPesanError(message);
         } finally {
         setLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
+<<<<<<< Updated upstream
+        ambilDaftarListing();
+=======
         let aktif = true;
-        fetch("/api/listing/penjual", { credentials: "same-origin", cache: "no-store" })
-        .then((res) => {
-            if (!res.ok) throw new Error("Gagal mengambil daftar listing makanan.");
-            return res.json();
-        })
-        .then((data) => {
-            if (!aktif) return;
-            setListings(data);
-            setPesanError(null);
-        })
-        .catch((err: unknown) => {
-            if (!aktif) return;
-            setPesanError(err instanceof Error ? err.message : "Terjadi kesalahan sistem");
-        })
-        .finally(() => {
-            if (aktif) setLoading(false);
-        });
+        ambilDaftarListingPenjual()
+            .then((data) => {
+                if (!aktif) return;
+                setListings(data);
+                setPesanError(null);
+            })
+            .catch((err: unknown) => {
+                if (!aktif) return;
+                setPesanError(err instanceof Error ? err.message : "Terjadi kesalahan sistem");
+            })
+            .finally(() => {
+                if (aktif) setLoading(false);
+            });
         return () => {
             aktif = false;
         };
+>>>>>>> Stashed changes
     }, []);
 
     // Eksekusi Soft Delete (UC09)
     const handleKonfirmasiHapus = async () => {
         if (!selectedListing) return;
 
-        const idTarget = selectedListing.id_listing;
+        const idTarget = selectedListing.id_listing || (selectedListing as any).idListing;
         setIsDeleting(true);
         try {
-        const res = await fetch(`/api/listing/${idTarget}`, {
-            method: "DELETE",
-            credentials: "same-origin",
-        });
-
-        if (!res.ok) {
-            throw new Error("Gagal menghapus listing.");
-        }
-
+        await hapusListingPenjual(idTarget);
         setSelectedListing(null);
         await ambilDaftarListing();
         } catch (err: unknown) {
@@ -142,7 +132,7 @@ export default function ListingPenjualPage() {
             {!loading && !pesanError && listings.length > 0 && (
             <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {listings.map((item, index) => {
-                const keyId = item.id_listing || index;
+                const keyId = item.id_listing || (item as any).idListing || index;
                 return (
                     <KartuListingPenjual
                     key={keyId}
@@ -158,7 +148,7 @@ export default function ListingPenjualPage() {
             {/* Pop-up Dialog Hapus */}
             <DialogKonfirmasiHapus
             isOpen={!!selectedListing}
-            namaMakanan={selectedListing?.nama_makanan || ""}
+            namaMakanan={selectedListing?.nama_makanan || (selectedListing as any)?.namaMakanan || ""}
             isDeleting={isDeleting}
             onConfirm={handleKonfirmasiHapus}
             onCancel={() => setSelectedListing(null)}
