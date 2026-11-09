@@ -37,8 +37,8 @@ def _keluaran(trx, items, nama, kode_qris=None) -> TransaksiOut:
 def checkout(body: CheckoutRequest, conn=Depends(get_conn),
              ctl: PembayaranController = Depends(get_controller),
              user=Depends(require_roles(["PEMBELI"]))):
-    trx, items, nama = ctl.checkout(conn, user["id_pengguna"], body.id_listing, body.jumlah)
-    return _keluaran(trx, items, nama)
+    trx, items, nama, kode_qris = ctl.checkout(conn, user["id_pengguna"], body.id_listing, body.jumlah)
+    return _keluaran(trx, items, nama, kode_qris)
 
 
 @router.get("/{id_transaksi}", response_model=TransaksiOut)
@@ -47,4 +47,4 @@ def detail(id_transaksi: int, conn=Depends(get_conn),
     trx, items, nama = ambil_transaksi(conn, id_transaksi)
     if trx is None or trx.id_pembeli != user["id_pengguna"]:
         raise PembayaranError("Transaksi tidak ditemukan", 404)
-    return _keluaran(trx, items, nama)
+    return _keluaran(trx, items, nama, ctl.metode.buat_tagihan(trx))

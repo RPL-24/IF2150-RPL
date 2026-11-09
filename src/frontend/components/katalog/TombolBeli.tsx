@@ -1,8 +1,9 @@
 import Link from "next/link";
 
 // Kontrak P3 → P4: route halaman checkout. Ubah di sini saja jika P4 memakai route lain.
+// oke makasih :D 
 export function ruteCheckout(idListing: number): string {
-  return `/checkout?idListing=${idListing}`;
+  return `/pembayaran/checkout?idlisting=${idListing}`;
 }
 
 export default function TombolBeli({ idListing }: { idListing: number }) {

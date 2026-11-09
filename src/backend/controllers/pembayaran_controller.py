@@ -60,4 +60,5 @@ class PembayaranController:
             conn.rollback()
             raise
 
-        return ambil_transaksi(conn, id_transaksi)    # (trx, items, nama)
+        trx, items, nama = ambil_transaksi(conn, id_transaksi)
+        return trx, items, nama, self.metode.buat_tagihan(trx)    # after commit, as in Algo-C18-01
