@@ -1,3 +1,5 @@
+"use client"
+
 // C13 · PenugasanPage (kelas boundary DPPL). Pemilik: Peran C (lihat AGENTS.md bagian 4).
 import {useRef, useState, useTransition } from "react";
 import { FilterKategori, SEMUA_KATEGORI, type PilihanKategori } from "@/client/components/penugasan/FilterKategori";
