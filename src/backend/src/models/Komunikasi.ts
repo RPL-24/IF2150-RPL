@@ -176,13 +176,13 @@ export class Komunikasi {
           pengirim: {
             select: {
               idPengguna: true,
-              nama: true,
+              namaPengguna: true,
             },
           },
           penerima: {
             select: {
               idPengguna: true,
-              nama: true,
+              namaPengguna: true,
             },
           },
         },
