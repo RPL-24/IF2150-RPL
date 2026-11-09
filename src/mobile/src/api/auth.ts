@@ -23,7 +23,7 @@ type ResponsMasuk = { token: string; waktuLogin: string; pengguna: Pengguna };
 export async function masukDenganGoogle(): Promise<Pengguna | null> {
   const urlApi = process.env.EXPO_PUBLIC_API_URL?.replace(/\/+$/, '');
   if (!urlApi) {
-    throw new ApiError(0, KODE_KLIEN.jaringan, 'EXPO_PUBLIC_API_URL belum diatur. Salin .env.example ke .env.');
+    throw new ApiError(0, KODE_KLIEN.konfigurasi, 'EXPO_PUBLIC_API_URL belum diatur. Salin .env.example ke .env.');
   }
 
   // `sehati://` in the APK, `exp://<host>:8081/--/` in Expo Go. Both are allowed by the backend.

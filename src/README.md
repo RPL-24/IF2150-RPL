@@ -25,8 +25,8 @@ Arsitektur mengikuti DPPL (`docs/M8/K01_G04_DPPL2.md`): Client-Server + MVC, den
 
 | Komponen | Versi |
 |---|---|
-| Node.js | 22.13+ (atau 24.3+, 26+) |
-| npm | 10+ |
+| Node.js | 22.13+ (atau 24.3+, 26+); Expo CLI dan Metro tetap berjalan di Node |
+| [Bun](https://bun.com) | 1.4.x (pengelola paket, `bun.lock`) |
 | Expo SDK | 58 (`expo ~58.0.23`) |
 | React Native | 0.88.1 |
 | React | 19.3.0 |
@@ -35,6 +35,7 @@ Arsitektur mengikuti DPPL (`docs/M8/K01_G04_DPPL2.md`): Client-Server + MVC, den
 | Plus Jakarta Sans | `@expo-google-fonts/plus-jakarta-sans` ^0.4.2 |
 | Ikon | `lucide-react-native` ^1.69.0 + `react-native-svg` 15.16.0 |
 | Linter | ESLint 9 + `eslint-config-expo` |
+| Test | Vitest ^5.1.0 |
 
 ### Backend (`src/backend`)
 
@@ -49,7 +50,7 @@ Arsitektur mengikuti DPPL (`docs/M8/K01_G04_DPPL2.md`): Client-Server + MVC, den
 | Vitest | 5.1.0 (test) |
 | Node.js | 20+ (hanya untuk `better-sqlite3`, dipakai harness test) |
 
-> **Backend memakai `bun`, bukan `npm`.** Proyek *pin* ke Bun 1.4.x dengan `bun.lock`; `npm` mengabaikan lockfile itu dan dapat menghasilkan pohon dependensi berbeda. Mobile tetap memakai `npm` (`package-lock.json`), jadi kedua direktori memang punya lockfile masing-masing — jangan disatukan.
+> **Mobile dan backend sama-sama memakai `bun`, bukan `npm`.** Keduanya *pin* ke Bun 1.4.x dengan `bun.lock` masing-masing; `npm` mengabaikan lockfile itu dan dapat menghasilkan pohon dependensi berbeda. Jangan membuat `package-lock.json`. Kedua direktori tetap punya lockfile sendiri — jangan disatukan.
 
 ## 2. Struktur Folder
 
@@ -71,6 +72,8 @@ src/
       theme/              # token desain: warna, font, gaya teks, jarak, sudut
       api/                # klien HTTP ke backend, login, dan sesi (SecureStore)
       lib/                # sesi pengguna bersama (useSesi)
+    bun.lock              # lockfile Bun
+    test/                 # unit test Vitest (vitest.config.mts)
   backend/                # Cloudflare Worker (Hono + D1): REST API dan cron
     .env.example          # contoh CLOUDFLARE_* dan KUNCI_TOKEN
     .dev.vars             # rahasia lokal (tidak di-commit)
@@ -95,20 +98,20 @@ src/
 
 Prasyarat:
 
-- Node.js 22.13 atau lebih baru, dan npm.
+- Node.js 22.13 atau lebih baru.
 - Git.
 - Untuk mencoba di ponsel: aplikasi **Expo Go** (App Store / Play Store). Ponsel dan komputer berada di jaringan Wi-Fi yang sama.
 - Opsional: Android Studio (emulator Android). Simulator iOS hanya tersedia di macOS.
-- Untuk backend: **Bun 1.4.x**.
+- **Bun 1.4.x** untuk mobile dan backend (`curl -fsSL https://bun.sh/install | bash`).
 
 Instalasi dependensi mobile:
 
 ```bash
 cd src/mobile
-npm install
+bun install
 ```
 
-Gunakan `npx expo install <paket>` (bukan `npm install <paket>`) saat menambah paket agar versinya cocok dengan Expo SDK 58.
+Gunakan `bunx expo install <paket>` (bukan `bun add <paket>`) saat menambah paket agar versinya cocok dengan Expo SDK 58. Untuk paket pengembangan: `bunx expo install <paket> -- --dev`.
 
 Instalasi dependensi backend:
 
@@ -144,7 +147,7 @@ Nilai `EXPO_PUBLIC_API_URL` bergantung pada tempat aplikasi berjalan, karena `lo
 | Web atau simulator iOS di komputer yang sama | `http://localhost:8787` |
 | Backend yang sudah di-*deploy* | `https://<nama-worker>.<subdomain>.workers.dev` |
 
-File `.env` tidak di-*commit* (sudah ada di `.gitignore`). Variabel `EXPO_PUBLIC_*` ikut tertanam di aplikasi, jadi jangan isi rahasia apa pun di sana. Setelah mengubah `.env`, jalankan ulang `npx expo start`.
+File `.env` tidak di-*commit* (sudah ada di `.gitignore`). Variabel `EXPO_PUBLIC_*` ikut tertanam di aplikasi, jadi jangan isi rahasia apa pun di sana. Setelah mengubah `.env`, jalankan ulang `bunx expo start`.
 
 ### Backend
 
@@ -188,7 +191,7 @@ Jalankan dari terminal interaktif (QR code tidak muncul jika terminal tidak inte
 
 ```bash
 cd src/mobile
-npx expo start
+bunx expo start
 ```
 
 Lalu pilih salah satu:
@@ -201,15 +204,18 @@ Lalu pilih salah satu:
 Jika ponsel tidak dapat terhubung (misalnya jaringan kampus memblokir antarperangkat), gunakan mode *tunnel*:
 
 ```bash
-npx expo start --tunnel
+bunx expo start --tunnel
 ```
 
 Pemeriksaan kode:
 
 ```bash
-npx tsc --noEmit   # cek tipe TypeScript
-npx expo lint      # ESLint
+bunx tsc --noEmit  # cek tipe TypeScript
+bunx expo lint     # ESLint
+bun run test       # unit test Vitest (test/)
 ```
+
+Unit test di `src/mobile/test/` menguji logika TypeScript murni, seperti klien API (`client.test.ts`): URL dan header `Authorization`, amplop galat menjadi `ApiError`, *callback* 401, serta kode `JARINGAN_GAGAL`, `BATAS_WAKTU`, dan `KONFIGURASI_TIDAK_VALID`. `fetch` diganti tiruan, sehingga tidak perlu backend yang berjalan. Layar dan komponen tidak dirender di test; keduanya diperiksa langsung di Expo Go.
 
 Layar pertama adalah I-01 Masuk. Untuk mencoba aplikasi tanpa akun Google, gunakan tombol "Mode demo" (bagian 6).
 
@@ -285,7 +291,7 @@ Login Google memerlukan OAuth client milik kelompok, sehingga untuk menguji apli
 Langkah:
 
 1. Backend: isi `MODE_DEMO=1` di `src/backend/.dev.vars`, jalankan migrasi dan *seed* (`bun run db:migrate:local`, `bun run db:seed:local`), lalu jalankan `bun run dev -- --ip 0.0.0.0` agar dapat diakses dari ponsel.
-2. Mobile: isi `EXPO_PUBLIC_MODE_DEMO=1` dan `EXPO_PUBLIC_API_URL=http://<IP-LAN-komputer>:8787` di `src/mobile/.env`, lalu jalankan ulang `npx expo start`.
+2. Mobile: isi `EXPO_PUBLIC_MODE_DEMO=1` dan `EXPO_PUBLIC_API_URL=http://<IP-LAN-komputer>:8787` di `src/mobile/.env`, lalu jalankan ulang `bunx expo start`.
 3. Di layar Masuk, tekan **Mahasiswa** atau **Administrator** di bawah tulisan "Mode demo".
 
 Catatan:
@@ -372,7 +378,7 @@ Ringkasan konvensi untuk anggota yang mengerjakan layar:
   }
   ```
 
-  Klien otomatis mengirim `Authorization: Bearer <token>` setelah `aturToken(token)` dipanggil saat login, dan mengubah respons galat backend `{ error: { kode, pesan, detail } }` menjadi `ApiError`. Galat jaringan menghasilkan `kode` `JARINGAN_GAGAL` atau `BATAS_WAKTU`.
+  Klien otomatis mengirim `Authorization: Bearer <token>` setelah `aturToken(token)` dipanggil saat login, dan mengubah respons galat backend `{ error: { kode, pesan, detail } }` menjadi `ApiError`. Galat jaringan menghasilkan `kode` `JARINGAN_GAGAL` atau `BATAS_WAKTU`, sedangkan `EXPO_PUBLIC_API_URL` yang belum diatur menghasilkan `KONFIGURASI_TIDAK_VALID` (tanpa permintaan ke server). Ketiganya memiliki `status` 0.
 
 ## 10. Panduan Pengembangan Backend
 
