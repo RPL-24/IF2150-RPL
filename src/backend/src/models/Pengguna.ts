@@ -15,78 +15,82 @@ export interface PenggunaProps {
 }
 
 export class Pengguna {
-  protected idPengguna: string;
-  protected nomorTelepon: string;
-  protected email: string;
-  protected namaPengguna: string;
-  protected username: string;
-  protected passwordHash: string;
-  protected role: Role;
-  protected avatarUrl: string | null;
-  protected akumulasiRating: number;
-  protected riwayatRating: number[];
+    protected idPengguna: string;
+    protected nomorTelepon: string;
+    protected email: string;
+    protected namaPengguna: string;
+    protected username: string;
+    protected passwordHash: string;
+    protected role: Role;
+    protected avatarUrl: string | null;
+    protected akumulasiRating: number;
+    protected riwayatRating: number[];
 
-  constructor(props: PenggunaProps) {
-    this.idPengguna = props.idPengguna;
-    this.nomorTelepon = props.nomorTelepon;
-    this.email = props.email;
-    this.namaPengguna = props.namaPengguna;
-    this.username = props.username;
-    this.passwordHash = props.passwordHash;
-    this.role = props.role ?? Role.PELANGGAN;
-    this.avatarUrl = props.avatarUrl ?? null;
-    this.akumulasiRating = props.akumulasiRating ?? 0.0;
-    this.riwayatRating = props.riwayatRating ?? [];
-  }
+    constructor(props: PenggunaProps) {
+        this.idPengguna = props.idPengguna;
+        this.nomorTelepon = props.nomorTelepon;
+        this.email = props.email;
+        this.namaPengguna = props.namaPengguna;
+        this.username = props.username;
+        this.passwordHash = props.passwordHash;
+        this.role = props.role ?? Role.PELANGGAN;
+        this.avatarUrl = props.avatarUrl ?? null;
+        this.akumulasiRating = props.akumulasiRating ?? 0.0;
+        this.riwayatRating = props.riwayatRating ?? [];
+    }
 
-  public getId(): string {
-    return this.idPengguna;
-  }
+    public getId(): string {
+      return this.idPengguna;
+    }
 
-  public getNomor(): string {
-    return this.nomorTelepon;
-  }
+    public getNomor(): string {
+      return this.nomorTelepon;
+    }
 
-  public getEmail(): string {
-    return this.email;
-  }
+    public getEmail(): string {
+      return this.email;
+    }
 
-  public getNama(): string {
-    return this.namaPengguna;
-  }
+    public getNama(): string {
+      return this.namaPengguna;
+    }
 
-  public getUsername(): string {
-    return this.username;
-  }
+    public getUsername(): string {
+      return this.username;
+    }
 
-  public getPasswordHash(): string {
-    return this.passwordHash;
-  }
+    public getPasswordHash(): string {
+      return this.passwordHash;
+    }
 
-  public getRole(): Role {
-    return this.role;
-  }
+    public getRole(): Role {
+      return this.role;
+    }
 
 
-  public getAkumulasiRating(): number {
-    return this.akumulasiRating;
-  }
+    public getAkumulasiRating(): number {
+      return this.akumulasiRating;
+    }
 
-  public getRiwayatRating(): number[] {
-    return [...this.riwayatRating];
-  }
+    public getRiwayatRating(): number[] {
+      return [...this.riwayatRating];
+    }
 
-  public setNomor(nomorBaru: string): void {
-    this.nomorTelepon = nomorBaru.trim();
-  }
+    public setNomor(nomorBaru: string): void {
+      this.nomorTelepon = nomorBaru.trim();
+    }
 
-  public setEmail(emailBaru: string): void {
-    this.email = emailBaru.trim().toLowerCase();
-  }
+    public setEmail(emailBaru: string): void {
+      this.email = emailBaru.trim().toLowerCase();
+    }
 
-  public setNama(namaBaru: string): void {
-    this.namaPengguna = namaBaru.trim();
-  }
+    public setNama(namaBaru: string): void {
+      this.namaPengguna = namaBaru.trim();
+    }
+    public setAvatarUrl(avatarUrlBaru: string | null): void {
+      this.avatarUrl = avatarUrlBaru;
+    }
+
 
   public addNewRatingRiwayat(nilaiRating: number): void {
     if (nilaiRating < 1 || nilaiRating > 5) {
