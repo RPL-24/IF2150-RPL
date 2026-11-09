@@ -48,3 +48,10 @@ def detail(id_transaksi: int, conn=Depends(get_conn),
     if trx is None or trx.id_pembeli != user["id_pengguna"]:
         raise PembayaranError("Transaksi tidak ditemukan", 404)
     return _keluaran(trx, items, nama, ctl.metode.buat_tagihan(trx))
+
+@router.post("/{id_transaksi}/bayar", response_model=TransaksiOut)
+def bayar(id_transaksi: int, conn=Depends(get_conn),
+          ctl: PembayaranController = Depends(get_controller),
+          user=Depends(require_roles(["PEMBELI"]))):
+    trx, items, nama = ctl.konfirmasi_bayar(conn, id_transaksi, user["id_pengguna"])
+    return _keluaran(trx, items, nama)
