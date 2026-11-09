@@ -1,0 +1,227 @@
+/* ==========================================================================
+   MahaSehat - ReportPage.css
+   Komponen khusus Laporan Kesehatan. Dimuat SETELAH DashboardPage*.css,
+   sehingga memakai token warna, sidebar, kartu, dan responsif dari file itu.
+   ========================================================================== */
+
+:root {
+    --chart-green: #1A6B4F;
+    --chart-green-dark: #0F4A37;
+    --color-track: #EEECE6;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.report-block {
+    margin-bottom: 24px;
+}
+
+.periode-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 18px 28px;
+}
+
+.segmented {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background-color: var(--color-mist);
+    border-radius: 999px;
+}
+
+.seg-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.seg-btn:hover {
+    background-color: var(--color-teal-subtle);
+}
+
+.seg-btn.active {
+    background-color: var(--color-amber);
+}
+
+.seg-btn:focus-visible,
+.date-btn:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.chart {
+    padding-left: 28px;
+    margin-top: 4px;
+}
+
+.plot {
+    position: relative;
+    height: 170px;
+}
+
+.gridline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: rgba(42, 58, 63, 0.1);
+}
+
+.tick {
+    position: absolute;
+    left: -28px;
+    width: 20px;
+    text-align: right;
+    transform: translateY(50%);
+    font-size: 11px;
+    color: var(--color-ink-subtle);
+}
+
+.bars {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: 100%;
+    align-items: end;
+}
+
+.bar {
+    justify-self: center;
+    align-self: end;
+    width: 62%;
+    max-width: 44px;
+    min-height: 26px;
+    padding-top: 5px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.bar-low { background-color: var(--color-amber); color: var(--color-ink); }
+.bar-mid { background-color: var(--color-teal); color: var(--color-ink); }
+.bar-high { background-color: var(--chart-green); color: #FFFFFF; }
+.bar-top { background-color: var(--chart-green-dark); color: #FFFFFF; }
+
+.xlabels {
+    display: grid;
+    margin-top: 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-ink-subtle);
+}
+
+.stres-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stres-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.track {
+    height: 8px;
+    border-radius: 999px;
+    background-color: var(--color-track);
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    border-radius: 999px;
+}
+
+.date-strip {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    margin-bottom: 12px;
+    border-radius: 999px;
+    background-color: var(--color-mist);
+}
+
+.date-btn {
+    flex: 1;
+    padding: 6px 0;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.date-btn.active {
+    background-color: var(--color-amber);
+}
+
+.note-box {
+    min-height: 110px;
+    padding: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background-color: var(--color-mist-light);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.risk-badge {
+    align-self: flex-start;
+    margin-bottom: 14px;
+    padding: 8px 20px;
+    font-size: 18px;
+}
+
+.risk-rendah { background-color: var(--color-teal-subtle); color: #2D867B; }
+.risk-sedang { background-color: var(--color-amber-subtle); color: #C07E17; }
+.risk-tinggi { background-color: var(--color-danger-subtle); color: var(--color-danger); }
+
+.card-text {
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.card-text.note {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--color-ink-subtle);
+}
+
+.privacy-note {
+    font-size: 13px;
+    color: var(--color-ink-subtle);
+}
+
+@media (max-width: 900px) {
+    .report-grid {
+        grid-template-columns: 1fr;
+    }
+}
