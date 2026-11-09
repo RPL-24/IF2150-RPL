@@ -12,9 +12,5 @@ export default function PageTambahListing() {
     router.push("/penjual/listing");
   };
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <FormListing onSubmit={handleTambah} isEditing={false} />
-    </div>
-  );
+  return <FormListing onSubmit={handleTambah} isEditing={false} />;
 }

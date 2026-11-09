@@ -28,7 +28,7 @@ export default function LoginPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:8000/api/auth/login", {
+      const response = await fetch("/api/auth/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -156,7 +156,7 @@ export default function LoginPage() {
                   aria-hidden="true"
                 >
                   <path
-                    d="M2.2 12C2.8 10.8 6.4 6 12 6s9.2 4.8 9.8 6-.6 1.2-4.2 6-9.8 6s-9.2-4.8-9.8-6Z"
+                    d="M2 12C4 8.5 7.5 6 12 6s8 2.5 10 6c-2 3.5-5.5 6-10 6S4 15.5 2 12Zm10-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />

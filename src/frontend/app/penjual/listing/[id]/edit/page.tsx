@@ -62,9 +62,5 @@ export default function PageEditListing({ params }: { params: Promise<{ id: stri
         );
     }
 
-    return (
-        <div className="container mx-auto px-4 py-8">
-        <FormListing initialData={initialData} onSubmit={handleEdit} isEditing={true} />
-        </div>
-    );
+    return <FormListing initialData={initialData} onSubmit={handleEdit} isEditing />;
 }

@@ -3,8 +3,8 @@ import pytest
 from io import BytesIO
 from pathlib import Path
 from fastapi import UploadFile, HTTPException
-import services.listing_service as listing_service
-from services.listing_service import simpan_foto_listing
+from backend.services import listing_service
+from backend.services.listing_service import simpan_foto_listing
 
 # Header asli (magic bytes) untuk file dummy
 DUMMY_PNG_HEADER = b"\x89PNG\r\n\x1a\n" + b"\x00" * 100
