@@ -1,7 +1,16 @@
 // C07 · ListTugas (kelas entity DPPL). Pemilik: Peran C.
 // Nama fungsi mengikuti nama operasi di DPPL.
 
-import { Enums, Tables } from "@/types/database";
+import { Constants, type Enums, type Tables } from "@/types/database";
+
+export type Kategori = Enums<"kategori_kerusakan">;
+
+const DAFTAR_KATEGORI: readonly string[] = Constants.public.Enums.kategori_kerusakan;
+
+//Periksa apakah input kategori terdapat di database
+export function isKategori(nilai: string): nilai is Kategori {
+    return DAFTAR_KATEGORI.includes(nilai);
+}
 
 export type TugasLaporan = Pick<
     Tables<"laporan">,
@@ -35,7 +44,7 @@ export class ListTugas {
     }
 
     // Algo-013
-    filterKategori(kategori: Enums<"kategori_kerusakan">): TugasLaporan[] {
+    filterKategori(kategori: Kategori): TugasLaporan[] {
         return this.urutPrioritas().filter((laporan) => laporan.kategori === kategori);
     }
 
