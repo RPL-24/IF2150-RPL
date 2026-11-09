@@ -9,14 +9,14 @@ import Users from 'lucide-react-native/icons/users';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { ambilAfirmasi } from '@/api';
-import { useMuatan, type Muatan } from '@/lib/muatan';
+import { ambilAfirmasi, ambilSesiBerikutnya } from '@/api';
+import { useMuatan } from '@/lib/muatan';
 import { useSesi } from '@/lib/sesi';
 import { sapaan } from '@/lib/waktu';
 import { jarak, warna } from '@/theme';
 import { GridMenu, type ItemMenu } from '@/views/beranda/GridMenu';
 import { KartuAfirmasi } from '@/views/beranda/KartuAfirmasi';
-import { KartuSesi, type SesiBerikutnya } from '@/views/beranda/KartuSesi';
+import { KartuSesi } from '@/views/beranda/KartuSesi';
 import { KepalaBeranda } from '@/views/beranda/KepalaBeranda';
 
 /** I-02-05: menu tiles and the screens they open (`HomeView.bukaMenu`). */
@@ -29,26 +29,13 @@ const MENU: ItemMenu[] = [
   { ikon: MessageSquare, judul: 'Umpan Balik', tujuan: '/umpan-balik' },
 ];
 
-// TODO(#4): replace with GET /api/sessions/next. Sample values follow the seed data.
-const PRATINJAU: { sesi: Muatan<SesiBerikutnya | null> } = {
-  sesi: {
-    status: 'siap',
-    data: {
-      waktu: '2026-11-09T03:00:00Z',
-      waktuSelesai: '2026-11-09T04:00:00Z',
-      nama: 'Dr. Raisa Wibowo, M.Psi.',
-      spesialisasi: 'Psikologi Klinis',
-    },
-  },
-};
-
 /** I-02 Beranda Mahasiswa (`HomeView.tampilkanBeranda('mahasiswa')`). */
 export default function BerandaMahasiswa() {
   const router = useRouter();
   const { top } = useSafeAreaInsets();
   const { pengguna } = useSesi();
   const [afirmasi, muatUlangAfirmasi] = useMuatan(ambilAfirmasi);
-  const { sesi } = PRATINJAU;
+  const [sesi, muatUlangSesi] = useMuatan(ambilSesiBerikutnya);
 
   return (
     <ScrollView style={styles.layar} contentContainerStyle={[styles.isi, { paddingTop: top + jarak.md }]}>
@@ -60,7 +47,7 @@ export default function BerandaMahasiswa() {
         sesi={sesi}
         onBuka={() => router.push('/kalender')}
         onPesan={() => router.push('/konsultasi')}
-        onCobaLagi={() => {}} // TODO(#4): reload once sesi comes from the backend
+        onCobaLagi={muatUlangSesi}
       />
 
       <GridMenu judul="Menu" menu={MENU} kolom={3} />
