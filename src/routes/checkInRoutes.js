@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const checkInController = require('../controllers/checkInController');
-const verifyToken = require('../middlewares/authMiddleware');
+const {authenticate} = require('../middleware/authMiddleware');
 
-router.post('/', verifyToken, checkInController.submitCheckIn);
-router.get('/history', verifyToken, checkInController.getHistory);
-router.get('/today', verifyToken, checkInController.getTodayStatus);
+router.post('/', authenticate, checkInController.submitCheckIn);
+router.get('/history', authenticate, checkInController.getHistory);
+router.get('/today', authenticate, checkInController.getTodayStatus);
 
 module.exports = router;

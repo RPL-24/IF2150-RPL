@@ -3,6 +3,20 @@ const Pelajar = require('../models/Pelajar');
 const CheckIn = require('../models/CheckIn');
 const AppError = require('../utils/AppError');
 
+exports.validateCheckInFormat = (data) => {
+    const moodValue = data.mood !== undefined ? data.mood : data.skalaMood;
+    if (moodValue === undefined || moodValue === null) {
+        return false;
+    }
+    const moodNum = Number(moodValue);
+    return !isNaN(moodNum) && moodNum >= 1 && moodNum <= 5;
+};
+
+exports.encryptJournal = (catatan) => {
+    if (!catatan) return null;
+    return typeof catatan === 'string' ? catatan : JSON.stringify(catatan);
+}
+
 exports.submitCheckIn = async (req, res, next) => {
     try {
         
@@ -15,19 +29,30 @@ exports.submitCheckIn = async (req, res, next) => {
 
         const { mood, sleep, meal, triggers, note } = req.body;
 
-        if (mood === undefined || mood === null) {
-            return res.status(400).json({ status: 'error', message: 'Skala mood wajib diisi.' });
+        const finalMood = mood !== undefined ? mood : skalaMood;
+        if (!exports.validateCheckInFormat({ mood: finalMood })) {
+            return res.status(400).json({ status: 'error', message: 'Skala mood wajib diisi (1-5).' });
         }
         const today = new Date().toISOString().split('T')[0];
 
+        const bedTime = sleep?.bed || jamTidur || '22:30';
+        const wakeTime = sleep?.wake || jamBangun || '06:00';
+        const dietVal = meal || polaMakan || 'Teratur';
+        const triggerVal = triggers || pemicuStres;
+        const rawNote = note || catatanRefleksi;
+
+        const formattedTriggers = Array.isArray(triggerVal) ? triggerVal.join(', ') : (triggerVal || '');
+        const encryptedNote = exports.encryptJournal(rawNote);
+
         const checkInData = CheckIn.createCheckIn({
+            idPelajar: pelajar.idPelajar || pelajar.id_pelajar,
             tanggalCheckIn: today,
-            skalaMood: Number(mood),
-            jamTidur: sleep?.bed || '22:30',
-            jamBangun: sleep?.wake || '06:00',
-            polaMakan: meal || 'Teratur',
-            pemicuStres: Array.isArray(triggers) ? triggers.join(', ') : (triggers || ''),
-            catatanRefleksi: note ? JSON.stringify(note) : null
+            skalaMood: Number(finalMood),
+            jamTidur: bedTime,
+            jamBangun: wakeTime,
+            polaMakan: dietVal,
+            pemicuStres: formattedTriggers,
+            catatanRefleksi: encryptedNote
         });
 
         await pelajar.setCheckIn(checkInData);
@@ -63,7 +88,8 @@ exports.getHistory = async (req, res) => {
         });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ status: 'error', message: 'Gagal mengambil riwayat daily check-in' });
+        return res.status(500).json({
+            status: 'error', message: 'Gagal mengambil riwayat daily check-in' });
     }
 };
 
@@ -72,7 +98,9 @@ exports.getTodayStatus = async (req, res) => {
         const idPengguna = req.user.id || req.user.id_pengguna;
         const pelajar = await Pelajar.findByIdPengguna(idPengguna);
         if (!pelajar) {
-            return res.status(404).json({ status: 'error', message: 'Profil pelajar tidak ditemukan.' });
+            return res.status(404).json({
+                status: 'error',
+                message: 'Profil pelajar tidak ditemukan.' });
         }
 
         const today = new Date().toISOString().split('T')[0];
@@ -87,6 +115,8 @@ exports.getTodayStatus = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ status: 'error', message: 'Gagal memeriksa status daily check-in hari ini' });
+        return res.status(500).json({
+            status: 'error',
+            message: 'Gagal memeriksa status daily check-in hari ini' });
     }
 };
