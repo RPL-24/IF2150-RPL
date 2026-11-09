@@ -106,7 +106,7 @@ class PercakapanController {
     await percakapan.perbaruiWaktuTerakhir(pesanBaru.waktuKirim || new Date());
 
     const idPenerima = idAkun === percakapan.idPembeli ? percakapan.idPenjual : percakapan.idPembeli;
-    await PercakapanController.beritahuPenerima(percakapan, idPenerima, isiBersih);
+    await PercakapanController.beritahuPenerima(percakapan, idPenerima);
 
     return sukses(201, {
       idPesan: pesanBaru.idPesan,
@@ -117,13 +117,14 @@ class PercakapanController {
     });
   }
 
-  // KF34: kegagalan notifikasi hanya dicatat, pesan tetap terkirim
-  static async beritahuPenerima(percakapan, idPenerima, isi) {
+  // KF34: kegagalan notifikasi hanya dicatat, pesan tetap terkirim.
+  // KF36: notifikasi tersimpan plaintext, jadi tidak memuat isi/cuplikan pesan.
+  static async beritahuPenerima(percakapan, idPenerima) {
     try {
       // Lawan bicara dari sisi penerima adalah pengirim
       const pengirim = await percakapan.getLawanBicara(idPenerima);
       const nama = pengirim ? pengirim.nama : 'Pengguna ITBELI';
-      await NotifikasiController.kirimNotifikasi(idPenerima, 'pesan', `${nama}: ${PercakapanController.potongCuplikan(isi)}`);
+      await NotifikasiController.kirimNotifikasi(idPenerima, 'pesan', `Pesan baru dari ${nama}`);
     } catch (galat) {
       console.error('Notifikasi pesan baru gagal dikirim:', galat);
     }

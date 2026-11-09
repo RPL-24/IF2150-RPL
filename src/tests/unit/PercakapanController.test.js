@@ -198,16 +198,11 @@ describe('PercakapanController.kirimPesan (UC17, KF32, KF34, KF36)', () => {
     });
   });
 
-  test('penerima (lawan bicara) diberi notifikasi berisi nama pengirim dan cuplikan <= 80 karakter', async () => {
-    const isiPanjang = 'x'.repeat(150);
-    await PercakapanController.kirimPesan(ID_PEMBELI, ID_PERCAKAPAN, isiPanjang);
+  test('penerima (lawan bicara) diberi notifikasi berisi nama pengirim tanpa isi pesan (KF36)', async () => {
+    await PercakapanController.kirimPesan(ID_PEMBELI, ID_PERCAKAPAN, 'Nomor WA saya 0812xxxx');
 
     expect(Percakapan.prototype.getLawanBicara).toHaveBeenCalledWith(ID_PENJUAL);
-    const [idPenerima, jenis, isi] = NotifikasiController.kirimNotifikasi.mock.calls[0];
-    expect(idPenerima).toBe(ID_PENJUAL);
-    expect(jenis).toBe('pesan');
-    expect(isi.startsWith('Ani: ')).toBe(true);
-    expect(isi.length - 'Ani: '.length).toBeLessThanOrEqual(80);
+    expect(NotifikasiController.kirimNotifikasi).toHaveBeenCalledWith(ID_PENJUAL, 'pesan', 'Pesan baru dari Ani');
   });
 
   test('kegagalan notifikasi tidak menggagalkan kirim pesan', async () => {
