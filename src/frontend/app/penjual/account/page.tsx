@@ -88,10 +88,11 @@ export default function AkunPenjualPage() {
     <AppLayout
       role="seller"
       isAuthenticated
-      title="Seller Account"
+      title={<h1 className="text-2xl font-bold text-[#fff4f2] text-center sm:text-4xl">Seller Account</h1>}
       showHeader
-      headerClassName="bg-[#1bb0c7] px-5 pb-5 pt-8"
-      bodyClassName="bg-[#e6e0c8] px-4 py-5 sm:px-6 lg:px-8"
+      theme="pink"
+      headerClassName="px-5 pb-5 pt-8"
+      bodyClassName="px-4 py-5 sm:px-6 lg:px-8"
     >
       <div className="mx-auto max-w-2xl">
         {pesanError && (

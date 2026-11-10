@@ -47,7 +47,7 @@ export default function LoginPage() {
 
       const role = data?.peran;
       if (role === "PENJUAL") {
-        router.push("/penjual/listing");
+        router.push("/penjual");
         return;
       }
 
@@ -76,7 +76,7 @@ export default function LoginPage() {
         </div>
       }
       headerClassName="bg-[#f4b61a] px-5 pb-5 pt-8"
-      bodyClassName="bg-[#e6e0c8] px-5 pb-10 pt-4"
+      bodyClassName="bg-[#f8f4d0] px-5 pb-10 pt-4"
     >
       <div className="flex min-h-full flex-col justify-center">
         <h2 className="mb-8 text-center text-[2.3rem] font-black tracking-[-0.06em] text-[#f15d69]">
@@ -90,7 +90,7 @@ export default function LoginPage() {
         ) : null}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <label className="flex items-center gap-3 rounded-lg bg-[#e8e0ca] px-4 py-3 text-[#5f675c] shadow-inner">
+          <label className="flex items-center gap-3 rounded-lg bg-[#e6d9aa] px-4 py-3 text-[#716759] shadow-inner">
             <svg viewBox="0 0 24 24" className="h-6 w-6 fill-none stroke-current stroke-[1.8]" aria-hidden="true">
               <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z" />
               <path d="m5 7 7 5 7-5" strokeLinecap="round" strokeLinejoin="round" />
@@ -106,7 +106,7 @@ export default function LoginPage() {
             />
           </label>
 
-          <label className="flex items-center gap-3 rounded-lg bg-[#e8e0ca] px-4 py-3 text-[#5f675c] shadow-inner">
+          <label className="flex items-center gap-3 rounded-lg bg-[#e6d9aa] px-4 py-3 text-[#716759] shadow-inner">
             <svg viewBox="0 0 24 24" className="h-6 w-6 fill-none stroke-current stroke-[1.8]" aria-hidden="true">
               <rect x="5" y="10" width="14" height="10" rx="2" />
               <path d="M8 10V7.5A4 4 0 0 1 12 3.5a4 4 0 0 1 4 4V10" strokeLinecap="round" />
@@ -124,7 +124,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => setShowPassword((value) => !value)}
               aria-label={showPassword ? "Hide password" : "Show password"}
-              className="text-[#5f675c] hover:text-[#39423c]"
+              className="text-[#716759] hover:text-[#39423c]"
             >
               {showPassword ? (
                 <svg

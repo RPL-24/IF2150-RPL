@@ -66,7 +66,7 @@ export default function RewardPage() {
     <AppLayout
       role="buyer"
       isAuthenticated
-      title="My Reward"
+      title={<h1 className="text-2xl font-bold text-[#fff4f2] text-center sm:text-4xl">My Reward</h1>}
       showHeader
       theme="pink"
       headerClassName="px-5 pb-5 pt-8"

@@ -42,7 +42,7 @@ export default function CartPage() {
     <AppLayout
       role="buyer"
       isAuthenticated
-      title={<h1 className="text-xl font-bold text-[#fff4f2] text-center sm:text-2xl">My Cart</h1>}
+      title={<h1 className="text-2xl font-bold text-[#fff4f2] text-center sm:text-4xl">My Cart</h1>}
       showHeader
       theme="blue"
       headerClassName="px-5 pb-5 pt-4"
