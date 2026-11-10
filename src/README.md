@@ -66,7 +66,7 @@ docker compose up -d
 Lalu isi `.env`:
 
 ```
-DATABASE_URL=postgres://antriin:antriin@localhost:5432/antriin
+DATABASE_URL=postgres://<username>:<password>@localhost:5432/<database>
 ```
 
 Tabel dibuat otomatis saat server pertama kali berjalan (`server/db/schema.sql`), lalu data contoh dimasukkan. Seed juga bisa dijalankan manual:
