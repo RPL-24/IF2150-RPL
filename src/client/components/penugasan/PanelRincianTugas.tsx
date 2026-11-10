@@ -43,7 +43,25 @@ export function PanelRincianTugas({ rincian }: { rincian: RincianTugas }) {
                 </p>
             </section>
 
-            <div className="flex flex-col gap-2"></div>
+            <div className="flex flex-col gap-2">
+                {/* I05-10 */}
+                <a
+                    href={tautanGoogleMaps(latitude, longitude)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-md border border-gray-300 py-2 text-center font-medium"
+                >
+                    Buka di Google Maps
+                </a>
+
+                {/* I05-11 */}
+                <Link
+                    href={tautanHasilPerbaikan(rincian.id_tiket)}
+                    className="rounded-md bg-blue-600 py-2 text-center font-medium text-white"
+                >
+                    Laporkan Hasil
+                </Link>
+            </div>
         </div>
     )
 }
