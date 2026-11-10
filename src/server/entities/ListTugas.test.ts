@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isKategori, ListTugas, type TugasLaporan } from "@/server/entities/ListTugas";
+import { isKategori, isTugasAktif, ListTugas, type TugasLaporan } from "@/server/entities/ListTugas";
 
 function tugas(idTiket: string, ubah: Partial<TugasLaporan> = {}): TugasLaporan {
   return {
@@ -92,5 +92,21 @@ describe("isKategori", () => {
 
   it.each(["", "semua", "Jalan berlubang", "jalan_berlubang ", "drop table laporan"])("menolak %j", (nilai) => {
     expect(isKategori(nilai)).toBe(false);
+  });
+});
+
+
+describe("isTugasAktif", () => {
+  it("aktif jika status dikerjakan dan menunggu eksekusi", () => {
+    expect(isTugasAktif({ status: "dikerjakan", tahap: "menunggu_eksekusi" })).toBe(true);
+  });
+
+  it.each([
+    { status: "dikerjakan", tahap: "menunggu_evaluasi" },
+    { status: "diterima", tahap: null },
+    { status: "berhasil", tahap: null },
+    { status: "ditolak", tahap: null },
+  ] as const)("tidak aktif untuk $status / $tahap", (laporan) => {
+    expect(isTugasAktif(laporan)).toBe(false);
   });
 });

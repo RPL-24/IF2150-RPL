@@ -39,7 +39,6 @@ export class ListTugas {
 
     // Algo-012
     urutPrioritas(): TugasLaporan[] {
-        // BELUM DIURUTIN GA ADA bandingkanPrioritas
         return [...this.daftarLaporan].sort(bandingkanPrioritas);
     }
 
@@ -57,4 +56,22 @@ function bandingkanPrioritas(a: TugasLaporan, b: TugasLaporan): number {
     const selisihSkor = Number(b.skor_prioritas) - Number(a.skor_prioritas);
     if (selisihSkor !== 0) return selisihSkor;
     return Date.parse(a.waktu_masuk) - Date.parse(b.waktu_masuk);
+}
+
+// Mengecek tugas yang berstatus Dikerjakan namun hasilnya belum dikirim
+export function isTugasAktif(laporan: Pick<Tables<"laporan">, "status" | "tahap">): boolean {
+    return laporan.status === "dikerjakan" && laporan.tahap === "menunggu_eksekusi";
+}
+
+// Berkas media dari tugas/laporan
+export type MediaTugas = { path: string };
+
+// Evaluasi terakhir yang diberikan Tim Administrasi untuk tugas tersebut
+export type EvaluasiTerakhir = Pick<Tables<"evaluasi">, "keputusan" | "catatan" | "waktu_evaluasi">;
+
+// Panel rincian tugas (I05-06 s.d. I05-11)
+export type RincianTugas = TugasLaporan & Pick<Tables<"laporan">, "status" | "tahap"> & {
+    foto: MediaTugas[];
+    video: MediaTugas[];
+    evaluasiTerakhir: EvaluasiTerakhir | null;
 }
