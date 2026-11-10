@@ -42,9 +42,10 @@ export default function CartPage() {
     <AppLayout
       role="buyer"
       isAuthenticated
-      title="My Cart"
+      title={<h1 className="text-xl font-bold text-[#fff4f2] text-center sm:text-2xl">My Cart</h1>}
       showHeader
-      headerClassName="bg-[#1bb0c7] px-5 pb-5 pt-8"
+      theme="blue"
+      headerClassName="px-5 pb-5 pt-4"
       bodyClassName="bg-[#e6e0c8] px-4 py-5"
     >
       {!siap ? (
@@ -82,7 +83,7 @@ export default function CartPage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <h3 className="truncate text-[1.15rem] font-bold text-[#1b8ca3]">
+                        <h3 className="truncate text-base font-bold text-[#1b8ca3]">
                           {listing.nama_makanan}
                         </h3>
                         <p className="truncate text-sm text-[#5d625b]">
@@ -95,14 +96,14 @@ export default function CartPage() {
                         type="button"
                         onClick={() => hapus(listing.id_listing)}
                         aria-label={`Hapus ${listing.nama_makanan} dari keranjang`}
-                        className="text-2xl font-bold leading-none text-[#f15d69] transition hover:brightness-110"
+                        className="text-lg leading-none text-[#f15d69] transition hover:brightness-110"
                       >
                         ×
                       </button>
                     </div>
 
                     <div className="mt-3 flex items-center justify-between">
-                      <p className="text-lg font-bold text-[#1a1a1a]">
+                      <p className="text-base font-bold text-[#1a1a1a]">
                         {rupiah(listing.harga * jumlah)}
                       </p>
                       <div className="flex items-center gap-1 rounded-md bg-[#ff4d57] px-1 py-1 text-white">
@@ -110,7 +111,7 @@ export default function CartPage() {
                           type="button"
                           onClick={() => kurangi(listing.id_listing)}
                           aria-label={`Kurangi ${listing.nama_makanan}`}
-                          className="flex h-8 w-8 items-center justify-center text-lg font-bold leading-none transition hover:brightness-110"
+                          className="flex h-8 w-8 items-center justify-center text-base font-bold leading-none transition hover:brightness-110"
                         >
                           −
                         </button>
@@ -119,7 +120,7 @@ export default function CartPage() {
                           type="button"
                           onClick={() => jumlah >= listing.stok ? setStokPenuhUntuk(listing.nama_makanan) : tambah(listing, 1)}
                           aria-label={`Tambah ${listing.nama_makanan}`}
-                          className="flex h-8 w-8 items-center justify-center text-lg font-bold leading-none transition hover:brightness-110"
+                          className="flex h-8 w-8 items-center justify-center text-base font-bold leading-none transition hover:brightness-110"
                         >
                           +
                         </button>
@@ -132,13 +133,13 @@ export default function CartPage() {
           </div>
 
           <div className="mt-6 rounded-t-md border-t border-[#d6cebb] bg-[#e6e0c8] px-1 pt-4">
-            <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-[1.6rem] font-medium text-[#1b1b1b]">
+            <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm font-medium text-[#1b1b1b]">
               <span>Total</span>
               <span className="text-right">{rupiah(totalHarga)}</span>
               <span>Discount</span>
               <span className="text-right">{rupiah(0)}</span>
-              <span className="font-bold">Subtotal</span>
-              <span className="text-right font-bold">{rupiah(totalHarga)}</span>
+              <span className="text-base font-bold">Subtotal</span>
+              <span className="text-right text-base font-bold">{rupiah(totalHarga)}</span>
             </div>
 
             {pesan && (
@@ -156,7 +157,7 @@ export default function CartPage() {
               type="button"
               disabled={memproses}
               onClick={beliSekarang}
-              className="mt-6 w-full rounded-md bg-[#f25f4b] px-4 py-4 text-2xl font-black text-white shadow-sm transition hover:brightness-110 disabled:opacity-60"
+              className="mt-6 w-full rounded-md bg-[#f25f4b] px-4 py-3 text-base font-bold text-white shadow-sm transition hover:brightness-110 disabled:opacity-60"
             >
               {memproses ? "Memproses..." : `Buy Now (${totalItem})`}
             </button>

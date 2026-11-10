@@ -15,6 +15,8 @@ export interface AppLayoutProps {
   className?: string;
   headerClassName?: string;
   bodyClassName?: string;
+  /** Tema warna header halaman: ikut animasi fade antar halaman. */
+  theme?: "green" | "blue" | "pink";
 }
 
 export function AppLayout({
@@ -29,6 +31,7 @@ export function AppLayout({
   className = "",
   headerClassName = "",
   bodyClassName = "",
+  theme,
 }: AppLayoutProps) {
   const resolvedNavItems = navItems ?? buildNavItems({ role, isAuthenticated });
 
@@ -37,7 +40,9 @@ export function AppLayout({
       <div className="flex min-h-screen w-full flex-col overflow-hidden bg-[#e6e0c8]">
         {showHeader && (
           <header
-            className={`px-5 pb-5 pt-7 text-[#fff4f2] sm:px-6 lg:px-8 ${headerClassName || "bg-[#f56369]"}`}
+            className={`px-5 pb-5 pt-7 text-[#fff4f2] sm:px-6 lg:px-8 ${headerClassName} ${
+              theme ? "themed-header" : headerClassName ? "" : "bg-[#f56369]"
+            }`}
           >
             {title ? (
               typeof title === "string" ? (
@@ -53,11 +58,12 @@ export function AppLayout({
           </header>
         )}
 
-        <main className={`flex-1 bg-[#e6e0c8] ${bodyClassName} ${className}`}>
+        {/* pb besar: jarak konsisten antara konten terakhir & bottom navbar (fixed) di semua halaman. */}
+        <main className={`flex-1 bg-[#e6e0c8] pb-24 ${bodyClassName} ${className}`}>
           {children}
         </main>
 
-        {showBottomNav ? <BottomNavbar items={resolvedNavItems} className="lg:mt-auto" /> : null}
+        {showBottomNav ? <BottomNavbar items={resolvedNavItems} className="fixed inset-x-0 bottom-0 z-50" /> : null}
       </div>
     </div>
   );

@@ -17,44 +17,65 @@ function StoreIcon({ className = "" }: { className?: string }) {
 }
 
 export default function KartuListing({ listing }: { listing: ListingKatalog }) {
+  // Mobile: kartu horizontal ringkas (foto di kiri, info di kanan).
+  // Layar lebih lebar (sm+): tetap kartu vertikal seperti sebelumnya.
   return (
-    <article className="group flex flex-col overflow-hidden rounded-[18px] border border-[#d7cfb5] bg-[#f7f0dc] p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      <Link href={`/katalog/${listing.id_listing}`} className="block">
-        <div className="overflow-hidden rounded-[14px] border border-[#d7cfb5] bg-[#f5d7aa]">
+    <article className="group flex h-full items-stretch gap-3 overflow-hidden rounded-[16px] border border-[#d7cfb5] bg-[#f7f0dc] p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:flex-col sm:items-stretch sm:gap-0 sm:rounded-[18px]">
+      <Link
+        href={`/katalog/${listing.id_listing}`}
+        className="block shrink-0"
+        aria-label={`Lihat detail ${listing.nama_makanan}`}
+      >
+        {/* Rasio foto dikunci di container (4/3) supaya semua kartu punya tinggi sama,
+            dan crop-nya konsisten antara mobile & desktop. */}
+        <div className="h-full w-24 overflow-hidden rounded-[12px] border border-[#d7cfb5] bg-[#f5d7aa] sm:aspect-[4/3] sm:h-auto sm:w-full sm:rounded-[14px]">
           <FotoListing
             foto={listing.foto}
             alt={listing.nama_makanan}
-            className="aspect-[4/3] w-full object-cover"
+            className="h-full w-full object-cover"
           />
-        </div>
-
-        <div className="min-w-0">
-          <h2 className="text-[1.1rem] font-extrabold tracking-[-0.04em] text-[#0a8ea8] group-hover:text-[#0d7b96]">
-            {listing.nama_makanan}
-          </h2>
-          <p className="mt-1 text-sm text-[#5c6460]">{listing.deskripsi || "Food surplus available now"}</p>
-          <div className="mt-2 rounded-lg bg-[#e0ece9] px-2.5 py-2">
-            <p className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#2a6a5b]">
-              <StoreIcon className="h-3.5 w-3.5" aria-hidden="true" />
-              {listing.nama_toko}
-            </p>
-            <p className="mt-1 line-clamp-2 text-xs text-[#4e5f56]">
-              {listing.alamat_toko || "Lokasi toko belum tersedia"}
-            </p>
-          </div>
         </div>
       </Link>
 
-      <div className="mt-3 flex items-center justify-between gap-3">
-        <p className="text-lg font-extrabold text-[#1a1a1a]">{formatRupiah(listing.harga)}</p>
-        <span className="text-xs font-semibold uppercase tracking-[0.08em] text-[#5e6a61]">
-          stok {listing.stok}
-        </span>
-      </div>
+      <div className="flex min-w-0 flex-1 flex-col justify-between gap-2 sm:mt-3 sm:gap-0">
+        <Link href={`/katalog/${listing.id_listing}`} className="block min-w-0">
+          <h2 className="line-clamp-2 text-base font-extrabold leading-snug tracking-[-0.02em] text-[#0a8ea8] group-hover:text-[#0d7b96] sm:text-[1.1rem] sm:tracking-[-0.04em]">
+            {listing.nama_makanan}
+          </h2>
+          <p className="mt-0.5 line-clamp-1 text-xs leading-snug text-[#5c6460] sm:mt-1 sm:line-clamp-2 sm:text-sm">
+            {listing.deskripsi || "Food surplus available now"}
+          </p>
+          <div className="mt-1.5 rounded-lg bg-[#e0ece9] px-2 py-1 sm:mt-2 sm:px-2.5 sm:py-2">
+            <p className="flex items-center gap-1 text-[11px] font-semibold text-[#2a6a5b] sm:gap-1.5 sm:text-xs">
+              <StoreIcon className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+              <span className="truncate">{listing.nama_toko}</span>
+            </p>
+            <p className="line-clamp-1 text-[10px] leading-snug text-[#4e5f56] sm:mt-1 sm:line-clamp-2 sm:text-xs">
+              {listing.alamat_toko || "Lokasi toko belum tersedia"}
+            </p>
+          </div>
+        </Link>
 
-      {/* Pengatur jumlah di luar Link: klik +/− tidak boleh ikut membuka halaman detail. */}
-      <div className="mt-3 flex items-center justify-end">
-        <PengaturJumlah listing={listing} />
+        <div className="flex items-end justify-between gap-2 sm:mt-auto sm:items-center sm:pt-3 sm:gap-3">
+          <div className="min-w-0">
+            <p className="text-base font-extrabold leading-tight text-[#1a1a1a] sm:text-lg">
+              {formatRupiah(listing.harga)}
+            </p>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#5e6a61] sm:hidden">
+              stok {listing.stok}
+            </p>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="hidden text-xs font-semibold uppercase tracking-[0.08em] text-[#5e6a61] sm:inline">
+              stok {listing.stok}
+            </span>
+            {/* Pengatur jumlah di luar Link: klik +/− tidak boleh ikut membuka halaman detail. */}
+            <div className="scale-90 origin-right sm:scale-100">
+              <PengaturJumlah listing={listing} />
+            </div>
+          </div>
+        </div>
       </div>
     </article>
   );

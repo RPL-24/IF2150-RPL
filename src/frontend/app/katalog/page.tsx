@@ -12,9 +12,10 @@ export default function KatalogPage() {
     <AppLayout
       role="buyer"
       isAuthenticated
-      title="What do you want to eat today?"
+      title={<h1 className="text-xl font-bold text-[#fff4f2] text-center sm:text-2xl">What do you want to eat today?</h1>}
       showHeader
-      headerClassName="bg-[#1bb0c7] px-5 pb-4 pt-8"
+      theme="green"
+      headerClassName="px-5 pb-4 pt-4"
       bodyClassName="px-4 py-5 lg:px-6"
     >
       <div className="mx-auto w-full max-w-6xl">

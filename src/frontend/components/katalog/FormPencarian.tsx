@@ -23,8 +23,14 @@ export default function FormPencarian() {
       role="search"
       className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center"
     >
-      <SearchBar defaultValue={pencarian.kataKunci} />
+      {/* w-full on mobile, and flex-1 on sm+ so the search bar always gets
+          the leftover width — wider than the fixed-content filter harga */}
+      <div className="w-full sm:flex-1">
+        <SearchBar defaultValue={pencarian.kataKunci} />
+      </div>
+
       <FilterHarga hargaMin={pencarian.hargaMin} hargaMaks={pencarian.hargaMaks} />
+      
       <div className="flex gap-2 items-center">
         <button
           type="submit"

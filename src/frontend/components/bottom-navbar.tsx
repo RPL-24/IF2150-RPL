@@ -91,7 +91,7 @@ function BottomNavbarContent({ items, className = "" }: BottomNavbarProps) {
   return (
     <nav
       aria-label="Primary navigation"
-      className={`border-t border-[#2a8ea1]/30 bg-[#1ab0c7] px-3 py-2 ${className}`}
+      className={`themed-nav border-t px-3 py-2 ${className}`}
     >
       <ul className="flex items-center justify-between gap-2">
         {items.map((item) => {
@@ -105,8 +105,8 @@ function BottomNavbarContent({ items, className = "" }: BottomNavbarProps) {
                 href={item.href}
                 className={`flex flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-[0.7rem] font-medium transition-colors ${
                   isActive
-                    ? "text-white"
-                    : "text-[#d8faff] opacity-90 hover:text-white"
+                    ? "text-white focus-visible:text-white"
+                    : "text-[var(--theme-nav-inactive)] opacity-90 hover:text-white focus-visible:text-white"
                 }`}
                 aria-current={isActive ? "page" : undefined}
                 aria-label={
@@ -144,12 +144,12 @@ function NavbarFallback({ className = "" }: { className?: string }) {
   return (
     <nav
       aria-label="Primary navigation"
-      className={`border-t border-[#2a8ea1]/30 bg-[#1ab0c7] px-3 py-2 ${className}`}
+      className={`themed-nav border-t px-3 py-2 ${className}`}
     >
       <ul className="flex items-center justify-between gap-2">
         {["Home", "Cart", "Account"].map((label) => (
           <li key={label} className="flex-1">
-            <div className="flex flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-[0.7rem] font-medium text-[#d8faff] opacity-90">
+            <div className="flex flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-[0.7rem] font-medium text-[var(--theme-nav-inactive)] opacity-90">
               <span className="flex h-7 w-7 items-center justify-center">•</span>
               <span>{label}</span>
             </div>

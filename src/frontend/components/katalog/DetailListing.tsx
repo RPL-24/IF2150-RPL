@@ -87,7 +87,7 @@ export default function DetailListing() {
           <h1 className="text-2xl font-bold">{listing.nama_makanan}</h1>
           <p className="mt-1 text-2xl font-bold text-emerald-700 dark:text-emerald-400">{formatRupiah(listing.harga)}</p>
         </div>
-        {listing.deskripsi && <p className="text-zinc-700 dark:text-zinc-300">{listing.deskripsi}</p>}
+        {listing.deskripsi && <p className="text-[#0a8ea8] dark:text-[#0a8ea8]">{listing.deskripsi}</p>}
         {/* Toko penjual + lokasi pengambilan makanan (R09: pickup di tempat) */}
         <div className="rounded-xl border border-[#d7cfb5] bg-[#f7f0dc] p-4 text-sm">
           <p className="inline-flex items-center gap-1.5 font-bold text-[#0a8ea8]">
