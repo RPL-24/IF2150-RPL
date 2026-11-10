@@ -4,7 +4,9 @@ import dotenv from 'dotenv';
 import authRouter from './routes/auth.routes';
 import usersRouter from './routes/user.routes';
 import servicesRoutes from './routes/services.routes';
+import kontrakRoutes from './routes/kontrakRoutes';
 import { KategoriJasaController } from './controllers/KategoriJasaController';
+import { startAutoCancelWorker } from './workers/autoCancelKontrakWorker';
 
 dotenv.config();
 
@@ -31,7 +33,12 @@ app.get('/api/categories', kategoriJasaController.getAllCategoriesHandler);
 app.get('/api/categories/:id', kategoriJasaController.getCategoryByIdHandler);
 app.post('/api/categories', kategoriJasaController.createCategoryAndBindServiceHandler);
 
+// Mount Route Kontrak Pekerjaan (UC05, UC06, UC07)
+app.use('/api/kontrak', kontrakRoutes);
+app.use('/kontrak', kontrakRoutes);
+
 if (process.env.NODE_ENV !== 'test') {
+  startAutoCancelWorker();
   app.listen(port, () => {
     console.log(`[server]: Backend running at http://localhost:${port}`);
   });
