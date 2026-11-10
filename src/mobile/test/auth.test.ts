@@ -283,6 +283,63 @@ describe('fallback listener Linking', () => {
     expect((globalThis.fetch as any).mock.calls).toHaveLength(1);
   });
 
+  describe('setelah grace period', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    test('iOS: browser yang selesai lama tanpa event url tetap masuk', async () => {
+      // Regression: picking an account takes longer than the grace period, and on
+      // iOS the redirect only comes back through openAuthSessionAsync. Waiting on
+      // the url event alone left the login screen hanging forever.
+      addEventListener.mockReturnValue({ remove: vi.fn() });
+      openAuthSessionAsync.mockReturnValue(
+        new Promise((selesai) =>
+          setTimeout(() => selesai({ type: 'success', url: 'exp://10.0.2.2:8081/--/?code=4%2Fkode' }), 5000),
+        ),
+      );
+
+      const janji = masukDenganGoogle();
+      await vi.advanceTimersByTimeAsync(5000);
+
+      await expect(janji).resolves.toMatchObject({ idPengguna: 'u1' });
+      expect(dismissBrowser).not.toHaveBeenCalled();
+    });
+
+    test('cancel dari browser mengalah pada deep link yang menyusul', async () => {
+      let pendengar: ((e: { url: string }) => void) | undefined;
+      addEventListener.mockImplementation((_jenis: string, fn: typeof pendengar) => {
+        pendengar = fn;
+        return { remove: vi.fn() };
+      });
+      openAuthSessionAsync.mockReturnValue(
+        new Promise((selesai) => setTimeout(() => selesai({ type: 'dismiss' }), 3000)),
+      );
+
+      const janji = masukDenganGoogle();
+      await vi.advanceTimersByTimeAsync(3200);
+      pendengar?.({ url: 'exp://10.0.2.2:8081/--/?code=4%2Fkode' });
+
+      await expect(janji).resolves.toMatchObject({ idPengguna: 'u1' });
+    });
+
+    test('cancel tanpa deep link tetap dianggap batal', async () => {
+      addEventListener.mockReturnValue({ remove: vi.fn() });
+      openAuthSessionAsync.mockReturnValue(
+        new Promise((selesai) => setTimeout(() => selesai({ type: 'cancel' }), 3000)),
+      );
+
+      const janji = masukDenganGoogle();
+      await vi.advanceTimersByTimeAsync(3000 + 1500);
+
+      await expect(janji).resolves.toBeNull();
+      expect((globalThis.fetch as any).mock.calls).toHaveLength(0);
+    });
+  });
+
   test('melepas listener setelah selesai', async () => {
     const remove = vi.fn();
     addEventListener.mockReturnValue({ remove });
