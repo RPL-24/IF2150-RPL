@@ -431,12 +431,51 @@ describe("login Google dari aplikasi (mulai + callback)", () => {
 
   test("callback meneruskan code ke deep link aplikasi", async () => {
     const res = await minta(app, ctx.D1, {
-      path: `/api/auth/google/callback?code=kode-123&state=${encodeURIComponent("sehati://")}`,
+      path: `/api/auth/google/callback?code=kode-123&state=${encodeURIComponent("sehati://masuk")}`,
     });
     expect(res.status).toBe(302);
     const tujuan = new URL(res.headers.get("Location")!);
     expect(tujuan.protocol).toBe("sehati:");
+    expect(tujuan.host).toBe("masuk");
     expect(tujuan.searchParams.get("code")).toBe("kode-123");
+  });
+
+  /**
+   * Regression: `Linking.createURL('/')` used to produce `sehati:///`, which parses
+   * but has an empty host. Android routes intents by `scheme://host`, so the browser
+   * found no app and the login ended silently after the callback. These must 400.
+   */
+  test.each(["sehati:///", "sehati://", "sehati:/", "sehati:"]) (
+    "menolak deep link tanpa host: state = %j",
+    async (kembali) => {
+      const res = await minta(app, ctx.D1, {
+        path: `/api/auth/google/callback?code=kode-123&state=${encodeURIComponent(kembali)}`,
+      });
+      expect(res.status).toBe(400);
+    },
+  );
+
+  test.each(["sehati:///", "sehati://", "sehati:"]) (
+    "menolak deep link tanpa host: kembali = %j",
+    async (kembali) => {
+      const res = await minta(app, ctx.D1, {
+        path: `/api/auth/google/mulai?kembali=${encodeURIComponent(kembali)}`,
+      });
+      expect(res.status).toBe(400);
+    },
+  );
+
+  test.each([
+    "sehati://masuk",
+    "sehati://callback/masuk",
+    "exp://10.0.0.5:8081/--/masuk",
+    "exps://192.168.1.10:8081/--/masuk",
+  ])("menerima deep link berhost: %j", async (kembali) => {
+    const res = await minta(app, ctx.D1, {
+      path: `/api/auth/google/mulai?kembali=${encodeURIComponent(kembali)}`,
+    });
+    expect(res.status).toBe(302);
+    expect(new URL(res.headers.get("Location")!).searchParams.get("state")).toBe(kembali);
   });
 
   test("callback meneruskan error saat pengguna membatalkan", async () => {

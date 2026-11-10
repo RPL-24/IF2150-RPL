@@ -193,6 +193,51 @@ curl -X POST http://localhost:8787/api/auth/demo \
 # {"token":"…","waktuLogin":"…","pengguna":{"idPengguna":"seed-usr-adm",…,"peran":"administrator"}}
 ```
 
+## Google login flow
+
+Google only redirects to `http(s)` URIs, so the authorization code cannot come
+straight back to the app. The backend relays it in three steps:
+
+```
+1. app      -> GET /api/auth/google/mulai?kembali=<app deep link>
+                 302 to accounts.google.com, with `state=<app deep link>`
+2. Google   -> GET /api/auth/google/callback?code=…&state=…
+                 302 to <app deep link>?code=…
+3. app      -> POST /api/auth/google { kodeOtorisasi }
+                 200 { token, waktuLogin, pengguna }
+```
+
+The exchange in step 3 happens on the server because it needs the client secret;
+the code is never exchanged on the device.
+
+### `kembali` / `state` must have a host
+
+Both routes validate the deep link and answer **400** if it has no host:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' \
+  'http://localhost:8787/api/auth/google/mulai?kembali=sehati%3A%2F%2F'
+# 400
+```
+
+| Value | Result |
+| --- | --- |
+| `sehati://masuk` | accepted — production binary |
+| `exp://10.0.2.2:8081/--/` | accepted — Expo Go under Metro |
+| `sehati://` | **400** — empty host |
+| `sehati:///` | **400** — empty host |
+| `https://evil.example/` | **400** — scheme not in the allowlist |
+
+Only the schemes in `SKEMA_KEMBALI` (`sehati:`, `exp:`, `exps:`) are accepted, so
+the callback cannot be used as an open redirect that leaks the code.
+
+The host requirement is not cosmetic. Android routes an intent by
+`scheme://host`, so a hostless link opens nothing at all — the browser sits there
+and the login appears to hang with no error anywhere.
+
+> Adding a new deep-link scheme? Register it in `SKEMA_KEMBALI` in
+> `src/routes/auth.ts` **and** keep a host.
+
 ### Seed contents
 
 | Table | What you get |
@@ -295,7 +340,9 @@ test/                   vitest suites + D1 harness
 | --- | --- |
 | `Missing required binding/env: KUNCI_TOKEN` | `.dev.vars` absent or not picked up — restart `bun run dev`. |
 | `KUNCI_TOKEN must decode to exactly 32 bytes` | Regenerate with `openssl rand -base64 32`. |
-| `redirect_uri_mismatch` from Google | `GOOGLE_REDIRECT_URI` differs from the console registration or from what the app sends. |
+| `redirect_uri_mismatch` from Google | `GOOGLE_REDIRECT_URI` differs from the console registration. It is sent verbatim at both grants, so it must include the scheme. |
+| `400 Parameter kembali harus deep link aplikasi yang memiliki host` | The app sent `sehati://` or `sehati:///`. A deep link needs a host; see [Google login flow](#kembali--state-must-have-a-host). |
+| Login hangs, browser never returns | Deep link has no host, or its scheme is not claimed by the running app (Expo Go only claims `exp:`/`exps:`). |
 | `401` on every call | Token is not a seeded dev token, or the session passed `BATAS_SESI` — re-run `bun run db:seed:local`. |
 | `no such table` | Migrations not applied: `bun run db:migrate:local`. |
 | Studio remote: `needs CLOUDFLARE_ACCOUNT_ID` | `.env` missing or not loaded — copy `.env.example` and fill it. |
