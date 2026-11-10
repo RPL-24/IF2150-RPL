@@ -1,28 +1,7 @@
-:root {
-  --teal: #78c9c0;
-  --cream: #fffdf7;
-  --amber: #f8c16f;
-  --ink: #2a3a3f;
-  --mist: #e2e8f0;
-  --ink-75: rgba(42, 58, 63, 0.75);
-}
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-body {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 120px 24px 48px;
-  background: var(--cream);
-  color: var(--ink);
-  font-family: "DM Sans", sans-serif;
 }
 
 .brand {
@@ -32,7 +11,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: var(--ink);
+  color: var(--color-ink);
   font-family: "Space Grotesk", sans-serif;
   font-size: 24px;
   font-weight: 700;
@@ -61,9 +40,9 @@ body {
   max-width: 500px;
   min-height: 400px;
   padding: 32px;
-  border: 1px solid var(--mist);
+  border: 1px solid var(--color-mist);
   border-radius: 16px;
-  background: var(--cream);
+  background: var(--color-cream);
   box-shadow: 0 8px 24px rgba(42, 58, 63, 0.1);
   text-align: center;
 }
@@ -76,7 +55,7 @@ body {
   height: 56px;
   margin-bottom: 20px;
   border-radius: 999px;
-  background: var(--teal);
+  background: var(--color-teal);
 }
 
 .success-icon svg {
@@ -95,14 +74,14 @@ body {
 .success-desc {
   max-width: 440px;
   margin-top: 8px;
-  color: var(--ink-75);
+  color: var(--color-ink-subtle);
   font-size: 16px;
   line-height: 24px;
 }
 
 .success-note {
   margin-top: 12px;
-  color: var(--ink-75);
+  color: var(--color-ink-subtle);
   font-size: 12px;
   line-height: 20px;
 }
@@ -117,8 +96,8 @@ body {
   margin-top: 32px;
   border: 1px solid rgba(42, 58, 63, 0.6);
   border-radius: 999px;
-  background: var(--amber);
-  color: var(--ink);
+  background: var(--color-amber);
+  color: var(--color-ink);
   font-size: 18px;
   font-weight: 700;
   line-height: 28px;
@@ -126,23 +105,20 @@ body {
 }
 
 .success-btn:hover {
-  background: #e9a94f;
+  background: var(--color-amber-hover);
 }
 
 .success-btn:active {
-  background: #d99a42;
+  background: var(--color-amber-hover);
 }
 
 .brand:focus-visible,
 .success-btn:focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--color-ink);
   outline-offset: 2px;
 }
 
 @media (max-width: 640px) {
-  body {
-    padding: 104px 24px 40px;
-  }
 
   .brand {
     top: 24px;

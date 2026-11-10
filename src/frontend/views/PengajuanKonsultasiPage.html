@@ -1,0 +1,202 @@
+<!--
+  STATUS: TEMPORARILY UNLINKED (2026-11-10)
+  Halaman ini dilepas sementara dari navigasi aplikasi dan menunggu keputusan
+  desain tim (posisi C21: pelajar UC06 vs nakes UC07). Berkas, CSS, dan logika
+  bisnis tetap utuh; tidak ada entry point yang mengarah ke halaman ini.
+  Bila diaktifkan kembali: tautkan dari menu yang relevan dan audit ulang.
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Pengajuan Konsultasi Tenaga Kesehatan</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS bersama, lalu CSS halaman -->
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="PengajuanKonsultasiPage.css">
+
+</head>
+<body>
+    <a href="#Panel_PengajuanKonsultasi" class="skip-link">Lewati ke konten utama</a>
+
+    <div class="app-layout">
+        <!-- Floating Sidebar Navigasi -->
+        <aside class="app-sidebar" data-role="nakes" id="Sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-header">
+                    <a href="DashboardPageTenagaKesehatan.html" class="brand-link">
+                        <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                        <span class="brand-title">MahaSehat</span>
+                    </a>
+                </div>
+
+                <div class="sidebar-search">
+                    <span class="search-icon" aria-hidden="true">⌕</span>
+                    <input type="text" class="search-input" id="Search_Pasien" placeholder="Cari nama pelajar..." aria-label="Cari pengajuan konsultasi">
+                </div>
+
+                <!-- Menu Navigasi Nakes -->
+                <nav class="nav-menu" aria-label="Menu utama">
+                    <a href="DashboardPageTenagaKesehatan.html" class="nav-item" id="Menu_Dashboard">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="PengajuanKonsultasiPage.html" class="nav-item active" aria-current="page" id="Menu_Konsultasi">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span class="nav-label">Konsultasi</span>
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="SettingPageTenagaKesehatan.html" class="nav-item" id="Menu_Setelan">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="nav-label">Setelan</span>
+                    </a>
+                    <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span class="nav-label">Keluar</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Profil Nakes -->
+            <div class="sidebar-user" id="Info_User">
+                <div class="user-avatar" id="User_Avatar">R</div>
+                <div class="user-meta">
+                    <p class="user-name" id="Text_NamaUser">Raissa Hadiman, M. Psi.</p>
+                    <p class="user-role" id="Text_RoleUser">Tenaga Kesehatan</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Area Konten Utama -->
+        <main class="main-viewport" id="Panel_PengajuanKonsultasi">
+            <header class="page-header">
+                <h1 class="page-title" id="Title_PengajuanKonsultasi">Manajemen Konsultasi</h1>
+                <p class="page-subtitle" id="Subtitle_PengajuanKonsultasi">Tinjau permohonan janji temu, periksa riwayat kesehatan pelajar, dan tentukan jadwal sesi.</p>
+            </header>
+
+            <!-- Filter Status Pengajuan (Segmented Tabs Langsung) -->
+            <div class="filter-status-bar" id="Card_FilterStatus">
+                <div class="segmented segmented--scrollable" id="Group_FilterStatus" role="tablist" aria-label="Filter status konsultasi">
+                    <button type="button" class="seg-btn active" data-filter="all" role="tab" aria-selected="true" id="Tab_Semua">
+                        Semua (<span id="Count_Semua">0</span>)
+                    </button>
+                    <button type="button" class="seg-btn" data-filter="Menunggu" role="tab" aria-selected="false" id="Tab_Menunggu">
+                        Menunggu (<span id="Count_Menunggu">0</span>)
+                    </button>
+                    <button type="button" class="seg-btn" data-filter="Disetujui" role="tab" aria-selected="false" id="Tab_Disetujui">
+                        Disetujui (<span id="Count_Disetujui">0</span>)
+                    </button>
+                    <button type="button" class="seg-btn" data-filter="Dijadwal Ulang" role="tab" aria-selected="false" id="Tab_DijadwalUlang">
+                        Dijadwal Ulang (<span id="Count_DijadwalUlang">0</span>)
+                    </button>
+                    <button type="button" class="seg-btn" data-filter="Ditolak" role="tab" aria-selected="false" id="Tab_Ditolak">
+                        Ditolak (<span id="Count_Ditolak">0</span>)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Daftar Kartu Pengajuan Konsultasi -->
+            <div class="consultation-feed" id="Feed_Pengajuan" aria-live="polite">
+                <!-- Diisi secara dinamis oleh PengajuanKonsultasiPage.js -->
+            </div>
+
+            <!-- Tampilan Kosong Jika Tidak Ada Pengajuan -->
+            <div class="empty-state" id="Box_Kosong" hidden>
+                <div class="empty-state__icon">
+                    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M16 16s-1.5-2-4-2-4 2-4 2"></path>
+                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    </svg>
+                </div>
+                <h2 class="empty-state__title" id="Text_JudulKosong">Tidak Ada Pengajuan</h2>
+                <p class="empty-state__desc" id="Text_DeskripsiKosong">Belum ada permohonan konsultasi pada kategori ini.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Jadwal Ulang Konsultasi -->
+    <dialog class="modal" id="Modal_Reschedule" aria-labelledby="Modal_Reschedule_Title">
+        <div class="modal__header">
+            <h2 class="modal__title" id="Modal_Reschedule_Title">Jadwal Ulang Konsultasi</h2>
+            <button type="button" class="btn btn--icon" id="Btn_TutupModalReschedule" aria-label="Tutup modal">&times;</button>
+        </div>
+        <p class="modal__subtitle" id="Modal_Reschedule_Pasien">Pasien: Albert Einstein</p>
+
+        <form id="Form_Reschedule" class="modal-form">
+            <input type="hidden" id="Input_Reschedule_IdJadwal">
+            <div class="form-group">
+                <label for="Input_Reschedule_Tanggal" class="form-label">Tanggal Pengganti</label>
+                <input type="date" id="Input_Reschedule_Tanggal" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label for="Input_Reschedule_Waktu" class="form-label">Waktu Pengganti</label>
+                <select id="Input_Reschedule_Waktu" class="form-select" required>
+                    <option value="">Pilih Sesi Jam</option>
+                    <option value="09:00 - 10:00 WIB">09:00 - 10:00 WIB</option>
+                    <option value="10:00 - 11:00 WIB">10:00 - 11:00 WIB</option>
+                    <option value="13:00 - 14:00 WIB">13:00 - 14:00 WIB</option>
+                    <option value="14:00 - 15:00 WIB">14:00 - 15:00 WIB</option>
+                    <option value="15:30 - 16:30 WIB">15:30 - 16:30 WIB</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Input_Reschedule_Catatan" class="form-label">Catatan Penjadwalan Ulang (Opsional)</label>
+                <textarea id="Input_Reschedule_Catatan" class="form-textarea" rows="3" placeholder="Berikan alasan atau instruksi waktu kepada pelajar..."></textarea>
+            </div>
+            <div class="modal__actions">
+                <button type="button" class="btn btn--secondary" id="Btn_BatalReschedule">Batal</button>
+                <button type="submit" class="btn btn--primary" id="Btn_KirimReschedule">Kirim Penjadwalan Ulang</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Modal Tolak Pengajuan -->
+    <dialog class="modal" id="Modal_Tolak" aria-labelledby="Modal_Tolak_Title">
+        <div class="modal__header">
+            <h2 class="modal__title" id="Modal_Tolak_Title">Tolak Pengajuan Konsultasi</h2>
+            <button type="button" class="btn btn--icon" id="Btn_TutupModalTolak" aria-label="Tutup modal">&times;</button>
+        </div>
+        <p class="modal__subtitle" id="Modal_Tolak_Pasien">Pasien: Albert Einstein</p>
+
+        <form id="Form_Tolak" class="modal-form">
+            <input type="hidden" id="Input_Tolak_IdJadwal">
+            <div class="form-group">
+                <label for="Input_Tolak_Alasan" class="form-label">Alasan Penolakan</label>
+                <textarea id="Input_Tolak_Alasan" class="form-textarea" rows="3" placeholder="Sebutkan alasan penolakan agar pelajar memahami (misal: slot penuh darurat, jadwal bentrok)..." required></textarea>
+            </div>
+            <div class="modal__actions">
+                <button type="button" class="btn btn--secondary" id="Btn_BatalTolak">Batal</button>
+                <button type="submit" class="btn btn--danger" id="Btn_KonfirmasiTolak">Tolak Pengajuan</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="PengajuanKonsultasiPage.js"></script>
+</body>
+</html>

@@ -10,13 +10,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="SidebarTenagaKesehatan.css">
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="DashboardPageTenagaKesehatan.css">
+
 </head>
 <body>
     <div class="app-layout">
         <!-- Floating Sidebar Navigasi Nakes -->
-        <aside class="app-sidebar" id="Sidebar">
+        <aside class="app-sidebar" data-role="nakes" id="Sidebar">
             <div class="sidebar-top">
                 <div class="sidebar-header">
                     <a href="DashboardPageTenagaKesehatan.html" class="brand-link" id="Link_Brand">
@@ -33,7 +36,7 @@
 
                 <!-- Menu Navigasi Utama -->
                 <nav class="nav-menu" aria-label="Menu utama">
-                    <a href="DashboardPageTenagaKesehatan.html" class="nav-item active" id="Menu_Dashboard" aria-current="page">
+                    <a href="DashboardPageTenagaKesehatan.html" class="nav-item active" aria-current="page" id="Menu_Dashboard" aria-current="page">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="3" width="7" height="7"></rect>
                             <rect x="14" y="3" width="7" height="7"></rect>
@@ -94,7 +97,7 @@
                     <div class="profile-info-text">
                         <div class="profile-header-line">
                             <h2 class="profile-name" id="Text_NamaNakes">Raissa Hadiman, M. Psi.</h2>
-                            <span class="status-badge status-stabil">Praktik Aktif</span>
+                            <span class="badge badge--stabil">Praktik Aktif</span>
                         </div>
                         <p class="profile-specialty" id="Text_JenisNakes">Psikologi Klinis</p>
                         <p class="profile-detail-line" id="Text_DetailProfil">Rumah Sakit ABC • Rp150.000 - Rp250.000 per sesi</p>
@@ -153,7 +156,7 @@
                     <p class="empty-msg" id="Text_PengajuanKosong" style="display: none;">Belum ada pengajuan konsultasi.</p>
 
                     <div class="card-box-footer">
-                        <a href="ManajemenKonsultasiPage.html" class="btn-primary-pill" id="Link_KelolaPengajuan">Kelola Pengajuan</a>
+                        <a href="ManajemenKonsultasiPage.html" class="btn btn--primary" id="Link_KelolaPengajuan">Kelola Pengajuan</a>
                     </div>
                 </section>
 

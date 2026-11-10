@@ -10,12 +10,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="DashboardPagePelajar.css">
 </head>
 <body>
     <div class="app-layout">
         <!-- Floating Sidebar Navigasi (Sesuai Node 3960 & 4073 FigCraft) -->
-        <aside class="app-sidebar" id="Sidebar">
+        <aside class="app-sidebar" data-role="pelajar" id="Sidebar">
             <div class="sidebar-top">
                 <div class="sidebar-header">
                     <a href="DashboardPagePelajar.html" class="brand-link">
@@ -32,7 +35,7 @@
 
                 <!-- Menu Navigasi Utama -->
                 <nav class="nav-menu" aria-label="Menu utama">
-                    <a href="DashboardPagePelajar.html" class="nav-item active" id="Menu_Dashboard">
+                    <a href="DashboardPagePelajar.html" class="nav-item active" aria-current="page" id="Menu_Dashboard">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="3" width="7" height="7"></rect>
                             <rect x="14" y="3" width="7" height="7"></rect>
@@ -41,7 +44,7 @@
                         </svg>
                         <span class="nav-label">Dashboard</span>
                     </a>
-                    <a href="ReportPage.html" class="nav-item" id="Menu_Laporan">
+                    <a href="ReportPagePelajar.html" class="nav-item" id="Menu_Laporan">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
@@ -51,7 +54,7 @@
                         </svg>
                         <span class="nav-label">Laporan Kesehatan</span>
                     </a>
-                    <a href="CariTenagaKesehatanPage.html" class="nav-item" id="Menu_Konsultasi">
+                    <a class="nav-item nav-item--disabled" aria-disabled="true" title="Halaman belum tersedia" id="Menu_Konsultasi">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                         </svg>
@@ -109,7 +112,7 @@
                     </p>
                 </div>
                 <div class="banner-cta">
-                    <a href="CheckInPage.html" class="btn-primary-pill" id="Btn_AksiCheckIn">Mulai check-in</a>
+                    <a href="CheckInPage.html" class="btn btn--primary" id="Btn_AksiCheckIn">Mulai check-in</a>
                 </div>
             </section>
 
@@ -158,7 +161,7 @@
                 <section class="card-box index-card" id="Card_IndeksKesehatan">
                     <div class="card-box-header">
                         <h3 class="card-box-title">Indeks Kesehatan Mental</h3>
-                        <span class="status-badge status-stabil" id="Badge_StatusIndeks">Stabil</span>
+                        <span class="badge badge--stabil" id="Badge_StatusIndeks">Stabil</span>
                     </div>
                     <div class="index-score-wrap">
                         <span class="index-score-value" id="Value_Indeks">78</span>
@@ -204,7 +207,7 @@
                         </div>
 
                         <div class="schedule-footer">
-                            <a href="JadwalKonsultasiPage.html" class="schedule-link">Lihat detail</a>
+                            <a class="schedule-link" aria-disabled="true" title="Halaman belum tersedia">Lihat detail</a>
                         </div>
                     </div>
 

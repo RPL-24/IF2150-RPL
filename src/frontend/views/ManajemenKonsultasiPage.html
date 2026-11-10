@@ -10,13 +10,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="SidebarTenagaKesehatan.css">
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="ManajemenKonsultasiPage.css">
+
 </head>
 <body>
     <div class="app-layout">
         <!-- Floating Sidebar Navigasi Nakes -->
-        <aside class="app-sidebar" id="Sidebar">
+        <aside class="app-sidebar" data-role="nakes" id="Sidebar">
             <div class="sidebar-top">
                 <div class="sidebar-header">
                     <a href="DashboardPageTenagaKesehatan.html" class="brand-link" id="Link_Brand">
@@ -42,7 +45,7 @@
                         </svg>
                         <span class="nav-label">Dashboard</span>
                     </a>
-                    <a href="ManajemenKonsultasiPage.html" class="nav-item active" id="Menu_Konsultasi" aria-current="page">
+                    <a href="ManajemenKonsultasiPage.html" class="nav-item active" aria-current="page" id="Menu_Konsultasi">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                         </svg>
@@ -123,7 +126,7 @@
                                 <h2 class="patient-name" id="Detail_Nama">Albert Einstein</h2>
                                 <p class="patient-sub" id="Detail_SubInfo">Pelajar · SMAN 1 Bandung · NIS: 215001</p>
                             </div>
-                            <button type="button" class="btn-outline-pill btn-hubungi" id="Btn_HubungiPelajar">Hubungi</button>
+                            <button type="button" class="btn btn--secondary btn-hubungi" id="Btn_HubungiPelajar">Hubungi</button>
                         </div>
 
                         <hr class="panel-divider">
@@ -197,9 +200,9 @@
 
                         <!-- Tombol Aksi Keputusan Klinis -->
                         <div class="action-buttons-row">
-                            <button type="button" class="btn-pill btn-primary-dark" id="Btn_Setujui">Setujui Permohonan</button>
-                            <button type="button" class="btn-pill btn-secondary-outline" id="Btn_JadwalkanUlang">Jadwalkan Ulang</button>
-                            <button type="button" class="btn-pill btn-danger-outline" id="Btn_Tolak">Tolak</button>
+                            <button type="button" class="btn btn--dark" id="Btn_Setujui">Setujui Permohonan</button>
+                            <button type="button" class="btn btn--secondary" id="Btn_JadwalkanUlang">Jadwalkan Ulang</button>
+                            <button type="button" class="btn btn--danger-outline" id="Btn_Tolak">Tolak</button>
                         </div>
                     </div>
                 </section>
@@ -213,8 +216,8 @@
     <!-- Modal Dialog untuk Jadwal Ulang -->
     <div class="modal-overlay" id="Modal_JadwalUlang" style="display: none;">
         <div class="modal-box">
-            <h3 class="modal-title">Jadwalkan Ulang Sesi Konsultasi</h3>
-            <p class="modal-subtitle" id="Modal_JadwalSub">Tentukan tanggal dan waktu baru untuk konsultasi bersama Albert Einstein.</p>
+            <h3 class="modal__title">Jadwalkan Ulang Sesi Konsultasi</h3>
+            <p class="modal__subtitle" id="Modal_JadwalSub">Tentukan tanggal dan waktu baru untuk konsultasi bersama Albert Einstein.</p>
             <div class="modal-form-group">
                 <label class="form-label-custom" for="Modal_InputTanggal">Tanggal Sesi Baru</label>
                 <input type="date" class="form-input-custom" id="Modal_InputTanggal" value="2026-11-12">
@@ -229,8 +232,8 @@
                 </select>
             </div>
             <div class="modal-buttons-row">
-                <button type="button" class="btn-pill btn-primary-dark" id="Modal_BtnSimpanJadwal">Simpan Jadwal Baru</button>
-                <button type="button" class="btn-pill btn-secondary-outline" id="Modal_BtnBatalJadwal">Batal</button>
+                <button type="button" class="btn btn--dark" id="Modal_BtnSimpanJadwal">Simpan Jadwal Baru</button>
+                <button type="button" class="btn btn--secondary" id="Modal_BtnBatalJadwal">Batal</button>
             </div>
         </div>
     </div>

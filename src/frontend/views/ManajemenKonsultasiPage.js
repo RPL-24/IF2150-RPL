@@ -209,7 +209,7 @@
 
         if (filtered.length === 0) {
             listContainer.innerHTML = `
-                <div style="padding: 32px 16px; text-align: center; color: var(--color-muted); font-size: 14px;">
+                <div style="padding: 32px 16px; text-align: center; color: var(--color-ink-muted); font-size: 14px;">
                     Tidak ada permohonan konsultasi yang sesuai dengan kriteria.
                 </div>
             `;
@@ -225,9 +225,9 @@
             card.setAttribute('tabindex', '0');
 
             // Format chip status
-            let chipClass = 'menunggu';
-            if (item.status === 'Disetujui') chipClass = 'disetujui';
-            else if (item.status === 'Selesai' || item.status === 'Ditolak') chipClass = 'riwayat';
+            let chipClass = 'badge--menunggu';
+            if (item.status === 'Disetujui') chipClass = 'badge--disetujui';
+            else if (item.status === 'Selesai' || item.status === 'Ditolak') chipClass = 'badge--riwayat';
 
             card.innerHTML = `
                 <div class="queue-card-top">
@@ -236,7 +236,7 @@
                         <h4 class="queue-card-name">${escapeHtml(item.nama)}</h4>
                         <p class="queue-card-sub">${escapeHtml(item.sekolah)}</p>
                     </div>
-                    <span class="status-chip ${chipClass}">${escapeHtml(item.status)}</span>
+                    <span class="badge ${chipClass}">${escapeHtml(item.status)}</span>
                 </div>
                 <div class="queue-card-divider"></div>
                 <p class="queue-card-schedule">${escapeHtml(item.jadwal)}</p>

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('Form_Registration');
     const roleInput = document.getElementById('Input_Role');
-    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabBtns = document.querySelectorAll('.seg-btn');
     
     // Input Fields
     const inputNama = document.getElementById('Input_Nama');

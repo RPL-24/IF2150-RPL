@@ -69,11 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Helper Kelas Badge
     function kelasBadge(status) {
-        if (status === 'Diajukan') return 'status-badge badge-proses';
-        if (status === 'Disetujui') return 'status-badge badge-selesai';
-        if (status === 'Dijadwal Ulang') return 'status-badge badge-info';
-        if (status === 'Kosong') return 'status-badge badge-selesai';
-        return 'status-badge badge-netral';
+        if (status === 'Diajukan') return 'badge badge--proses';
+        if (status === 'Disetujui') return 'badge badge--selesai';
+        if (status === 'Dijadwal Ulang') return 'badge badge--info';
+        if (status === 'Kosong') return 'badge badge--selesai';
+        return 'badge badge--netral';
     }
 
     function hitungPengajuan(status) {

@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (badgeStatusAkun) {
         if (data.pelajar.terverifikasi) {
             badgeStatusAkun.textContent = 'Terverifikasi';
-            badgeStatusAkun.className = 'status-badge badge-selesai';
+            badgeStatusAkun.className = 'badge badge--selesai';
         } else {
             badgeStatusAkun.textContent = 'Belum Terverifikasi';
-            badgeStatusAkun.className = 'status-badge badge-belum';
+            badgeStatusAkun.className = 'badge badge--belum';
         }
     }
 

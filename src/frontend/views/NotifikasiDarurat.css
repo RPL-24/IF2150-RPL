@@ -1,58 +1,19 @@
 /* ==========================================================================
    MahaSehat - NotifikasiDarurat.css
    Gaya Modal Notifikasi Darurat Sesuai Design System MahaSehat
-   Palet: Teal #78C9C0, Cream #FFFDF7, Ink #2A3A3F, Amber #F8C16F, Danger #B5453B
-   ========================================================================== */
-
-*, *::before, *::after {
+   Palet: Teal var(--color-teal), Cream var(--color-cream), Ink var(--color-ink), Amber var(--color-amber), Danger var(--color-danger)
+   ========================================================================== */*, *::before, *::after{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}
-
-:root {
-    --color-cream: #FFFDF7;
-    --color-white: #FFFFFF;
-    --color-teal: #78C9C0;
-    --color-teal-hover: #63B8AF;
-    --color-ink: #2A3A3F;
-    --color-ink-subtle: rgba(42, 58, 63, 0.72);
-    --color-ink-muted: rgba(42, 58, 63, 0.5);
-    --color-amber: #F8C16F;
-    --color-amber-hover: #EAB361;
-    --color-mist: #E2E8F0;
-    --color-mist-light: #F8FAFC;
-    --color-border: #E2E8F0;
-    --color-danger: #B5453B;
-    --color-danger-subtle: rgba(181, 69, 59, 0.12);
-    --color-success: #2E7D32;
-    --color-success-subtle: rgba(46, 125, 50, 0.12);
-
-    --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-body {
-    background-color: var(--color-cream);
-    color: var(--color-ink);
-    font-family: var(--font-body);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    -webkit-font-smoothing: antialiased;
-}
-
-.notif-container {
+}.notif-container{
     width: 100%;
     padding: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-/* Kartu Modal Notifikasi Universal */
-.notif-card {
+}/* Kartu Modal Notifikasi Universal */
+.notif-card{
     background-color: var(--color-white);
     border: 1px solid var(--color-border);
     border-radius: 24px;
@@ -67,19 +28,15 @@ body {
     animation: modalPopIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes modalPopIn {
-    from {
+@keyframes modalPopIn {from{
         opacity: 0;
         transform: scale(0.96) translateY(8px);
-    }
-    to {
+    }to{
         opacity: 1;
         transform: scale(1) translateY(0);
     }
-}
-
-/* Badge Ikon Darurat */
-.darurat-icon-badge {
+}/* Badge Ikon Darurat */
+.darurat-icon-badge{
     width: 64px;
     height: 64px;
     border-radius: 50%;
@@ -89,21 +46,15 @@ body {
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-}
-
-.darurat-img {
+}.darurat-img{
     width: 32px;
     height: 32px;
     object-fit: contain;
-}
-
-.darurat-svg {
+}.darurat-svg{
     width: 32px;
     height: 32px;
     stroke: var(--color-danger);
-}
-
-.success-icon-badge {
+}.success-icon-badge{
     width: 64px;
     height: 64px;
     border-radius: 50%;
@@ -113,10 +64,8 @@ body {
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-}
-
-/* Tipografi Judul & Deskripsi */
-.notif-title, #Title_Darurat {
+}/* Tipografi Judul & Deskripsi */
+.notif-title, #Title_Darurat{
     font-family: var(--font-heading);
     font-size: 22px;
     font-weight: 700;
@@ -124,9 +73,7 @@ body {
     letter-spacing: -0.02em;
     line-height: 1.25;
     margin-bottom: 12px;
-}
-
-.notif-desc, #Desc_Darurat {
+}.notif-desc, #Desc_Darurat{
     font-family: var(--font-body);
     color: var(--color-ink-subtle);
     font-size: 15px;
@@ -134,62 +81,13 @@ body {
     line-height: 1.6;
     margin-bottom: 28px;
     max-width: 420px;
-}
-
-/* Tata Letak Tombol Aksi */
-.button-group {
+}/* Tata Letak Tombol Aksi */
+.button-group{
     display: flex;
     gap: 16px;
     width: 100%;
     justify-content: center;
-}
-
-.btn-action {
-    flex: 1;
-    min-width: 160px;
-    height: 48px;
-    padding: 0 20px;
-    border-radius: 999px;
-    font-family: var(--font-body);
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
-}
-
-/* Tombol Outline (Diterima) */
-.btn-outline-action {
-    background-color: var(--color-white);
-    color: var(--color-ink);
-    border: 1px solid rgba(42, 58, 63, 0.4);
-}
-
-.btn-outline-action:hover:not(:disabled) {
-    background-color: var(--color-mist-light);
-    border-color: var(--color-ink);
-    transform: translateY(-1px);
-}
-
-/* Tombol Utama (Sudah Ditindaklanjuti) */
-.btn-primary-action {
-    background-color: var(--color-amber);
-    color: var(--color-ink);
-    border: 1px solid rgba(42, 58, 63, 0.35);
-}
-
-.btn-primary-action:hover:not(:disabled) {
-    background-color: var(--color-amber-hover);
-    transform: translateY(-1px);
-}
-
-/* Status Nonaktif / Dikonfirmasi */
-.btn-action:disabled,
-.btn-confirmed {
+}.btn-confirmed{
     background-color: var(--color-mist) !important;
     color: var(--color-ink-muted) !important;
     border-color: var(--color-border) !important;
@@ -198,27 +96,15 @@ body {
     opacity: 0.85;
 }
 
-/* ==========================================================================
-   Responsif (Mobile)
-   ========================================================================== */
+/* ========================================================================== Responsif (Mobile) ========================================================================== */
 
-@media (max-width: 480px) {
-    .notif-card {
+ @media (max-width: 480px){.notif-card{
         padding: 32px 20px 28px 20px;
         border-radius: 20px;
-    }
-
-    .notif-title, #Title_Darurat {
+    }.notif-title, #Title_Darurat{
         font-size: 20px;
-    }
-
-    .button-group {
+    }.button-group{
         flex-direction: column;
         gap: 12px;
-    }
-
-    .btn-action {
-        width: 100%;
-        min-width: 100%;
     }
 }

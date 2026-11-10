@@ -8,91 +8,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background-color: #FFFDF7;
-            color: #2A3A3F;
-            font-family: 'DM Sans', -apple-system, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-        }
-        .gateway-card {
-            width: 100%;
-            max-width: 440px;
-            background-color: #FFFDF7;
-            border: 1px solid #E2E8F0;
-            border-radius: 24px;
-            padding: 40px 32px;
-            text-align: center;
-            box-shadow: 0 4px 16px rgba(42, 58, 63, 0.04);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .gateway-logo {
-            width: 58px;
-            height: 40px;
-            object-fit: contain;
-            margin: 0 auto 8px;
-        }
-        h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: -1px;
-            color: #2A3A3F;
-        }
-        p {
-            font-size: 15px;
-            color: rgba(42, 58, 63, 0.7);
-            margin-bottom: 8px;
-        }
-        .btn-role {
-            width: 100%;
-            height: 50px;
-            padding: 0 20px;
-            border: 1px solid rgba(42, 58, 63, 0.5);
-            border-radius: 999px;
-            background-color: #F8C16F;
-            color: #2A3A3F;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-        .btn-role:hover {
-            background-color: #EAB361;
-            transform: translateY(-1px);
-        }
-        .btn-role-outline {
-            background-color: transparent;
-            border: 1px solid #E2E8F0;
-        }
-        .btn-role-outline:hover {
-            background-color: #E2E8F0;
-        }
-    </style>
+    <!-- CSS bersama, lalu CSS halaman -->
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="DashboardPage.css">
 </head>
 <body>
     <main class="gateway-card" id="Panel_PilihPeran" hidden>
         <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="gateway-logo">
         <h1 id="Title_PilihPeran">Masuk ke Dashboard</h1>
         <p id="Text_PilihPeran">Pilih peran akun untuk membuka antarmuka dashboard yang sesuai.</p>
-        <button type="button" class="btn-role" id="Btn_Pelajar" data-role="pelajar">Pelajar</button>
-        <button type="button" class="btn-role" id="Btn_OrangTuaWali" data-role="orangtuawali">Orang Tua / Wali</button>
-        <button type="button" class="btn-role" id="Btn_TenagaKesehatan" data-role="tenagakesehatan">Tenaga Kesehatan</button>
+        <button type="button" class="btn btn--primary" id="Btn_Pelajar" data-role="pelajar">Pelajar</button>
+        <button type="button" class="btn btn--primary" id="Btn_OrangTuaWali" data-role="orangtuawali">Orang Tua / Wali</button>
+        <button type="button" class="btn btn--primary" id="Btn_TenagaKesehatan" data-role="tenagakesehatan">Tenaga Kesehatan</button>
     </main>
 
     <script>

@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '<input type="time" class="form-input" name="mulai" aria-label="Jam mulai" value="' + mulai + '">' +
             '<span class="range-sep">sampai</span>' +
             '<input type="time" class="form-input" name="selesai" aria-label="Jam selesai" value="' + selesai + '">' +
-            '<button type="button" class="btn-icon-remove" aria-label="Hapus rentang jam">&times;</button>';
+            '<button type="button" class="btn btn--icon" aria-label="Hapus rentang jam">&times;</button>';
         groupRentang.appendChild(row);
         syncRemoveButtons();
     }

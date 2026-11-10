@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (menuLaporan) menuLaporan.style.display = 'none';
         if (menuKonsultasi) {
             menuKonsultasi.style.display = 'flex';
-            menuKonsultasi.href = 'PengajuanKonsultasiPage.html';
+            menuKonsultasi.href = 'ManajemenKonsultasiPage.html';
         }
     } else if (role === 'orangtuawali') {
         if (menuLaporan) {
@@ -121,8 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
             menuLaporan.href = 'ReportPage.html';
         }
         if (menuKonsultasi) {
+            // Halaman Konsultasi pelajar belum tersedia: biarkan nonaktif, jangan pasang href
             menuKonsultasi.style.display = 'flex';
-            menuKonsultasi.href = 'CariTenagaKesehatanPage.html';
+            menuKonsultasi.removeAttribute('href');
+            menuKonsultasi.setAttribute('aria-disabled', 'true');
+            menuKonsultasi.classList.add('nav-item--disabled');
         }
     }
 

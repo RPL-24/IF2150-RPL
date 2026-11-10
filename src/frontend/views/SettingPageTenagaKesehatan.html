@@ -10,13 +10,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="SidebarTenagaKesehatan.css">
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="SettingPageTenagaKesehatan.css">
+
 </head>
 <body>
     <div class="app-layout">
         <!-- Floating Sidebar Navigasi Nakes -->
-        <aside class="app-sidebar" id="Sidebar">
+        <aside class="app-sidebar" data-role="nakes" id="Sidebar">
             <div class="sidebar-top">
                 <div class="sidebar-header">
                     <a href="DashboardPageTenagaKesehatan.html" class="brand-link" id="Link_Brand">
@@ -53,7 +56,7 @@
                     <div class="menu-divider"></div>
 
                     <!-- Item Setelan Aktif -->
-                    <a href="SettingPageTenagaKesehatan.html" class="nav-item active" id="Menu_Setelan" aria-current="page">
+                    <a href="SettingPageTenagaKesehatan.html" class="nav-item active" aria-current="page" id="Menu_Setelan" aria-current="page">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="3"></circle>
                             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -141,7 +144,7 @@
                             </div>
 
                             <div class="form-actions">
-                                <button type="submit" class="btn-primary-pill btn-full" id="Btn_SimpanProfil">Simpan Profil Profesional</button>
+                                <button type="submit" class="btn btn--primary btn--block" id="Btn_SimpanProfil">Simpan Profil Profesional</button>
                             </div>
                         </form>
                     </section>
@@ -155,7 +158,7 @@
                             <p class="field-label-bold">Kata sandi</p>
                             <p class="field-note">Terakhir diperbarui 3 minggu lalu.</p>
                         </div>
-                        <a href="ResetPasswordPage.html" class="btn-outline-pill btn-full" id="Link_UbahSandi">Ubah kata sandi</a>
+                        <a href="ResetPasswordPage.html" class="btn btn--secondary btn--block" id="Link_UbahSandi">Ubah kata sandi</a>
                     </section>
                 </div>
 
@@ -179,7 +182,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Metode Konsultasi yang Dilayani</label>
+                                <span class="form-label">Metode Konsultasi yang Dilayani</span>
                                 <div class="checkbox-group-row">
                                     <label class="custom-checkbox-label">
                                         <input type="checkbox" id="Check_Online" name="metode_online" checked>
@@ -198,7 +201,7 @@
                             </div>
 
                             <div class="form-actions">
-                                <button type="submit" class="btn-primary-pill btn-full" id="Btn_SimpanTempatKerja">Simpan Tempat Kerja</button>
+                                <button type="submit" class="btn btn--primary btn--block" id="Btn_SimpanTempatKerja">Simpan Tempat Kerja</button>
                             </div>
                         </form>
                     </section>
@@ -224,7 +227,7 @@
 
                             <!-- Pemilihan Hari Praktik -->
                             <div class="form-group">
-                                <label class="form-label">Hari Praktik Mingguan</label>
+                                <span class="form-label">Hari Praktik Mingguan</span>
                                 <div class="days-selector-grid" id="Group_HariPraktik" role="group" aria-label="Pilih hari praktik">
                                     <label class="day-chip">
                                         <input type="checkbox" name="hari" value="Senin" checked>
@@ -258,9 +261,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Rentang Jam Praktik</label>
+                                <span class="form-label">Rentang Jam Praktik</span>
                                 <div class="range-list" id="Group_RentangJam" role="group" aria-label="Rentang jam praktik"></div>
-                                <button type="button" class="btn-text-action" id="Btn_TambahRentang">+ Tambah rentang jam</button>
+                                <button type="button" class="btn btn--link" id="Btn_TambahRentang">+ Tambah rentang jam</button>
                                 <p class="form-error" id="Text_ErrorJam" role="alert" hidden></p>
                             </div>
 
@@ -275,12 +278,12 @@
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">Slot yang Akan Tersedia</label>
+                                <span class="form-label">Slot yang Akan Tersedia</span>
                                 <div class="time-slots-grid" id="Group_SlotWaktu" aria-live="polite"></div>
                             </div>
 
                             <div class="form-actions">
-                                <button type="submit" class="btn-primary-pill btn-full" id="Btn_SimpanJadwal">Simpan Ketersediaan Jadwal</button>
+                                <button type="submit" class="btn btn--primary btn--block" id="Btn_SimpanJadwal">Simpan Ketersediaan Jadwal</button>
                             </div>
                         </form>
                     </section>
