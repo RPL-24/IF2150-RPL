@@ -39,7 +39,6 @@ export class ListTugas {
 
     // Algo-012
     urutPrioritas(): TugasLaporan[] {
-        // BELUM DIURUTIN GA ADA bandingkanPrioritas
         return [...this.daftarLaporan].sort(bandingkanPrioritas);
     }
 
