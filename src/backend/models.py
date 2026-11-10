@@ -341,3 +341,21 @@ class Kupon:
 
     def is_berlaku(self, tanggal_sekarang: str) -> bool:
         return not self.terpakai and tanggal_sekarang <= self.berlaku_sampai
+    
+    def simpan(self, conn: sqlite3.Connection) -> None:
+        """Q-C19-04: simpan kupon baru hasil klaim reward."""
+        conn.execute(
+            "INSERT INTO kupon (kode_kupon, id_pembeli, nilai_potongan, berlaku_sampai, terpakai) "
+            "VALUES (?, ?, ?, ?, 0)",
+            (self.kode_kupon, self.id_pembeli, self.nilai_potongan, self.berlaku_sampai),
+        )
+
+    @classmethod
+    def cariByPembeli(cls, conn: sqlite3.Connection, id_pembeli: int) -> List["Kupon"]:
+        """Daftar kupon milik Pembeli, berlaku paling lama lebih dulu."""
+        rows = conn.execute(
+            "SELECT kode_kupon, id_pembeli, nilai_potongan, berlaku_sampai, terpakai "
+            "FROM kupon WHERE id_pembeli = ? ORDER BY berlaku_sampai DESC, kode_kupon",
+            (id_pembeli,),
+        ).fetchall()
+        return [cls(r[0], r[1], r[2], r[3], bool(r[4])) for r in rows]
