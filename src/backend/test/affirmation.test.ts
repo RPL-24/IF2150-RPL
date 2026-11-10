@@ -74,6 +74,42 @@ describe("AffirmationController (C-26) / Algo-028", () => {
     const res = await minta(app, ctx.D1, { path: "/api/affirmation", token: admin });
     expect(res.status).toBe(403);
   });
+
+  test("DELETE menghentikan pengiriman lalu GET kembali null (I-04-03)", async () => {
+    await minta(app, ctx.D1, {
+      method: "PUT",
+      path: "/api/affirmation/time",
+      token: mhs,
+      body: { waktu: "07:30" },
+    });
+
+    const res = await minta(app, ctx.D1, { method: "DELETE", path: "/api/affirmation", token: mhs });
+    expect(res.status).toBe(200);
+    expect(await json(res)).toEqual({ ok: true });
+
+    const jumlah = ctx.raw.prepare("SELECT COUNT(*) AS n FROM daily_affirmation").get() as {
+      n: number;
+    };
+    expect(jumlah.n).toBe(0);
+
+    const body = await json(await minta(app, ctx.D1, { path: "/api/affirmation", token: mhs }));
+    expect(body.affirmation).toBeNull();
+  });
+
+  test("DELETE tanpa afirmasi tetap 200 (idempoten)", async () => {
+    const res = await minta(app, ctx.D1, { method: "DELETE", path: "/api/affirmation", token: mhs });
+    expect(res.status).toBe(200);
+  });
+
+  test("DELETE oleh administrator ditolak (403)", async () => {
+    const admin = buatSesiUji(ctx.raw, { idPengguna: "adm", peran: "administrator", token: "ta" });
+    const res = await minta(app, ctx.D1, {
+      method: "DELETE",
+      path: "/api/affirmation",
+      token: admin,
+    });
+    expect(res.status).toBe(403);
+  });
 });
 
 describe("ReminderController (C-27) / Algo-028", () => {

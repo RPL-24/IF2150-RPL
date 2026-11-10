@@ -7,6 +7,7 @@ import {
   cariAfirmasiId,
   cariReminder,
   daftarReminder,
+  hapusAfirmasi,
   ubahWaktuAfirmasi,
   ubahWaktuReminder,
 } from "../db/queries";
@@ -57,6 +58,15 @@ affirmationRoutes.put("/time", async (c) => {
   }
 
   return c.json({ ok: true, waktuKirim: waktu });
+});
+
+/**
+ * I-04-03 "Kirim afirmasi harian" toggle off: deletes the row so the daily
+ * send stops. Idempotent — deleting when none exists still succeeds.
+ */
+affirmationRoutes.delete("/", async (c) => {
+  await hapusAfirmasi(c.get("db"), c.get("idPengguna"));
+  return c.json({ ok: true });
 });
 
 /** C-27 `tampilkanOpsiReminder()` — the student's reminders per `jenis`. */

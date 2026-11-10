@@ -230,6 +230,13 @@ export function ambilAfirmasi(db: Db, idMahasiswa: string) {
     .limit(1);
 }
 
+/** Deletes the student's affirmation (I-04-03 toggle off). Not in the DPPL. */
+export function hapusAfirmasi(db: Db, idMahasiswa: string) {
+  return db
+    .delete(schema.dailyAffirmation)
+    .where(eq(schema.dailyAffirmation.idMahasiswa, idMahasiswa));
+}
+
 /** Q-024 — find the student's reminder of one `jenis`. */
 export function cariReminder(db: Db, idMahasiswa: string, jenis: string) {
   return db
