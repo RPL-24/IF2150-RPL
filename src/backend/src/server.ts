@@ -7,18 +7,14 @@ import { Server as SocketIOServer } from 'socket.io';
 import authRouter from './routes/auth.routes';
 import usersRouter from './routes/user.routes';
 import servicesRoutes from './routes/services.routes';
-<<<<<<< HEAD
 import { createChatsRouter } from './routes/chats.routes';
 import { createNotificationsRouter } from './routes/notifications.routes';
 
 import { KategoriJasaController } from './controllers/KategoriJasaController';
 import { KomunikasiController } from './controllers/KomunikasiController';
 import { NotifikasiController, RealtimeEmitter } from './controllers/NotifikasiController';
-=======
 import kontrakRoutes from './routes/kontrakRoutes';
-import { KategoriJasaController } from './controllers/KategoriJasaController';
 import { startAutoCancelWorker } from './workers/autoCancelKontrakWorker';
->>>>>>> origin/develop
 
 dotenv.config();
 
@@ -123,15 +119,9 @@ app.use('/api/kontrak', kontrakRoutes);
 app.use('/kontrak', kontrakRoutes);
 
 if (process.env.NODE_ENV !== 'test') {
-<<<<<<< HEAD
   // Wajib pakai httpServer.listen (bukan app.listen) supaya Socket.IO ikut jalan
   httpServer.listen(port, '0.0.0.0', () => {
     console.log(`[server]: Backend + Socket.IO running at http://localhost:${port}`);
-=======
-  startAutoCancelWorker();
-  app.listen(port, () => {
-    console.log(`[server]: Backend running at http://localhost:${port}`);
->>>>>>> origin/develop
   });
 }
 
