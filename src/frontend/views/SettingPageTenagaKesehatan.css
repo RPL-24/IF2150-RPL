@@ -8,13 +8,7 @@
    Viewport Utama & Formulir Setelan
    (Gaya Sidebar Dikelola Terpusat di SidebarTenagaKesehatan.css)
    ========================================================================== */
-/* ========================================================================== Viewport Utama & Formulir Setelan (Gaya Sidebar Dikelola Terpusat di SidebarTenagaKesehatan.css) ========================================================================== */ .main-viewport{
-    flex: 1;
-    min-width: 0;
-    padding: 24px 32px 32px 8px;
-    display: flex;
-    flex-direction: column;
-}/* Toast Notifikasi Feedback */
+/* ========================================================================== Viewport Utama & Formulir Setelan (Gaya Sidebar Dikelola Terpusat di SidebarTenagaKesehatan.css) ========================================================================== */ /* Toast Notifikasi Feedback */
 .feedback-toast{
     padding: 14px 20px;
     background-color: var(--color-success-tint);
@@ -26,6 +20,10 @@
     margin-bottom: 20px;
     box-shadow: 0 4px 12px rgba(3, 84, 63, 0.08);
 }/* Grid Dua Kolom Setelan Nakes */
+.settings-grid-top > *{
+    min-width: 0;
+}
+
 .settings-grid-top{
     display: grid;
     grid-template-columns: 1fr 1fr;

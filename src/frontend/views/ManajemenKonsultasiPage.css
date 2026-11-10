@@ -10,12 +10,8 @@
    (Gaya Sidebar Dikelola Terpusat di SidebarTenagaKesehatan.css)
    ========================================================================== */
 
-.main-viewport {
-    flex: 1;
+.split-view-container > * {
     min-width: 0;
-    padding: 24px 32px 32px 8px;
-    display: flex;
-    flex-direction: column;
 }
 
 .split-view-container {
@@ -337,6 +333,14 @@
     grid-template-columns: 1fr 1fr;
     gap: 16px;
     margin-top: 6px;
+    min-width: 0;
+}
+
+/* Dua grafik berdampingan hanya bila kolom detail cukup lebar */
+@media (max-width: 1400px) {
+    .charts-comparison-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .chart-box-mini {
@@ -503,9 +507,11 @@
 /* Toast Feedback */
 
 .toast-notification {
+    /* Sejajar dengan tepi kanan kartu konten (padding kanvas), bukan pojok viewport */
     position: fixed;
     bottom: 24px;
-    right: 24px;
+    right: clamp(16px, 4vw, 32px);
+    max-width: min(420px, calc(100vw - 96px));
     background-color: var(--color-ink);
     color: var(--color-cream);
     padding: 14px 22px;
@@ -516,6 +522,15 @@
     display: none;
     z-index: 1000;
     animation: slideUp 0.3s ease;
+}
+
+@media (max-width: 1023px) {
+    .toast-notification {
+        left: clamp(16px, 4vw, 32px);
+        right: clamp(16px, 4vw, 32px);
+        bottom: 16px;
+        max-width: none;
+    }
 }
 
 @keyframes slideUp {
@@ -586,5 +601,95 @@
 
     .action-buttons-row {
         flex-direction: column;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Drawer detail konsultasi (<=1200px)
+   Kolom detail yang sama dipindahkan ke <dialog> oleh JS, jadi tidak ada
+   markup atau data yang diduplikasi.
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+    .split-view-container .consultation-detail-column {
+        display: none;
+    }
+}
+
+.consult-detail-dialog {
+    position: fixed;
+    top: 16px;
+    right: 12px;
+    bottom: 16px;
+    left: auto;
+    width: min(460px, calc(100vw - 24px));
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    overflow: visible;
+    color: var(--color-ink);
+}
+
+.consult-detail-dialog::backdrop {
+    background-color: rgba(42, 58, 63, 0.45);
+    backdrop-filter: blur(4px);
+}
+
+.consult-detail-dialog .detail-card-panel {
+    height: calc(100dvh - 32px);
+    max-height: none;
+    overflow-y: auto;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-modal);
+}
+
+.consult-detail-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    background-color: var(--color-white);
+}
+
+.consult-detail-dialog .patient-header-section {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px;
+    padding-right: 44px;
+}
+
+.consult-detail-dialog .patient-meta-info {
+    flex: 1 1 140px;
+    min-width: 0;
+}
+
+.consult-detail-dialog .btn-hubungi {
+    margin-left: 0;
+    width: 100%;
+}
+
+.queue-card-chevron {
+    display: none;
+    margin-left: 4px;
+    color: var(--color-ink-muted);
+}
+
+.queue-card-item[aria-haspopup="dialog"] .queue-card-chevron {
+    display: inline-flex;
+}
+
+@media (max-width: 600px) {
+    .consult-detail-dialog {
+        top: 8px;
+        right: 8px;
+        bottom: 8px;
+        left: 8px;
+        width: auto;
+    }
+
+    .consult-detail-dialog .detail-card-panel {
+        height: calc(100dvh - 16px);
     }
 }
