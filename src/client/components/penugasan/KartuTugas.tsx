@@ -20,7 +20,7 @@ export function KartuTugas({ tugas, aktif, onSelect}: Props) {
       type="button"
       onClick={() => onSelect(tugas)}
       aria-pressed={aktif}
-      className={`block w-full rounded-lg border p-3 text-left ${
+      className={`block w-full cursor-pointer rounded-lg border p-3 text-left ${
         aktif ? "border-blue-600 ring-1 ring-blue-600" : "border-gray-200"
       }`}
     >
