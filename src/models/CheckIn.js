@@ -36,6 +36,7 @@ class CheckIn {
   getCheckInData() {
     return {
       idCheckIn: this.idCheckIn,
+      idPelajar: this.idPelajar,
       tanggalCheckIn: this.tanggalCheckIn,
       skalaMood: this.skalaMood,
       jamTidur: this.jamTidur,
