@@ -10,6 +10,8 @@ const { encryptAES256 } = require('../utils/encryption');
 const { hariIni, hitungUsia, tanggalValid } = require('../utils/waktu');
 const { kirim } = require('../utils/respon');
 const { kirimEmailKonfirmasiWali } = require('../utils/mailer');
+const bcrypt = require('bcryptjs');
+const { generateToken } = require('../middleware/authMiddleware');
 
 const PERAN = {
   pelajar: 'Pelajar',
@@ -247,9 +249,77 @@ async function tolakRegistrasi(req, res) {
   return kirim(res, 200, 'Pendaftaran akun pelajar ditolak.', hasil);
 }
 
+// ---------------------------------------------------------------------------
+// UC09 Masuk Akun (Algo-C11-03, Algo-C11-04, Algo-C11-07 s.d. 10)
+// ---------------------------------------------------------------------------
+
+const PESAN_KREDENSIAL_SALAH = 'Email atau kata sandi salah.';
+// Hash pembanding agar waktu respons sama, baik akunnya ada maupun tidak
+const HASH_PEMBANDING = '$2a$12$SJMi98wlP2BUO482RrBCGOoUmiMNiz9mWToEMOEUYSLJKIWwxDGNG';
+const MODEL_PROFIL = { Pelajar, OrangTuaWali, TenagaKesehatan };
+
+async function cariProfil(pengguna) {
+  return MODEL_PROFIL[pengguna.getRole()].findByIdPengguna(pengguna.idPengguna);
+}
+
+function idProfil(profil) {
+  return profil.idPelajar || profil.idWali || profil.idTenagaKesehatan;
+}
+
+async function masuk(req, res) {
+  const body = req.body || {};
+  const kunci = teks(body.email ?? body.identifier ?? body.username_or_email);
+  const password = typeof body.password === 'string' ? body.password : '';
+  if (kunci === '' || password === '') {
+    throw new AppError(400, 'Email dan kata sandi wajib diisi.');
+  }
+
+  const pengguna = await Pengguna.findByUsernameOrEmail(kunci);
+  const cocok = pengguna
+    ? await pengguna.verifyPassword(password)
+    : await bcrypt.compare(password, HASH_PEMBANDING).then(() => false);
+  if (!cocok) {
+    throw new AppError(401, PESAN_KREDENSIAL_SALAH);
+  }
+  if (pengguna.getStatusAkun() === 'Belum Terverifikasi') {
+    throw new AppError(403, 'Akun belum dikonfirmasi oleh orang tua/wali.');
+  }
+  if (pengguna.getStatusAkun() !== 'Aktif') {
+    throw new AppError(403, 'Pendaftaran akun ini ditolak oleh orang tua/wali.');
+  }
+
+  const profil = await cariProfil(pengguna);
+  const data = {
+    idPengguna: pengguna.idPengguna,
+    email: pengguna.email,
+    role: pengguna.getRole(),
+    idProfil: idProfil(profil),
+  };
+  const token = generateToken({ ...data, versiToken: pengguna.versiToken });
+  return kirim(res, 200, 'Login berhasil.', { token, pengguna: { ...data, nama: profil.nama } });
+}
+
+/** Data ringkas pengguna yang sedang login untuk DashboardPage (C28). */
+async function profilSaya(req, res) {
+  const profil = await MODEL_PROFIL[req.user.role].findByIdPengguna(req.user.idPengguna);
+  if (!profil) {
+    throw new AppError(404, 'Profil pengguna tidak ditemukan.');
+  }
+  return kirim(res, 200, 'Profil pengguna.', {
+    idPengguna: req.user.idPengguna,
+    idProfil: idProfil(profil),
+    role: req.user.role,
+    nama: profil.nama,
+    email: profil.email,
+    nomorTelepon: profil.nomorTelepon,
+  });
+}
+
 module.exports = {
   daftar,
   dataKonfirmasi,
   setujuiRegistrasi,
   tolakRegistrasi,
+  masuk,
+  profilSaya,
 };
