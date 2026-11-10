@@ -30,7 +30,9 @@
           "imageWidth": 160,
           "backgroundColor": "#FFFFFF"
         }
-      ]
+      ],
+      "expo-web-browser",
+      "expo-secure-store"
     ],
     "scheme": "sehati",
     "extra": {

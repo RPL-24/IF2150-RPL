@@ -18,6 +18,20 @@ export type JenisReminder = "makan" | "tidur" | "olahraga";
 export type JenisStatus = "website" | "server";
 export type Peran = "mahasiswa" | "administrator";
 
+/**
+ * Seeded accounts (`seed/seed.sql`) that demo login signs in as, so assistants can
+ * try both roles without a campus Google account. Only active when `MODE_DEMO=1`.
+ */
+export const AKUN_DEMO: Record<Peran, string> = {
+  mahasiswa: "seed-usr-mhs",
+  administrator: "seed-usr-adm",
+};
+
+/** True when the Worker var `MODE_DEMO` is `"1"`. Off by default. */
+export function modeDemoAktif(env: Env): boolean {
+  return read(env, "MODE_DEMO") === "1";
+}
+
 export const JENIS_REMINDER: readonly JenisReminder[] = ["makan", "tidur", "olahraga"];
 export const JENIS_STATUS: readonly JenisStatus[] = ["website", "server"];
 

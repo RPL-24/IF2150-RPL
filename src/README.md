@@ -64,13 +64,14 @@ src/
     src/
       app/                # rute Expo Router (satu file = satu layar)
         _layout.tsx       # root: font, splash, Stack
-        index.tsx         # layar masuk (sementara, diganti di #3)
+        index.tsx         # I-01 Masuk (login Google dan mode demo)
         komponen.tsx      # galeri komponen untuk pengembangan
         (mahasiswa)/      # tab bar Mahasiswa: beranda, kalender, konsultasi, pengingat, faq (+ layar tersembunyi)
         admin/            # stack Administrator: index, jadwal, faq, umpan-balik, status
       components/         # komponen bersama dari Figma (Tombol, IsianTeks, Banner, ...)
       theme/              # token desain: warna, font, gaya teks, jarak, sudut
-      api/                # klien HTTP ke backend
+      api/                # klien HTTP ke backend, login, dan sesi (SecureStore)
+      lib/                # sesi pengguna bersama (useSesi)
     bun.lock              # lockfile Bun
     test/                 # unit test Vitest (vitest.config.mts)
   backend/                # Cloudflare Worker (Hono + D1): REST API dan cron
@@ -135,6 +136,7 @@ cp .env.example .env
 | Variabel | Keterangan |
 |---|---|
 | `EXPO_PUBLIC_API_URL` | Alamat dasar backend tanpa `/` di akhir. |
+| `EXPO_PUBLIC_MODE_DEMO` | Isi `1` untuk menampilkan tombol "Mode demo" di layar Masuk (lihat bagian 6). Backend juga harus berjalan dengan `MODE_DEMO=1`. |
 
 Nilai `EXPO_PUBLIC_API_URL` bergantung pada tempat aplikasi berjalan, karena `localhost` di ponsel berarti ponsel itu sendiri:
 
@@ -155,8 +157,9 @@ Rahasia lokal dibaca `wrangler dev` dari `src/backend/.dev.vars` (tidak di-*comm
 KUNCI_TOKEN=<hasil openssl rand -base64 32>
 GOOGLE_CLIENT_ID=<oauth client id>
 GOOGLE_CLIENT_SECRET=<oauth client secret>
-GOOGLE_REDIRECT_URI=http://localhost:8787/api/auth/google
+GOOGLE_REDIRECT_URI=http://localhost:8787/api/auth/google/callback
 API_BASE_URL=http://localhost:8787
+MODE_DEMO=1
 ```
 
 | Variabel | Keterangan |
@@ -164,8 +167,9 @@ API_BASE_URL=http://localhost:8787
 | `KUNCI_TOKEN` | Kunci AES-256-GCM untuk mengenkripsi *access/refresh token* Google di basis data (Algo-001, Algo-009). Wajib berukuran **tepat 32 byte** setelah di-*decode*. Bila hilang, token Google tersimpan tidak dapat dibaca sehingga pengguna harus login ulang. |
 | `GOOGLE_CLIENT_ID` | Client id OAuth, dikirim saat penukaran kode dan penyegaran token (Algo-027). Bukan rahasia. |
 | `GOOGLE_CLIENT_SECRET` | Client secret OAuth, diminta Google pada kedua alur tersebut. Karena itu penukaran kode dilakukan di server — nilai ini tidak boleh sampai ke aplikasi *mobile*. |
-| `GOOGLE_REDIRECT_URI` | Harus **sama persis** dengan yang didaftarkan di Google Cloud Console dan yang dikirim aplikasi. Bila berbeda, Google membalas `redirect_uri_mismatch`. |
+| `GOOGLE_REDIRECT_URI` | URL rute `/api/auth/google/callback` milik backend ini. Harus **sama persis** dengan yang didaftarkan di Google Cloud Console. Bila berbeda, Google membalas `redirect_uri_mismatch`. |
 | `API_BASE_URL` | Alamat dasar yang diperiksa tugas *cron uptime* (Algo-021). Opsional; tanpa nilai ini pemeriksaan tercatat `down`. |
+| `MODE_DEMO` | Isi `1` untuk mengaktifkan `POST /api/auth/demo`, yaitu login sebagai akun Mahasiswa atau Administrator hasil *seed* tanpa Google (untuk asisten yang menguji APK). Opsional; nilai lain atau kosong menonaktifkan rute (404). Basis data harus sudah di-*seed*. |
 
 Untuk `.env` (dipakai `drizzle.config.ts`, bukan Worker) isi `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_DATABASE_ID`, dan `CLOUDFLARE_D1_TOKEN` — lihat `.env.example`. Variabel ini diperlukan untuk perintah yang lewat HTTP (Drizzle Studio *remote*, `db:migrate:remote`), terpisah dari sesi `wrangler login`.
 
@@ -176,6 +180,7 @@ bunx wrangler secret put KUNCI_TOKEN
 bunx wrangler secret put GOOGLE_CLIENT_ID
 bunx wrangler secret put GOOGLE_CLIENT_SECRET
 bunx wrangler secret put GOOGLE_REDIRECT_URI
+bunx wrangler secret put MODE_DEMO   # opsional, isi 1 untuk login demo
 ```
 
 ## 5. Menjalankan Aplikasi
@@ -212,7 +217,7 @@ bun run test       # unit test Vitest (test/)
 
 Unit test di `src/mobile/test/` menguji logika TypeScript murni, seperti klien API (`client.test.ts`): URL dan header `Authorization`, amplop galat menjadi `ApiError`, *callback* 401, serta kode `JARINGAN_GAGAL`, `BATAS_WAKTU`, dan `KONFIGURASI_TIDAK_VALID`. `fetch` diganti tiruan, sehingga tidak perlu backend yang berjalan. Layar dan komponen tidak dirender di test; keduanya diperiksa langsung di Expo Go.
 
-Selama pengembangan, layar masuk sementara berisi tombol untuk membuka navigasi Mahasiswa, navigasi Administrator, dan galeri komponen (`/komponen`).
+Layar pertama adalah I-01 Masuk. Untuk mencoba aplikasi tanpa akun Google, gunakan tombol "Mode demo" (bagian 6).
 
 ### Backend
 
@@ -274,9 +279,26 @@ Catatan:
 
 Data lain yang ikut dibuat: 3 konsultan, deretan slot mendatang (`seed-jdw-*`, sebagian sudah terpesan), dan 3 entri FAQ.
 
-### Mobile
+### Mobile (login demo)
 
-**TODO (#3, Iqi):** akun uji Mahasiswa dan Administrator (login demo tanpa akun Google pribadi).
+Login Google memerlukan OAuth client milik kelompok, sehingga untuk menguji aplikasi disediakan **login demo** yang masuk sebagai kedua akun *seed* di atas tanpa Google:
+
+| Tombol di layar Masuk | Masuk sebagai | Diarahkan ke |
+|---|---|---|
+| **Mahasiswa** | `seed-usr-mhs` — Mahasiswa Uji (NIM 13599001) | I-02 Beranda Mahasiswa |
+| **Administrator** | `seed-usr-adm` — Administrator Uji | I-03 Beranda Administrator |
+
+Langkah:
+
+1. Backend: isi `MODE_DEMO=1` di `src/backend/.dev.vars`, jalankan migrasi dan *seed* (`bun run db:migrate:local`, `bun run db:seed:local`), lalu jalankan `bun run dev -- --ip 0.0.0.0` agar dapat diakses dari ponsel.
+2. Mobile: isi `EXPO_PUBLIC_MODE_DEMO=1` dan `EXPO_PUBLIC_API_URL=http://<IP-LAN-komputer>:8787` di `src/mobile/.env`, lalu jalankan ulang `bunx expo start`.
+3. Di layar Masuk, tekan **Mahasiswa** atau **Administrator** di bawah tulisan "Mode demo".
+
+Catatan:
+
+- Setiap login demo membuat sesi baru melalui `POST /api/auth/demo`, bukan memakai token `dev-token-*`. Sesi tersimpan di perangkat (`expo-secure-store`), sehingga aplikasi langsung membuka Beranda saat dibuka kembali sampai pengguna keluar atau sesi melewati 30 hari.
+- Bila backend berjalan tanpa `MODE_DEMO=1`, rute login demo membalas 404 dan layar Masuk menampilkan pesan galat.
+- Login Google sungguhan memerlukan `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, dan `GOOGLE_REDIRECT_URI` (bagian 4). Google tidak menerima alamat IP LAN sebagai *redirect URI*, sehingga login Google dari ponsel memerlukan backend yang sudah di-*deploy* atau *tunnel* ber-HTTPS.
 
 ## 7. Modul dan Pembagian Tugas
 
@@ -366,7 +388,10 @@ Rujukan lengkap: [`backend/README.md`](./backend/README.md).
 
 | Method | Path | Peran |
 |---|---|---|
+| `GET` | `/api/auth/google/mulai?kembali=<deep link>` | publik |
+| `GET` | `/api/auth/google/callback` | publik (dipanggil Google) |
 | `POST` | `/api/auth/google` | publik |
+| `POST` | `/api/auth/demo` | publik (hanya bila `MODE_DEMO=1`) |
 | `POST` | `/api/auth/logout` | semua |
 | `POST` | `/api/auth/device` | semua |
 | `GET` | `/api/me` | semua |
@@ -392,13 +417,15 @@ Rujukan lengkap: [`backend/README.md`](./backend/README.md).
 | `GET` | `/api/status/:jenis` | semua |
 | `GET` | `/health` | publik |
 
-Selain `/api/auth/google` dan `/health`, semua rute memerlukan `Authorization: Bearer <token>`. Galat memakai satu amplop:
+Selain `/api/auth/google*` dan `/health`, semua rute memerlukan `Authorization: Bearer <token>`. Galat memakai satu amplop:
 
 ```json
 { "error": { "kode": "VALIDASI_GAGAL", "pesan": "...", "detail": null } }
 ```
 
 Status: `400` body tidak valid · `401` belum terautentikasi · `403` peran salah · `404` tidak ditemukan · `409` konflik (slot terambil / jadwal bentrok) · `422` validasi gagal · `502` kegagalan layanan eksternal.
+
+**Deep link login wajib berhost.** `kembali` pada `/api/auth/google/mulai` dan `state` pada `/api/auth/google/callback` harus berupa deep link aplikasi yang memiliki host — `sehati://masuk` untuk biner produksi, `exp://<host>:8081/--/` untuk Expo Go. Tanpa host (`sehati://`, `sehati:///`) rute membalas **400**, karena Android merutekan intent berdasarkan `scheme://host` sehingga tautan tanpa host tidak membuka aplikasi apa pun dan login tampak menggantung tanpa pesan galat. Alur lengkapnya ada di [`backend/README.md`](./backend/README.md#google-login-flow).
 
 ### Tugas terjadwal
 

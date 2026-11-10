@@ -7,8 +7,36 @@ import {
   type Db,
 } from "../db/queries";
 
+const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const CALENDAR_BASE = "https://www.googleapis.com/calendar/v3";
+
+/** Identity for login plus read access for the integrated calendar (UC-03, Algo-009/010). */
+const SCOPE_GOOGLE = [
+  "openid",
+  "email",
+  "profile",
+  "https://www.googleapis.com/auth/calendar.readonly",
+].join(" ");
+
+/**
+ * Google's consent-screen URL. `state` is echoed back to the redirect URI.
+ * `access_type=offline` + `prompt=consent` make Google return a refresh token,
+ * which `ambilTokenValid` needs once the access token expires.
+ */
+export function buatUrlOtorisasi(cfg: AppConfig, state: string): string {
+  const url = new URL(GOOGLE_AUTH_URL);
+  url.search = new URLSearchParams({
+    client_id: cfg.googleClientId,
+    redirect_uri: cfg.googleRedirectUri,
+    response_type: "code",
+    scope: SCOPE_GOOGLE,
+    access_type: "offline",
+    prompt: "select_account consent",
+    state,
+  }).toString();
+  return url.toString();
+}
 
 /* -------------------------------------------------------------------------- */
 /* GoogleAuthService (C-34) — Algo-027                                        */
