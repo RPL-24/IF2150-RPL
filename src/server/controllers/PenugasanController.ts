@@ -68,6 +68,7 @@ export async function bukaLaporan(idTiket: string): Promise<ActionResult<Rincian
         if (error) return gagal(PESAN_GAGAL_RINCIAN);
         if (!data || !isTugasAktif(data)) return gagal(PESAN_TUGAS_TAK_ADA);
 
+        // DITAHAN: evaluasi menunggu ... Peran B
         const evaluasiTerakhir: EvaluasiTerakhir | null = null;
 
         return ok({
