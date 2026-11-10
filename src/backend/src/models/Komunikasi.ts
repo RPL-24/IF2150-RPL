@@ -211,8 +211,8 @@ export class Komunikasi {
       const isOutgoing = msg.idPengguna === idPengguna;
       const idLawanBicara = isOutgoing ? msg.idPenerima : msg.idPengguna;
       const namaLawanBicara = isOutgoing
-        ? (msg.penerima?.nama ?? msg.idPenerima)
-        : (msg.pengirim?.nama ?? msg.idPengguna);
+        ? (msg.penerima?.namaPengguna ?? msg.idPenerima)
+        : (msg.pengirim?.namaPengguna ?? msg.idPengguna);
 
       const existing = latestPerPartnerMap.get(idLawanBicara);
       if (!existing || msg.waktuTerkirim > existing.waktuTerkirim) {
