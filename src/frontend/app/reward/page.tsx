@@ -120,7 +120,7 @@ export default function RewardPage() {
 
               <button
                 onClick={onKlaim}
-                disabled={!data.bisa_klaim || mengklaim}
+                disabled={mengklaim}
                 className="w-full rounded-full bg-[#f56369] py-3 text-lg font-bold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {mengklaim
