@@ -331,3 +331,31 @@ export async function tandaiPesananDiambil(idTransaksi: number | string): Promis
 export async function logoutSesi(): Promise<void> {
   await postJson<{ message: string }>("/api/auth/logout");
 }
+
+// ---------- Reward (P5: UC08) ----------
+
+export type KuponReward = {
+  kode_kupon: string;
+  nilai_potongan: number;   // rupiah
+  berlaku_sampai: string;   // YYYY-MM-DD
+  terpakai: boolean;
+  berlaku: boolean;
+};
+
+export type ProgresReward = {
+  poin_terkumpul: number;
+  poin_per_klaim: number;
+  poin_per_login: number;
+  bisa_klaim: boolean;
+  tanggal_login_terakhir: string | null;
+  nilai_potongan: number;
+  kupon: KuponReward[];
+};
+
+export function ambilProgresReward(): Promise<ProgresReward> {
+  return getJson<ProgresReward>("/api/reward");
+}
+
+export function klaimReward(): Promise<KuponReward> {
+  return postJson<KuponReward>("/api/reward/klaim");
+}

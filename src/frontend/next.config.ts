@@ -4,13 +4,13 @@ const nextConfig: NextConfig = {
   experimental: {
     agentFeedback: true,
   },
-  async rewrites() {
+    async rewrites() {
     return [
       {
-        // Only the QR demo confirmation is proxied from LAN/tunnel visitors.
-        // Do not expose the entire FastAPI surface through the Next dev server.
-        source: '/api/pembayaran/scan/:token',
-        destination: 'http://localhost:8000/api/pembayaran/scan/:token',
+        // Semua request /api/* diteruskan ke FastAPI (same-origin, agar cookie sesi ikut terkirim).
+        // Sudah mencakup /api/pembayaran/scan/:token untuk demo QR.
+        source: '/api/:path*',
+        destination: 'http://localhost:8000/api/:path*',
       },
     ];
   },
