@@ -7,6 +7,8 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 
 import { aturSaatTidakTerautentikasi, hapusSesi, keluar as keluarApi, type Pengguna } from '@/api';
 
+import { daftarkanPerangkatIni } from './notifikasi';
+
 type NilaiSesi = {
   /** `null` when nobody is signed in. */
   pengguna: Pengguna | null;
@@ -31,13 +33,19 @@ export function PenyediaSesi({ awal, children }: { awal: Pengguna | null; childr
     return () => aturSaatTidakTerautentikasi(null);
   }, []);
 
+  const masuk = (baru: Pengguna) => {
+    setPengguna(baru);
+    // Algo-003 after a successful login; runs in the background and never fails the login.
+    void daftarkanPerangkatIni();
+  };
+
   const keluar = async () => {
     await keluarApi();
     setPengguna(null);
     router.replace('/');
   };
 
-  return <KonteksSesi.Provider value={{ pengguna, masuk: setPengguna, keluar }}>{children}</KonteksSesi.Provider>;
+  return <KonteksSesi.Provider value={{ pengguna, masuk, keluar }}>{children}</KonteksSesi.Provider>;
 }
 
 export function useSesi(): NilaiSesi {
