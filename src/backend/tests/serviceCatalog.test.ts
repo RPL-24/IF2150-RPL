@@ -187,14 +187,15 @@ class MockPemberiJasa extends PemberiJasa {
     const targetId = idPemberiJasa || this.getIDPemberiJasa();
     const targetKatId = idKategoriJasa || this.getIDKategoriJasa();
     const existing = this.providers.find((p) => p.idPemberiJasa === targetId);
-    if (existing) {
-      existing.idKategoriJasa = targetKatId;
-      if (extraData?.namaToko !== undefined) existing.namaToko = extraData.namaToko;
-      if (extraData?.latitude !== undefined) existing.latitude = extraData.latitude;
-      if (extraData?.longitude !== undefined) existing.longitude = extraData.longitude;
-      return existing;
+    if (!existing) {
+      throw new Error('Pengguna tidak ditemukan');
     }
-    return null;
+    existing.idKategoriJasa = targetKatId;
+    existing.role = 'PEMBERI_JASA';
+    if (extraData?.namaToko !== undefined) existing.namaToko = extraData.namaToko;
+    if (extraData?.latitude !== undefined) existing.latitude = extraData.latitude;
+    if (extraData?.longitude !== undefined) existing.longitude = extraData.longitude;
+    return existing;
   }
 
   public override async searchPemberiJasa(filter: SearchServiceFilter): Promise<PemberiJasaDetail[]> {
@@ -514,6 +515,108 @@ describe('Issue #5: Backend Pendaftaran Jasa, Katalog Kategori, dan Pencarian Te
       expect(resObj.body.data[0].idPemberiJasa).toBe(PJ_AHMAD_ID);
       expect(resObj.body.data[1].idPemberiJasa).toBe(PJ_DEDI_ID);
       expect(resObj.body.data[0].jarakKm).toBeLessThan(resObj.body.data[1].jarakKm);
+    });
+  });
+
+  describe('5. Issue #6: Pendaftaran Penyedia Jasa (UC01)', () => {
+    it('POST /api/services/register mengembalikan 201, mengubah role menjadi PEMBERI_JASA, dan menyimpan namaToko', async () => {
+      const mockKategori = new MockKategoriJasa();
+      const mockPemberi = new MockPemberiJasa();
+      const kCtrl = new KategoriJasaController(
+        mockKategori,
+        new PemberiJasaController(mockPemberi)
+      );
+
+      const { req, res, resObj } = createMockReqRes({
+        body: {
+          idPemberiJasa: PJ_AHMAD_ID,
+          namaToko: 'Ahmad Servis Terpadu',
+          jenisJasa: 'Servis',
+          deskripsiJasa: 'Servis berbagai peralatan elektronik rumah tangga bergaransi.',
+          tarif: 85000,
+          jamKerja: '08:00 - 17:00',
+          daerahKerja: 'Coblong, Dago, Bandung Utara',
+        },
+      });
+
+      await kCtrl.registerServiceProviderHandler(req, res);
+
+      expect(resObj.statusCode).toBe(201);
+      expect(resObj.body.success).toBe(true);
+      expect(resObj.body.data.role).toBe('PEMBERI_JASA');
+      expect(resObj.body.data.pemberiJasa.namaToko).toBe('Ahmad Servis Terpadu');
+      expect(resObj.body.data.pemberiJasa.role).toBe('PEMBERI_JASA');
+    });
+
+    it('POST /api/services/register mengembalikan 400 jika namaToko kosong', async () => {
+      const kCtrl = new KategoriJasaController(
+        new MockKategoriJasa(),
+        new PemberiJasaController(new MockPemberiJasa())
+      );
+
+      const { req, res, resObj } = createMockReqRes({
+        body: {
+          idPemberiJasa: PJ_AHMAD_ID,
+          namaToko: '   ',
+          jenisJasa: 'Servis',
+          deskripsiJasa: 'Servis peralatan elektronik rumah tangga.',
+          tarif: 85000,
+          jamKerja: '08:00 - 17:00',
+          daerahKerja: 'Bandung',
+        },
+      });
+
+      await kCtrl.registerServiceProviderHandler(req, res);
+
+      expect(resObj.statusCode).toBe(400);
+      expect(resObj.body.success).toBe(false);
+    });
+
+    it('POST /api/services/register mengembalikan 400 jika idPemberiJasa tidak dikirim', async () => {
+      const kCtrl = new KategoriJasaController(
+        new MockKategoriJasa(),
+        new PemberiJasaController(new MockPemberiJasa())
+      );
+
+      const { req, res, resObj } = createMockReqRes({
+        body: {
+          namaToko: 'Toko Servis Baru',
+          jenisJasa: 'Servis',
+          deskripsiJasa: 'Servis peralatan elektronik rumah tangga.',
+          tarif: 85000,
+          jamKerja: '08:00 - 17:00',
+          daerahKerja: 'Bandung',
+        },
+      });
+
+      await kCtrl.registerServiceProviderHandler(req, res);
+
+      expect(resObj.statusCode).toBe(400);
+      expect(resObj.body.success).toBe(false);
+    });
+
+    it('POST /api/services/register mengembalikan 404 jika idPemberiJasa tidak dikenal', async () => {
+      const kCtrl = new KategoriJasaController(
+        new MockKategoriJasa(),
+        new PemberiJasaController(new MockPemberiJasa())
+      );
+
+      const { req, res, resObj } = createMockReqRes({
+        body: {
+          idPemberiJasa: '999e8400-e29b-41d4-a716-446655449999',
+          namaToko: 'Toko Tidak Dikenal',
+          jenisJasa: 'Servis',
+          deskripsiJasa: 'Servis peralatan elektronik rumah tangga.',
+          tarif: 85000,
+          jamKerja: '08:00 - 17:00',
+          daerahKerja: 'Bandung',
+        },
+      });
+
+      await kCtrl.registerServiceProviderHandler(req, res);
+
+      expect(resObj.statusCode).toBe(404);
+      expect(resObj.body.success).toBe(false);
     });
   });
 });

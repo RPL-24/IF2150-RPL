@@ -31,7 +31,14 @@ export const BottomTabNavigator: React.FC = () => {
       })}
     >
       <Tab.Screen name="Beranda" component={BerandaScreen} />
-      <Tab.Screen name="Riwayat" component={RiwayatScreen} />
+      <Tab.Screen
+        name="Riwayat"
+        component={RiwayatScreen}
+        options={{
+          title: 'Riwayat Pekerjaan',
+          tabBarLabel: 'Riwayat',
+        }}
+      />
       <Tab.Screen name="Chat" component={ChatScreen} />
     </Tab.Navigator>
   );
