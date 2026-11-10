@@ -68,8 +68,12 @@ export default function LayarI13() {
       </div>
 
       {memuat && <p className="text-sm text-gray-500">Memuat analitik...</p>}
+
       {pesanGalat && (
-        <div role="alert" className="rounded border border-red-300 bg-red-50 p-4 text-sm text-red-800">
+        <div
+          role="alert"
+          className="rounded border border-red-300 bg-red-50 p-4 text-sm text-red-800"
+        >
           {pesanGalat}
         </div>
       )}
