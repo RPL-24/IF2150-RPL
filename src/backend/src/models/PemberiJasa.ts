@@ -1,5 +1,7 @@
+import { randomUUID } from 'crypto';
 import { Role } from '@prisma/client';
-import prisma from '../database/prisma';
+import { prisma } from '../database/prisma';
+import { Pengguna, PenggunaProps } from './Pengguna';
 
 export interface PemberiJasaDetail {
   idPemberiJasa: string;
@@ -28,24 +30,97 @@ export interface SearchServiceFilter {
   idKategoriJasa?: string;
 }
 
-export class PemberiJasa {
+export interface PemberiJasaProps extends PenggunaProps {
+  namaToko?: string;
+  idKategoriJasa?: string | null;
+  jenisJasa?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  statusKetersediaan?: string;
+  isOnline?: boolean;
+}
+
+export interface CreatePemberiJasaInput {
+  namaPengguna: string;
+  username: string;
+  email: string;
+  nomorTelepon: string;
+  passwordHash: string;
+  idKategoriJasa?: string | null;
+  jenisJasa: string;
+  namaToko?: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  avatarUrl?: string | null;
+}
+
+export class PemberiJasa extends Pengguna {
   private idPemberiJasa: string = '';
   public idKategoriJasa: string = '';
   public jenisJasa: string = '';
+  private namaToko: string = '';
+  private latitude: number | null = null;
+  private longitude: number | null = null;
+  private statusKetersediaan: string = 'Available';
+  private isOnline: boolean = true;
   private dataPemberiJasa: PemberiJasaDetail | null = null;
 
-  constructor(idPemberiJasa?: string, idKategoriJasa?: string, jenisJasa?: string) {
-    if (idPemberiJasa) this.idPemberiJasa = idPemberiJasa;
-    if (idKategoriJasa) this.idKategoriJasa = idKategoriJasa;
-    if (jenisJasa) this.jenisJasa = jenisJasa;
+  // Constructor overloading: Mendukung pemanggilan model OOP (HEAD) maupun service instantiation (develop)
+  constructor();
+  constructor(props: PemberiJasaProps);
+  constructor(idPemberiJasa?: string, idKategoriJasa?: string, jenisJasa?: string);
+  constructor(
+    propsOrId?: PemberiJasaProps | string,
+    idKategoriJasa?: string,
+    jenisJasa?: string
+  ) {
+    if (typeof propsOrId === 'object' && propsOrId !== null) {
+      super({
+        ...propsOrId,
+        role: Role.PEMBERI_JASA,
+        akumulasiRating: propsOrId.akumulasiRating ?? 0.0,
+        riwayatRating: propsOrId.riwayatRating ?? [],
+      });
+      this.idPemberiJasa = propsOrId.idPengguna || '';
+      this.namaToko = propsOrId.namaToko ?? '';
+      this.idKategoriJasa = propsOrId.idKategoriJasa ?? '';
+      this.jenisJasa = propsOrId.jenisJasa ?? '';
+      this.latitude = propsOrId.latitude ?? null;
+      this.longitude = propsOrId.longitude ?? null;
+      this.statusKetersediaan = propsOrId.statusKetersediaan ?? 'Available';
+      this.isOnline = propsOrId.isOnline ?? true;
+    } else {
+      const id = typeof propsOrId === 'string' ? propsOrId : '';
+      super({
+        idPengguna: id,
+        nomorTelepon: '',
+        email: '',
+        namaPengguna: '',
+        username: '',
+        passwordHash: '',
+        role: Role.PEMBERI_JASA,
+        akumulasiRating: 0.0,
+        riwayatRating: [],
+      });
+      this.idPemberiJasa = id;
+      this.idKategoriJasa = idKategoriJasa ?? '';
+      this.jenisJasa = jenisJasa ?? '';
+      this.namaToko = '';
+      this.latitude = null;
+      this.longitude = null;
+      this.statusKetersediaan = 'Available';
+      this.isOnline = true;
+    }
   }
 
+  // ==================== GETTERS & SETTERS ====================
   public getIDPemberiJasa(): string {
-    return this.idPemberiJasa;
+    return this.idPemberiJasa || this.idPengguna;
   }
 
   public setIDPemberiJasa(idPemberiJasa: string): void {
     this.idPemberiJasa = idPemberiJasa;
+    this.idPengguna = idPemberiJasa;
   }
 
   public getIDKategoriJasa(): string {
@@ -56,16 +131,124 @@ export class PemberiJasa {
     this.idKategoriJasa = idKategoriJasa;
   }
 
-  /**
-   * ALGO-002 & Q-002: Mengambil detail profil, lokasi/daerah kerja, rating, dan tarif Pemberi Jasa berdasarkan ID
-   * Query:
-   * SELECT pj.id_pemberi_jasa, u.nama_pengguna, u.nomor_telpon, u.email, u.akumulasi_rating,
-   *        pj.id_kategori_jasa, pj.jenis_jasa, kj.deskripsi_jasa, kj.tarif, kj.jam_kerja, kj.daerah_kerja
-   * FROM pemberi_jasa pj
-   * JOIN pengguna u ON pj.id_pemberi_jasa = u.id_pengguna
-   * LEFT JOIN kategori_jasa kj ON pj.id_kategori_jasa = kj.id_kategori_jasa
-   * WHERE pj.id_pemberi_jasa = $1;
-   */
+  public getIdKategoriJasa(): string | null {
+    return this.idKategoriJasa || null;
+  }
+
+  public getJenisJasa(): string | null {
+    return this.jenisJasa || null;
+  }
+
+  public getNamaToko(): string {
+    return this.namaToko;
+  }
+
+  public getStatusKetersediaan(): string {
+    return this.statusKetersediaan;
+  }
+
+  public getIsOnline(): boolean {
+    return this.isOnline;
+  }
+
+  // ==================== REGISTRATION & PERSISTENCE (HEAD) ====================
+  public static makePemberiJasa(input: CreatePemberiJasaInput): PemberiJasa {
+    return new PemberiJasa({
+      idPengguna: randomUUID(),
+      namaPengguna: input.namaPengguna.trim(),
+      username: input.username.trim(),
+      email: input.email.trim().toLowerCase(),
+      nomorTelepon: input.nomorTelepon.trim(),
+      passwordHash: input.passwordHash,
+      role: Role.PEMBERI_JASA,
+      avatarUrl: input.avatarUrl ?? null,
+      akumulasiRating: 0.0,
+      riwayatRating: [],
+      namaToko: (input.namaToko ?? input.namaPengguna).trim(),
+      idKategoriJasa: input.idKategoriJasa ? input.idKategoriJasa.trim() : null,
+      jenisJasa: input.jenisJasa.trim(),
+      latitude: input.latitude ?? null,
+      longitude: input.longitude ?? null,
+      statusKetersediaan: 'Available',
+      isOnline: true,
+    });
+  }
+
+  public async simpanKeDb(): Promise<PemberiJasa> {
+    const result = await prisma.$transaction(async (tx) => {
+      const penggunaRecord = await tx.pengguna.create({
+        data: {
+          idPengguna: this.idPengguna,
+          namaPengguna: this.namaPengguna,
+          username: this.username,
+          email: this.email,
+          nomorTelpon: this.nomorTelepon,
+          password: this.passwordHash,
+          role: Role.PEMBERI_JASA,
+          avatarUrl: this.avatarUrl,
+          akumulasiRating: 0.0,
+          riwayatRating: [],
+        },
+      });
+
+      let resolvedIdKategori: string | null = this.idKategoriJasa || null;
+      if (resolvedIdKategori) {
+        const existingKategori = await tx.kategoriJasa.findUnique({
+          where: { idKategoriJasa: resolvedIdKategori },
+        });
+
+        if (!existingKategori) {
+          await tx.kategoriJasa.create({
+            data: {
+              idKategoriJasa: resolvedIdKategori,
+              jenisJasa: this.jenisJasa || 'Umum',
+              deskripsiJasa: `Layanan ${this.jenisJasa || 'Umum'}`,
+              tarif: 0,
+              jamKerja: '08:00 - 17:00',
+              daerahKerja: 'Bandung',
+            },
+          });
+        }
+      }
+
+      const pemberiJasaRecord = await tx.pemberiJasa.create({
+        data: {
+          idPemberiJasa: penggunaRecord.idPengguna,
+          namaToko: this.namaToko || '',
+          idKategoriJasa: resolvedIdKategori,
+          jenisJasa: this.jenisJasa || null,
+          latitude: this.latitude,
+          longitude: this.longitude,
+          statusKetersediaan: this.statusKetersediaan,
+          isOnline: this.isOnline,
+        },
+      });
+
+      return { penggunaRecord, pemberiJasaRecord };
+    });
+
+    return new PemberiJasa({
+      idPengguna: result.penggunaRecord.idPengguna,
+      namaPengguna: result.penggunaRecord.namaPengguna,
+      username: result.penggunaRecord.username,
+      email: result.penggunaRecord.email,
+      nomorTelepon: result.penggunaRecord.nomorTelpon,
+      passwordHash: result.penggunaRecord.password,
+      role: result.penggunaRecord.role,
+      avatarUrl: result.penggunaRecord.avatarUrl,
+      akumulasiRating: result.penggunaRecord.akumulasiRating,
+      riwayatRating: result.penggunaRecord.riwayatRating,
+      namaToko: result.pemberiJasaRecord.namaToko,
+      idKategoriJasa: result.pemberiJasaRecord.idKategoriJasa,
+      jenisJasa: result.pemberiJasaRecord.jenisJasa,
+      latitude: result.pemberiJasaRecord.latitude,
+      longitude: result.pemberiJasaRecord.longitude,
+      statusKetersediaan: result.pemberiJasaRecord.statusKetersediaan,
+      isOnline: result.pemberiJasaRecord.isOnline,
+    });
+  }
+
+  // ==================== QUERY & SERVICE METHODS (DEVELOP) ====================
   public async getPemberiJasaByID(idPemberiJasa: string): Promise<PemberiJasaDetail | null> {
     const row = await prisma.pemberiJasa.findUnique({
       where: { idPemberiJasa },
@@ -105,14 +288,6 @@ export class PemberiJasa {
     return formatted;
   }
 
-  /**
-   * ALGO-003 & Q-003: Mengambil daftar Pemberi Jasa yang tersedia berdasarkan ID Kategori Jasa
-   * Query:
-   * SELECT pj.id_pemberi_jasa, u.nama_pengguna, u.akumulasi_rating, pj.id_kategori_jasa, pj.jenis_jasa
-   * FROM pemberi_jasa pj
-   * JOIN pengguna u ON pj.id_pemberi_jasa = u.id_pengguna
-   * WHERE pj.id_kategori_jasa = $1;
-   */
   public async getPemberiJasaByKategori(idKategoriJasa: string): Promise<PemberiJasaDetail[]> {
     const rows = await prisma.pemberiJasa.findMany({
       where: { idKategoriJasa },
@@ -208,10 +383,6 @@ export class PemberiJasa {
     return this.getPemberiJasaByID(targetIdPemberiJasa);
   }
 
-  /**
-   * Mengambil daftar Pemberi Jasa dengan filter kata kunci dan/atau ID kategori
-   * Digunakan oleh endpoint GET /api/services/search
-   */
   public async searchPemberiJasa(filter: SearchServiceFilter): Promise<PemberiJasaDetail[]> {
     const { keyword, idKategoriJasa } = filter;
 
@@ -267,6 +438,21 @@ export class PemberiJasa {
       statusKetersediaan: row.statusKetersediaan,
       isOnline: row.isOnline,
     }));
+  }
+
+  // ==================== DATA SANITIZATION ====================
+  public override toJSON(): Record<string, unknown> {
+    return {
+      ...super.toJSON(),
+      idPemberiJasa: this.idPemberiJasa || this.idPengguna,
+      namaToko: this.namaToko,
+      idKategoriJasa: this.idKategoriJasa,
+      jenisJasa: this.jenisJasa,
+      latitude: this.latitude,
+      longitude: this.longitude,
+      statusKetersediaan: this.statusKetersediaan,
+      isOnline: this.isOnline,
+    };
   }
 }
 
