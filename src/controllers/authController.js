@@ -315,6 +315,16 @@ async function profilSaya(req, res) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// UC10 Keluar Akun
+// ---------------------------------------------------------------------------
+
+/** Menaikkan versi token sehingga token sesi ini langsung tidak berlaku (KNF12). */
+async function keluar(req, res) {
+  await Pengguna.akhiriSesiById(req.user.idPengguna);
+  return kirim(res, 200, 'Logout berhasil.');
+}
+
 module.exports = {
   daftar,
   dataKonfirmasi,
@@ -322,4 +332,5 @@ module.exports = {
   tolakRegistrasi,
   masuk,
   profilSaya,
+  keluar,
 };
