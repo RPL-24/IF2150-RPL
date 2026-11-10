@@ -39,7 +39,7 @@ export function PanelRincianTugas({ rincian }: { rincian: RincianTugas }) {
                 <h3 className="text-sm font-medium">Lokasi</h3>
                 <MapView titikTerpilih={{ latitude, longitude}} tinggi="220px"/>
                 <p className="text-xs text-gray-500">
-                    {latitude.toFixed(5)}, {longitude.toFixed(5)} · {rincian.jumlah_upvote} upvotes
+                    {latitude.toFixed(5)}, {longitude.toFixed(5)} · {rincian.jumlah_upvote} dukungan warga
                 </p>
             </section>
 
