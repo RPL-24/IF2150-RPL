@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import prisma from '../database/prisma.js';
+import prisma from '../database/prisma';
 
 export const STATUS_PEKERJAAN = {
   MENUNGGU: 'Menunggu',
@@ -44,6 +44,31 @@ export interface KontrakPekerjaanDetail {
   createdAt: Date;
   expiresAt: Date | null;
 }
+
+/**
+ * Antarmuka pengirim notifikasi yang kompatibel dengan NotifikasiController (C30)
+ * pada branch feat/notification (`buatNotifikasi(idPenerima, isiNotifikasi)`).
+ */
+export interface KontrakNotifikasiSender {
+  buatNotifikasi(idPenerima: string, isiNotifikasi: string): Promise<unknown>;
+}
+
+export const defaultKontrakNotifikasiSender: KontrakNotifikasiSender = {
+  async buatNotifikasi(idPenerima: string, isiNotifikasi: string) {
+    if (!idPenerima || !isiNotifikasi) {
+      return null;
+    }
+    return prisma.notifikasi.create({
+      data: {
+        idNotifikasi: randomUUID(),
+        idPenerima,
+        isiNotifikasi,
+        waktuNotifikasi: new Date(),
+        statusBaca: 'Unread',
+      },
+    });
+  },
+};
 
 export class KontrakError extends Error {
   public readonly statusCode: number;
@@ -112,7 +137,6 @@ export class KontrakPekerjaan {
     this.isPersisted = isPersisted;
   }
 
-  // Getters & Setters
   public getIdKontrakPekerjaan(): string | null {
     return this.idKontrakPekerjaan;
   }
@@ -210,8 +234,8 @@ export class KontrakPekerjaan {
       };
     }
 
-    // KNF18: Mencegah payload injeksi berbahaya
-    const dangerousPattern = /(<script\b[^>]*>[\s\S]*?<\/script>|;\s*(DROP|DELETE|TRUNCATE|ALTER)\s+TABLE\b|--\s*$)/i;
+    const dangerousPattern =
+      /(<script\b[^>]*>[\s\S]*?<\/script>|;\s*(DROP|DELETE|TRUNCATE|ALTER)\s+TABLE\b|--\s*$)/i;
     if (dangerousPattern.test(trimmedDetail)) {
       return {
         valid: false,
@@ -245,9 +269,7 @@ export class KontrakPekerjaan {
    * Menginisialisasi atribut objek kontrak baru dari data masukan controller.
    * Status awal diset 'Menunggu' (menunggu konfirmasi penyedia jasa) dengan batas waktu 30 menit (KF07, KNF11).
    */
-  public newKontrak(
-    dataKontrak: NewKontrakInput | [string, number]
-  ): void {
+  public newKontrak(dataKontrak: NewKontrakInput | [string, number]): void {
     const now = new Date();
     this.createdAt = now;
     this.expiresAt = new Date(now.getTime() + AUTO_CANCEL_TIMEOUT_MS);
@@ -256,7 +278,8 @@ export class KontrakPekerjaan {
 
     if (Array.isArray(dataKontrak)) {
       const [detailPekerjaan, persetujuanHarga] = dataKontrak;
-      this.detailPekerjaan = typeof detailPekerjaan === 'string' ? detailPekerjaan.trim() : '';
+      this.detailPekerjaan =
+        typeof detailPekerjaan === 'string' ? detailPekerjaan.trim() : '';
       this.persetujuanHarga = Number(persetujuanHarga);
       return;
     }
@@ -304,8 +327,6 @@ export class KontrakPekerjaan {
   /**
    * ALGO-036 & Q-016: statusUpdate(jenisStatus, nilaiStatus)
    * Memperbarui status pekerjaan yang sedang dikontrak di memori maupun di database.
-   * Mendukung pemanggilan 2 parameter `statusUpdate("statusPekerjaan", nilaiStatus)` (ALGO-036/ALGO-043)
-   * maupun 1 parameter `statusUpdate(nilaiStatus)` (ALGO-042).
    */
   public async statusUpdate(
     jenisStatusOrNilai: string,
@@ -318,7 +339,6 @@ export class KontrakPekerjaan {
       return false;
     }
 
-    // Jika sudah tersimpan di DB, validasi aturan state transition (KNF22)
     if (this.isPersisted && this.statusPekerjaan !== statusBaru) {
       if (!KontrakPekerjaan.isValidStateTransition(this.statusPekerjaan, statusBaru)) {
         return false;
@@ -328,10 +348,8 @@ export class KontrakPekerjaan {
     const previousStatus = this.statusPekerjaan;
     this.statusPekerjaan = statusBaru;
 
-    // Jika objek sudah memiliki ID dan sudah tersimpan di DB, jalankan Q-016
     if (this.idKontrakPekerjaan !== null && this.isPersisted) {
       try {
-        // Q-016: UPDATE kontrak_pekerjaan SET status_pekerjaan = this.statusPekerjaan WHERE id_kontrak_pekerjaan = this.idKontrakPekerjaan
         await prisma.kontrakPekerjaan.update({
           where: { idKontrakPekerjaan: this.idKontrakPekerjaan },
           data: { statusPekerjaan: this.statusPekerjaan },
@@ -343,7 +361,6 @@ export class KontrakPekerjaan {
       }
     }
 
-    // Jika belum tersimpan di DB, status diperbarui di memori
     return true;
   }
 
@@ -361,7 +378,6 @@ export class KontrakPekerjaan {
           this.expiresAt = new Date(this.createdAt.getTime() + AUTO_CANCEL_TIMEOUT_MS);
         }
 
-        // Q-017: INSERT INTO kontrak_pekerjaan (...) VALUES (...)
         const created = await prisma.kontrakPekerjaan.create({
           data: {
             idKontrakPekerjaan: this.idKontrakPekerjaan,
@@ -386,7 +402,6 @@ export class KontrakPekerjaan {
           return false;
         }
 
-        // Q-018: UPDATE kontrak_pekerjaan SET status_pekerjaan = this.statusPekerjaan WHERE id_kontrak_pekerjaan = this.idKontrakPekerjaan
         await prisma.kontrakPekerjaan.update({
           where: { idKontrakPekerjaan: this.idKontrakPekerjaan },
           data: {
@@ -473,7 +488,6 @@ export class KontrakPekerjaan {
         );
       }
 
-      // KNF04 & KNF19: Kunci penyedia jasa dengan pemeriksaan version (Optimistic Locking)
       const lockResult = await tx.pemberiJasa.updateMany({
         where: {
           idPemberiJasa: this.idPemberiJasa,
@@ -494,7 +508,6 @@ export class KontrakPekerjaan {
         );
       }
 
-      // Q-017: INSERT INTO kontrak_pekerjaan
       const created = await tx.kontrakPekerjaan.create({
         data: {
           idKontrakPekerjaan: this.idKontrakPekerjaan!,
@@ -522,11 +535,7 @@ export class KontrakPekerjaan {
   }
 
   /**
-   * Penyedia jasa menyetujui kontrak:
-   * - Validasi transisi status Menunggu -> On Progress (KNF22)
-   * - Cek kedaluwarsa 30 menit (KF07, KNF11)
-   * - Optimistic Locking version check pada PemberiJasa (KNF04, KNF19)
-   * - Update kontrak ke 'On Progress' (Q-016 / Q-018)
+   * Penyedia jasa menyetujui kontrak dengan Optimistic Locking (KNF04, KNF19, Q-016 / Q-018)
    */
   public async acceptKontrakWithOptimisticLock(
     expectedVersion?: number
@@ -581,7 +590,6 @@ export class KontrakPekerjaan {
         );
       }
 
-      // Pastikan penyedia jasa tidak sedang memiliki kontrak lain yang sudah berstatus 'On Progress' atau 'Menunggu Konfirmasi Pelanggan'
       const activeOtherContract = await tx.kontrakPekerjaan.findFirst({
         where: {
           idPemberiJasa: this.idPemberiJasa,
@@ -603,7 +611,6 @@ export class KontrakPekerjaan {
         );
       }
 
-      // KNF04 & KNF19: Optimistic Locking version check & increment pada PemberiJasa
       const lockResult = await tx.pemberiJasa.updateMany({
         where: {
           idPemberiJasa: this.idPemberiJasa,
@@ -623,7 +630,6 @@ export class KontrakPekerjaan {
         );
       }
 
-      // Q-016 / Q-018: UPDATE kontrak_pekerjaan SET status_pekerjaan = 'On Progress' WHERE id_kontrak_pekerjaan = ...
       const updateResult = await tx.kontrakPekerjaan.updateMany({
         where: {
           idKontrakPekerjaan: this.idKontrakPekerjaan!,
@@ -653,9 +659,7 @@ export class KontrakPekerjaan {
   }
 
   /**
-   * Penyedia jasa menolak kontrak:
-   * - Ubah status kontrak Menunggu -> Ditolak (Q-016 / Q-018)
-   * - Lepaskan kunci ketersediaan PemberiJasa menjadi 'Available'
+   * Penyedia jasa menolak kontrak dan membuka kunci ketersediaan
    */
   public async rejectKontrakAndUnlock(): Promise<KontrakPekerjaan> {
     if (!this.idKontrakPekerjaan) {
@@ -725,7 +729,6 @@ export class KontrakPekerjaan {
 
   /**
    * ALGO-040 & Q-019: fetchKontrakPekerjaan(idKontrakPekerjaan)
-   * Mengambil data kontrak pekerjaan dari database berdasarkan ID kontrak.
    */
   public async fetchKontrakPekerjaan(
     idKontrakPekerjaan: string
@@ -734,7 +737,6 @@ export class KontrakPekerjaan {
       return null;
     }
 
-    // Q-019: SELECT ... FROM kontrak_pekerjaan WHERE id_kontrak_pekerjaan = idKontrakPekerjaan
     const record = await prisma.kontrakPekerjaan.findUnique({
       where: { idKontrakPekerjaan },
     });
@@ -757,10 +759,6 @@ export class KontrakPekerjaan {
     return this;
   }
 
-  /**
-   * Static helper untuk ALGO-040 & ALGO-041:
-   * `KontrakPekerjaan.fetchKontrakPekerjaan(idKontrakPekerjaan)`
-   */
   public static async fetchKontrakPekerjaan(
     idKontrakPekerjaan: string
   ): Promise<KontrakPekerjaan | null> {
@@ -768,9 +766,6 @@ export class KontrakPekerjaan {
     return instance.fetchKontrakPekerjaan(idKontrakPekerjaan);
   }
 
-  /**
-   * Menandai bahwa kontrak pekerjaan terkait telah diberikan penilaian (rating) (Tabel 5.11.1)
-   */
   public async addRating(): Promise<boolean> {
     if (!this.idKontrakPekerjaan) {
       return false;

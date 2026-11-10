@@ -1,10 +1,11 @@
-import prisma from '../database/prisma.js';
+import prisma from '../database/prisma';
 import {
   AUTO_CANCEL_TIMEOUT_MS,
+  defaultKontrakNotifikasiSender,
+  KontrakNotifikasiSender,
   STATUS_KETERSEDIAAN,
   STATUS_PEKERJAAN,
-} from '../models/KontrakPekerjaan.js';
-import { notifikasiController } from '../controllers/NotifikasiController.js';
+} from '../models/KontrakPekerjaan';
 
 export interface AutoCancelResult {
   cancelledCount: number;
@@ -18,7 +19,8 @@ let workerTimer: NodeJS.Timeout | null = null;
  * tanpa konfirmasi dari penyedia jasa, serta melepaskan kunci ketersediaan penyedia jasa.
  */
 export async function cancelExpiredContracts(
-  referenceTime: Date = new Date()
+  referenceTime: Date = new Date(),
+  notifSender: KontrakNotifikasiSender = defaultKontrakNotifikasiSender
 ): Promise<AutoCancelResult> {
   const fallbackCutoff = new Date(
     referenceTime.getTime() - AUTO_CANCEL_TIMEOUT_MS
@@ -63,7 +65,6 @@ export async function cancelExpiredContracts(
           return false;
         }
 
-        // Cek apakah penyedia jasa masih memiliki kontrak aktif lain sebelum membuka kunci
         const activeOtherContracts = await tx.kontrakPekerjaan.count({
           where: {
             idPemberiJasa: contract.idPemberiJasa,
@@ -94,13 +95,12 @@ export async function cancelExpiredContracts(
       if (wasCancelled) {
         cancelledIds.push(contract.idKontrakPekerjaan);
 
-        // Kirim notifikasi ke pelanggan dan penyedia jasa (KF07, KNF11)
         await Promise.allSettled([
-          notifikasiController.buatNotifikasi(
+          notifSender.buatNotifikasi(
             contract.idPelanggan,
             `Pesanan "${contract.detailPekerjaan}" dibatalkan otomatis karena penyedia jasa tidak merespons dalam 30 menit.`
           ),
-          notifikasiController.buatNotifikasi(
+          notifSender.buatNotifikasi(
             contract.idPemberiJasa,
             `Pesanan "${contract.detailPekerjaan}" dibatalkan otomatis karena melewati batas waktu konfirmasi 30 menit.`
           ),
@@ -155,9 +155,6 @@ export function startAutoCancelWorker(
   return workerTimer;
 }
 
-/**
- * Menghentikan background worker pembatalan otomatis
- */
 export function stopAutoCancelWorker(): void {
   if (workerTimer) {
     clearInterval(workerTimer);

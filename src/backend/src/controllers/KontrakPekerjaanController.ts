@@ -1,16 +1,14 @@
 import { Request, Response } from 'express';
-import prisma from '../database/prisma.js';
+import prisma from '../database/prisma';
 import {
+  defaultKontrakNotifikasiSender,
   KontrakError,
+  KontrakNotifikasiSender,
   KontrakPekerjaan,
   STATUS_PEKERJAAN,
-} from '../models/KontrakPekerjaan.js';
-import { Pengguna } from '../models/Pengguna.js';
-import {
-  NotifikasiController,
-  notifikasiController as defaultNotifikasiController,
-} from './NotifikasiController.js';
-import { cancelExpiredContracts } from '../workers/autoCancelKontrakWorker.js';
+} from '../models/KontrakPekerjaan';
+import { Pengguna } from '../models/Pengguna';
+import { cancelExpiredContracts } from '../workers/autoCancelKontrakWorker';
 
 /**
  * Kelas DPPL C18 - KontrakPekerjaanController
@@ -19,15 +17,14 @@ import { cancelExpiredContracts } from '../workers/autoCancelKontrakWorker.js';
  * (UC05, UC06, UC07 | KF02, KF07, KF10, KF11, KF12, KF13 | KNF04, KNF11, KNF18, KNF19, KNF20, KNF21, KNF22).
  */
 export class KontrakPekerjaanController {
-  private notifikasiController: NotifikasiController;
+  private notifikasiSender: KontrakNotifikasiSender;
 
-  constructor(notifCtrl: NotifikasiController = defaultNotifikasiController) {
-    this.notifikasiController = notifCtrl;
+  constructor(
+    notifSender: KontrakNotifikasiSender = defaultKontrakNotifikasiSender
+  ) {
+    this.notifikasiSender = notifSender;
   }
 
-  /**
-   * Menampilkan struktur formulir pembuatan kontrak kosong untuk diisi pelanggan (Tabel 5.12.1, KF10, KNF17)
-   */
   public showKontrakForm(): {
     detailPekerjaan: string;
     persetujuanHarga: number;
@@ -42,7 +39,6 @@ export class KontrakPekerjaanController {
 
   /**
    * ALGO-041: getKontrakPekerjaan(idKontrakPekerjaan)
-   * Mengambil objek data kontrak pekerjaan melalui model KontrakPekerjaan (ALGO-040, Q-019).
    */
   public async getKontrakPekerjaan(
     idKontrakPekerjaan: string
@@ -67,12 +63,6 @@ export class KontrakPekerjaanController {
 
   /**
    * ALGO-043: kirimInput(detailPekerjaan, persetujuanHarga, idPelanggan, idPemberiJasa, expectedVersion)
-   * Menerima input kesepakatan dari pelanggan (UC05, KF02, KF10, KF11):
-   * 1. Validasi input pada sisi server (KNF18)
-   * 2. Inisialisasi objek via newKontrak() (ALGO-038) & makeKontrak() (ALGO-039)
-   * 3. Set status awal 'Menunggu' (konfirmasi penyedia jasa) dengan batas waktu 30 menit (KF07, KNF11)
-   * 4. Kunci penyedia jasa dengan Optimistic Locking (KNF04, KNF19) & simpan ke DB (ALGO-037, Q-017)
-   * 5. Kirim notifikasi pesanan masuk ke penyedia jasa (KF06, KNF12)
    */
   public async kirimInput(
     detailPekerjaan: string,
@@ -130,14 +120,14 @@ export class KontrakPekerjaanController {
       );
     }
 
-    // ALGO-036: Set status awal kontrak ke 'Menunggu' (menunggu konfirmasi penyedia jasa)
+    // ALGO-036: Set status awal kontrak ke 'Menunggu'
     await objKontrak.statusUpdate('statusPekerjaan', STATUS_PEKERJAAN.MENUNGGU);
 
     // ALGO-037 (Q-017) + KNF04 & KNF19: Simpan kontrak & kunci penyedia jasa dengan Optimistic Locking
     await objKontrak.saveNewKontrakWithOptimisticLock(expectedVersion);
 
     // KF06 & KNF12: Kirim notifikasi pesanan masuk ke penyedia jasa
-    await this.notifikasiController.buatNotifikasi(
+    await this.notifikasiSender.buatNotifikasi(
       idPemberiJasa,
       `Pesanan baru masuk: "${validation.sanitizedDetail}" dengan kesepakatan harga Rp ${validation.harga.toLocaleString(
         'id-ID'
@@ -149,8 +139,6 @@ export class KontrakPekerjaanController {
 
   /**
    * Penyedia jasa mengonfirmasi persetujuan kontrak (Terima / Tolak)
-   * - Jika diterima: status berubah Menunggu -> On Progress, kunci penyedia jasa dengan Optimistic Locking (KNF04, KNF19, Q-016, Q-018)
-   * - Jika ditolak: status berubah Menunggu -> Ditolak, lepaskan kunci ketersediaan penyedia jasa
    */
   public async konfirmasiPersetujuanPenyedia(
     idKontrakPekerjaan: string,
@@ -185,7 +173,7 @@ export class KontrakPekerjaanController {
 
     const expiresAt = kontrak.getExpiresAt();
     if (expiresAt && expiresAt.getTime() <= Date.now()) {
-      await cancelExpiredContracts(new Date());
+      await cancelExpiredContracts(new Date(), this.notifikasiSender);
       throw new KontrakError(
         'Kontrak telah melewati batas waktu 30 menit dan dibatalkan secara otomatis',
         410,
@@ -199,7 +187,7 @@ export class KontrakPekerjaanController {
       const { kontrak: acceptedKontrak } =
         await kontrak.acceptKontrakWithOptimisticLock(expectedVersion);
 
-      await this.notifikasiController.buatNotifikasi(
+      await this.notifikasiSender.buatNotifikasi(
         detail.idPelanggan,
         `Penyedia jasa telah menyetujui kontrak "${detail.detailPekerjaan}". Status pekerjaan kini On Progress.`
       );
@@ -208,7 +196,7 @@ export class KontrakPekerjaanController {
     } else {
       const rejectedKontrak = await kontrak.rejectKontrakAndUnlock();
 
-      await this.notifikasiController.buatNotifikasi(
+      await this.notifikasiSender.buatNotifikasi(
         detail.idPelanggan,
         `Penyedia jasa menolak kontrak "${detail.detailPekerjaan}". Silakan pilih penyedia jasa lainnya.`
       );
@@ -219,9 +207,6 @@ export class KontrakPekerjaanController {
 
   /**
    * UC06 & KF12: Penyedia jasa menyelesaikan pekerjaan
-   * - Validasi state transition: wajib dari 'On Progress' ke 'Menunggu Konfirmasi Pelanggan' (KNF22)
-   * - Perbarui status via statusUpdate() (ALGO-036, Q-016)
-   * - Kirim notifikasi ke pelanggan bahwa pekerjaan telah selesai (KNF20)
    */
   public async selesaikanPekerjaan(
     idKontrakPekerjaan: string,
@@ -258,7 +243,6 @@ export class KontrakPekerjaanController {
       );
     }
 
-    // ALGO-036 & Q-016: Update status ke 'Menunggu Konfirmasi Pelanggan'
     const isUpdated = await this.statusUpdate(
       idKontrakPekerjaan,
       STATUS_PEKERJAAN.MENUNGGU_KONFIRMASI_PELANGGAN
@@ -275,8 +259,7 @@ export class KontrakPekerjaanController {
     await kontrak.fetchKontrakPekerjaan(idKontrakPekerjaan);
     const detail = kontrak.getDetailPekerjaan();
 
-    // KNF20: Kirim notifikasi ke pelanggan bahwa pekerjaan sudah selesai
-    await this.notifikasiController.buatNotifikasi(
+    await this.notifikasiSender.buatNotifikasi(
       detail.idPelanggan,
       `Pekerjaan "${detail.detailPekerjaan}" telah selesai dikerjakan oleh penyedia jasa. Mohon konfirmasi penyelesaian dan pembayaran sebesar Rp ${detail.persetujuanHarga.toLocaleString(
         'id-ID'
@@ -288,11 +271,6 @@ export class KontrakPekerjaanController {
 
   /**
    * ALGO-042: konfirmasiPekerjaan(idKontrak)
-   * Pelanggan mengonfirmasi penyelesaian pekerjaan & pembayaran (UC07, KF13, KNF21, KNF22):
-   * - Verifikasi status aktif sebelumnya ('On Progress' atau 'Menunggu Konfirmasi Pelanggan') (KNF22)
-   * - Ubah status kontrak menjadi 'Done' melalui Pengguna.konfirmasiPekerjaan() & KontrakPekerjaan.statusUpdate()
-   * - Buka kembali kunci ketersediaan penyedia jasa ('Available')
-   * - Kirim notifikasi ke penyedia jasa
    */
   public async konfirmasiPekerjaan(
     idKontrak: string,
@@ -332,8 +310,7 @@ export class KontrakPekerjaanController {
 
     const detail = kontrak.getDetailPekerjaan();
 
-    // KNF21: Kirim notifikasi konfirmasi selesai & pembayaran ke penyedia jasa
-    await this.notifikasiController.buatNotifikasi(
+    await this.notifikasiSender.buatNotifikasi(
       detail.idPemberiJasa,
       `Pelanggan telah mengonfirmasi penyelesaian pekerjaan "${detail.detailPekerjaan}" dan menyelesaikan pembayaran sebesar Rp ${detail.persetujuanHarga.toLocaleString(
         'id-ID'
@@ -342,10 +319,6 @@ export class KontrakPekerjaanController {
 
     return true;
   }
-
-  // ============================================================================
-  // Express HTTP Handlers
-  // ============================================================================
 
   public handleShowKontrakForm = (_req: Request, res: Response): void => {
     const formTemplate = this.showKontrakForm();
@@ -383,7 +356,8 @@ export class KontrakPekerjaanController {
         res.status(400).json({
           success: false,
           code: 'INVALID_VERSION',
-          message: 'Parameter version untuk Optimistic Locking harus berupa bilangan bulat positif',
+          message:
+            'Parameter version untuk Optimistic Locking harus berupa bilangan bulat positif',
         });
         return;
       }
@@ -398,7 +372,8 @@ export class KontrakPekerjaanController {
 
       res.status(201).json({
         success: true,
-        message: 'Kontrak pekerjaan berhasil dibuat dengan status Menunggu konfirmasi penyedia jasa',
+        message:
+          'Kontrak pekerjaan berhasil dibuat dengan status Menunggu konfirmasi penyedia jasa',
         data: kontrak.getDetailPekerjaan(),
       });
     } catch (error) {
@@ -533,7 +508,8 @@ export class KontrakPekerjaanController {
           res.status(400).json({
             success: false,
             code: 'INVALID_ACTION',
-            message: 'Nilai aksi harus berupa "terima" atau "tolak" (atau boolean disetujui)',
+            message:
+              'Nilai aksi harus berupa "terima" atau "tolak" (atau boolean disetujui)',
           });
           return;
         }
@@ -541,7 +517,8 @@ export class KontrakPekerjaanController {
         res.status(400).json({
           success: false,
           code: 'MISSING_APPROVAL_DECISION',
-          message: 'Parameter disetujui (boolean) atau aksi ("terima" | "tolak") wajib diisi',
+          message:
+            'Parameter disetujui (boolean) atau aksi ("terima" | "tolak") wajib diisi',
         });
         return;
       }
@@ -560,7 +537,8 @@ export class KontrakPekerjaanController {
         res.status(400).json({
           success: false,
           code: 'INVALID_VERSION',
-          message: 'Parameter version untuk Optimistic Locking harus berupa bilangan bulat positif',
+          message:
+            'Parameter version untuk Optimistic Locking harus berupa bilangan bulat positif',
         });
         return;
       }

@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { kontrakPekerjaanController } from '../controllers/KontrakPekerjaanController.js';
+import { Role } from '@prisma/client';
+import { kontrakPekerjaanController } from '../controllers/KontrakPekerjaanController';
 import {
   authenticateJWT,
   authorizeRoles,
-} from '../middlewares/authMiddleware.js';
+} from '../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -13,7 +14,7 @@ const router = Router();
 router.get(
   '/form',
   authenticateJWT,
-  authorizeRoles('PELANGGAN'),
+  authorizeRoles(Role.PELANGGAN),
   kontrakPekerjaanController.handleShowKontrakForm
 );
 
@@ -33,7 +34,7 @@ router.get(
 router.post(
   '/',
   authenticateJWT,
-  authorizeRoles('PELANGGAN'),
+  authorizeRoles(Role.PELANGGAN),
   kontrakPekerjaanController.handleKirimInput
 );
 
@@ -53,35 +54,35 @@ router.get(
 router.patch(
   '/:id/persetujuan',
   authenticateJWT,
-  authorizeRoles('PEMBERI_JASA'),
+  authorizeRoles(Role.PEMBERI_JASA),
   kontrakPekerjaanController.handleKonfirmasiPersetujuan
 );
 
 router.post(
   '/:id/terima',
   authenticateJWT,
-  authorizeRoles('PEMBERI_JASA'),
+  authorizeRoles(Role.PEMBERI_JASA),
   kontrakPekerjaanController.handleTerimaKontrak
 );
 
 router.patch(
   '/:id/terima',
   authenticateJWT,
-  authorizeRoles('PEMBERI_JASA'),
+  authorizeRoles(Role.PEMBERI_JASA),
   kontrakPekerjaanController.handleTerimaKontrak
 );
 
 router.post(
   '/:id/tolak',
   authenticateJWT,
-  authorizeRoles('PEMBERI_JASA'),
+  authorizeRoles(Role.PEMBERI_JASA),
   kontrakPekerjaanController.handleTolakKontrak
 );
 
 router.patch(
   '/:id/tolak',
   authenticateJWT,
-  authorizeRoles('PEMBERI_JASA'),
+  authorizeRoles(Role.PEMBERI_JASA),
   kontrakPekerjaanController.handleTolakKontrak
 );
 
@@ -92,14 +93,14 @@ router.patch(
 router.patch(
   '/:id/selesai',
   authenticateJWT,
-  authorizeRoles('PEMBERI_JASA'),
+  authorizeRoles(Role.PEMBERI_JASA),
   kontrakPekerjaanController.handleSelesaikanPekerjaan
 );
 
 router.post(
   '/:id/selesai',
   authenticateJWT,
-  authorizeRoles('PEMBERI_JASA'),
+  authorizeRoles(Role.PEMBERI_JASA),
   kontrakPekerjaanController.handleSelesaikanPekerjaan
 );
 
@@ -110,14 +111,14 @@ router.post(
 router.patch(
   '/:id/konfirmasi',
   authenticateJWT,
-  authorizeRoles('PELANGGAN'),
+  authorizeRoles(Role.PELANGGAN),
   kontrakPekerjaanController.handleKonfirmasiPekerjaan
 );
 
 router.post(
   '/:id/konfirmasi',
   authenticateJWT,
-  authorizeRoles('PELANGGAN'),
+  authorizeRoles(Role.PELANGGAN),
   kontrakPekerjaanController.handleKonfirmasiPekerjaan
 );
 

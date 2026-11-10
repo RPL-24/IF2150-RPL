@@ -1,25 +1,21 @@
-import test, { describe, beforeEach } from 'node:test';
-import assert from 'node:assert/strict';
-import type { Request, Response } from 'express';
-import prisma from '../src/database/prisma.js';
+import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import { Role } from '@prisma/client';
+import prisma from '../src/database/prisma';
 import {
   AUTO_CANCEL_TIMEOUT_MS,
   KontrakError,
   KontrakPekerjaan,
   STATUS_KETERSEDIAAN,
   STATUS_PEKERJAAN,
-} from '../src/models/KontrakPekerjaan.js';
-import { Pengguna } from '../src/models/Pengguna.js';
-import { KontrakPekerjaanController } from '../src/controllers/KontrakPekerjaanController.js';
-import { cancelExpiredContracts } from '../src/workers/autoCancelKontrakWorker.js';
+} from '../src/models/KontrakPekerjaan';
+import { Pengguna } from '../src/models/Pengguna';
+import { KontrakPekerjaanController } from '../src/controllers/KontrakPekerjaanController';
+import { cancelExpiredContracts } from '../src/workers/autoCancelKontrakWorker';
 import {
   authenticateJWT,
   authorizeRoles,
-  signJWT,
-  verifyJWT,
-} from '../src/middlewares/authMiddleware.js';
-
-process.env.NODE_ENV = 'test';
+} from '../src/middlewares/auth.middleware';
 
 interface MockPemberiJasaRow {
   idPemberiJasa: string;
@@ -238,22 +234,12 @@ function setupMockPrisma(): void {
         mockDb.notifikasi.push(notif);
         return notif;
       },
-      update: async ({ where, data }: any) => {
-        const found = mockDb.notifikasi.find(
-          (n) => n.idNotifikasi === where.idNotifikasi
-        );
-        if (found) Object.assign(found, data);
-        return found;
-      },
-      findFirst: async ({ where }: any) => {
-        const items = mockDb.notifikasi.filter(
-          (n) => n.idPenerima === where.idPenerima
-        );
-        return items.length > 0 ? items[items.length - 1] : null;
-      },
     },
     $transaction: async (fn: any) => {
-      return fn(mockDelegates);
+      if (typeof fn === 'function') {
+        return fn(mockDelegates);
+      }
+      return Promise.all(fn);
     },
   };
 
@@ -292,6 +278,9 @@ function createMockReqRes(options: {
   return { req, res };
 }
 
+const JWT_SECRET =
+  process.env.JWT_SECRET || 'dev_fallback_secret_cariuang_2026_ChangeInProd';
+
 describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () => {
   const controller = new KontrakPekerjaanController();
 
@@ -299,7 +288,7 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
     setupMockPrisma();
   });
 
-  test('ALGO-037 (saveKontrak Q-017 & Q-018), ALGO-038 (newKontrak), ALGO-039 (makeKontrak), ALGO-040 (fetchKontrakPekerjaan Q-019), dan KNF18', async () => {
+  it('ALGO-037 (saveKontrak Q-017 & Q-018), ALGO-038 (newKontrak), ALGO-039 (makeKontrak), ALGO-040 (fetchKontrakPekerjaan Q-019), dan KNF18', async () => {
     const kontrak = new KontrakPekerjaan();
     kontrak.newKontrak({
       idPelanggan: 'cust-1',
@@ -308,53 +297,48 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
       persetujuanHarga: 75000,
     });
 
-    assert.equal(kontrak.getStatusPekerjaan(), STATUS_PEKERJAAN.MENUNGGU);
-    assert.ok(kontrak.getExpiresAt() instanceof Date);
+    expect(kontrak.getStatusPekerjaan()).toBe(STATUS_PEKERJAAN.MENUNGGU);
+    expect(kontrak.getExpiresAt()).toBeInstanceOf(Date);
 
     const created = kontrak.makeKontrak();
-    assert.equal(created, true);
+    expect(created).toBe(true);
     const id = kontrak.getIdKontrakPekerjaan()!;
-    assert.ok(id);
+    expect(id).toBeTruthy();
 
     // ALGO-037 (Q-017): INSERT kontrak baru
     const savedNew = await kontrak.saveKontrak();
-    assert.equal(savedNew, true);
+    expect(savedNew).toBe(true);
 
     // ALGO-040 (Q-019): fetchKontrakPekerjaan
     const fetched = await KontrakPekerjaan.fetchKontrakPekerjaan(id);
-    assert.ok(fetched);
-    assert.equal(fetched.getPersetujuanHarga(), 75000);
+    expect(fetched).not.toBeNull();
+    expect(fetched!.getPersetujuanHarga()).toBe(75000);
 
     // ALGO-036 (Q-016) & ALGO-037 (Q-018): UPDATE kontrak yang sudah ada
-    const statusUpdated = await fetched.statusUpdate(
+    const statusUpdated = await fetched!.statusUpdate(
       'statusPekerjaan',
       STATUS_PEKERJAAN.ON_PROGRESS
     );
-    assert.equal(statusUpdated, true);
-    assert.equal(fetched.getStatusPekerjaan(), STATUS_PEKERJAAN.ON_PROGRESS);
+    expect(statusUpdated).toBe(true);
+    expect(fetched!.getStatusPekerjaan()).toBe(STATUS_PEKERJAAN.ON_PROGRESS);
 
-    const savedExisting = await fetched.saveKontrak();
-    assert.equal(savedExisting, true);
+    const savedExisting = await fetched!.saveKontrak();
+    expect(savedExisting).toBe(true);
 
     // KNF18: Tolak input kosong, harga negatif, atau injeksi berbahaya
-    assert.equal(
-      KontrakPekerjaan.validateKontrakInput('', 50000).valid,
-      false
-    );
-    assert.equal(
-      KontrakPekerjaan.validateKontrakInput('Perbaikan pipa', -10000).valid,
-      false
-    );
-    assert.equal(
+    expect(KontrakPekerjaan.validateKontrakInput('', 50000).valid).toBe(false);
+    expect(
+      KontrakPekerjaan.validateKontrakInput('Perbaikan pipa', -10000).valid
+    ).toBe(false);
+    expect(
       KontrakPekerjaan.validateKontrakInput(
         'Test; DROP TABLE kontrak_pekerjaan',
         50000
-      ).valid,
-      false
-    );
+      ).valid
+    ).toBe(false);
   });
 
-  test('UC05, ALGO-043 (kirimInput), KNF04 & KNF19: Pelanggan membuat kontrak -> status Menunggu & Optimistic Lock penyedia jasa', async () => {
+  it('UC05, ALGO-043 (kirimInput), KNF04 & KNF19: Pelanggan membuat kontrak -> status Menunggu & Optimistic Lock penyedia jasa', async () => {
     const kontrak = await controller.kirimInput(
       'Servis resleting jaket kulit',
       85000,
@@ -364,39 +348,26 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
     );
 
     const detail = kontrak.getDetailPekerjaan();
-    assert.equal(detail.statusPekerjaan, STATUS_PEKERJAAN.MENUNGGU);
-    assert.equal(detail.persetujuanHarga, 85000);
-    assert.ok(detail.expiresAt);
+    expect(detail.statusPekerjaan).toBe(STATUS_PEKERJAAN.MENUNGGU);
+    expect(detail.persetujuanHarga).toBe(85000);
+    expect(detail.expiresAt).toBeTruthy();
 
-    // Penyedia jasa terkunci (statusKetersediaan = 'On Progress', version naik 1 -> 2)
     const provider = mockDb.pemberiJasa.get('provider-1')!;
-    assert.equal(provider.statusKetersediaan, STATUS_KETERSEDIAAN.ON_PROGRESS);
-    assert.equal(provider.version, 2);
+    expect(provider.statusKetersediaan).toBe(STATUS_KETERSEDIAAN.ON_PROGRESS);
+    expect(provider.version).toBe(2);
 
-    // Notifikasi terkirim ke penyedia jasa
-    assert.equal(mockDb.notifikasi.length, 1);
-    assert.equal(mockDb.notifikasi[0].idPenerima, 'provider-1');
+    expect(mockDb.notifikasi).toHaveLength(1);
+    expect(mockDb.notifikasi[0].idPenerima).toBe('provider-1');
 
     // KNF04: Pelanggan ke-2 mencoba memesan penyedia jasa yang sama secara bersamaan -> ditolak (409 Conflict)
-    await assert.rejects(
-      async () => {
-        await controller.kirimInput(
-          'Permak jas',
-          120000,
-          'cust-2',
-          'provider-1',
-          1
-        );
-      },
-      (err: unknown) => {
-        assert.ok(err instanceof KontrakError);
-        assert.equal(err.statusCode, 409);
-        return true;
-      }
-    );
+    await expect(
+      controller.kirimInput('Permak jas', 120000, 'cust-2', 'provider-1', 1)
+    ).rejects.toMatchObject({
+      statusCode: 409,
+    });
   });
 
-  test('Penyedia menerima kontrak (Optimistic Locking KNF04 & KNF19) -> On Progress -> Selesai (UC06, KNF20) -> Konfirmasi Pelanggan (UC07, ALGO-042, KNF21, KNF22) -> Done', async () => {
+  it('Penyedia menerima kontrak (Optimistic Locking KNF04 & KNF19) -> On Progress -> Selesai (UC06, KNF20) -> Konfirmasi Pelanggan (UC07, ALGO-042, KNF21, KNF22) -> Done', async () => {
     const kontrak = await controller.kirimInput(
       'Sol sepatu kulit 2 pasang',
       100000,
@@ -405,23 +376,13 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
     );
     const idKontrak = kontrak.getIdKontrakPekerjaan()!;
 
-    // Uji Optimistic Locking gagal jika version tidak sesuai (mis. version lama = 1 padahal sekarang 2)
-    await assert.rejects(
-      async () => {
-        await controller.konfirmasiPersetujuanPenyedia(
-          idKontrak,
-          'provider-1',
-          true,
-          1
-        );
-      },
-      (err: unknown) => {
-        assert.ok(err instanceof KontrakError);
-        assert.equal(err.code, 'OPTIMISTIC_LOCK_CONFLICT');
-        assert.equal(err.statusCode, 409);
-        return true;
-      }
-    );
+    // Uji Optimistic Locking gagal jika version tidak sesuai (version lama = 1 padahal sekarang 2)
+    await expect(
+      controller.konfirmasiPersetujuanPenyedia(idKontrak, 'provider-1', true, 1)
+    ).rejects.toMatchObject({
+      code: 'OPTIMISTIC_LOCK_CONFLICT',
+      statusCode: 409,
+    });
 
     // Penyedia menerima dengan version yang valid (version = 2) -> status menjadi 'On Progress'
     const accepted = await controller.konfirmasiPersetujuanPenyedia(
@@ -430,35 +391,33 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
       true,
       2
     );
-    assert.equal(accepted.getStatusPekerjaan(), STATUS_PEKERJAAN.ON_PROGRESS);
-    assert.equal(mockDb.pemberiJasa.get('provider-1')!.version, 3);
+    expect(accepted.getStatusPekerjaan()).toBe(STATUS_PEKERJAAN.ON_PROGRESS);
+    expect(mockDb.pemberiJasa.get('provider-1')!.version).toBe(3);
 
     // UC06: Penyedia menyelesaikan pekerjaan -> status menjadi 'Menunggu Konfirmasi Pelanggan' + kirim notifikasi (KNF20)
     const finished = await controller.selesaikanPekerjaan(
       idKontrak,
       'provider-1'
     );
-    assert.equal(
-      finished.getStatusPekerjaan(),
+    expect(finished.getStatusPekerjaan()).toBe(
       STATUS_PEKERJAAN.MENUNGGU_KONFIRMASI_PELANGGAN
     );
 
     // UC07 & ALGO-042 & C01 Pengguna.konfirmasiPekerjaan: Pelanggan mengonfirmasi penyelesaian & pembayaran -> status 'Done' & buka kunci penyedia
     const confirmed = await controller.konfirmasiPekerjaan(idKontrak, 'cust-1');
-    assert.equal(confirmed, true);
+    expect(confirmed).toBe(true);
 
     const finalKontrak = await controller.getKontrakPekerjaan(idKontrak);
-    assert.equal(finalKontrak?.getStatusPekerjaan(), STATUS_PEKERJAAN.DONE);
+    expect(finalKontrak?.getStatusPekerjaan()).toBe(STATUS_PEKERJAAN.DONE);
 
     // Kunci ketersediaan penyedia jasa terbuka kembali ('Available')
     const providerAfterDone = mockDb.pemberiJasa.get('provider-1')!;
-    assert.equal(
-      providerAfterDone.statusKetersediaan,
+    expect(providerAfterDone.statusKetersediaan).toBe(
       STATUS_KETERSEDIAAN.AVAILABLE
     );
   });
 
-  test('KF07 & KNF11: Auto-cancel 30 menit membatalkan kontrak Menunggu yang kedaluwarsa dan membuka kunci penyedia jasa', async () => {
+  it('KF07 & KNF11: Auto-cancel 30 menit membatalkan kontrak Menunggu yang kedaluwarsa dan membuka kunci penyedia jasa', async () => {
     const kontrak = await controller.kirimInput(
       'Perbaikan engsel pintu kayu',
       150000,
@@ -467,8 +426,7 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
     );
     const idKontrak = kontrak.getIdKontrakPekerjaan()!;
 
-    assert.equal(
-      mockDb.pemberiJasa.get('provider-1')!.statusKetersediaan,
+    expect(mockDb.pemberiJasa.get('provider-1')!.statusKetersediaan).toBe(
       STATUS_KETERSEDIAAN.ON_PROGRESS
     );
 
@@ -476,23 +434,21 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
     const futureTime = new Date(Date.now() + AUTO_CANCEL_TIMEOUT_MS + 60_000);
     const result = await cancelExpiredContracts(futureTime);
 
-    assert.equal(result.cancelledCount, 1);
-    assert.deepEqual(result.cancelledIds, [idKontrak]);
+    expect(result.cancelledCount).toBe(1);
+    expect(result.cancelledIds).toEqual([idKontrak]);
 
     const expiredKontrak = await controller.getKontrakPekerjaan(idKontrak);
-    assert.equal(
-      expiredKontrak?.getStatusPekerjaan(),
+    expect(expiredKontrak?.getStatusPekerjaan()).toBe(
       STATUS_PEKERJAAN.DIBATALKAN
     );
 
     // Kunci penyedia jasa telah dilepaskan kembali menjadi 'Available'
-    assert.equal(
-      mockDb.pemberiJasa.get('provider-1')!.statusKetersediaan,
+    expect(mockDb.pemberiJasa.get('provider-1')!.statusKetersediaan).toBe(
       STATUS_KETERSEDIAAN.AVAILABLE
     );
   });
 
-  test('KNF22: Validasi state transition menolak perubahan status yang tidak sah & mendukung Pengguna.konfirmasiPekerjaan()', async () => {
+  it('KNF22: Validasi state transition menolak perubahan status yang tidak sah & mendukung Pengguna.konfirmasiPekerjaan()', async () => {
     const kontrak = await controller.kirimInput(
       'Bersih taman rumah',
       90000,
@@ -501,10 +457,9 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
     );
     const idKontrak = kontrak.getIdKontrakPekerjaan()!;
 
-    // Pelanggan tidak bisa langsung konfirmasi Done saat status masih 'Menunggu'
     const pelanggan = new Pengguna({ idPengguna: 'cust-1' });
     const prematureConfirm = await pelanggan.konfirmasiPekerjaan(idKontrak);
-    assert.equal(prematureConfirm, false);
+    expect(prematureConfirm).toBe(false);
 
     // Penyedia menolak kontrak -> status 'Ditolak' & kunci penyedia jasa dilepas
     const rejected = await controller.konfirmasiPersetujuanPenyedia(
@@ -512,27 +467,31 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
       'provider-1',
       false
     );
-    assert.equal(rejected.getStatusPekerjaan(), STATUS_PEKERJAAN.DITOLAK);
-    assert.equal(
-      mockDb.pemberiJasa.get('provider-1')!.statusKetersediaan,
+    expect(rejected.getStatusPekerjaan()).toBe(STATUS_PEKERJAAN.DITOLAK);
+    expect(mockDb.pemberiJasa.get('provider-1')!.statusKetersediaan).toBe(
       STATUS_KETERSEDIAAN.AVAILABLE
     );
   });
 
-  test('REST API Handlers + JWT Auth Middleware: alur lengkap dari pembuatan kontrak hingga selesai', async () => {
-    const pelangganToken = signJWT({
-      idPengguna: 'cust-1',
-      username: 'pelanggan1',
-      role: 'PELANGGAN',
-    });
-    const providerToken = signJWT({
-      idPengguna: 'provider-1',
-      username: 'pakbudi',
-      role: 'PEMBERI_JASA',
-    });
-
-    const decoded = verifyJWT(pelangganToken);
-    assert.equal(decoded.idPengguna, 'cust-1');
+  it('REST API Handlers + JWT Auth Middleware (auth.middleware.ts): alur lengkap dari pembuatan kontrak hingga selesai', async () => {
+    const pelangganToken = jwt.sign(
+      {
+        idPengguna: 'cust-1',
+        username: 'pelanggan1',
+        role: Role.PELANGGAN,
+      },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+    const providerToken = jwt.sign(
+      {
+        idPengguna: 'provider-1',
+        username: 'pakbudi',
+        role: Role.PEMBERI_JASA,
+      },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
 
     // 1. Tanpa token -> 401 Unauthorized
     const unauth = createMockReqRes({});
@@ -540,8 +499,8 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
     authenticateJWT(unauth.req, unauth.res, () => {
       nextCalled = true;
     });
-    assert.equal(nextCalled, false);
-    assert.equal(unauth.res.getStatus(), 401);
+    expect(nextCalled).toBe(false);
+    expect(unauth.res.getStatus()).toBe(401);
 
     // 2. Pelanggan membuat kontrak -> 201 Created (status: 'Menunggu')
     const createCall = createMockReqRes({
@@ -554,12 +513,12 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
       },
     });
     authenticateJWT(createCall.req, createCall.res, () => {});
-    authorizeRoles('PELANGGAN')(createCall.req, createCall.res, () => {});
+    authorizeRoles(Role.PELANGGAN)(createCall.req, createCall.res, () => {});
     await controller.handleKirimInput(createCall.req, createCall.res);
 
-    assert.equal(createCall.res.getStatus(), 201);
+    expect(createCall.res.getStatus()).toBe(201);
     const createdJson = createCall.res.getJson();
-    assert.equal(createdJson.data.statusPekerjaan, STATUS_PEKERJAAN.MENUNGGU);
+    expect(createdJson.data.statusPekerjaan).toBe(STATUS_PEKERJAAN.MENUNGGU);
     const kontrakId = createdJson.data.idKontrakPekerjaan;
 
     // 3. Penyedia jasa menyetujui kontrak -> 200 OK (status: 'On Progress')
@@ -569,15 +528,14 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
       body: { disetujui: true, expectedVersion: 2 },
     });
     authenticateJWT(acceptCall.req, acceptCall.res, () => {});
-    authorizeRoles('PEMBERI_JASA')(acceptCall.req, acceptCall.res, () => {});
+    authorizeRoles(Role.PEMBERI_JASA)(acceptCall.req, acceptCall.res, () => {});
     await controller.handleKonfirmasiPersetujuan(
       acceptCall.req,
       acceptCall.res
     );
 
-    assert.equal(acceptCall.res.getStatus(), 200);
-    assert.equal(
-      acceptCall.res.getJson().data.statusPekerjaan,
+    expect(acceptCall.res.getStatus()).toBe(200);
+    expect(acceptCall.res.getJson().data.statusPekerjaan).toBe(
       STATUS_PEKERJAAN.ON_PROGRESS
     );
 
@@ -589,9 +547,8 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
     authenticateJWT(finishCall.req, finishCall.res, () => {});
     await controller.handleSelesaikanPekerjaan(finishCall.req, finishCall.res);
 
-    assert.equal(finishCall.res.getStatus(), 200);
-    assert.equal(
-      finishCall.res.getJson().data.statusPekerjaan,
+    expect(finishCall.res.getStatus()).toBe(200);
+    expect(finishCall.res.getJson().data.statusPekerjaan).toBe(
       STATUS_PEKERJAAN.MENUNGGU_KONFIRMASI_PELANGGAN
     );
 
@@ -606,9 +563,8 @@ describe('KontrakPekerjaan & KontrakPekerjaanController (UC05, UC06, UC07)', () 
       confirmCall.res
     );
 
-    assert.equal(confirmCall.res.getStatus(), 200);
-    assert.equal(
-      confirmCall.res.getJson().data.statusPekerjaan,
+    expect(confirmCall.res.getStatus()).toBe(200);
+    expect(confirmCall.res.getJson().data.statusPekerjaan).toBe(
       STATUS_PEKERJAAN.DONE
     );
   });
