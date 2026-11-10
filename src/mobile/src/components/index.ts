@@ -8,6 +8,6 @@ export { LayarSementara } from './LayarSementara';
 export { Lencana } from './Lencana';
 export { MenuTile } from './MenuTile';
 export { StatusBar } from './StatusBar';
-export { TabBar } from './TabBar';
+export { TabBar, TanpaTombolTab } from './TabBar';
 export { Teks } from './Teks';
 export { Tombol } from './Tombol';
