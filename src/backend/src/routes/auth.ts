@@ -27,11 +27,21 @@ export const authRoutes = new Hono<AppEnv>();
  */
 const SKEMA_KEMBALI = ["sehati:", "exp:", "exps:"];
 
-function urlKembaliValid(kembali: unknown): URL | null {
+/**
+ * Validates the `kembali`/`state` deep link.
+ *
+ * The host check is essential: Android routes an intent by `scheme://host`.
+ * A link such as `sehati:///` parses fine but has an empty host, so the browser
+ * finds no app to hand off to and the login dies silently after the callback.
+ * Rejecting it here turns that dead end into a loud 400.
+ */
+export function urlKembaliValid(kembali: unknown): URL | null {
   if (typeof kembali !== "string") return null;
   try {
     const url = new URL(kembali);
-    return SKEMA_KEMBALI.includes(url.protocol) ? url : null;
+    if (!SKEMA_KEMBALI.includes(url.protocol)) return null;
+    if (url.host === "") return null;
+    return url;
   } catch {
     return null;
   }
@@ -44,7 +54,11 @@ function urlKembaliValid(kembali: unknown): URL | null {
  */
 authRoutes.get("/google/mulai", (c) => {
   const kembali = urlKembaliValid(c.req.query("kembali"));
-  if (!kembali) throw permintaanTidakValid("Parameter kembali harus berupa deep link aplikasi");
+  if (!kembali) {
+    throw permintaanTidakValid(
+      "Parameter kembali harus deep link aplikasi yang memiliki host (mis. sehati://masuk)",
+    );
+  }
   return c.redirect(buatUrlOtorisasi(bacaConfig(c.env), kembali.toString()));
 });
 
@@ -54,8 +68,11 @@ authRoutes.get("/google/mulai", (c) => {
  */
 authRoutes.get("/google/callback", (c) => {
   const kembali = urlKembaliValid(c.req.query("state"));
-  if (!kembali) throw permintaanTidakValid("State login Google tidak valid");
-
+  if (!kembali) {
+    throw permintaanTidakValid(
+      "State login Google tidak valid: deep link aplikasi harus memiliki host (mis. sehati://masuk)",
+    );
+  }
   const kode = c.req.query("code");
   if (kode) kembali.searchParams.set("code", kode);
   else kembali.searchParams.set("error", c.req.query("error") ?? "tidak_ada_kode");

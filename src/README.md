@@ -439,6 +439,8 @@ Selain `/api/auth/google*` dan `/health`, semua rute memerlukan `Authorization: 
 
 Status: `400` body tidak valid · `401` belum terautentikasi · `403` peran salah · `404` tidak ditemukan · `409` konflik (slot terambil / jadwal bentrok) · `422` validasi gagal · `502` kegagalan layanan eksternal.
 
+**Deep link login wajib berhost.** `kembali` pada `/api/auth/google/mulai` dan `state` pada `/api/auth/google/callback` harus berupa deep link aplikasi yang memiliki host — `sehati://masuk` untuk biner produksi, `exp://<host>:8081/--/` untuk Expo Go. Tanpa host (`sehati://`, `sehati:///`) rute membalas **400**, karena Android merutekan intent berdasarkan `scheme://host` sehingga tautan tanpa host tidak membuka aplikasi apa pun dan login tampak menggantung tanpa pesan galat. Alur lengkapnya ada di [`backend/README.md`](./backend/README.md#google-login-flow).
+
 ### Tugas terjadwal
 
 Satu *cron trigger* `* * * * *` menjalankan:
