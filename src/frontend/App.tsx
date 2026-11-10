@@ -1,13 +1,13 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
-import { RootNavigator } from './src/navigation/RootNavigator';
+import { BottomTabNavigator } from './src/navigation/BottomTabNavigation';
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <RootNavigator />
+        <BottomTabNavigator/>
       </NavigationContainer>
     </SafeAreaProvider>
   );
