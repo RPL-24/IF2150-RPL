@@ -9,9 +9,9 @@ RPC `cari_laporan_duplikat(p_lat, p_lng, p_kategori)` dipanggil `LaporanControll
 Acceptance criteria issue #104:
 
 - [x] Uji performa `cari_laporan_duplikat` dengan dataset besar (±10.000 laporan) → skrip [`benchmark-cari-duplikat.sql`](benchmark-cari-duplikat.sql).
-- [ ] Catat metrik awal (sequential/bitmap scan) dengan `EXPLAIN ANALYZE` → bagian [Hasil](#hasil), **diisi dari SQL Editor**.
+- [x] Catat metrik awal dengan `EXPLAIN ANALYZE` → bagian [Hasil](#hasil). Rencana awal ternyata **Index Scan lewat `laporan_status_tahap_idx`**, bukan Seq Scan; lihat [catatan](#catatan-terhadap-acceptance-criteria).
 - [x] Optimasi index (kategori, status) + penyaringan bounding box sebelum haversine → migration [`20261110140216_index_cari_duplikat.sql`](../../../supabase/migrations/20261110140216_index_cari_duplikat.sql); bounding box sudah ada di RPC sejak migration `20261107155512_trigger_status.sql`.
-- [ ] Catat metrik sesudah optimasi + tabel perbandingan → bagian [Hasil](#hasil), **diisi dari SQL Editor**.
+- [x] Catat metrik sesudah optimasi + tabel perbandingan → bagian [Hasil](#hasil).
 
 ## Yang dibandingkan
 
@@ -84,37 +84,76 @@ Pesan berisi tiga bagian:
 
 ## Hasil
 
-Dijalankan di: [ISI DARI SQL EDITOR: tanggal, project Supabase, versi PostgreSQL]. Dataset: 10.000 laporan dummy + data seed, n = 50.
+Dijalankan di: Supabase SQL Editor (project LaporKota), PostgreSQL 17, 10 November 2026. Dataset: 10.000 laporan dummy + data seed, n = 50.
 
 | Titik | Metode | Scan | Median (ms) | p95 (ms) | Percepatan (x) | Rows removed by filter |
 |---|---|---|---|---|---|---|
-| Pusat kota | 1 naif | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | 1,0 | [ISI DARI SQL EDITOR] |
-| Pusat kota | 2 RPC tanpa index | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] |
-| Pusat kota | 3 RPC + index | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] |
-| Pinggir kota | 1 naif | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | 1,0 | [ISI DARI SQL EDITOR] |
-| Pinggir kota | 2 RPC tanpa index | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] |
-| Pinggir kota | 3 RPC + index | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] |
-| Ada duplikat | 1 naif | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | 1,0 | [ISI DARI SQL EDITOR] |
-| Ada duplikat | 2 RPC tanpa index | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] |
-| Ada duplikat | 3 RPC + index | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] | [ISI DARI SQL EDITOR] |
+| Pusat kota | 1 naif | Index Scan (`laporan_status_tahap_idx`) | 1,662 | 1,688 | 1,0 | 5.144 |
+| Pusat kota | 2 RPC tanpa index | Index Scan (`laporan_status_tahap_idx`) | 1,733 | 1,765 | 1,0 | 5.144 |
+| Pusat kota | 3 RPC + index | Index Scan (`laporan_cari_duplikat_idx`) | 0,333 | 0,352 | 5,0 | 0 |
+| Pinggir kota | 1 naif | Index Scan (`laporan_status_tahap_idx`) | 1,648 | 1,673 | 1,0 | 5.144 |
+| Pinggir kota | 2 RPC tanpa index | Index Scan (`laporan_status_tahap_idx`) | 1,707 | 1,741 | 1,0 | 5.144 |
+| Pinggir kota | 3 RPC + index | Index Scan (`laporan_cari_duplikat_idx`) | 0,334 | 0,352 | 4,9 | 0 |
+| Ada duplikat | 1 naif | Index Scan (`laporan_status_tahap_idx`) | 1,680 | 1,702 | 1,0 | 5.141 |
+| Ada duplikat | 2 RPC tanpa index | Index Scan (`laporan_status_tahap_idx`) | 1,738 | 1,759 | 1,0 | 5.141 |
+| Ada duplikat | 3 RPC + index | Index Scan (`laporan_cari_duplikat_idx`) | 0,350 | 0,367 | 4,8 | 1 |
 
-Cek hasil: [ISI DARI SQL EDITOR: cocok YA/TIDAK per titik].
+Median dan p95 metode 2/3 adalah waktu pemanggilan RPC (end-to-end di server); kolom scan dan rows removed untuk metode 2/3 berasal dari EXPLAIN isi RPC.
+
+Cek hasil (`id_tiket` naif = RPC + index):
+
+| Titik | Naif | RPC + index | Cocok |
+|---|---|---|---|
+| Pusat kota | (kosong) | (kosong) | YA |
+| Pinggir kota | (kosong) | (kosong) | YA |
+| Ada duplikat | BENCH-D1, BENCH-D2, BENCH-D3 | BENCH-D1, BENCH-D2, BENCH-D3 | YA |
 
 Cuplikan EXPLAIN sebelum (metode 1, titik ada duplikat):
 
 ```
-[ISI DARI SQL EDITOR]
+Sort (actual time=1.653..1.653 rows=3 loops=1)
+  Sort Key: (('12742000'::double precision * asin(LEAST('1'::double precision, sqrt((power(sin((radians((l.latitude - '-6.902'::double precision)) / '2'::double precision)), '2'::double precision) + (('0.992753147757843'::double precision * cos(radians(l.latitude))) * power(sin((radians((l.longitude - '107.635'::double precision)) / '2'::double precision)), '2'::double precision))))))))
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=586
+  ->  Index Scan using laporan_status_tahap_idx on laporan l (actual time=0.959..1.648 rows=3 loops=1)
+        Index Cond: (status = ANY ('{diterima,dikerjakan}'::status_laporan[]))
+        Filter: ((kategori = 'jalan_berlubang'::kategori_kerusakan) AND (('12742000'::double precision * asin(LEAST('1'::double precision, sqrt((power(sin((radians((latitude - '-6.902'::double precision)) / '2'::double precision)), '2'::double precision) + (('0.992753147757843'::double precision * cos(radians(latitude))) * power(sin((radians((longitude - '107.635'::double precision)) / '2'::double precision)), '2'::double precision))))))) <= '20'::double precision))
+        Rows Removed by Filter: 5141
+        Buffers: shared hit=586
+Planning Time: 0.135 ms
+Execution Time: 1.680 ms
 ```
 
 Cuplikan EXPLAIN sesudah (isi RPC + index, titik ada duplikat):
 
 ```
-[ISI DARI SQL EDITOR]
+Sort (actual time=0.027..0.027 rows=3 loops=1)
+  Sort Key: (('12742000'::double precision * asin(LEAST('1'::double precision, sqrt((power(sin((radians((l.latitude - $1)) / '2'::double precision)), '2'::double precision) + ((cos(radians($1)) * cos(radians(l.latitude))) * power(sin((radians((l.longitude - $2)) / '2'::double precision)), '2'::double precision))))))))
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=3
+  ->  Index Scan using laporan_cari_duplikat_idx on laporan l (actual time=0.020..0.023 rows=3 loops=1)
+        Index Cond: ((kategori = $3) AND (latitude >= ($1 - '0.0003'::double precision)) AND (latitude <= ($1 + '0.0003'::double precision)) AND (longitude >= ($2 - ('0.0003'::double precision / cos(radians($1))))) AND (longitude <= ($2 + ('0.0003'::double precision / cos(radians($1))))))
+        Filter: (('12742000'::double precision * asin(LEAST('1'::double precision, sqrt((power(sin((radians((latitude - $1)) / '2'::double precision)), '2'::double precision) + ((cos(radians($1)) * cos(radians(latitude))) * power(sin((radians((longitude - $2)) / '2'::double precision)), '2'::double precision))))))) <= '20'::double precision)
+        Rows Removed by Filter: 1
+        Buffers: shared hit=3
+Planning Time: 0.012 ms
+Execution Time: 0.062 ms
 ```
+
+### Analisis
+
+1. **±5× end-to-end, ±27× di dalam query.** Waktu pemanggilan RPC turun dari ±1,7 ms menjadi ±0,33–0,35 ms (4,8–5,0×). Waktu query di dalam RPC turun lebih jauh: EXPLAIN naif 1,680 ms → EXPLAIN isi RPC + index 0,062 ms (±27×). Selisih ±0,28 ms antara 0,062 ms dan 0,350 ms adalah overhead pemanggilan fungsi (menyiapkan dan merencanakan isi fungsi SQL setiap kali dipanggil), yang tidak dipengaruhi index. Setelah optimasi, overhead ini menjadi bagian terbesar dari waktu RPC.
+2. **Buffers 586 → 3.** Sebelum index, query membaca 586 blok (seluruh laporan aktif); sesudahnya cukup 3 blok (halaman index + baris di dalam kotak). Jumlah blok ini bergantung pada data, bukan pada kecepatan server, jadi menjadi bukti yang paling stabil.
+3. **"RPC tanpa index" sama lambatnya dengan naif** (1,707–1,738 ms vs 1,648–1,680 ms, rows removed sama). Tanpa index pada koordinat, kondisi kotak hanya menjadi `Filter` yang dicek per baris setelah baris dibaca, jadi jumlah baris yang dibaca tidak berkurang. Sedikit lebih lambat karena overhead pemanggilan fungsi. Bounding box baru berguna setelah ada index yang bisa memakai rentangnya sebagai `Index Cond`.
+4. **Hasil tetap benar.** Ketiga titik menghasilkan `id_tiket` yang sama antara query naif dan RPC + index; 4 laporan jebakan (ditolak, kategori lain, 25 m, sudah berhasil) tidak ikut.
+
+### Catatan terhadap acceptance criteria
+
+Issue #104 meminta metrik awal berupa *sequential scan time*. Di Supabase, rencana sebelum optimasi **bukan Seq Scan**, melainkan **Index Scan lewat `laporan_status_tahap_idx`** (index `(status, tahap)` dari skema awal) dengan `Index Cond` hanya pada status. Index itu tidak membatasi kategori maupun koordinat, sehingga query tetap memindai **semua laporan aktif**: 5.141 baris dibaca lalu dibuang oleh `Filter` (kategori + haversine), untuk mendapatkan 3 baris. Secara biaya, ini setara pemindaian penuh atas laporan aktif. Angka "sebelum" di atas adalah waktu pemindaian tersebut, bukan Seq Scan pada seluruh tabel.
 
 ### Kenapa lebih cepat
 
-- **Sebelum**: index yang ada hanya `(status, tahap)`. Planner membaca semua laporan aktif (Seq Scan atau Bitmap Heap Scan lewat `laporan_status_tahap_idx`), lalu menghitung haversine (sin, cos, asin, sqrt) untuk **setiap** baris tersebut dan membuang hampir semuanya (*rows removed by filter* ≈ jumlah laporan aktif). Kotak di metode 2 mengurangi jumlah haversine, tetapi tabel tetap dibaca seluruhnya karena tidak ada index pada koordinat.
+- **Sebelum**: index yang ada hanya `(status, tahap)`. Planner memakai Index Scan `laporan_status_tahap_idx` untuk mengambil semua laporan aktif, lalu menghitung haversine (sin, cos, asin, sqrt) untuk **setiap** baris tersebut dan membuang hampir semuanya (*rows removed by filter* 5.141–5.144). Kotak di metode 2 tidak mengurangi jumlah baris yang dibaca karena tidak ada index pada koordinat.
 - **Sesudah**: index `(kategori, latitude, longitude)` membuat planner memakai **Index Scan** dengan rentang: `kategori = $3` dan rentang latitude menentukan potongan index yang dibaca, lalu rentang longitude dicek di dalam index. Hanya baris di dalam kotak ±33 m yang dibaca dari tabel dan dihitung haversine-nya, sehingga *rows removed by filter* tinggal 0–beberapa baris.
 - Kerja per panggilan tidak lagi bergantung pada jumlah total laporan, melainkan pada kepadatan laporan di sekitar titik.
 - Partial index (`where status in ('diterima','dikerjakan')`) tidak memuat laporan ditolak/berhasil yang terus bertambah, jadi index tetap kecil dan biaya insert kecil.
