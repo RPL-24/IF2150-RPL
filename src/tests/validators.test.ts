@@ -3,6 +3,7 @@ import {
   isDataLengkap,
   isEmailValid,
   isKonfirmasiPasswordSesuai,
+  isNoTelpValid,
   isPasswordKuat,
 } from '../controllers/validators';
 
@@ -45,6 +46,25 @@ describe('isEmailValid', () => {
 
   it('false untuk format email yang tidak valid', () => {
     expect(isEmailValid('budi@')).toBe(false);
+  });
+});
+
+describe('isNoTelpValid', () => {
+  it('true untuk angka saja', () => {
+    expect(isNoTelpValid('081234567890')).toBe(true);
+  });
+
+  it('true jika ada spasi atau tanda minus', () => {
+    expect(isNoTelpValid('0812 3456 7890')).toBe(true);
+    expect(isNoTelpValid('0812-3456-7890')).toBe(true);
+  });
+
+  it('false jika mengandung huruf', () => {
+    expect(isNoTelpValid('08abc')).toBe(false);
+  });
+
+  it('false untuk string kosong', () => {
+    expect(isNoTelpValid('')).toBe(false);
   });
 });
 

@@ -2,14 +2,12 @@ import { useCallback, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { supabase } from '../services/supabase';
-import { AuthController } from '../controllers/AuthController';
 import { formatRupiah } from '../controllers/margin';
 import { palette, styles } from './styles';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/types';
 import { pushNotificationUI } from '../services/PushNotificationUI';
 
-const auth = new AuthController();
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 type ProdukRingkas = {
@@ -69,14 +67,6 @@ export default function HomePage({ navigation }: Props) {
       };
     }, []),
   );
-
-  async function logout() {
-    try {
-      await auth.logout();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Gagal logout');
-    }
-  }
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={{ padding: 20, gap: 12 }}>
@@ -169,8 +159,12 @@ export default function HomePage({ navigation }: Props) {
         <Text>Uji push (hapus sebelum commit)</Text>
       </Pressable> */}
 
-      <Pressable accessibilityRole="button" onPress={logout} style={{ padding: 14, alignItems: 'center' }}>
-        <Text style={{ color: palette.secondary, fontWeight: '700' }}>Logout</Text>
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => navigation.navigate('Profile')}
+        style={{ padding: 14, alignItems: 'center' }}
+      >
+        <Text style={{ color: palette.navy, fontWeight: '700' }}>Profil</Text>
       </Pressable>
     </ScrollView>
   );

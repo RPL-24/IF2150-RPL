@@ -28,6 +28,7 @@ import HomePage from './views/HomePage';
 import NotificationPage from './views/NotificationPage';
 import IzinNotifikasiPage from './views/IzinNotifikasiPage';
 import ProductDetailPage from './views/ProductDetailPage';
+import ProfilePage from './views/ProfilePage';
 import {
   pushNotificationUI as pushUI,
   type DataNotifikasi,
@@ -150,6 +151,11 @@ export default function App() {
             name="ProductDetail"
             component={ProductDetailPage}
             options={{ title: 'Detail Produk' }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={ProfilePage}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       ) : (

@@ -41,12 +41,12 @@ export class ProfileController {
       throw new ValidationError('Email sudah digunakan akun lain');
     }
 
-    await pemilik.setNamaUsaha(namaUsaha.trim());
-    await pemilik.setNoTelp(noTelp.trim());
-
     if (emailBerubah) {
       await pemilik.setEmail(emailBaru);
     }
+
+    await pemilik.setNamaUsaha(namaUsaha.trim());
+    await pemilik.setNoTelp(noTelp.trim());
 
     return { emailPerluKonfirmasi: emailBerubah };
   }
