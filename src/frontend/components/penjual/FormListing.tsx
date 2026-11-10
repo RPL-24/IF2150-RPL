@@ -159,11 +159,12 @@ interface FormListingProps {
             role="seller"
             isAuthenticated
             title={
-                <h1 className="text-xl font-bold tracking-normal text-white">
+                    <h1 className="text-2xl font-bold text-[#fff4f2] text-center sm:text-4xl">
+
                     {isEditing ? "Edit Product" : "Add Product"}
                 </h1>
             }
-            theme="green"
+            theme="blue"
             headerClassName="px-5 pb-5 pt-8"
             bodyClassName="px-4 py-6 sm:px-6"
         >
@@ -330,7 +331,7 @@ interface FormListingProps {
                 name="aksi-listing"
                 value="draft"
                 disabled={isSubmitting || !isFormValid}
-                className="w-full whitespace-nowrap rounded-xl border border-[#1a8ca1] bg-white px-5 py-2.5 text-sm font-bold text-[#1a8ca1] hover:bg-[#e7f5f6] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                className="w-full whitespace-nowrap rounded-xl border border-[#1C8CC9] bg-white px-5 py-2.5 text-sm font-bold text-[#1C8CC9] hover:bg-[#e7f3fb] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
                 {isSubmitting ? "Saving..." : "Save Draft"}
             </button>
@@ -339,7 +340,7 @@ interface FormListingProps {
                 name="aksi-listing"
                 value="show"
                 disabled={isSubmitting || !isFormValid}
-                className="w-full whitespace-nowrap rounded-xl bg-[#1a8ca1] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#14798b] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                className="w-full whitespace-nowrap rounded-xl bg-[#1C8CC9] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#166DA2] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
                 {isSubmitting ? "Saving..." : isEditing ? "Save Changes / Show" : "Show"}
             </button>

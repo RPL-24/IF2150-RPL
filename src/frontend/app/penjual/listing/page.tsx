@@ -76,7 +76,7 @@ export default function ListingPenjualPage() {
       role="seller"
       isAuthenticated
       title={<h1 className="text-2xl font-bold text-[#fff4f2] text-center sm:text-4xl">Kelola Listing</h1>}
-      theme="green"
+      theme="blue"
       headerClassName="px-5 pb-5 pt-8"
       bodyClassName="px-4 py-6 sm:px-6 lg:px-8"
     >
@@ -93,7 +93,7 @@ export default function ListingPenjualPage() {
           <button
             type="button"
             onClick={() => router.push("/penjual/listing/tambah")}
-            className="rounded-xl bg-[#1a8ca1] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#14798b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14798b]"
+            className="rounded-xl bg-[#1C8CC9] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#166DA2] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#166DA2]"
           >
             + Tambah Listing
           </button>
@@ -133,7 +133,7 @@ export default function ListingPenjualPage() {
             <button
               type="button"
               onClick={() => router.push("/penjual/listing/tambah")}
-              className="mt-5 rounded-xl bg-[#1a8ca1] px-5 py-3 text-sm font-bold text-white hover:bg-[#14798b]"
+              className="mt-5 rounded-xl bg-[#1C8CC9] px-5 py-3 text-sm font-bold text-white hover:bg-[#166DA2]"
             >
               Tambah Makanan Pertama
             </button>

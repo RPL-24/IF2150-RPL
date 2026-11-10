@@ -46,8 +46,9 @@ function temaUntukPath(pathname: string): TemaHalaman {
   if (pathname === "/" || pathname.startsWith("/katalog")) return TEMA_HIJAU;
   if (pathname.startsWith("/cart")) return TEMA_BIRU;
   if (pathname.startsWith("/reward") || pathname.startsWith("/penjual/account")) return TEMA_PINK;
-  // Halaman penjual (dashboard, kelola listing, tambah/edit) ikut tema hijau seperti katalog pembeli.
-  if (pathname === "/penjual" || pathname.startsWith("/penjual/listing")) return TEMA_HIJAU;
+  // Halaman penjual: dashboard ikut tema hijau; kelola/tambah/edit listing biru seperti Cart pembeli.
+  if (pathname === "/penjual") return TEMA_HIJAU;
+  if (pathname.startsWith("/penjual/listing")) return TEMA_BIRU;
   return TEMA_DEFAULT;
 }
 
