@@ -7,24 +7,27 @@ IMPLEMENTASI PERANGKAT LUNAK
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## *ITBELI*
 ### *[Logo Perangkat Lunak]*
 
-### Untuk: *[Nama Asisten]*
+### Untuk:  *Mikhael Andrian Yonatan*
 
 Dipersiapkan oleh:
+
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | *K01* |
+| Kelompok | *G02*  |
+| Nama Kelompok | *Indeks A*  |
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| *13525124* | *Sulthan Dhiyazka Suwandi* |
+| *13525034* | *Dhanesworo Muhammad Datiputro* |
+| *13525115* | *Nazhif Hilmi Kistijantoro* |
+| *13525121* | *I Made Adi Kusuma Ardana* |
+| *13525106* | *Ghaniyul Amri Caulava* |
+
 ---
 
 > **Petunjuk pengerjaan:** *[Silahkan hapus bagian ini setelah selesai mengerjakan]*
@@ -190,8 +193,18 @@ Tabel B.1. Perubahan dari DPPL
 
 | No | Bagian DPPL | Rancangan Awal | Implementasi Akhir | Alasan |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | *[mis. Kelas C05, layar I-03, tabel `orders`]* | *[Yang direncanakan]* | *[Yang dibuat]* | *[Alasan perubahan]* |
-| *...* | *...* | *...* | *...* | *...* |
+| 1 | Lingkungan implementasi, DBMS (Tabel 2.1) | PostgreSQL terkelola pada Supabase (*cloud*), tidak dijalankan lokal | PostgreSQL 16 lokal melalui Docker Compose (`src/docker-compose.yml`). Basis data lain, termasuk Supabase, tetap dapat dipakai dengan mengisi `DATABASE_URL` | Ketentuan A.2 M9 meminta aplikasi dapat dijalankan ulang asisten tanpa akun pribadi kelompok, dan basis data lokal disarankan. Skema dan SQL tetap PostgreSQL sehingga rancangan tidak berubah |
+| 2 | Kelas C43 SurelAdapter | Mengirim surel melalui layanan SMTP | Tetap SMTP melalui nodemailer, tetapi saat pengembangan dan penilaian diarahkan ke Mailpit (SMTP lokal pada Docker Compose, kotak masuk di `http://localhost:8025`). SMTP asli cukup diatur lewat variabel `SMTP_*` | Kode verifikasi (UC02) dapat diuji asisten tanpa akun surel sungguhan dan tanpa kredensial yang di-*commit* |
+| 3 | Kelas C13 AkunController: `daftarAkun`, `verifikasiAkun`, `kirimUlangKode` | Mengembalikan `Boolean` | Mengembalikan objek `{ berhasil, kodePesan, pesan }`, misalnya `DOMAIN_TIDAK_VALID`, `SUREL_TERDAFTAR`, `KODE_KEDALUWARSA`. `login` memakai pola yang sama dengan kode pesan Algo-006 ditambah `ISIAN_KOSONG` | KF05 meminta pesan kesalahan yang menyebutkan penyebabnya. Dengan nilai `Boolean`, View tidak dapat membedakan domain salah, surel terdaftar, atau kode kedaluwarsa |
+| 4 | Kelas C13 AkunController: `validasiKodeVerifikasi(kode)` dan `cekKedaluwarsaKode(idToken)` | Parameter berupa kode dan `idToken` | Keduanya menerima objek `TokenVerifikasi` yang sudah diambil `verifikasiAkun` | Controller tidak menyimpan *state* antarpermintaan (DPPL 2.2.2), sehingga token perlu diteruskan sebagai parameter. Cara ini juga menghindari query ulang ke tabel `token_verifikasi` |
+| 5 | UC02, layar I-03 (`arahkanKeBeranda`) | Setelah verifikasi berhasil, pengguna diarahkan ke beranda | `POST /api/akun/verifikasi` yang berhasil langsung membuat sesi login (`buatSesiLogin`) dan mengembalikan token | Beranda memerlukan sesi login. Tanpa sesi, pengguna harus login ulang tepat setelah memverifikasi surel |
+| 6 | Kelas C28 SesiLogin: `buatToken` | Token sesi "bertanda tangan kriptografis" | Token acak 32 byte (64 karakter hex) dari `crypto.randomBytes` yang disimpan pada tabel `sesi_login` dan diperiksa ke basis data pada setiap permintaan | Token yang tersimpan di basis data dapat dicabut seketika saat logout (KF12) maupun saat akun diblokir (`nonaktifkanByAkun`, KF53), hal yang sulit dilakukan pada token bertanda tangan seperti JWT |
+| 7 | Kelas C41 Otorisasi | Operasi `verifikasiToken` dan `verifikasiAdmin` | Kedua operasi tetap ada, ditambah `ambilToken` (membaca header `Authorization: Bearer`) serta middleware Express `wajibLogin` (401) dan `wajibAdmin` (401/403) yang membungkus kedua operasi tersebut | Cara standar Express untuk melindungi route, sehingga pemeriksaan sesi dan peran tidak ditulis ulang di setiap route. Dipakai route Modul A, B, C, D, dan E |
+| 8 | Kelas C13 AkunController: `getTautanDokumenLegal` | Operasi controller yang dipanggil View | Ditambah endpoint `GET /api/akun/tautan-kebijakan` | View (I-02, I-09) berjalan di peramban sehingga memerlukan jalur HTTP untuk memanggil operasi controller |
+| 9 | Kelas C29 Barang: `getListingPenjual` | Mengembalikan `List<Barang>` dengan atribut Tabel 4.1 | Setiap objek `Barang` dilengkapi atribut tambahan `fotoUtama` yang diambil dalam query yang sama (subquery ke `foto_barang`) | Kartu listing pada profil (I-09) memerlukan foto utama. Mengambilnya per barang akan menimbulkan satu query tambahan untuk setiap listing |
+| 10 | Kelas C02 HalamanProfil: `tampilkanDaftarListing`, layar I-09 (I09-O02) | Memanggil `KartuProduk.render()` untuk setiap barang | Kartu listing dibuat oleh `HalamanProfil.buatKartu` dengan gaya `.card` yang sama, dan menaut ke detail listing milik penjual (`/detail?id=`) | C06 KartuProduk (Modul C) dibuat untuk katalog: menaut ke detail pembeli dan belum mendukung label "Terjual", sedangkan profil menampilkan listing Tersedia dan Terjual milik sendiri |
+| 11 | Kelas C01 HalamanOtentikasi, layar I-02 (I02-O04) | Isian kata sandi dengan indikator kekuatan, tanpa aturan minimum | Kata sandi wajib minimal 8 karakter serta memuat huruf dan angka, divalidasi di View dan di `AkunController.daftarAkun` | Mengikuti teks petunjuk pada rancangan antarmuka I-02 ("Minimal 8 karakter, memuat huruf dan angka") |
+| 12 | Kelas C40 DokumenLegal: atribut `isi` | Isi lengkap dokumen berupa teks | Isi disimpan dengan penanda `## ` di awal judul setiap bagian, dan `tanggal_berlaku` diambil sebagai teks `YYYY-MM-DD` | Penanda bagian memungkinkan I-15 membuat daftar isi otomatis (I15-O05). Tanggal sebagai teks mencegah tanggal bergeser satu hari akibat konversi zona waktu di peramban |
 
 ## B.2 Bukti Penerapan Best Practices
 
@@ -240,19 +253,30 @@ Tabel B.5. Traceability Kelas Perancangan ke Implementasi
 
 | ID Kelas | Nama Kelas Perancangan | Bentuk Implementasi | Lokasi (File dan Nama) | Keterangan |
 | :--- | :--- | :--- | :--- | :--- |
+| C01 | HalamanOtentikasi | Kelas JavaScript sisi klien (View) dan tiga halaman HTML | `src/views/js/HalamanOtentikasi.js` - `HalamanOtentikasi`; `src/views/pages/masuk.html` (I-01), `src/views/pages/daftar.html` (I-02), `src/views/pages/verifikasi.html` (I-03) | Atribut (`nama`, `nim`, `email`, `kataSandi`, `setujuKebijakan`, `kodeVerifikasi`, `sisaWaktu`, `token`) menjadi properti objek. Operasi menjadi *method* penangan *event* formulir yang memanggil `/api/akun/*` melalui `src/views/js/api.js`. Token sesi disimpan di `localStorage` dan dihapus oleh `hapusTokenLokal` |
+| C02 | HalamanProfil | Kelas JavaScript sisi klien (View) dan halaman HTML | `src/views/js/HalamanProfil.js` - `HalamanProfil`; `src/views/pages/profil.html` (I-09) | `muatProfil` memanggil `GET /api/akun/profil`, `bukaPengaturanAkun` memanggil `GET /api/akun/tautan-kebijakan`, dan tombol Keluar memanggil `HalamanOtentikasi.kirimPermintaanLogout` (I09-O05). Atribut `daftarKartuProduk` berisi elemen kartu listing yang dibuat `HalamanProfil.buatKartu` (lihat B.1 No. 10) |
 | C11 | DasborAdmin | Komponen UI & Skrip Client-side | `src/views/pages/admin-laporan.html`, `src/views/pages/admin-detail.html`, `src/views/js/DasborAdmin.js` - `DasborAdmin` | Antarmuka dasbor admin untuk melihat/menyaring daftar laporan (I-13) dan melihat rincian laporan (I-14), termasuk dropdown pengubah status penanganan (UC21) dan tombol tindakan moderasi |
+| C12 | HalamanDokumenLegal | Kelas JavaScript sisi klien (View) dan halaman HTML | `src/views/js/HalamanDokumenLegal.js` - `HalamanDokumenLegal`; `src/views/pages/legal.html` (I-15) | `bukaDokumen` memanggil `GET /api/dokumen-legal/:jenis` (tab I15-O01), `tampilkanDokumen` merender judul, versi, isi per bagian, dan daftar isi otomatis (I15-O02, O03, O05), serta `sorotKlausaPrivasi` menyorot klausul privasi percakapan (I15-O04, KF38). Isi ditampilkan melalui `textContent` agar aman dari XSS |
+| C13 | AkunController | Kelas Controller (*method* statis) dan *route* Express | `src/controllers/AkunController.js` - `AkunController`; `src/routes/akunRoutes.js` (`/api/akun/*`) | Tanpa atribut, sesuai DPPL. Seluruh operasi Tabel 4.1 diimplementasikan dengan nama yang sama: Algo-002 `daftarAkun`, Algo-003 `buatKodeVerifikasi`, Algo-004 `verifikasiAkun`, Algo-005 `kirimUlangKode`, Algo-006 `login`, serta `logout`, `getProfil`, dan operasi pendukungnya. *Route* memetakan hasil ke HTTP: `POST /daftar`, `/verifikasi`, `/kirim-ulang`, `/login`, `/logout`, `GET /profil`, `/tautan-kebijakan` (lihat B.1 No. 3, 4, 5, 8) |
 | C19 | NotifikasiController | Kelas Controller | `src/controllers/NotifikasiController.js` - `NotifikasiController` | Mengorkestrasikan pengiriman notifikasi/surel peringatan moderasi dan penangguhan akun |
 | C21 | ModerasiController | Kelas Controller | `src/controllers/ModerasiController.js` - `ModerasiController` | Mengorkestrasikan moderasi laporan, otorisasi peran admin (KF56), penyaringan laporan (UC20), perubahan status penanganan laporan (UC21), penghapusan listing (UC22), pemblokiran akun (UC23), dan pembukaan blokir akun (UC24) |
-| C23 | Akun | Kelas Model (Entity) & Tabel DB | `src/models/Akun.js` - `Akun`, `src/database/schema.sql` (tabel `akun`) | Entitas akun pengguna dengan status akun, status blokir, serta operasi pemblokiran dan pembukaan blokir |
-| C26 | Admin | Kelas Model (Entity Turunan) | Diwarisi dari `src/models/Akun.js`, diverifikasi melalui `src/pendukung/Otorisasi.js` - `verifikasiAdmin` | Entitas pengguna berhak akses admin yang diverifikasi melalui token sesi login |
-| C28 | SesiLogin | Kelas Model (Entity) & Tabel DB | `src/models/SesiLogin.js` - `SesiLogin`, `src/database/schema.sql` (tabel `sesi_login`) | Entitas sesi login aktif pengguna/admin yang dapat dicabut/dinonaktifkan saat pemblokiran akun |
+| C22 | DokumenLegalController | Kelas Controller (*method* statis) dan *route* Express | `src/controllers/DokumenLegalController.js` - `DokumenLegalController`; `src/routes/dokumenLegalRoutes.js` (`GET /api/dokumen-legal/:jenis`) | `getDokumen` memvalidasi jenis terhadap daftar tetap (`kebijakan-privasi`, `ketentuan-penggunaan`) sebelum memanggil `DokumenLegal.getVersiTerbaru`, sehingga jenis lain langsung ditolak (404). `getKlausaPrivasi` mengambil klausul dari Kebijakan Privasi yang berlaku |
+| C23 | Akun | Kelas Model (Entity) & Tabel DB | `src/models/Akun.js` - `Akun`, `src/database/schema.sql` (tabel `akun`), `src/database/seed.js` (akun uji) | Atribut menjadi kolom tabel `akun` (indeks unik `LOWER(email)`, `CHECK` untuk `status_akun` dan `peran`). Operasi menjadi query SQL berparameter: `simpan` (Algo-025), `cariByEmail` (Algo-026), `cariById`, `perbaruiStatusAkun`, `getStatusBlokir`, `getSyaratTidakDiblokir`. `getStatusAkun` mengutamakan status blokir dan `getDataIdentitas` hanya mengembalikan nama, NIM, dan surel. `blokir` dan `bukaBlokir` dipakai Modul E untuk pemblokiran dan pembukaan blokir akun (UC23, UC24) |
+| C24 | Pembeli | Kelas Model (Entity Turunan) | `src/models/Pembeli.js` - `Pembeli extends Akun` | Tanpa atribut dan operasi tambahan, sesuai DPPL 5.24. Disimpan pada tabel `akun` yang sama dengan `peran = 'Pengguna'` (*single table inheritance*) |
+| C25 | Penjual | Kelas Model (Entity Turunan) | `src/models/Penjual.js` - `Penjual extends Akun` | `getIdentitas` (Algo-027) mengambil identitas publik penjual dari tabel `akun`. Saat ini belum dipanggil modul lain: detail listing (Modul C) mengambil nama penjual langsung melalui JOIN pada `Barang.getDetailKatalog` |
+| C26 | Admin | Kelas Model (Entity Turunan) | `src/models/Admin.js` - `Admin extends Akun` | `verifikasiPeran` (Algo-028) memeriksa `peran = 'Admin'` dan akun tidak diblokir. Dipanggil `Otorisasi.verifikasiAdmin` untuk melindungi endpoint moderasi (KF56). Disimpan pada tabel `akun` dengan `peran = 'Admin'` |
+| C27 | TokenVerifikasi | Kelas Model (Entity) & Tabel DB | `src/models/TokenVerifikasi.js` - `TokenVerifikasi`, `src/database/schema.sql` (tabel `token_verifikasi`) | Atribut menjadi kolom tabel, dengan `status_pakai` bernilai `Aktif`, `Terpakai`, atau `Hangus`. `simpan` dan `cariTokenAktif` (Algo-029) berupa query SQL, `cocokkanKode` dan `sudahKedaluwarsa` dihitung pada objek, sedangkan `tandaiTerpakai` (kode tidak dapat dipakai ulang) dan `tandaiHangus` (saat kirim ulang) mengubah `status_pakai` |
+| C28 | SesiLogin | Kelas Model (Entity) & Tabel DB | `src/models/SesiLogin.js` - `SesiLogin`, `src/database/schema.sql` (tabel `sesi_login`) | `buatToken` membangkitkan token acak 32 byte (lihat B.1 No. 6). `simpan` mencatat sesi berlaku `DURASI_SESI_JAM` (bawaan 24 jam, KF11). `cariSesiAktif` (Algo-030) hanya mengambil sesi aktif yang belum kedaluwarsa. `nonaktifkan` dipakai saat logout (KF12), dan `nonaktifkanByAkun` (Algo-031) dipakai Modul E untuk mencabut seluruh sesi saat pemblokiran akun |
 | C29 | Barang | Kelas Model (Entity) & Tabel DB | `src/models/Barang.js` - `Barang`, `src/database/schema.sql` (tabel `barang`) | Entitas katalog barang dengan penonaktifan dan pemulihan listing |
 | C30 | FotoBarang | Kelas Model (Entity) & Tabel DB | `src/models/FotoBarang.js` - `FotoBarang`, `src/database/schema.sql` (tabel `foto_barang`) | Entitas foto barang yang terhubung ke penyimpanan berkas lokal |
 | C36 | Laporan | Kelas Model (Entity) & Tabel DB | `src/models/Laporan.js` - `Laporan`, `src/database/schema.sql` (tabel `laporan`) | Entitas laporan pelanggaran pengguna dengan pelacakan status penanganan ("Baru", "Diproses", "Selesai"), validasi transisi tertib, dan waktu perubahannya (KF47) |
 | C37 | BuktiLaporan | Kelas Model (Entity) & Tabel DB | `src/models/BuktiLaporan.js` - `BuktiLaporan`, `src/database/schema.sql` (tabel `bukti_laporan`) | Entitas berkas tangkapan layar bukti pelanggaran |
 | C38 | LogAudit | Kelas Model (Entity) & Tabel DB | `src/models/LogAudit.js` - `LogAudit`, `src/database/schema.sql` (tabel `log_audit`) | Rekam jejak audit penanganan laporan bersifat append-only tanpa operasi UPDATE atau DELETE untuk menjamin immutabilitas bukti audit (KF48, KF49) |
 | C39 | LogAdmin | Kelas Model (Entity) & Tabel DB | `src/models/LogAdmin.js` - `LogAdmin`, `src/database/schema.sql` (tabel `log_admin`) | Rekam jejak audit tindakan moderasi administratif (penghapusan listing, pemblokiran akun, pembukaan blokir) |
-| C41 | Otorisasi | Modul Pendukung | `src/pendukung/Otorisasi.js` - `Otorisasi` | Memverifikasi token JWT dan peran akun (Admin vs Pengguna) untuk melindungi endpoint moderasi (KF56) |
+| C40 | DokumenLegal | Kelas Model (Entity) & Tabel DB | `src/models/DokumenLegal.js` - `DokumenLegal`, `src/database/schema.sql` (tabel `dokumen_legal`), `src/database/seedDokumenLegal.js` (isi versi 1.0) | Atribut menjadi kolom tabel dengan `UNIQUE (jenis_dokumen, versi)`. `getVersiTerbaru` (Algo-063) mengambil versi terpublikasi yang sudah berlaku (`tanggal_berlaku <= CURRENT_DATE`), sedangkan `getTautan` dan `getIsi` mengembalikan atribut dokumen (lihat B.1 No. 12) |
+| C41 | Otorisasi | Kelas Pendukung (*method* statis) dan middleware Express | `src/pendukung/Otorisasi.js` - `Otorisasi` | `verifikasiToken` (Algo-064) memeriksa token sesi pada tabel `sesi_login` melalui `SesiLogin.cariSesiAktif`. `verifikasiAdmin` (Algo-065) menambahkan pemeriksaan `Admin.verifikasiPeran` (KF56). Keduanya dibungkus middleware `wajibLogin` (401) dan `wajibAdmin` (401/403) yang dipakai route seluruh modul, termasuk endpoint moderasi Modul E (lihat B.1 No. 7) |
+| C42 | Kriptografi | Kelas Pendukung (instans tunggal) | `src/pendukung/Kriptografi.js` - `Kriptografi` | Atribut `saltRounds` dan `kunciEnkripsi` dibaca dari variabel lingkungan. `hash` dan `cocokkanHash` (Algo-066, Algo-067) memakai bcrypt untuk kata sandi (Modul A, KF09, KF10), sedangkan `enkripsi` dan `dekripsi` (Algo-068, Algo-069) memakai AES-256-GCM untuk isi pesan percakapan (Modul D, KF36) |
+| C43 | SurelAdapter | Kelas Integrasi Eksternal (instans tunggal) | `src/integrasi/SurelAdapter.js` - `SurelAdapter` | Atribut `hostSmtp`, `portSmtp`, dan `alamatPengirim` dibaca dari variabel lingkungan `SMTP_*`. `kirimSurel` mengirim surel melalui nodemailer dan mengembalikan `false` bila gagal. Dipanggil `NotifikasiController` untuk kode verifikasi (UC01, UC02) dan pemberitahuan moderasi (Modul E). Saat lokal diarahkan ke Mailpit (lihat B.1 No. 2) |
 
 Catatan:
 - Satu kelas perancangan boleh diwujudkan oleh beberapa file/unit, dan satu file/unit boleh mewujudkan beberapa kelas perancangan. Tuliskan semuanya.
