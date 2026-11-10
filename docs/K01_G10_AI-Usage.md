@@ -30,6 +30,7 @@
 * [Milestone 6](#milestone-6)
 * [Milestone 7](#milestone-7)
 * [Milestone 8](#milestone-8)
+* [Milestone 9](#milestone-9)
 
 ---
 
@@ -79,6 +80,13 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | :--- | :--- | :--- | :--- |
 | *Gemini* | *Mengecek Ketepatan Algoritma* | *"Apakah algoritma yang ditulis tepat tanpa kesalahan logika?"* | *Saya menyesuaikan algoritma yang ditulis agar tidak salah* |
 | *Claude* | *Membuat antarmuka Antri.in* | *"Berdasarkan dokumen-dokumen yang aku lampirkan, buatkan antarmuka antri.in"* | *Saya melakukan beberapa kali iterasi agar antarmuka bagus dan sesuai kesepakatan tim* |
+| | | | | |
+
+### Milestone 9
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Claude* | *Mengetahui cara menghubungkan tautan untuk laporan implementasi* | *"Cara melakukan tautan issue, commit, branching, dan pull request di github"* | *Saya menyesuaikan cara menulis tautan dengan tautan yang sebenarnya* |
+| *Claude* | *Membuat template pengerjaan aplikasi* | *"Siapkan template aplikasi antri.in sesuai dengan dokumen yang aku lampirkan"* | *Kami memahami isi kode dan penyesuaian kode untuk memastikan bisa bekerja dengan benar* |
 | | | | | |
 
 ---
