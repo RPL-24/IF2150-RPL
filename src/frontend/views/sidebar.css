@@ -415,20 +415,43 @@ body.nav-locked {
     overflow: hidden;
 }
 
-/* Ikon tombol berubah menjadi silang saat panel terbuka */
-.nav-toggle svg line {
-    transform-origin: 12px 12px;
+/* Ikon tombol: garis tiga berubah menjadi silang yang simetris.
+   Silang digambar oleh dua batang semu di tengah tombol supaya panjang
+   kedua lengannya pasti sama (rotasi per-garis SVG tidak stabil karena
+   transform-origin tiap <line> berbeda). */
+.nav-toggle {
+    position: relative;
+}
+
+.nav-toggle svg {
+    transition: opacity var(--duration-fast) ease;
+}
+
+.nav-toggle::before,
+.nav-toggle::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: currentColor;
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(0deg);
     transition: transform var(--duration-fast) ease, opacity var(--duration-fast) ease;
 }
 
-.app-sidebar[data-nav-open="true"] .nav-toggle svg line:nth-child(1) {
-    transform: translateY(6px) rotate(45deg);
-}
-
-.app-sidebar[data-nav-open="true"] .nav-toggle svg line:nth-child(2) {
+.app-sidebar[data-nav-open="true"] .nav-toggle svg {
     opacity: 0;
 }
 
-.app-sidebar[data-nav-open="true"] .nav-toggle svg line:nth-child(3) {
-    transform: translateY(-6px) rotate(-45deg);
+.app-sidebar[data-nav-open="true"] .nav-toggle::before {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.app-sidebar[data-nav-open="true"] .nav-toggle::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
