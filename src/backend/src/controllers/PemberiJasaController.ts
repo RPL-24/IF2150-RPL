@@ -36,6 +36,8 @@ export interface SearchQueryParams {
 
 /**
  * Kelas C06 - PemberiJasaController
+ * Mengatur registrasi pemberi jasa (static) serta logika pemberi jasa
+ * dan pencarian layanan (UC01, UC02) (instance).
  * Mengatur logika program untuk registrasi pemberi jasa, manajemen profil, dan pencarian layanan (UC01, UC02)
  */
 export class PemberiJasaController extends PenggunaController {
@@ -95,11 +97,7 @@ export class PemberiJasaController extends PenggunaController {
   public static async registrasiPemberiJasa(req: Request, res: Response): Promise<void> {
     try {
       const validation = PemberiJasaController.validasiInfoRegistrasi(req.body);
-      if (
-        !validation.valid ||
-        !validation.sanitizedData ||
-        !validation.providerData
-      ) {
+      if (!validation.valid || !validation.sanitizedData || !validation.providerData) {
         res.status(400).json({
           success: false,
           message: validation.message,
@@ -107,20 +105,16 @@ export class PemberiJasaController extends PenggunaController {
         return;
       }
 
-      const {
-        namaPengguna,
-        username,
-        password,
-        email,
-        nomorTelepon,
-        avatarUrl,
-      } = validation.sanitizedData;
+      const { namaPengguna, username, password, email, nomorTelepon, avatarUrl } =
+        validation.sanitizedData;
       const { idKategoriJasa, jenisJasa, namaToko, latitude, longitude } =
         validation.providerData;
 
       // Cek duplikasi username atau email di database (Q-005)
-      const { usernameExists, emailExists } =
-        await Pengguna.cekDuplikasiKredensial(username, email);
+      const { usernameExists, emailExists } = await Pengguna.cekDuplikasiKredensial(
+        username,
+        email
+      );
 
       if (usernameExists || emailExists) {
         res.status(400).json({
@@ -159,17 +153,14 @@ export class PemberiJasaController extends PenggunaController {
         data: savedPemberiJasa.toJSON(),
       });
     } catch (error) {
-      console.error(
-        '[PemberiJasaController.registrasiPemberiJasa] Error:',
-        error
-      );
+      console.error('[PemberiJasaController.registrasiPemberiJasa] Error:', error);
       res.status(500).json({
         success: false,
-        message:
-          'Terjadi kesalahan internal saat memproses registrasi pemberi jasa.',
+        message: 'Terjadi kesalahan internal saat memproses registrasi pemberi jasa.',
       });
     }
   }
+
 
   /**
    * ALGO-007: Memvalidasi keberadaan dan keabsahan ID pemberi jasa
@@ -282,8 +273,7 @@ export class PemberiJasaController extends PenggunaController {
     }
 
     // Tentukan metode pengurutan (default ke 'nearest' jika ada koordinat, atau 'rating' jika tidak)
-    const effectiveSort: SortOption =
-      sortBy ?? (hasValidUserCoords ? 'nearest' : 'rating');
+    const effectiveSort: SortOption = sortBy ?? (hasValidUserCoords ? 'nearest' : 'rating');
 
     processed.sort((a, b) => {
       if (effectiveSort === 'nearest' || effectiveSort === 'terdekat') {
@@ -331,8 +321,7 @@ export class PemberiJasaController extends PenggunaController {
           : req.query.lng !== undefined
           ? Number(req.query.lng)
           : undefined;
-      const rawRadius =
-        req.query.radiusKm !== undefined ? Number(req.query.radiusKm) : undefined;
+      const rawRadius = req.query.radiusKm !== undefined ? Number(req.query.radiusKm) : undefined;
       const sortBy = (req.query.sortBy as SortOption) || (req.query.sort as SortOption) || undefined;
 
       const data = await this.searchServices({
