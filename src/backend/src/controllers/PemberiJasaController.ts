@@ -38,6 +38,7 @@ export interface SearchQueryParams {
  * Kelas C06 - PemberiJasaController
  * Mengatur registrasi pemberi jasa (static) serta logika pemberi jasa
  * dan pencarian layanan (UC01, UC02) (instance).
+ * Mengatur logika program untuk registrasi pemberi jasa, manajemen profil, dan pencarian layanan (UC01, UC02)
  */
 export class PemberiJasaController extends PenggunaController {
   private pemberiJasa: PemberiJasa;
@@ -46,10 +47,6 @@ export class PemberiJasaController extends PenggunaController {
     super();
     this.pemberiJasa = pemberiJasaModel ?? new PemberiJasa();
   }
-
-  // ===========================================================================
-  // REGISTRASI PEMBERI JASA (static)
-  // ===========================================================================
 
   public static override validasiInfoRegistrasi(
     payload: ProviderRegistrationPayload
@@ -164,9 +161,6 @@ export class PemberiJasaController extends PenggunaController {
     }
   }
 
-  // ===========================================================================
-  // LOGIKA PEMBERI JASA & PENCARIAN LAYANAN (instance)
-  // ===========================================================================
 
   /**
    * ALGO-007: Memvalidasi keberadaan dan keabsahan ID pemberi jasa
