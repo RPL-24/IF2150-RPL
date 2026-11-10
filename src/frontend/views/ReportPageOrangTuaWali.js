@@ -7,20 +7,23 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
-    const role = Report.bacaRole(params, 'orangtuawali');
+    const roleParam = params.get('role');
 
-    if (role === 'pelajar') {
+    if (roleParam === 'pelajar') {
         window.location.replace('ReportPagePelajar.html' + window.location.search);
         return;
     }
-    if (role !== 'orangtuawali') {
-        window.location.replace(role === 'tenagakesehatan' ? 'DashboardPageTenagaKesehatan.html' : 'LoginPage.html');
+    if (roleParam === 'tenagakesehatan') {
+        window.location.replace('DashboardPageTenagaKesehatan.html');
         return;
     }
 
+    localStorage.setItem('role', 'orangtuawali');
+
+    const profile = Report.bacaJson('mahasehat_ortu_profile');
     const user = Report.bacaJson('mahasehat_user');
     const namaPelajar = Report.bacaJson('studentAccountStatus').nama || 'Albert Einstein';
-    Report.isiProfil(user.nama || 'Hermann Einstein', 'Orang Tua/Wali');
+    Report.isiProfil(profile.nama || user.nama || 'Hermann Einstein', 'Orang Tua / Wali');
     Report.pasangKeluar();
     document.getElementById('Text_Subjudul').textContent = `Ringkasan kondisi ${namaPelajar} dari data daily check-in.`;
 

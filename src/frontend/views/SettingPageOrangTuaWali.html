@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Setelan Orang Tua / Wali</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="SidebarOrangTuaWali.css">
+    <link rel="stylesheet" href="SettingPageOrangTuaWali.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Floating Sidebar Navigasi Orang Tua / Wali -->
+        <aside class="app-sidebar" id="Sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-header">
+                    <a href="DashboardPageOrangTuaWali.html" class="brand-link" id="Link_Brand">
+                        <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                        <span class="brand-title">MahaSehat</span>
+                    </a>
+                </div>
+
+                <!-- Kolom Pencarian di Atas Menu -->
+                <div class="sidebar-search">
+                    <span class="search-icon" aria-hidden="true">⌕</span>
+                    <input type="text" class="search-input" placeholder="Cari" aria-label="Cari menu">
+                </div>
+
+                <!-- Menu Navigasi Utama -->
+                <nav class="nav-menu" aria-label="Menu utama">
+                    <a href="DashboardPageOrangTuaWali.html" class="nav-item" id="Menu_Dashboard">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="ReportPageOrangTuaWali.html" class="nav-item" id="Menu_Laporan">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span class="nav-label">Laporan Kesehatan</span>
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <!-- Item Setelan Aktif -->
+                    <a href="SettingPageOrangTuaWali.html" class="nav-item active" id="Menu_Setelan" aria-current="page">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="nav-label">Setelan</span>
+                    </a>
+                    <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span class="nav-label">Keluar</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Profil Wali Bawah Sidebar -->
+            <div class="sidebar-user" id="Info_User">
+                <div class="user-avatar" id="User_Avatar">H</div>
+                <div class="user-meta">
+                    <p class="user-name" id="Text_NamaUser">Hermann Einstein</p>
+                    <p class="user-role" id="Text_RoleUser">Orang Tua / Wali</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Area Konten Utama Setelan -->
+        <main class="main-viewport" id="Panel_Setelan">
+            <!-- Header Halaman -->
+            <header class="page-header" id="Topbar">
+                <h1 class="page-title" id="Title_Setelan">Setelan Akun</h1>
+                <p class="page-subtitle" id="Text_Subjudul">Kelola profil pribadi, keamanan kata sandi, sesi login, dan izin notifikasi pemantauan.</p>
+            </header>
+
+            <!-- Feedback Toast Notifikasi -->
+            <div id="Feedback_Toast" class="feedback-toast" role="status" aria-live="polite" style="display: none;"></div>
+
+            <!-- Grid Layout Dua Kolom Atas (Profil & Keamanan/Sesi) -->
+            <div class="settings-grid-top">
+                <!-- Kolom Kiri: Kartu Profil Wali -->
+                <section class="card-box" id="Card_Profil">
+                    <div class="card-box-header">
+                        <h2 class="card-box-title">Profil Orang Tua / Wali</h2>
+                    </div>
+
+                    <!-- Formulir Profil Wali -->
+                    <form id="Form_EditProfil" class="settings-form" novalidate>
+                        <div class="form-group">
+                            <label class="form-label" for="Input_Nama">Nama Lengkap</label>
+                            <input type="text" class="form-input" id="Input_Nama" name="nama" autocomplete="name" placeholder="Nama lengkap wali" value="Hermann Einstein">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="Input_Email">Email</label>
+                            <input type="email" class="form-input" id="Input_Email" name="email" autocomplete="email" placeholder="nama@email.com" value="hermann.einstein@gmail.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="Input_NomorTelepon">Nomor Telepon</label>
+                            <input type="tel" class="form-input" id="Input_NomorTelepon" name="nomor_telp" autocomplete="tel" placeholder="08xxxxxxxxxx" value="081234567890">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="Input_PelajarDidampingi">Pelajar yang Didampingi</label>
+                            <input type="text" class="form-input input-readonly" id="Input_PelajarDidampingi" value="Albert Einstein (16 tahun)" readonly>
+                            <p class="field-hint">Koneksi pelajar dikelola saat registrasi wali.</p>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary-pill btn-full" id="Btn_SimpanProfil">Simpan perubahan</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Kolom Kanan: Keamanan & Sesi -->
+                <div class="settings-column-right">
+                    <!-- Kartu Keamanan -->
+                    <section class="card-box" id="Card_Keamanan">
+                        <h2 class="card-box-title">Keamanan</h2>
+                        <div class="security-info">
+                            <p class="field-label-bold">Kata Sandi</p>
+                            <p class="field-note">Terakhir diubah 2 minggu lalu.</p>
+                        </div>
+                        <a href="ResetPasswordPage.html" class="btn-outline-pill btn-full" id="Link_UbahSandi">Ubah kata sandi</a>
+                    </section>
+
+                    <!-- Kartu Sesi -->
+                    <section class="card-box" id="Card_Keluar">
+                        <h2 class="card-box-title">Sesi Akun</h2>
+                        <p class="field-note mb-4">Akhiri sesi login di perangkat ini.</p>
+                        <button type="button" class="btn-danger-pill btn-full" id="Btn_Keluar">Keluar dari akun</button>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Baris Bawah: Kartu Izin & Notifikasi -->
+            <section class="card-box settings-card-full" id="Card_Izin">
+                <h2 class="card-box-title">Izin & Notifikasi</h2>
+                
+                <div class="permissions-divider"></div>
+
+                <!-- Izin Notifikasi Pemantauan -->
+                <div class="permission-item-row">
+                    <div class="permission-text">
+                        <p class="field-label-bold" id="Label_IzinNotif">Notifikasi Pemantauan</p>
+                        <p class="field-description">Dapatkan pengingat bila pelajar belum check-in atau ada indikator penting.</p>
+                        <p class="field-status-note" id="Text_NotifInfo"></p>
+                    </div>
+                    <label class="switch-toggle">
+                        <input type="checkbox" role="switch" id="Switch_Notifikasi" aria-labelledby="Label_IzinNotif">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+
+                <div class="permissions-divider"></div>
+
+                <!-- Izin Lokasi -->
+                <div class="permission-item-row">
+                    <div class="permission-text">
+                        <p class="field-label-bold" id="Label_IzinLokasi">Lokasi</p>
+                        <p class="field-description">Digunakan untuk menyesuaikan rekomendasi fasilitas kesehatan terdekat.</p>
+                        <p class="field-status-note" id="Text_LokasiInfo"></p>
+                    </div>
+                    <label class="switch-toggle">
+                        <input type="checkbox" role="switch" id="Switch_Lokasi" aria-labelledby="Label_IzinLokasi">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Tautan Kembali ke Dashboard -->
+            <div class="page-footer-nav">
+                <a href="DashboardPageOrangTuaWali.html" class="btn-back-link" id="Link_Kembali">&larr; Kembali ke Dashboard</a>
+            </div>
+        </main>
+    </div>
+
+    <!-- Dialog Pop-up Konfirmasi Keluar -->
+    <dialog class="modal-dialog" id="Popup_KonfirmasiKeluar" aria-labelledby="Title_KonfirmasiKeluar">
+        <div class="modal-content">
+            <button type="button" class="modal-close" id="Btn_TutupPopup" aria-label="Tutup pop-up">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <h2 class="modal-title" id="Title_KonfirmasiKeluar">Keluar dari akun?</h2>
+            <p class="modal-message" id="Text_KonfirmasiKeluar">Sesi login akan diakhiri dan kamu akan kembali ke halaman masuk.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary-pill" id="Btn_Batal">Batal</button>
+                <button type="button" class="btn-danger-solid-pill" id="Btn_KonfirmasiKeluar">Keluar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="SettingPageOrangTuaWali.js"></script>
+</body>
+</html>
+
