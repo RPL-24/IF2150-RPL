@@ -10,11 +10,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="SidebarOrangTuaWali.css">
     <link rel="stylesheet" href="DashboardPageOrangTuaWali.css">
 </head>
 <body>
     <div class="app-layout">
-        <!-- Floating Sidebar Navigasi (Sesuai Node 3960 & 4073 FigCraft) -->
+        <!-- Floating Sidebar Navigasi -->
         <aside class="app-sidebar" id="Sidebar">
             <div class="sidebar-top">
                 <div class="sidebar-header">
@@ -24,7 +25,7 @@
                     </a>
                 </div>
 
-                <!-- Kolom Pencarian di Atas Menu (Node 4076 FigCraft) -->
+                <!-- Kolom Pencarian di Atas Menu -->
                 <div class="sidebar-search">
                     <span class="search-icon" aria-hidden="true">⌕</span>
                     <input type="text" class="search-input" placeholder="Cari" aria-label="Cari menu">
@@ -41,7 +42,7 @@
                         </svg>
                         <span class="nav-label">Dashboard</span>
                     </a>
-                    <a href="ReportPage.html" class="nav-item" id="Menu_Laporan">
+                    <a href="ReportPageOrangTuaWali.html" class="nav-item" id="Menu_Laporan">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
@@ -54,10 +55,10 @@
 
                     <div class="menu-divider"></div>
 
-                    <a href="SettingPage.html" class="nav-item" id="Menu_Setelan">
+                    <a href="SettingPageOrangTuaWali.html" class="nav-item" id="Menu_Setelan">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                         </svg>
                         <span class="nav-label">Setelan</span>
                     </a>
@@ -72,7 +73,7 @@
                 </nav>
             </div>
 
-            <!-- Profil Wali Bawah Sidebar (Node 4120-4123 FigCraft) -->
+            <!-- Profil Wali Bawah Sidebar -->
             <div class="sidebar-user" id="Info_User">
                 <div class="user-avatar" id="User_Avatar">H</div>
                 <div class="user-meta">

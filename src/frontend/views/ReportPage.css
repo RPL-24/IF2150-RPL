@@ -281,11 +281,18 @@
     color: var(--color-ink);
 }
 
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
 .risk-badge {
     align-self: flex-start;
     margin-bottom: 14px;
-    padding: 8px 20px;
-    font-size: 18px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .risk-rendah { background-color: var(--color-teal-subtle); color: #2D867B; }
@@ -310,6 +317,9 @@
 
 @media (max-width: 900px) {
     .report-grid {
+        grid-template-columns: 1fr;
+    }
+    .bottom-grid {
         grid-template-columns: 1fr;
     }
 }

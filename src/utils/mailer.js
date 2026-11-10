@@ -42,4 +42,24 @@ async function kirimEmailKonfirmasiWali({ emailWali, namaPelajar, token }) {
   });
 }
 
-module.exports = { kirimEmailKonfirmasiWali };
+/**
+ * Mengirim tautan reset password (UC09 skenario alternatif, Algo-C27-01).
+ * Bila SMTP belum dikonfigurasi, tautan hanya dicatat di log agar alur lokal tetap bisa diuji.
+ */
+async function kirimEmailResetPassword({ email, token }) {
+  const tautan = `${process.env.APP_URL || 'http://localhost:3000'}/reset-password?token=${token}`;
+  const pengangkut = getTransporter();
+  if (!pengangkut) {
+    console.log(`[Mail] Reset password untuk ${email}: ${tautan}`);
+    return;
+  }
+
+  await pengangkut.sendMail({
+    from: process.env.SMTP_FROM || 'MahaSehat <no-reply@mahasehat.id>',
+    to: email,
+    subject: 'Atur Ulang Kata Sandi MahaSehat',
+    text: `Buka tautan berikut untuk mengatur ulang kata sandi. Tautan berlaku 1 jam.\n${tautan}`,
+  });
+}
+
+module.exports = { kirimEmailKonfirmasiWali, kirimEmailResetPassword };

@@ -1,0 +1,285 @@
+/**
+ * MahaSehat - SettingPageTenagaKesehatan.js
+ * Logika Pengelolaan Profil Praktik, Tempat Kerja, dan Jadwal Tenaga Kesehatan
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    const STORAGE_KEY = 'mahasehat_nakes_profile';
+
+    // Form elements
+    const formProfil = document.getElementById('Form_ProfilNakes');
+    const formTempat = document.getElementById('Form_TempatKerja');
+    const formJadwal = document.getElementById('Form_JadwalPraktik');
+    const toast = document.getElementById('Feedback_Toast');
+    const toggleMenerima = document.getElementById('Toggle_MenerimaPasien');
+    const textStatusPenerimaan = document.getElementById('Text_StatusPenerimaan');
+    const groupRentang = document.getElementById('Group_RentangJam');
+    const btnTambahRentang = document.getElementById('Btn_TambahRentang');
+    const selectDurasi = document.getElementById('Select_DurasiSesi');
+    const groupSlot = document.getElementById('Group_SlotWaktu');
+    const textErrorJam = document.getElementById('Text_ErrorJam');
+
+    // Rentang jam default 
+    const DEFAULT_RENTANG = [
+        { mulai: '10:00', selesai: '11:00' },
+        { mulai: '13:00', selesai: '14:00' },
+        { mulai: '15:30', selesai: '16:30' }
+    ];
+
+    // Rentang jam custom
+    const toMinutes = (t) => {
+        const [h, m] = t.split(':').map(Number);
+        return h * 60 + m;
+    };
+    const toTime = (min) => String(Math.floor(min / 60)).padStart(2, '0') + ':' + String(min % 60).padStart(2, '0');
+    const fmtDot = (min) => toTime(min).replace(':', '.');
+
+    function addRangeRow(mulai = '', selesai = '') {
+        const row = document.createElement('div');
+        row.className = 'range-row';
+        row.innerHTML =
+            '<input type="time" class="form-input" name="mulai" aria-label="Jam mulai" value="' + mulai + '">' +
+            '<span class="range-sep">sampai</span>' +
+            '<input type="time" class="form-input" name="selesai" aria-label="Jam selesai" value="' + selesai + '">' +
+            '<button type="button" class="btn-icon-remove" aria-label="Hapus rentang jam">&times;</button>';
+        groupRentang.appendChild(row);
+        syncRemoveButtons();
+    }
+
+    function setRanges(list) {
+        groupRentang.innerHTML = '';
+        list.forEach((r) => addRangeRow(r.mulai, r.selesai));
+    }
+
+    function syncRemoveButtons() {
+        const rows = groupRentang.querySelectorAll('.range-row');
+        rows.forEach((row) => {
+            row.querySelector('.btn-icon-remove').disabled = rows.length === 1;
+        });
+    }
+
+    function readRanges() {
+        return Array.from(groupRentang.querySelectorAll('.range-row')).map((row) => ({
+            mulai: row.querySelector('[name="mulai"]').value,
+            selesai: row.querySelector('[name="selesai"]').value
+        }));
+    }
+
+    // Buat daftar slot dari semua rentang
+    function generateSlots(ranges, durasi) {
+        const slots = [];
+        ranges
+            .filter((r) => r.mulai && r.selesai && toMinutes(r.selesai) > toMinutes(r.mulai))
+            .sort((a, b) => toMinutes(a.mulai) - toMinutes(b.mulai))
+            .forEach((r) => {
+                for (let t = toMinutes(r.mulai); t + durasi <= toMinutes(r.selesai); t += durasi) {
+                    slots.push(fmtDot(t) + '-' + fmtDot(t + durasi));
+                }
+            });
+        return slots;
+    }
+
+    function validateRanges(ranges, durasi) {
+        for (const r of ranges) {
+            if (!r.mulai || !r.selesai) return 'Lengkapi jam mulai dan jam selesai pada setiap rentang.';
+            if (toMinutes(r.selesai) <= toMinutes(r.mulai)) return 'Jam selesai harus lebih besar dari jam mulai.';
+            if (toMinutes(r.selesai) - toMinutes(r.mulai) < durasi) {
+                return 'Setiap rentang minimal sepanjang durasi sesi (' + durasi + ' menit).';
+            }
+        }
+        const sorted = [...ranges].sort((a, b) => toMinutes(a.mulai) - toMinutes(b.mulai));
+        for (let i = 1; i < sorted.length; i++) {
+            if (toMinutes(sorted[i].mulai) < toMinutes(sorted[i - 1].selesai)) {
+                return 'Rentang jam tidak boleh saling tumpang tindih.';
+            }
+        }
+        return '';
+    }
+
+    function showJamError(message) {
+        textErrorJam.textContent = message;
+        textErrorJam.hidden = !message;
+    }
+
+    function renderSlotPreview() {
+        const slots = generateSlots(readRanges(), Number(selectDurasi.value));
+        groupSlot.innerHTML = '';
+        if (slots.length === 0) {
+            const note = document.createElement('p');
+            note.className = 'field-note';
+            note.textContent = 'Belum ada slot. Pastikan rentang jam minimal sepanjang durasi sesi.';
+            groupSlot.appendChild(note);
+            return;
+        }
+        slots.forEach((s) => {
+            const pill = document.createElement('span');
+            pill.className = 'slot-pill';
+            pill.textContent = s.replace('-', ' - ') + ' WIB';
+            groupSlot.appendChild(pill);
+        });
+    }
+
+    function initJadwalKustom() {
+        if (!groupRentang.children.length) setRanges(DEFAULT_RENTANG);
+
+        btnTambahRentang.addEventListener('click', () => {
+            const rows = readRanges();
+            const last = rows[rows.length - 1];
+            // Usulkan rentang baru 1 jam setelah rentang terakhir
+            const start = last && last.selesai ? toMinutes(last.selesai) : 9 * 60;
+            addRangeRow(toTime(Math.min(start, 22 * 60 + 59)), toTime(Math.min(start + 60, 23 * 60 + 59)));
+            renderSlotPreview();
+        });
+
+        groupRentang.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn-icon-remove');
+            if (!btn || btn.disabled) return;
+            btn.closest('.range-row').remove();
+            syncRemoveButtons();
+            showJamError('');
+            renderSlotPreview();
+        });
+
+        groupRentang.addEventListener('input', () => { showJamError(''); renderSlotPreview(); });
+        selectDurasi.addEventListener('change', () => { showJamError(''); renderSlotPreview(); });
+
+        renderSlotPreview();
+    }
+
+    // Load saved profile data if exists
+    function loadSavedData() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            const data = JSON.parse(raw);
+
+            if (data.nama) document.getElementById('Input_Nama').value = data.nama;
+            if (data.spesialisasi) document.getElementById('Input_Spesialisasi').value = data.spesialisasi;
+            if (data.sip) document.getElementById('Input_SIP').value = data.sip;
+            if (data.tarif) document.getElementById('Input_Tarif').value = data.tarif;
+            if (data.email) document.getElementById('Input_Email').value = data.email;
+            if (data.telepon) document.getElementById('Input_NomorTelepon').value = data.telepon;
+            if (data.bio) document.getElementById('Input_Bio').value = data.bio;
+
+            if (data.instansi) document.getElementById('Input_Instansi').value = data.instansi;
+            if (data.alamat) document.getElementById('Input_Alamat').value = data.alamat;
+            if (typeof data.online === 'boolean') document.getElementById('Check_Online').checked = data.online;
+            if (typeof data.offline === 'boolean') document.getElementById('Check_Offline').checked = data.offline;
+            if (data.linkMeet) document.getElementById('Input_LinkTelekonsultasi').value = data.linkMeet;
+
+            // Jadwal: rentang jam custom
+            if (data.durasiSesi) selectDurasi.value = String(data.durasiSesi);
+            if (Array.isArray(data.rentangJam) && data.rentangJam.length) {
+                setRanges(data.rentangJam);
+            } else if (Array.isArray(data.slots) && data.slots.length) {
+                setRanges(data.slots.map((s) => {
+                    const [a, b] = s.split('-');
+                    return { mulai: a.replace('.', ':'), selesai: b.replace('.', ':') };
+                }));
+            }
+            if (Array.isArray(data.hari)) {
+                document.querySelectorAll('input[name="hari"]').forEach((el) => {
+                    el.checked = data.hari.includes(el.value);
+                });
+            }
+
+            if (typeof data.menerimaPasien === 'boolean') {
+                toggleMenerima.checked = data.menerimaPasien;
+                updateToggleText(data.menerimaPasien);
+            }
+        } catch (e) {
+            console.warn('Gagal memuat profil nakes dari storage:', e);
+        }
+    }
+
+    function showToast(message) {
+        if (!toast) return;
+        toast.textContent = message;
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3500);
+    }
+
+    function updateToggleText(isActive) {
+        if (!textStatusPenerimaan) return;
+        if (isActive) {
+            textStatusPenerimaan.textContent = 'Saat ini menerima pengajuan konsultasi baru';
+            textStatusPenerimaan.style.color = 'var(--color-teal)';
+        } else {
+            textStatusPenerimaan.textContent = 'Praktik ditutup sementara (tidak menerima permohonan baru)';
+            textStatusPenerimaan.style.color = 'var(--color-danger)';
+        }
+    }
+
+    if (toggleMenerima) {
+        toggleMenerima.addEventListener('change', (e) => {
+            updateToggleText(e.target.checked);
+        });
+    }
+
+    // Handler Form Profil
+    if (formProfil) {
+        formProfil.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const data = {
+                nama: document.getElementById('Input_Nama').value,
+                spesialisasi: document.getElementById('Input_Spesialisasi').value,
+                sip: document.getElementById('Input_SIP').value,
+                tarif: document.getElementById('Input_Tarif').value,
+                email: document.getElementById('Input_Email').value,
+                telepon: document.getElementById('Input_NomorTelepon').value,
+                bio: document.getElementById('Input_Bio').value
+            };
+            const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...current, ...data }));
+            showToast('✓ Profil profesional dan tarif berhasil disimpan.');
+        });
+    }
+
+    // Handler Form Tempat Kerja
+    if (formTempat) {
+        formTempat.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const data = {
+                instansi: document.getElementById('Input_Instansi').value,
+                alamat: document.getElementById('Input_Alamat').value,
+                online: document.getElementById('Check_Online').checked,
+                offline: document.getElementById('Check_Offline').checked,
+                linkMeet: document.getElementById('Input_LinkTelekonsultasi').value
+            };
+            const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...current, ...data }));
+            showToast('✓ Informasi tempat kerja dan tautan telekonsultasi berhasil diperbarui.');
+        });
+    }
+
+    // Handler Form Jadwal
+    if (formJadwal) {
+        formJadwal.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const selectedDays = Array.from(document.querySelectorAll('input[name="hari"]:checked')).map(el => el.value);
+            const rentangJam = readRanges();
+            const durasiSesi = Number(selectDurasi.value);
+            const error = validateRanges(rentangJam, durasiSesi);
+            if (error) {
+                showJamError(error);
+                return;
+            }
+            showJamError('');
+            const data = {
+                menerimaPasien: toggleMenerima ? toggleMenerima.checked : true,
+                hari: selectedDays,
+                rentangJam: rentangJam,
+                durasiSesi: durasiSesi,
+                slots: generateSlots(rentangJam, durasiSesi)
+            };
+            const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...current, ...data }));
+            showToast('✓ Ketersediaan jadwal praktik dan slot konsultasi berhasil disimpan.');
+        });
+    }
+
+    loadSavedData();
+    initJadwalKustom();
+});

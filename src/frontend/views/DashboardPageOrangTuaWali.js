@@ -5,6 +5,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    localStorage.setItem('role', 'orangtuawali');
     const cardRegistrasi = document.getElementById('Card_Registrasi');
     const textDetailRegistrasi = document.getElementById('Text_DetailRegistrasi');
     const badgeStatusAkun = document.getElementById('Badge_StatusAkun');
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const textNamaUser = document.getElementById('Text_NamaUser');
     const textRoleUser = document.getElementById('Text_RoleUser');
     if (textNamaUser) textNamaUser.textContent = data.nama;
-    if (textRoleUser) textRoleUser.textContent = 'Orang Tua/Wali';
+    if (textRoleUser) textRoleUser.textContent = 'Orang Tua / Wali';
     if (userAvatar) userAvatar.textContent = (data.nama || 'H').trim().charAt(0).toUpperCase();
 
     // Pelajar Profile
