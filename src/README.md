@@ -71,8 +71,9 @@ src/
         admin/            # stack Administrator: index, jadwal, faq, umpan-balik, status
       components/         # komponen bersama dari Figma (Tombol, IsianTeks, Banner, ...)
       theme/              # token desain: warna, font, gaya teks, jarak, sudut
-      api/                # klien HTTP ke backend, login, dan sesi (SecureStore)
-      lib/                # sesi pengguna bersama (useSesi), pendaftaran notifikasi push
+      views/              # bagian layar per fitur (views/beranda: kartu afirmasi, sesi, status layanan)
+      api/                # klien HTTP ke backend, login, sesi (SecureStore), dan fungsi per sumber daya
+      lib/                # sesi pengguna bersama (useSesi), pemuatan data (useMuatan), format waktu, pendaftaran notifikasi push
     bun.lock              # lockfile Bun
     test/                 # unit test Vitest (vitest.config.mts)
   backend/                # Cloudflare Worker (Hono + D1): REST API dan cron
@@ -348,6 +349,7 @@ Catatan:
 
 - Setiap login demo membuat sesi baru melalui `POST /api/auth/demo`, bukan memakai token `dev-token-*`. Sesi tersimpan di perangkat (`expo-secure-store`), sehingga aplikasi langsung membuka Beranda saat dibuka kembali sampai pengguna keluar atau sesi melewati 30 hari.
 - Bila backend berjalan tanpa `MODE_DEMO=1`, rute login demo membalas 404 dan layar Masuk menampilkan pesan galat.
+- Isi Beranda dari data *seed*: Mahasiswa Uji belum punya afirmasi (kartu afirmasi berisi ajakan mengatur waktu di I-04) dan sudah punya satu sesi terpesan besok pukul 11.00 WIB. Di Beranda Administrator, kartu status layanan menampilkan "Belum dicek" sampai *cron* pertama berjalan. `wrangler dev` tidak menjalankan *cron* sendiri; jalankan `bun run dev -- --test-scheduled`, lalu picu pemeriksaan dengan `curl "http://localhost:8787/__scheduled?cron=*+*+*+*+*"` (dengan `API_BASE_URL` terisi agar hasilnya Up).
 - Login Google sungguhan memerlukan `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, dan `GOOGLE_REDIRECT_URI` (bagian 4). Google tidak menerima alamat IP LAN sebagai *redirect URI*, sehingga login Google dari ponsel memerlukan backend yang sudah di-*deploy* atau *tunnel* ber-HTTPS.
 
 ## 7. Modul dan Pembagian Tugas
@@ -429,6 +431,15 @@ Ringkasan konvensi untuk anggota yang mengerjakan layar:
   ```
 
   Klien otomatis mengirim `Authorization: Bearer <token>` setelah `aturToken(token)` dipanggil saat login, dan mengubah respons galat backend `{ error: { kode, pesan, detail } }` menjadi `ApiError`. Galat jaringan menghasilkan `kode` `JARINGAN_GAGAL` atau `BATAS_WAKTU`, sedangkan `EXPO_PUBLIC_API_URL` yang belum diatur menghasilkan `KONFIGURASI_TIDAK_VALID` (tanpa permintaan ke server). Ketiganya memiliki `status` 0.
+- **Fungsi per sumber daya:** bungkus tiap rute dalam fungsi di `src/mobile/src/api/<fitur>.ts` yang membuka amplop respons, misalnya `ambilAfirmasi()` mengembalikan isi `{ affirmation }` dari `GET /api/affirmation`. Ekspor juga dari `src/mobile/src/api/index.ts`. Unit test-nya mengimpor dari modul tersebut (`@/api/afirmasi`), bukan dari `@/api`, karena *barrel* ikut memuat modul *native* Expo yang tidak berjalan di Node.
+- **Memuat data di layar:** gunakan `useMuatan` dari `@/lib/muatan`, yang menghasilkan `Muatan<T>` (`memuat`, `galat` dengan `pesan`, atau `siap` dengan `data`) dan fungsi muat ulang untuk tombol "Coba lagi":
+
+  ```tsx
+  const [afirmasi, muatUlang] = useMuatan(ambilAfirmasi);
+  // afirmasi.status === 'siap' && afirmasi.data === null -> tampilkan keadaan kosong
+  ```
+
+  Data dimuat ulang setiap kali layar kembali tampil. Hanya pemuatan pertama dan "Coba lagi" yang menampilkan indikator memuat. Fungsi yang diberikan harus stabil (fungsi modul atau `useCallback`). Contoh pemakaian ada di Beranda (`src/mobile/src/app/(mahasiswa)/beranda.tsx`, `src/mobile/src/app/admin/index.tsx`).
 
 ## 10. Panduan Pengembangan Backend
 
