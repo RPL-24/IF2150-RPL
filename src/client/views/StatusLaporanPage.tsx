@@ -14,7 +14,7 @@ import { formatTanggal } from "@/lib/format";
 import {
   ambilDetailStatus, ambilLaporanPublik, ambilRiwayatWarga, prosesUpvote, type DetailStatus, type ItemPeta, type ItemRiwayat,
 } from "@/server/controllers/StatusController";
-import type { Enums } from "@/types/database";
+import type { Enums, Tables } from "@/types/database";
 
 type ModeTampilan = "Riwayat" | "Peta";
 type KeadaanDukungan = { memuat: boolean; tercatat: boolean; pesan: string; gagal: boolean };
@@ -22,17 +22,19 @@ type Props = {
   peran: Enums<"peran_user"> | null;
   riwayatAwal: ActionResult<ItemRiwayat[]> | null;
   petaAwal: ActionResult<ItemPeta[]> | null;
+  tiketAwal?: Tables<"laporan">["id_tiket"] | null;
+  detailAwal?: ActionResult<DetailStatus> | null;
 };
 
 const STATUS_PUBLIK = ["diterima", "dikerjakan", "berhasil"] as const satisfies readonly Enums<"status_laporan">[];
 
-export function StatusLaporanPage({ peran, riwayatAwal, petaAwal }: Props) {
-  const [modeTampilan, setModeTampilan] = useState<ModeTampilan>(peran === "warga" ? "Riwayat" : "Peta");
+export function StatusLaporanPage({ peran, riwayatAwal, petaAwal, tiketAwal = null, detailAwal = null }: Props) {
+  const [modeTampilan, setModeTampilan] = useState<ModeTampilan>(peran === "warga" || detailAwal !== null ? "Riwayat" : "Peta");
   const [riwayat, setRiwayat] = useState(riwayatAwal);
   const [peta, setPeta] = useState(petaAwal);
   const [memuat, setMemuat] = useState(false);
-  const [pilihanTiket, setPilihanTiket] = useState<string | null>(null);
-  const [detail, setDetail] = useState<ActionResult<DetailStatus> | null>(null);
+  const [pilihanTiket, setPilihanTiket] = useState<Tables<"laporan">["id_tiket"] | null>(peran === "warga" ? tiketAwal : null);
+  const [detail, setDetail] = useState<ActionResult<DetailStatus> | null>(peran === "warga" ? detailAwal : null);
   const [memuatDetail, setMemuatDetail] = useState(false);
   const [dukunganTiket, setDukunganTiket] = useState<Record<string, KeadaanDukungan>>({});
   const dukunganBerjalan = useRef(new Set<string>());
@@ -135,47 +137,51 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal }: Props) {
 
   function tampilkanRiwayat(daftarLaporan: ItemRiwayat[]) {
     return (
-      <>
-        <ul className="space-y-3">
-          {daftarLaporan.map((laporan) => (
-            <li key={laporan.id}>
-              <button
-                type="button"
-                aria-expanded={pilihanTiket === laporan.id_tiket}
-                aria-controls={`${id}-detail`}
-                onClick={() => void pilihTiket(laporan.id_tiket)}
-                className={`block w-full space-y-2 rounded-lg border p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
-                  pilihanTiket === laporan.id_tiket ? "border-blue-600 bg-blue-50" : "border-gray-200 hover:border-blue-300"
-                }`}
-              >
-                <span className="block text-sm text-gray-600">
-                  <span className="font-semibold text-gray-900">{laporan.id_tiket}</span>
-                  {" · "}<time dateTime={laporan.waktu_masuk}>{formatTanggal(laporan.waktu_masuk)}</time>
-                </span>
-                <span className="block font-medium">{KATEGORI[laporan.kategori]}</span>
-                <StatusBadge status={laporan.status} tahap={laporan.tahap} />
-              </button>
-            </li>
-          ))}
-        </ul>
+      <ul className="space-y-3">
+        {daftarLaporan.map((laporan) => (
+          <li key={laporan.id}>
+            <button
+              type="button"
+              aria-expanded={pilihanTiket === laporan.id_tiket}
+              aria-controls={`${id}-detail`}
+              onClick={() => void pilihTiket(laporan.id_tiket)}
+              className={`block w-full space-y-2 rounded-lg border p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
+                pilihanTiket === laporan.id_tiket ? "border-blue-600 bg-blue-50" : "border-gray-200 hover:border-blue-300"
+              }`}
+            >
+              <span className="block text-sm text-gray-600">
+                <span className="font-semibold text-gray-900">{laporan.id_tiket}</span>
+                {" · "}<time dateTime={laporan.waktu_masuk}>{formatTanggal(laporan.waktu_masuk)}</time>
+              </span>
+              <span className="block font-medium">{KATEGORI[laporan.kategori]}</span>
+              <StatusBadge status={laporan.status} tahap={laporan.tahap} />
+            </button>
+          </li>
+        ))}
+      </ul>
+    );
+  }
 
-        <section id={`${id}-detail`} aria-labelledby={`${id}-detail-judul`} aria-busy={memuatDetail} className="space-y-3">
-          <div className="flex items-center justify-between gap-3">
-            <h2 id={`${id}-detail-judul`} className="text-lg font-semibold">Detail tiket</h2>
-            {pilihanTiket && (
-              <button type="button" onClick={tutupDetailTiket} className="text-sm text-blue-700 underline">
-                Tutup detail
-              </button>
-            )}
-          </div>
-          {memuatDetail ? (
-            <p role="status" className="text-sm text-gray-600">Memuat detail tiket {pilihanTiket}…</p>
-          ) : detail ? (
-            detail.ok ? (
-              tampilkanDetailTiket(detail.data)
-            ) : (
-              <div role="alert" className="space-y-2 rounded-md bg-red-50 p-4 text-sm text-red-700">
-                <p>{detail.error}</p>
+  function tampilkanPanelDetail() {
+    return (
+      <section id={`${id}-detail`} aria-labelledby={`${id}-detail-judul`} aria-busy={memuatDetail} className="space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <h2 id={`${id}-detail-judul`} className="text-lg font-semibold">Detail tiket</h2>
+          {pilihanTiket && (
+            <button type="button" onClick={tutupDetailTiket} className="text-sm text-blue-700 underline">
+              Tutup detail
+            </button>
+          )}
+        </div>
+        {memuatDetail ? (
+          <p role="status" className="text-sm text-gray-600">Memuat detail tiket {pilihanTiket}…</p>
+        ) : detail ? (
+          detail.ok ? (
+            tampilkanDetailTiket(detail.data)
+          ) : (
+            <div role="alert" className="space-y-2 rounded-md bg-red-50 p-4 text-sm text-red-700">
+              <p>{detail.error}</p>
+              {pilihanTiket && (
                 <button
                   type="button"
                   onClick={() => { if (pilihanTiket) void pilihTiket(pilihanTiket); }}
@@ -183,11 +189,11 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal }: Props) {
                 >
                   Coba lagi
                 </button>
-              </div>
-            )
-          ) : <p className="text-sm text-gray-600">Pilih tiket untuk melihat detail laporan.</p>}
-        </section>
-      </>
+              )}
+            </div>
+          )
+        ) : <p className="text-sm text-gray-600">Pilih tiket untuk melihat detail laporan.</p>}
+      </section>
     );
   }
 
@@ -392,20 +398,26 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal }: Props) {
             ) : memuat ? (
               <p role="status" className="text-sm text-gray-600">Memuat {mode === "Riwayat" ? "riwayat laporan" : "peta laporan publik"}…</p>
             ) : hasilAktif && !hasilAktif.ok ? (
-              <div role="alert" className="space-y-2 rounded-md bg-red-50 p-4 text-sm text-red-700">
-                <p>{hasilAktif.error}</p>
-                <button
-                  type="button"
-                  onClick={mode === "Riwayat" ? pilihMenuRiwayat : pilihMenuPeta}
-                  className="font-medium underline"
-                >
-                  Coba lagi
-                </button>
-              </div>
+              <>
+                <div role="alert" className="space-y-2 rounded-md bg-red-50 p-4 text-sm text-red-700">
+                  <p>{hasilAktif.error}</p>
+                  <button
+                    type="button"
+                    onClick={mode === "Riwayat" ? pilihMenuRiwayat : pilihMenuPeta}
+                    className="font-medium underline"
+                  >
+                    Coba lagi
+                  </button>
+                </div>
+                {mode === "Riwayat" && detail !== null && tampilkanPanelDetail()}
+              </>
             ) : mode === "Riwayat" ? (
-              riwayat?.ok && riwayat.data.length > 0 ? (
-                tampilkanRiwayat(riwayat.data)
-              ) : <p className="text-sm text-gray-600">Belum ada laporan yang Anda kirim.</p>
+              <>
+                {riwayat?.ok && riwayat.data.length > 0 ? (
+                  tampilkanRiwayat(riwayat.data)
+                ) : <p className="text-sm text-gray-600">Belum ada laporan yang Anda kirim.</p>}
+                {(pilihanTiket !== null || detail !== null || (riwayat?.ok && riwayat.data.length > 0)) && tampilkanPanelDetail()}
+              </>
             ) : (
               tampilkanPetaSebaran(peta?.ok ? peta.data : [])
             )
