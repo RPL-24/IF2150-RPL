@@ -13,7 +13,8 @@ export default function DetailListingPage() {
       isAuthenticated
       title="Detail Listing"
       showHeader
-      headerClassName="bg-[#1bb0c7] px-5 pb-4 pt-8"
+      theme="green"
+      headerClassName="px-5 pb-4 pt-8"
       bodyClassName="px-4 py-5 lg:px-6"
     >
       <div className="mx-auto w-full max-w-5xl">

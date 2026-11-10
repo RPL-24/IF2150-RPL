@@ -16,6 +16,12 @@ export default function RewardPage() {
   const [perluLogin, setPerluLogin] = useState(false);
   const [mengklaim, setMengklaim] = useState(false);
   const [pesan, setPesan] = useState<{ jenis: "ok" | "gagal"; teks: string } | null>(null);
+  // new Date() tidak stabil saat prerender, jadi dihitung di client saja (useEffect).
+  const [tanggalHariIni, setTanggalHariIni] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTanggalHariIni(hariIni());
+  }, []);
 
   const muat = useCallback(async () => {
     try {
@@ -54,7 +60,7 @@ export default function RewardPage() {
   }
 
   const persen = data ? Math.min(100, (data.poin_terkumpul / data.poin_per_klaim) * 100) : 0;
-  const sudahLoginHariIni = data?.tanggal_login_terakhir === hariIni();
+  const sudahLoginHariIni = tanggalHariIni !== null && data?.tanggal_login_terakhir === tanggalHariIni;
 
   return (
     <AppLayout
@@ -62,7 +68,8 @@ export default function RewardPage() {
       isAuthenticated
       title="My Reward"
       showHeader
-      headerClassName="bg-[#f56369] px-5 pb-5 pt-8"
+      theme="pink"
+      headerClassName="px-5 pb-5 pt-8"
       bodyClassName="bg-[#e6e0c8] px-4 py-5"
     >
       <div className="space-y-5">

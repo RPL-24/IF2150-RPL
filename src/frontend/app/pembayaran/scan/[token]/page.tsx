@@ -1,9 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 export default function ScanPembayaranPage() {
+  // useParams butuh runtime → dibungkus Suspense agar prerendering tidak macet.
+  return (
+    <Suspense fallback={null}>
+      <KontenScan />
+    </Suspense>
+  );
+}
+
+function KontenScan() {
   const { token } = useParams<{ token: string }>();
   const router = useRouter();
   const [pesan, setPesan] = useState("Mengonfirmasi pembayaran demo…");
