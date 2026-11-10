@@ -144,6 +144,7 @@ Nilai `EXPO_PUBLIC_API_URL` bergantung pada tempat aplikasi berjalan, karena `lo
 | Aplikasi berjalan di | Nilai |
 |---|---|
 | Ponsel fisik (Expo Go) | `http://<IP-LAN-komputer>:8787`, misalnya `http://192.168.1.10:8787` |
+| Ponsel fisik (dev build) | idem, atau `https://sehati.sbxte.net` untuk Worker yang sudah di-*deploy* |
 | Emulator Android | `http://10.0.2.2:8787` |
 | Web atau simulator iOS di komputer yang sama | `http://localhost:8787` |
 | Backend yang sudah di-*deploy* | `https://<nama-worker>.<subdomain>.workers.dev` |
@@ -188,11 +189,22 @@ bunx wrangler secret put MODE_DEMO   # opsional, isi 1 untuk login demo
 
 ### Mobile
 
-Jalankan dari terminal interaktif (QR code tidak muncul jika terminal tidak interaktif):
+Ada dua cara menjalankan aplikasi, dan keduanya berbeda kemampuan. Ringkasnya juga tersedia sebagai `bun run go*` dan `bun run app*` di `src/mobile/package.json`.
+
+| | `bun run go:android` (Expo Go) | `bun run app:android` (dev build) |
+|---|---|---|
+| Perintah | `bunx expo start` lalu `a` | `bunx expo run:android` |
+| Yang dibuka | Aplikasi **Expo Go** | Aplikasi Sehati sendiri (`com.k01g04.sehati`) |
+| Kompilasi native | Tidak pernah | Ya, Gradle (5–10 menit pada build pertama) |
+| Skema *deep link* | `exp://` (milik Expo Go) | `sehati://` (milik aplikasi) |
+| *Push notification* Android | **Tidak bisa** | Bisa, dengan `google-services.json` |
+| Cocok untuk | Iterasi cepat layar dan alur | Menguji notifikasi, APK, dan `sehati://` |
+
+**Expo Go** — jalankan dari terminal interaktif (QR code tidak muncul jika terminal tidak interaktif):
 
 ```bash
 cd src/mobile
-bunx expo start
+bun run go:android      # atau: bunx expo start
 ```
 
 Lalu pilih salah satu:
@@ -206,6 +218,30 @@ Jika ponsel tidak dapat terhubung (misalnya jaringan kampus memblokir antarperan
 
 ```bash
 bunx expo start --tunnel
+```
+
+**Dev build** — wajib untuk notifikasi *push* di Android, karena Expo Go Android tidak lagi mendukungnya sejak SDK 53 dan `pushDidukung()` sengaja mengembalikan `false` untuk kombinasi itu:
+
+```bash
+cd src/mobile
+bun run app:android     # atau: bunx expo run:android
+```
+
+Perintah ini membuat folder `android/` bila belum ada (di-*gitignore*), mengompilasi APK *debug*, memasangnya di perangkat atau emulator, lalu menjalankan Metro. Setelah build pertama, perubahan JavaScript cukup di-*reload* (`r`); kompilasi ulang hanya perlu bila konfigurasi native berubah — `app.json`/`app.config.ts`, `google-services.json`, atau penambahan paket native.
+
+> Jangan `ctrl-C` lalu `run:android` hanya untuk perubahan JavaScript: itu mengompilasi ulang native selama beberapa menit tanpa alasan.
+
+#### `google-services.json` (khusus *push* Android)
+
+Berkas ini berisi kredensial Firebase, jadi **tidak di-*commit*** (lihat M9 A.3). Unduh dari Firebase Console untuk paket `com.k01g04.sehati`, lalu letakkan di `src/mobile/google-services.json`.
+
+`app.config.ts` menambahkan `googleServicesFile` hanya bila berkas itu ada, sehingga repo tetap dapat dijalankan tanpanya — aplikasi berfungsi normal, hanya tidak memperoleh *push token* di Android. Untuk build EAS, isi lewat variabel rahasia `GOOGLE_SERVICES_JSON`, bukan berkas yang di-*commit*.
+
+Gejala bila berkas ini hilang padahal dibutuhkan:
+
+```
+Pendaftaran perangkat untuk notifikasi gagal: [Error: Unable to get Firebase Messaging instance…]
+Default FirebaseApp is not initialized in this process com.k01g04.sehati.
 ```
 
 Pemeriksaan kode:
