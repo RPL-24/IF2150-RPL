@@ -295,15 +295,41 @@ class ItemTransaksi:
 
 @dataclass
 class RewardLogin:
+    """C07 RewardLogin: poin login harian milik Pembeli (UC07, UC08)."""
     id_reward: Optional[int]
     id_pembeli: int
     poin_terkumpul: int = 0
     tanggal_login_terakhir: Optional[str] = None
-    POIN_PER_LOGIN: int = 10
-    POIN_PER_KLAIM: int = 100
+    POIN_PER_LOGIN: ClassVar[int] = 10
+    POIN_PER_KLAIM: ClassVar[int] = 100
 
-    def cukup_untuk_klaim(self) -> bool:
+    def catatLogin(self, tanggal: str) -> bool:
+        """Algo-C07-01: tambah poin jika belum login pada tanggal ini."""
+        if self.tanggal_login_terakhir is not None and self.tanggal_login_terakhir == tanggal:
+            return False  # sudah login hari ini, poin tidak ditambah
+        self.poin_terkumpul += self.POIN_PER_LOGIN
+        self.tanggal_login_terakhir = tanggal
+        return True
+
+    def cukupUntukKlaim(self) -> bool:
+        """Algo-C07-02"""
         return self.poin_terkumpul >= self.POIN_PER_KLAIM
+
+    def kurangiPoin(self, jumlah: int) -> None:
+        """Algo-C07-03"""
+        if jumlah <= 0 or jumlah > self.poin_terkumpul:
+            raise ValueError("Poin tidak mencukupi")
+        self.poin_terkumpul -= jumlah
+
+    @classmethod
+    def cariByPembeli(cls, conn: sqlite3.Connection, id_pembeli: int) -> Optional["RewardLogin"]:
+        """Q-C19-01: ambil RewardLogin milik Pembeli. None jika tidak ada."""
+        baris = conn.execute(
+            "SELECT id_reward, id_pembeli, poin_terkumpul, tanggal_login_terakhir "
+            "FROM reward_login WHERE id_pembeli = ?",
+            (id_pembeli,),
+        ).fetchone()
+        return None if baris is None else cls(*baris)
 
 @dataclass
 class Kupon:
