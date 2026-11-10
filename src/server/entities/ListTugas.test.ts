@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ListTugas, type TugasLaporan } from "@/server/entities/ListTugas";
+import { isKategori, ListTugas, type TugasLaporan } from "@/server/entities/ListTugas";
 
 function tugas(idTiket: string, ubah: Partial<TugasLaporan> = {}): TugasLaporan {
   return {
@@ -79,5 +79,18 @@ describe("ListTugas.getLaporanById", () => {
 
   it("mengembalikan null jika ID tiket tidak ada", () => {
     expect(list.getLaporanById("LK-9999")).toBeNull();
+  });
+});
+
+describe("isKategori", () => {
+  it.each(["jalan_berlubang", "lampu_jalan_mati", "saluran_air_tersumbat", "trotoar_rusak", "rambu_marka_rusak"])(
+    "menerima %s",
+    (nilai) => {
+      expect(isKategori(nilai)).toBe(true);
+    },
+  );
+
+  it.each(["", "semua", "Jalan berlubang", "jalan_berlubang ", "drop table laporan"])("menolak %j", (nilai) => {
+    expect(isKategori(nilai)).toBe(false);
   });
 });
