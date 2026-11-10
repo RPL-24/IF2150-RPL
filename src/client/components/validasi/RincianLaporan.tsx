@@ -13,7 +13,7 @@ export function RincianLaporan({ rincian, sedangMemproses, onValidClicked, onTol
   const titik = { latitude: rincian.latitude, longitude: rincian.longitude };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 text-gray-900">
       <DetailLaporan laporan={rincian}>
         <button
           type="button"
@@ -34,7 +34,7 @@ export function RincianLaporan({ rincian, sedangMemproses, onValidClicked, onTol
       </DetailLaporan>
 
       <section className="space-y-2 rounded-md border border-gray-200 bg-white p-4">
-        <h3 className="text-sm font-medium">Lokasi</h3>
+        <h3 className="text-sm font-medium text-gray-900">Lokasi</h3>
         <MapView
           markers={[{ id: rincian.id, ...titik, status: rincian.status, label: rincian.id_tiket }]}
           idTerpilih={rincian.id}

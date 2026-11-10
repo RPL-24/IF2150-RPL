@@ -31,13 +31,13 @@ export function DialogTolak({ idTiket, sedangMemproses, onBatal, onKirim }: Prop
         role="dialog"
         aria-modal="true"
         aria-labelledby="judul-dialog-tolak"
-        className="w-full max-w-md space-y-3 rounded-lg bg-white p-5 shadow-lg"
+        className="w-full max-w-md space-y-3 rounded-lg bg-white p-5 text-gray-900 shadow-lg"
       >
-        <h2 id="judul-dialog-tolak" className="font-semibold">
+        <h2 id="judul-dialog-tolak" className="font-semibold text-gray-900">
           Tolak laporan {idTiket}
         </h2>
         <div className="space-y-1">
-          <label htmlFor="alasan-penolakan" className="text-sm font-medium">
+          <label htmlFor="alasan-penolakan" className="text-sm font-medium text-gray-800">
             Alasan penolakan
           </label>
           <textarea
@@ -49,7 +49,7 @@ export function DialogTolak({ idTiket, sedangMemproses, onBatal, onKirim }: Prop
             autoFocus
             placeholder="Tuliskan alasan yang akan dikirim ke pelapor"
             aria-invalid={galat ? true : undefined}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900"
           />
           {galat && (
             <p role="alert" className="text-sm text-red-600">
@@ -62,7 +62,7 @@ export function DialogTolak({ idTiket, sedangMemproses, onBatal, onKirim }: Prop
             type="button"
             onClick={onBatal}
             disabled={sedangMemproses}
-            className="rounded-md border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50 disabled:opacity-60"
+            className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-60"
           >
             Batal
           </button>

@@ -131,9 +131,9 @@ export function EvaluasiPage({ hasilAwal }: Props) {
   }
 
   return (
-    <main className="flex h-full flex-col gap-4 p-6">
+    <main className="flex h-full flex-col gap-4 p-6 text-gray-900">
       <header>
-        <h1 className="text-xl font-semibold">Evaluasi Hasil Kerja</h1>
+        <h1 className="text-xl font-semibold text-gray-900">Evaluasi Hasil Kerja</h1>
       </header>
 
       {pesan && (

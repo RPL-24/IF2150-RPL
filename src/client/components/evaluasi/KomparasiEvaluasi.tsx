@@ -130,7 +130,7 @@ export function KomparasiEvaluasi({
             disabled={sedangMemproses}
             rows={2}
             placeholder="Tambahkan catatan untuk eksekutor atau arsip tiket"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900"
           />
         </div>
 

@@ -33,7 +33,7 @@ export function AntreanLaporan({
           id="filter-kategori"
           value={pilihanFilter}
           onChange={(e) => onPilihFilterKategori(e.target.value)}
-          className="min-w-0 flex-1 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm"
+          className="min-w-0 flex-1 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
         >
           <option value="semua">Semua kategori</option>
           {Object.entries(KATEGORI).map(([nilai, label]) => (
@@ -45,18 +45,18 @@ export function AntreanLaporan({
         <button
           type="button"
           onClick={onBalikUrutan}
-          className="shrink-0 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm hover:bg-gray-50"
+          className="shrink-0 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 hover:bg-gray-50"
         >
           {ascending ? "Terlama" : "Terbaru"}
         </button>
       </div>
 
-      <p className="text-xs text-gray-500" aria-live="polite">
+      <p className="text-xs text-gray-600" aria-live="polite">
         {memuat ? "Memuat antrean..." : `${daftar.length} laporan`}
       </p>
 
       {daftar.length === 0 && !memuat ? (
-        <p className="rounded-lg border border-dashed border-gray-300 p-6 text-center text-sm text-gray-500">
+        <p className="rounded-lg border border-dashed border-gray-300 p-6 text-center text-sm text-gray-600">
           Tidak ada laporan dalam antrean.
         </p>
       ) : (
@@ -74,11 +74,11 @@ export function AntreanLaporan({
                   }`}
                 >
                   <span className="flex items-center justify-between gap-2">
-                    <span className="font-medium">{laporan.id_tiket}</span>
-                    <span className="text-xs text-gray-500">{formatWaktu(laporan.waktu_masuk)}</span>
+                    <span className="font-medium text-gray-900">{laporan.id_tiket}</span>
+                    <span className="text-xs text-gray-600">{formatWaktu(laporan.waktu_masuk)}</span>
                   </span>
-                  <span className="mt-0.5 block text-xs text-gray-600">{KATEGORI[laporan.kategori]}</span>
-                  <span className="mt-1 line-clamp-2 block text-gray-700">{laporan.deskripsi}</span>
+                  <span className="mt-0.5 block text-xs font-medium text-gray-700">{KATEGORI[laporan.kategori]}</span>
+                  <span className="mt-1 line-clamp-2 block text-gray-800">{laporan.deskripsi}</span>
                 </button>
               </li>
             );

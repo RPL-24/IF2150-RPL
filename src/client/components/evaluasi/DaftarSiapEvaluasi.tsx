@@ -38,12 +38,12 @@ export function DaftarSiapEvaluasi({ daftar, idTiketDipilih, memuat, onPilihPeke
                 >
                   <span className="flex items-center justify-between gap-2">
                     <span className="font-medium text-gray-900">{item.id_tiket}</span>
-                    <span className="text-xs text-gray-500">{formatWaktu(item.waktu_unggah)}</span>
+                    <span className="text-xs text-gray-600">{formatWaktu(item.waktu_unggah)}</span>
                   </span>
                   <span className="mt-0.5 block text-xs font-medium text-gray-700">
                     {KATEGORI[item.kategori]}
                   </span>
-                  <span className="mt-1 block text-xs text-gray-500">
+                  <span className="mt-1 block text-xs text-gray-600">
                     {item.nama_eksekutor ?? "Eksekutor Lapangan"} · Laporan masuk {formatTanggal(item.waktu_masuk)}
                   </span>
                 </button>
