@@ -68,18 +68,18 @@
 
   const nav = ({ label = "Lanjut", action = "next", disabled = false, skip = false } = {}) => `
     <div class="form-actions">
-      <button class="btn-amber" type="button" data-action="${action}" ${disabled ? "disabled" : ""}>${label}</button>
-      ${skip ? `<button class="btn-detail" type="button" data-action="skip">Lewati</button>` : ""}
-      <button class="btn-detail" type="button" data-action="back">Kembali</button>
+      <button class="btn btn--primary btn--block" type="button" data-action="${action}" ${disabled ? "disabled" : ""}>${label}</button>
+      ${skip ? `<button class="btn btn--link" type="button" data-action="skip">Lewati</button>` : ""}
+      <button class="btn btn--link" type="button" data-action="back">Kembali</button>
     </div>`;
 
   const views = {
     0: () => `
-      <section class="card intro-card">
-        <span class="intro-icon" aria-hidden="true">×</span>
+      <section class="card-box intro-card">
+        <span class="intro-icon" aria-hidden="true">✎</span>
         <h1 class="page-title" tabindex="-1">${greeting()}, ${esc(cfg.name)}.</h1>
         <p class="page-subtitle">Hari ini kamu belum mengisi daily check-in. Yuk, luangkan 5 menitmu untuk merefleksikan kesehatan mentalmu hari ini.</p>
-        <button class="btn-amber" type="button" data-action="start">Mulai check-in</button>
+        <button class="btn btn--primary btn--block" type="button" data-action="start">Mulai check-in</button>
       </section>`,
 
     1: () => head("Bagaimana perasaanmu hari ini?", "Pilih yang paling mendekati keadaanmu.") +
@@ -92,7 +92,7 @@
         <label>Jam tidur<input type="time" id="bed" value="${state.bed}"></label>
         <label>Jam bangun<input type="time" id="wake" value="${state.wake}"></label>
       </div>
-      <p class="form-hint" id="duration">Durasi tidur: ${fmtHours(sleepHours(state.bed, state.wake))}.</p>` +
+      <p class="field-hint" id="duration">Durasi tidur: ${fmtHours(sleepHours(state.bed, state.wake))}.</p>` +
       nav({ disabled: !state.bed || !state.wake }),
 
     3: () => head("Bagaimana pola makanmu hari ini?", "Pilih yang paling mendekati.") +
@@ -101,9 +101,9 @@
       `</div>` + nav({ disabled: state.meal === null }),
 
     4: () => head("Ada yang ingin kamu catat?", "Opsional. Hanya terlihat olehmu.") + `
-      <textarea class="note-field" id="note" rows="7" maxlength="${MAX_NOTE}" aria-label="Catatan refleksi"
+      <textarea class="form-textarea" id="note" rows="7" maxlength="${MAX_NOTE}" aria-label="Catatan refleksi"
         placeholder="Apa yang paling terasa hari ini?">${esc(state.note)}</textarea>
-      <p class="form-hint">Catatan ini dienkripsi. <span class="char-count" id="count">${state.note.length} / ${MAX_NOTE}</span></p>` +
+      <p class="field-hint">Catatan ini dienkripsi. <span class="char-count" id="count">${state.note.length} / ${MAX_NOTE}</span></p>` +
       nav({ skip: true }),
 
     5: () => {
@@ -115,28 +115,27 @@
         ["Refleksi", state.note.trim() || "Tidak ada catatan", 4]
       ];
       return head("Cek lagi sebelum simpan.", "Kamu bisa mengubah bagian mana pun.") + `
-        <dl class="card summary-card">
+        <dl class="card-box summary-card">
           <h2>Ringkasan check-in</h2>
           ${rows.map(([k, v, s]) => `
             <div class="summary-row">
               <div><dt>${k}</dt><dd>${esc(v)}</dd></div>
-              <button class="btn-detail" type="button" data-action="edit" data-value="${s}" aria-label="Ubah ${k}">Ubah</button>
+              <button class="btn btn--link" type="button" data-action="edit" data-value="${s}" aria-label="Ubah ${k}">Ubah</button>
             </div>`).join("")}
         </dl>
         ${state.error ? `<p class="form-error" role="alert">${esc(state.error)}</p>` : ""}
         <div class="form-actions">
-          <button class="btn-amber" type="button" data-action="save" ${state.saving ? "disabled" : ""}>${state.saving ? "Menyimpan…" : "Simpan check-in"}</button>
-          <button class="btn-detail" type="button" data-action="back-summary">Kembali</button>
-        </div>
-        <p class="form-hint">Catatan refleksi dienkripsi dan hanya terlihat olehmu.</p>`;
+          <button class="btn btn--primary btn--block" type="button" data-action="save" ${state.saving ? "disabled" : ""}>${state.saving ? "Menyimpan…" : "Simpan check-in"}</button>
+          <button class="btn btn--link" type="button" data-action="back-summary">Kembali</button>
+        </div>`;
     },
 
     6: () => `
-      <section class="card success-card">
+      <section class="card-box success-card">
         <span class="success-icon" aria-hidden="true">✓</span>
         <h1 class="page-title page-title-sm" tabindex="-1">Check-in tersimpan.</h1>
         <p class="page-subtitle">Terima kasih sudah meluangkan waktu untuk dirimu hari ini! Catatanmu sudah aman. Sampai jumpa besok.</p>
-        <button class="btn-amber" type="button" data-action="done">Kembali ke dashboard</button>
+        <button class="btn btn--primary btn--block" type="button" data-action="done">Kembali ke dashboard</button>
       </section>`
   };
 

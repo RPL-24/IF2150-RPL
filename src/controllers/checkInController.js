@@ -1,122 +1,92 @@
-const db = require('../config/db');
 const Pelajar = require('../models/Pelajar');
 const CheckIn = require('../models/CheckIn');
 const AppError = require('../utils/AppError');
+const { encryptAES256 } = require('../utils/encryption');
+const { kirim, tanganiAsync } = require('../utils/respon');
 
-exports.validateCheckInFormat = (data) => {
-    const moodValue = data.mood !== undefined ? data.mood : data.skalaMood;
-    if (moodValue === undefined || moodValue === null) {
-        return false;
-    }
-    const moodNum = Number(moodValue);
-    return !isNaN(moodNum) && moodNum >= 1 && moodNum <= 5;
+const POLA_MAKAN_BAWAAN = 'Teratur';
+const JAM_TIDUR_BAWAAN = '22:30';
+const JAM_BANGUN_BAWAAN = '06:00';
+
+/** Skala mood wajib berupa angka 1-5. */
+exports.validateCheckInFormat = (data = {}) => {
+  const moodValue = data.mood !== undefined ? data.mood : data.skalaMood;
+  if (moodValue === undefined || moodValue === null || moodValue === '') {
+    return false;
+  }
+  const moodNum = Number(moodValue);
+  return Number.isFinite(moodNum) && moodNum >= 1 && moodNum <= 5;
 };
 
+/**
+ * KNF01: catatan refleksi wajib tersimpan terenkripsi AES-256.
+ * Menerima string biasa maupun objek hasil enkripsi sisi klien ({ cipher, iv, key }).
+ */
 exports.encryptJournal = (catatan) => {
-    if (!catatan) return null;
-    return typeof catatan === 'string' ? catatan : JSON.stringify(catatan);
+  if (catatan === null || catatan === undefined) return null;
+  const teks = typeof catatan === 'string' ? catatan : JSON.stringify(catatan);
+  if (teks.trim() === '') return null;
+  return encryptAES256(teks);
+};
+
+function tanggalHariIni() {
+  return new Date().toISOString().split('T')[0];
 }
 
-exports.submitCheckIn = async (req, res, next) => {
-    try {
-        
-        const idPengguna = req.user.id || req.user.id_pengguna;
-        
-        const pelajar = await Pelajar.findByIdPengguna(idPengguna);
-        if (!pelajar) {
-            return res.status(404).json({ status: 'error', message: 'Profil pelajar tidak ditemukan.' });
-        }
+function ambilIdPengguna(req) {
+  return req.user.id || req.user.id_pengguna;
+}
 
-        const { mood, sleep, meal, triggers, note } = req.body;
+/** Ambil profil pelajar milik pengguna yang sedang masuk. */
+async function pelajarDariSesi(req) {
+  const pelajar = await Pelajar.findByIdPengguna(ambilIdPengguna(req));
+  if (!pelajar) {
+    throw new AppError(404, 'Profil pelajar tidak ditemukan.');
+  }
+  return pelajar;
+}
 
-        const finalMood = mood !== undefined ? mood : skalaMood;
-        if (!exports.validateCheckInFormat({ mood: finalMood })) {
-            return res.status(400).json({ status: 'error', message: 'Skala mood wajib diisi (1-5).' });
-        }
-        const today = new Date().toISOString().split('T')[0];
+exports.submitCheckIn = tanganiAsync(async (req, res) => {
+  const pelajar = await pelajarDariSesi(req);
 
-        const bedTime = sleep?.bed || jamTidur || '22:30';
-        const wakeTime = sleep?.wake || jamBangun || '06:00';
-        const dietVal = meal || polaMakan || 'Teratur';
-        const triggerVal = triggers || pemicuStres;
-        const rawNote = note || catatanRefleksi;
+  const { mood, sleep = {}, meal, triggers = [], note } = req.body || {};
 
-        const formattedTriggers = Array.isArray(triggerVal) ? triggerVal.join(', ') : (triggerVal || '');
-        const encryptedNote = exports.encryptJournal(rawNote);
+  if (!exports.validateCheckInFormat({ mood })) {
+    throw new AppError(400, 'Skala mood wajib diisi (1-5).');
+  }
 
-        const checkInData = CheckIn.createCheckIn({
-            idPelajar: pelajar.idPelajar || pelajar.id_pelajar,
-            tanggalCheckIn: today,
-            skalaMood: Number(finalMood),
-            jamTidur: bedTime,
-            jamBangun: wakeTime,
-            polaMakan: dietVal,
-            pemicuStres: formattedTriggers,
-            catatanRefleksi: encryptedNote
-        });
+  const pemicu = Array.isArray(triggers) ? triggers.join(', ') : String(triggers || '');
 
-        await pelajar.setCheckIn(checkInData);
+  const checkInData = CheckIn.createCheckIn({
+    idPelajar: pelajar.idPelajar || pelajar.id_pelajar,
+    tanggalCheckIn: tanggalHariIni(),
+    skalaMood: Number(mood),
+    jamTidur: sleep.bed || JAM_TIDUR_BAWAAN,
+    jamBangun: sleep.wake || JAM_BANGUN_BAWAAN,
+    polaMakan: meal || POLA_MAKAN_BAWAAN,
+    pemicuStres: pemicu,
+    catatanRefleksi: exports.encryptJournal(note),
+  });
 
-        return res.status(201).json({
-            status: 'success',
-            message: 'Daily check-in berhasil disimpan!',
-            data: checkInData
-        });
+  await pelajar.setCheckIn(checkInData);
 
-    } catch (error) {
-        if (error instanceof AppError) {
-            return res.status(error.status).json({ status: 'error', message: error.message });
-        }
-        console.error(error);
-        return res.status(500).json({ status: 'error', message: 'Gagal memproses daily check-in' });
-    }
-};
+  return kirim(res, 201, 'Daily check-in berhasil disimpan.', checkInData.getCheckInData());
+});
 
-exports.getHistory = async (req, res) => {
-    try {
-        const idPengguna = req.user.id || req.user.id_pengguna;
-        const pelajar = await Pelajar.findByIdPengguna(idPengguna);
-        if (!pelajar) {
-            return res.status(404).json({ status: 'error', message: 'Profil pelajar tidak ditemukan.' });
-        }
+exports.getHistory = tanganiAsync(async (req, res) => {
+  const pelajar = await pelajarDariSesi(req);
+  const history = await pelajar.getCheckInHistory();
+  return kirim(res, 200, 'Riwayat daily check-in.', history);
+});
 
-        const history = await pelajar.getCheckInHistory();
+exports.getTodayStatus = tanganiAsync(async (req, res) => {
+  const pelajar = await pelajarDariSesi(req);
 
-        return res.status(200).json({
-            status: 'success',
-            data: history
-        });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            status: 'error', message: 'Gagal mengambil riwayat daily check-in' });
-    }
-};
+  const checkInHariIni = await pelajar.getCheckInSejak(tanggalHariIni());
+  const sudahCheckIn = checkInHariIni.length > 0;
 
-exports.getTodayStatus = async (req, res) => {
-    try {
-        const idPengguna = req.user.id || req.user.id_pengguna;
-        const pelajar = await Pelajar.findByIdPengguna(idPengguna);
-        if (!pelajar) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'Profil pelajar tidak ditemukan.' });
-        }
-
-        const today = new Date().toISOString().split('T')[0];
-        const checkInToday = await pelajar.getCheckInSejak(today);
-        const hasCheckedIn = checkInToday.length > 0;
-
-        return res.status(200).json({
-            status: 'success',
-            hasCheckedIn: hasCheckedIn,
-            data: hasCheckedIn ? checkInToday[0] : null
-        });
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            status: 'error',
-            message: 'Gagal memeriksa status daily check-in hari ini' });
-    }
-};
+  return kirim(res, 200, 'Status daily check-in hari ini.', {
+    sudahCheckIn,
+    checkIn: sudahCheckIn ? checkInHariIni[0] : null,
+  });
+});

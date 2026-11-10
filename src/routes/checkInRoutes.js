@@ -5,6 +5,6 @@ const {authenticate} = require('../middleware/authMiddleware');
 
 router.post('/', authenticate, checkInController.submitCheckIn);
 router.get('/history', authenticate, checkInController.getHistory);
-router.get('/today', authenticate, checkInController.getTodayStatus);
+router.get('/status', authenticate, checkInController.getTodayStatus);
 
 module.exports = router;
