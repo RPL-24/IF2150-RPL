@@ -5,17 +5,19 @@ import Link from "next/link";
 import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { DetailLaporan } from "@/client/components/shared/DetailLaporan";
 import { BuktiPerbaikan } from "@/client/components/status/BuktiPerbaikan";
+import { KartuLaporanPublik } from "@/client/components/status/KartuLaporanPublik";
 import { MapView } from "@/client/components/shared/MapView";
 import { StatusBadge } from "@/client/components/shared/StatusBadge";
 import { gagal, type ActionResult } from "@/lib/action-result";
 import { KATEGORI, STATUS_LABEL, STATUS_WARNA_PETA } from "@/lib/constants";
 import { formatTanggal } from "@/lib/format";
 import {
-  ambilDetailStatus, ambilLaporanPublik, ambilRiwayatWarga, type DetailStatus, type ItemPeta, type ItemRiwayat,
+  ambilDetailStatus, ambilLaporanPublik, ambilRiwayatWarga, prosesUpvote, type DetailStatus, type ItemPeta, type ItemRiwayat,
 } from "@/server/controllers/StatusController";
 import type { Enums } from "@/types/database";
 
 type ModeTampilan = "Riwayat" | "Peta";
+type KeadaanDukungan = { memuat: boolean; tercatat: boolean; pesan: string; gagal: boolean };
 type Props = {
   peran: Enums<"peran_user"> | null;
   riwayatAwal: ActionResult<ItemRiwayat[]> | null;
@@ -32,6 +34,9 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal }: Props) {
   const [pilihanTiket, setPilihanTiket] = useState<string | null>(null);
   const [detail, setDetail] = useState<ActionResult<DetailStatus> | null>(null);
   const [memuatDetail, setMemuatDetail] = useState(false);
+  const [dukunganTiket, setDukunganTiket] = useState<Record<string, KeadaanDukungan>>({});
+  const dukunganBerjalan = useRef(new Set<string>());
+  const jumlahDukunganTerbaru = useRef<Record<string, ItemPeta["jumlah_upvote"]>>({});
   const permintaan = useRef(0);
   const permintaanDetail = useRef(0);
   const tabRiwayat = useRef<HTMLButtonElement>(null);
@@ -67,7 +72,16 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal }: Props) {
     setMemuat(true);
     try {
       const hasil = await ambilLaporanPublik();
-      if (nomor === permintaan.current) setPeta(hasil);
+      if (nomor === permintaan.current) {
+        // Pembacaan yang dimulai sebelum upvote selesai tidak boleh menurunkan counter.
+        setPeta(hasil.ok ? {
+          ...hasil,
+          data: hasil.data.map((laporan) => ({
+            ...laporan,
+            jumlah_upvote: Math.max(laporan.jumlah_upvote, jumlahDukunganTerbaru.current[laporan.id_tiket] ?? 0),
+          })),
+        } : hasil);
+      }
     } catch {
       if (nomor === permintaan.current) setPeta(gagal("Gagal memuat peta. Periksa koneksi lalu coba lagi."));
     } finally {
@@ -177,6 +191,141 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal }: Props) {
     );
   }
 
+  /** C16 pilihMarker (I02-12): pilih tiket publik yang memang ada pada daftar peta. */
+  function pilihMarker(idTiket: string) {
+    if (!peta?.ok || !peta.data.some((laporan) => laporan.id_tiket === idTiket)) return;
+    setPilihanTiket(idTiket);
+  }
+
+  function perbaruiJumlahDukungan(idTiket: string, jumlah: ItemPeta["jumlah_upvote"]) {
+    const terbaru = Math.max(jumlah, jumlahDukunganTerbaru.current[idTiket] ?? 0);
+    jumlahDukunganTerbaru.current[idTiket] = terbaru;
+    setPeta((sebelumnya) => sebelumnya?.ok ? {
+      ...sebelumnya,
+      data: sebelumnya.data.map((laporan) => laporan.id_tiket === idTiket
+        ? { ...laporan, jumlah_upvote: Math.max(laporan.jumlah_upvote, terbaru) }
+        : laporan),
+    } : sebelumnya);
+  }
+
+  /** C16 onUpvoteClicked (I02-14): hasil tetap terikat tiket awal saat marker berganti. */
+  async function onUpvoteClicked() {
+    const idTiket = pilihanTiket;
+    if (peran !== "warga" || !idTiket || !peta?.ok || dukunganBerjalan.current.has(idTiket) || dukunganTiket[idTiket]?.tercatat) return;
+    const laporan = peta.data.find((item) => item.id_tiket === idTiket);
+    if (!laporan || laporan.sudahDidukung !== false || (laporan.status !== "diterima" && laporan.status !== "dikerjakan")) return;
+
+    dukunganBerjalan.current.add(idTiket);
+    setDukunganTiket((sebelumnya) => ({
+      ...sebelumnya, [idTiket]: { memuat: true, tercatat: false, pesan: "", gagal: false },
+    }));
+    try {
+      const hasil = await prosesUpvote(idTiket);
+      setDukunganTiket((sebelumnya) => ({
+        ...sebelumnya,
+        [idTiket]: {
+          memuat: true, tercatat: hasil.ok || hasil.dukunganTercatat === true,
+          pesan: hasil.ok ? "Terima kasih, dukungan Anda sudah tercatat." : hasil.error,
+          gagal: !hasil.ok,
+        },
+      }));
+      if (hasil.ok) {
+        perbaruiJumlahDukungan(idTiket, hasil.data);
+      } else if (hasil.dukunganTercatat) {
+        // Dukungan sudah ada; hanya baca ulang counter, jangan mengirim insert ulang.
+        try {
+          const terbaru = await ambilLaporanPublik();
+          const tiket = terbaru.ok ? terbaru.data.find((item) => item.id_tiket === idTiket) : null;
+          if (tiket) perbaruiJumlahDukungan(idTiket, tiket.jumlah_upvote);
+        } catch {
+          // Pesan dan penanda dukungan tersimpan tetap dipertahankan saat koneksi gagal.
+        }
+      }
+    } catch {
+      setDukunganTiket((sebelumnya) => ({
+        ...sebelumnya,
+        [idTiket]: { memuat: true, tercatat: false, pesan: "Gagal mengirim dukungan. Periksa koneksi lalu coba lagi.", gagal: true },
+      }));
+    } finally {
+      dukunganBerjalan.current.delete(idTiket);
+      setDukunganTiket((sebelumnya) => ({ ...sebelumnya, [idTiket]: { ...sebelumnya[idTiket], memuat: false } }));
+    }
+  }
+
+  /** C16 tampilkanPetaSebaran (I02-10..13), memakai MapView shared. */
+  function tampilkanPetaSebaran(daftarLaporanPublik: ItemPeta[]) {
+    const laporanTerpilih = daftarLaporanPublik.find((laporan) => laporan.id_tiket === pilihanTiket);
+
+    return (
+      <div className="relative isolate -mx-4 overflow-hidden bg-gray-100 sm:mx-0 sm:rounded-2xl">
+        <MapView
+          markers={daftarLaporanPublik.map((laporan) => ({
+            id: laporan.id_tiket,
+            latitude: laporan.latitude,
+            longitude: laporan.longitude,
+            status: laporan.status,
+            label: laporan.id_tiket,
+          }))}
+          onPilihMarker={pilihMarker}
+          idTerpilih={laporanTerpilih?.id_tiket ?? null}
+          tinggi="clamp(28rem, calc(100svh - 12rem), 44rem)"
+        />
+
+        {/* Sisakan ruang di kiri untuk kontrol zoom Leaflet dan di bawah untuk atribusi. */}
+        <div className="pointer-events-none absolute top-3 right-3 left-14 z-[1000] space-y-2">
+          <h2 className="w-fit max-w-full rounded-full bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm">
+            Laporan publik di sekitar Anda
+          </h2>
+          <ul aria-label="Legenda status laporan" className="flex w-fit max-w-full flex-wrap gap-x-4 gap-y-2 rounded-xl bg-white px-3 py-2 text-xs text-gray-700 shadow-sm sm:text-sm">
+            {STATUS_PUBLIK.map((status) => (
+              <li key={status} className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: STATUS_WARNA_PETA[status] }} />
+                {STATUS_LABEL[status]}
+              </li>
+            ))}
+          </ul>
+          <label className="pointer-events-auto flex max-w-full items-center gap-2 rounded-xl bg-white px-3 py-2 text-sm text-gray-700 shadow-sm">
+            <span className="shrink-0 font-medium">Tiket</span>
+            <select
+              aria-label="Pilih laporan pada peta"
+              value={laporanTerpilih?.id_tiket ?? ""}
+              onChange={(event) => pilihMarker(event.target.value)}
+              disabled={daftarLaporanPublik.length === 0}
+              className="min-w-0 flex-1 rounded bg-white text-gray-900 focus-visible:outline-2 focus-visible:outline-blue-600 disabled:opacity-60"
+            >
+              <option value="" disabled>Pilih tiket laporan</option>
+              {daftarLaporanPublik.map((laporan) => (
+                <option key={laporan.id} value={laporan.id_tiket}>
+                  {laporan.id_tiket} · {KATEGORI[laporan.kategori]}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <div aria-live="polite" aria-atomic="true" className="absolute right-3 bottom-8 left-3 z-[1000]">
+          {laporanTerpilih ? (
+            <KartuLaporanPublik
+              laporan={laporanTerpilih}
+              peran={peran}
+              memuatDukungan={dukunganTiket[laporanTerpilih.id_tiket]?.memuat}
+              sudahDidukung={dukunganTiket[laporanTerpilih.id_tiket]?.tercatat || laporanTerpilih.sudahDidukung}
+              pesanDukungan={dukunganTiket[laporanTerpilih.id_tiket]?.pesan}
+              gagalDukungan={dukunganTiket[laporanTerpilih.id_tiket]?.gagal}
+              onDukung={() => void onUpvoteClicked()}
+            />
+          ) : (
+            <p className="rounded-xl bg-white px-4 py-3 text-sm text-gray-600 shadow-md">
+              {daftarLaporanPublik.length === 0
+                ? "Belum ada laporan publik untuk ditampilkan."
+                : "Pilih penanda untuk melihat ringkasan laporan."}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   function pindahTabDenganKeyboard(event: KeyboardEvent<HTMLButtonElement>) {
     let tujuan: ModeTampilan;
     if (event.key === "Home") tujuan = "Riwayat";
@@ -258,21 +407,7 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal }: Props) {
                 tampilkanRiwayat(riwayat.data)
               ) : <p className="text-sm text-gray-600">Belum ada laporan yang Anda kirim.</p>
             ) : (
-              <>
-                <h2 className="font-medium">Laporan publik di sekitar Anda</h2>
-                {peta?.ok && peta.data.length === 0 && (
-                  <p className="text-sm text-gray-600">Belum ada laporan publik untuk ditampilkan.</p>
-                )}
-                <MapView markers={peta?.ok ? peta.data.map((laporan) => ({ ...laporan, label: laporan.id_tiket })) : []} tinggi="400px" />
-                <ul aria-label="Legenda status laporan" className="flex flex-wrap gap-4 text-sm text-gray-600">
-                  {STATUS_PUBLIK.map((status) => (
-                    <li key={status} className="flex items-center gap-2">
-                      <span aria-hidden="true" className="h-3 w-3 rounded-full" style={{ backgroundColor: STATUS_WARNA_PETA[status] }} />
-                      {STATUS_LABEL[status]}
-                    </li>
-                  ))}
-                </ul>
-              </>
+              tampilkanPetaSebaran(peta?.ok ? peta.data : [])
             )
           )}
         </section>
