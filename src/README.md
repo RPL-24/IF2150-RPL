@@ -34,6 +34,7 @@ Arsitektur mengikuti DPPL (`docs/M8/K01_G04_DPPL2.md`): Client-Server + MVC, den
 | Expo Router | ~58.0.30 (navigasi berbasis file) |
 | Plus Jakarta Sans | `@expo-google-fonts/plus-jakarta-sans` ^0.4.2 |
 | Ikon | `lucide-react-native` ^1.69.0 + `react-native-svg` 15.16.0 |
+| Notifikasi push | `expo-notifications` ~58.1.8 + `expo-device` ~58.0.5 |
 | Linter | ESLint 9 + `eslint-config-expo` |
 | Test | Vitest ^5.1.0 |
 
@@ -72,7 +73,7 @@ src/
       theme/              # token desain: warna, font, gaya teks, jarak, sudut
       views/              # bagian layar per fitur (views/beranda: kartu afirmasi, sesi, status layanan)
       api/                # klien HTTP ke backend, login, sesi (SecureStore), dan fungsi per sumber daya
-      lib/                # sesi pengguna bersama (useSesi), pemuatan data (useMuatan), format waktu
+      lib/                # sesi pengguna bersama (useSesi), pemuatan data (useMuatan), format waktu, pendaftaran notifikasi push
     bun.lock              # lockfile Bun
     test/                 # unit test Vitest (vitest.config.mts)
   backend/                # Cloudflare Worker (Hono + D1): REST API dan cron
@@ -144,6 +145,7 @@ Nilai `EXPO_PUBLIC_API_URL` bergantung pada tempat aplikasi berjalan, karena `lo
 | Aplikasi berjalan di | Nilai |
 |---|---|
 | Ponsel fisik (Expo Go) | `http://<IP-LAN-komputer>:8787`, misalnya `http://192.168.1.10:8787` |
+| Ponsel fisik (dev build) | idem, atau `https://sehati.sbxte.net` untuk Worker yang sudah di-*deploy* |
 | Emulator Android | `http://10.0.2.2:8787` |
 | Web atau simulator iOS di komputer yang sama | `http://localhost:8787` |
 | Backend yang sudah di-*deploy* | `https://<nama-worker>.<subdomain>.workers.dev` |
@@ -188,11 +190,22 @@ bunx wrangler secret put MODE_DEMO   # opsional, isi 1 untuk login demo
 
 ### Mobile
 
-Jalankan dari terminal interaktif (QR code tidak muncul jika terminal tidak interaktif):
+Ada dua cara menjalankan aplikasi, dan keduanya berbeda kemampuan. Ringkasnya juga tersedia sebagai `bun run go*` dan `bun run app*` di `src/mobile/package.json`.
+
+| | `bun run go:android` (Expo Go) | `bun run app:android` (dev build) |
+|---|---|---|
+| Perintah | `bunx expo start` lalu `a` | `bunx expo run:android` |
+| Yang dibuka | Aplikasi **Expo Go** | Aplikasi Sehati sendiri (`com.k01g04.sehati`) |
+| Kompilasi native | Tidak pernah | Ya, Gradle (5–10 menit pada build pertama) |
+| Skema *deep link* | `exp://` (milik Expo Go) | `sehati://` (milik aplikasi) |
+| *Push notification* Android | **Tidak bisa** | Bisa, dengan `google-services.json` |
+| Cocok untuk | Iterasi cepat layar dan alur | Menguji notifikasi, APK, dan `sehati://` |
+
+**Expo Go** — jalankan dari terminal interaktif (QR code tidak muncul jika terminal tidak interaktif):
 
 ```bash
 cd src/mobile
-bunx expo start
+bun run go:android      # atau: bunx expo start
 ```
 
 Lalu pilih salah satu:
@@ -208,6 +221,30 @@ Jika ponsel tidak dapat terhubung (misalnya jaringan kampus memblokir antarperan
 bunx expo start --tunnel
 ```
 
+**Dev build** — wajib untuk notifikasi *push* di Android, karena Expo Go Android tidak lagi mendukungnya sejak SDK 53 dan `pushDidukung()` sengaja mengembalikan `false` untuk kombinasi itu:
+
+```bash
+cd src/mobile
+bun run app:android     # atau: bunx expo run:android
+```
+
+Perintah ini membuat folder `android/` bila belum ada (di-*gitignore*), mengompilasi APK *debug*, memasangnya di perangkat atau emulator, lalu menjalankan Metro. Setelah build pertama, perubahan JavaScript cukup di-*reload* (`r`); kompilasi ulang hanya perlu bila konfigurasi native berubah — `app.json`/`app.config.ts`, `google-services.json`, atau penambahan paket native.
+
+> Jangan `ctrl-C` lalu `run:android` hanya untuk perubahan JavaScript: itu mengompilasi ulang native selama beberapa menit tanpa alasan.
+
+#### `google-services.json` (khusus *push* Android)
+
+Berkas ini berisi kredensial Firebase, jadi **tidak di-*commit*** (lihat M9 A.3). Unduh dari Firebase Console untuk paket `com.k01g04.sehati`, lalu letakkan di `src/mobile/google-services.json`.
+
+`app.config.ts` menambahkan `googleServicesFile` hanya bila berkas itu ada, sehingga repo tetap dapat dijalankan tanpanya — aplikasi berfungsi normal, hanya tidak memperoleh *push token* di Android. Untuk build EAS, isi lewat variabel rahasia `GOOGLE_SERVICES_JSON`, bukan berkas yang di-*commit*.
+
+Gejala bila berkas ini hilang padahal dibutuhkan:
+
+```
+Pendaftaran perangkat untuk notifikasi gagal: [Error: Unable to get Firebase Messaging instance…]
+Default FirebaseApp is not initialized in this process com.k01g04.sehati.
+```
+
 Pemeriksaan kode:
 
 ```bash
@@ -216,9 +253,22 @@ bunx expo lint     # ESLint
 bun run test       # unit test Vitest (test/)
 ```
 
-Unit test di `src/mobile/test/` menguji logika TypeScript murni, seperti klien API (`client.test.ts`): URL dan header `Authorization`, amplop galat menjadi `ApiError`, *callback* 401, serta kode `JARINGAN_GAGAL`, `BATAS_WAKTU`, dan `KONFIGURASI_TIDAK_VALID`. `fetch` diganti tiruan, sehingga tidak perlu backend yang berjalan. Layar dan komponen tidak dirender di test; keduanya diperiksa langsung di Expo Go.
+Unit test di `src/mobile/test/` menguji logika TypeScript murni, seperti klien API (`client.test.ts`): URL dan header `Authorization`, amplop galat menjadi `ApiError`, *callback* 401, serta kode `JARINGAN_GAGAL`, `BATAS_WAKTU`, dan `KONFIGURASI_TIDAK_VALID`. `fetch` diganti tiruan, sehingga tidak perlu backend yang berjalan. Kode yang memakai modul *native* (misalnya `notifikasi.test.ts`) diuji dengan mengganti `react-native` dan modul Expo menggunakan `vi.mock`, karena modul tersebut tidak dapat dimuat di Node. Layar dan komponen tidak dirender di test; keduanya diperiksa langsung di Expo Go.
 
 Layar pertama adalah I-01 Masuk. Untuk mencoba aplikasi tanpa akun Google, gunakan tombol "Mode demo" (bagian 6).
+
+#### Notifikasi push
+
+Setelah login (Google maupun demo), aplikasi meminta izin notifikasi, mengambil Expo push token, lalu mengirimkannya ke `POST /api/auth/device` (Algo-003, `src/mobile/src/lib/notifikasi.ts`). Backend menyimpan token pada sesi aktif dan mengakhiri sesi lain yang memakai perangkat yang sama, lalu tugas *cron* mengirim afirmasi dan pengingat ke token tersebut. Pendaftaran berjalan di latar belakang: bila izin ditolak atau terjadi galat, login tetap berhasil dan perangkat hanya tidak menerima notifikasi.
+
+| Lingkungan | Notifikasi push |
+|---|---|
+| Expo Go di Android | Tidak didukung sejak Expo SDK 53; pendaftaran dilewati tanpa meminta izin. Gunakan *development build* atau APK (bagian Rilis). |
+| Expo Go di iOS | Didukung. |
+| Emulator Android / simulator iOS | Dilewati tanpa meminta izin (`Device.isDevice` bernilai `false`). Uji notifikasi di perangkat fisik. |
+| APK / *development build* di perangkat fisik | Didukung. Di Android, pengiriman memerlukan kredensial FCM V1 yang diunggah ke proyek EAS (`tszcodess-team`), lihat [panduan Expo](https://docs.expo.dev/push-notifications/fcm-credentials/). |
+
+Untuk memeriksa pendaftaran, buka `bun run db:studio:local` dan lihat kolom `token_push` pada tabel `sesi_autentikasi`. Notifikasi uji dapat dikirim ke token tersebut melalui [Expo push notifications tool](https://expo.dev/notifications).
 
 ### Backend
 
