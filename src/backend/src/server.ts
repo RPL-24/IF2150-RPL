@@ -1,10 +1,16 @@
 import http from 'http';
-import express, { Application, NextFunction, Request, Response } from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express, { Application, Request, Response } from 'express';
 import { Server as SocketIOServer } from 'socket.io';
+import { KategoriJasaController } from './controllers/KategoriJasaController';
 import { KomunikasiController } from './controllers/KomunikasiController';
 import { NotifikasiController, RealtimeEmitter } from './controllers/NotifikasiController';
 import { createChatsRouter } from './routes/chats.routes';
 import { createNotificationsRouter } from './routes/notifications.routes';
+import servicesRoutes from './routes/services.routes';
+
+dotenv.config();
 
 export class SocketIORealtimeEmitter implements RealtimeEmitter {
   constructor(private readonly io: SocketIOServer) {}
@@ -22,32 +28,21 @@ export function createApp(): {
   notifikasiController: NotifikasiController;
 } {
   const app = express();
-
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
-    if (req.method === 'OPTIONS') {
-      res.status(204).end();
-      return;
-    }
-    next();
-  });
-
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-
   const httpServer = http.createServer(app);
-
   const io = new SocketIOServer(httpServer, {
     cors: {
       origin: '*',
-      methods: ['GET', 'POST', 'PATCH'],
+      methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
     },
     transports: ['websocket', 'polling'],
+  });
+
+  app.use(cors());
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+
+  app.get('/health', (_req: Request, res: Response) => {
+    res.status(200).json({ status: 'ok', uptime: process.uptime() });
   });
 
   io.on('connection', (socket) => {
@@ -67,35 +62,31 @@ export function createApp(): {
   });
 
   const realtimeEmitter = new SocketIORealtimeEmitter(io);
-  const notifikasiController = new NotifikasiController(
-    undefined,
-    undefined,
-    realtimeEmitter
-  );
+  const notifikasiController = new NotifikasiController(undefined, undefined, realtimeEmitter);
   const komunikasiController = new KomunikasiController(
     undefined,
     notifikasiController,
     realtimeEmitter
   );
+  const kategoriJasaController = new KategoriJasaController();
 
   app.use('/api/chats', createChatsRouter(komunikasiController));
   app.use('/api/notifications', createNotificationsRouter(notifikasiController));
+  app.use('/api/services', servicesRoutes);
 
-  return {
-    app,
-    httpServer,
-    io,
-    komunikasiController,
-    notifikasiController,
-  };
+  app.get('/api/categories', kategoriJasaController.getAllCategoriesHandler);
+  app.get('/api/categories/:id', kategoriJasaController.getCategoryByIdHandler);
+  app.post('/api/categories', kategoriJasaController.createCategoryAndBindServiceHandler);
+
+  return { app, httpServer, io, komunikasiController, notifikasiController };
 }
 
 const { app, httpServer, io } = createApp();
 
 if (require.main === module) {
-  const PORT = Number(process.env.PORT) || 3000;
-  httpServer.listen(PORT, '0.0.0.0', () => {
-    console.log(`[CariUang Express + Socket.IO Server] Running on http://0.0.0.0:${PORT}`);
+  const port = Number(process.env.PORT) || 3000;
+  httpServer.listen(port, '0.0.0.0', () => {
+    console.log(`[CariUang Express + Socket.IO Server] Running on http://localhost:${port}`);
   });
 }
 

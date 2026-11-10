@@ -1,14 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 
 /**
- * Singleton Prisma Client untuk menghindari koneksi database yang berlebihan,
- * terutama saat hot-reload di development (tsx watch).
- *
- * Referensi: https://www.prisma.io/docs/guides/performance-and-optimization/connection-management
+ * Reuse one client during development so hot reload does not create a new
+ * PostgreSQL connection for every module reload.
  */
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+const globalForPrisma = globalThis as typeof globalThis & {
+  prisma?: PrismaClient;
+};
 
-const prisma = globalForPrisma.prisma ?? new PrismaClient();
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+  });
 
 if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma;
