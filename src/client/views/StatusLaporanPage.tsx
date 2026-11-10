@@ -2,10 +2,11 @@
 
 // C16 · StatusLaporanPage (kelas boundary DPPL). Pemilik: Peran D.
 import Link from "next/link";
-import { useId, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { DetailLaporan } from "@/client/components/shared/DetailLaporan";
 import { BuktiPerbaikan } from "@/client/components/status/BuktiPerbaikan";
 import { KartuLaporanPublik } from "@/client/components/status/KartuLaporanPublik";
+import { gabungkanPetaTerbaru, mulaiPembaruanPeta } from "@/client/components/status/pembaruanPeta";
 import { MapView } from "@/client/components/shared/MapView";
 import { StatusBadge } from "@/client/components/shared/StatusBadge";
 import { gagal, type ActionResult } from "@/lib/action-result";
@@ -45,6 +46,23 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal, tiketAwal = nu
   const tabPeta = useRef<HTMLButtonElement>(null);
   const id = useId();
 
+  useEffect(() => {
+    // Pemuatan awal/manual diselesaikan dahulu; refresh latar belakang tidak mengosongkan peta.
+    if (modeTampilan !== "Peta" || memuat) return;
+    return mulaiPembaruanPeta(async (signal) => {
+      const nomor = permintaan.current;
+      const hasil = await ambilLaporanPublik();
+      if (signal.aborted || nomor !== permintaan.current || !hasil.ok) return;
+
+      const jumlah = jumlahDukunganTerbaru.current;
+      setPeta((sebelumnya) => ({
+        ...hasil,
+        data: gabungkanPetaTerbaru(hasil.data, sebelumnya?.ok ? sebelumnya.data : [], jumlah),
+      }));
+      setPilihanTiket((terpilih) => hasil.data.some((laporan) => laporan.id_tiket === terpilih) ? terpilih : null);
+    });
+  }, [modeTampilan, memuat]);
+
   /** C16 pilihMenuRiwayat (Algo-031). */
   async function pilihMenuRiwayat() {
     tutupDetailTiket();
@@ -76,12 +94,10 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal, tiketAwal = nu
       const hasil = await ambilLaporanPublik();
       if (nomor === permintaan.current) {
         // Pembacaan yang dimulai sebelum upvote selesai tidak boleh menurunkan counter.
-        setPeta(hasil.ok ? {
+        const jumlah = jumlahDukunganTerbaru.current;
+        setPeta((sebelumnya) => hasil.ok ? {
           ...hasil,
-          data: hasil.data.map((laporan) => ({
-            ...laporan,
-            jumlah_upvote: Math.max(laporan.jumlah_upvote, jumlahDukunganTerbaru.current[laporan.id_tiket] ?? 0),
-          })),
+          data: gabungkanPetaTerbaru(hasil.data, sebelumnya?.ok ? sebelumnya.data : [], jumlah),
         } : hasil);
       }
     } catch {
