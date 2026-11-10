@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import { Role } from '@prisma/client';
 import prisma from '../src/database/prisma';
 import {
@@ -123,7 +123,7 @@ function setupMockPrisma(): void {
         return row ? { ...row } : null;
       },
       findFirst: async ({ where }: any) => {
-        for (const row of mockDb.kontrakPekerjaan.values()) {
+        for (const row of Array.from(mockDb.kontrakPekerjaan.values())) {
           if (where.idPemberiJasa && row.idPemberiJasa !== where.idPemberiJasa) {
             continue;
           }
@@ -145,7 +145,7 @@ function setupMockPrisma(): void {
       },
       findMany: async ({ where }: any) => {
         const results: MockKontrakRow[] = [];
-        for (const row of mockDb.kontrakPekerjaan.values()) {
+        for (const row of Array.from(mockDb.kontrakPekerjaan.values())) {
           if (
             where?.statusPekerjaan &&
             row.statusPekerjaan !== where.statusPekerjaan
@@ -182,7 +182,7 @@ function setupMockPrisma(): void {
       },
       count: async ({ where }: any) => {
         let count = 0;
-        for (const row of mockDb.kontrakPekerjaan.values()) {
+        for (const row of Array.from(mockDb.kontrakPekerjaan.values())) {
           if (where.idPemberiJasa && row.idPemberiJasa !== where.idPemberiJasa) {
             continue;
           }
