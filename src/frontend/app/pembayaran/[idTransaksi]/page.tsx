@@ -117,7 +117,7 @@ function PembayaranIsi() {
     <AppLayout
       role="buyer"
       isAuthenticated
-      title="Pembayaran"
+      title={<h1 className="text-2xl font-bold text-[#fff4f2] text-center sm:text-4xl">Payment</h1>}
       showHeader
       headerClassName="bg-[#1bb0c7] px-5 pb-5 pt-8"
       bodyClassName="bg-[#e6e0c8] px-4 py-5"

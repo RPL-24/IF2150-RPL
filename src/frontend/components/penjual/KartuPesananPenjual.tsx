@@ -77,7 +77,7 @@ export default function KartuPesananPenjual({
             onClick={() => onTandaiDiambil(pesanan.id_transaksi)}
             className="rounded-lg bg-[#1a8ca1] px-4 py-2 text-sm font-bold text-white transition hover:bg-[#14798b] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isMenandai ? "Menandai..." : "Sudah diambil / Selesai"}
+            {isMenandai ? "Menandai..." : "Selesaikan"}
           </button>
         )}
       </div>

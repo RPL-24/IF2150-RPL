@@ -163,8 +163,9 @@ interface FormListingProps {
                     {isEditing ? "Edit Product" : "Add Product"}
                 </h1>
             }
-            headerClassName="bg-[#1bb0c7] px-5 pb-5 pt-8"
-            bodyClassName="bg-[#e6e0c8] px-4 py-6 sm:px-6"
+            theme="green"
+            headerClassName="px-5 pb-5 pt-8"
+            bodyClassName="px-4 py-6 sm:px-6"
         >
         <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-6 rounded-2xl bg-[#f7f0dc] p-5 shadow-sm sm:p-7">
             <h2 className="text-lg font-bold text-[#264b4d]">Product details</h2>
@@ -315,12 +316,12 @@ interface FormListingProps {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-3 border-t border-[#d9d1b5] pt-5">
+            <div className="flex flex-col gap-3 border-t border-[#d9d1b5] pt-5 sm:flex-row sm:justify-end">
             <button
                 type="button"
                 onClick={handleBatalClick}
                 disabled={isSubmitting}
-                className="rounded-xl border border-[#d8cfb4] bg-white px-4 py-3 text-sm font-semibold text-[#496864] hover:bg-[#f3efe6]"
+                className="w-full whitespace-nowrap rounded-xl border border-[#d8cfb4] bg-white px-4 py-2.5 text-sm font-semibold text-[#496864] hover:bg-[#f3efe6] sm:w-auto"
             >
                 Cancel
             </button>
@@ -329,7 +330,7 @@ interface FormListingProps {
                 name="aksi-listing"
                 value="draft"
                 disabled={isSubmitting || !isFormValid}
-                className="rounded-xl border border-[#1a8ca1] bg-white px-5 py-3 text-sm font-bold text-[#1a8ca1] hover:bg-[#e7f5f6] disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full whitespace-nowrap rounded-xl border border-[#1a8ca1] bg-white px-5 py-2.5 text-sm font-bold text-[#1a8ca1] hover:bg-[#e7f5f6] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
                 {isSubmitting ? "Saving..." : "Save Draft"}
             </button>
@@ -338,7 +339,7 @@ interface FormListingProps {
                 name="aksi-listing"
                 value="show"
                 disabled={isSubmitting || !isFormValid}
-                className="rounded-xl bg-[#1a8ca1] px-5 py-3 text-sm font-bold text-white hover:bg-[#14798b] disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full whitespace-nowrap rounded-xl bg-[#1a8ca1] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#14798b] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
                 {isSubmitting ? "Saving..." : isEditing ? "Save Changes / Show" : "Show"}
             </button>

@@ -75,10 +75,10 @@ export default function ListingPenjualPage() {
     <AppLayout
       role="seller"
       isAuthenticated
-      title="Kelola Listing Makanan"
-      subtitle="Daftar makanan surplus yang dijual di toko Anda."
-      headerClassName="bg-[#1bb0c7] px-5 pb-5 pt-8"
-      bodyClassName="bg-[#e6e0c8] px-4 py-6 sm:px-6 lg:px-8"
+      title={<h1 className="text-2xl font-bold text-[#fff4f2] text-center sm:text-4xl">Kelola Listing</h1>}
+      theme="green"
+      headerClassName="px-5 pb-5 pt-8"
+      bodyClassName="px-4 py-6 sm:px-6 lg:px-8"
     >
       <div className="mx-auto max-w-7xl">
         <div className="mb-6 flex flex-col gap-4 border-b border-[#b9c9bd] pb-5 sm:flex-row sm:items-center sm:justify-between">

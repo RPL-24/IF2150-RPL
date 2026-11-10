@@ -12,7 +12,7 @@ export default function KatalogPage() {
     <AppLayout
       role="buyer"
       isAuthenticated
-      title={<h1 className="text-xl font-bold text-[#fff4f2] text-center sm:text-2xl">What do you want to eat today?</h1>}
+      title={<h1 className="text-2xl font-bold text-[#fff4f2] text-center sm:text-4xl">Today's Menu</h1>}
       showHeader
       theme="green"
       headerClassName="px-5 pb-4 pt-4"

@@ -18,65 +18,70 @@ export default function KartuListingPenjual({
   const fotoUrl = urlFoto(listing.foto);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-[18px] border border-[#d8cfb4] bg-[#f7f0dc] p-3 shadow-sm">
-      <div className="flex items-start justify-between gap-3">
-        <div className="relative h-[90px] w-[112px] overflow-hidden rounded-xl border border-[#d8cfb4] bg-[#f4d7ab]">
-          {fotoUrl ? (
-            <img
-              src={fotoUrl}
-              alt={listing.nama_makanan}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-xs text-[#5d655f]">No photo</div>
-          )}
-        </div>
-
-        <button
-          type="button"
-          onClick={() => onHapus(listing)}
-          className="text-2xl font-black text-[#ef5a61]"
-          aria-label={`Delete ${listing.nama_makanan}`}
-        >
-          ×
-        </button>
+    <div className="group flex h-full items-stretch gap-3 overflow-hidden rounded-[16px] border border-[#d8cfb4] bg-[#f7f0dc] p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:flex-col sm:gap-0 sm:rounded-[18px]">
+      {/* Mobile: foto kecil di kiri; sm+: foto besar di atas seperti kartu pembeli. */}
+      <div className="h-full w-24 shrink-0 overflow-hidden rounded-[12px] border border-[#d8cfb4] bg-[#f4d7ab] sm:aspect-[4/3] sm:h-auto sm:w-full sm:rounded-[14px]">
+        {fotoUrl ? (
+          <img
+            src={fotoUrl}
+            alt={listing.nama_makanan}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center text-[10px] text-[#5d655f] sm:text-xs">
+            No photo
+          </div>
+        )}
       </div>
 
-      <div className="mt-3 flex-1">
-        <h3 className="text-[1.2rem] font-extrabold tracking-[-0.04em] text-[#0b8ea8]">
-          {listing.nama_makanan}
-        </h3>
-        <p className="mt-1 text-sm text-[#58635b]">{listing.porsi} · {listing.kondisi}</p>
+      <div className="flex min-w-0 flex-1 flex-col sm:mt-3">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="line-clamp-2 text-base font-extrabold leading-snug tracking-[-0.02em] text-[#0b8ea8] sm:text-[1.2rem] sm:tracking-[-0.04em]">
+            {listing.nama_makanan}
+          </h3>
+          <button
+            type="button"
+            onClick={() => onHapus(listing)}
+            className="shrink-0 text-xl font-black leading-none text-[#ef5a61] sm:text-2xl"
+            aria-label={`Delete ${listing.nama_makanan}`}
+          >
+            ×
+          </button>
+        </div>
 
-        <div className="mt-3 flex items-center justify-between gap-3">
-          <p className="text-lg font-extrabold text-[#1a1a1a]">
+        <p className="mt-0.5 truncate text-xs leading-snug text-[#58635b] sm:mt-1 sm:text-sm">
+          {listing.porsi} · {listing.kondisi}
+        </p>
+
+        <div className="mt-1 flex items-baseline justify-between gap-3 sm:mt-3">
+          <p className="text-base font-extrabold text-[#1a1a1a] sm:text-lg">
             Rp. {listing.harga.toLocaleString("id-ID")}
           </p>
 
-          <p className="text-sm font-semibold text-[#58635b]">
+          <p className="text-xs font-semibold text-[#58635b] sm:text-sm">
             Stok: {listing.stok}
           </p>
         </div>
-      </div>
 
-      <div className="mt-4 flex items-center justify-between gap-2 border-t border-[#d9d1b5] pt-3">
-        <span
-          className={`rounded-full px-2.5 py-1 text-[0.7rem] font-bold uppercase ${
-            listing.tersedia
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
-          }`}
-        >
-          {listing.draft ? "Draf" : listing.tersedia ? "Tersedia" : "Tidak Tersedia"}
-        </span>
+        <div className="mt-auto flex items-center justify-between gap-2 border-t border-[#d9d1b5] pt-2 sm:mt-4 sm:pt-3">
+          <span
+            className={`rounded-full px-2.5 py-1 text-[0.7rem] font-bold uppercase ${
+              listing.tersedia
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            {listing.draft ? "Draf" : listing.tersedia ? "Tersedia" : "Tidak Tersedia"}
+          </span>
 
-        <button
-          type="button"
-          onClick={() => onEdit(listing.id_listing)}
-          className="rounded-md border border-[#d6cfb6] bg-white px-3 py-2 text-sm font-medium text-[#496864] hover:bg-[#f3efe6]"
-        >
-          Edit
-        </button>
+          <button
+            type="button"
+            onClick={() => onEdit(listing.id_listing)}
+            className="rounded-md border border-[#d6cfb6] bg-white px-3 py-2 text-sm font-medium text-[#496864] hover:bg-[#f3efe6]"
+          >
+            Edit
+          </button>
+        </div>
       </div>
     </div>
   );
