@@ -1,0 +1,344 @@
+/* ==========================================================================
+   MahaSehat - CheckInPage.css
+   Halaman daily check-in pelajar (UC03). Alur mandiri (wizard) tanpa sidebar,
+   seperti NotifikasiDarurat, agar pelajar fokus menyelesaikan lima langkah.
+   Token, tombol, kartu, field, dan hint berasal dari base.css + components.css.
+   ========================================================================== */
+
+.site-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--color-cream);
+}
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px 80px 0;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--color-ink);
+}
+
+.brand-logo {
+    width: 46px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.brand-title {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+}
+
+.main-viewport {
+    flex: 1;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+}
+
+.site-footer {
+    padding: 24px 80px 32px;
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-body-sm);
+    color: var(--color-ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Indikator langkah
+   -------------------------------------------------------------------------- */
+.progress-track {
+    height: 4px;
+    margin-bottom: 12px;
+    background-color: var(--color-mist);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+}
+
+.progress-fill {
+    display: block;
+    height: 100%;
+    background-color: var(--color-teal);
+    border-radius: var(--radius-pill);
+    transition: width 0.35s ease;
+}
+
+/* Judul difokuskan secara programatis untuk pembaca layar; jangan tampilkan outline */
+.page-title:focus {
+    outline: none;
+}
+
+.step-label {
+    margin-bottom: 40px;
+    font-size: var(--text-body);
+    color: var(--color-ink-subtle);
+}
+
+/* --------------------------------------------------------------------------
+   Pilihan jawaban
+   -------------------------------------------------------------------------- */
+.option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 64px;
+    padding: 12px 20px;
+    text-align: left;
+    background-color: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    cursor: pointer;
+    transition: border-color var(--duration-fast) ease,
+                background-color var(--duration-fast) ease;
+}
+
+.option-card strong {
+    display: block;
+    font-size: 18px;
+}
+
+.option-card small {
+    font-size: var(--text-body);
+    color: var(--color-ink-subtle);
+}
+
+.option-card:hover {
+    border-color: var(--color-ink);
+}
+
+.option-card.is-selected {
+    background-color: var(--color-teal);
+    border: 2px solid var(--color-ink);
+    padding: 11px 19px;
+}
+
+.option-card.is-selected small {
+    color: var(--color-ink);
+}
+
+.option-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    background-color: var(--color-mist);
+    border-radius: var(--radius-sm);
+    font-size: 20px;
+}
+
+.option-card.is-selected .option-icon {
+    background-color: var(--color-cream);
+}
+
+/* --------------------------------------------------------------------------
+   Jam tidur & catatan
+   -------------------------------------------------------------------------- */
+.time-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.time-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-weight: 700;
+}
+
+.time-grid input {
+    height: 64px;
+    padding: 0 16px;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.form-textarea {
+    min-height: 168px;
+}
+
+.char-count {
+    float: right;
+}
+
+/* --------------------------------------------------------------------------
+   Aksi langkah
+   -------------------------------------------------------------------------- */
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: 40px;
+}
+
+.form-actions .btn--block {
+    max-width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Ringkasan & kartu penutup
+   -------------------------------------------------------------------------- */
+.summary-card h2 {
+    margin-bottom: 8px;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+}
+
+.summary-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.summary-row dt {
+    font-size: var(--text-body);
+    color: var(--color-ink-muted);
+}
+
+.summary-row dd {
+    margin-top: 2px;
+    overflow-wrap: anywhere;
+}
+
+.intro-card,
+.success-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+    padding: 40px 32px;
+    text-align: center;
+}
+
+.intro-card .page-title,
+.success-card .page-title {
+    margin-bottom: 12px;
+}
+
+.intro-card .btn,
+.success-card .btn {
+    max-width: 320px;
+}
+
+.intro-icon,
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.intro-icon {
+    background-color: var(--color-amber);
+    color: var(--color-ink);
+}
+
+.success-icon {
+    background-color: var(--color-teal);
+    color: var(--color-ink);
+    animation: pop var(--duration-base) ease;
+}
+
+@keyframes pop {
+    from {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Responsif
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+    .site-header {
+        padding: 24px 24px 0;
+    }
+
+    .site-footer {
+        padding: 20px 24px 24px;
+    }
+
+    .main-viewport {
+        padding: 24px 20px 48px;
+    }
+
+    .step-label {
+        margin-bottom: 28px;
+    }
+
+    .time-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .site-header {
+        padding: 16px 16px 0;
+    }
+
+    .main-viewport {
+        padding: 20px 16px 40px;
+    }
+
+    .intro-card,
+    .success-card {
+        padding: 28px 20px;
+        margin-top: 24px;
+    }
+
+    .option-card {
+        padding: 12px 16px;
+    }
+
+    .option-card.is-selected {
+        padding: 11px 15px;
+    }
+
+    .time-grid input {
+        height: 56px;
+        font-size: 20px;
+    }
+
+    .summary-row {
+        gap: 12px;
+    }
+}

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Manajemen Konsultasi Tenaga Kesehatan</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="SidebarTenagaKesehatan.css">
+    <link rel="stylesheet" href="ManajemenKonsultasiPage.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Floating Sidebar Navigasi Nakes -->
+        <aside class="app-sidebar" id="Sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-header">
+                    <a href="DashboardPageTenagaKesehatan.html" class="brand-link" id="Link_Brand">
+                        <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                        <span class="brand-title">MahaSehat</span>
+                    </a>
+                </div>
+
+                <!-- Kolom Pencarian di Atas Menu -->
+                <div class="sidebar-search">
+                    <span class="search-icon" aria-hidden="true">⌕</span>
+                    <input type="text" class="search-input" placeholder="Cari" aria-label="Cari menu">
+                </div>
+
+                <!-- Menu Navigasi Utama -->
+                <nav class="nav-menu" aria-label="Menu utama">
+                    <a href="DashboardPageTenagaKesehatan.html" class="nav-item" id="Menu_Dashboard">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="ManajemenKonsultasiPage.html" class="nav-item active" id="Menu_Konsultasi" aria-current="page">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span class="nav-label">Konsultasi</span>
+                        <span class="nav-badge" id="Badge_PendingCount">2</span>
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="SettingPageTenagaKesehatan.html" class="nav-item" id="Menu_Setelan">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="nav-label">Setelan</span>
+                    </a>
+                    <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span class="nav-label">Keluar</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Profil Nakes Bawah Sidebar -->
+            <div class="sidebar-user" id="Info_User">
+                <div class="user-avatar" id="User_Avatar">R</div>
+                <div class="user-meta">
+                    <p class="user-name" id="Text_NamaUser">Raissa Hadiman, M. Psi.</p>
+                    <p class="user-role" id="Text_RoleUser">Tenaga Kesehatan</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Area Konten Utama -->
+        <main class="main-viewport" id="Panel_ManajemenKonsultasi">
+            <header class="page-header">
+                <h1 class="page-title" id="Title_Page">Manajemen Konsultasi</h1>
+                <p class="page-subtitle" id="Text_Subjudul">Daftar permohonan konsultasi masuk dan rekapitulasi tren kesehatan pelajar.</p>
+            </header>
+
+            <!-- Split View Layout -->
+            <div class="split-view-container" id="SplitView_Konsultasi">
+                
+                <!-- Kolom Kiri: Antrean & Pencarian Pelajar -->
+                <section class="consultation-queue-column" aria-label="Daftar Permohonan Konsultasi">
+                    <!-- Search Field -->
+                    <div class="queue-search-wrap">
+                        <span class="queue-search-icon" aria-hidden="true">⌕</span>
+                        <input type="text" class="queue-search-input" id="Input_CariPelajar" placeholder="Cari nama pelajar atau kata kunci..." aria-label="Cari nama pelajar atau kata kunci">
+                    </div>
+
+                    <!-- Filter Chips (Anti-Slop Pill Style) -->
+                    <div class="filter-chips-row" role="tablist" aria-label="Filter status permohonan">
+                        <button type="button" class="filter-pill active" data-filter="all" id="Tab_Semua">Semua (<span id="Count_Semua">4</span>)</button>
+                        <button type="button" class="filter-pill" data-filter="Menunggu" id="Tab_Menunggu">Menunggu (<span id="Count_Menunggu">2</span>)</button>
+                        <button type="button" class="filter-pill" data-filter="Disetujui" id="Tab_Disetujui">Disetujui (<span id="Count_Disetujui">1</span>)</button>
+                        <button type="button" class="filter-pill" data-filter="Riwayat" id="Tab_Riwayat">Riwayat (<span id="Count_Riwayat">1</span>)</button>
+                    </div>
+
+                    <!-- List Kartu Permohonan -->
+                    <div class="queue-cards-list" id="List_Permohonan">
+                        <!-- Kartu permohonan akan di-render secara dinamis oleh JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Kolom Kanan: Panel Detail Klinis & Konfirmasi Sesi -->
+                <section class="consultation-detail-column" aria-label="Detail Permohonan Konsultasi">
+                    <div class="detail-card-panel" id="Card_DetailPanel">
+                        
+                        <!-- Header Pasien -->
+                        <div class="patient-header-section">
+                            <div class="patient-avatar-circle" id="Detail_Avatar">AE</div>
+                            <div class="patient-meta-info">
+                                <h2 class="patient-name" id="Detail_Nama">Albert Einstein</h2>
+                                <p class="patient-sub" id="Detail_SubInfo">Pelajar · SMAN 1 Bandung · NIS: 215001</p>
+                            </div>
+                            <button type="button" class="btn-outline-pill btn-hubungi" id="Btn_HubungiPelajar">Hubungi</button>
+                        </div>
+
+                        <hr class="panel-divider">
+
+                        <!-- Section 1: Rincian Sesi -->
+                        <div class="detail-section">
+                            <h3 class="section-title">Rincian Sesi Konsultasi</h3>
+                            <div class="info-block">
+                                <p class="info-label">Waktu Pengajuan</p>
+                                <p class="info-value-bold" id="Detail_WaktuSesi">Selasa, 10 November 2026 · 10.00 - 11.00 WIB (60 Menit)</p>
+                            </div>
+                            <div class="info-block">
+                                <p class="info-label">Metode & Kuota</p>
+                                <p class="info-value-bold" id="Detail_MetodeSesi">Daring (Google Meet) · Sesi Mandiri 1 Pelajar</p>
+                            </div>
+                            <div class="info-block">
+                                <p class="info-label">Keluhan Utama dari Pelajar</p>
+                                <p class="info-quote" id="Detail_KeluhanUtama">"Sering merasa cemas dan kesulitan tidur menjelang ujian akhir semester. Butuh bimbingan manajemen stres dan latihan regulasi emosi."</p>
+                            </div>
+                        </div>
+
+                        <hr class="panel-divider">
+
+                        <!-- Section 2: Tren Kesehatan 7 Hari Terakhir (Agregat KNF02) -->
+                        <div class="detail-section">
+                            <div class="section-header-flex">
+                                <h3 class="section-title">Tren Kesehatan 7 Hari Terakhir</h3>
+                            </div>
+                            <p class="section-subtext">Rangkuman agregat dari catatan harian pelajar (jurnal pribadi tetap terenkripsi).</p>
+
+                            <!-- Grid 2 Grafik Batang Kanonikal (Mengikuti I-14 Laporan Kesehatan) -->
+                            <div class="charts-comparison-grid">
+                                <!-- Grafik Mood -->
+                                <div class="chart-box-mini">
+                                    <div class="chart-box-header">
+                                        <h4 class="chart-box-title">Data Mood</h4>
+                                        <span class="chart-box-stat" id="Stat_MoodRerata">2.8 / 5.0</span>
+                                    </div>
+                                    <div class="chart-bars-wrap" id="Bars_Mood">
+                                        <!-- Mini bar chart mood akan di-render oleh JS -->
+                                    </div>
+                                </div>
+
+                                <!-- Grafik Tidur -->
+                                <div class="chart-box-mini">
+                                    <div class="chart-box-header">
+                                        <h4 class="chart-box-title">Data Tidur</h4>
+                                        <span class="chart-box-stat" id="Stat_TidurRerata">5.2 Jam</span>
+                                    </div>
+                                    <div class="chart-bars-wrap" id="Bars_Tidur">
+                                        <!-- Mini bar chart tidur akan di-render oleh JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="panel-divider">
+
+                        <!-- Section 3: Tautan & Catatan Sesi -->
+                        <div class="detail-section">
+                            <h3 class="section-title">Tautan & Catatan Sesi</h3>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="Input_MeetLink">Tautan Google Meet</label>
+                                <input type="url" class="form-input-custom" id="Input_MeetLink" value="https://meet.google.com/mhs-klsk-nks">
+                            </div>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="Textarea_Catatan">Catatan Persiapan untuk Pelajar</label>
+                                <textarea class="form-textarea-custom" id="Textarea_Catatan" rows="2">Mohon persiapkan ringkasan kendala belajar. Sesi dimulai tepat pukul 10.00 WIB.</textarea>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Aksi Keputusan Klinis -->
+                        <div class="action-buttons-row">
+                            <button type="button" class="btn-pill btn-primary-dark" id="Btn_Setujui">Setujui Permohonan</button>
+                            <button type="button" class="btn-pill btn-secondary-outline" id="Btn_JadwalkanUlang">Jadwalkan Ulang</button>
+                            <button type="button" class="btn-pill btn-danger-outline" id="Btn_Tolak">Tolak</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Feedback Notification -->
+    <div class="toast-notification" id="Toast_Notification" role="alert" aria-live="assertive"></div>
+
+    <!-- Modal Dialog untuk Jadwal Ulang -->
+    <div class="modal-overlay" id="Modal_JadwalUlang" style="display: none;">
+        <div class="modal-box">
+            <h3 class="modal-title">Jadwalkan Ulang Sesi Konsultasi</h3>
+            <p class="modal-subtitle" id="Modal_JadwalSub">Tentukan tanggal dan waktu baru untuk konsultasi bersama Albert Einstein.</p>
+            <div class="modal-form-group">
+                <label class="form-label-custom" for="Modal_InputTanggal">Tanggal Sesi Baru</label>
+                <input type="date" class="form-input-custom" id="Modal_InputTanggal" value="2026-11-12">
+            </div>
+            <div class="modal-form-group">
+                <label class="form-label-custom" for="Modal_InputWaktu">Waktu Sesi</label>
+                <select class="form-input-custom" id="Modal_InputWaktu">
+                    <option value="09.00 - 10.00 WIB">09.00 - 10.00 WIB</option>
+                    <option value="10.00 - 11.00 WIB">10.00 - 11.00 WIB</option>
+                    <option value="13.00 - 14.00 WIB" selected>13.00 - 14.00 WIB</option>
+                    <option value="15.00 - 16.00 WIB">15.00 - 16.00 WIB</option>
+                </select>
+            </div>
+            <div class="modal-buttons-row">
+                <button type="button" class="btn-pill btn-primary-dark" id="Modal_BtnSimpanJadwal">Simpan Jadwal Baru</button>
+                <button type="button" class="btn-pill btn-secondary-outline" id="Modal_BtnBatalJadwal">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Utama -->
+    <script src="ManajemenKonsultasiPage.js"></script>
+</body>
+</html>
+
