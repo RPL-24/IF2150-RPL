@@ -14,4 +14,19 @@
   "triggers": {
     "crons": ["* * * * *"]
   },
+  "observability": {
+    "issues": {
+      "enabled": true
+    },
+    "logs": {
+      "enabled": true
+    },
+    "traces": {
+      "enabled": true
+    }
+  },
+  "vars": {
+    "API_BASE_URL": "https://sehati.sbxte.net",
+    "GOOGLE_REDIRECT_URI": "https://sehati.sbxte.net/api/auth/google/callback"
+  },
 }
