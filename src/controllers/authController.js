@@ -191,4 +191,65 @@ async function daftar(req, res) {
   );
 }
 
-module.exports = { daftar };
+// ---------------------------------------------------------------------------
+// UC02 Mengonfirmasi Registrasi Akun (Algo-C11-05, Algo-C11-06, I-06)
+// ---------------------------------------------------------------------------
+
+const PESAN_TAUTAN_TIDAK_VALID = 'Tautan konfirmasi tidak valid atau sudah digunakan.';
+
+/** Data pelajar yang ditampilkan pada I-06. Riwayat kesehatan tidak ikut dikirim. */
+async function dataKonfirmasi(req, res) {
+  const akun = await Pengguna.findByTokenKonfirmasi(teks(req.params.token));
+  if (!akun) {
+    throw new AppError(404, PESAN_TAUTAN_TIDAK_VALID);
+  }
+  const pelajar = await Pelajar.findByIdPengguna(akun.idPengguna);
+  return kirim(res, 200, 'Data pendaftaran ditemukan.', {
+    nama: pelajar.nama,
+    email: pelajar.email,
+    nomorTelepon: pelajar.nomorTelepon,
+    tanggalDaftar: akun.tanggalDaftar,
+  });
+}
+
+/**
+ * Mengubah status akun yang menunggu persetujuan. Baris dikunci di dalam transaksi
+ * sehingga token hanya bisa dipakai sekali walau tombol ditekan berulang.
+ */
+async function putuskanKonfirmasi(token, statusBaru) {
+  return db.withTransaction(async (client) => {
+    const akun = await Pengguna.findByTokenKonfirmasi(token, client, { kunci: true });
+    if (!akun) {
+      throw new AppError(404, PESAN_TAUTAN_TIDAK_VALID);
+    }
+    await akun.ubahStatusKonfirmasi(statusBaru, client);
+    if (statusBaru !== 'Aktif') {
+      return { statusAkun: statusBaru, terhubungKeWali: false };
+    }
+    const pelajar = await Pelajar.findByIdPengguna(akun.idPengguna, client);
+    const idWali = pelajar.emailWali ? await OrangTuaWali.findIdByEmail(pelajar.emailWali, client) : null;
+    if (idWali) {
+      await pelajar.setWali(idWali, client);
+    }
+    return { statusAkun: statusBaru, terhubungKeWali: Boolean(idWali) };
+  });
+}
+
+/** Btn_Setuju pada I-06 (Q-C11-03). Pelajar langsung dihubungkan ke akun wali bila sudah ada. */
+async function setujuiRegistrasi(req, res) {
+  const hasil = await putuskanKonfirmasi(teks(req.params.token), 'Aktif');
+  return kirim(res, 200, 'Konfirmasi registrasi berhasil. Akun pelajar sudah aktif.', hasil);
+}
+
+/** Btn_TidakSetuju pada I-06. */
+async function tolakRegistrasi(req, res) {
+  const hasil = await putuskanKonfirmasi(teks(req.params.token), 'Ditolak');
+  return kirim(res, 200, 'Pendaftaran akun pelajar ditolak.', hasil);
+}
+
+module.exports = {
+  daftar,
+  dataKonfirmasi,
+  setujuiRegistrasi,
+  tolakRegistrasi,
+};

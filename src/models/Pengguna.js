@@ -15,6 +15,7 @@ class Pengguna {
     this.role = baris.role;
     this.statusAkun = baris.status_akun;
     this.versiToken = baris.versi_token;
+    this.tanggalDaftar = baris.tanggal_daftar ?? null;
   }
 
   /** Membentuk objek subkelas sesuai role (Algo-C01-01). */
@@ -54,10 +55,11 @@ class Pengguna {
     return rows[0] ? Pengguna.dariBaris(rows[0]) : null;
   }
 
-  static async findByTokenKonfirmasi(token, executor = db) {
+  /** Bila kunci = true (dipakai di dalam transaksi), baris dikunci agar setuju dan tolak tidak bisa terjadi bersamaan. */
+  static async findByTokenKonfirmasi(token, executor = db, { kunci = false } = {}) {
     const { rows } = await executor.query(
-      `SELECT ${KOLOM} FROM pengguna
-       WHERE token_konfirmasi = $1 AND status_akun = 'Belum Terverifikasi';`,
+      `SELECT ${KOLOM}, TO_CHAR(created_at, 'YYYY-MM-DD') AS tanggal_daftar FROM pengguna
+       WHERE token_konfirmasi = $1 AND status_akun = 'Belum Terverifikasi'${kunci ? ' FOR UPDATE' : ''};`,
       [token]
     );
     return rows[0] ? Pengguna.dariBaris(rows[0]) : null;
