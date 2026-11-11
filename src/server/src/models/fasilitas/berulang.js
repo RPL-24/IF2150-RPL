@@ -1,19 +1,5 @@
-/**
- * Model Fasilitas — kerusakan berulang (UC06, KF14, Algo-007, Q-006, Q-007).
- * Pemilik: P5.
- */
 import { ATURAN } from '@silembur/shared';
-import { belumDiimplementasi } from '../../utils/http.js';
 
-/**
- * Algo-007 getJumlahLaporan(): jumlah laporan fasilitas dalam PERIODE_BERULANG_HARI terakhir
- * (tidak menghitung Ditolak/Digabung), lalu simpan ke fasilitas.jumlah_kerusakan_berulang
- * dan tandai kandidat_evaluasi bila >= AMBANG_BERULANG (KF14).
- *
- * Versi dasar dari starter (sesuai Q-006/Q-007) agar P4 bisa memakainya untuk hitungSkor().
- * P5 boleh memperbaiki/optimasi tanpa mengubah kontrak.
- * @returns {Promise<number>}
- */
 export async function getJumlahLaporan(db, idFasilitas) {
   if (!idFasilitas) return 0;
   const { rows } = await db.query(
@@ -23,7 +9,7 @@ export async function getJumlahLaporan(db, idFasilitas) {
         AND status_laporan NOT IN ('Ditolak', 'Digabung')`,
     [idFasilitas, ATURAN.PERIODE_BERULANG_HARI],
   );
-  const jumlah = rows[0].jumlah;
+  const jumlah = parseInt(rows[0].jumlah, 10);
   await db.query(
     `UPDATE fasilitas SET jumlah_kerusakan_berulang = $1, kandidat_evaluasi = $2 WHERE id_fasilitas = $3`,
     [jumlah, jumlah >= ATURAN.AMBANG_BERULANG, idFasilitas],
@@ -32,9 +18,35 @@ export async function getJumlahLaporan(db, idFasilitas) {
 }
 
 /**
- * lihatFasilitasRusakBerulang(): fasilitas kandidat evaluasi, urut jumlah terbanyak.
- * @param {{ limit?: number }} opsi  limit kecil untuk preview dashboard (UC06 langkah 1)
+ * Mengambil fasilitas kandidat evaluasi (fasilitas berulang).
  */
-export async function getFasilitasBerulang(db, opsi) {
-  throw belumDiimplementasi('P5', 'lihatFasilitasRusakBerulang (KF14)');
+export async function getFasilitasBerulang(db, opsi = {}) {
+  const limit = opsi.limit ? parseInt(opsi.limit, 10) : null;
+  const params = [];
+  let limitClause = '';
+
+  if (limit) {
+    params.push(limit);
+    limitClause = `LIMIT $1`;
+  }
+
+  const query = `
+    SELECT 
+      id_fasilitas AS id,
+      nama_fasilitas AS nama,
+      kategori,
+      lokasi_fasilitas AS lokasi,
+      latitude,
+      longitude,
+      wilayah,
+      jumlah_kerusakan_berulang AS "jumlahKerusakanBerulang",
+      kandidat_evaluasi AS "kandidatEvaluasi"
+    FROM fasilitas
+    WHERE kandidat_evaluasi = true
+    ORDER BY jumlah_kerusakan_berulang DESC, id_fasilitas ASC
+    ${limitClause};
+  `;
+
+  const { rows } = await db.query(query, params);
+  return rows;
 }
