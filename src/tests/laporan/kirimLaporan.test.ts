@@ -1,27 +1,14 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import type { KonteksSesi } from "@/lib/auth/konteks";
-import { ModulLaporan, type AnggotaKomunitas, type RepositoriLaporan } from "@/modules/laporan/internal/ModulLaporan";
+import { ModulLaporan, type AnggotaKomunitas } from "@/modules/laporan/internal/ModulLaporan";
 import { LaporanController } from "@/modules/laporan/service";
+import { TEKNISI, WARGA, buatRepoPalsu } from "./palsu";
 
-const WARGA: KonteksSesi = {
-  email: "warga@fajar.test",
-  nama: "Sari Lestari",
-  statusAkun: "DISETUJUI",
-  peran: "WARGA",
-  idWarga: 7,
-  idKomunitas: "KOM-1",
-};
-const TEKNISI: KonteksSesi = {
-  email: "teknisi@fajar.test",
-  nama: "Arif Pratama",
-  statusAkun: "DISETUJUI",
-  peran: "TEKNISI",
-  idTeknisi: "TEK-01",
-};
 const FORM = { jenisGangguan: "Kebocoran pipa", deskripsi: "Pipa dekat balai warga bocor.", fotoPendukung: [] };
 
 function buat(sesi: KonteksSesi, anggota = true, simpan = true) {
-  const repo = { simpanLaporan: jest.fn<RepositoriLaporan["simpanLaporan"]>(async () => simpan) };
+  const { repo } = buatRepoPalsu();
+  repo.simpanLaporan.mockImplementation(async () => simpan);
   const akun = { validasiKeanggotaan: jest.fn<AnggotaKomunitas["validasiKeanggotaan"]>(async () => anggota) };
   return { repo, akun, controller: new LaporanController(sesi, new ModulLaporan(repo, akun)) };
 }
