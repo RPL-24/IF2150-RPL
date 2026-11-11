@@ -1,10 +1,19 @@
 // LaporanController (DPPL 5.35). Identitas selalu dari sesi server, tidak pernah dari body atau query.
-import type { ApiRespons, DetailLaporan, FormLaporan, HasilLaporan, RingkasanLaporan, RingkasanStatus } from "@/contracts";
+import type {
+  ApiRespons,
+  DetailLaporan,
+  FormLaporan,
+  HasilLaporan,
+  HasilStatus,
+  RingkasanLaporan,
+  RingkasanStatus,
+} from "@/contracts";
 import type { KonteksSesi } from "@/lib/auth/konteks";
-import type { ModulLaporan } from "./internal/ModulLaporan";
+import type { GalatTransisi, ModulLaporan } from "./internal/ModulLaporan";
+import { adalahStatus } from "./internal/StatusLaporan";
 import { periksaLaporan } from "./internal/validasi";
 
-export type { AnggotaKomunitas, RepositoriLaporan } from "./internal/ModulLaporan";
+export type { AnggotaKomunitas, GalatTransisi, RepositoriLaporan } from "./internal/ModulLaporan";
 
 const TIDAK_BERWENANG = { ok: false, kode: "TIDAK_BERWENANG", pesan: "Akses ditolak" } as const;
 const ID_TIDAK_VALID = { ok: false, kode: "VALIDASI_GAGAL", pesan: "ID laporan tidak valid" } as const;
@@ -60,5 +69,40 @@ export class LaporanController {
     if (!this.idValid(idLaporan)) return ID_TIDAK_VALID;
     const { idWarga } = this.sesi;
     return this.jalankan(() => this.modul.riwayatMilikWarga(idWarga, idLaporan));
+  }
+
+  async daftarPenugasan(): Promise<ApiRespons<RingkasanLaporan[]>> {
+    if (this.sesi.peran !== "TEKNISI") return TIDAK_BERWENANG;
+    const { idTeknisi } = this.sesi;
+    return this.jalankan(() => this.modul.daftarPenugasan(idTeknisi));
+  }
+
+  async detailTugas(idLaporan: unknown): Promise<ApiRespons<DetailLaporan>> {
+    if (this.sesi.peran !== "TEKNISI") return TIDAK_BERWENANG;
+    if (!this.idValid(idLaporan)) return ID_TIDAK_VALID;
+    const { idTeknisi } = this.sesi;
+    return this.jalankan(() => this.modul.detailTugas(idTeknisi, idLaporan));
+  }
+
+  async riwayatTugas(idLaporan: unknown): Promise<ApiRespons<RingkasanStatus[]>> {
+    if (this.sesi.peran !== "TEKNISI") return TIDAK_BERWENANG;
+    if (!this.idValid(idLaporan)) return ID_TIDAK_VALID;
+    const { idTeknisi } = this.sesi;
+    return this.jalankan(() => this.modul.riwayatTugas(idTeknisi, idLaporan));
+  }
+
+  async perbaruiStatus(idLaporan: unknown, statusBaru: unknown): Promise<ApiRespons<HasilStatus> | GalatTransisi> {
+    if (this.sesi.peran !== "TEKNISI") return TIDAK_BERWENANG;
+    if (!this.idValid(idLaporan)) return ID_TIDAK_VALID;
+    if (!adalahStatus(statusBaru)) {
+      return { ok: false, kode: "VALIDASI_GAGAL", pesan: "Status tidak dikenal", galat: [{ kolom: "status", pesan: "Status tidak dikenal" }] };
+    }
+    const { idTeknisi } = this.sesi;
+    try {
+      return await this.modul.perbaruiStatus(idTeknisi, idLaporan, statusBaru);
+    } catch (galat) {
+      console.error("[laporan] perbaruiStatus gagal:", galat);
+      return GAGAL_INTERNAL;
+    }
   }
 }
