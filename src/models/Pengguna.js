@@ -4,6 +4,8 @@ const db = require('../config/db');
 const BCRYPT_COST = 12;
 const POLA_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const KOLOM = 'id_pengguna, username, email, password_hash, role, status_akun, versi_token';
+// Batas waktu wali menanggapi tautan konfirmasi registrasi (SKPL UC02 skenario alternatif 1)
+const MASA_BERLAKU_KONFIRMASI = '7 days';
 
 /** C01 - Kelas abstrak data akun milik ketiga aktor. */
 class Pengguna {
@@ -16,6 +18,7 @@ class Pengguna {
     this.statusAkun = baris.status_akun;
     this.versiToken = baris.versi_token;
     this.tanggalDaftar = baris.tanggal_daftar ?? null;
+    this.konfirmasiKedaluwarsa = baris.konfirmasi_kedaluwarsa === true;
   }
 
   /** Membentuk objek subkelas sesuai role (Algo-C01-01). */
@@ -55,10 +58,15 @@ class Pengguna {
     return rows[0] ? Pengguna.dariBaris(rows[0]) : null;
   }
 
-  /** Bila kunci = true (dipakai di dalam transaksi), baris dikunci agar setuju dan tolak tidak bisa terjadi bersamaan. */
+  /**
+   * Bila kunci = true (dipakai di dalam transaksi), baris dikunci agar setuju dan tolak tidak bisa terjadi bersamaan.
+   * konfirmasi_kedaluwarsa bernilai true bila tautan sudah lewat MASA_BERLAKU_KONFIRMASI sejak pendaftaran.
+   */
   static async findByTokenKonfirmasi(token, executor = db, { kunci = false } = {}) {
     const { rows } = await executor.query(
-      `SELECT ${KOLOM}, TO_CHAR(created_at, 'YYYY-MM-DD') AS tanggal_daftar FROM pengguna
+      `SELECT ${KOLOM}, TO_CHAR(created_at, 'YYYY-MM-DD') AS tanggal_daftar,
+              created_at < NOW() - INTERVAL '${MASA_BERLAKU_KONFIRMASI}' AS konfirmasi_kedaluwarsa
+       FROM pengguna
        WHERE token_konfirmasi = $1 AND status_akun = 'Belum Terverifikasi'${kunci ? ' FOR UPDATE' : ''};`,
       [token]
     );
@@ -129,13 +137,20 @@ class Pengguna {
     );
   }
 
-  /** Mengubah status akun saat wali menyetujui atau menolak registrasi (Q-C11-03). */
+  /**
+   * Mengubah status akun yang masih menunggu konfirmasi (Q-C11-03). Akun yang statusnya sudah
+   * diputuskan tidak ikut berubah. Mengembalikan true bila status berhasil diubah.
+   */
   async ubahStatusKonfirmasi(statusBaru, executor = db) {
-    await executor.query(
-      `UPDATE pengguna SET status_akun = $1, token_konfirmasi = NULL WHERE id_pengguna = $2;`,
+    const { rowCount } = await executor.query(
+      `UPDATE pengguna SET status_akun = $1, token_konfirmasi = NULL
+       WHERE id_pengguna = $2 AND status_akun = 'Belum Terverifikasi';`,
       [statusBaru, this.idPengguna]
     );
-    this.statusAkun = statusBaru;
+    if (rowCount > 0) {
+      this.statusAkun = statusBaru;
+    }
+    return rowCount > 0;
   }
 
   /** Mengakhiri seluruh sesi pengguna (KNF12). */

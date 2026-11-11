@@ -198,12 +198,22 @@ async function daftar(req, res) {
 // ---------------------------------------------------------------------------
 
 const PESAN_TAUTAN_TIDAK_VALID = 'Tautan konfirmasi tidak valid atau sudah digunakan.';
+const PESAN_TAUTAN_KEDALUWARSA =
+  'Tautan konfirmasi sudah kedaluwarsa (lebih dari 7 hari). Akun pelajar ditandai gagal terverifikasi.';
 
 /** Data pelajar yang ditampilkan pada I-06. Riwayat kesehatan tidak ikut dikirim. */
 async function dataKonfirmasi(req, res) {
   const akun = await Pengguna.findByTokenKonfirmasi(teks(req.params.token));
   if (!akun) {
     throw new AppError(404, PESAN_TAUTAN_TIDAK_VALID);
+  }
+  // SKPL UC02 skenario alternatif 1: tautan lewat batas waktu, akun ditandai gagal terverifikasi
+  if (akun.konfirmasiKedaluwarsa) {
+    // Bila status sudah lebih dulu diputuskan lewat tombol, tautan dianggap sudah digunakan
+    const ditandai = await akun.ubahStatusKonfirmasi('Ditolak');
+    throw ditandai
+      ? new AppError(410, PESAN_TAUTAN_KEDALUWARSA)
+      : new AppError(404, PESAN_TAUTAN_TIDAK_VALID);
   }
   const pelajar = await Pelajar.findByIdPengguna(akun.idPengguna);
   return kirim(res, 200, 'Data pendaftaran ditemukan.', {
@@ -217,12 +227,18 @@ async function dataKonfirmasi(req, res) {
 /**
  * Mengubah status akun yang menunggu persetujuan. Baris dikunci di dalam transaksi
  * sehingga token hanya bisa dipakai sekali walau tombol ditekan berulang.
+ * Tautan yang kedaluwarsa tetap menandai akun gagal terverifikasi; galatnya dilempar setelah
+ * transaksi selesai agar perubahan status tidak ikut dibatalkan.
  */
 async function putuskanKonfirmasi(token, statusBaru) {
-  return db.withTransaction(async (client) => {
+  const hasil = await db.withTransaction(async (client) => {
     const akun = await Pengguna.findByTokenKonfirmasi(token, client, { kunci: true });
     if (!akun) {
       throw new AppError(404, PESAN_TAUTAN_TIDAK_VALID);
+    }
+    if (akun.konfirmasiKedaluwarsa) {
+      await akun.ubahStatusKonfirmasi('Ditolak', client);
+      return null;
     }
     await akun.ubahStatusKonfirmasi(statusBaru, client);
     if (statusBaru !== 'Aktif') {
@@ -235,6 +251,10 @@ async function putuskanKonfirmasi(token, statusBaru) {
     }
     return { statusAkun: statusBaru, terhubungKeWali: Boolean(idWali) };
   });
+  if (!hasil) {
+    throw new AppError(410, PESAN_TAUTAN_KEDALUWARSA);
+  }
+  return hasil;
 }
 
 /** Btn_Setuju pada I-06 (Q-C11-03). Pelajar langsung dihubungkan ke akun wali bila sudah ada. */
@@ -285,7 +305,10 @@ async function masuk(req, res) {
     throw new AppError(403, 'Akun belum dikonfirmasi oleh orang tua/wali.');
   }
   if (pengguna.getStatusAkun() !== 'Aktif') {
-    throw new AppError(403, 'Pendaftaran akun ini ditolak oleh orang tua/wali.');
+    throw new AppError(
+      403,
+      'Akun gagal terverifikasi: pendaftaran ditolak orang tua/wali atau tautan konfirmasinya sudah kedaluwarsa.'
+    );
   }
 
   const profil = await cariProfil(pengguna);

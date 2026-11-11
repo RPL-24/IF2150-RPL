@@ -10,6 +10,7 @@ const request = require('supertest');
 const app = require('../app');
 const db = require('../config/db');
 const mailer = require('../utils/mailer');
+const Pengguna = require('../models/Pengguna');
 
 const PASSWORD = 'Password123!';
 const TOKEN_ANDI = 'TOKEN-WALI-ANDI-2026';
@@ -112,5 +113,64 @@ async function daftarPelajarDiBawahUmur(email, emailWali) {
     const res = await request(app).post(`/api/auth/confirm/${token}`);
     expect(res.body.data).toEqual({ status_akun: 'Aktif', terhubung_ke_wali: false });
     expect((await akun('tanpawali@contoh.test')).id_wali).toBeNull();
+  });
+
+  describe('batas waktu tautan 7 hari (SKPL UC02 skenario alternatif 1)', () => {
+    async function mundurkanPendaftaran(email, hari) {
+      await db.query(
+        `UPDATE pengguna SET created_at = NOW() - make_interval(days => $2) WHERE email = $1;`,
+        [email, hari]
+      );
+    }
+
+    test('tautan yang masih 6 hari tetap berlaku', async () => {
+      const token = await daftarPelajarDiBawahUmur('enamhari@contoh.test', 'wali.enam@contoh.test');
+      await mundurkanPendaftaran('enamhari@contoh.test', 6);
+      await request(app).get(`/api/auth/confirm/${token}`).expect(200);
+      const res = await request(app).post(`/api/auth/confirm/${token}`);
+      expect(res.body.data.status_akun).toBe('Aktif');
+    });
+
+    test('membuka tautan yang lewat 7 hari menandai akun gagal terverifikasi', async () => {
+      const token = await daftarPelajarDiBawahUmur('lewat.buka@contoh.test', 'santoso.wali@mahasehat.id');
+      await mundurkanPendaftaran('lewat.buka@contoh.test', 8);
+
+      const res = await request(app).get(`/api/auth/confirm/${token}`);
+      expect(res.status).toBe(410);
+      expect(res.body.message).toContain('kedaluwarsa');
+      expect(await akun('lewat.buka@contoh.test')).toEqual({
+        status_akun: 'Ditolak',
+        token_konfirmasi: null,
+        id_wali: null,
+      });
+      await request(app).post(`/api/auth/confirm/${token}`).expect(404);
+    });
+
+    test('status akun yang sudah diputuskan tidak tertimpa penanda kedaluwarsa', async () => {
+      const token = await daftarPelajarDiBawahUmur('balapan@contoh.test', 'wali.balapan@contoh.test');
+      await mundurkanPendaftaran('balapan@contoh.test', 8);
+      const akunLama = await Pengguna.findByTokenKonfirmasi(token);
+      await db.query("UPDATE pengguna SET status_akun = 'Aktif' WHERE email = 'balapan@contoh.test';");
+
+      expect(await akunLama.ubahStatusKonfirmasi('Ditolak')).toBe(false);
+      expect((await akun('balapan@contoh.test')).status_akun).toBe('Aktif');
+    });
+
+    test.each(['confirm', 'reject'])(
+      'menekan tombol (%s) pada tautan kedaluwarsa tetap menyimpan status gagal',
+      async (aksi) => {
+        const email = `lewat.${aksi}@contoh.test`;
+        const token = await daftarPelajarDiBawahUmur(email, 'santoso.wali@mahasehat.id');
+        await mundurkanPendaftaran(email, 8);
+
+        const res = await request(app).post(`/api/auth/${aksi}/${token}`);
+        expect(res.status).toBe(410);
+        expect(await akun(email)).toEqual({ status_akun: 'Ditolak', token_konfirmasi: null, id_wali: null });
+
+        const masuk = await request(app).post('/api/auth/login').send({ email, password: PASSWORD });
+        expect(masuk.status).toBe(403);
+        expect(masuk.body.message).toContain('kedaluwarsa');
+      }
+    );
   });
 });
