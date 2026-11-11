@@ -14,6 +14,7 @@ export const WARGA: KonteksSesi = {
   idKomunitas: "KOM-1",
 };
 export const WARGA_LAIN: KonteksSesi = { ...WARGA, email: "warga2@fajar.test", nama: "Budi", idWarga: 8 };
+export const TEKNISI_LAIN: KonteksSesi = { email: "teknisi2@fajar.test", nama: "Dedi", statusAkun: "DISETUJUI", peran: "TEKNISI", idTeknisi: "TEK-02" };
 export const TEKNISI: KonteksSesi = {
   email: "teknisi@fajar.test",
   nama: "Arif Pratama",
@@ -73,5 +74,38 @@ export function buatRepoPalsu(isi: IsiPalsu = {}) {
         : [];
     }),
   };
-  return { repo, dataLaporan, dataRiwayat, penugasan, ditugaskan };
+  const milikTeknisi = (idTeknisi: string, idLaporan: string) =>
+    ditugaskan(idTeknisi, idLaporan) ? dataLaporan.find((x) => x.idLaporan === idLaporan) : undefined;
+
+  const tugas = {
+    cariPenugasan: jest.fn<RepositoriLaporan["cariPenugasan"]>(async (idTeknisi, idLaporan) =>
+      ditugaskan(idTeknisi, idLaporan) ? { idPenugasan: "P", idTeknisi, idLaporan, waktuPenugasan: new Date(0) } : null,
+    ),
+    cariDaftarTugas: jest.fn<RepositoriLaporan["cariDaftarTugas"]>(async (idTeknisi) =>
+      dataLaporan
+        .filter((l) => ditugaskan(idTeknisi, l.idLaporan))
+        .sort((a, b) => a.waktuDibuat.getTime() - b.waktuDibuat.getTime()),
+    ),
+    cariDetailTugas: jest.fn<RepositoriLaporan["cariDetailTugas"]>(async (idTeknisi, idLaporan) => {
+      const l = milikTeknisi(idTeknisi, idLaporan);
+      return l ? denganPemilik(l) : null;
+    }),
+    cariRiwayatTugas: jest.fn<RepositoriLaporan["cariRiwayatTugas"]>(async (idTeknisi, idLaporan) =>
+      milikTeknisi(idTeknisi, idLaporan)
+        ? dataRiwayat.filter((r) => r.idLaporan === idLaporan).sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+        : [],
+    ),
+    // Meniru transaksi: syarat dicek ulang, lalu status dan riwayat berubah bersama atau tidak sama sekali.
+    simpanStatusDanRiwayat: jest.fn<RepositoriLaporan["simpanStatusDanRiwayat"]>(async (l, r, idTeknisi, statusLama) => {
+      const asli = dataLaporan.find((x) => x.idLaporan === l.idLaporan);
+      if (!asli || !ditugaskan(idTeknisi, l.idLaporan) || asli.status !== statusLama) return false;
+      if (kendali.gagalRiwayat) return false;
+      asli.status = l.status;
+      dataRiwayat.push(r);
+      return true;
+    }),
+  };
+  const kendali = { gagalRiwayat: false };
+  Object.assign(repo, tugas);
+  return { repo: repo as typeof repo & typeof tugas, dataLaporan, dataRiwayat, penugasan, ditugaskan, kendali };
 }
