@@ -51,7 +51,7 @@ export async function GET(req: Request) {
       });
     } else {
       const pdfBuf = Rekapitulasi.toPDFBuffer(hasilRekap.data, periode ?? undefined);
-      return new NextResponse(pdfBuf, {
+      return new NextResponse(new Uint8Array(pdfBuf), {
         status: 200,
         headers: {
           "Content-Type": "application/pdf",

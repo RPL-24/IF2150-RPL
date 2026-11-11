@@ -1,4 +1,5 @@
 // src/tests/iuran/iuran.test.ts
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { ModulIuran, type KonteksSesiIuran, type RepositoriIuran } from "@/modules/iuran/internal/ModulIuran";
 import { Rekapitulasi } from "@/modules/iuran/internal/Rekapitulasi";
 
@@ -286,7 +287,7 @@ describe("ModulIuran - UC02, UC09, UC10, UC11", () => {
         expect(csv).toContain("65000");
 
         const pdf = Rekapitulasi.toPDFBuffer(hasil.data);
-        expect(pdf.toString("utf-8")).toContain("%PDF-1.4");
+        expect(pdf.toString("utf-8")).toContain("%PDF-");
       }
     });
   });

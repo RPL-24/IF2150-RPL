@@ -6,6 +6,7 @@
  * Runner harus dapat meresolusi alias `@/` (Jest: moduleNameMapper,
  * Vitest: vite-tsconfig-paths).
  */
+import { describe, expect, it } from '@jest/globals';
 import { AkunController } from '../../modules/akun/controller';
 import type { DataAkunBoundary } from '../../modules/akun/boundary';
 import type { AkunRingkas, DataAkun } from '../../modules/akun/entity';

@@ -29,6 +29,7 @@ export interface AturanTarifDTO {
 export interface TagihanDTO {
   idTagihan: string;
   idWarga: number;
+  namaWarga?: string; // diisi pada pratinjau UC10 agar pengurus mengenali warganya
   idPeriode: string;
   jumlahIuran: number;
   status: StatusTagihan;

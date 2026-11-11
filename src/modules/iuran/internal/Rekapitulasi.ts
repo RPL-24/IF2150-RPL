@@ -1,6 +1,7 @@
 // src/modules/iuran/internal/Rekapitulasi.ts
 // Kelas Perancangan: C28 (Rekapitulasi) - Algo-022
 import type { BarisRekap, PeriodeDTO, RekapitulasiDTO, TagihanDTO } from "@/contracts";
+import { bangunCsv, bangunPdf } from "../ekspor";
 
 export interface TagihanDenganNama extends TagihanDTO {
   namaWarga?: string;
@@ -50,85 +51,13 @@ export class Rekapitulasi {
     };
   }
 
-  /**
-   * Ekspor ke format CSV
-   */
+  /** Ekspor ke CSV: lihat ekspor.ts (BOM UTF-8, tanda kutip, dan nama berawalan = + - @ dinetralkan). */
   static toCSV(rekap: RekapitulasiDTO): string {
-    const header = [
-      "ID Warga",
-      "Nama Warga",
-      "Volume Air (m3)",
-      "Energi (kWh)",
-      "Jumlah Iuran (Rp)",
-    ].join(",");
-
-    const rows = rekap.baris.map((b) =>
-      [
-        b.idWarga,
-        `"${b.namaWarga.replace(/"/g, '""')}"`,
-        b.volumeAirM3,
-        b.energiKWh,
-        b.jumlahIuran,
-      ].join(","),
-    );
-
-    const footer = [
-      "TOTAL",
-      '""',
-      rekap.totalPemakaianAir,
-      rekap.totalPemakaianEnergi,
-      rekap.totalIuran,
-    ].join(",");
-
-    return [header, ...rows, footer].join("\n");
+    return bangunCsv(rekap);
   }
 
-  /**
-   * Ekspor ke PDF sederhana (valid PDF-1.4 buffer tanpa library eksternal berisiko)
-   */
+  /** Ekspor ke PDF (jsPDF): tabel rata kanan, dan halaman baru otomatis untuk banyak warga. */
   static toPDFBuffer(rekap: RekapitulasiDTO, periode?: PeriodeDTO): Buffer {
-    const judulPeriode = periode
-      ? `Periode ${periode.bulan}/${periode.tahun}`
-      : `Periode ${rekap.idPeriode}`;
-
-    const lines = [
-      `REKAPITULASI IURAN KOMUNAL - FAJAR TECH`,
-      `${judulPeriode} (ID Rekap: ${rekap.idRekap})`,
-      `----------------------------------------------------------------`,
-      `ID Warga | Nama Warga           | Air (m3) | Energi (kWh) | Iuran (Rp)`,
-      `----------------------------------------------------------------`,
-      ...rekap.baris.map(
-        (b) =>
-          `${String(b.idWarga).padEnd(8)} | ${b.namaWarga.slice(0, 20).padEnd(20)} | ${String(b.volumeAirM3).padEnd(8)} | ${String(b.energiKWh).padEnd(12)} | Rp ${b.jumlahIuran.toLocaleString("id-ID")}`,
-      ),
-      `----------------------------------------------------------------`,
-      `TOTAL AIR   : ${rekap.totalPemakaianAir} m3`,
-      `TOTAL ENERGI: ${rekap.totalPemakaianEnergi} kWh`,
-      `TOTAL IURAN : Rp ${rekap.totalIuran.toLocaleString("id-ID")}`,
-    ];
-
-    const escapePdf = (s: string) => s.replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
-    const textCommands = lines
-      .map((line, idx) => `1 0 0 1 40 ${780 - idx * 16} Tm (${escapePdf(line)}) Tj`)
-      .join("\n");
-
-    const streamContent = `BT\n/F1 10 Tf\n${textCommands}\nET`;
-    const pdf = [
-      "%PDF-1.4",
-      "1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj",
-      "2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj",
-      "3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj",
-      `4 0 obj << /Length ${streamContent.length} >> stream\n${streamContent}\nendstream endobj`,
-      "5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Courier >> endobj",
-      "xref",
-      "0 6",
-      "0000000000 65535 f ",
-      "trailer << /Size 6 /Root 1 0 R >>",
-      "startxref",
-      "0",
-      "%%EOF",
-    ].join("\n");
-
-    return Buffer.from(pdf, "utf-8");
+    return Buffer.from(bangunPdf(rekap, periode));
   }
 }
