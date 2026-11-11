@@ -1,23 +1,61 @@
-/**
- * PrioritasController (DPPL Tabel 2.3): daftar laporan terverifikasi berdasarkan skor & filter (UC03),
- * plus pembaruan status penanganan oleh pemda (gap G8).
- * Pemilik: P5. Kontrak: src/docs/API.md#uc03
- */
 import { z } from 'zod';
 import { STATUS } from '@silembur/shared';
-import { belumDiimplementasi } from '../utils/http.js';
+import pool, { withTransaction } from '../db/pool.js';
+import { getLaporanTerverifikasi } from '../models/laporan/prioritas.js';
+import { ubahStatus } from '../models/laporan/status.js';
+import { hitungSkor } from '../models/skor.js';
 
 export const skemaUbahStatus = z.object({
   status: z.enum([STATUS.DIPROSES, STATUS.SELESAI]),
   keterangan: z.string().trim().min(1, 'Keterangan penanganan wajib diisi').max(300),
 });
 
-/** GET /api/prioritas?kategori=&wilayah=&status= -> { data: LaporanPrioritas[] } (urut skor DESC) */
-export async function daftarPrioritas() {
-  throw belumDiimplementasi('P5', 'GET /api/prioritas (KF18, KF19)');
+/**
+ * GET /api/prioritas?kategori=&wilayah=&status=
+ */
+export async function daftarPrioritas(req, res, next) {
+  try {
+    const { kategori, wilayah, status } = req.query;
+
+    // Hitung ulang skor yang kadaluarsa (> 1 jam) - KF17
+    const kadaluarsa = await pool.query(
+      `SELECT id_laporan FROM skor_prioritas WHERE dihitung_pada < NOW() - INTERVAL '1 hour'`
+    );
+    for (const row of kadaluarsa.rows) {
+      await hitungSkor(pool, row.id_laporan);
+    }
+
+    const data = await getLaporanTerverifikasi(pool, { kategori, wilayah, status });
+    res.json({ data });
+  } catch (err) {
+    next(err);
+  }
 }
 
-/** PATCH /api/laporan/:id/status  body: { status: 'Diproses'|'Selesai', keterangan } -> { laporan } */
-export async function perbaruiStatus() {
-  throw belumDiimplementasi('P5', 'PATCH /api/laporan/:id/status (KF12, KF22)');
+/**
+ * PATCH /api/laporan/:id/status
+ */
+export async function perbaruiStatus(req, res, next) {
+  try {
+    const idLaporan = parseInt(req.params.id, 10);
+    const { status, keterangan } = skemaUbahStatus.parse(req.body);
+    const idPengguna = req.pengguna.id;
+
+    await withTransaction(async (db) => {
+      await ubahStatus(db, {
+        idLaporan,
+        statusBaru: status,
+        deskripsi: keterangan,
+        idPengguna,
+      });
+    });
+
+    // Ambil data laporan terbarui
+    const laporanList = await getLaporanTerverifikasi(pool, { status });
+    const laporan = laporanList.find((l) => l.id === idLaporan);
+
+    res.json({ laporan });
+  } catch (err) {
+    next(err);
+  }
 }
