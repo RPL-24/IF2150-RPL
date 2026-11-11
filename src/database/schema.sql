@@ -136,6 +136,22 @@ CREATE TABLE IF NOT EXISTS barang (
 CREATE INDEX IF NOT EXISTS barang_id_penjual ON barang (id_penjual);
 CREATE INDEX IF NOT EXISTS barang_status ON barang (status);
 
+-- Katalog (UC13): urutan bawaan "terbaru" dibaca langsung dari indeks, tanpa mengurutkan
+-- seluruh listing Tersedia pada setiap permintaan. Angka profiling ada di laporan M9 bagian B.2.1.
+CREATE INDEX IF NOT EXISTS barang_katalog_terbaru
+  ON barang (waktu_unggah DESC, id_barang) WHERE status = 'Tersedia';
+
+-- Pencarian (UC14): ILIKE '%kata%' pada judul dan deskripsi memakai indeks trigram.
+-- Bila ekstensi pg_trgm tidak tersedia, blok ini dilewati dan pencarian tetap berjalan tanpa indeks.
+DO $$
+BEGIN
+  CREATE EXTENSION IF NOT EXISTS pg_trgm;
+  CREATE INDEX IF NOT EXISTS barang_judul_trgm ON barang USING gin (judul gin_trgm_ops);
+  CREATE INDEX IF NOT EXISTS barang_deskripsi_trgm ON barang USING gin (deskripsi_kondisi gin_trgm_ops);
+EXCEPTION WHEN OTHERS THEN
+  RAISE NOTICE 'Indeks trigram dilewati: %', SQLERRM;
+END $$;
+
 -- C30 FotoBarang (KF17, KF21, KF23, KF50)
 CREATE TABLE IF NOT EXISTS foto_barang (
   id_foto     UUID PRIMARY KEY,
