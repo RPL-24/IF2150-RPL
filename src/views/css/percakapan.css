@@ -1,0 +1,284 @@
+/* ITBELI — Gaya khusus I-10 Percakapan dan I-11 Panel Notifikasi.
+   Selaras dengan src/mockup/I-10-percakapan.html dan I-11-panel-notifikasi.html.
+   Seluruh warna dan jarak memakai variabel dari tokens.css. */
+
+/* ───────────── I-10 Ruang & Daftar Percakapan ───────────── */
+.chat {
+  display: flex;
+  height: calc(100vh - var(--topbar-h));
+  min-height: 560px;
+}
+
+.chat__list {
+  width: 360px;
+  flex: none;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  overflow-y: auto;
+}
+
+.chat__list-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.chat__room {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.chat__room-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat__header {
+  min-height: 80px;
+  flex: none;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-6);
+}
+
+.chat__thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  flex: none;
+  background: var(--bg);
+}
+
+.chat__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.chat__body {
+  flex: 1;
+  min-height: 0;
+  padding: var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  overflow-y: auto;
+}
+
+.chat__body .infobox {
+  margin-bottom: auto;
+}
+
+.chat__messages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.chat__composer {
+  flex: none;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: var(--sp-4) var(--sp-6);
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+}
+
+.chat__composer .field__input {
+  flex: 1;
+}
+
+.sendbtn {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--green-700);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.sendbtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.daystamp {
+  text-align: center;
+  font: 400 12px/16px var(--font-sans);
+  color: var(--text-400);
+}
+
+.convitem {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+}
+
+.convitem:hover {
+  background: var(--green-50);
+}
+
+.bubble {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  align-self: flex-start;
+}
+
+.bubble--saya {
+  align-self: flex-end;
+}
+
+.chat__empty-wrap {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-8);
+}
+
+/* ───────────── I-11 Panel Notifikasi ───────────── */
+.topbar {
+  position: relative;
+}
+
+.iconbtn {
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.notif {
+  position: fixed;
+  top: 72px;
+  right: var(--sp-6);
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 96px);
+  display: flex;
+  flex-direction: column;
+  z-index: 25;
+}
+
+.notif__head {
+  display: flex;
+  align-items: center;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--border);
+  gap: var(--sp-2);
+}
+
+.notif__list {
+  overflow-y: auto;
+  max-height: 420px;
+}
+
+.notif__item {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  background: var(--surface);
+}
+
+.notif__item:last-child {
+  border-bottom: none;
+}
+
+.notif__item.is-baru {
+  background: var(--green-50);
+}
+
+.notif__item:hover {
+  background: var(--green-50);
+}
+
+.notif__ic {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  display: grid;
+  place-items: center;
+}
+
+.notif__item.is-baru .notif__ic {
+  background: var(--surface);
+}
+
+.notif__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green-700);
+  flex: none;
+  align-self: center;
+}
+
+.notif__empty {
+  padding: var(--sp-8) var(--sp-4);
+  text-align: center;
+  color: var(--text-600);
+  font-size: 14px;
+}
+
+.notif__foot {
+  padding: var(--sp-3) var(--sp-4);
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.dim {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 24, 26, .12);
+  z-index: 24;
+}
+
+@media (max-width: 960px) {
+  .chat {
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - var(--topbar-h));
+  }
+  .chat__list {
+    width: 100%;
+    max-height: 280px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .chat__room {
+    min-height: 480px;
+  }
+}

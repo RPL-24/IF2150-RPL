@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Detail Listing · ITBELI</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/listing.css">
+  <link rel="stylesheet" href="/css/katalog.css">
+  <script src="/js/api.js" defer></script>
+  <script src="/js/ListingUI.js" defer></script>
+  <script src="/js/layoutKatalog.js" defer></script>
+  <script src="/js/HalamanDetailBarang.js" defer></script>
+</head>
+<body>
+<div class="page">
+  <header id="listing-topbar" class="topbar"></header>
+  <div class="shell">
+    <aside id="listing-rail" class="rail"></aside>
+    <main class="content">
+      <div class="content__inner col gap-5">
+        <a href="/katalog" class="detail-kembali">‹ Kembali ke katalog</a>
+
+        <div id="galat-umum" class="infobox infobox--galat" role="alert" hidden></div>
+        <p id="memuat" class="muted">Memuat detail listing…</p>
+
+        <div id="detail" class="detail-barang" hidden>
+          <section class="detail-barang__galeri" aria-label="Foto barang">
+            <div id="foto-utama" class="detail-barang__foto"></div>
+            <div id="foto-thumbs" class="detail-barang__thumbs"></div>
+          </section>
+
+          <section class="panel detail-barang__info">
+            <span id="badge-status" class="badge badge--terjual" hidden>Terjual</span>
+            <h1 id="judul" class="h-page"></h1>
+            <div id="harga" class="detail-barang__harga"></div>
+
+            <dl class="detail-barang__meta">
+              <dt>Kategori</dt><dd id="kategori"></dd>
+              <dt>Lokasi COD</dt><dd id="lokasi"></dd>
+              <dt>Diunggah</dt><dd id="waktu"></dd>
+            </dl>
+
+            <div>
+              <h2 class="h-sec">Deskripsi kondisi</h2>
+              <p id="deskripsi" class="detail-barang__deskripsi mt-2"></p>
+            </div>
+
+            <div class="detail-barang__penjual">
+              <div id="penjual-inisial" class="avatar" aria-hidden="true"></div>
+              <div>
+                <div class="muted">Penjual</div>
+                <div id="penjual-nama" class="detail-barang__nama"></div>
+              </div>
+            </div>
+
+            <div id="aksi" class="detail-barang__aksi"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="pesan" class="toast" role="status" hidden></div>
+</div>
+</body>
+</html>

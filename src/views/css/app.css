@@ -1,0 +1,72 @@
+/* ITBELI — penyesuaian components.css untuk halaman yang benar-benar berjalan.
+   components.css berasal dari mockup yang dirender ke PNG berukuran tetap 1440×1043,
+   sehingga ukuran body dan .page perlu dilepas di sini. Warna tetap memakai tokens.css. */
+
+body { width: auto; height: auto; min-height: 100vh; overflow: auto; }
+.page { width: auto; height: auto; max-width: 1440px; margin: 0 auto; }
+.hero { height: auto; min-height: 640px; }
+
+/* Kerangka topbar + rail + konten: tinggi mengikuti isi, tidak lagi dikunci 1043px */
+.shell { height: auto; min-height: calc(100vh - var(--topbar-h)); }
+.rail, .content { overflow: visible; }
+.rail .navlist a.is-active, .navlist a:hover { background: var(--green-50); }
+.brand { text-decoration: none; color: inherit; }
+
+[hidden] { display: none !important; }
+
+a.btn { text-decoration: none; }
+.btn[disabled] { cursor: not-allowed; }
+
+/* Isian formulir asli (<input>) dengan tampilan .field__input */
+input.field__input { width: 100%; font: inherit; outline: none; }
+input.field__input:focus { border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(46, 125, 85, .15); }
+input.field__input::placeholder { color: var(--text-400); }
+
+input.field__input.is-error { border-color: var(--danger); background: var(--danger-bg); }
+
+.infobox--galat { background: var(--danger-bg); color: var(--danger); }
+.infobox--peringatan { background: var(--warning-bg); color: var(--warning); }
+.infobox a { color: inherit; font-weight: 600; }
+
+/* Kotak centang asli dengan warna tema (I02-O05) */
+.checkbox input { width: 18px; height: 18px; flex: none; margin-top: 1px; accent-color: var(--green-700); }
+.checkbox a { color: var(--green-700); }
+
+/* Toast menempel di layar, bukan di dasar halaman */
+.toast { position: fixed; z-index: 10; }
+
+/* I-03 Verifikasi Surel */
+.verif-wrap { display: grid; grid-template-columns: minmax(0, 1fr); place-items: center;
+  min-height: calc(100vh - var(--topbar-h)); padding: var(--sp-6) var(--sp-4); }
+.verif strong { overflow-wrap: anywhere; }
+.verif { width: 520px; max-width: 100%; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+  padding: var(--sp-8); display: flex; flex-direction: column; gap: var(--sp-5); }
+.verif__icon { width: 56px; height: 56px; border-radius: var(--radius-full);
+  background: var(--green-50); display: grid; place-items: center; }
+.otp { display: flex; gap: var(--sp-3); }
+.otp input { width: 64px; min-width: 0; flex: 1; height: 72px; border: 1px solid var(--border);
+  border-radius: var(--radius-md); background: var(--surface); text-align: center;
+  font: 700 28px/1 var(--font-sans); color: var(--text-900); outline: none; }
+.otp input:focus { border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(46, 125, 85, .15); }
+.otp input.is-filled { border-color: var(--green-500); background: var(--green-50); color: var(--green-900); }
+
+@media (max-width: 960px) {
+  .topbar { padding: 0 var(--sp-4); }
+  .auth { grid-template-columns: minmax(0, 1fr); padding: var(--sp-6) var(--sp-4); gap: var(--sp-6); }
+  .hero { min-height: 0; padding: var(--sp-6); }
+  .hero__title { font-size: 32px; line-height: 40px; }
+  .authform__title { font-size: 32px; line-height: 40px; }
+  .hero__media { display: none; }
+  .footerlinks { padding: var(--sp-6) var(--sp-4); flex-wrap: wrap; }
+  .shell .rail { display: none; }
+  .content { padding: var(--sp-6) var(--sp-4); min-width: 0; }
+  .verif { padding: var(--sp-6); }
+  .otp { gap: var(--sp-2); }
+  .otp input { height: 56px; font-size: 22px; }
+  .toast { left: var(--sp-4); right: var(--sp-4); bottom: var(--sp-4); }
+}
+
+@media (max-width: 480px) {
+  .brand__tag { display: none; }
+}

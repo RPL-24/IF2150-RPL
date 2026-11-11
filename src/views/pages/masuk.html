@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Masuk · ITBELI</title>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/app.css">
+<style>
+  /* Tombol Masuk mengikuti lebar isinya, bukan selebar kolom, seperti rancangan I-01. */
+  .authform .btn--masuk { align-self: flex-start; padding: 0 var(--sp-8); }
+</style>
+<script src="/js/api.js" defer></script>
+<script src="/js/HalamanOtentikasi.js" defer></script>
+</head>
+<body data-halaman="masuk">
+<div class="page">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand__mark">IT</div>
+      <div>
+        <div class="brand__name">ITBELI</div>
+        <div class="brand__tag">Marketplace preloved sivitas ITB</div>
+      </div>
+    </div>
+    <div class="topbar__right">
+      <a class="btn btn--primer btn--sm" href="/daftar">Daftar</a>
+    </div>
+  </header>
+
+  <main class="auth">
+
+    <section class="hero">
+      <div class="hero__eyebrow">Marketplace preloved sivitas ITB</div>
+      <h1 class="hero__title">Barang bagus tak harus selalu baru.</h1>
+      <p class="hero__text">
+        Temukan kebutuhan kuliah, teruskan barang yang masih berharga.
+        Mulai dari komunitas kampus sendiri.
+      </p>
+      <div class="hero__media">
+        <div><div class="ph ph--jas"></div></div>
+        <div><div class="ph ph--kalkulator"></div></div>
+        <div><div class="ph ph--buku"></div></div>
+      </div>
+    </section>
+
+    <section class="authform">
+      <div>
+        <h2 class="authform__title">Kembali ke kampus.</h2>
+        <p class="authform__sub mt-2">
+          Masuk untuk mencari barang, mengelola listing, dan melanjutkan percakapan.
+        </p>
+      </div>
+
+      <!-- Pengguna belum masuk -->
+      <form id="formulir-login" class="authform" style="padding-top:0" novalidate hidden>
+        <div id="pesan-galat" class="infobox infobox--galat" role="alert" hidden></div>
+
+        <label class="field">
+          <span class="field__label">Email institusi</span>
+          <input id="email" class="field__input" type="email" autocomplete="username"
+                 placeholder="nama@itb.ac.id" required>
+          <span class="field__hint">Gunakan email berdomain @itb.ac.id.</span>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Kata sandi</span>
+          <input id="kata-sandi" class="field__input" type="password" autocomplete="current-password" required>
+        </label>
+
+        <button id="tombol-masuk" class="btn btn--primer btn--masuk" type="submit">Masuk</button>
+
+        <div class="row">
+          <span class="muted">Belum punya akun?</span>
+          <a class="btn btn--sekunder btn--sm ml-auto" href="/daftar">Daftar</a>
+        </div>
+      </form>
+
+      <!-- Pengguna sudah masuk (I01-O08) -->
+      <div id="panel-masuk" class="authform" style="padding-top:0" hidden>
+        <div class="infobox infobox--netral">
+          Anda sedang masuk sebagai <strong id="email-masuk"></strong>
+        </div>
+        <div class="row">
+          <a class="btn btn--primer" href="/">Lanjut ke beranda</a>
+          <a class="btn btn--sekunder" href="/profil">Profil saya</a>
+          <button id="tombol-keluar" class="btn btn--sekunder" type="button">Keluar</button>
+        </div>
+      </div>
+
+      <div class="infobox">
+        <strong>Khusus sivitas ITB</strong>
+        Akun harus terverifikasi sebelum masuk. Jangan bagikan kata sandi atau
+        kode verifikasi Anda kepada siapa pun.
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footerlinks">
+    <a href="/legal?jenis=kebijakan-privasi">Kebijakan Privasi</a><span>·</span>
+    <a href="/legal?jenis=ketentuan-penggunaan">Ketentuan Penggunaan</a>
+  </footer>
+</div>
+</body>
+</html>
