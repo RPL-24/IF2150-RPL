@@ -30,17 +30,17 @@
    Daftar tenaga kesehatan
    -------------------------------------------------------------------------- */
 .nakes-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     min-width: 0;
 }
 
 .nakes-card {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    padding: 20px;
+    gap: 12px;
+    padding: 18px 20px;
     background-color: var(--color-white);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -54,10 +54,10 @@
 }
 
 .nakes-main {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
-    gap: 6px 12px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 14px;
     min-width: 0;
 }
 
@@ -107,14 +107,12 @@
 }
 
 .nakes-fee {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: baseline;
-    justify-content: flex-end;
-    gap: 6px;
+    margin-left: auto;
+    text-align: right;
 }
 
 .nakes-fee strong {
+    display: block;
     font-size: var(--text-body);
     font-weight: 700;
     color: var(--color-ink);
@@ -257,26 +255,10 @@
 }
 
 /* --------------------------------------------------------------------------
-   Toast
-   -------------------------------------------------------------------------- */
-.page-toast {
-    position: fixed;
-    right: clamp(16px, 4vw, 32px);
-    bottom: 24px;
-    max-width: min(420px, calc(100vw - 96px));
-    z-index: 1000;
-    box-shadow: var(--shadow-modal);
-}
-
-/* --------------------------------------------------------------------------
    Responsif
    -------------------------------------------------------------------------- */
 @media (max-width: 900px) {
     .search-toolbar {
-        grid-template-columns: 1fr;
-    }
-
-    .nakes-list {
         grid-template-columns: 1fr;
     }
 }
@@ -284,6 +266,11 @@
 @media (max-width: 600px) {
     .nakes-card {
         padding: 16px;
+    }
+
+    .nakes-fee {
+        margin-left: 0;
+        text-align: left;
     }
 
     .detail-grid {
@@ -297,12 +284,5 @@
 
     .card-actions .btn {
         flex: 1;
-    }
-
-    .page-toast {
-        left: clamp(16px, 4vw, 32px);
-        right: clamp(16px, 4vw, 32px);
-        bottom: 16px;
-        max-width: none;
     }
 }

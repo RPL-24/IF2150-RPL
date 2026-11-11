@@ -605,3 +605,43 @@
         width: 100%;
     }
 }
+
+/* --------------------------------------------------------------------------
+   Toast: umpan balik singkat untuk aksi yang berhasil
+   -------------------------------------------------------------------------- */
+.toast-notification {
+    position: fixed;
+    right: clamp(16px, 4vw, 32px);
+    bottom: 24px;
+    z-index: 1000;
+    max-width: min(420px, calc(100vw - 96px));
+    padding: 14px 22px;
+    border-radius: var(--radius-md);
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+    font-size: var(--text-body);
+    font-weight: 500;
+    line-height: 1.4;
+    box-shadow: var(--shadow-modal);
+    animation: toastMasuk var(--duration-base) ease;
+}
+
+@keyframes toastMasuk {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1023px) {
+    .toast-notification {
+        left: clamp(16px, 4vw, 32px);
+        right: clamp(16px, 4vw, 32px);
+        bottom: 16px;
+        max-width: none;
+    }
+}

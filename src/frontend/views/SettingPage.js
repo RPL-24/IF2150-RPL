@@ -121,11 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
             menuLaporan.href = 'ReportPage.html';
         }
         if (menuKonsultasi) {
-            // Halaman Konsultasi pelajar belum tersedia: biarkan nonaktif, jangan pasang href
             menuKonsultasi.style.display = 'flex';
-            menuKonsultasi.removeAttribute('href');
-            menuKonsultasi.setAttribute('aria-disabled', 'true');
-            menuKonsultasi.classList.add('nav-item--disabled');
+            menuKonsultasi.href = 'CariTenagaKesehatanPage.html';
+            menuKonsultasi.removeAttribute('aria-disabled');
+            menuKonsultasi.removeAttribute('title');
+            menuKonsultasi.classList.remove('nav-item--disabled');
         }
     }
 
