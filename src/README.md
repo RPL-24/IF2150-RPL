@@ -78,7 +78,38 @@ Teknisi mencatat tindakan dan hasil perawatan di `/dashboard/teknisi/pemeliharaa
 
 ### Laporan gangguan
 
-<!-- TODO(Rionaldo) -->
+Warga mengirim dan memantau laporan gangguan, teknisi mengubah status tugasnya. Kode ada di `modules/laporan`, layar di `components/layar/LayarI05` sampai `LayarI07` (warga) dan `LayarI10`, `LayarI11` (teknisi).
+
+| Use case | Layar | Rute API | Peran |
+| --- | --- | --- | --- |
+| UC03 kirim laporan | I-05 `/dashboard/warga/laporan/baru` | `POST /api/laporan` | Warga |
+| UC04 daftar, detail, riwayat | I-06 `/dashboard/warga/laporan`, I-07 `/dashboard/warga/laporan/{id}` | `GET /api/laporan`, `GET /api/laporan/{id}`, `GET /api/laporan/{id}/riwayat` | Warga |
+| UC07 daftar tugas, detail, ubah status | I-10 `/dashboard/teknisi/tugas`, I-11 `/dashboard/teknisi/tugas/{id}` | `GET /api/laporan/tugas`, `GET /api/laporan/tugas/{id}`, `PATCH /api/laporan/tugas/{id}/status` | Teknisi |
+
+Aturan yang dijaga server:
+
+- Identitas warga dan teknisi diambil dari sesi, bukan dari body atau URL.
+- Pengiriman laporan memeriksa keanggotaan komunitas warga dari basis data setiap kali.
+- Setiap pembacaan laporan warga memuat syarat pemilik, dan setiap pembacaan tugas memuat syarat penugasan. Laporan milik orang lain dan ID yang tidak ada sama-sama dibalas 404.
+- Status hanya maju satu langkah: `MENUNGGU`, `SEDANG_DIPERBAIKI`, `SELESAI`. Lompat, mundur, dan status yang sama ditolak dengan 400 dan daftar `opsi.statusBerikutnya`.
+- Status dan riwayat disimpan dalam satu transaksi. Bila salah satunya gagal atau status sudah berubah (409), tidak ada yang tersimpan.
+- Foto pendukung belum didukung (belum ada unggah). Jenis gangguan dipilih dari daftar tetap di `modules/laporan/internal/validasi.ts`.
+- Belum ada layar untuk menugaskan laporan ke teknisi (di luar daftar use case). Penugasan di data uji dibuat lewat seed, jadi laporan baru dari warga tetap berstatus MENUNGGU dan baru muncul di Tugas saya setelah barisnya ditambahkan ke tabel `penugasan_laporan`.
+
+Menjalankan tes laporan:
+
+```bash
+npx jest tests/laporan
+```
+
+Uji transaksi status ke PostgreSQL sungguhan (butuh basis data yang sudah dimigrasi dan di-seed, tidak ikut `npx jest`):
+
+```bash
+DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/fajartech npx tsx tests/laporan/transaksiStatus.db.ts
+```
+
+Coba lewat browser: masuk sebagai `warga@fajar.test`, kirim laporan di menu Lapor gangguan, lalu lihat di Laporan saya. Masuk sebagai `teknisi@fajar.test`, buka Tugas saya, dan klik Mulai perbaikan pada LAP-01. Dua laporan seed (LAP-01 dan LAP-02) ditugaskan ke teknisi itu.
+
 
 ### Iuran
 
