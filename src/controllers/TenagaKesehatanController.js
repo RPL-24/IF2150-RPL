@@ -1,103 +1,84 @@
 const TenagaKesehatan = require('../models/TenagaKesehatan');
-const FasilitasKesehatan = require('../models/FasilitasKesehatan');
+const AppError = require('../utils/AppError');
+const { kirim, tanganiAsync } = require('../utils/respon');
+const { calculateDistanceKm } = require('../utils/distance');
 
-class TenagaKesehatanController {
-    
-    // Memuat daftar tenaga kesehatan lengkap dengan fasilitas (Q-C20-01)
-    async loadTenagaKesehatan(req, res) {
-        try {
-            const { spesialisasi, search } = req.query;
-            
-            let listNakes = await TenagaKesehatan.findSemuaDenganFasilitas();
-            const listFasilitas = await FasilitasKesehatan.findAll();
-
-            if (spesialisasi) {
-                listNakes = listNakes.filter(n => n.jenis_tenaga_kesehatan === spesialisasi);
-            }
-            if (search) {
-                const keyword = search.toLowerCase();
-                listNakes = listNakes.filter(n => 
-                    (n.nama && n.nama.toLowerCase().includes(keyword)) ||
-                    (n.nama_fasilitas && n.nama_fasilitas.toLowerCase().includes(keyword)) ||
-                    (n.lokasi_kerja && n.lokasi_kerja.toLowerCase().includes(keyword))
-                );
-            }
-
-            return res.status(200).json({
-                status: 'success',
-                daftarTenagaKesehatan: listNakes,
-                daftarFasilitas: listFasilitas
-            });
-        } catch (error) {
-            console.error('Error loadTenagaKesehatan:', error);
-            return res.status(500).json({ status: 'error', message: 'Gagal memuat data tenaga kesehatan.' });
-        }
-    }
-
-    // Memproses izin lokasi dan menghitung jarak (jika disetujui)
-    async processLocationPermission(req, res) {
-        try {
-            const { izinLokasi, latitude, longitude } = req.body;
-            let listNakes = await TenagaKesehatan.findSemuaDenganFasilitas();
-
-            if (izinLokasi && latitude !== undefined && longitude !== undefined) {
-                listNakes = listNakes.map(nakes => {
-                    let jarakKm = 0;
-
-                    if (nakes.lokasi && nakes.lokasi.includes(',')) {
-                        const [nLat, nLng] = nakes.lokasi.split(',').map(Number);
-                        jarakKm = this.calculateHaversineDistance(latitude, longitude, nLat, nLng);
-                    }
-                    return { ...nakes, jarakKm: parseFloat(jarakKm.toFixed(1)) };
-                }).sort((a, b) => a.jarakKm - b.jarakKm);
-            }
-
-            return res.status(200).json({
-                status: 'success',
-                izinLokasi: Boolean(izinLokasi),
-                data: listNakes
-            });
-        } catch (error) {
-            console.error('Error processLocationPermission:', error);
-            return res.status(500).json({ status: 'error', message: 'Gagal memproses izin lokasi.' });
-        }
-    }
-
-    calculateHaversineDistance(lat1, lon1, lat2, lon2) {
-        const toRad = (value) => (value * Math.PI) / 180;
-        const dLat = toRad(lat2 - lat1);
-        const dLon = toRad(lon2 - lon1);
-        const a =
-            Math.sin(dLat / 2) ** 2 +
-            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return 6371 * c;
-    }
-
-    // Mengambil detail spesifik nakes (Q-C20-02 & Algo-C04-04)
-    async selectTenagaKesehatan(req, res) {
-        try {
-            const { id } = req.params;
-            const detailNakes = await TenagaKesehatan.findDetailDenganFasilitas(id);
-            
-            if (!detailNakes) {
-                return res.status(404).json({ status: 'error', message: 'Tenaga kesehatan tidak ditemukan.' });
-            }
-
-            const nasehatObj = await TenagaKesehatan.findById(id);
-            const jadwalTersedia = nasehatObj ? await nasehatObj.getJadwalTersedia() : [];
-
-            return res.status(200).json({
-                status: 'success',
-                data: detailNakes,
-                jadwalTersedia: jadwalTersedia,
-                profilDetail: nasehatObj ? nasehatObj.getProfil() : null
-            });
-        } catch (error) {
-            console.error('Error selectTenagaKesehatan:', error);
-            return res.status(500).json({ status: 'error', message: 'Gagal mengambil detail tenaga kesehatan.' });
-        }
-    }
+/** Ambil koordinat pengguna dari query (GET) atau body (PUT). Null bila tidak valid. */
+function lokasiPengguna(req) {
+  const sumber = { ...req.query, ...(req.body || {}) };
+  const lat = Number(sumber.lat !== undefined ? sumber.lat : sumber.latitude);
+  const lng = Number(sumber.lng !== undefined ? sumber.lng : sumber.longitude);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return null;
+  return { lat, lng };
 }
 
-module.exports = new TenagaKesehatanController();
+/** Tambahkan jarak_km relatif terhadap pengguna, urut terdekat lebih dulu. */
+function denganJarak(daftar, lokasi) {
+  if (!lokasi) return daftar.map((nakes) => ({ ...nakes, jarak_km: null }));
+
+  return daftar
+    .map((nakes) => {
+      const jarak = calculateDistanceKm(lokasi, nakes.lokasi || nakes.lokasi_kerja);
+      return { ...nakes, jarak_km: jarak >= 0 ? jarak : null };
+    })
+    .sort((a, b) => {
+      if (a.jarak_km === null) return 1;
+      if (b.jarak_km === null) return -1;
+      return a.jarak_km - b.jarak_km;
+    });
+}
+
+exports.loadTenagaKesehatan = tanganiAsync(async (req, res) => {
+  const { spesialisasi, search } = req.query;
+  let daftar = await TenagaKesehatan.findSemuaDenganFasilitas();
+
+  if (spesialisasi) {
+    const kunci = String(spesialisasi).toLowerCase();
+    daftar = daftar.filter((nakes) => String(nakes.jenis_tenaga_kesehatan || '').toLowerCase() === kunci);
+  }
+
+  if (search) {
+    const kata = String(search).toLowerCase();
+    daftar = daftar.filter((nakes) => [nakes.nama, nakes.nama_fasilitas, nakes.lokasi_kerja, nakes.alamat]
+      .filter(Boolean)
+      .some((nilai) => String(nilai).toLowerCase().includes(kata)));
+  }
+
+  return kirim(res, 200, 'Daftar tenaga kesehatan.', denganJarak(daftar, lokasiPengguna(req)));
+});
+
+/** Q-C20-03: simpan izin lokasi lalu kembalikan daftar yang sudah berjarak. */
+exports.processLocationPermission = tanganiAsync(async (req, res) => {
+  const lokasi = lokasiPengguna(req);
+  if (!lokasi) {
+    throw new AppError(400, 'Koordinat lokasi tidak valid.');
+  }
+
+  const daftar = await TenagaKesehatan.findSemuaDenganFasilitas();
+  return kirim(res, 200, 'Daftar tenaga kesehatan terdekat.', denganJarak(daftar, lokasi));
+});
+
+/** Q-C20-02 & Algo-C04-04 */
+exports.selectTenagaKesehatan = tanganiAsync(async (req, res) => {
+  const { id } = req.params;
+  const detail = await TenagaKesehatan.findDetailDenganFasilitas(id);
+  if (!detail) {
+    throw new AppError(404, 'Tenaga kesehatan tidak ditemukan.');
+  }
+
+  const nakes = await TenagaKesehatan.findById(id);
+  const jadwal = nakes ? await nakes.getJadwalTersedia() : [];
+  const lokasi = lokasiPengguna(req);
+
+  return kirim(res, 200, 'Detail tenaga kesehatan.', {
+    ...detail,
+    jarak_km: lokasi ? Math.max(calculateDistanceKm(lokasi, detail.lokasi || detail.lokasi_kerja), -1) : null,
+    jadwal_tersedia: jadwal.map((item) => ({
+      id_jadwal: item.idJadwal,
+      tanggal: item.tanggal,
+      waktu: item.waktu,
+      status_ketersediaan: item.statusKetersediaan,
+    })),
+  });
+});

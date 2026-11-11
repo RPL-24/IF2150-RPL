@@ -9,19 +9,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- CSS bersama, lalu CSS halaman -->
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="CariTenagaKesehatanPage.css">
 </head>
 <body>
     <div class="app-layout">
-        <aside class="app-sidebar" id="Sidebar">
-            <div class="sidebar-top">
-                <div class="sidebar-header">
-                    <a href="DashboardPagePelajar.html" class="brand-link">
-                        <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
-                        <span class="brand-title">MahaSehat</span>
-                    </a>
-                </div>
+        <!-- Sidebar pelajar -->
+        <aside class="app-sidebar" data-role="pelajar" id="Sidebar">
+            <div class="sidebar-header">
+                <a href="DashboardPagePelajar.html" class="brand-link">
+                    <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                    <span class="brand-title">MahaSehat</span>
+                </a>
+                <button type="button" class="nav-toggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="SidebarPanel">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
 
+            <div class="sidebar-panel" id="SidebarPanel">
                 <div class="sidebar-search">
                     <span class="search-icon" aria-hidden="true">⌕</span>
                     <input type="text" class="search-input" placeholder="Cari" aria-label="Cari menu">
@@ -29,7 +41,7 @@
 
                 <nav class="nav-menu" aria-label="Menu utama">
                     <a href="DashboardPagePelajar.html" class="nav-item" id="Menu_Dashboard">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <rect x="3" y="3" width="7" height="7"></rect>
                             <rect x="14" y="3" width="7" height="7"></rect>
                             <rect x="14" y="14" width="7" height="7"></rect>
@@ -37,35 +49,34 @@
                         </svg>
                         <span class="nav-label">Dashboard</span>
                     </a>
-                    <a href="ReportPage.html" class="nav-item" id="Menu_Laporan">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <a href="ReportPagePelajar.html" class="nav-item" id="Menu_Laporan">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
                             <line x1="16" y1="13" x2="8" y2="13"></line>
                             <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
                         </svg>
                         <span class="nav-label">Laporan Kesehatan</span>
                     </a>
-                    <a href="CariTenagaKesehatanPage.html" class="nav-item active" id="Menu_Konsultasi" aria-current="page">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <a href="CariTenagaKesehatanPage.html" class="nav-item active" aria-current="page" id="Menu_Konsultasi">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                         </svg>
                         <span class="nav-label">Konsultasi</span>
-                        <span class="nav-badge" id="Badge_Konsultasi">2</span>
+                        <span class="nav-badge" id="Badge_Konsultasi" hidden>0</span>
                     </a>
 
                     <div class="menu-divider"></div>
 
                     <a href="SettingPage.html" class="nav-item" id="Menu_Setelan">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <circle cx="12" cy="12" r="3"></circle>
                             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                         </svg>
                         <span class="nav-label">Setelan</span>
                     </a>
                     <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                             <polyline points="16 17 21 12 16 7"></polyline>
                             <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -73,65 +84,67 @@
                         <span class="nav-label">Keluar</span>
                     </a>
                 </nav>
-            </div>
 
-            <div class="sidebar-user" id="Info_User">
-                <div class="user-avatar" id="User_Avatar">B</div>
-                <div class="user-meta">
-                    <p class="user-name" id="Text_NamaUser">Budi Pratama</p>
-                    <p class="user-role" id="Text_RoleUser">Pelajar</p>
+                <div class="sidebar-user" id="Info_User">
+                    <div class="user-avatar" id="User_Avatar">B</div>
+                    <div class="user-meta">
+                        <p class="user-name" id="Text_NamaUser">Budi Pratama</p>
+                        <p class="user-role" id="Text_RoleUser">Pelajar</p>
+                    </div>
                 </div>
             </div>
         </aside>
 
         <main class="main-viewport" id="Panel_CariTenagaKesehatan">
             <header class="page-header">
-                <h1 class="page-title" id="Title_Cari">Cari Tenaga Kesehatan di Dekat Anda</h1>
+                <h1 class="page-title" id="Title_Cari">Cari Tenaga Kesehatan</h1>
                 <p class="page-subtitle" id="Text_Subjudul">Psikolog dan konselor terverifikasi di sekitarmu.</p>
             </header>
 
             <section class="search-toolbar" aria-label="Pencarian tenaga kesehatan">
-                <label class="search-field" for="Input_Lokasi">
-                    <span class="search-icon" aria-hidden="true">⌕</span>
-                    <input type="search" id="Input_Lokasi" placeholder="Nama lokasi atau tenaga kesehatan" autocomplete="off">
-                </label>
+                <div class="form-group search-field">
+                    <label class="form-label" for="Input_Lokasi">Cari</label>
+                    <input class="form-input" type="search" id="Input_Lokasi" placeholder="Nama lokasi atau tenaga kesehatan" autocomplete="off">
+                </div>
 
-                <label class="filter-field" for="Filter_Spesialisasi">
-                    <span class="filter-caption">Spesialisasi</span>
-                    <select id="Filter_Spesialisasi">
+                <div class="form-group filter-field">
+                    <label class="form-label" for="Filter_Spesialisasi">Spesialisasi</label>
+                    <select class="form-select" id="Filter_Spesialisasi">
                         <option value="">Semua spesialisasi</option>
                     </select>
-                </label>
+                </div>
             </section>
 
             <p class="result-count" id="Text_JumlahHasil">Menampilkan tenaga kesehatan terdekat.</p>
 
             <section id="NakesListContainer" class="nakes-list" aria-live="polite"></section>
 
-            <p class="empty-state" id="Text_Kosong" hidden>
+            <p class="empty-result" id="Text_Kosong" hidden>
                 Tidak ada tenaga kesehatan yang cocok dengan pencarian atau filter ini.
             </p>
         </main>
     </div>
 
-    <div class="modal" id="Modal_IzinLokasi" hidden>
-        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="Title_IzinLokasi">
-            <h2 id="Title_IzinLokasi">Akses lokasi</h2>
-            <p id="Desc_IzinAksesLokasiPengguna">Izinkan MahaSehat untuk mengakses lokasi Anda untuk menemukan tenaga kesehatan terdekat.</p>
-            <div class="modal-actions">
-                <button type="button" class="btn-outline" id="Btn_JanganIzinkan">Jangan Izinkan</button>
-                <button type="button" class="btn-amber" id="Btn_Izinkan">Izinkan</button>
+    <!-- Dialog izin lokasi -->
+    <dialog class="modal" id="Modal_IzinLokasi" aria-labelledby="Title_IzinLokasi" aria-describedby="Desc_IzinAksesLokasiPengguna">
+        <div class="modal__body">
+            <h2 class="modal__title" id="Title_IzinLokasi">Akses lokasi</h2>
+            <p class="modal__subtitle" id="Desc_IzinAksesLokasiPengguna">Izinkan MahaSehat mengakses lokasi Anda agar tenaga kesehatan terdekat muncul lebih dulu.</p>
+            <div class="modal__actions">
+                <button type="button" class="btn btn--secondary" id="Btn_JanganIzinkan">Jangan Izinkan</button>
+                <button type="button" class="btn btn--primary" id="Btn_Izinkan">Izinkan</button>
             </div>
         </div>
-    </div>
+    </dialog>
 
-    <div class="modal" id="Modal_Detail" hidden>
-        <div class="modal-card modal-card-wide" role="dialog" aria-modal="true" aria-labelledby="Title_Detail">
+    <!-- Dialog detail tenaga kesehatan -->
+    <dialog class="modal modal--wide" id="Modal_Detail" aria-labelledby="Title_Detail">
+        <div class="modal__body">
             <div class="detail-head">
-                <div class="nakes-avatar" id="Detail_Avatar">RH</div>
+                <div class="nakes-avatar" id="Detail_Avatar" aria-hidden="true">RH</div>
                 <div>
-                    <h2 id="Title_Detail">Profil Tenaga Kesehatan</h2>
-                    <p class="detail-spec" id="Detail_Spesialisasi"></p>
+                    <h2 class="modal__title" id="Title_Detail">Profil Tenaga Kesehatan</h2>
+                    <p class="modal__subtitle" id="Detail_Spesialisasi"></p>
                 </div>
             </div>
             <dl class="detail-grid">
@@ -162,32 +175,51 @@
             </dl>
             <p class="detail-copy" id="Detail_Deskripsi"></p>
             <div class="tag-row" id="Detail_Tags"></div>
-            <div class="modal-actions">
-                <button type="button" class="btn-outline" id="Btn_TutupDetail">Tutup</button>
-                <button type="button" class="btn-amber" id="Btn_JadwalkanDariDetail">Jadwalkan</button>
+            <div class="modal__actions">
+                <button type="button" class="btn btn--secondary" id="Btn_TutupDetail">Tutup</button>
+                <button type="button" class="btn btn--primary" id="Btn_JadwalkanDariDetail">Jadwalkan</button>
             </div>
         </div>
-    </div>
+    </dialog>
 
-    <div class="modal" id="Modal_Janji" hidden>
-        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="Title_Janji">
-            <h2 id="Title_Janji">Buat janji</h2>
-            <p class="detail-spec" id="Janji_Nama"></p>
-            <fieldset class="slot-list">
-                <legend>Pilih slot</legend>
-                <label><input type="radio" name="slot" value="Rabu, 28 Oktober 2026 · 10.00–11.00" checked> Rabu, 28 Oktober 2026 · 10.00–11.00</label>
-                <label><input type="radio" name="slot" value="Kamis, 29 Oktober 2026 · 13.00–14.00"> Kamis, 29 Oktober 2026 · 13.00–14.00</label>
-                <label><input type="radio" name="slot" value="Jumat, 30 Oktober 2026 · 09.00–10.00"> Jumat, 30 Oktober 2026 · 09.00–10.00</label>
-            </fieldset>
-            <div class="modal-actions">
-                <button type="button" class="btn-outline" id="Btn_BatalJanji">Batal</button>
-                <button type="button" class="btn-amber" id="Btn_BuatJanji">Buat Janji</button>
-            </div>
+    <!-- Dialog buat janji -->
+    <dialog class="modal" id="Modal_Janji" aria-labelledby="Title_Janji">
+        <div class="modal__body">
+            <h2 class="modal__title" id="Title_Janji">Buat janji</h2>
+            <p class="modal__subtitle" id="Janji_Nama"></p>
+
+            <form id="Form_Janji" novalidate>
+                <fieldset class="slot-list">
+                    <legend class="form-label">Pilih slot</legend>
+                    <div id="Slot_Container"></div>
+                </fieldset>
+                <p class="form-error" id="Error_Slot" role="alert"></p>
+
+                <div class="form-group">
+                    <label class="form-label" for="Input_Metode">Metode konsultasi</label>
+                    <select class="form-select" id="Input_Metode">
+                        <option value="Daring (Google Meet)">Daring (Google Meet)</option>
+                        <option value="Tatap Muka (Klinik)">Tatap Muka (Klinik)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="Input_Keluhan">Keluhan utama</label>
+                    <textarea class="form-textarea" id="Input_Keluhan" rows="3" maxlength="400" required placeholder="Ceritakan singkat apa yang membuatmu ingin berkonsultasi."></textarea>
+                    <small class="form-error" id="Error_Keluhan" role="alert"></small>
+                </div>
+
+                <div class="modal__actions">
+                    <button type="button" class="btn btn--secondary" id="Btn_BatalJanji">Batal</button>
+                    <button type="submit" class="btn btn--primary" id="Btn_BuatJanji">Buat Janji</button>
+                </div>
+            </form>
         </div>
-    </div>
+    </dialog>
 
-    <p class="toast" id="Toast_Janji" role="status" hidden></p>
+    <p class="alert-box alert-success page-toast" id="Toast_Janji" role="status" hidden></p>
 
     <script src="CariTenagaKesehatanPage.js"></script>
+    <script src="sidebar.js"></script>
 </body>
 </html>
