@@ -79,7 +79,7 @@ export function HasilPerbaikanForm({ hasilTiket, idUser }: Props) {
           <Link 
               href="/tugas"
               aria-label="Kembali ke Daftar Tugas"
-              className="flex h-10 w-f10 shrink-0 items-center justify-center rounded-full text-xl hover:bg-gray-100"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xl hover:bg-gray-100"
           >
             ←
           </Link>
@@ -107,6 +107,7 @@ export function HasilPerbaikanForm({ hasilTiket, idUser }: Props) {
           <textarea
             rows={4}
             value={inputDeskripsi}
+            disabled={mengirim}
             onChange={(e) => userInput(e.target.value, berkasFoto, berkasVideo)}
             placeholder="Contoh: Lubang ditambal aspal hotmix, area sudah dibersihkan."
             aria-invalid={tandaiKosong && catatanKosong}
@@ -153,7 +154,7 @@ export function HasilPerbaikanForm({ hasilTiket, idUser }: Props) {
         <button type="submit" disabled={mengirim} className="w-full cursor-pointer rounded-md bg-blue-600 py-2.5 font-medium text-white">
           {mengirim? "Mengirim..." : "Kirim Hasil"}
         </button>
-        
+
       </form>
     </main>
   );
