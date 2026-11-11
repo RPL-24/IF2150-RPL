@@ -215,12 +215,11 @@ Tabel B.2. Bukti Best Practices
 
 | Praktik | Bukti | Keterangan |
 | :--- | :--- | :--- |
-| Branching | *[Tautan ke daftar branch / graph commit]* | *[Skema yang dipakai]* |
-| Semantic commit | *[Tautan ke riwayat commit]* | *[Ringkasan]* |
-| Track tasks | *[Tautan ke Issues/Projects]* | *[Jumlah issue, pembagian]* |
-| Pull request dan review | *[Tautan ke 2-3 PR representatif]* | *[Siapa me-review siapa]* |
+| Branching | ['Branches'](https://github.com/hehey304/IF2150-RPL-K01-G10/branches) | *Git Flow (development-based branching strategy)* |
+| Semantic commit | ['Commits'](https://github.com/hehey304/IF2150-RPL-K01-G10/commits) | *Pengembangan aplikasi dilakukan secara bertahap, dimulai dari inisialisasi proyek menggunakan TypeScript dan Express, pembangunan struktur frontend dan backend, konfigurasi database, serta implementasi sistem autentikasi yang mencakup registrasi, login, dan logout. Selanjutnya, tim mengembangkan berbagai fitur utama aplikasi, seperti pengelolaan restoran, menu dan stok, pemesanan, pembayaran, pencarian, kemitraan, notifikasi, keluhan pelanggan, ulasan, dan sistem antrean. Tim juga melakukan pengujian dan profiling pada website* |
+| Track tasks | ['Issues'](https://github.com/hehey304/IF2150-RPL-K01-G10/issues) | *7 Issues: Pencarian Resto, Pemesanan, Antrean, Pendaftaran Restoran, Pengaturan Restoran, Pengaturan Akun, Keluhan* |
+| Pull request dan review | *['PR 18'](https://github.com/hehey304/IF2150-RPL-K01-G10/pull/18) ['PR 20'](https://github.com/hehey304/IF2150-RPL-K01-G10/pull/20) ['PR 40'](https://github.com/hehey304/IF2150-RPL-K01-G10/pull/40)* | *Atha memeriksa Bayu, Atim memeriksa Atha, Fikri memeriksa Atim* |
 | Pengujian | [`src/tests/`](../../src/tests) | 68 test dengan `node:test`, dijalankan lewat `npm test`. Isinya: unit test aturan bisnis (validasi booking 7 hari, status kuota, estimasi, format dokumen, input kuota) dan kelas `Keranjang`; test alur UC01-UC15 terhadap basis data (registrasi/login/logout, pemesanan, stok habis, antrean ditutup, slot penuh, pembayaran gagal & kedaluwarsa, dequeue manual & otomatis, kuota, menu, pengajuan mitra tolak/setujui, keluhan, hapus restoran); serta test hak akses REST API. Iterasi 2 menambah test profil & kata sandi, ulasan, notifikasi, profil restoran & foto, filter area, QR pembayaran, "Mulai siapkan", tutup antrean, estimasi median, filter keluhan/restoran, dan simulator antrean dummy, serta payment gateway sandbox (QR, VA nominal tepat, kartu uji + OTP, kartu ditolak, ganti metode, refund stok habis & bayar terlambat, transaksi kedaluwarsa, verifikasi HMAC webhook). Test dipecah per modul (`tests/<modul>.test.ts`). Semua lulus pada PGlite dan PostgreSQL 16 (`TEST_DATABASE_URL=... npm run test:pg`) |
-
 ### B.2.1 Profiling dan Optimasi
 
 | Informasi | Keterangan |
@@ -248,11 +247,11 @@ Tabel B.4. Kontribusi Anggota
 
 | NIM | Nama | Modul / Fitur yang Dikerjakan | Persentase Kontribusi |
 | :--- | :--- | :--- | :--- |
-| *13525145* | *Muhammad Nur Fikri Hariyawan* | *[Modul/fitur]* | *[%]* |
-| *13525085* | *Bayu Palamarta Wirawan* | *[Modul/fitur]* | *[%]* |
-| *13525133* | *Chatima Anandakhorita* | *[Modul/fitur]* | *[%]* |
-| *13525148* | *Athallah Nanda Andita* | *[Modul/fitur]* | *[%]* |
-| *13525091* | *Muhammad Fauzi Muharam* | *[Modul/fitur]* | *[%]* |
+| *13525145* | *Muhammad Nur Fikri Hariyawan* | *Antrean & pengaturan kuota* | *18* |
+| *13525085* | *Bayu Palamarta Wirawan* | *Pembelian & riwayat pesanan, login/logout & kata sandi, database & ERD* | *20* |
+| *13525133* | *Chatima Anandakhorita* | *Pencarian restoran, pendaftaran & verifikasi mitra, Pembayaran (partner Bayu), simulator antrean dummy* | *21* |
+| *13525148* | *Athallah Nanda Andita* | *Keluhan, penanggapan, hapus restoran, ulasan & rating* | *20* |
+| *13525091* | *Muhammad Fauzi Muharam* | *Menu & stok, profil restoran, notifikasi, fondasi & penyatuan* | *21* |
 
 ## B.5 Traceability Kelas Perancangan ke Implementasi
 
