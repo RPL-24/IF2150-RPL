@@ -41,7 +41,8 @@
     "app:ios": "expo run:ios",
     "lint": "expo lint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "private": true
 }
