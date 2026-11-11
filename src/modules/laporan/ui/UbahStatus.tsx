@@ -32,7 +32,8 @@ export default function UbahStatus({ idLaporan, status }: { idLaporan: string; s
       const hasil = (await res.json()) as ApiRespons<HasilStatus> | GalatTransisi;
       if (hasil.ok) {
         router.refresh();
-      } else if (hasil.kode === "KONFLIK") {
+      } else if (hasil.kode === "KONFLIK" || "opsi" in hasil) {
+        // Tombol hanya menawarkan langkah sah, jadi transisi ditolak berarti tampilan sudah usang.
         setGalat({ judul: "409 · Status telah berubah", teks: "Perubahan Anda tidak disimpan. Muat ulang dan tinjau status terbaru sebelum melanjutkan." });
       } else {
         setGalat({ teks: hasil.pesan });
