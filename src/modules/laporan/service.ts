@@ -31,6 +31,8 @@ export class LaporanController {
     const { idWarga, idKomunitas } = this.sesi;
     const hasil = periksaLaporan(form);
     if (!hasil.valid) return { ok: false, kode: "VALIDASI_GAGAL", pesan: "Isian belum lengkap", galat: hasil.galat };
-    return this.jalankan(() => this.modul.kirimLaporan(idWarga, idKomunitas, form as FormLaporan));
+    // Hanya kolom yang divalidasi yang diteruskan; foto selalu kosong sampai unggah tersedia.
+    const { jenisGangguan, deskripsi } = form as FormLaporan;
+    return this.jalankan(() => this.modul.kirimLaporan(idWarga, idKomunitas, { jenisGangguan, deskripsi, fotoPendukung: [] }));
   }
 }

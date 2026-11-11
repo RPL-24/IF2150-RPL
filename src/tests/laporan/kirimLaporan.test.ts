@@ -54,6 +54,13 @@ describe("LaporanController.kirimLaporan (Algo-025, Algo-034)", () => {
     expect(repo.simpanLaporan.mock.calls[0][0]).toMatchObject({ idWarga: 7, status: "MENUNGGU" });
   });
 
+  it("menerima formulir tanpa kolom fotoPendukung", async () => {
+    const { repo, controller } = buat(WARGA);
+    const hasil = await controller.kirimLaporan({ jenisGangguan: "Kebocoran pipa", deskripsi: "Bocor" });
+    expect(hasil.ok).toBe(true);
+    expect(repo.simpanLaporan.mock.calls[0][0].fotoPendukung).toEqual([]);
+  });
+
   it("menolak formulir tidak valid tanpa memeriksa keanggotaan atau menyimpan", async () => {
     const { repo, akun, controller } = buat(WARGA);
     const hasil = await controller.kirimLaporan({ jenisGangguan: "", deskripsi: "", fotoPendukung: [] });
