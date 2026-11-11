@@ -18,8 +18,8 @@ export default async function LayarI05() {
         <aside>
           <h2 style={{ fontSize: 32, marginBottom: 20 }}>Dari temuan ke penanganan.</h2>
           <ol className="langkah">
-            {LANGKAH.map(([judul, isi]) => (
-              <li key={judul}>
+            {LANGKAH.map(([judul, isi], i) => (
+              <li key={judul} className={i === 0 ? "sekarang" : undefined}>
                 <strong>{judul}</strong>
                 <p>{isi}</p>
               </li>
