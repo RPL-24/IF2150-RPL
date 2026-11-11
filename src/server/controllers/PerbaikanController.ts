@@ -6,7 +6,7 @@ import { gagal, ok, type ActionResult } from "@/lib/action-result"
 import { requireRole } from "@/lib/auth";
 import { pesanErrorDb } from "@/lib/error-db";
 import { PESAN_BERKAS_TIDAK_VALID } from "@/lib/media";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import { cekMediaTerunggah, PESAN_TAK_LENGKAP, validasiForm } from "@/lib/validasi-perbaikan";
 import type { MediaTerunggah } from "../entities/Foto";
 import { simpanBukti, validasiBerkas } from "../entities/HasilPerbaikan";
