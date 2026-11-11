@@ -94,6 +94,7 @@ Aturan yang dijaga server:
 - Status hanya maju satu langkah: `MENUNGGU`, `SEDANG_DIPERBAIKI`, `SELESAI`. Lompat, mundur, dan status yang sama ditolak dengan 400 dan daftar `opsi.statusBerikutnya`.
 - Status dan riwayat disimpan dalam satu transaksi. Bila salah satunya gagal atau status sudah berubah (409), tidak ada yang tersimpan.
 - Foto pendukung belum didukung (belum ada unggah). Jenis gangguan dipilih dari daftar tetap di `modules/laporan/internal/validasi.ts`.
+- Belum ada layar untuk menugaskan laporan ke teknisi (di luar daftar use case). Penugasan di data uji dibuat lewat seed, jadi laporan baru dari warga tetap berstatus MENUNGGU dan baru muncul di Tugas saya setelah barisnya ditambahkan ke tabel `penugasan_laporan`.
 
 Menjalankan tes laporan:
 
