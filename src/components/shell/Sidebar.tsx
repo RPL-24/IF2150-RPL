@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MENU, NAMA_KOMUNITAS, NAMA_PERAN, URL_KELUAR, menuAktif, type Peran } from "./menu";
+import { MENU, NAMA_KOMUNITAS, NAMA_PERAN, menuAktif, type Peran } from "./menu";
+import TombolKeluar from "./TombolKeluar";
 
 export default function Sidebar({ peran, namaPengguna }: { peran: Peran; namaPengguna?: string }) {
   const pathname = usePathname();
@@ -30,11 +31,7 @@ export default function Sidebar({ peran, namaPengguna }: { peran: Peran; namaPen
       <div className="profile">
         {namaPengguna && <strong>{namaPengguna}</strong>}
         {NAMA_PERAN[peran]}
-        <form action={URL_KELUAR} method="post">
-          <button type="submit" className="btn link">
-            Keluar ke Masuk
-          </button>
-        </form>
+        <TombolKeluar />
       </div>
     </aside>
   );
