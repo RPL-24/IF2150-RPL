@@ -244,6 +244,11 @@
     color: var(--color-ink);
 }
 
+/* Penanda wajib pada label ------------------------------------------------ */
+.req {
+    color: var(--color-danger);
+}
+
 .form-input,
 .form-select,
 .form-textarea,

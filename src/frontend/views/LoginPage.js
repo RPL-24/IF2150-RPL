@@ -53,13 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const showGlobalError = (message) => {
         if (!alertError) return;
         alertError.textContent = message;
-        alertError.style.display = 'block';
+        alertError.hidden = false;
     };
 
     const hideGlobalError = () => {
         if (!alertError) return;
         alertError.textContent = '';
-        alertError.style.display = 'none';
+        alertError.hidden = true;
     };
 
     // Bersihkan error saat pengguna mulai mengetik

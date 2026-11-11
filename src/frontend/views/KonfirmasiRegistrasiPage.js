@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!alertBox) return;
         alertBox.className = `alert-box alert-${type}`;
         alertBox.textContent = message;
-        alertBox.style.display = 'block';
+        alertBox.hidden = false;
         alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     };
 

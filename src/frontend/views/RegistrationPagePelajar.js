@@ -126,10 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!isValidDate(tgl, bln, thn)) {
             hintError.innerText = "Tanggal lahir tidak valid (periksa kembali tanggal, bulan, dan tahun)";
-            hintError.style.display = "block";
+            hintError.hidden = false;
             isValid = false;
         } else {
-            hintError.style.display = "none";
+            hintError.hidden = true;
         }
 
         // Validasi Email Orang Tua
