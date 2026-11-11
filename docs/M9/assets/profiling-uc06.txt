@@ -1,0 +1,74 @@
+# Keluaran src/prisma/profiling/uc06-riwayat-panel.sql
+# PostgreSQL 15 (Docker), dijalankan 10 Nov 2026
+
+Pager usage is off.
+== 1. Menyiapkan data profiling ==
+DELETE 0
+DELETE 0
+INSERT 0 10
+INSERT 0 1051200
+ANALYZE
+ total_baris | ukuran_tabel 
+-------------+--------------
+     1051200 | 169 MB
+(1 row)
+
+== 2. SEBELUM: tanpa indeks (id_panel, waktu) ==
+BEGIN
+DROP INDEX
+                                                                                       QUERY PLAN                                                                                       
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Gather  (cost=1000.00..19715.60 rows=2126 width=54) (actual time=17.392..67.427 rows=2016 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   Buffers: shared hit=10838
+   ->  Parallel Seq Scan on data_historis_kinerja  (cost=0.00..18503.00 rows=886 width=54) (actual time=13.902..57.231 rows=672 loops=3)
+         Filter: ((waktu >= '2025-05-31 17:00:00+00'::timestamp with time zone) AND (waktu <= '2025-06-07 16:59:59+00'::timestamp with time zone) AND (id_panel = 'PNL-PROF-03'::text))
+         Rows Removed by Filter: 349728
+         Buffers: shared hit=10838
+ Planning:
+   Buffers: shared hit=20
+ Planning Time: 0.327 ms
+ Execution Time: 67.624 ms
+(12 rows)
+
+                                                                                       QUERY PLAN                                                                                       
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Gather  (cost=1000.00..19715.60 rows=2126 width=54) (actual time=15.864..62.748 rows=2016 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   Buffers: shared hit=10838
+   ->  Parallel Seq Scan on data_historis_kinerja  (cost=0.00..18503.00 rows=886 width=54) (actual time=12.304..52.570 rows=672 loops=3)
+         Filter: ((waktu >= '2025-05-31 17:00:00+00'::timestamp with time zone) AND (waktu <= '2025-06-07 16:59:59+00'::timestamp with time zone) AND (id_panel = 'PNL-PROF-03'::text))
+         Rows Removed by Filter: 349728
+         Buffers: shared hit=10838
+ Planning Time: 0.128 ms
+ Execution Time: 62.942 ms
+(10 rows)
+
+ROLLBACK
+== 3. SESUDAH: dengan indeks (id_panel, waktu) ==
+                                                                                      QUERY PLAN                                                                                      
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using data_historis_kinerja_id_panel_waktu_idx on data_historis_kinerja  (cost=0.43..3496.07 rows=2126 width=54) (actual time=0.094..0.709 rows=2016 loops=1)
+   Index Cond: ((id_panel = 'PNL-PROF-03'::text) AND (waktu >= '2025-05-31 17:00:00+00'::timestamp with time zone) AND (waktu <= '2025-06-07 16:59:59+00'::timestamp with time zone))
+   Buffers: shared hit=23 read=12
+ Planning:
+   Buffers: shared hit=20
+ Planning Time: 0.380 ms
+ Execution Time: 0.882 ms
+(7 rows)
+
+                                                                                      QUERY PLAN                                                                                      
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using data_historis_kinerja_id_panel_waktu_idx on data_historis_kinerja  (cost=0.43..3496.07 rows=2126 width=54) (actual time=0.016..0.576 rows=2016 loops=1)
+   Index Cond: ((id_panel = 'PNL-PROF-03'::text) AND (waktu >= '2025-05-31 17:00:00+00'::timestamp with time zone) AND (waktu <= '2025-06-07 16:59:59+00'::timestamp with time zone))
+   Buffers: shared hit=35
+ Planning Time: 0.103 ms
+ Execution Time: 0.728 ms
+(5 rows)
+
+== 4. Membersihkan data profiling ==
+DELETE 1051200
+DELETE 10
+VACUUM
