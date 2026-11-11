@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const risiko = ['rendah', 'sedang', 'tinggi'].includes(uji) ? uji : d.risiko;
 
         badgeRisiko.textContent = LABEL_RISIKO[risiko].label;
-        badgeRisiko.className = `status-badge risk-badge risk-${risiko}`;
+        badgeRisiko.className = `badge badge--netral risk-badge risk-${risiko}`;
         document.getElementById('Text_RisikoPenjelasan').textContent = LABEL_RISIKO[risiko].teks;
         document.getElementById('Text_Ringkasan').textContent = d.ringkasan;
         document.getElementById('Value_RerataMood').textContent = d.rerataMood.toFixed(1);

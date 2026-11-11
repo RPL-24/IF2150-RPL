@@ -2,109 +2,33 @@
    MahaSehat - SettingPageOrangTuaWali.css
    Gaya Khusus Halaman Setelan Akun Orang Tua / Wali
    Layout Mandiri & Bersih Tanpa Polusi Aturan Sidebar (Dikelola SidebarOrangTuaWali.css)
-   Palet: Teal #78C9C0, Cream #FFFDF7, Ink #2A3A3F, Amber #F8C16F, Mist #E2E8F0
-   ========================================================================== */
-
-/* --------------------------------------------------------------------------
+   Palet: Teal var(--color-teal), Cream var(--color-cream), Ink var(--color-ink), Amber var(--color-amber), Mist var(--color-mist)
+   ========================================================================== *//* --------------------------------------------------------------------------
    Area Konten Utama
    -------------------------------------------------------------------------- */
-
-.main-viewport {
-    flex: 1;
-    min-width: 0;
-    padding: 24px 32px 32px 8px;
-    display: flex;
-    flex-direction: column;
-}
-
-.page-header {
-    margin-bottom: 24px;
-}
-
-.page-title {
-    font-family: var(--font-heading);
-    font-size: 38px;
-    font-weight: 700;
-    color: var(--color-ink);
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    margin-bottom: 6px;
-}
-
-.page-subtitle {
-    font-size: 15px;
-    color: var(--color-ink-subtle);
-}
-
-/* --------------------------------------------------------------------------
+/* -------------------------------------------------------------------------- Area Konten Utama -------------------------------------------------------------------------- */ /* --------------------------------------------------------------------------
    Grid Layout Setelan
    -------------------------------------------------------------------------- */
-
-.settings-grid-top {
+/* -------------------------------------------------------------------------- Grid Layout Setelan -------------------------------------------------------------------------- */ .settings-grid-top{
     display: grid;
     grid-template-columns: 1.4fr 1fr;
     gap: 24px;
     margin-bottom: 24px;
-}
-
-.settings-column-right {
+}.settings-column-right{
     display: flex;
     flex-direction: column;
     gap: 24px;
-}
-
-/* Kotak Kartu Universal */
-.card-box {
-    background-color: var(--color-white);
-    border: 1px solid var(--color-border);
-    border-radius: 20px;
-    padding: 28px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 2px 8px rgba(42, 58, 63, 0.02);
-}
-
-.settings-card-full {
+}/* Kotak Kartu Universal */
+.settings-card-full{
     margin-bottom: 24px;
-}
-
-.card-box-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.card-box-title {
-    font-family: var(--font-heading);
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--color-ink);
-}
-
-/* --------------------------------------------------------------------------
+}/* --------------------------------------------------------------------------
    Formulir & Kontrol Masukan
    -------------------------------------------------------------------------- */
-
-.settings-form {
+/* -------------------------------------------------------------------------- Formulir & Kontrol Masukan -------------------------------------------------------------------------- */ .settings-form{
     display: flex;
     flex-direction: column;
     gap: 16px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.form-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--color-ink);
-}
-
-.form-input {
+}.form-input{
     width: 100%;
     height: 46px;
     padding: 0 16px;
@@ -116,114 +40,76 @@
     color: var(--color-ink);
     outline: none;
     transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.form-input:focus {
+}.form-input:focus{
     border-color: var(--color-teal);
     background-color: var(--color-white);
     box-shadow: 0 0 0 3px rgba(120, 201, 192, 0.25);
-}
-
-.form-input.input-readonly {
-    background-color: #F1F5F9;
+}.form-input.input-readonly{
+    background-color: var(--color-border-subtle);
     color: var(--color-ink-subtle);
     cursor: default;
-}
-
-.field-hint {
+}.field-hint{
     font-size: 12px;
     color: var(--color-ink-muted);
     margin-top: 2px;
-}
-
-.form-actions {
-    margin-top: 10px;
-}
-
-/* --------------------------------------------------------------------------
+}/* --------------------------------------------------------------------------
    Kartu Keamanan & Sesi
    -------------------------------------------------------------------------- */
-
-.security-info {
+/* -------------------------------------------------------------------------- Kartu Keamanan & Sesi -------------------------------------------------------------------------- */ .security-info{
     margin-bottom: 20px;
-}
-
-.field-label-bold {
+}.field-label-bold{
     font-size: 15px;
     font-weight: 600;
     color: var(--color-ink);
     margin-bottom: 4px;
-}
-
-.field-note {
+}.field-note{
     font-size: 13px;
     color: var(--color-ink-subtle);
     line-height: 1.4;
-}
-
-.mb-4 {
+}.mb-4{
     margin-bottom: 20px;
-}
-
-/* --------------------------------------------------------------------------
+}/* --------------------------------------------------------------------------
    Izin & Toggle Switches
    -------------------------------------------------------------------------- */
-
-.permissions-divider {
+/* -------------------------------------------------------------------------- Izin & Toggle Switches -------------------------------------------------------------------------- */ .permissions-divider{
     height: 1px;
     background-color: var(--color-mist);
     margin: 16px 0;
-}
-
-.permission-item-row {
+}.permission-item-row{
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
     padding: 4px 0;
-}
-
-.permission-text {
+}.permission-text{
     flex: 1;
-}
-
-.field-description {
+}.field-description{
     font-size: 13px;
     color: var(--color-ink-subtle);
     line-height: 1.4;
-}
-
-.field-status-note {
+}.field-status-note{
     font-size: 12px;
     color: var(--color-danger);
     margin-top: 4px;
-}
-
-/* Custom Toggle Switch */
-.switch-toggle {
+}/* Custom Toggle Switch */
+.switch-toggle{
     position: relative;
     display: inline-block;
     width: 48px;
     height: 26px;
     flex-shrink: 0;
-}
-
-.switch-toggle input {
+}.switch-toggle input{
     opacity: 0;
     width: 0;
     height: 0;
-}
-
-.switch-slider {
+}.switch-slider{
     position: absolute;
     cursor: pointer;
     inset: 0;
-    background-color: #CBD5E1;
+    background-color: var(--color-mist);
     border-radius: 999px;
     transition: background-color 0.2s ease;
-}
-
-.switch-slider::before {
+}.switch-slider::before{
     position: absolute;
     content: "";
     height: 20px;
@@ -234,118 +120,14 @@
     border-radius: 50%;
     transition: transform 0.2s ease;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-}
-
-.switch-toggle input:checked + .switch-slider {
+}.switch-toggle input:checked + .switch-slider{
     background-color: var(--color-teal);
-}
-
-.switch-toggle input:checked + .switch-slider::before {
+}.switch-toggle input:checked + .switch-slider::before{
     transform: translateX(22px);
-}
-
-.switch-toggle input:focus-visible + .switch-slider {
+}.switch-toggle input:focus-visible + .switch-slider{
     outline: 2px solid var(--color-ink);
     outline-offset: 2px;
-}
-
-/* --------------------------------------------------------------------------
-   Tombol & Aksi
-   -------------------------------------------------------------------------- */
-
-.btn-full {
-    width: 100%;
-}
-
-.btn-primary-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 44px;
-    padding: 0 24px;
-    background-color: var(--color-amber);
-    color: var(--color-ink);
-    border: 1px solid rgba(42, 58, 63, 0.4);
-    border-radius: 999px;
-    font-family: var(--font-body);
-    font-size: 15px;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background-color 0.15s ease, transform 0.1s ease;
-}
-
-.btn-primary-pill:hover {
-    background-color: var(--color-amber-hover);
-    transform: translateY(-1px);
-}
-
-.btn-outline-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 44px;
-    padding: 0 20px;
-    background-color: transparent;
-    color: var(--color-ink);
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    font-family: var(--font-body);
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.btn-outline-pill:hover {
-    background-color: var(--color-mist-light);
-    border-color: var(--color-ink-subtle);
-}
-
-.btn-danger-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 44px;
-    padding: 0 20px;
-    background-color: transparent;
-    color: var(--color-danger);
-    border: 1px solid rgba(181, 69, 59, 0.4);
-    border-radius: 999px;
-    font-family: var(--font-body);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
-
-.btn-danger-pill:hover {
-    background-color: var(--color-danger-subtle);
-}
-
-.btn-danger-solid-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 42px;
-    padding: 0 22px;
-    background-color: var(--color-danger);
-    color: var(--color-white);
-    border: none;
-    border-radius: 999px;
-    font-family: var(--font-body);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
-
-.btn-danger-solid-pill:hover {
-    background-color: #9E3B32;
-}
-
-.btn-secondary-pill {
+}.btn-secondary-pill{
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -360,130 +142,36 @@
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.15s ease;
-}
-
-.btn-secondary-pill:hover {
+}.btn-secondary-pill:hover{
     background-color: var(--color-mist);
-}
-
-/* --------------------------------------------------------------------------
+}/* --------------------------------------------------------------------------
    Feedback Toast & Footer Nav
    -------------------------------------------------------------------------- */
-
-.feedback-toast {
+/* -------------------------------------------------------------------------- Feedback Toast & Footer Nav -------------------------------------------------------------------------- */ .feedback-toast{
     padding: 12px 20px;
     margin-bottom: 20px;
     border-radius: 12px;
-    background-color: #E6F7F5;
+    background-color: var(--color-success-tint);
     border: 1px solid var(--color-teal);
-    color: #1F5F58;
+    color: var(--color-success-text);
     font-size: 14px;
     font-weight: 600;
     animation: fadeIn 0.2s ease;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.page-footer-nav {
+@keyframes fadeIn {from{ opacity: 0; transform: translateY(-4px); }to{ opacity: 1; transform: translateY(0); }
+}.page-footer-nav{
     margin-top: 8px;
     margin-bottom: 24px;
-}
-
-.btn-back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--color-ink-subtle);
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.15s ease;
-}
-
-.btn-back-link:hover {
-    color: var(--color-ink);
-}
-
-/* --------------------------------------------------------------------------
-   Modal Dialog Konfirmasi Keluar
-   -------------------------------------------------------------------------- */
-
-.modal-dialog {
-    border: none;
-    border-radius: 20px;
-    background: transparent;
-    padding: 0;
-    margin: auto;
-    max-width: 420px;
-    width: 90%;
-    box-shadow: 0 16px 40px rgba(42, 58, 63, 0.2);
-}
-
-.modal-dialog::backdrop {
-    background-color: rgba(42, 58, 63, 0.45);
-    backdrop-filter: blur(2px);
-}
-
-.modal-content {
-    background-color: var(--color-white);
-    border: 1px solid var(--color-border);
-    border-radius: 20px;
-    padding: 28px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.modal-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    border: none;
-    background: transparent;
-    color: var(--color-ink-subtle);
-    cursor: pointer;
-    border-radius: 50%;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.15s ease, background-color 0.15s ease;
-}
-
-.modal-close:hover {
-    color: var(--color-ink);
-    background-color: var(--color-mist-light);
-}
-
-.modal-title {
-    font-family: var(--font-heading);
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--color-ink);
-    margin-bottom: 8px;
-}
-
-.modal-message {
+}.modal-message{
     font-size: 14px;
     line-height: 1.5;
     color: var(--color-ink-subtle);
     margin-bottom: 24px;
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-}
-
-/* --------------------------------------------------------------------------
+}/* --------------------------------------------------------------------------
    Responsivitas (Tablet & Mobile)
    -------------------------------------------------------------------------- */
-
-@media (max-width: 900px) {
+/* -------------------------------------------------------------------------- Responsivitas (Tablet & Mobile) -------------------------------------------------------------------------- */ @media (max-width: 900px){
     .settings-grid-top {
         grid-template-columns: 1fr;
     }
@@ -496,4 +184,3 @@
         font-size: 28px;
     }
 }
-

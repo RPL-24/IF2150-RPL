@@ -39,6 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Pindahkan fokus ke judul langkah yang ditampilkan agar pembaca layar mengumumkannya
+    function fokuskanJudul(target) {
+        const judul = target.querySelector('h2');
+        if (!judul) return;
+        judul.setAttribute('tabindex', '-1');
+        judul.focus({ preventScroll: true });
+    }
+
     function showEmailForm() {
         showStep(stepEmail);
         inputEmail.focus();
@@ -52,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showMessage(email) {
         document.getElementById('Text_EmailTujuan').textContent = email;
         showStep(stepTerkirim);
+        fokuskanJudul(stepTerkirim);
     }
 
     function showError(input, el, pesan) {
@@ -77,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setBusy(btn, busy, teks) {
         btn.disabled = busy;
+        btn.setAttribute('aria-busy', busy ? 'true' : 'false');
         btn.textContent = teks;
     }
 
@@ -248,6 +258,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const tampil = input.type === 'password';
             input.type = tampil ? 'text' : 'password';
             btn.textContent = tampil ? 'Sembunyikan' : 'Tampilkan';
+            btn.setAttribute('aria-pressed', tampil ? 'true' : 'false');
+            // Kembalikan fokus ke kolom agar pengguna dapat langsung mengetik
+            input.focus({ preventScroll: true });
         });
     });
 
