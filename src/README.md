@@ -10,14 +10,14 @@ Proyek Tugas Besar IF2150 Rekayasa Perangkat Lunak, Kelas K01, Kelompok 10 (Duck
 
 | Komponen | Versi | Keterangan |
 | :--- | :--- | :--- |
-| Node.js | 20 LTS atau lebih baru (diuji pada 22.x) | Runtime |
-| TypeScript | 7.x | Bahasa server dan klien |
-| Express | 4.x | REST API dan penyaji berkas statis |
+| Node.js | 20 LTS atau lebih baru (diuji pada v26.13.0) | Runtime |
+| TypeScript | 7.0.2 | Bahasa server dan klien |
+| Express | 4.22.3 | REST API dan penyaji berkas statis |
 | PostgreSQL | 15+ (diuji pada 16) | DBMS sesuai DPPL, lewat `DATABASE_URL` |
-| PGlite (`@electric-sql/pglite`) | 0.5.x | PostgreSQL *embedded* (WASM). Dipakai otomatis bila `DATABASE_URL` kosong, sehingga tidak perlu memasang DBMS |
-| bcryptjs | 3.x | Hash kata sandi |
-| multer | 2.x | Unggah dokumen pendaftaran mitra |
-| tsx | 4.x | Menjalankan TypeScript di server dan test runner |
+| PGlite (`@electric-sql/pglite`) | 0.5.13 | PostgreSQL *embedded* (WASM). Dipakai otomatis bila `DATABASE_URL` kosong, sehingga tidak perlu memasang DBMS |
+| bcryptjs | 3.0.3 | Hash kata sandi |
+| multer | 2.5.0 | Unggah dokumen pendaftaran mitra |
+| tsx | 4.23.15 | Menjalankan TypeScript di server dan test runner |
 
 Antarmuka klien ditulis dengan TypeScript tanpa *framework* (*vanilla*), lalu dikompilasi `tsc` ke `public/js`. Pembaruan antrean *real-time* memakai **Server-Sent Events**.
 
