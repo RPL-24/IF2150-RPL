@@ -1,13 +1,10 @@
 /**
  * AkunController (Business Layer): menerima permintaan dari View/route,
  * memvalidasi, lalu mendelegasikan ke ModulAkun.
- *
- * Operasi lain (ambilAkunMenunggu, setujuiAkun, tolakAkun) ditambahkan pada
- * feat persetujuan.
  */
-import type { KonteksSesi, Peran } from '@/lib/auth/konteks';
+import { GalatAuth, type KonteksSesi, type Peran } from '@/lib/auth/konteks';
 import { PASSWORD_MAKS_PANJANG } from '@/lib/auth/password';
-import { CalonPengguna } from './entity';
+import { CalonPengguna, Pengurus, type AkunRingkas } from './entity';
 import { AkunTidakLengkap, EmailSudahTerdaftar } from './galat';
 import type { ModulAkun } from './modul';
 import type { KesalahanRegistrasi, Validasi } from './validasi';
@@ -32,6 +29,10 @@ export type HasilLogin =
       pesan: string;
     };
 
+export type HasilPersetujuan =
+  | { berhasil: true; email: string; status: 'DISETUJUI' | 'DITOLAK' }
+  | { berhasil: false; kode: 'TIDAK_DITEMUKAN' | 'SUDAH_DIPROSES'; pesan: string };
+
 const PESAN_GAGAL_REGISTRASI = 'Email sudah terdaftar atau data tidak valid';
 
 // Pesan login mengikuti skenario alternatif pada antarmuka I-01.
@@ -39,6 +40,10 @@ const PESAN_KREDENSIAL_SALAH = 'Email atau password salah';
 const PESAN_MENUNGGU = 'Akun masih menunggu persetujuan pengurus';
 const PESAN_DITOLAK = 'Akun tidak memperoleh persetujuan';
 const PESAN_TIDAK_LENGKAP = 'Akun belum dapat digunakan. Hubungi Pengurus.';
+
+// Pesan persetujuan mengikuti antarmuka I-16.
+const PESAN_TIDAK_DITEMUKAN = 'Pengajuan tidak ditemukan';
+const PESAN_SUDAH_DIPROSES = 'Pengajuan sudah diproses atau berubah. Muat ulang daftar.';
 
 function teksAtauKosong(nilai: unknown): string {
   return typeof nilai === 'string' ? nilai : '';
@@ -141,5 +146,66 @@ export class AkunController {
       }
       throw kesalahan;
     }
+  }
+
+  /**
+   * Algo-006 (Pengurus.verifikasiKewenangan) terhadap data TERKINI di basis
+   * data, bukan hanya sesi, sehingga Pengurus yang statusnya sudah berubah
+   * tidak lagi berwenang. Melempar GalatAuth (403) bila tidak berwenang.
+   * Dipanggil sebelum membaca atau mengubah data apa pun.
+   */
+  private async pastikanPengurus(sesi: KonteksSesi): Promise<void> {
+    if (sesi.peran !== 'PENGURUS') throw new GalatAuth('DILARANG');
+
+    const akun = await this.modulAkun.cariEmail(sesi.email);
+    if (!akun || akun.peran !== 'PENGURUS') throw new GalatAuth('DILARANG');
+
+    const pengurus = new Pengurus(
+      { email: akun.email, nama: akun.nama, password: '', statusAkun: akun.statusAkun },
+      { idPengurus: sesi.idPengurus },
+    );
+    if (!pengurus.verifikasiKewenangan()) throw new GalatAuth('DILARANG');
+  }
+
+  /** UC14: daftar akun MENUNGGU. Hanya Pengurus yang berwenang (I-16, A2). */
+  async ambilAkunMenunggu(sesi: KonteksSesi): Promise<AkunRingkas[]> {
+    await this.pastikanPengurus(sesi);
+    return this.modulAkun.daftarAkunMenunggu();
+  }
+
+  /** UC14: menyetujui pengajuan yang masih MENUNGGU. */
+  setujuiAkun(sesi: KonteksSesi, email: unknown): Promise<HasilPersetujuan> {
+    return this.prosesPersetujuan(sesi, email, 'DISETUJUI');
+  }
+
+  /** UC14: menolak pengajuan yang masih MENUNGGU. */
+  tolakAkun(sesi: KonteksSesi, email: unknown): Promise<HasilPersetujuan> {
+    return this.prosesPersetujuan(sesi, email, 'DITOLAK');
+  }
+
+  /**
+   * Keberhasilan hanya dilaporkan setelah perubahan benar-benar tersimpan.
+   * Bila pengajuan sudah diproses pihak lain, hasilnya SUDAH_DIPROSES dan
+   * status tidak diubah. Galat penyimpanan dibiarkan naik.
+   */
+  private async prosesPersetujuan(
+    sesi: KonteksSesi,
+    email: unknown,
+    status: 'DISETUJUI' | 'DITOLAK',
+  ): Promise<HasilPersetujuan> {
+    await this.pastikanPengurus(sesi);
+
+    const emailBersih = teksAtauKosong(email).trim().toLowerCase();
+    if (emailBersih === '') {
+      return { berhasil: false, kode: 'TIDAK_DITEMUKAN', pesan: PESAN_TIDAK_DITEMUKAN };
+    }
+
+    const berubah = await this.modulAkun.ubahStatusPersetujuan(emailBersih, status);
+    if (berubah) return { berhasil: true, email: emailBersih, status };
+
+    const akun = await this.modulAkun.cariEmail(emailBersih);
+    return akun
+      ? { berhasil: false, kode: 'SUDAH_DIPROSES', pesan: PESAN_SUDAH_DIPROSES }
+      : { berhasil: false, kode: 'TIDAK_DITEMUKAN', pesan: PESAN_TIDAK_DITEMUKAN };
   }
 }

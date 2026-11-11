@@ -1,5 +1,8 @@
-import LayarI16 from "@/components/layar/LayarI16";
+import PersetujuanView from '@/modules/akun/ui/PersetujuanView';
 
-export default function Halaman() {
-  return <LayarI16 />;
+export const metadata = { title: 'Persetujuan akun | Fajar Tech' };
+
+// Hanya Pengurus: dibatasi middleware (jalur /dashboard/pengurus) dan API.
+export default function HalamanPersetujuan() {
+  return <PersetujuanView />;
 }
