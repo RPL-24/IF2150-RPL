@@ -1,4 +1,4 @@
-export { ambilAfirmasi, type Afirmasi } from './afirmasi';
+export { ambilAfirmasi, hapusAfirmasi, simpanWaktuAfirmasi, type Afirmasi } from './afirmasi';
 export { masukDemo, masukDenganGoogle } from './auth';
 export { ambilSesiBerikutnya, type SesiBerikutnya } from './konsultasi';
 export { daftarkanPerangkat } from './perangkat';

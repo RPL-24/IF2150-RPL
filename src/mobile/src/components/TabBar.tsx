@@ -6,17 +6,26 @@ import { jarak, ukuran, warna } from '@/theme';
 import { Teks } from './Teks';
 
 /**
+ * Renders no tab button: pass via `options={{ tabBarButton: TanpaTombolTab }}`
+ * to keep a route navigable without giving it a tab button. (`href: null`
+ * used to do this, but SDK 58 makes such routes unreachable and redirects
+ * navigation to the initial tab.)
+ */
+export const TanpaTombolTab = () => null;
+
+/**
  * Mahasiswa bottom tab bar from the Figma prototype: 76 tall, active tab in
  * red. Pass it to `<Tabs tabBar={(props) => <TabBar {...props} />}>`.
- * Icons come from each screen's `tabBarIcon` option; routes declared with
- * `href: null` are skipped.
+ * Icons come from each screen's `tabBarIcon` option; routes without a tab
+ * button (`tabBarButton: TanpaTombolTab`) and internal (`hidden`) routes
+ * are skipped.
  */
 export function TabBar({ state, descriptors, navigateToTab, insets }: BottomTabBarProps) {
   return (
     <View accessibilityRole="tablist" style={[styles.wadah, { paddingBottom: insets.bottom }]}>
       {state.routes.map((route, i) => {
         const { options } = descriptors[route.key];
-        if (options.hidden) return null;
+        if (options.hidden || options.tabBarButton === TanpaTombolTab) return null;
 
         const aktif = state.index === i;
         const label = options.title ?? route.name;

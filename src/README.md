@@ -34,6 +34,7 @@ Arsitektur mengikuti DPPL (`docs/M8/K01_G04_DPPL2.md`): Client-Server + MVC, den
 | Expo Router | ~58.0.30 (navigasi berbasis file) |
 | Plus Jakarta Sans | `@expo-google-fonts/plus-jakarta-sans` ^0.4.2 |
 | Ikon | `lucide-react-native` ^1.69.0 + `react-native-svg` 15.16.0 |
+| Pemilih waktu | `@react-native-community/datetimepicker` 9.2.1 |
 | Notifikasi push | `expo-notifications` ~58.1.8 + `expo-device` ~58.0.5 |
 | Linter | ESLint 9 + `eslint-config-expo` |
 | Test | Vitest ^5.1.0 |
@@ -350,6 +351,7 @@ Catatan:
 - Setiap login demo membuat sesi baru melalui `POST /api/auth/demo`, bukan memakai token `dev-token-*`. Sesi tersimpan di perangkat (`expo-secure-store`), sehingga aplikasi langsung membuka Beranda saat dibuka kembali sampai pengguna keluar atau sesi melewati 30 hari.
 - Bila backend berjalan tanpa `MODE_DEMO=1`, rute login demo membalas 404 dan layar Masuk menampilkan pesan galat.
 - Isi Beranda dari data *seed*: Mahasiswa Uji belum punya afirmasi (kartu afirmasi berisi ajakan mengatur waktu di I-04) dan sudah punya satu sesi terpesan besok pukul 11.00 WIB. Di Beranda Administrator, kartu status layanan menampilkan "Belum dicek" sampai *cron* pertama berjalan. `wrangler dev` tidak menjalankan *cron* sendiri; jalankan `bun run dev -- --test-scheduled`, lalu picu pemeriksaan dengan `curl "http://localhost:8787/__scheduled?cron=*+*+*+*+*"` (dengan `API_BASE_URL` terisi agar hasilnya Up).
+- Afirmasi harian (I-04): dari Beranda, ketuk kartu "Afirmasi hari ini" untuk membuka pengaturannya. Waktu dipilih lewat chip cepat atau pemilih waktu bawaan, lalu "Simpan Setelan" (`PUT /api/affirmation/time`). Toggle "Kirim afirmasi harian" yang dimatikan menghapus jadwal (`DELETE /api/affirmation`) sehingga kartu Beranda kembali menampilkan ajakan mengatur afirmasi; menyalakannya kembali membuat jadwal pada waktu yang sedang dipilih.
 - Login Google sungguhan memerlukan `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, dan `GOOGLE_REDIRECT_URI` (bagian 4). Google tidak menerima alamat IP LAN sebagai *redirect URI*, sehingga login Google dari ponsel memerlukan backend yang sudah di-*deploy* atau *tunnel* ber-HTTPS.
 
 ## 7. Modul dan Pembagian Tugas
@@ -416,6 +418,7 @@ Ringkasan konvensi untuk anggota yang mengerjakan layar:
 
   Contoh semua komponen ada di `src/mobile/src/app/komponen.tsx`.
 - **Ikon:** impor per ikon, misalnya `import House from 'lucide-react-native/icons/house';`. Mengimpor dari `'lucide-react-native'` langsung ikut membundel sekitar 1.600 ikon (+2,5 MB).
+- **Paket bergantung modul native:** pasang lewat `bunx expo install <paket>` (bukan `bun add`) supaya versinya cocok dengan Expo SDK dan *config plugin*-nya ditambahkan ke `app.json` secara otomatis — misalnya `@react-native-community/datetimepicker` (pemilih waktu I-04).
 - **Memanggil backend:** gunakan klien di `@/api`:
 
   ```ts

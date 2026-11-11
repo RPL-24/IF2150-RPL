@@ -15,3 +15,20 @@ export async function ambilAfirmasi(): Promise<Afirmasi | null> {
   const { affirmation } = await api.get<{ affirmation: Afirmasi | null }>('/api/affirmation');
   return affirmation;
 }
+
+/**
+ * `submitWaktuPengiriman(waktu)`: Algo-023 `validasiWaktu`, then
+ * `DailyAffirmation.aturWaktuKirim` (Algo-004 / Algo-028). Creates the row
+ * with default content on the first save.
+ */
+export async function simpanWaktuAfirmasi(waktu: string): Promise<void> {
+  await api.put('/api/affirmation/time', { waktu });
+}
+
+/**
+ * I-04-03 toggle off: stops the daily send by deleting the affirmation.
+ * Toggling back on goes through `simpanWaktuAfirmasi` again.
+ */
+export async function hapusAfirmasi(): Promise<void> {
+  await api.delete('/api/affirmation');
+}
