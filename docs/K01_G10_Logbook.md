@@ -30,7 +30,7 @@
 * [Milestone 6](#milestone-6)
 * [Milestone 7](#milestone-7)
 * [Milestone 8](#milestone-8)
-
+* [Milestone 9](#milestone-9)
 
 
 ---
@@ -217,7 +217,20 @@
 **Catatan/Evaluasi Milestone 8:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 
+### Milestone 9
+**Periode:** 29-10-2026 - 13-11-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *29-10-2026* | *Bayu Palamarta Wirawan* | *Melakukan inisialisasi Milestone 9* | *1* | *Done* | *-* |
+| *4-11-2026* | *Bayu Palamarta Wirawan* | *Membuat Database* | *2* | *Done* | *-* |
+| *5-11-2026* | *Bayu Palamarta Wirawan* | *Mengimplementasi registrasi, login, logout* | *3* | *Done* | *-* |
+| *6-11-2026* | *Bayu Palamarta Wirawan* | *Mengimplementasi pemesanan* | *3* | *Done* | *-* |
+| *8-11-2026* | *Bayu Palamarta Wirawan* | *Menerima implementasi antrean* | *1* | *Done* | *-* |
+| *9-11-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki testing dengan helper* | *1* | *Done* | *-* |
+| *10-11-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki isu kredensial database* | *1* | *Done* | *-* |
 
+**Catatan/Evaluasi Milestone 9:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 ---
 
 
