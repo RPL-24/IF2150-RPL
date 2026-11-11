@@ -2,16 +2,25 @@
  * DataAkunBoundary (Data Access Layer): satu-satunya tempat modul akun
  * mengakses basis data, lewat Prisma (kelas Database pada DPPL).
  *
- * ASUMSI SKEMA (cocokkan dengan schema.prisma Rafiandhi): model `Akun` dengan
- * field `email` (unique), `nama`, `password` (hash), `peran`, `statusAkun`.
- * Bila nama berbeda, cukup ubah berkas ini.
+ * ASUMSI SKEMA (cocokkan dengan schema.prisma Rafiandhi):
+ * - model `Akun`: `email` (unique), `nama`, `password` (hash), `peran`, `statusAkun`
+ * - relasi opsional satu-satu dari Akun: `warga` (idWarga, idKomunitas,
+ *   statusTerdaftar), `teknisi` (idTeknisi, kontak), `pengurus` (idPengurus)
+ * Bila nama berbeda, cukup ubah berkas ini; kesalahan tipe dari Prisma akan
+ * menunjukkan bagian yang perlu disesuaikan.
  *
- * Operasi lain (ambilAkun, ambilBerdasarkanStatus, perbaruiAkun, cariWarga)
- * ditambahkan pada feat login dan persetujuan.
+ * Operasi lain (ambilBerdasarkanStatus, perbaruiAkun, cariWarga) ditambahkan
+ * pada feat persetujuan.
  */
 import type { Peran } from '@/lib/auth/konteks';
 import { prisma } from '@/lib/prisma';
-import type { AkunRingkas, DataAkun, StatusAkun } from './entity';
+import {
+  Akun,
+  type AkunRingkas,
+  type DataAkun,
+  type ProfilPeran,
+  type StatusAkun,
+} from './entity';
 import { EmailSudahTerdaftar } from './galat';
 
 function adalahPelanggaranUnik(galat: unknown): boolean {
@@ -36,6 +45,51 @@ export class DataAkunBoundary {
       peran: baris.peran as Peran,
       statusAkun: baris.statusAkun as StatusAkun,
     };
+  }
+
+  /**
+   * Ambil akun lengkap (beserta profil perannya) sebagai entity untuk
+   * autentikasi. Mengembalikan null bila email tidak ada. Profil boleh null
+   * (misalnya akun yang masih menunggu persetujuan).
+   */
+  async ambilAkun(email: string): Promise<Akun | null> {
+    const baris = await prisma.akun.findUnique({
+      where: { email },
+      include: { warga: true, teknisi: true, pengurus: true },
+    });
+    if (!baris) return null;
+
+    let profil: ProfilPeran | null = null;
+    switch (String(baris.peran).toUpperCase()) {
+      case 'WARGA':
+        profil = baris.warga
+          ? {
+              idWarga: baris.warga.idWarga,
+              idKomunitas: baris.warga.idKomunitas,
+              statusTerdaftar: baris.warga.statusTerdaftar,
+            }
+          : null;
+        break;
+      case 'TEKNISI':
+        profil = baris.teknisi
+          ? { idTeknisi: baris.teknisi.idTeknisi, kontak: baris.teknisi.kontak ?? '' }
+          : null;
+        break;
+      case 'PENGURUS':
+        profil = baris.pengurus ? { idPengurus: baris.pengurus.idPengurus } : null;
+        break;
+    }
+
+    return Akun.buatAkun(
+      baris.peran,
+      {
+        email: baris.email,
+        nama: baris.nama,
+        password: baris.password,
+        statusAkun: baris.statusAkun as StatusAkun,
+      },
+      profil,
+    );
   }
 
   /**
