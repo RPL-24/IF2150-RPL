@@ -1,4 +1,4 @@
-import PersetujuanView from '@/modules/akun/ui/PersetujuanView';
+import PersetujuanView from '@/modules/akun/ui/persetujuanView';
 
 export const metadata = { title: 'Persetujuan akun | Fajar Tech' };
 
