@@ -57,8 +57,10 @@
       <span class="progress-fill" style="width:${(state.step / TOTAL) * 100}%"></span>
     </div>
     <p class="step-label">Langkah ${state.step} dari ${TOTAL}</p>
-    <h1 class="page-title" tabindex="-1">${title}</h1>
-    <p class="page-subtitle">${sub}</p>`;
+    <header class="page-header">
+      <h1 class="page-title" tabindex="-1">${title}</h1>
+      <p class="page-subtitle">${sub}</p>
+    </header>`;
 
   const option = ({ selected, action, value, title, desc, lead, role }) => `
     <button type="button" role="${role}" aria-checked="${selected}" class="option-card${selected ? " is-selected" : ""}" data-action="${action}" data-value="${esc(value)}">
@@ -89,8 +91,8 @@
 
     2: () => head("Bagaimana tidurmu semalam?", "Isi jam tidur dan jam bangun.") + `
       <div class="time-grid">
-        <label>Jam tidur<input type="time" id="bed" value="${state.bed}"></label>
-        <label>Jam bangun<input type="time" id="wake" value="${state.wake}"></label>
+        <label>Jam tidur<input class="form-input" type="time" id="bed" value="${state.bed}"></label>
+        <label>Jam bangun<input class="form-input" type="time" id="wake" value="${state.wake}"></label>
       </div>
       <p class="field-hint" id="duration">Durasi tidur: ${fmtHours(sleepHours(state.bed, state.wake))}.</p>` +
       nav({ disabled: !state.bed || !state.wake }),

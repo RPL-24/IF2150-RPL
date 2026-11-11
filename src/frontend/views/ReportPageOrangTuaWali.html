@@ -9,20 +9,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="SidebarOrangTuaWali.css">
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="DashboardPageOrangTuaWali.css">
     <link rel="stylesheet" href="ReportPage.css">
+
 </head>
 <body>
     <div class="app-layout">
-        <aside class="app-sidebar" id="Sidebar">
-            <div class="sidebar-top">
-                <div class="sidebar-header">
-                    <a href="DashboardPageOrangTuaWali.html" class="brand-link">
-                        <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
-                        <span class="brand-title">MahaSehat</span>
-                    </a>
-                </div>
+        <aside class="app-sidebar" data-role="wali" id="Sidebar">
+            <div class="sidebar-header">
+                <a href="DashboardPageOrangTuaWali.html" class="brand-link">
+                    <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                    <span class="brand-title">MahaSehat</span>
+                </a>
+                <button type="button" class="nav-toggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="SidebarPanel">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="sidebar-panel" id="SidebarPanel">
 
                 <!-- Kolom Pencarian di Atas Menu -->
                 <div class="sidebar-search">
@@ -41,7 +52,7 @@
                         </svg>
                         <span class="nav-label">Dashboard</span>
                     </a>
-                    <a href="ReportPageOrangTuaWali.html" class="nav-item active" id="Menu_Laporan" aria-current="page">
+                    <a href="ReportPageOrangTuaWali.html" class="nav-item active" aria-current="page" id="Menu_Laporan" aria-current="page">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
@@ -70,16 +81,16 @@
                         <span class="nav-label">Keluar</span>
                     </a>
                 </nav>
-            </div>
 
-            <!-- Profil Wali Bawah Sidebar -->
-            <div class="sidebar-user" id="Info_User">
-                <div class="user-avatar" id="User_Avatar">H</div>
-                <div class="user-meta">
-                    <p class="user-name" id="Text_NamaUser">Hermann Einstein</p>
-                    <p class="user-role" id="Text_RoleUser">Orang Tua / Wali</p>
+                <div class="sidebar-user" id="Info_User">
+                    <div class="user-avatar" id="User_Avatar">H</div>
+                    <div class="user-meta">
+                        <p class="user-name" id="Text_NamaUser">Hermann Einstein</p>
+                        <p class="user-role" id="Text_RoleUser">Orang Tua / Wali</p>
+                    </div>
                 </div>
             </div>
+
         </aside>
 
         <main class="main-viewport" id="Panel_Laporan">
@@ -90,7 +101,7 @@
 
             <!-- Filter Periode (DPPL: Filter_Periode) -->
             <section class="card-box periode-card report-block" id="Filter_Periode" data-legacy-id="Card_Periode">
-                <h3 class="card-box-title">Periode</h3>
+                <h2 class="card-box-title">Periode</h2>
                 <div class="segmented" id="Group_Periode" role="group" aria-label="Pilih periode">
                     <button type="button" class="seg-btn active" id="Btn_Periode7" data-periode="7" aria-pressed="true">7 Hari</button>
                     <button type="button" class="seg-btn" id="Btn_Periode30" data-periode="30" aria-pressed="false">30 Hari</button>
@@ -100,7 +111,7 @@
 
             <section class="card-box report-block" id="Alert_DataKosong" hidden>
                 <div class="card-box-header">
-                    <h3 class="card-box-title">Data belum cukup</h3>
+                    <h2 class="card-box-title">Data belum cukup</h2>
                 </div>
                 <p class="empty-msg">Data check-in pelajar belum cukup untuk divisualisasikan. Laporan muncul setelah pelajar rutin mengisi daily check-in.</p>
             </section>
@@ -108,12 +119,12 @@
             <div id="Grid_Laporan">
                 <div class="bottom-grid report-block">
                     <section class="card-box" id="Card_IndikatorRisiko">
-                        <div class="card-box-header"><h3 class="card-box-title">Indikator Risiko</h3></div>
-                        <span class="status-badge risk-badge" id="Badge_Risiko">-</span>
+                        <div class="card-box-header"><h2 class="card-box-title">Indikator Risiko</h2></div>
+                        <span class="badge risk-badge" id="Badge_Risiko">-</span>
                         <p class="card-text" id="Text_RisikoPenjelasan"></p>
                     </section>
                     <section class="card-box" id="Card_RingkasanKondisi">
-                        <div class="card-box-header"><h3 class="card-box-title">Ringkasan Kondisi</h3></div>
+                        <div class="card-box-header"><h2 class="card-box-title">Ringkasan Kondisi</h2></div>
                         <p class="card-text" id="Text_Ringkasan"></p>
                         <p class="card-text note">Ringkasan ini berasal dari data check-in dan bukan diagnosis.</p>
                     </section>
@@ -121,22 +132,22 @@
 
                 <section class="stats-grid" id="Grid_Ringkasan">
                     <article class="stat-card" id="Card_RerataMood">
-                        <h3 class="stat-title">Rerata Mood</h3>
+                        <h2 class="stat-title">Rerata Mood</h2>
                         <div class="stat-metric"><span class="stat-value" id="Value_RerataMood">-</span><span class="stat-unit">/ 5</span></div>
                         <p class="stat-note">Rata-rata skala suasana hati</p>
                     </article>
                     <article class="stat-card" id="Card_RerataTidur">
-                        <h3 class="stat-title">Rerata Tidur</h3>
+                        <h2 class="stat-title">Rerata Tidur</h2>
                         <div class="stat-metric"><span class="stat-value" id="Value_RerataTidur">-</span><span class="stat-unit">Jam</span></div>
                         <p class="stat-note">Rata-rata durasi tidur</p>
                     </article>
                     <article class="stat-card" id="Card_RerataMakan">
-                        <h3 class="stat-title">Pola Makan</h3>
+                        <h2 class="stat-title">Pola Makan</h2>
                         <div class="stat-metric"><span class="stat-value" id="Value_RerataMakan">-</span><span class="stat-unit">x / Hari</span></div>
                         <p class="stat-note">Rata-rata frekuensi makan</p>
                     </article>
                     <article class="stat-card" id="Card_HariTanpaCheckIn">
-                        <h3 class="stat-title">Tanpa Check-In</h3>
+                        <h2 class="stat-title">Tanpa Check-In</h2>
                         <div class="stat-metric"><span class="stat-value" id="Value_HariTanpaCheckIn">-</span><span class="stat-unit">Hari</span></div>
                         <p class="stat-note">Pada periode ini</p>
                     </article>
@@ -144,11 +155,11 @@
 
                 <div class="report-grid report-block">
                     <section class="card-box" id="Card_TrenMood">
-                        <div class="card-box-header"><h3 class="card-box-title">Tren Mood</h3></div>
+                        <div class="card-box-header"><h2 class="card-box-title">Tren Mood</h2></div>
                         <div class="chart" id="Chart_Mood"></div>
                     </section>
                     <section class="card-box" id="Card_TrenTidur">
-                        <div class="card-box-header"><h3 class="card-box-title">Tren Tidur</h3></div>
+                        <div class="card-box-header"><h2 class="card-box-title">Tren Tidur</h2></div>
                         <div class="chart" id="Chart_Tidur"></div>
                     </section>
                 </div>
@@ -160,5 +171,6 @@
 
     <script src="ReportChart.js"></script>
     <script src="ReportPageOrangTuaWali.js"></script>
+    <script src="sidebar.js"></script>
 </body>
 </html>

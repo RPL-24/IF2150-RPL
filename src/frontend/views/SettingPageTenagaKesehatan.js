@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectDurasi = document.getElementById('Select_DurasiSesi');
     const groupSlot = document.getElementById('Group_SlotWaktu');
     const textErrorJam = document.getElementById('Text_ErrorJam');
+    const switchNotif = document.getElementById('Switch_Notifikasi');
+    const textNotifInfo = document.getElementById('Text_NotifInfo');
+    const switchLokasi = document.getElementById('Switch_Lokasi');
+    const textLokasiInfo = document.getElementById('Text_LokasiInfo');
 
     // Rentang jam default 
     const DEFAULT_RENTANG = [
@@ -41,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '<input type="time" class="form-input" name="mulai" aria-label="Jam mulai" value="' + mulai + '">' +
             '<span class="range-sep">sampai</span>' +
             '<input type="time" class="form-input" name="selesai" aria-label="Jam selesai" value="' + selesai + '">' +
-            '<button type="button" class="btn-icon-remove" aria-label="Hapus rentang jam">&times;</button>';
+            '<button type="button" class="btn btn--icon" aria-label="Hapus rentang jam">&times;</button>';
         groupRentang.appendChild(row);
         syncRemoveButtons();
     }
@@ -277,6 +281,73 @@ document.addEventListener('DOMContentLoaded', () => {
             const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
             localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...current, ...data }));
             showToast('✓ Ketersediaan jadwal praktik dan slot konsultasi berhasil disimpan.');
+        });
+    }
+
+    // Inisialisasi Izin Notifikasi
+    if (switchNotif) {
+        if (!('Notification' in window)) {
+            switchNotif.disabled = true;
+            if (textNotifInfo) textNotifInfo.textContent = 'Peramban tidak mendukung notifikasi.';
+        } else {
+            switchNotif.checked = Notification.permission === 'granted' && localStorage.getItem('notifAktif') !== 'tidak';
+            if (Notification.permission === 'denied' && textNotifInfo) {
+                textNotifInfo.textContent = 'Izin diblokir. Aktifkan lewat pengaturan peramban.';
+            }
+        }
+
+        switchNotif.addEventListener('change', () => {
+            if (!switchNotif.checked) {
+                localStorage.setItem('notifAktif', 'tidak');
+                if (textNotifInfo) textNotifInfo.textContent = '';
+                return;
+            }
+
+            Notification.requestPermission().then((hasil) => {
+                if (hasil === 'granted') {
+                    localStorage.setItem('notifAktif', 'ya');
+                    if (textNotifInfo) textNotifInfo.textContent = '';
+                    tampilkanToast('✓ Notifikasi pemantauan diaktifkan.');
+                } else {
+                    switchNotif.checked = false;
+                    if (textNotifInfo) textNotifInfo.textContent = 'Izin ditolak oleh pengguna.';
+                }
+            });
+        });
+    }
+
+    // Inisialisasi Izin Lokasi
+    if (switchLokasi) {
+        if (!('geolocation' in navigator)) {
+            switchLokasi.disabled = true;
+            if (textLokasiInfo) textLokasiInfo.textContent = 'Peramban tidak mendukung akses lokasi.';
+        } else if (navigator.permissions) {
+            navigator.permissions.query({ name: 'geolocation' }).then((hasil) => {
+                switchLokasi.checked = hasil.state === 'granted' && localStorage.getItem('lokasiAktif') !== 'tidak';
+                if (hasil.state === 'denied' && textLokasiInfo) {
+                    textLokasiInfo.textContent = 'Izin lokasi diblokir di peramban.';
+                }
+            });
+        }
+
+        switchLokasi.addEventListener('change', () => {
+            if (!switchLokasi.checked) {
+                localStorage.setItem('lokasiAktif', 'tidak');
+                if (textLokasiInfo) textLokasiInfo.textContent = '';
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                () => {
+                    localStorage.setItem('lokasiAktif', 'ya');
+                    if (textLokasiInfo) textLokasiInfo.textContent = '';
+                    tampilkanToast('✓ Izin lokasi diaktifkan.');
+                },
+                () => {
+                    switchLokasi.checked = false;
+                    if (textLokasiInfo) textLokasiInfo.textContent = 'Akses lokasi ditolak atau tidak tersedia.';
+                }
+            );
         });
     }
 

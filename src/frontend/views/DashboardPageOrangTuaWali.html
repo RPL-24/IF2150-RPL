@@ -10,20 +10,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="SidebarOrangTuaWali.css">
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="DashboardPageOrangTuaWali.css">
+
 </head>
 <body>
     <div class="app-layout">
         <!-- Floating Sidebar Navigasi -->
-        <aside class="app-sidebar" id="Sidebar">
-            <div class="sidebar-top">
-                <div class="sidebar-header">
-                    <a href="DashboardPageOrangTuaWali.html" class="brand-link">
-                        <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
-                        <span class="brand-title">MahaSehat</span>
-                    </a>
-                </div>
+        <aside class="app-sidebar" data-role="wali" id="Sidebar">
+            <div class="sidebar-header">
+                <a href="DashboardPageOrangTuaWali.html" class="brand-link">
+                    <img src="../assets/logo-mahasehat.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                    <span class="brand-title">MahaSehat</span>
+                </a>
+                <button type="button" class="nav-toggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="SidebarPanel">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="sidebar-panel" id="SidebarPanel">
 
                 <!-- Kolom Pencarian di Atas Menu -->
                 <div class="sidebar-search">
@@ -33,7 +44,7 @@
 
                 <!-- Menu Navigasi Utama -->
                 <nav class="nav-menu" aria-label="Menu utama">
-                    <a href="DashboardPageOrangTuaWali.html" class="nav-item active" id="Menu_Dashboard">
+                    <a href="DashboardPageOrangTuaWali.html" class="nav-item active" aria-current="page" id="Menu_Dashboard">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="3" width="7" height="7"></rect>
                             <rect x="14" y="3" width="7" height="7"></rect>
@@ -71,16 +82,16 @@
                         <span class="nav-label">Keluar</span>
                     </a>
                 </nav>
-            </div>
 
-            <!-- Profil Wali Bawah Sidebar -->
-            <div class="sidebar-user" id="Info_User">
-                <div class="user-avatar" id="User_Avatar">H</div>
-                <div class="user-meta">
-                    <p class="user-name" id="Text_NamaUser">Hermann Einstein</p>
-                    <p class="user-role" id="Text_RoleUser">Orang Tua / Wali</p>
+                <div class="sidebar-user" id="Info_User">
+                    <div class="user-avatar" id="User_Avatar">H</div>
+                    <div class="user-meta">
+                        <p class="user-name" id="Text_NamaUser">Hermann Einstein</p>
+                        <p class="user-role" id="Text_RoleUser">Orang Tua / Wali</p>
+                    </div>
                 </div>
             </div>
+
         </aside>
 
         <!-- Area Konten Utama -->
@@ -109,7 +120,7 @@
                     </p>
                 </div>
                 <div class="banner-cta">
-                    <a href="KonfirmasiRegistrasiPage.html" class="btn-primary-pill" id="Link_TinjauRegistrasi">Tinjau Registrasi</a>
+                    <a href="KonfirmasiRegistrasiPage.html" class="btn btn--primary" id="Link_TinjauRegistrasi">Tinjau Registrasi</a>
                 </div>
             </section>
 
@@ -157,7 +168,7 @@
                 <section class="card-box" id="Card_Ringkasan">
                     <div class="card-box-header">
                         <h3 class="card-box-title">Ringkasan Kondisi</h3>
-                        <span class="status-badge status-stabil">Laporan Aktif</span>
+                        <span class="badge badge--stabil">Laporan Aktif</span>
                     </div>
                     
                     <p class="ringkasan-text" id="Text_RingkasanKondisi">
@@ -166,7 +177,7 @@
                     <p class="empty-msg" id="Text_RingkasanKosong" style="display: none;">Ringkasan muncul setelah data check-in cukup.</p>
 
                     <div class="card-box-footer">
-                        <a href="ReportPage.html" class="btn-primary-pill" id="Link_LaporanLengkap">Lihat Laporan Lengkap</a>
+                        <a href="ReportPage.html" class="btn btn--primary" id="Link_LaporanLengkap">Lihat Laporan Lengkap</a>
                     </div>
                 </section>
 
@@ -182,7 +193,7 @@
                             <h4 class="pelajar-name" id="Text_NamaPelajar">Albert Einstein</h4>
                             <p class="pelajar-sub" id="Text_UsiaPelajar">16 tahun</p>
                         </div>
-                        <span class="status-badge badge-belum" id="Badge_StatusAkun">Belum Terverifikasi</span>
+                        <span class="badge badge--belum" id="Badge_StatusAkun">Belum Terverifikasi</span>
                     </div>
 
                     <div class="pelajar-guidance-note">
@@ -199,5 +210,6 @@
     </div>
 
     <script src="DashboardPageOrangTuaWali.js"></script>
+    <script src="sidebar.js"></script>
 </body>
 </html>

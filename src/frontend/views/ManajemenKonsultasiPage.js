@@ -130,6 +130,18 @@
 
     // Elemen Modal Jadwal Ulang
     const modalJadwal = document.getElementById('Modal_JadwalUlang');
+    const modalTolak = document.getElementById('Modal_KonfirmasiTolak');
+    const namaTolak = document.getElementById('Nama_Tolak');
+    const btnKonfirmasiTolak = document.getElementById('Btn_KonfirmasiTolak');
+    const btnBatalTolak = document.getElementById('Btn_BatalTolak');
+
+    // Drawer detail untuk layar <=1200px: kolom detail yang sama dipindahkan
+    const splitView = document.getElementById('SplitView_Konsultasi');
+    const detailColumn = document.getElementById('Panel_Detail');
+    const dialogDetail = document.getElementById('Dialog_DetailKonsultasi');
+    const btnTutupDetail = document.getElementById('Btn_TutupDetail');
+    const mqDrawer = window.matchMedia('(max-width: 1200px)');
+    let pemicuDetail = null;
     const modalSub = document.getElementById('Modal_JadwalSub');
     const modalInputTanggal = document.getElementById('Modal_InputTanggal');
     const modalInputWaktu = document.getElementById('Modal_InputWaktu');
@@ -207,9 +219,14 @@
             return matchStatus && matchQuery;
         });
 
+        if (selectedId && !filtered.some(item => item.id === selectedId)) {
+            selectedId = null;
+            tutupDetail();
+        }
+
         if (filtered.length === 0) {
             listContainer.innerHTML = `
-                <div style="padding: 32px 16px; text-align: center; color: var(--color-muted); font-size: 14px;">
+                <div style="padding: 32px 16px; text-align: center; color: var(--color-ink-muted); font-size: 14px;">
                     Tidak ada permohonan konsultasi yang sesuai dengan kriteria.
                 </div>
             `;
@@ -223,11 +240,12 @@
             card.id = `CardItem_${item.id}`;
             card.setAttribute('role', 'button');
             card.setAttribute('tabindex', '0');
+            if (modeDrawer()) card.setAttribute('aria-haspopup', 'dialog');
 
             // Format chip status
-            let chipClass = 'menunggu';
-            if (item.status === 'Disetujui') chipClass = 'disetujui';
-            else if (item.status === 'Selesai' || item.status === 'Ditolak') chipClass = 'riwayat';
+            let chipClass = 'badge--menunggu';
+            if (item.status === 'Disetujui') chipClass = 'badge--disetujui';
+            else if (item.status === 'Selesai' || item.status === 'Ditolak') chipClass = 'badge--riwayat';
 
             card.innerHTML = `
                 <div class="queue-card-top">
@@ -236,7 +254,8 @@
                         <h4 class="queue-card-name">${escapeHtml(item.nama)}</h4>
                         <p class="queue-card-sub">${escapeHtml(item.sekolah)}</p>
                     </div>
-                    <span class="status-chip ${chipClass}">${escapeHtml(item.status)}</span>
+                    <span class="badge ${chipClass}">${escapeHtml(item.status)}</span>
+                    <span class="queue-card-chevron" aria-hidden="true">›</span>
                 </div>
                 <div class="queue-card-divider"></div>
                 <p class="queue-card-schedule">${escapeHtml(item.jadwal)}</p>
@@ -246,12 +265,14 @@
 
             card.addEventListener('click', () => {
                 selectConsultation(item.id);
+                bukaDetail(card);
             });
 
             card.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     selectConsultation(item.id);
+                    bukaDetail(card);
                 }
             });
 
@@ -360,8 +381,52 @@
 
         saveData();
         renderQueueList();
-        selectConsultation(selectedId);
+        if (selectedId) selectConsultation(selectedId);
+        tutupDetail();
         showToast(feedbackMsg);
+    }
+
+    /**
+     * Drawer detail: di layar <=1200px kolom detail dipindahkan ke <dialog>
+     * sehingga tampil sebagai panel di depan dengan latar gelap.
+     */
+    function modeDrawer() {
+        return mqDrawer.matches;
+    }
+
+    function pindahkanDetailKeDialog() {
+        if (dialogDetail && detailColumn && detailColumn.parentElement !== dialogDetail) {
+            dialogDetail.appendChild(detailColumn);
+        }
+    }
+
+    function pindahkanDetailKeGrid() {
+        if (splitView && detailColumn && detailColumn.parentElement !== splitView) {
+            splitView.appendChild(detailColumn);
+        }
+    }
+
+    function bukaDetail(pemicu) {
+        if (!modeDrawer() || !dialogDetail) return;
+        pemicuDetail = pemicu || null;
+        pindahkanDetailKeDialog();
+        if (!dialogDetail.open) dialogDetail.showModal();
+        document.body.classList.add('body-locked');
+    }
+
+    function tutupDetail() {
+        if (!dialogDetail) return;
+        if (dialogDetail.open) dialogDetail.close();
+        document.body.classList.remove('body-locked');
+    }
+
+    function sinkronkanModeDetail() {
+        if (modeDrawer()) {
+            pindahkanDetailKeDialog();
+            return;
+        }
+        tutupDetail();
+        pindahkanDetailKeGrid();
     }
 
     /**
@@ -408,15 +473,27 @@
             });
         }
 
-        // Tombol Tolak
-        if (btnTolak) {
+        // Tombol Tolak -> dialog konfirmasi sesuai design system
+        if (btnTolak && modalTolak) {
             btnTolak.addEventListener('click', () => {
                 const item = consultations.find(c => c.id === selectedId);
-                const name = item ? item.nama : 'Pelajar';
-                const konfirmasi = confirm(`Apakah Anda yakin ingin menolak permohonan konsultasi dari ${name}?`);
-                if (konfirmasi) {
-                    updateStatus('Ditolak', `Permohonan konsultasi ${name} telah ditolak.`);
-                }
+                if (!item) return;
+                if (namaTolak) namaTolak.textContent = item.nama;
+                modalTolak.showModal();
+            });
+        }
+
+        if (btnBatalTolak && modalTolak) {
+            btnBatalTolak.addEventListener('click', () => modalTolak.close());
+        }
+
+        if (btnKonfirmasiTolak && modalTolak) {
+            btnKonfirmasiTolak.addEventListener('click', () => {
+                const item = consultations.find(c => c.id === selectedId);
+                if (!item) return;
+                const name = item.nama;
+                modalTolak.close();
+                updateStatus('Ditolak', `Permohonan konsultasi ${name} telah ditolak.`);
             });
         }
 
@@ -426,14 +503,14 @@
                 const item = consultations.find(c => c.id === selectedId);
                 if (!item) return;
                 if (modalSub) modalSub.textContent = `Tentukan tanggal dan waktu baru untuk sesi bersama ${item.nama}.`;
-                if (modalJadwal) modalJadwal.style.display = 'flex';
+                if (modalJadwal) modalJadwal.showModal();
             });
         }
 
         // Modal Batal
         if (modalBtnBatal && modalJadwal) {
             modalBtnBatal.addEventListener('click', () => {
-                modalJadwal.style.display = 'none';
+                modalJadwal.close();
             });
         }
 
@@ -455,10 +532,11 @@
                 item.jadwalFull = `${tglFormatted} · ${waktuVal} (Dijadwal Ulang)`;
                 item.status = 'Disetujui';
 
-                modalJadwal.style.display = 'none';
+                modalJadwal.close();
                 saveData();
                 renderQueueList();
-                selectConsultation(selectedId);
+                if (selectedId) selectConsultation(selectedId);
+                tutupDetail();
                 showToast(`Jadwal konsultasi ${item.nama} berhasil diperbarui ke ${item.jadwal}.`);
             });
         }
@@ -473,11 +551,35 @@
         }
     }
 
+    // Drawer detail: tutup lewat tombol, ESC (native), atau klik backdrop
+    if (btnTutupDetail) {
+        btnTutupDetail.addEventListener('click', tutupDetail);
+    }
+
+    if (dialogDetail) {
+        dialogDetail.addEventListener('click', (event) => {
+            if (event.target === dialogDetail) tutupDetail();
+        });
+        dialogDetail.addEventListener('close', () => {
+            document.body.classList.remove('body-locked');
+            if (pemicuDetail && pemicuDetail.isConnected) pemicuDetail.focus();
+            pemicuDetail = null;
+        });
+    }
+
+    if (mqDrawer.addEventListener) {
+        mqDrawer.addEventListener('change', () => {
+            sinkronkanModeDetail();
+            renderQueueList();
+        });
+    }
+
     // Eksekusi Saat Dokumen Siap
     document.addEventListener('DOMContentLoaded', () => {
         initData();
+        sinkronkanModeDetail();
         renderQueueList();
-        selectConsultation(selectedId);
+        if (selectedId) selectConsultation(selectedId);
         setupEventListeners();
     });
 

@@ -6,6 +6,7 @@ const {
   tolakRegistrasi,
   masuk,
   profilSaya,
+  keluar,
 } = require('../controllers/authController');
 const { lupaPassword, resetPassword } = require('../controllers/passwordController');
 const { authenticate } = require('../middleware/authMiddleware');
@@ -26,5 +27,8 @@ router.post('/login', tanganiAsync(masuk));
 router.get('/me', authenticate, tanganiAsync(profilSaya));
 router.post('/forgot-password', tanganiAsync(lupaPassword));
 router.post('/reset-password', tanganiAsync(resetPassword));
+
+// UC10
+router.post('/logout', authenticate, tanganiAsync(keluar));
 
 module.exports = router;

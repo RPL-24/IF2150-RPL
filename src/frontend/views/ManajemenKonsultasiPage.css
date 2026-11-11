@@ -1,86 +1,17 @@
 /* ==========================================================================
    MahaSehat - ManajemenKonsultasiPage.css
    Desain Sesuai Konvensi Anti-Slop & Sistem Desain Resmi MahaSehat
-   Palet: Warm Cream #FFFDF7, Charcoal #2A3A3F, Teal #78C9C0, Amber #F8C16F, Mist #E2E8F0
+   Palet: Warm Cream var(--color-cream), Charcoal var(--color-ink), Teal var(--color-teal), Amber var(--color-amber), Mist var(--color-mist)
    Kartu Putih Konsisten Selaras dengan Dashboard & Setelan
    ========================================================================== */
-
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-:root {
-    --color-cream: #FFFDF7;
-    --color-white: #FFFFFF;
-    --color-charcoal: #2A3A3F;
-    --color-charcoal-subtle: rgba(42, 58, 63, 0.72);
-    --color-ink: #2A3A3F;
-    --color-ink-subtle: rgba(42, 58, 63, 0.72);
-    --color-ink-muted: #64748B;
-    --color-muted: #64748B;
-
-    --color-teal: #78C9C0;
-    --color-teal-hover: #63B8AF;
-    --color-teal-subtle: rgba(120, 201, 192, 0.2);
-
-    --color-amber: #F8C16F;
-    --color-amber-hover: #EAB361;
-    --color-amber-subtle: rgba(248, 193, 111, 0.2);
-
-    --color-mist: #E2E8F0;
-    --color-mist-light: #F8FAFC;
-    --color-border: #E2E8F0;
-    --color-border-subtle: #F1F5F9;
-
-    --color-danger: #B5453B;
-    --color-danger-subtle: rgba(181, 69, 59, 0.1);
-
-    --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-
-    --sidebar-width: 280px;
-}
-
-body {
-    background-color: var(--color-cream);
-    color: var(--color-charcoal);
-    font-family: var(--font-body);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-}
 
 /* ==========================================================================
    Viewport Utama & Split View Layout
    (Gaya Sidebar Dikelola Terpusat di SidebarTenagaKesehatan.css)
    ========================================================================== */
 
-.main-viewport {
-    flex: 1;
+.split-view-container > * {
     min-width: 0;
-    padding: 24px 32px 32px 8px;
-    display: flex;
-    flex-direction: column;
-}
-
-.page-header {
-    margin-bottom: 24px;
-}
-
-.page-title {
-    font-family: var(--font-heading);
-    font-size: 38px;
-    font-weight: 700;
-    color: var(--color-charcoal);
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    margin-bottom: 6px;
-}
-
-.page-subtitle {
-    font-size: 16px;
-    color: var(--color-ink-subtle);
 }
 
 .split-view-container {
@@ -111,7 +42,7 @@ body {
     top: 50%;
     transform: translateY(-50%);
     font-size: 18px;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     pointer-events: none;
 }
 
@@ -123,7 +54,7 @@ body {
     border-radius: 12px;
     font-family: var(--font-body);
     font-size: 14px;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     outline: none;
     transition: all 0.2s ease;
     box-shadow: 0 1px 3px rgba(42, 58, 63, 0.02);
@@ -135,6 +66,7 @@ body {
 }
 
 /* Filter Chips (Anti-Slop Pill Style) */
+
 .filter-chips-row {
     display: flex;
     gap: 8px;
@@ -147,7 +79,7 @@ body {
     border-radius: 999px;
     border: 1px solid var(--color-border);
     background-color: var(--color-white);
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     font-family: var(--font-body);
     font-size: 12px;
     font-weight: 500;
@@ -158,17 +90,18 @@ body {
 
 .filter-pill:hover {
     background-color: var(--color-mist-light);
-    border-color: var(--color-charcoal);
+    border-color: var(--color-ink);
 }
 
 .filter-pill.active {
-    background-color: var(--color-charcoal);
-    border-color: var(--color-charcoal);
+    background-color: var(--color-ink);
+    border-color: var(--color-ink);
     color: var(--color-cream);
     font-weight: 700;
 }
 
 /* List Kartu Antrean (Kartu Putih Konsisten Sesuai Dashboard) */
+
 .queue-cards-list {
     display: flex;
     flex-direction: column;
@@ -189,13 +122,13 @@ body {
 }
 
 .queue-card-item:hover {
-    border-color: var(--color-charcoal-subtle);
+    border-color: var(--color-ink-subtle);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(42, 58, 63, 0.05);
 }
 
 .queue-card-item.selected {
-    border: 2px solid var(--color-charcoal);
+    border: 2px solid var(--color-ink);
     box-shadow: 0 4px 16px rgba(42, 58, 63, 0.08);
 }
 
@@ -210,7 +143,7 @@ body {
     height: 46px;
     border-radius: 50%;
     background-color: var(--color-teal);
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     font-family: var(--font-heading);
     font-size: 17px;
     font-weight: 700;
@@ -229,7 +162,7 @@ body {
     font-family: var(--font-body);
     font-size: 16px;
     font-weight: 700;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -237,33 +170,8 @@ body {
 
 .queue-card-sub {
     font-size: 13px;
-    color: var(--color-muted);
+    color: var(--color-ink-muted);
     margin-top: 2px;
-}
-
-.status-chip {
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-    flex-shrink: 0;
-}
-
-.status-chip.menunggu {
-    background-color: var(--color-amber-subtle);
-    color: #C07E17;
-    border: 1px solid rgba(248, 193, 111, 0.4);
-}
-
-.status-chip.disetujui {
-    background-color: var(--color-teal-subtle);
-    color: #2D867B;
-    border: 1px solid rgba(120, 201, 192, 0.4);
-}
-
-.status-chip.riwayat {
-    background-color: var(--color-mist);
-    color: var(--color-muted);
 }
 
 .queue-card-divider {
@@ -274,12 +182,12 @@ body {
 .queue-card-schedule {
     font-size: 13px;
     font-weight: 700;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
 }
 
 .queue-card-snippet {
     font-size: 13px;
-    color: var(--color-muted);
+    color: var(--color-ink-muted);
     line-height: 1.45;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -294,7 +202,7 @@ body {
     border-radius: 999px;
     background-color: var(--color-mist-light);
     border: 1px solid var(--color-border);
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     font-size: 11px;
     font-weight: 600;
 }
@@ -330,7 +238,7 @@ body {
     height: 60px;
     border-radius: 50%;
     background-color: var(--color-teal);
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     font-family: var(--font-heading);
     font-size: 22px;
     font-weight: 700;
@@ -348,19 +256,18 @@ body {
     font-family: var(--font-heading);
     font-size: 24px;
     font-weight: 700;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     letter-spacing: -0.01em;
 }
 
 .patient-sub {
     font-size: 14px;
-    color: var(--color-muted);
+    color: var(--color-ink-muted);
     margin-top: 3px;
 }
 
 .btn-hubungi {
     margin-left: auto;
-    padding: 8px 20px;
 }
 
 .panel-divider {
@@ -379,13 +286,13 @@ body {
     font-family: var(--font-heading);
     font-size: 18px;
     font-weight: 700;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     letter-spacing: -0.01em;
 }
 
 .section-subtext {
     font-size: 13px;
-    color: var(--color-muted);
+    color: var(--color-ink-muted);
     margin-top: -4px;
 }
 
@@ -398,18 +305,18 @@ body {
 .info-label {
     font-size: 13px;
     font-weight: 600;
-    color: var(--color-muted);
+    color: var(--color-ink-muted);
 }
 
 .info-value-bold {
     font-size: 14px;
     font-weight: 700;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
 }
 
 .info-quote {
     font-size: 14px;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     line-height: 1.5;
     background-color: var(--color-mist-light);
     padding: 14px 18px;
@@ -420,11 +327,20 @@ body {
 }
 
 /* Grid Grafik Mini (Sesuai I-14 Laporan Kesehatan) */
+
 .charts-comparison-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
     margin-top: 6px;
+    min-width: 0;
+}
+
+/* Dua grafik berdampingan hanya bila kolom detail cukup lebar */
+@media (max-width: 1400px) {
+    .charts-comparison-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .chart-box-mini {
@@ -447,14 +363,14 @@ body {
     font-family: var(--font-body);
     font-size: 14px;
     font-weight: 700;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
 }
 
 .chart-box-stat {
     font-family: var(--font-heading);
     font-size: 15px;
     font-weight: 700;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
 }
 
 .chart-bars-wrap {
@@ -485,10 +401,11 @@ body {
 
 .mini-bar-day {
     font-size: 11px;
-    color: var(--color-muted);
+    color: var(--color-ink-muted);
 }
 
 /* Form Tautan & Catatan */
+
 .form-group-custom {
     display: flex;
     flex-direction: column;
@@ -498,7 +415,7 @@ body {
 .form-label-custom {
     font-size: 13px;
     font-weight: 600;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
 }
 
 .form-input-custom {
@@ -510,7 +427,7 @@ body {
     background-color: var(--color-mist-light);
     font-family: var(--font-body);
     font-size: 14px;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     outline: none;
     transition: all 0.2s ease;
 }
@@ -529,7 +446,7 @@ body {
     background-color: var(--color-mist-light);
     font-family: var(--font-body);
     font-size: 13px;
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     resize: vertical;
     outline: none;
     line-height: 1.45;
@@ -543,6 +460,7 @@ body {
 }
 
 /* Tombol Aksi (Anti-Slop Pill Shape) */
+
 .action-buttons-row {
     display: flex;
     gap: 12px;
@@ -550,31 +468,15 @@ body {
     flex-wrap: wrap;
 }
 
-.btn-pill {
-    height: 48px;
-    padding: 0 24px;
-    border-radius: 999px;
-    font-family: var(--font-body);
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
 .btn-primary-dark {
-    background-color: var(--color-charcoal);
+    background-color: var(--color-ink);
     color: var(--color-cream);
     flex: 1.2;
-    border: 1px solid var(--color-charcoal);
+    border: 1px solid var(--color-ink);
 }
 
 .btn-primary-dark:hover {
-    background-color: #1A2528;
+    background-color: var(--color-ink-hover);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(42, 58, 63, 0.15);
 }
@@ -582,12 +484,12 @@ body {
 .btn-secondary-outline {
     background-color: var(--color-white);
     border: 1.5px solid var(--color-border);
-    color: var(--color-charcoal);
+    color: var(--color-ink);
     flex: 1;
 }
 
 .btn-secondary-outline:hover {
-    border-color: var(--color-charcoal);
+    border-color: var(--color-ink);
     background-color: var(--color-mist-light);
 }
 
@@ -602,34 +504,15 @@ body {
     background-color: var(--color-danger-subtle);
 }
 
-.btn-outline-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 38px;
-    padding: 0 18px;
-    border-radius: 999px;
-    background-color: var(--color-white);
-    border: 1.5px solid var(--color-border);
-    color: var(--color-charcoal);
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-outline-pill:hover {
-    border-color: var(--color-charcoal);
-    background-color: var(--color-mist-light);
-}
-
 /* Toast Feedback */
+
 .toast-notification {
+    /* Sejajar dengan tepi kanan kartu konten (padding kanvas), bukan pojok viewport */
     position: fixed;
     bottom: 24px;
-    right: 24px;
-    background-color: var(--color-charcoal);
+    right: clamp(16px, 4vw, 32px);
+    max-width: min(420px, calc(100vw - 96px));
+    background-color: var(--color-ink);
     color: var(--color-cream);
     padding: 14px 22px;
     border-radius: 12px;
@@ -641,11 +524,21 @@ body {
     animation: slideUp 0.3s ease;
 }
 
+@media (max-width: 1023px) {
+    .toast-notification {
+        left: clamp(16px, 4vw, 32px);
+        right: clamp(16px, 4vw, 32px);
+        bottom: 16px;
+        max-width: none;
+    }
+}
+
 @keyframes slideUp {
     from {
         opacity: 0;
         transform: translateY(16px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -653,6 +546,7 @@ body {
 }
 
 /* Modal Dialog */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -680,21 +574,6 @@ body {
     box-shadow: 0 16px 36px rgba(42, 58, 63, 0.15);
 }
 
-.modal-title {
-    font-family: var(--font-heading);
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--color-charcoal);
-    letter-spacing: -0.01em;
-}
-
-.modal-subtitle {
-    font-size: 14px;
-    color: var(--color-muted);
-    margin-top: -6px;
-    line-height: 1.45;
-}
-
 .modal-form-group {
     display: flex;
     flex-direction: column;
@@ -708,6 +587,7 @@ body {
 }
 
 /* Responsive */
+
 @media (max-width: 1200px) {
     .split-view-container {
         grid-template-columns: 1fr;
@@ -715,13 +595,101 @@ body {
 }
 
 @media (max-width: 768px) {
-    .main-viewport {
-        padding: 16px;
-    }
     .charts-comparison-grid {
         grid-template-columns: 1fr;
     }
+
     .action-buttons-row {
         flex-direction: column;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Drawer detail konsultasi (<=1200px)
+   Kolom detail yang sama dipindahkan ke <dialog> oleh JS, jadi tidak ada
+   markup atau data yang diduplikasi.
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+    .split-view-container .consultation-detail-column {
+        display: none;
+    }
+}
+
+.consult-detail-dialog {
+    position: fixed;
+    top: 16px;
+    right: 12px;
+    bottom: 16px;
+    left: auto;
+    width: min(460px, calc(100vw - 24px));
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    overflow: visible;
+    color: var(--color-ink);
+}
+
+.consult-detail-dialog::backdrop {
+    background-color: rgba(42, 58, 63, 0.45);
+    backdrop-filter: blur(4px);
+}
+
+.consult-detail-dialog .detail-card-panel {
+    height: calc(100dvh - 32px);
+    max-height: none;
+    overflow-y: auto;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-modal);
+}
+
+.consult-detail-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    background-color: var(--color-white);
+}
+
+.consult-detail-dialog .patient-header-section {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px;
+    padding-right: 44px;
+}
+
+.consult-detail-dialog .patient-meta-info {
+    flex: 1 1 140px;
+    min-width: 0;
+}
+
+.consult-detail-dialog .btn-hubungi {
+    margin-left: 0;
+    width: 100%;
+}
+
+.queue-card-chevron {
+    display: none;
+    margin-left: 4px;
+    color: var(--color-ink-muted);
+}
+
+.queue-card-item[aria-haspopup="dialog"] .queue-card-chevron {
+    display: inline-flex;
+}
+
+@media (max-width: 600px) {
+    .consult-detail-dialog {
+        top: 8px;
+        right: 8px;
+        bottom: 8px;
+        left: 8px;
+        width: auto;
+    }
+
+    .consult-detail-dialog .detail-card-panel {
+        height: calc(100dvh - 16px);
     }
 }

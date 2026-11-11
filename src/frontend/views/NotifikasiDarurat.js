@@ -20,6 +20,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (descDarurat) descDarurat.innerText = emergencyData.ringkasanKondisi;
     }
 
+    // Umpan balik seragam di dalam kartu (menggantikan alert bawaan peramban)
+    function tampilkanPesan(teks) {
+        let kotak = document.getElementById('Pesan_UmpanBalik');
+        if (!kotak) {
+            kotak = document.createElement('p');
+            kotak.id = 'Pesan_UmpanBalik';
+            kotak.className = 'alert-box alert-success';
+            kotak.setAttribute('role', 'status');
+            const grupTombol = cardDarurat.querySelector('.button-group') || cardDarurat;
+            cardDarurat.insertBefore(kotak, grupTombol);
+        }
+        kotak.textContent = teks;
+        kotak.hidden = false;
+    }
+
     if (btnDiterima) {
         btnDiterima.addEventListener('click', () => {
             btnDiterima.disabled = true;
@@ -27,15 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
             btnDiterima.classList.add('btn-confirmed');
 
             console.log(`[NotifikasiDaruratController] confirmReceived called for idNotifikasi: ${idNotifikasi}`);
-            alert("Status notifikasi telah dicatat sebagai 'Diterima'. Silakan hubungi pelajar untuk tindak lanjut.");
+            tampilkanPesan("Status notifikasi telah dicatat sebagai 'Diterima'. Silakan hubungi pelajar untuk tindak lanjut.");
         });
     }
 
     if (btnSudahDitindaklanjuti) {
         btnSudahDitindaklanjuti.addEventListener('click', () => {
             console.log(`[NotifikasiDaruratController] markFollowUp called for idNotifikasi: ${idNotifikasi}`);
-            
-            alert("Status tindak lanjut berhasil dicatat sebagai 'Sudah Ditindaklanjuti'. Status darurat pelajar kini telah dipulihkan.");
+
+            tampilkanPesan("Status tindak lanjut berhasil dicatat sebagai 'Sudah Ditindaklanjuti'. Status darurat pelajar kini telah dipulihkan.");
 
             if (cardDarurat) cardDarurat.style.display = 'none';
             if (cardSelesai) cardSelesai.style.display = 'flex';

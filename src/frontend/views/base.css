@@ -135,6 +135,11 @@ a[aria-disabled="true"]:not(.btn) {
 }
 
 /* Utilitas --------------------------------------------------------------- */
+/* Konten di belakang overlay tidak ikut bergulir */
+body.body-locked {
+    overflow: hidden;
+}
+
 [hidden] {
     display: none;
 }

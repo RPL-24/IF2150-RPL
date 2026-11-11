@@ -8,10 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="RegistrationPage.css" />
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="RegistrationPage.css">
   </head>
   <body>
     <div class="auth-container">
@@ -34,14 +36,14 @@
         <div class="form-shell">
           <p class="eyebrow">Registrasi</p>
           <h2 id="Title_Registrasi">Buat akun pelajar</h2>
-          <div class="role-tabs" id="Tab_RoleGroup" role="tablist">
-            <button type="button" class="tab-btn active" id="Tab_Role_Pelajar" data-role="pelajar">
+          <div class="role-tabs" id="Tab_RoleGroup" role="group" aria-label="Pilih jenis akun">
+            <button type="button" class="seg-btn active" aria-pressed="true" id="Tab_Role_Pelajar" data-role="pelajar">
               Pelajar
             </button>
-            <button type="button" class="tab-btn" id="Tab_Role_OrangTuaWali" data-role="orangtuawali">
+            <button type="button" class="seg-btn" aria-pressed="false" id="Tab_Role_OrangTuaWali" data-role="orangtuawali">
               Orang tua/wali
             </button>
-            <button type="button" class="tab-btn" id="Tab_Role_TenagaKesehatan" data-role="tenagakesehatan">
+            <button type="button" class="seg-btn" aria-pressed="false" id="Tab_Role_TenagaKesehatan" data-role="tenagakesehatan">
               Tenaga kesehatan
             </button>
           </div>
@@ -63,7 +65,7 @@
 
                 <div class="field">
                   <label for="Input_Email">Email <span class="req">*</span></label>
-                  <input type="email" id="Input_Email" name="email" placeholder="nama@kampus.ac.id" required />
+                  <input type="email" id="Input_Email" name="email" placeholder="nama@email.com" required />
                   <small class="error-msg" id="Error_Email"></small>
                 </div>
 
@@ -83,8 +85,8 @@
                 </div>
 
                 <div class="field field--full" id="Group_TglLahir">
-                  <label>Tanggal lahir <span class="req">*</span></label>
-                  <div class="date-row">
+                  <span class="field-label" id="Label_TanggalLahir">Tanggal lahir <span class="req">*</span></span>
+                  <div class="date-row" role="group" aria-labelledby="Label_TanggalLahir">
                     <input type="number" id="Input_TanggalLahir" name="tanggal_lahir" placeholder="Tanggal" min="1" max="31" required />
                     <input type="number" id="Input_BulanLahir" name="bulan_lahir" placeholder="Bulan" min="1" max="12" required />
                     <input type="number" id="Input_TahunLahir" name="tahun_lahir" placeholder="Tahun" min="1900" max="2026" required />
@@ -134,9 +136,9 @@
               </p>
             </section>
 
-            <div id="Alert_Error" class="alert-box" role="alert"></div>
+            <div id="Alert_Error" class="alert-box alert-danger" role="alert" hidden></div>
 
-            <button type="submit" class="btn-primary" id="Btn_Daftar">Buat akun</button>
+            <button type="submit" class="btn btn--primary btn--block" id="Btn_Daftar">Buat akun</button>
           </form>
 
           <p class="login-link">
@@ -145,7 +147,6 @@
         </div>
       </main>
     </div>
-
 
     <script src="RegistrationPagePelajar.js"></script>
   </body>
