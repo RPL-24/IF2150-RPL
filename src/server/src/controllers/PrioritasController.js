@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { STATUS } from '@silembur/shared';
-import pool, { withTransaction } from '../db/pool.js';
+import { pool } from '../db/pool.js'; 
 import { getLaporanTerverifikasi } from '../models/laporan/prioritas.js';
 import { ubahStatus } from '../models/laporan/status.js';
-import { hitungSkor } from '../models/skor.js';
+import { hitungSkor } from '../models/skorPrioritas/skor.js';
 
 export const skemaUbahStatus = z.object({
   status: z.enum([STATUS.DIPROSES, STATUS.SELESAI]),
