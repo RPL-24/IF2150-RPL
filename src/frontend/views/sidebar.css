@@ -99,48 +99,6 @@
     color: var(--color-ink);
 }
 
-/* Pencarian di atas menu ------------------------------------------------- */
-
-.sidebar-search {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    height: 44px;
-    padding: 0 14px;
-    background-color: var(--color-mist-light);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    transition: border-color var(--duration-base) ease,
-                background-color var(--duration-base) ease;
-}
-
-.sidebar-search:focus-within {
-    border-color: var(--color-teal);
-    background-color: var(--color-white);
-    box-shadow: 0 0 0 3px var(--color-teal-subtle);
-}
-
-.search-icon {
-    font-size: 18px;
-    line-height: 1;
-    color: var(--color-ink-subtle);
-    user-select: none;
-}
-
-.search-input {
-    width: 100%;
-    border: none;
-    background: transparent;
-    outline: none;
-    font-family: var(--font-body);
-    font-size: 14px;
-    color: var(--color-ink);
-}
-
-.search-input::placeholder {
-    color: var(--color-ink-muted);
-}
-
 /* Menu navigasi ----------------------------------------------------------- */
 
 .nav-menu {

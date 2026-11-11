@@ -12,7 +12,6 @@
  *       <button class="nav-toggle" aria-controls="SidebarPanel" aria-expanded="false">...</button>
  *     </div>
  *     <div class="sidebar-panel" id="SidebarPanel">
- *       <div class="sidebar-search">...</div>
  *       <nav class="nav-menu">...</nav>
  *       <div class="sidebar-user">...</div>
  *     </div>

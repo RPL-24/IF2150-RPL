@@ -23,8 +23,7 @@
     font-weight: 700;
     color: var(--color-ink);
     letter-spacing: -0.02em;
-}/* Kolom Pencarian di Atas Menu (Node 4076 FigCraft) */
-/* Menu Navigasi */
+}/* Menu Navigasi */
 /* State Aktif (Pill Teal 12px sesuai FigCraft) */
 .nav-item.active{
     background-color: var(--color-teal);

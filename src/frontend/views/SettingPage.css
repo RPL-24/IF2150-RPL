@@ -23,8 +23,7 @@
     font-weight: 700;
     color: var(--color-ink);
     letter-spacing: -0.02em;
-}/* Kolom Pencarian di Atas Menu */
-/* Menu Navigasi */
+}/* Menu Navigasi */
 /* Item Aktif Setelan (Node 4640 FigCraft) */
 .nav-item.active{
     background-color: var(--color-teal);
