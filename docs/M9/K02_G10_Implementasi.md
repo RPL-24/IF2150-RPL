@@ -235,6 +235,19 @@ Tabel B.5. Traceability Kelas Perancangan ke Implementasi
 
 | ID Kelas | Nama Kelas Perancangan | Bentuk Implementasi | Lokasi (File dan Nama) | Keterangan |
 | :--- | :--- | :--- | :--- | :--- |
+| *C01* | *OneClickSOS* | ** | ** | ** |
+| *C02* | *AntarmukaPolisi* | ** | ** | ** |
+| *C03* | *Korban* | ** | ** | ** |
+| *C04* | *Peta* | ** | ** | ** |
+| *C05* | *ListLayanan* | ** | ** | ** |
+| *C06* | *Layanan* | ** | ** | ** |
+| *C07* | *AntarmukaTelepon* | ** | ** | ** |
+| *C08* | *Polisi* | ** | ** | ** |
+| *C09* | *Rekaman* | ** | ** | ** |
+| *C10* | *LaporanKekerasan* | ** | ** | ** |
+| *C11* | *APILayanan* | ** | ** | ** |
+| *C12* | *AntarmukaPetaLayanan* | ** | ** | ** |
+
 | *[C01]* | *[Nama kelas pada DPPL]* | *[mis. Kelas / Fungsi / Komponen / Route / Tabel]* | *[mis. `src/models/user.py` - `User`]* | *[Cara atribut dan operasi kelas diwujudkan; "-" jika tidak ada penjelasan tambahan]* |
 | *[C02]* | *[Nama kelas pada DPPL]* | *[Bentuk implementasi]* | *[mis. `src/components/LoginForm.tsx` - `LoginForm`]* | *[mis. atribut menjadi *state*, operasi menjadi *handler*]* |
 | *[C03]* | *[Nama kelas pada DPPL]* | *[Bentuk implementasi]* | *[mis. `src/routes/auth.js` - `POST /login`]* | *[Keterangan]* |
