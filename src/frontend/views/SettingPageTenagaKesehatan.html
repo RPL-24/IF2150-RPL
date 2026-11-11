@@ -168,8 +168,42 @@
                         </div>
                         <a href="ResetPasswordPage.html" class="btn btn--secondary btn--block" id="Link_UbahSandi">Ubah kata sandi</a>
                     </section>
-                </div>
+                
+                    <!-- Baris Bawah: Kartu Izin & Notifikasi -->
+                    <section class="card-box settings-card-full" id="Card_Izin">
+                        <h2 class="card-box-title">Izin & Notifikasi</h2>
+                        
+                        <div class="permissions-divider"></div>
 
+                        <!-- Izin Notifikasi Pemantauan -->
+                        <div class="permission-item-row">
+                            <div class="permission-text">
+                                <p class="field-label-bold" id="Label_IzinNotif">Notifikasi Pengajuan Konsultasi</p>
+                                <p class="field-description">Dapatkan pengingat bila ada pelajar yang mengajukan konsultasi.</p>
+                                <p class="field-status-note" id="Text_NotifInfo"></p>
+                            </div>
+                            <label class="switch-toggle">
+                                <input type="checkbox" role="switch" id="Switch_Notifikasi" aria-labelledby="Label_IzinNotif">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="permissions-divider"></div>
+
+                        <!-- Izin Lokasi -->
+                        <div class="permission-item-row">
+                            <div class="permission-text">
+                                <p class="field-label-bold" id="Label_IzinLokasi">Lokasi</p>
+                                <p class="field-description">Digunakan untuk menyesuaikan rekomendasi fasilitas kesehatan terdekat.</p>
+                                <p class="field-status-note" id="Text_LokasiInfo"></p>
+                            </div>
+                            <label class="switch-toggle">
+                                <input type="checkbox" role="switch" id="Switch_Lokasi" aria-labelledby="Label_IzinLokasi">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </section>
+                </div>
                 <!-- Kolom Kanan: Tempat Kerja & Ketersediaan Jadwal -->
                 <div class="settings-column-right">
                     <!-- Kartu Tempat Kerja & Metode Konsultasi -->
