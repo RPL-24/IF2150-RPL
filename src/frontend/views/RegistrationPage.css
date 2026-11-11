@@ -95,11 +95,17 @@ h1, h2, h3{
 .role-tabs{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 4px;
   margin-top: 32px;
   padding: 4px;
   background: var(--color-mist);
   border-radius: 999px;
+}
+
+.role-tabs .seg-btn{
+  text-align: center;
+  padding: 8px 4px;
+  white-space: no-wrap;
 }
 
 .divider{
