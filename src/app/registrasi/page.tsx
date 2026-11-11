@@ -1,4 +1,4 @@
-import RegistrasiView from '@/modules/akun/ui/RegistrasiView';
+import RegistrasiView from '@/modules/akun/ui/registrasiView';
 
 export const metadata = { title: 'Registrasi akun | Fajar Tech' };
 
