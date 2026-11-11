@@ -3,6 +3,20 @@ import app from "./index";
 import { buatDbUji, envUji } from "../test/harness";
 
 describe("GET /health", () => {
+  test("mengembalikan ok", async () => {
+    const ctx = buatDbUji();
+    const res = await app.fetch(
+      new Request("http://sehati.test/health"),
+      envUji(ctx.D1),
+      {} as ExecutionContext,
+    );
+    const body = (await res.json()) as any;
+    expect(body).toMatchObject({ ok: true });
+    ctx.tutup();
+  });
+});
+
+describe("GET /health/db", () => {
   test("mengembalikan ok dan pemeriksaan status terakhir", async () => {
     const ctx = buatDbUji(`
       INSERT INTO status_server (jenis, status_uptime, waktu_cek) VALUES
@@ -11,7 +25,7 @@ describe("GET /health", () => {
     `);
 
     const res = await app.fetch(
-      new Request("http://sehati.test/health"),
+      new Request("http://sehati.test/health/db"),
       envUji(ctx.D1),
       {} as ExecutionContext,
     );
@@ -26,7 +40,7 @@ describe("GET /health", () => {
   test("ok walau belum ada pemeriksaan (latest null)", async () => {
     const ctx = buatDbUji();
     const res = await app.fetch(
-      new Request("http://sehati.test/health"),
+      new Request("http://sehati.test/health/db"),
       envUji(ctx.D1),
       {} as ExecutionContext,
     );

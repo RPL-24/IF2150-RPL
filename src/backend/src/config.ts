@@ -5,7 +5,8 @@
  */
 
 /** App session lifetime in ms (Algo-002: `waktu sekarang - sesi.waktu_login > BATAS_SESI`). */
-export const BATAS_SESI_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+export const BATAS_SESI_HARI = 30;
+export const BATAS_SESI_MS = BATAS_SESI_HARI * 24 * 60 * 60 * 1000; // 30 days in ms
 
 /** Domains whose local-part becomes `mahasiswa.nim` (Algo-001). */
 export const DOMAIN_KAMPUS = ["std.stei.itb.ac.id", "mahasiswa.itb.ac.id"] as const;

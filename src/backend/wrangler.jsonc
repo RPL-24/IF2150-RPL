@@ -12,7 +12,14 @@
   ],
   // Algo-005 / Algo-007 / Algo-021 run every minute (Cloudflare Cron Trigger).
   "triggers": {
-    "crons": ["* * * * *"]
+    "crons": [
+      // for affirmations and reminders
+      "* * * * *",
+      // status check
+      "*/5 * * * *",
+      // db cleanup
+      "0 */12 * * *"
+    ]
   },
   "observability": {
     "issues": {

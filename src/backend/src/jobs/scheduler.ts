@@ -9,7 +9,8 @@ import {
   hapusTokenPush,
   reminderJatuhTempo,
 } from "../db/queries";
-import { TEKS_PENGINGAT, type JenisStatus } from "../config";
+import { BATAS_SESI_HARI, TEKS_PENGINGAT, type JenisStatus } from "../config";
+import { and, eq, lt, or, sql } from "drizzle-orm";
 
 const EXPO_PUSH_URL = "https://exp.host/--/api/v2/push/send";
 const BATCH_SIZE = 100;
@@ -139,18 +140,56 @@ async function jalankanCekStatus(env: Env, db: ReturnType<typeof drizzle<typeof 
   }
 }
 
+/** 
+ * Cleans up outdated, no longer needed data from the database
+ * to prevent it from ballooning in size
+ */
+async function bersihkanDB(_env: Env, db: ReturnType<typeof drizzle<typeof schema>>) {
+  await db.delete(schema.statusServer).where(lt(schema.statusServer.waktuCek, sql`datetime('now', '-7 days')`));
+
+  await db.delete(schema.notifikasi).where(lt(schema.notifikasi.waktuKirim, sql`datetime('now', '-30 days')`));
+
+  await db.delete(schema.sesiAutentikasi).where(
+    or(
+      lt(schema.sesiAutentikasi.waktuLogin, sql`datetime('now', ${`-${BATAS_SESI_HARI} days`})`),
+      and(
+        eq(schema.sesiAutentikasi.status, "berakhir"),
+        lt(schema.sesiAutentikasi.waktuLogin, sql`datetime('now', '-7 days')`)
+      )
+    )
+  );
+}
+
 /** Cloudflare Cron Trigger entrypoint. */
 export async function scheduled(
-  _event: ScheduledController,
+  controller: ScheduledController,
   env: Env,
   ctx: ExecutionContext,
 ) {
   const db = drizzle(env.D1, { schema });
   ctx.waitUntil(
     (async () => {
-      await jalankanAfirmasi(env, db);
-      await jalankanPengingat(env, db);
-      await jalankanCekStatus(env, db);
+      switch (controller.cron) {
+        // for affirmations and reminders
+        case "* * * * *":
+          await jalankanAfirmasi(env, db);
+          await jalankanPengingat(env, db);
+          break;
+
+        // status check
+        case "*/5 * * * *":
+          await jalankanCekStatus(env, db);
+          break;
+
+        // db cleanup
+        case "0 */12 * * *":
+          await bersihkanDB(env, db);
+          break;
+
+        default:
+          console.log(`[Cron] Unknown cron timer found ${controller.cron}`);
+          break;
+      }
     })(),
   );
 }
