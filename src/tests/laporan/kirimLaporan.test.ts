@@ -27,7 +27,9 @@ function buat(sesi: KonteksSesi, anggota = true, simpan = true) {
 }
 
 describe("LaporanController.kirimLaporan (Algo-025, Algo-034)", () => {
-  beforeEach(() => jest.spyOn(console, "error").mockImplementation(() => {}));
+  beforeEach(() => {
+    jest.spyOn(console, "error").mockImplementation(() => {});
+  });
 
   it("menyimpan laporan berstatus MENUNGGU milik warga sesi", async () => {
     const { repo, akun, controller } = buat(WARGA);

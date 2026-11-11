@@ -98,3 +98,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .table .num { text-align: right; }
 
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
+
+.dua-kolom { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 52px; align-items: start; }
+.langkah { list-style: none; margin: 0; padding: 0; }
+.langkah li { position: relative; padding: 0 0 22px 26px; font-size: 14px; }
+.langkah li::before { content: ""; position: absolute; left: 0; top: 4px; width: 11px; height: 11px; border: 2px solid var(--teal); border-radius: 50%; background: var(--white); }
+.langkah li:first-child::before { background: var(--mint); }
+.langkah li::after { content: ""; position: absolute; left: 5px; top: 17px; bottom: 0; width: 1px; background: var(--control); }
+.langkah li:last-child::after { display: none; }
+.langkah p { font-size: 13px; line-height: 1.5; color: var(--muted); margin: 2px 0 0; }
+@media (max-width: 800px) { .dua-kolom { grid-template-columns: 1fr; gap: 28px; } }
