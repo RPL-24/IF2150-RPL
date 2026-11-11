@@ -2,28 +2,34 @@
 
 // C14 · HasilPerbaikanForm (kelas boundary DPPL). Pemilik: Peran C (lihat AGENTS.md bagian 4).
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { MediaUploader } from "../components/shared/MediaUploader";
 import { StatusBadge } from "../components/shared/StatusBadge";
 import type { ActionResult } from "@/lib/action-result";
 import { KATEGORI } from "@/lib/constants";
+import { unggahMedia } from "@/lib/media";
 import { cekKelengkapan, PESAN_TAK_LENGKAP, validasiForm } from "@/lib/validasi-perbaikan";
 import type { RincianTugas } from "@/server/entities/ListTugas";
+import { unggahHasil } from "@/server/controllers/PerbaikanController";
 
 // Atribut statusTampilan
-type StatusTampilan = "mengisi" | "tak_lengkap" | "siap_kirim"
+type StatusTampilan = "mengisi" | "tak_lengkap" | "terkirim"
 
-type Props = { hasilTiket: ActionResult<RincianTugas> };
+type Props = { hasilTiket: ActionResult<RincianTugas>; idUser: string };
 
 // Operasi tampilkanForm
-export function HasilPerbaikanForm({ hasilTiket }: Props) {
+export function HasilPerbaikanForm({ hasilTiket, idUser }: Props) {
   const [statusTampilan, setStatusTampilan] = useState<StatusTampilan>("mengisi");
   const [inputDeskripsi, setInputDeskripsi] = useState("");
   const [berkasFoto, setBerkasFoto] = useState<File[]>([]);
   const [berkasVideo, setBerkasVideo] = useState<File[]>([]);
+  const [pesanGagal, setPesanGagal] = useState<string | null> (null);
+  const [mengirim, startKirim] = useTransition();
 
   if (!hasilTiket.ok) return renderGagal(hasilTiket.error);
   const tiket = hasilTiket.data;
+
+  if (statusTampilan === "terkirim") return renderTerkirim(tiket.id_tiket);
 
   const tandaiKosong = statusTampilan === "tak_lengkap";
   const { catatanKosong, fotoKosong } = cekKelengkapan(inputDeskripsi, berkasFoto);
@@ -34,17 +40,36 @@ export function HasilPerbaikanForm({ hasilTiket }: Props) {
     setInputDeskripsi(deskripsi);
     setBerkasFoto(foto);
     setBerkasVideo(video);
-    if (statusTampilan === "siap_kirim") setStatusTampilan("mengisi");
+    setPesanGagal(null);
   }
 
   // Operasi submitForm
   function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (mengirim) return;
     if (!validasiForm(inputDeskripsi, berkasFoto, berkasVideo)) {
       setStatusTampilan("tak_lengkap");
       return;
     }
-    // unggahMedia() masih DITAHAN
+    setPesanGagal(null);
+
+    startKirim(async () => {
+      const unggah = await unggahMedia([...berkasFoto, ...berkasVideo], "hasil", idUser);
+      if (!unggah.ok) {
+        setPesanGagal(unggah.error);
+        return;
+      }
+
+      const foto = unggah.data.filter((m) => m.tipe === "foto");
+      const video = unggah.data.filter((m) => m.tipe === "video");
+      const hasil = await unggahHasil(tiket.id_tiket, inputDeskripsi, foto, video);
+
+      if (!hasil.ok) {
+        setPesanGagal(`Gagal terkirim: ${hasil.error}`);
+        return;
+      }
+      setStatusTampilan("terkirim");
+    });
   }
 
   return (
@@ -98,6 +123,7 @@ export function HasilPerbaikanForm({ hasilTiket }: Props) {
           value={berkasFoto}
           onChange={(foto) => userInput(inputDeskripsi, foto, berkasVideo)}
           invalid={tandaiKosong && fotoKosong}
+          disabled={mengirim}
         />
 
         {/* I06-06 & I06-07: berkas video */}
@@ -107,6 +133,7 @@ export function HasilPerbaikanForm({ hasilTiket }: Props) {
           maks={1}
           value={berkasVideo}
           onChange={(video) => userInput(inputDeskripsi, berkasFoto, video)}
+          disabled={mengirim}
         />
 
         {/* I06-08: form tak lengkap */}
@@ -116,17 +143,17 @@ export function HasilPerbaikanForm({ hasilTiket }: Props) {
           </p>
         )}
 
-        {statusTampilan === "siap_kirim" && (
-          <p role="status" className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">
-            Formulir lengkap. Dilanjut di Langkah 6.
+        {pesanGagal && (
+          <p role="alert" className="rounded-md bg-red-50 p-3 text-sm text-red-700">
+            {pesanGagal}
           </p>
         )}
 
         {/* I06-09 */}
-        <button type="submit" className="w-full cursor-pointer rounded-md bg-blue-600 py-2.5 font-medium text-white">
-          Kirim Hasil
+        <button type="submit" disabled={mengirim} className="w-full cursor-pointer rounded-md bg-blue-600 py-2.5 font-medium text-white">
+          {mengirim? "Mengirim..." : "Kirim Hasil"}
         </button>
-
+        
       </form>
     </main>
   );
@@ -143,6 +170,25 @@ function renderGagal(pesan: string) {
         {pesan}
       </p>
       <Link href="/tugas" className="block rounded-md border border-gray-300 py-2 text-center font-medium">
+        Kembali ke Daftar Tugas
+      </Link>
+    </main>
+  )
+}
+
+function renderTerkirim(idTiket: string) {
+  return (
+    <main className="mx-auto w-full max-w-md space-y-4 p-4">
+      <h1 className="text-xl font-semibold">
+        Hasil perbaikan terkirim!
+      </h1>
+      <p role="status" className="rounded-md bg-green-50 p-3 text-sm text-green-800">
+        Hasil perbaikan tiket {idTiket} sudah dikirim dan menunggu evaluasi Tim Administrasi.
+      </p>
+      <Link
+        href="/tugas"
+        className="block rounded-md bg-blue-600 py-2.5 text-center font-medium text-white"
+      >
         Kembali ke Daftar Tugas
       </Link>
     </main>
