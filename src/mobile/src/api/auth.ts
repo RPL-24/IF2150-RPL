@@ -30,6 +30,11 @@ const HOST_KEMBALI = 'masuk';
 /** How long to trust `openAuthSessionAsync` before falling back to the `url` event. */
 const GRACE_LISTENER_MS = 1500;
 
+/** Resolves to `nilai` after `ms` milliseconds. */
+function tunda<T>(ms: number, nilai: T): Promise<T> {
+  return new Promise((selesai) => setTimeout(() => selesai(nilai), ms));
+}
+
 /**
  * Builds the link Google should bounce back to.
  *
@@ -99,6 +104,12 @@ function urlCocok(diterima: string, diharapkan: string): boolean {
  * resolved as a cancel and the login failed after the redirect had already
  * worked. Here the listener resolves a separate promise that is only consulted
  * after a grace period, so a working browser path is never preempted.
+ *
+ * After the grace period the browser promise stays in the race: the user always
+ * takes longer than that to pick an account, and on iOS the redirect arrives
+ * only through `openAuthSessionAsync` (no `url` event), so waiting on the event
+ * alone hung the login. A browser cancel still yields to a deep link that lands
+ * within the grace period, in case Android reports the tab closing first.
  */
 async function tungguRedirect(
   urlOtorisasi: string,
@@ -123,9 +134,20 @@ async function tungguRedirect(
     const pemenang = await Promise.race([dariBrowser, batas]);
 
     if (pemenang === 'batas') {
-      // The promise is stuck: wait for the event, and close the tab ourselves.
-      const hasil = await dariDeepLink;
-      void WebBrowser.dismissBrowser?.().catch(() => {});
+      // Take whichever comes first. A cancel only counts if no deep link follows.
+      const dariBrowserLanjut = dariBrowser.then((hasil) =>
+        hasil.dibatalkan ? Promise.race([dariDeepLink, tunda(GRACE_LISTENER_MS, hasil)]) : hasil,
+      );
+      let lewatDeepLink = false;
+      const hasil = await Promise.race([
+        dariBrowserLanjut,
+        dariDeepLink.then((h) => {
+          lewatDeepLink = true;
+          return h;
+        }),
+      ]);
+      // The event won, so the browser may still be open: close it ourselves.
+      if (lewatDeepLink) void WebBrowser.dismissBrowser?.().catch(() => {});
       return hasil;
     }
     return pemenang;

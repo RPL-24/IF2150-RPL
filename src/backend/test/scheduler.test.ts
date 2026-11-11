@@ -2,8 +2,17 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { buatDbUji, buatSesiUji } from "./harness";
 import { jamMenitWib, scheduled } from "../src/jobs/scheduler";
 
-/** Builds the `scheduled()` event/context pair the Worker would receive. */
-function konteks() {
+/** The three triggers declared in wrangler.jsonc. */
+const CRON_AFIRMASI = "* * * * *";
+const CRON_STATUS = "*/5 * * * *";
+const CRON_BERSIH = "0 */12 * * *";
+
+/**
+ * Builds the `scheduled()` event/context pair the Worker would receive.
+ * `scheduled()` dispatches on `controller.cron`, so every test must say which
+ * trigger it is exercising.
+ */
+function konteks(cron: string) {
   let selesai: Promise<unknown> = Promise.resolve();
   const ctx = {
     waitUntil: (p: Promise<unknown>) => {
@@ -11,7 +20,8 @@ function konteks() {
     },
     passThroughOnException: () => {},
   } as unknown as ExecutionContext;
-  return { ctx, tunggu: () => selesai };
+  const event = { cron, scheduledTime: Date.now(), noRetry: () => {} } as unknown as ScheduledController;
+  return { event, ctx, tunggu: () => selesai };
 }
 
 function siapkanAfirmasiJatuhTempo(ctx: ReturnType<typeof buatDbUji>, tokenPush?: string) {
@@ -50,8 +60,8 @@ describe("Algo-005 kirimAfirmasi (cron)", () => {
       return new Response(JSON.stringify({ data: [] }), { status: 200 });
     }) as any;
 
-    const { ctx: ectx, tunggu } = konteks();
-    await scheduled({} as any, { ...ctx, D1: ctx.D1 } as any, ectx);
+    const { event, ctx: ectx, tunggu } = konteks(CRON_AFIRMASI);
+    await scheduled(event, { ...ctx, D1: ctx.D1 } as any, ectx);
     await tunggu();
 
     const rows = ctx.raw
@@ -78,8 +88,8 @@ describe("Algo-005 kirimAfirmasi (cron)", () => {
 
     globalThis.fetch = vi.fn(async () => new Response("{}", { status: 200 })) as any;
 
-    const { ctx: ectx, tunggu } = konteks();
-    await scheduled({} as any, { ...ctx, D1: ctx.D1 } as any, ectx);
+    const { event, ctx: ectx, tunggu } = konteks(CRON_AFIRMASI);
+    await scheduled(event, { ...ctx, D1: ctx.D1 } as any, ectx);
     await tunggu();
 
     const n = ctx.raw.prepare("SELECT COUNT(*) AS n FROM notifikasi").get() as { n: number };
@@ -102,8 +112,8 @@ describe("Algo-005 kirimAfirmasi (cron)", () => {
       return new Response("ok", { status: 200 });
     }) as any;
 
-    const { ctx: ectx, tunggu } = konteks();
-    await scheduled({} as any, { ...ctx, D1: ctx.D1 } as any, ectx);
+    const { event, ctx: ectx, tunggu } = konteks(CRON_AFIRMASI);
+    await scheduled(event, { ...ctx, D1: ctx.D1 } as any, ectx);
     await tunggu();
 
     expect(dikirim).toHaveLength(1);
@@ -128,8 +138,8 @@ describe("Algo-005 kirimAfirmasi (cron)", () => {
       return new Response("ok", { status: 200 });
     }) as any;
 
-    const { ctx: ectx, tunggu } = konteks();
-    await scheduled({} as any, { ...ctx, D1: ctx.D1 } as any, ectx);
+    const { event, ctx: ectx, tunggu } = konteks(CRON_AFIRMASI);
+    await scheduled(event, { ...ctx, D1: ctx.D1 } as any, ectx);
     await tunggu();
 
     const sesi = ctx.raw
@@ -168,8 +178,8 @@ describe("Algo-005 kirimAfirmasi (cron)", () => {
       return new Response("ok", { status: 200 });
     }) as any;
 
-    const { ctx: ectx, tunggu } = konteks();
-    await scheduled({} as any, { ...ctx, D1: ctx.D1 } as any, ectx);
+    const { event, ctx: ectx, tunggu } = konteks(CRON_AFIRMASI);
+    await scheduled(event, { ...ctx, D1: ctx.D1 } as any, ectx);
     await tunggu();
 
     expect(ukuranBatch).toEqual([100, 50]);
@@ -193,8 +203,8 @@ describe("Algo-007 kirimPengingat (cron)", () => {
       return new Response(JSON.stringify({ data: [] }), { status: 200 });
     }) as any;
 
-    const { ctx: ectx, tunggu } = konteks();
-    await scheduled({} as any, { ...ctx, D1: ctx.D1 } as any, ectx);
+    const { event, ctx: ectx, tunggu } = konteks(CRON_AFIRMASI);
+    await scheduled(event, { ...ctx, D1: ctx.D1 } as any, ectx);
     await tunggu();
 
     const row = ctx.raw
@@ -221,9 +231,9 @@ describe("Algo-021 cekStatusServer (cron)", () => {
     const ctx = buatDbUji();
     globalThis.fetch = vi.fn(async () => new Response("ok", { status: 200 })) as any;
 
-    const { ctx: ectx, tunggu } = konteks();
+    const { event, ctx: ectx, tunggu } = konteks(CRON_STATUS);
     await scheduled(
-      {} as any,
+      event,
       { D1: ctx.D1, API_BASE_URL: "https://sehati.test" } as any,
       ectx,
     );
@@ -243,9 +253,9 @@ describe("Algo-021 cekStatusServer (cron)", () => {
     const ctx = buatDbUji();
     globalThis.fetch = vi.fn(async () => new Response("gagal", { status: 503 })) as any;
 
-    const { ctx: ectx, tunggu } = konteks();
+    const { event, ctx: ectx, tunggu } = konteks(CRON_STATUS);
     await scheduled(
-      {} as any,
+      event,
       { D1: ctx.D1, API_BASE_URL: "https://sehati.test" } as any,
       ectx,
     );
@@ -262,12 +272,88 @@ describe("Algo-021 cekStatusServer (cron)", () => {
     const ctx = buatDbUji();
     globalThis.fetch = vi.fn(async () => new Response("ok", { status: 200 })) as any;
 
-    const { ctx: ectx, tunggu } = konteks();
-    await scheduled({} as any, { D1: ctx.D1 } as any, ectx);
+    const { event, ctx: ectx, tunggu } = konteks(CRON_STATUS);
+    await scheduled(event, { D1: ctx.D1 } as any, ectx);
     await tunggu();
 
     const n = ctx.raw.prepare("SELECT COUNT(*) AS n FROM status_server").get() as { n: number };
     expect(n.n).toBe(2);
+    ctx.tutup();
+  });
+});
+
+describe("pembersihan basis data (cron harian)", () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  /** Inserts a session with an explicit age and status. */
+  function sesi(ctx: ReturnType<typeof buatDbUji>, token: string, umurHari: number, status: "aktif" | "berakhir") {
+    buatSesiUji(ctx.raw, { idPengguna: token, peran: "mahasiswa", token });
+    ctx.raw
+      .prepare("UPDATE sesi_autentikasi SET waktu_login = datetime('now', ?), status = ? WHERE token = ?")
+      .run(`-${umurHari} days`, status, token);
+  }
+
+  test("menghapus data lama dan menyisakan yang masih berlaku", async () => {
+    const ctx = buatDbUji();
+    buatSesiUji(ctx.raw, { idPengguna: "mhs", peran: "mahasiswa", token: "tm" });
+    ctx.raw.exec(`
+      INSERT INTO status_server (jenis, status_uptime, waktu_cek) VALUES
+        ('website', 1, datetime('now', '-10 days')),
+        ('website', 1, datetime('now', '-1 days'));
+      INSERT INTO daily_affirmation (id_affirmation, id_mahasiswa, konten, waktu_kirim)
+        VALUES ('a-lama', 'mhs', 'lama', '23:59');
+      INSERT INTO notifikasi (id_notifikasi, id_mahasiswa, id_affirmation, id_reminder, isi, waktu_kirim)
+        VALUES ('n1', 'mhs', 'a-lama', NULL, 'lama', datetime('now', '-40 days'));
+    `);
+    sesi(ctx, "sesi-baru", 1, "aktif");
+    sesi(ctx, "sesi-berakhir-lama", 10, "berakhir");
+    // The row that used to leak: expired by age but never used, so never flipped
+    // to 'berakhir'. Its token is already rejected by verifikasiToken.
+    sesi(ctx, "sesi-aktif-kedaluwarsa", 40, "aktif");
+
+    globalThis.fetch = vi.fn(async () => new Response("ok", { status: 200 })) as any;
+    const { event, ctx: ectx, tunggu } = konteks(CRON_BERSIH);
+    await scheduled(event, { D1: ctx.D1 } as any, ectx);
+    await tunggu();
+
+    const status = ctx.raw.prepare("SELECT COUNT(*) AS n FROM status_server").get() as { n: number };
+    expect(status.n).toBe(1); // only the 1-day-old row survives
+
+    // Only the sessions this test created; "tm" belongs to the fixture user.
+    const sisa = (
+      ctx.raw
+        .prepare("SELECT token FROM sesi_autentikasi WHERE token <> 'tm' ORDER BY token")
+        .all() as { token: string }[]
+    ).map((r) => r.token);
+    expect(sisa).toEqual(["sesi-baru"]);
+
+    ctx.tutup();
+  });
+
+  test("cron lain tidak menjalankan pembersihan", async () => {
+    const ctx = buatDbUji();
+    ctx.raw.exec(
+      "INSERT INTO status_server (jenis, status_uptime, waktu_cek) VALUES ('website', 1, datetime('now', '-10 days'))",
+    );
+
+    globalThis.fetch = vi.fn(async () => new Response("ok", { status: 200 })) as any;
+    const { event, ctx: ectx, tunggu } = konteks(CRON_AFIRMASI);
+    await scheduled(event, { D1: ctx.D1 } as any, ectx);
+    await tunggu();
+
+    const n = ctx.raw.prepare("SELECT COUNT(*) AS n FROM status_server").get() as { n: number };
+    expect(n.n).toBe(1); // untouched
+    ctx.tutup();
+  });
+
+  test("cron tak dikenal tidak melakukan apa pun", async () => {
+    const ctx = buatDbUji();
+    const { event, ctx: ectx, tunggu } = konteks("0 0 1 1 *");
+    await scheduled(event, { D1: ctx.D1 } as any, ectx);
+    await tunggu();
+
+    const n = ctx.raw.prepare("SELECT COUNT(*) AS n FROM status_server").get() as { n: number };
+    expect(n.n).toBe(0);
     ctx.tutup();
   });
 });

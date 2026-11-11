@@ -40,7 +40,9 @@ app.notFound((c) =>
 );
 
 /** Smoke test; not part of the DPPL, mirrors the existing `/health` contract. */
-app.get("/health", async (c) => {
+app.get("/health", (c) => c.json({ ok: true }));
+
+app.get("/health/db", async (c) => {
   const db = drizzle(c.env.D1, { schema });
   const [latest] = await db
     .select()
