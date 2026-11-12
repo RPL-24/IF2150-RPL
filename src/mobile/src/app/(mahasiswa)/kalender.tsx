@@ -47,7 +47,10 @@ export default function Kalender() {
       const dari = new Date(minggu);
       const sampai = new Date(minggu);
       sampai.setDate(sampai.getDate() + 7);
-      const hasil = await ambilKalender(dari, sampai);
+      const hasil = await ambilKalender(
+        dari.toISOString(),
+       sampai.toISOString(),
+      );
       setEvents(hasil.events);
       setMode(hasil.mode);
       setPeringatan(hasil.peringatan);

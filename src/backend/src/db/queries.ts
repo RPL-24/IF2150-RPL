@@ -216,6 +216,11 @@ export function buatAfirmasi(
     waktuKirim: data.waktu,
   });
 }
+export function hapusAfirmasi(db: Db, idMahasiswa: string) {
+  return db
+    .delete(schema.dailyAffirmation)
+    .where(eq(schema.dailyAffirmation.idMahasiswa, idMahasiswa));
+}
 
 /** Q-041 — the student's affirmation (beranda card). */
 export function ambilAfirmasi(db: Db, idMahasiswa: string) {
