@@ -230,13 +230,6 @@ export function ambilAfirmasi(db: Db, idMahasiswa: string) {
     .limit(1);
 }
 
-/** Deletes the student's affirmation (I-04-03 toggle off). Not in the DPPL. */
-export function hapusAfirmasi(db: Db, idMahasiswa: string) {
-  return db
-    .delete(schema.dailyAffirmation)
-    .where(eq(schema.dailyAffirmation.idMahasiswa, idMahasiswa));
-}
-
 /** Q-024 — find the student's reminder of one `jenis`. */
 export function cariReminder(db: Db, idMahasiswa: string, jenis: string) {
   return db
@@ -348,8 +341,8 @@ export function konsultanAda(db: Db, idKonsultan: string) {
     .limit(1);
 }
 
-/** Q-013 — every slot (for the merged calendar). */
-export function semuaJadwal(db: Db) {
+/** Q-013 — slots that overlap the requested calendar window. */
+export function semuaJadwal(db: Db, dari: string, sampai: string) {
   return db
     .select({
       idJadwal: schema.jadwalKonsultasi.idJadwal,
@@ -359,6 +352,13 @@ export function semuaJadwal(db: Db) {
       status: schema.jadwalKonsultasi.status,
     })
     .from(schema.jadwalKonsultasi)
+    // Include events that start before the window but end inside it.
+    .where(
+      and(
+        lt(schema.jadwalKonsultasi.waktu, sampai),
+        gt(schema.jadwalKonsultasi.waktuSelesai, dari),
+      ),
+    )
     .orderBy(schema.jadwalKonsultasi.waktu);
 }
 

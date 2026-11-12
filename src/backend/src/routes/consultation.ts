@@ -23,12 +23,12 @@ import {
 import { bacaBody } from "../lib/http";
 import { validasiRentangJadwal } from "../lib/validasi";
 import {
-  ambilEventGoogle,
-  ambilTokenValid,
-  cekBentrokGoogle,
+  ambilKalender,
+  cekBentrokJadwal,
   type EventGoogle,
 } from "../lib/google";
 import { auth, requireRole, type AppEnv } from "../middleware/auth";
+import { gabungkanJadwal } from "../lib/kalender";
 
 export const calendarRoutes = new Hono<AppEnv>();
 
@@ -36,37 +36,6 @@ export const calendarRoutes = new Hono<AppEnv>();
 /* CalendarController (C-28) — Algo-009 / Algo-011                            */
 /* -------------------------------------------------------------------------- */
 
-interface EventKalender {
-  judul: string;
-  mulai: string;
-  selesai: string;
-  sumber: string;
-}
-
-/** Algo-011 `gabungkanJadwal` — merge Google events with consultation slots. */
-function gabungkanJadwal(
-  google: EventGoogle[],
-  jadwal: { waktu: string; waktuSelesai: string; status: string }[],
-): EventKalender[] {
-  const hasil: EventKalender[] = [];
-
-  for (const e of google) {
-    const mulai = e.start?.dateTime ?? e.start?.date;
-    const selesai = e.end?.dateTime ?? e.end?.date;
-    if (!mulai || !selesai) continue;
-    hasil.push({ judul: e.summary ?? "(tanpa judul)", mulai, selesai, sumber: "google" });
-  }
-  for (const j of jadwal) {
-    hasil.push({
-      judul: "Sesi konsultasi",
-      mulai: j.waktu,
-      selesai: j.waktuSelesai,
-      sumber: j.status,
-    });
-  }
-
-  return hasil.sort((a, b) => a.mulai.localeCompare(b.mulai));
-}
 
 /** C-28 `tampilkanCalendar()` — UC-03. Google failure degrades to slots only. */
 calendarRoutes.get("/", auth, requireRole("mahasiswa"), async (c) => {
@@ -76,14 +45,22 @@ calendarRoutes.get("/", auth, requireRole("mahasiswa"), async (c) => {
   const timeMin = c.req.query("dari") ?? new Date().toISOString();
   const timeMax =
     c.req.query("sampai") ?? new Date(Date.now() + 30 * 86_400_000).toISOString();
+  const rentang = validasiRentangJadwal(timeMin, timeMax);
+  if (!rentang) {
+    throw gagalValidasi("Parameter dari dan sampai harus berupa ISO-8601 valid dengan sampai > dari");
+  }
+  const dari = rentang.mulai.toISOString();
+  const sampai = rentang.selesai.toISOString();
 
-  const jadwal = await semuaJadwal(db); // Q-013
+  const jadwal = await semuaJadwal(db, dari, sampai); // Q-013
 
   let google: EventGoogle[] = [];
+  let mode: "google" | "mock" = "mock";
   let peringatan: string | undefined;
   try {
-    const accessToken = await ambilTokenValid(db, c.get("idPengguna"), cfg);
-    google = await ambilEventGoogle(accessToken, timeMin, timeMax); // Algo-009
+    const hasilGoogle = await ambilKalender(db, c.get("idPengguna"), cfg, dari, sampai); // Algo-009
+    google = hasilGoogle.events;
+    mode = hasilGoogle.mode;
   } catch (error) {
     // CalendarView.showErrorMessage() offers a Refresh action instead of failing hard.
     peringatan =
@@ -92,6 +69,7 @@ calendarRoutes.get("/", auth, requireRole("mahasiswa"), async (c) => {
 
   return c.json({
     events: gabungkanJadwal(google, jadwal),
+    mode,
     peringatan,
   });
 });
@@ -150,17 +128,15 @@ slotRoutes.post("/:id/book", auth, requireRole("mahasiswa"), async (c) => {
   if (!slot) throw tidakDitemukan("Slot jadwal tidak ditemukan");
   if (slot.status !== "tersedia") throw slotSudahDipesan();
 
-  // Algo-012 step 1: Google Calendar clash.
-  let accessToken: string | null = null;
-  try {
-    accessToken = await ambilTokenValid(db, idMahasiswa, cfg);
-  } catch {
-    accessToken = null; // user never linked Calendar; fall through to the local check
-  }
-  if (accessToken) {
-    const bentrok = await cekBentrokGoogle(accessToken, slot.waktu, slot.waktuSelesai); // Algo-010
-    if (bentrok) throw bentrokJadwal("Jadwal bentrok dengan event Google Calendar Anda");
-  }
+  // Algo-012 step 1: Google Calendar free/busy (Algo-010), including token refresh.
+  const bentrokGoogle = await cekBentrokJadwal(
+    db,
+    idMahasiswa,
+    cfg,
+    slot.waktu,
+    slot.waktuSelesai,
+  );
+  if (bentrokGoogle) throw bentrokJadwal("Jadwal bentrok dengan event Google Calendar Anda");
 
   // Algo-012 step 2: another booked session overlap (Q-011).
   const [tumpang] = await sesiTumpangTindih(db, {

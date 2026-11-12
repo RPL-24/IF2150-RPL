@@ -219,3 +219,73 @@ export async function cekBentrokGoogle(
   };
   return (data.calendars?.primary?.busy?.length ?? 0) > 0;
 }
+
+/**
+ * GoogleCalendarService.cekBentrokJadwal — Algo-010.
+ * Uses the same token lifecycle as ambilKalender (including refresh). When the
+ * account has no Google Calendar credentials, the local/mock calendar has no
+ * external busy periods, so the result is false.
+ */
+export async function cekBentrokJadwal(
+  db: Db,
+  idPengguna: string,
+  cfg: AppConfig,
+  waktu: string,
+  waktuSelesai: string,
+): Promise<boolean> {
+  if (!cfg.googleClientId || !cfg.googleClientSecret) return false;
+  const [token] = await bacaTokenGoogle(db, idPengguna);
+  if (!token) return false;
+  const accessToken = await ambilTokenValid(db, idPengguna, cfg);
+  return cekBentrokGoogle(accessToken, waktu, waktuSelesai);
+}
+
+
+/** Sample calendar events for local/demo use when the user has not linked Google. */
+export function buatEventKalenderMock(timeMin: string, timeMax: string): EventGoogle[] {
+  const awal = new Date(timeMin);
+  const akhir = new Date(timeMax);
+  const dasar = Number.isNaN(awal.getTime()) ? new Date() : awal;
+  const hari = new Date(dasar);
+  hari.setHours(9, 0, 0, 0);
+  hari.setDate(hari.getDate() + 1);
+  const kuliahMulai = new Date(hari);
+  const kuliahSelesai = new Date(hari);
+  kuliahSelesai.setHours(10, 30);
+  const tugasMulai = new Date(hari);
+  tugasMulai.setDate(tugasMulai.getDate() + 2);
+  tugasMulai.setHours(13, 0, 0, 0);
+  const tugasSelesai = new Date(tugasMulai);
+  tugasSelesai.setHours(14, 0);
+
+  const contoh: EventGoogle[] = [
+    { summary: "Kuliah / Kegiatan Kampus", start: { dateTime: kuliahMulai.toISOString() }, end: { dateTime: kuliahSelesai.toISOString() } },
+    { summary: "Waktu belajar mandiri", start: { dateTime: tugasMulai.toISOString() }, end: { dateTime: tugasSelesai.toISOString() } },
+  ];
+  const batasAkhir = akhir.getTime();
+  const batasAwal = dasar.getTime();
+  if (Number.isNaN(batasAkhir)) return contoh;
+  return contoh.filter((event) => {
+    const mulai = Date.parse(event.start?.dateTime ?? event.start?.date ?? "");
+    const selesai = Date.parse(event.end?.dateTime ?? event.end?.date ?? "");
+    return Number.isFinite(mulai) && Number.isFinite(selesai)
+      && mulai < batasAkhir && selesai > batasAwal;
+  });
+}
+
+/** GoogleCalendarService.ambilKalender — Algo-009, with credential-free mock mode. */
+export async function ambilKalender(
+  db: Db,
+  idPengguna: string,
+  cfg: AppConfig,
+  timeMin: string,
+  timeMax: string,
+): Promise<{ events: EventGoogle[]; mode: "google" | "mock" }> {
+  const [token] = await bacaTokenGoogle(db, idPengguna);
+  if (!token || !cfg.googleClientId || !cfg.googleClientSecret) {
+    return { events: buatEventKalenderMock(timeMin, timeMax), mode: "mock" };
+  }
+  const accessToken = await ambilTokenValid(db, idPengguna, cfg);
+  const events = await ambilEventGoogle(accessToken, timeMin, timeMax);
+  return { events, mode: "google" };
+}
