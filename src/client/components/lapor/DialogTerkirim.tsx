@@ -13,7 +13,7 @@ export function DialogTerkirim({ idTiket, onTutup }: Props) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="judul-dialog-terkirim"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-6"
+      className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/40 px-6"
     >
       <div className="w-full max-w-xs space-y-4 rounded-2xl bg-background p-6 text-center shadow-xl">
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
@@ -28,7 +28,7 @@ export function DialogTerkirim({ idTiket, onTutup }: Props) {
           </p>
         </div>
         <div className="space-y-2">
-          <Link href="/status" className="block w-full rounded-lg bg-blue-600 py-2.5 font-medium text-white">
+          <Link href={`/status?tiket=${encodeURIComponent(idTiket)}`} className="block w-full rounded-lg bg-blue-600 py-2.5 font-medium text-white">
             Lihat Status
           </Link>
           <button
