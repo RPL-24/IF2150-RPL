@@ -31,7 +31,7 @@ cd src
 npm install
 ```
 
-PostgreSQL **tidak wajib**. Tanpa konfigurasi apa pun, aplikasi memakai PGlite dan menyimpan data di `src/data/pglite`.
+Aplikasi secara otomatis memakai PGlite dan menyimpan data lokal di `src/data/pglite`.
 
 ## 3. Konfigurasi
 
@@ -56,18 +56,6 @@ cp .env.example .env
 | `SIMULASI_ANTREAN` | `true` | Menjalankan simulator antrean dummy (lihat bagian 5) |
 | `SIMULASI_INTERVAL_DETIK` | `15` | Selang waktu simulator antrean dummy |
 | `GATEWAY_SERVER_KEY` | *(kunci dev)* | Kunci HMAC tanda tangan notifikasi payment gateway |
-
-**Memakai PostgreSQL (opsional).** Jalankan PostgreSQL 16 lewat Docker:
-
-```bash
-docker compose up -d
-```
-
-Lalu isi `.env`:
-
-```
-DATABASE_URL=postgres://<username>:<password>@localhost:5432/<database>
-```
 
 Tabel dibuat otomatis saat server pertama kali berjalan (`server/db/schema.sql`), lalu data contoh dimasukkan. Seed juga bisa dijalankan manual:
 
@@ -97,11 +85,7 @@ npm run dev
 npm test
 ```
 
-Ada 68 test yang dipecah per modul (`tests/<modul>.test.ts`): unit test aturan bisnis dan keranjang, test alur seluruh use case terhadap basis data, serta test REST API. Secara bawaan test memakai PGlite in-memory. Untuk menguji terhadap PostgreSQL sungguhan, sediakan basis data khusus test lalu jalankan `test:pg` (berurutan karena semua file memakai satu basis data). **Seluruh isi skema `public` pada basis data tersebut akan dihapus.**
-
-```bash
-TEST_DATABASE_URL=postgres://user:pass@localhost:5432/antriin_test npm run test:pg
-```
+Ada 68 test yang dipecah per modul (`tests/<modul>.test.ts`): unit test aturan bisnis dan keranjang, test alur seluruh use case terhadap basis data, serta test REST API. Secara bawaan test memakai PGlite in-memory.
 
 Pemeriksaan tipe:
 
