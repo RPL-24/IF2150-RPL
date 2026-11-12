@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getDaftarPublik, getMilikSaya, getRincian, getRincianPublik } from "@/server/entities/Laporan";
 import { catatUpvote, getJumlahUpvote, sudahUpvote } from "@/server/entities/Upvote";
 import type { Tables } from "@/types/database";
+import { getBuktiLengkap } from "../entities/HasilPerbaikan";
 
 export type ItemRiwayat = Pick<Tables<"laporan">, "id" | "id_tiket" | "kategori" | "status" | "tahap" | "waktu_masuk">;
 
@@ -78,16 +79,22 @@ export async function ambilDetailStatus(idTiket: string): Promise<ActionResult<D
     // RLS mengembalikan null juga saat tiket milik warga lain; jangan membocorkan keberadaannya.
     if (!data) return gagal("Tiket tidak ditemukan atau tidak dapat diakses.");
 
-    const { id_tiket, kategori, deskripsi, waktu_masuk, status, tahap, alasan_penolakan, foto, video, riwayat } = data;
+    const { id, id_tiket, kategori, deskripsi, waktu_masuk, status, tahap, alasan_penolakan, foto, video, riwayat } = data;
+
+    let hasilPerbaikan: BuktiHasilPerbaikan | null | undefined;
+    if (status === "berhasil") {
+      const bukti = await getBuktiLengkap(supabase, id);
+      hasilPerbaikan = bukti.error ? undefined : bukti.data;
+    }
+    
+    
     return ok({
       id_tiket, kategori, deskripsi, waktu_masuk, status, tahap,
       alasan_penolakan: status === "ditolak" ? alasan_penolakan?.trim() || null : null,
       foto: foto ?? [],
       video: video ?? [],
       riwayat: riwayat ?? [],
-      // KF19 belum tersambung: getBuktiLengkap() belum ada pada entity milik C.
-      // Setelah tersedia, isi hasilPerbaikan hanya untuk status "berhasil" dengan bukti
-      // yang sesuai evaluasi selesai. Foto laporan awal tidak boleh dijadikan foto hasil.
+      hasilPerbaikan,
     });
   } catch {
     return gagal("Gagal memuat detail tiket. Coba lagi beberapa saat lagi.");
