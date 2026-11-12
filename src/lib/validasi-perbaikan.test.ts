@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cekKelengkapan, PESAN_TAK_LENGKAP, validasiForm } from "./validasi-perbaikan";
+import { cekKelengkapan, cekMediaTerunggah, PESAN_TAK_LENGKAP, validasiForm } from "./validasi-perbaikan";
 
 const foto = { name: "a.jpg", size: 1024 };
 const video = { name: "b.mp4", size: 1024 };
@@ -34,5 +34,35 @@ describe("cekKelengkapan", () => {
 describe("PESAN_TAK_LENGKAP", () => {
   it("sama persis dengan DPPL I06-08", () => {
     expect(PESAN_TAK_LENGKAP).toBe("Gagal terkirim: foto dan deskripsi wajib diisi.");
+  });
+});
+
+describe("cekMediaTerunggah", () => {
+  const ID = "11111111-1111-1111-1111-111111111111";
+  const media = (path: string, tipe: "foto" | "video", format = path.split(".").pop() ?? "") => ({
+    path,
+    format,
+    ukuran: 1024,
+    tipe,
+  });
+
+  it("menerima foto dan video di folder hasil milik sendiri", () => {
+    expect(cekMediaTerunggah([media(`hasil/${ID}/a.jpg`, "foto")], [media(`hasil/${ID}/b.mp4`, "video")], ID)).toBe(true);
+  });
+
+  it("menolak berkas di folder eksekutor lain", () => {
+    expect(cekMediaTerunggah([media("hasil/orang-lain/a.jpg", "foto")], [], ID)).toBe(false);
+  });
+
+  it("menolak berkas dari folder laporan warga", () => {
+    expect(cekMediaTerunggah([media(`laporan/${ID}/a.jpg`, "foto")], [], ID)).toBe(false);
+  });
+
+  it("menolak tipe yang tertukar (video di daftar foto)", () => {
+    expect(cekMediaTerunggah([media(`hasil/${ID}/a.mp4`, "video")], [], ID)).toBe(false);
+  });
+
+  it("menolak format yang tidak cocok dengan ekstensi path", () => {
+    expect(cekMediaTerunggah([media(`hasil/${ID}/a.jpg`, "foto", "png")], [], ID)).toBe(false);
   });
 });

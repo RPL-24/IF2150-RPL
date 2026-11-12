@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { MAX_FILE_SIZE } from "@/lib/constants";
-import { validasiBerkas } from "@/server/entities/HasilPerbaikan";
+import { validasiBerkas, pilihBuktiSelesai, type BarisHasil } from "@/server/entities/HasilPerbaikan";
 
 const MB = 1024 * 1024;
 const berkas = (name: string, size = 2 * MB) => ({ name, size });
@@ -36,5 +36,70 @@ describe("validasiBerkas", () => {
 
   it("berkas 0 byte ditolak", () => {
     expect(validasiBerkas([berkas("a.jpg", 0)], [])).toBe(false);
+  });
+});
+
+describe("pilihBuktiSelesai", () => {
+  const hasil = (
+    id: string,
+    waktu: string,
+    keputusan: ("selesai" | "belum_selesai" | "minta_ulang_bukti")[],
+  ): BarisHasil => ({
+    id_hasil: id,
+    catatan: `Catatan ${id}`,
+    waktu_unggah: waktu,
+    foto: [{ path: `hasil/u/${id}.jpg` }],
+    video: [],
+    evaluasi: keputusan.map((k) => ({ keputusan: k })),
+  });
+
+  it("null jika belum ada hasil perbaikan", () => {
+    expect(pilihBuktiSelesai([])).toBeNull();
+  });
+
+  it("null jika hasil belum dievaluasi", () => {
+    expect(pilihBuktiSelesai([hasil("h1", "2026-11-01T08:00:00Z", [])])).toBeNull();
+  });
+
+  it("null jika semua hasil dikembalikan", () => {
+    expect(
+      pilihBuktiSelesai([
+        hasil("h1", "2026-11-01T08:00:00Z", ["minta_ulang_bukti"]),
+        hasil("h2", "2026-11-02T08:00:00Z", ["belum_selesai"]),
+      ]),
+    ).toBeNull();
+  });
+
+  it("memilih hasil yang dikonfirmasi selesai, bukan hasil lama yang dikembalikan", () => {
+    const bukti = pilihBuktiSelesai([
+      hasil("h1", "2026-11-01T08:00:00Z", ["minta_ulang_bukti"]),
+      hasil("h2", "2026-11-03T08:00:00Z", ["selesai"]),
+    ]);
+    expect(bukti?.id_hasil).toBe("h2");
+  });
+
+  it("jika ada beberapa yang selesai, ambil yang terbaru", () => {
+    const bukti = pilihBuktiSelesai([
+      hasil("h2", "2026-11-03T08:00:00Z", ["selesai"]),
+      hasil("h3", "2026-11-05T08:00:00Z", ["selesai"]),
+    ]);
+    expect(bukti?.id_hasil).toBe("h3");
+  });
+
+  it("tidak menyertakan data evaluasi di hasilnya", () => {
+    const bukti = pilihBuktiSelesai([hasil("h1", "2026-11-01T08:00:00Z", ["selesai"])]);
+    expect(bukti).toEqual({
+      id_hasil: "h1",
+      catatan: "Catatan h1",
+      waktu_unggah: "2026-11-01T08:00:00Z",
+      foto: [{ path: "hasil/u/h1.jpg" }],
+      video: [],
+    });
+  });
+
+  it("tidak mengubah urutan daftar asli", () => {
+    const daftar = [hasil("h1", "2026-11-01T08:00:00Z", ["selesai"]), hasil("h2", "2026-11-03T08:00:00Z", ["selesai"])];
+    pilihBuktiSelesai(daftar);
+    expect(daftar.map((h) => h.id_hasil)).toEqual(["h1", "h2"]);
   });
 });
