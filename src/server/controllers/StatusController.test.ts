@@ -7,6 +7,8 @@ import { getDaftarPublik, getMilikSaya, getRincian, getRincianPublik } from "@/s
 import { catatUpvote, getJumlahUpvote, sudahUpvote } from "@/server/entities/Upvote";
 import type { Database } from "@/types/database";
 import { ambilDetailStatus, ambilLaporanPublik, ambilRiwayatWarga, prosesUpvote } from "./StatusController";
+import { getBuktiLengkap } from "@/server/entities/HasilPerbaikan";
+
 
 vi.mock("@/lib/auth", () => ({ requireRole: vi.fn(), getCurrentUser: vi.fn() }));
 vi.mock("@/lib/supabase/server", () => ({ createClient: vi.fn() }));
@@ -14,6 +16,8 @@ vi.mock("@/server/entities/Laporan", () => ({
   getMilikSaya: vi.fn(), getRincian: vi.fn(), getDaftarPublik: vi.fn(), getRincianPublik: vi.fn(),
 }));
 vi.mock("@/server/entities/Upvote", () => ({ catatUpvote: vi.fn(), getJumlahUpvote: vi.fn(), sudahUpvote: vi.fn() }));
+vi.mock("@/server/entities/HasilPerbaikan", () => ({ getBuktiLengkap: vi.fn() }));
+
 
 // Entity dimock; client ini hanya menjadi parameter, tidak menghubungi Supabase.
 const supabase = createSupabaseClient<Database>("https://laporkota-test.supabase.co", "sb_publishable_unit_test", {
@@ -55,6 +59,7 @@ beforeEach(() => {
   vi.mocked(requireRole).mockResolvedValue(ok({ id: "warga-uji", nama: "Warga Uji", role: "warga" }));
   vi.mocked(createClient).mockResolvedValue(supabase);
   vi.mocked(getRincian).mockResolvedValue(responsRincian);
+  vi.mocked(getBuktiLengkap).mockResolvedValue({ data: null, error: null });
 });
 
 describe("StatusController.ambilDetailStatus", () => {
@@ -171,27 +176,46 @@ describe("StatusController.ambilDetailStatus", () => {
     expect(hasil.ok && hasil.data.alasan_penolakan).toBeNull();
   });
 
-  it.each(["diterima", "dikerjakan", "berhasil"] as const)(
-    "tidak mengirim alasan penolakan untuk status %s", async (status) => {
-      vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: { ...rincian, status } });
+  it("tidak menganggap foto laporan awal sebagai foto hasil", async () => {
+  vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: { ...rincian, status: "berhasil" } });
 
-      const hasil = await ambilDetailStatus("LK-0001");
+  const hasil = await ambilDetailStatus(rincian.id_tiket);
 
-      expect(hasil.ok && hasil.data.alasan_penolakan).toBeNull();
-    },
-  );
+  expect(hasil.ok).toBe(true);
+  if (!hasil.ok) return;
+  expect(getBuktiLengkap).toHaveBeenCalledWith(expect.anything(), rincian.id);
+  expect(hasil.data.hasilPerbaikan).toBeNull(); // bukan foto laporan awal
+  expect(hasil.data.foto).toEqual(rincian.foto); // foto laporan awal tetap di tempatnya
+});
 
-  it("tidak menganggap foto laporan awal sebagai foto hasil saat pembacaan bukti belum tersambung", async () => {
-    vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: { ...rincian, status: "berhasil" } });
+it("mengirim bukti hasil perbaikan untuk laporan berhasil", async () => {
+  vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: { ...rincian, status: "berhasil" } });
+  const bukti = {
+    id_hasil: "h1",
+    catatan: "Lubang ditambal.",
+    waktu_unggah: "2026-11-10T08:00:00Z",
+    foto: [{ path: "hasil/u/h1.jpg" }],
+    video: [],
+  };
+  vi.mocked(getBuktiLengkap).mockResolvedValue({ data: bukti, error: null });
 
-    const hasil = await ambilDetailStatus("LK-0001");
+  const hasil = await ambilDetailStatus(rincian.id_tiket);
 
-    expect(hasil.ok).toBe(true);
-    if (hasil.ok) {
-      expect(hasil.data.foto).toEqual(rincian.foto);
-      expect(hasil.data.hasilPerbaikan).toBeUndefined();
-    }
+  expect(hasil.ok && hasil.data.hasilPerbaikan).toEqual(bukti);
+});
+
+it("menandai bukti belum dapat ditampilkan saat pembacaan bukti gagal", async () => {
+  vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: { ...rincian, status: "berhasil" } });
+  vi.mocked(getBuktiLengkap).mockResolvedValue({
+    data: null,
+    error: new PostgrestError({ code: "500", message: "x", details: "", hint: "" }),
   });
+
+  const hasil = await ambilDetailStatus(rincian.id_tiket);
+
+  expect(hasil.ok).toBe(true);
+  expect(hasil.ok && hasil.data.hasilPerbaikan).toBeUndefined();
+});
 
   it("menyembunyikan pesan mentah kegagalan database", async () => {
     vi.mocked(getRincian).mockResolvedValue({
