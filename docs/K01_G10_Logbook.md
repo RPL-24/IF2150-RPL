@@ -225,7 +225,10 @@
 | *4-11-2026* | *Bayu Palamarta Wirawan* | *Membuat Database* | *2* | *Done* | *-* |
 | *5-11-2026* | *Bayu Palamarta Wirawan* | *Mengimplementasi registrasi, login, logout* | *3* | *Done* | *-* |
 | *6-11-2026* | *Bayu Palamarta Wirawan* | *Mengimplementasi pemesanan* | *3* | *Done* | *-* |
+| *6-11-2026* | *Athallah Nanda Andita* | *Implementasi keluhan pelanggan* | *2.5* | *Done* | *-* |
+| *6-11-2026* | *Athallah Nanda Andita* | *Implementasi penghapusan restoran* | *3* | *Done* | *-* |
 | *8-11-2026* | *Bayu Palamarta Wirawan* | *Menerima implementasi antrean* | *1* | *Done* | *-* |
+| *8-11-2026* | *Athallah Nanda Andita* | *Implementasi ulasan* | *3* | *Done* | *-* |
 | *9-11-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki testing dengan helper* | *1* | *Done* | *-* |
 | *10-11-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki isu kredensial database* | *1* | *Done* | *-* |
 
