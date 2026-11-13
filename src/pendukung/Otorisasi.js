@@ -20,8 +20,10 @@ class Otorisasi {
   }
 
   // Algo-065
-  static async verifikasiAdmin(token) {
-    const sesi = await Otorisasi.verifikasiToken(token);
+  // sesiTerverifikasi diisi wajibAdmin dengan sesi yang baru saja diperiksanya,
+  // supaya token yang sama tidak dicari dua kali ke tabel sesi_login dalam satu permintaan.
+  static async verifikasiAdmin(token, sesiTerverifikasi = null) {
+    const sesi = sesiTerverifikasi ?? (await Otorisasi.verifikasiToken(token));
     if (sesi === null) return null;
     if (!(await Admin.verifikasiPeran(sesi.getIdAkun()))) return null;
     return sesi;
@@ -40,10 +42,11 @@ class Otorisasi {
 
   static async wajibAdmin(req, res, next) {
     const token = Otorisasi.ambilToken(req);
-    if ((await Otorisasi.verifikasiToken(token)) === null) {
+    const sesiLogin = await Otorisasi.verifikasiToken(token);
+    if (sesiLogin === null) {
       return res.status(401).json({ sukses: false, pesan: 'Silakan masuk terlebih dahulu.' });
     }
-    const sesi = await Otorisasi.verifikasiAdmin(token);
+    const sesi = await Otorisasi.verifikasiAdmin(token, sesiLogin);
     if (sesi === null) {
       return res.status(403).json({ sukses: false, pesan: 'Akses hanya untuk admin.' });
     }
