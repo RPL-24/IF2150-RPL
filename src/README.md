@@ -89,6 +89,7 @@ npm run db:seed
 | `DURASI_KODE_MENIT` | tidak | `15` | Masa berlaku kode verifikasi |
 | `KUNCI_ENKRIPSI_PESAN` | ya, untuk percakapan | - | Kunci AES-256-GCM, 64 karakter hex |
 | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | tidak | - | Kunci Web Push. Bila kosong, notifikasi di dalam aplikasi tetap muncul dan hanya notifikasi push peramban yang dilewati. Pasangan kunci dibuat dengan `npx web-push generate-vapid-keys` |
+| `BLOB_READ_WRITE_TOKEN` | hanya di Vercel | - | Token Vercel Blob. Bila diisi, foto listing dan bukti laporan disimpan ke Vercel Blob; bila kosong, disimpan di `uploads/` |
 
 Berkas `.env` tidak ikut repository. Jangan meng-commit-nya.
 
@@ -234,6 +235,37 @@ DATABASE_URL=postgres://pengguna:katasandi@localhost:5432/itbeli
 Basis datanya harus memakai *encoding* UTF-8. Setelah itu jalankan `npm run db:init` dan `npm run db:seed` seperti biasa. Pembuatan indeks pencarian memerlukan ekstensi `pg_trgm`; bila ekstensi itu tidak tersedia, `db:init` tetap berhasil dan pencarian hanya berjalan tanpa indeks.
 
 Tanpa Mailpit, lima akun uji tetap bisa dipakai karena sudah terverifikasi oleh seed. Pendaftaran akun baru tetap tersimpan, tetapi kode verifikasinya tidak sampai ke mana pun sampai `SMTP_HOST` dan `SMTP_PORT` diarahkan ke server SMTP yang hidup.
+
+## Deploy ke Vercel (opsional)
+
+Aplikasi tetap dinilai dari cara menjalankan lokal di atas. Bagian ini hanya untuk menayangkan ITBELI secara daring di `https://<nama-proyek>.vercel.app`.
+
+Di Vercel, aplikasi Express berjalan sebagai satu *serverless function*, sehingga ada empat perbedaan dari lokal:
+
+| Bagian | Lokal | Vercel |
+| :--- | :--- | :--- |
+| Halaman, CSS, JS | Disajikan `express.static()` dari `views/` | `express.static()` diabaikan Vercel. `npm run salin-statis` menyalin `views/` ke `public/` saat build (diatur `vercel.json`) |
+| Basis data | PostgreSQL di Docker | PostgreSQL terkelola, misalnya Neon dari Vercel Marketplace, lewat `DATABASE_URL` |
+| Foto dan bukti laporan | Folder `uploads/` | Vercel Blob lewat `BLOB_READ_WRITE_TOKEN`, karena disk *serverless* tidak permanen |
+| Surel | Mailpit | SMTP sungguhan, misalnya Gmail dengan *App Password* |
+
+Langkahnya, dari folder `src/`:
+
+1. Buat basis data Neon dan *store* Vercel Blob dari dashboard Vercel (**Storage**). `DATABASE_URL` dan `BLOB_READ_WRITE_TOKEN` akan tersedia untuk proyek tersebut.
+2. Siapkan skema basis data produksi dari mesin lokal. **Jangan jalankan `db:seed`**, karena akun uji seperti `admin.uji@itb.ac.id` memakai kata sandi yang tertulis di README ini:
+   ```bash
+   DATABASE_URL="postgresql://...?sslmode=require" npm run db:init
+   DATABASE_URL="postgresql://...?sslmode=require" npm run db:seed-legal
+   ```
+3. Deploy dengan Vercel CLI (`npm i -g vercel`). Jawab *directory* dengan `./`:
+   ```bash
+   vercel login
+   vercel
+   ```
+4. Isi **Settings → Environment Variables** di proyek Vercel: `DATABASE_URL`, `BLOB_READ_WRITE_TOKEN`, `KUNCI_ENKRIPSI_PESAN` (buat baru), `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, `SMTP_USER`, `SMTP_PASS`, `SUREL_PENGIRIM`, dan bila perlu `VAPID_*`.
+5. Rilis ke produksi dengan `vercel --prod`.
+
+Batasannya: Vercel menolak permintaan lebih dari 4,5 MB, sehingga total foto dalam satu kali simpan listing harus di bawah ukuran itu. Server tidak berjalan terus-menerus, sehingga permintaan pertama setelah lama tidak dipakai bisa sedikit lebih lambat.
 
 ## Masalah yang Sering Muncul
 

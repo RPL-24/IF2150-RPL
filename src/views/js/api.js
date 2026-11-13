@@ -41,6 +41,10 @@ const Api = {
       return { status: 0, sukses: false, pesan: 'Tidak dapat terhubung ke server.' };
     }
 
+    // 413 dari platform hosting (mis. Vercel, batas 4,5 MB per permintaan) tidak berbentuk JSON
+    if (res.status === 413) {
+      return { status: 413, sukses: false, pesan: 'Ukuran unggahan terlalu besar. Kurangi jumlah atau ukuran foto (total maksimal 4,5 MB).' };
+    }
     const isi = await res.json().catch(() => ({ sukses: false, pesan: 'Respons server tidak valid.' }));
     return { status: res.status, ...isi };
   },
