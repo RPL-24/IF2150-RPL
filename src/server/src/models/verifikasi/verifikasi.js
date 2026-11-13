@@ -7,6 +7,7 @@
  */
 import { KEPUTUSAN, KEPUTUSAN_KE_STATUS, STATUS } from '@silembur/shared';
 import { HttpError } from '../../utils/http.js';
+import { getJumlahLaporan } from '../fasilitas/berulang.js';
 import { ubahStatus } from '../laporan/status.js';
 import { kirimNotifikasi } from '../notifikasi/kirim.js';
 import { buatSkorAwal, hitungSkor } from '../skorPrioritas/skor.js';
@@ -34,7 +35,7 @@ export async function teruskanKePemerintah(db, idLaporan) {
  *   1. pastikan laporan ada (404) dan masih "Menunggu Verifikasi" (409)
  *   2. simpanVerifikasi
  *   3. ubahStatus sesuai KEPUTUSAN_KE_STATUS (Disetujui -> Terverifikasi, Ditolak, Revisi -> Perlu Revisi)
- *   4. jika Disetujui: buatSkorAwal (Q-008) lalu hitungSkor
+ *   4. jika Disetujui: buatSkorAwal (Q-008) lalu hitungSkor; selain itu: Fasilitas.getJumlahLaporan (Algo-007)
  *   5. kirimNotifikasi ke pelapor berisi keputusan + catatan (KF07)
  * @returns {Promise<{ idLaporan: number, idVerifikasi: number, status: string, skor: number|null }>}
  */
@@ -47,11 +48,11 @@ export async function tetapkanKeputusan(db, { idLaporan, idAdmin, keputusan, cat
   }
 
   const { rows } = await db.query(
-    'SELECT id_pelapor, status_laporan FROM laporan WHERE id_laporan = $1 FOR UPDATE',
+    'SELECT id_pelapor, id_fasilitas, status_laporan FROM laporan WHERE id_laporan = $1 FOR UPDATE',
     [idLaporan],
   );
   if (rows.length === 0) throw new HttpError(404, `Laporan #${idLaporan} tidak ditemukan`);
-  const { id_pelapor: idPelapor, status_laporan: statusLama } = rows[0];
+  const { id_pelapor: idPelapor, id_fasilitas: idFasilitas, status_laporan: statusLama } = rows[0];
   if (statusLama !== STATUS.MENUNGGU_VERIFIKASI) {
     throw new HttpError(409, `Laporan #${idLaporan} tidak bisa diverifikasi karena berstatus "${statusLama}"`);
   }
@@ -65,7 +66,10 @@ export async function tetapkanKeputusan(db, { idLaporan, idAdmin, keputusan, cat
     idPengguna: idAdmin,
   });
 
+  // Disetujui menghitung ulang kerusakan berulang lewat hitungSkor; Ditolak/Revisi dihitung ulang di sini
+  // agar laporan Ditolak langsung keluar dari hitungan fasilitas (KF14, Algo-007, gap G11).
   const skor = keputusan === KEPUTUSAN.DISETUJUI ? await teruskanKePemerintah(db, idLaporan) : null;
+  if (keputusan !== KEPUTUSAN.DISETUJUI) await getJumlahLaporan(db, idFasilitas);
 
   await kirimNotifikasi(db, {
     idLaporan,

@@ -7,6 +7,7 @@
  */
 import { ATURAN, SEMUA_KATEGORI, STATUS } from '@silembur/shared';
 import { HttpError, urlFoto } from '../../utils/http.js';
+import { getJumlahLaporan } from '../fasilitas/berulang.js';
 import { cariAtauBuatFasilitas } from '../fasilitas/cocokkan.js';
 import { setLokasiLaporan } from '../lokasi/lokasi.js';
 import { catatRiwayat, ubahStatus } from './status.js';
@@ -58,7 +59,8 @@ export async function simpanLaporan(db, { idPelapor, idFasilitas, foto, deskrips
 }
 
 /**
- * C01 Pelapor.konfirmasiSimpanLaporan (Algo-001), versi lengkap UC01 langkah 3.
+ * C01 Pelapor.konfirmasiSimpanLaporan (Algo-001), versi lengkap UC01 langkah 3, ditambah
+ * Fasilitas.getJumlahLaporan (Algo-007) agar penanda kerusakan berulang langsung terbarui (KF14, gap G11).
  * Panggil di dalam withTransaction. Foto sudah tersimpan (cloudStorageAdapter) dan wilayah/alamat
  * sudah didapat (googleMapsAdapter) sebelum transaksi, agar transaksi tidak menunggu layanan luar.
  * @param {{ idPelapor: number, foto: string, deskripsi: string, kategori: string,
@@ -72,6 +74,8 @@ export async function konfirmasiSimpanLaporan(db, { idPelapor, foto, deskripsi, 
   }
   const { idFasilitas } = await cariAtauBuatFasilitas(db, { kategori, ...lokasi });
   const idLaporan = await simpanLaporan(db, { idPelapor, idFasilitas, foto, deskripsi: deskripsi.trim(), kategori });
+  // KF14 / Algo-007 (gap G11): perbarui penanda kerusakan berulang fasilitas tanpa menunggu verifikasi.
+  await getJumlahLaporan(db, idFasilitas);
   await setLokasiLaporan(db, { idLaporan, ...lokasi });
   await catatRiwayat(db, {
     idLaporan,
@@ -84,7 +88,7 @@ export async function konfirmasiSimpanLaporan(db, { idPelapor, foto, deskripsi, 
 
 /**
  * Revisi laporan berstatus "Perlu Revisi" milik pelapor, lalu kembalikan ke
- * "Menunggu Verifikasi" lewat ubahStatus().
+ * "Menunggu Verifikasi" lewat ubahStatus(). Penanda berulang fasilitas terkait dihitung ulang (KF14).
  * @param {{ idLaporan: number, idPelapor: number,
  *           perubahan: { foto?: string, deskripsi?: string, kategori?: string,
  *                        lokasi?: { latitude, longitude, sumber, wilayah, alamat } } }} data
@@ -92,7 +96,7 @@ export async function konfirmasiSimpanLaporan(db, { idPelapor, foto, deskripsi, 
  */
 export async function revisiLaporan(db, { idLaporan, idPelapor, perubahan = {} }) {
   const { rows } = await db.query(
-    `SELECT l.status_laporan, l.kategori_kerusakan, lo.latitude, lo.longitude, lo.wilayah, lo.alamat
+    `SELECT l.status_laporan, l.kategori_kerusakan, l.id_fasilitas, lo.latitude, lo.longitude, lo.wilayah, lo.alamat
        FROM laporan l
        LEFT JOIN lokasi lo ON lo.id_laporan = l.id_laporan
       WHERE l.id_laporan = $1 AND l.id_pelapor = $2
@@ -134,6 +138,10 @@ export async function revisiLaporan(db, { idLaporan, idPelapor, perubahan = {} }
     [foto ?? null, deskripsi || null, kategori ?? null, idFasilitas, idLaporan],
   );
   if (lokasi) await setLokasiLaporan(db, { idLaporan, ...lokasi });
+
+  // KF14 / Algo-007 (gap G11): hitung ulang fasilitas baru dan fasilitas lama bila tautannya pindah.
+  await getJumlahLaporan(db, idFasilitas ?? lama.id_fasilitas);
+  if (idFasilitas && idFasilitas !== lama.id_fasilitas) await getJumlahLaporan(db, lama.id_fasilitas);
 
   await ubahStatus(db, {
     idLaporan,

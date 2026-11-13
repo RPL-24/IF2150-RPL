@@ -5,7 +5,7 @@
 import { z } from 'zod';
 import { ATURAN, SEMUA_KATEGORI, STATUS, SUMBER_LOKASI } from '@silembur/shared';
 import { cloudStorageAdapter } from '../../adapters/cloudStorageAdapter.js';
-import { getWilayahFromCoordinates } from '../../adapters/googleMapsAdapter.js';
+import { diKotaBandung, getWilayahFromCoordinates } from '../../adapters/googleMapsAdapter.js';
 import { pool, withTransaction } from '../../db/pool.js';
 import { periksa } from '../../middleware/validasi.js';
 import { Laporan } from '../../models/index.js';
@@ -59,6 +59,18 @@ const fotoWajib = () =>
     { field: 'foto', pesan: 'Foto kerusakan wajib dilampirkan' },
   ]);
 
+/**
+ * Lingkup satu kota (SKPL/DPPL 1.2): titik di luar Kota Bandung ditolak sebelum foto disimpan
+ * atau layanan peta dipanggil.
+ */
+function pastikanDiKotaBandung(lat, lng) {
+  if (!diKotaBandung(lat, lng)) {
+    throw new HttpError(400, 'Data yang dikirim belum lengkap atau tidak valid', [
+      { field: 'lokasi', pesan: 'Lokasi kerusakan harus berada di Kota Bandung' },
+    ]);
+  }
+}
+
 /** Algo-006: koordinat -> { latitude, longitude, sumber, wilayah, alamat } (geocoding di luar transaksi). */
 async function siapkanLokasi(lat, lng, sumber) {
   const { wilayah, alamat } = await getWilayahFromCoordinates(lat, lng);
@@ -67,13 +79,15 @@ async function siapkanLokasi(lat, lng, sumber) {
 
 /**
  * POST /api/laporan   (multipart/form-data: foto, kategori, deskripsi, latitude, longitude, sumberLokasi)
- * Alur (satu transaksi): simpan foto (cloudStorageAdapter) -> wilayah (googleMapsAdapter)
- *  -> cariAtauBuatFasilitas -> simpanLaporan -> setLokasiLaporan -> catatRiwayat("Laporan berhasil diterima oleh sistem")
+ * Alur: tolak titik di luar Kota Bandung (400) -> simpan foto (cloudStorageAdapter) -> wilayah (googleMapsAdapter)
+ *  -> satu transaksi: cariAtauBuatFasilitas -> simpanLaporan -> getJumlahLaporan (KF14) -> setLokasiLaporan
+ *  -> catatRiwayat("Laporan berhasil diterima oleh sistem")
  * Balas 201 { laporan: LaporanSaya }.
  */
 export async function buatLaporan(req, res) {
   const data = periksa(skemaBuatLaporan, req.body ?? {});
   if (!req.file) throw fotoWajib();
+  pastikanDiKotaBandung(data.latitude, data.longitude);
 
   const foto = await cloudStorageAdapter.simpanFoto(req.file);
   const lokasi = await siapkanLokasi(data.latitude, data.longitude, data.sumberLokasi);
@@ -105,6 +119,8 @@ export async function revisiLaporan(req, res) {
   if (sekarang.status !== STATUS.PERLU_REVISI) {
     throw new HttpError(409, `Laporan hanya bisa direvisi saat berstatus "${STATUS.PERLU_REVISI}"`);
   }
+
+  if (data.latitude !== undefined) pastikanDiKotaBandung(data.latitude, data.longitude);
 
   const perubahan = { kategori: data.kategori, deskripsi: data.deskripsi };
   if (req.file) perubahan.foto = await cloudStorageAdapter.simpanFoto(req.file);

@@ -42,10 +42,13 @@ afterAll(async () => {
       [lo.id_laporan, lo.koordinat, lo.latitude, lo.longitude, lo.wilayah, lo.alamat, lo.sumber],
     );
   }
+  // Hapus hanya foto yang diunggah test ini (laporan/...), jangan pernah foto seed atau file di luar uploadDir.
   await Promise.all(
     fotoDibuat
-      .filter((f) => f?.startsWith('/uploads/'))
-      .map((f) => fs.rm(path.join(config.uploadDir, f.slice('/uploads/'.length)), { force: true })),
+      .filter((f) => typeof f === 'string' && f.startsWith('/uploads/laporan/'))
+      .map((f) => path.resolve(config.uploadDir, f.slice('/uploads/'.length)))
+      .filter((p) => p.startsWith(path.join(config.uploadDir, 'laporan') + path.sep))
+      .map((p) => fs.rm(p, { force: true })),
   );
   await pool.end();
 });
@@ -63,7 +66,7 @@ function kirimLaporan(isian = {}, { token = tokenWarga1, foto = true } = {}) {
   for (const [k, v] of Object.entries(data)) if (v !== undefined) req = req.field(k, v);
   if (foto) req = req.attach('foto', PNG, { filename: 'a.png', contentType: 'image/png' });
   return req.then((res) => {
-    fotoDibuat.push(res.body?.laporan?.foto);
+    if (foto) fotoDibuat.push(res.body?.laporan?.foto);
     return res;
   });
 }
@@ -75,7 +78,8 @@ function kirimRevisi(id, isian = {}, { token = tokenWarga1, foto = false } = {})
   // supertest hanya mengirim multipart bila ada field/attach; tanpa isian kirim body kosong.
   if (!foto && Object.keys(isian).length === 0) req = req.send({});
   return req.then((res) => {
-    fotoDibuat.push(res.body?.laporan?.foto);
+    // Revisi tanpa foto baru mengembalikan foto lama (bisa foto seed) -> jangan dicatat untuk dihapus.
+    if (foto) fotoDibuat.push(res.body?.laporan?.foto);
     return res;
   });
 }
