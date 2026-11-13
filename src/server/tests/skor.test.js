@@ -4,7 +4,19 @@ import { afterAll, describe, expect, it } from 'vitest';
 import { pool } from '../src/db/pool.js';
 import { buatSkorAwal, hitungNilaiSkor, hitungSkor } from '../src/models/skorPrioritas/skor.js';
 
-afterAll(() => pool.end());
+// Baris yang dibuat test ini dihapus lagi agar tidak memengaruhi file test lain (mis. prioritas.test.js).
+const dibuat = { laporan: [], fasilitas: [] };
+
+afterAll(async () => {
+  if (dibuat.laporan.length) {
+    await pool.query('DELETE FROM skor_prioritas WHERE id_laporan = ANY($1)', [dibuat.laporan]);
+    await pool.query('DELETE FROM laporan WHERE id_laporan = ANY($1)', [dibuat.laporan]);
+  }
+  if (dibuat.fasilitas.length) {
+    await pool.query('DELETE FROM fasilitas WHERE id_fasilitas = ANY($1)', [dibuat.fasilitas]);
+  }
+  await pool.end();
+});
 
 describe('hitungNilaiSkor (Algo-009, fungsi murni)', () => {
   const dasar = { jumlahPelapor: 1, lamaMenunggu: 0, frekuensiBerulang: 0 };
@@ -44,6 +56,7 @@ describe('hitungSkor (Algo-009 + Q-009/Q-010)', () => {
        VALUES ('Fasilitas Uji Skor', $1, 'Jl. Uji Skor', -6.91, 107.61, 'Coblong') RETURNING id_fasilitas`,
       [KATEGORI.POHON_TUMBANG],
     );
+    dibuat.fasilitas.push(rows[0].id_fasilitas);
     return rows[0].id_fasilitas;
   }
 
@@ -51,11 +64,12 @@ describe('hitungSkor (Algo-009 + Q-009/Q-010)', () => {
     const { rows } = await pool.query(
       `INSERT INTO laporan (id_pelapor, id_fasilitas, id_laporan_induk, foto_laporan, deskripsi_laporan,
                             kategori_kerusakan, tanggal_laporan, status_laporan)
-       VALUES (1, $1, $2, 'seed/pohon-tumbang.png', 'Laporan uji skor', $3,
-               NOW() - make_interval(hours => $4), $5)
+       VALUES ((SELECT id_pengguna FROM pengguna WHERE email = 'warga1@silembur.test'), $1, $2,
+               'seed/pohon-tumbang.png', 'Laporan uji skor', $3, NOW() - make_interval(hours => $4), $5)
        RETURNING id_laporan`,
       [idFasilitas, induk, KATEGORI.POHON_TUMBANG, Math.round(hariLalu * 24), status],
     );
+    dibuat.laporan.push(rows[0].id_laporan);
     return rows[0].id_laporan;
   }
 
