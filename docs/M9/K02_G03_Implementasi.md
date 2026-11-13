@@ -248,11 +248,11 @@ Tabel B.4. Kontribusi Anggota
 
 | NIM | Nama | Modul / Fitur yang Dikerjakan | Persentase Kontribusi |
 | :--- | :--- | :--- | :--- |
-| 13525128 | Mochamad Fachri Alfaridzi | P1: Fondasi proyek, autentikasi (email + kata sandi dan Google Sign-In), integrasi eksternal (adapter Google Maps, Cloud Storage), penggabungan laporan duplikat (UC07), CI. | *[%]* |
-| 13525059 | Muhammad Pandu Pulunggana | P2: Pembuatan dan revisi laporan (UC01). Validasi isian, penyimpanan laporan, pencocokan fasilitas radius 30 m, lokasi laporan, endpoint `POST /api/laporan` dan `PUT /api/laporan/:id/revisi`, layar I-04, serta pengujiannya. | *[%]* |
-| 13525098 | Satya Radhityan Yahya | P3: Tampilan warga, yaitu laporan publik, laporan saya, notifikasi, dan UI kit (UC04, UC05). | *[%]* |
-| 13525101 | Kevin Lincoln Hutabarat | P4: Verifikasi admin, skor prioritas, dan pengiriman notifikasi (UC02). | *[%]* |
-| 13525035 | Muhammad Dhiya Rafi | P5: Dashboard pemerintah daerah, yaitu prioritas laporan, fasilitas rusak berulang, riwayat fasilitas (UC03, UC06, UC08), serta profiling Q-004. | *[%]* |
+| 13525128 | Mochamad Fachri Alfaridzi | P1: Fondasi proyek, autentikasi (email + kata sandi dan Google Sign-In), integrasi eksternal (adapter Google Maps, Cloud Storage), penggabungan laporan duplikat (UC07), CI. | 20% |
+| 13525059 | Muhammad Pandu Pulunggana | P2: Pembuatan dan revisi laporan (UC01). Validasi isian, penyimpanan laporan, pencocokan fasilitas radius 30 m, lokasi laporan, endpoint `POST /api/laporan` dan `PUT /api/laporan/:id/revisi`, layar I-04, serta pengujiannya. | 20% |
+| 13525098 | Satya Radhityan Yahya | P3: Tampilan warga, yaitu laporan publik, laporan saya, notifikasi, dan UI kit (UC04, UC05). | 20% |
+| 13525101 | Kevin Lincoln Hutabarat | P4: Verifikasi admin, skor prioritas, dan pengiriman notifikasi (UC02). | 20% |
+| 13525035 | Muhammad Dhiya Rafi | P5: Dashboard pemerintah daerah, yaitu prioritas laporan, fasilitas rusak berulang, riwayat fasilitas (UC03, UC06, UC08), serta profiling Q-004. | 20% |
 
 ## B.5 Traceability Kelas Perancangan ke Implementasi
 
