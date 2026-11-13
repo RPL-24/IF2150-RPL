@@ -106,6 +106,31 @@ npx eas-cli@latest build -p android --profile preview
 ```
 Profil build ada di `mobile/eas.json`. Unduh APK dari tautan yang diberikan, lalu lampirkan di GitHub Release.
 
+## Deploy uji coba (Render + Neon + Google Cloud Storage)
+
+Server API di [Render](https://render.com) (paket gratis), basis data di [Neon](https://neon.tech) (paket gratis), foto di Google Cloud Storage.
+Konfigurasi Render ada di `render.yaml` (root repo). **Jangan pernah meng-commit kunci, file service account, atau connection string** — repo ini publik; semua rahasia diisi lewat dashboard.
+
+1. **Neon** — buat project (region Singapore), salin *connection string* (sudah berisi `sslmode=require`).
+2. **Google Cloud Storage** — buat bucket (akses seragam), beri `allUsers` peran *Storage Object Viewer* agar foto bisa dibuka aplikasi, lalu buat *service account* berperan *Storage Object Admin* pada bucket itu dan unduh kunci JSON-nya.
+3. **Render** — *New → Blueprint*, pilih repo ini; Render membaca `render.yaml` (branch `feat/implementation`). Isi variabel yang diminta:
+   `DATABASE_URL` (dari Neon), `GCS_BUCKET`, dan opsional `GOOGLE_MAPS_API_KEY` (kosong = wilayah offline). `JWT_SECRET` dibuat otomatis oleh Render.
+   Lalu di *Environment → Secret Files* unggah kunci JSON dengan nama `gcs-key.json`. Build otomatis menjalankan migrasi.
+4. **Seed sekali** dari laptop (folder `src/`), mengarah ke Neon. Perintah ini **menghapus seluruh data** lalu mengisi ulang:
+   ```bash
+   DATABASE_URL="<connection string Neon>" npm run db:seed
+   ```
+   Foto contoh seed dibuat ulang otomatis oleh server setiap kali start, karena disk Render gratis tidak permanen.
+5. Cek `https://<nama-service>.onrender.com/api/health` → `{"status":"ok",...}`.
+6. **Aplikasi** — dengan Expo Go: jalankan `EXPO_PUBLIC_API_URL=https://<nama-service>.onrender.com npx expo start` dari `src/mobile`.
+   Atau build APK profil `demo` (ganti URL di `mobile/eas.json` bila nama service berbeda dari `silembur-api`):
+   ```bash
+   npx eas-cli@latest build -p android --profile demo
+   ```
+   Agar peta tampil di APK, isi `GOOGLE_MAPS_ANDROID_API_KEY` di *Environment variables* project Expo (environment `preview`).
+
+Catatan paket gratis Render: server tidur setelah ±15 menit tanpa permintaan dan butuh 30–60 detik untuk bangun, sedangkan aplikasi menunggu maksimal 5 detik ("Tolong muat ulang halaman"). **Buka `/api/health` beberapa menit sebelum demo.**
+
 ## Continuous Integration
 
 Setiap push ke `main` dan setiap pull request menjalankan `.github/workflows/ci.yml`: test server dengan PostgreSQL 18, lalu bundle aplikasi Android dan iOS.

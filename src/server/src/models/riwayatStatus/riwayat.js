@@ -3,14 +3,42 @@
  * Menulis riwayat dilakukan oleh ubahStatus()/catatRiwayat() di models/laporan/status.js.
  * Pemilik: P3 (getRiwayatStatus untuk UC05). P5 membaca riwayat per fasilitas di models/fasilitas/riwayat.js.
  */
-import { belumDiimplementasi } from '../../utils/http.js';
 
-/** Laporan.getRiwayatStatus(): semua riwayat satu laporan, urut tanggal_perubahan naik. */
-export async function getRiwayatStatus(db, idLaporan) {
-  throw belumDiimplementasi('P3', 'getRiwayatStatus (KF24)');
+/** DTO Riwayat (lihat src/docs/API.md). Identitas pengubah tidak disertakan. */
+export function toRiwayat(row) {
+  return {
+    id: row.id_riwayat,
+    statusLama: row.status_lama,
+    statusBaru: row.status_baru,
+    deskripsi: row.deskripsi_perubahan,
+    tanggal: row.tanggal_perubahan,
+  };
 }
 
-/** Algo-010 / Q-011 getPerubahan(): satu entri riwayat, null jika tidak ada. */
+/**
+ * Laporan.getRiwayatStatus(): semua riwayat satu laporan, urut tanggal_perubahan naik (KF24, UC05 langkah 2).
+ * @returns {Promise<object[]>} Riwayat[]
+ */
+export async function getRiwayatStatus(db, idLaporan) {
+  const { rows } = await db.query(
+    `SELECT id_riwayat, status_lama, status_baru, deskripsi_perubahan, tanggal_perubahan
+       FROM riwayat_status
+      WHERE id_laporan = $1
+      ORDER BY tanggal_perubahan ASC, id_riwayat ASC`,
+    [idLaporan],
+  );
+  return rows.map(toRiwayat);
+}
+
+/**
+ * Algo-010 / Q-011 getPerubahan(): tanggal dan deskripsi satu entri riwayat.
+ * @returns {Promise<{ id: number, tanggal: string, deskripsi: string }|null>} null jika tidak ada.
+ */
 export async function getPerubahan(db, idRiwayat) {
-  throw belumDiimplementasi('P3', 'Algo-010 / Q-011 getPerubahan');
+  const { rows } = await db.query(
+    'SELECT tanggal_perubahan, deskripsi_perubahan FROM riwayat_status WHERE id_riwayat = $1',
+    [idRiwayat],
+  );
+  if (rows.length === 0) return null;
+  return { id: idRiwayat, tanggal: rows[0].tanggal_perubahan, deskripsi: rows[0].deskripsi_perubahan };
 }
