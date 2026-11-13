@@ -8,18 +8,43 @@ import { PESAN_UMUM, pesanErrorDb } from "@/lib/error-db";
 import { createClient } from "@/lib/supabase/server";
 import { getRincianPublik, simpanLaporan, type DataLaporanBaru } from "@/server/entities/Laporan";
 import { catatUpvote } from "@/server/entities/Upvote";
-import { validasiBerkas, validasiForm, validasiLokasi } from "./laporan-validasi";
+import { PESAN_ANTIBOT_GAGAL, validasiBerkas, validasiForm, validasiLokasi } from "./laporan-validasi";
+
+const URL_SITEVERIFY = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 /** Hasil kirimLaporan: laporan baru tersimpan, atau ditemukan laporan serupa (KF05). */
 export type HasilKirim = { jenis: "terkirim"; idTiket: string } | { jenis: "duplikat"; idTiket: string };
 
-/** DPPL kirimLaporan (Algo-021). `data.media` adalah hasil unggahMedia() di client. */
-export async function kirimLaporan(data: DataLaporanBaru): Promise<ActionResult<HasilKirim>> {
+/**
+ * DPPL verifikasiAntiBot (Algo-038): tanyakan ke Cloudflare apakah token Turnstile sah.
+ * Tidak diekspor (private di DPPL), jadi tidak bisa dipanggil langsung dari browser.
+ */
+async function verifikasiAntiBot(token: string): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret || typeof token !== "string" || token === "") return false;
+  try {
+    const respons = await fetch(URL_SITEVERIFY, {
+      method: "POST",
+      body: new URLSearchParams({ secret, response: token }),
+      cache: "no-store",
+    });
+    if (!respons.ok) return false;
+    const hasil: { success?: boolean } = await respons.json();
+    return hasil.success === true;
+  } catch {
+    // Cloudflare tidak bisa dihubungi: anggap gagal supaya laporan tidak lolos tanpa verifikasi.
+    return false;
+  }
+}
+
+/** DPPL kirimLaporan (Algo-036). `data.media` adalah hasil unggahMedia(), `token` dari widget Turnstile. */
+export async function kirimLaporan(data: DataLaporanBaru, token: string): Promise<ActionResult<HasilKirim>> {
   // 1. verifikasiAkses: hanya warga yang boleh melapor.
   const akses = await requireRole("warga");
   if (!akses.ok) return akses;
 
-  // 2. verifikasiAntiBot: ditambahkan di branch feat/lapor-antibot.
+  // 2. verifikasiAntiBot (KNF04): tahan penyimpanan sampai token terbukti dari manusia (KF08).
+  if (!(await verifikasiAntiBot(token))) return gagal(PESAN_ANTIBOT_GAGAL);
 
   // 3. Validasi ulang di server.
   const pesan =

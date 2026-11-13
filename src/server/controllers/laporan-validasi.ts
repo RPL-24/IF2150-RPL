@@ -10,6 +10,8 @@ import { dalamWilayah } from "@/server/entities/Lokasi";
 import { isVideoValid } from "@/server/entities/Video";
 
 export const PESAN_FORM_TIDAK_LENGKAP = "Lengkapi kategori, deskripsi, lokasi, dan berkas bukti";
+export const PESAN_ANTIBOT_BELUM = "Selesaikan verifikasi keamanan terlebih dahulu";
+export const PESAN_ANTIBOT_GAGAL = "Verifikasi keamanan gagal. Muat ulang halaman lalu coba lagi.";
 export const PESAN_DI_LUAR_WILAYAH = "Lokasi di luar daerah penanganan. Pilih titik di dalam batas kota.";
 
 /** validasiForm: kategori harus salah satu nilai enum, deskripsi tidak boleh kosong. */
