@@ -7,24 +7,27 @@ IMPLEMENTASI PERANGKAT LUNAK
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
-### *[Logo Perangkat Lunak]*
+## *SILEMBUR*
+### *LOGO*
+<p align="center">
+<img alt="Logo SILEMBUR" src="./assets/logo.jpeg" width="40%">
+</p>
 
-### Untuk: *[Nama Asisten]*
+### Untuk: *Amanda Aurellia Salsabila*
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | *K02* |
+| Kelompok | *G03* |
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| *13525059* | *Muhammad Pandu Pulunggana* |
+| *13525128* | *Mochamad Fachri Alfaridzi* |
+| *13525101* | *Kevin Lincoln Hutabarat* |
+| *13525035* | *Muhammad Dhiya Rafi* |
+| *13525098* | *Satya Radhityan Yahya* |
 ---
 
 > **Petunjuk pengerjaan:** *[Silahkan hapus bagian ini setelah selesai mengerjakan]*
@@ -33,8 +36,8 @@ Dipersiapkan oleh:
 
 ---
 
-**Deadline:** Rabu, 11 November 2026, 21.50 WIB
-**Asistensi akbar:** *[Hari, DD Bulan YYYY, HH.MM WIB, lokasi/link]*
+**Deadline:** Jumat, 13 November 2026, 21.00 WIB
+**Asistensi akbar:** Senin, 2 November 2026, 19.00 WIB, Microsoft Teams
 
 ---
 
