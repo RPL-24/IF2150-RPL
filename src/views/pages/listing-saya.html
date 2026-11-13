@@ -1,14 +1,48 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-<meta name="theme-color" content="#0F4C97">
-<title>Listing Saya · ITBELI</title><link rel="stylesheet" href="/css/tokens.css"><link rel="stylesheet" href="/css/components.css"><link rel="stylesheet" href="/css/app.css"><link rel="stylesheet" href="/css/listing.css"><link rel="stylesheet" href="/css/percakapan.css">
-<script src="/js/api.js" defer></script><script src="/js/ListingUI.js" defer></script><script src="/js/HalamanListingPenjual.js" defer></script><script src="/js/PanelNotifikasi.js" defer></script></head><body><div class="page"><header id="listing-topbar" class="topbar"></header><div class="shell"><aside id="listing-rail" class="rail"></aside><main class="content"><div class="content__inner col gap-5">
-<div><h1 class="h-page">Listing Saya</h1><p class="muted mt-2">Kelola barang yang Anda jual di ITBELI</p></div>
-<a class="btn btn--primer mobile-jual" href="/listing-form">+ Jual Barang</a>
-<div class="tabs" role="tablist" aria-label="Status listing"><a id="tab-tersedia" href="#tersedia" class="is-active" role="tab" aria-selected="true">Tersedia (0)</a><a id="tab-terjual" href="#terjual" role="tab" aria-selected="false">Terjual (0)</a></div>
-<div id="galat-umum" class="infobox infobox--galat" role="alert" hidden></div><p id="memuat" class="muted">Memuat listing…</p><div id="daftar-listing" class="grid"></div>
-<div id="listing-kosong" class="panel kosong" hidden><h2 class="h-sec" id="teks-kosong">Anda belum punya listing</h2><p class="muted mt-2">Barang Anda akan muncul di sini.</p><a class="btn btn--primer mt-4" href="/listing-form">+ Jual Barang</a></div>
-</div></main></div><div id="pesan" class="toast" role="status" hidden></div></div></body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0F4C97">
+  <title>Listing Saya · ITBELI</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/listing.css">
+  <script src="/js/api.js" defer></script>
+  <script src="/js/Kerangka.js" defer></script>
+  <script src="/js/ListingUI.js" defer></script>
+  <script src="/js/HalamanListingPenjual.js" defer></script>
+  <script src="/js/PanelNotifikasi.js" defer></script>
+</head>
+<body>
+<div class="page">
+  <header id="listing-topbar" class="topbar" data-topbar></header>
+  <div class="shell">
+    <aside id="listing-rail" class="rail" data-judul="Listing Saya"></aside>
+    <main class="content">
+      <div class="content__inner col gap-4">
+        <p class="muted">Kelola barang yang Anda jual di ITBELI</p>
+        <div class="tabs" role="tablist" aria-label="Status listing">
+          <a id="tab-tersedia" href="#tersedia" class="is-active" role="tab" aria-selected="true">Tersedia (0)</a>
+          <a id="tab-terjual" href="#terjual" role="tab" aria-selected="false">Terjual (0)</a>
+        </div>
+        <div id="galat-umum" class="infobox infobox--galat" role="alert" hidden></div>
+        <p id="memuat" class="muted">Memuat listing…</p>
+        <div id="daftar-listing" class="grid"></div>
+        <div id="listing-kosong" class="panel kosong" hidden>
+          <h2 class="h-sec" id="teks-kosong">Anda belum punya listing</h2>
+          <p class="muted mt-2">Barang Anda akan muncul di sini.</p>
+          <a class="btn btn--primer mt-4" href="/listing-form">+ Jual Barang</a>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="pesan" class="toast" role="status" hidden></div>
+</div>
+</body>
+</html>

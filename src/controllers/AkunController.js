@@ -36,6 +36,7 @@ const PESAN = Object.freeze({
   KODE_TIDAK_ADA: 'Tidak ada kode verifikasi yang aktif. Minta kode baru.',
   KODE_SALAH: 'Kode verifikasi salah.',
   KODE_KEDALUWARSA: 'Kode verifikasi sudah kedaluwarsa. Minta kode baru.',
+  SSO_ADMIN_DILARANG: 'Akun admin tidak dapat masuk lewat Google. Masuk dengan surel dan kata sandi.',
   GAGAL_KIRIM_SUREL: 'Kode verifikasi gagal dikirim. Coba kirim ulang beberapa saat lagi.',
 });
 
@@ -207,6 +208,44 @@ class AkunController {
     const waktuKedaluwarsa = new Date(waktuMulai.getTime() + config.durasiSesiJam * 60 * 60 * 1000);
     await SesiLogin.simpan(idAkun, token, waktuMulai, waktuKedaluwarsa);
     return new SesiLogin({ idAkun, token, waktuMulai, waktuKedaluwarsa, statusAktif: true });
+  }
+
+  // Masuk lewat SSO: surel sudah dibuktikan penyedia. Akun belum ada → akunBaru true (profil dilengkapi dulu).
+  static async masukDenganSso(email) {
+    const akun = await Akun.cariByEmail(email);
+    if (akun === null) return { berhasil: true, akunBaru: true };
+    if (akun.getStatusAkun() === Akun.STATUS.DIBLOKIR) return gagal('AKUN_DIBLOKIR');
+    // SSO tidak pernah memberi akses Admin
+    if (akun.peran === Akun.PERAN.ADMIN) return gagal('SSO_ADMIN_DILARANG');
+
+    if (akun.getStatusAkun() === Akun.STATUS.BELUM_TERVERIFIKASI) {
+      // Hash lama diganti: kata sandi itu bisa saja dipasang orang lain yang mendaftar dengan surel ini sebelum pemiliknya.
+      await akun.perbaruiKataSandiHash(await AkunController.hashKataSandi(crypto.randomBytes(32).toString('hex')));
+      await akun.perbaruiStatusAkun(Akun.STATUS.TERVERIFIKASI);
+    }
+    const sesi = await AkunController.buatSesiLogin(akun.idAkun);
+    return { berhasil: true, akunBaru: false, token: sesi.token, peran: akun.peran };
+  }
+
+  // Melengkapi pendaftaran pengguna SSO baru: validasi yang sama dengan daftarAkun, akun langsung Terverifikasi
+  // dengan kata sandi acak yang tidak diketahui siapa pun.
+  static async daftarAkunSso(nama, nim, email, setujuKebijakan) {
+    if (setujuKebijakan !== true) return gagal('KEBIJAKAN_BELUM_DISETUJUI');
+    if (![nama, nim, email].every(teksTerisi)) return gagal('FORMULIR_TIDAK_LENGKAP');
+    if (!AkunController.validasiDomainEmail(email)) return gagal('DOMAIN_TIDAK_VALID');
+    if (!FORMAT_NIM.test(nim.trim())) return gagal('NIM_TIDAK_VALID');
+    if (!(await AkunController.cekKeunikanEmail(email))) return gagal('SUREL_TERDAFTAR');
+
+    const kataSandiHash = await AkunController.hashKataSandi(crypto.randomBytes(32).toString('hex'));
+    let idAkun;
+    try {
+      idAkun = await Akun.simpan(nama.trim().slice(0, 100), nim.trim(), email, kataSandiHash, Akun.STATUS.TERVERIFIKASI, true);
+    } catch (galat) {
+      if (galat.code === '23505') return gagal('SUREL_TERDAFTAR');
+      throw galat;
+    }
+    const sesi = await AkunController.buatSesiLogin(idAkun);
+    return { berhasil: true, token: sesi.token, peran: Akun.PERAN.PENGGUNA };
   }
 
   // KF12

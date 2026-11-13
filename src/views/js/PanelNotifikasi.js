@@ -161,8 +161,7 @@ class PanelNotifikasi {
     kepala.className = 'notif__head';
 
     const judul = document.createElement('span');
-    judul.className = 'h-sec';
-    judul.style.fontSize = '17px';
+    judul.className = 'notif__judul';
     judul.textContent = 'Notifikasi';
 
     const tombolBacaSemua = document.createElement('button');
@@ -291,12 +290,11 @@ class PanelNotifikasi {
       badan.className = 'grow';
 
       const teks = document.createElement('div');
-      teks.style.fontSize = '13px';
-      teks.style.lineHeight = '19px';
+      teks.className = 'notif__teks';
       teks.textContent = item.isi || '';
 
       const waktu = document.createElement('div');
-      waktu.className = 't-caption faint mt-2';
+      waktu.className = 't-caption muted notif__waktu';
       waktu.textContent = PanelNotifikasi.formatWaktuRelatif(item.waktuKirim);
 
       badan.append(teks, waktu);

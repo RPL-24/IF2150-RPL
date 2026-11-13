@@ -32,12 +32,16 @@ class HalamanKatalog {
 
   async mulai() {
     if (!await ListingUI.mulai()) return;
-    LayoutKatalog.aktifkanMenu();
     this.inputCari = LayoutKatalog.pasangPencarian(this.kriteria.q, (q) => {
       this.terapkan({ ...this.kriteria, q, halaman: undefined });
     });
 
     this.form = document.getElementById('form-filter');
+    // Di layar sempit filter dilipat agar barang langsung terlihat; di layar lebar selalu terbuka.
+    const rinci = document.getElementById('filter-rinci');
+    const sempit = window.matchMedia('(max-width: 959px)');
+    rinci.open = !sempit.matches;
+    rinci.addEventListener('toggle', () => { if (!sempit.matches) rinci.open = true; });
     this.form.addEventListener('submit', (e) => {
       e.preventDefault();
       this.terapkan({ ...this.kriteria, ...this.bacaFormulir(), halaman: undefined });

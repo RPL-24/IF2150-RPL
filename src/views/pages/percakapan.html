@@ -14,41 +14,20 @@
 <link rel="stylesheet" href="/css/app.css">
 <link rel="stylesheet" href="/css/percakapan.css">
 <script src="/js/api.js" defer></script>
+<script src="/js/Kerangka.js" defer></script>
 <script src="/js/PanelNotifikasi.js" defer></script>
 <script src="/js/HalamanPercakapan.js" defer></script>
 </head>
 <body data-halaman="percakapan">
 <div class="page">
-  <header id="percakapan-topbar" class="topbar">
-    <a class="brand" href="/">
-      <img class="brand__mark" src="/ikon/itbeli-simbol.svg" alt="" width="40" height="40">
-      <div>
-        <img class="brand__name" src="/ikon/itbeli-nama.svg" alt="ITBELI" width="60" height="20">
-        <div class="brand__tag">Marketplace preloved sivitas ITB</div>
-      </div>
-    </a>
-    <div class="searchbar">
-      <span class="ic ic--search"></span>
-      <span>Cari jas praktikum, buku, kalkulator…</span>
-    </div>
-    <div class="topbar__right">
-      <button type="button" class="iconbtn" title="Notifikasi" aria-label="Notifikasi" data-notifikasi-lonceng>
-        <span class="ic ic--bell"></span>
-      </button>
-      <a class="iconbtn" href="/percakapan" title="Percakapan" aria-label="Percakapan">
-        <span class="ic ic--chat"></span>
-        <span id="badge-topbar-percakapan" class="iconbtn__badge" hidden>0</span>
-      </a>
-      <a id="avatar-topbar" class="avatar" href="/profil" aria-label="Profil akun">?</a>
-    </div>
-  </header>
+  <header id="percakapan-topbar" class="topbar" data-topbar></header>
 
   <div class="chat">
 
     <!-- I10-O01: Kolom daftar percakapan -->
     <section class="chat__list" aria-label="Daftar percakapan">
-      <div class="row" style="padding:0 var(--sp-2) var(--sp-2)">
-        <h1 class="h-sec">Percakapan</h1>
+      <div class="chat__list-head">
+        <h1>Percakapan</h1>
         <span id="badge-belum-dibaca" class="badge ml-auto" hidden>0 belum dibaca</span>
       </div>
 
@@ -57,7 +36,7 @@
       <div id="daftar-percakapan" class="chat__list-items"></div>
 
       <!-- I10-O08: Keadaan kosong daftar percakapan -->
-      <div id="daftar-kosong" class="empty" style="padding:var(--sp-8) var(--sp-4)" hidden>
+      <div id="daftar-kosong" class="empty" hidden>
         <div class="empty__icon"><span class="ic ic--chat"></span></div>
         <div class="empty__title">Belum ada percakapan</div>
         <div class="empty__text">Hubungi penjual dari halaman detail barang untuk memulai percakapan.</div>
@@ -90,11 +69,11 @@
 
         <!-- I10-O02: Kepala ruang percakapan -->
         <header class="chat__header">
-          <div class="convitem__avatar" style="width:44px;height:44px">
+          <div class="convitem__avatar">
             <div class="ph ph--avatar"></div>
           </div>
           <div>
-            <div id="nama-lawan" style="font-weight:600"></div>
+            <div id="nama-lawan" class="chat__lawan"></div>
             <div id="info-lawan" class="t-caption muted">Sivitas ITB</div>
           </div>
           <div id="kartu-barang-header" class="row gap-3 ml-auto">
@@ -103,7 +82,7 @@
             </div>
             <div>
               <div class="t-caption muted">Membicarakan</div>
-              <div id="judul-barang-header" style="font-size:13px;font-weight:600"></div>
+              <div id="judul-barang-header" class="chat__barang-judul"></div>
             </div>
           </div>
         </header>
@@ -115,7 +94,7 @@
           <div class="infobox row gap-3">
             <span class="ic ic--lock"></span>
             <span>Isi percakapan ini terenkripsi dan tidak dapat diakses oleh admin maupun pengembang.
-              <a id="tautan-kebijakan" href="/legal?jenis=kebijakan-privasi" style="color:var(--primer-700);font-weight:600">Baca Kebijakan Privasi</a></span>
+              <a id="tautan-kebijakan" href="/legal?jenis=kebijakan-privasi">Baca Kebijakan Privasi</a></span>
           </div>
 
           <div id="galat-pesan" class="infobox infobox--galat" role="alert" hidden></div>

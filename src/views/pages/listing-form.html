@@ -1,20 +1,87 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-<meta name="theme-color" content="#0F4C97">
-<title>Jual Barang · ITBELI</title><link rel="stylesheet" href="/css/tokens.css"><link rel="stylesheet" href="/css/components.css"><link rel="stylesheet" href="/css/app.css"><link rel="stylesheet" href="/css/listing.css"><link rel="stylesheet" href="/css/percakapan.css">
-<script src="/js/api.js" defer></script><script src="/js/ListingUI.js" defer></script><script src="/js/FormulirBarang.js" defer></script><script src="/js/PanelNotifikasi.js" defer></script></head><body><div class="page"><header id="listing-topbar" class="topbar"></header><main class="form-wrap"><form id="form-listing" class="col gap-5" novalidate>
-<div><p id="breadcrumb" class="t-caption muted">Listing Saya · Buat listing baru</p><h1 id="judul-halaman" class="h-page mt-2">Jual Barang</h1></div>
-<div id="galat-umum" class="infobox infobox--galat" role="alert" hidden></div>
-<div class="field"><label class="field__label" for="foto">Foto barang <span class="muted">(maksimum 5, JPG atau PNG, maksimum 5 MB)</span></label>
-<input id="foto" type="file" accept="image/jpeg,image/png" multiple hidden><div id="foto-list" class="fotos" aria-label="Foto barang; seret untuk mengubah urutan"></div>
-<div class="field__hint">Seret foto untuk mengubah urutan. Foto pertama dipakai sebagai foto utama pada katalog.</div><div id="foto-error" class="field__error" role="alert" hidden></div></div>
-<div class="field"><label class="field__label" for="judul">Judul barang</label><input id="judul" name="judul" class="field__input" required maxlength="80" placeholder="Nama barang yang Anda jual"><div id="judul-error" class="field__error" hidden></div><div id="judul-hitung" class="field__hint">0 / 80 karakter</div></div>
-<div class="two"><div class="field"><label class="field__label" for="harga">Harga (Rp)</label><input id="harga" name="harga" type="number" min="0.01" max="9999999999.99" step="0.01" class="field__input" required placeholder="120000"><div id="harga-error" class="field__error" hidden></div></div>
-<div class="field"><label class="field__label" for="idKategori">Kategori</label><select id="idKategori" name="idKategori" class="field__input select" required><option value="">Pilih kategori</option></select><div id="idKategori-error" class="field__error" hidden></div></div></div>
-<div class="field"><label class="field__label" for="idLokasi">Lokasi titik temu COD</label><select id="idLokasi" name="idLokasi" class="field__input select" required><option value="">Pilih lokasi titik temu</option></select><div id="idLokasi-error" class="field__error" hidden></div></div>
-<div class="field"><label class="field__label" for="deskripsiKondisi">Deskripsi kondisi</label><textarea id="deskripsiKondisi" name="deskripsiKondisi" class="field__area" maxlength="1000" required placeholder="Jelaskan kondisi, lama pemakaian, dan kekurangan barang"></textarea><div id="deskripsiKondisi-error" class="field__error" hidden></div><div id="deskripsi-hitung" class="field__hint">0 / 1000 karakter</div></div>
-<div class="row gap-3"><button id="simpan" type="submit" class="btn btn--primer" disabled>Publikasikan</button><button id="batal" type="button" class="btn btn--sekunder">Batal</button></div>
-</form><aside class="preview col gap-3"><div class="rail__title">Pratinjau di katalog</div><div id="pratinjau"></div><div class="infobox--netral infobox">Beginilah tampilan listing Anda pada halaman katalog. Judul yang melebihi dua baris akan dipotong secara otomatis.</div></aside></main><div id="pesan" class="toast" role="status" hidden></div></div></body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0F4C97">
+  <title>Jual Barang · ITBELI</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/listing.css">
+  <script src="/js/api.js" defer></script>
+  <script src="/js/Kerangka.js" defer></script>
+  <script src="/js/ListingUI.js" defer></script>
+  <script src="/js/FormulirBarang.js" defer></script>
+  <script src="/js/PanelNotifikasi.js" defer></script>
+</head>
+<body>
+<div class="page">
+  <header id="listing-topbar" class="topbar" data-topbar></header>
+  <div class="shell">
+    <aside id="listing-rail" class="rail" data-judul="Jual Barang"></aside>
+    <main class="content">
+      <div class="content__inner form-wrap">
+        <form id="form-listing" class="col gap-5" novalidate>
+          <div>
+            <p id="breadcrumb" class="t-caption muted">Listing Saya · Buat listing baru</p>
+            <h2 id="judul-halaman" class="h-page mt-2">Jual Barang</h2>
+          </div>
+          <div id="galat-umum" class="infobox infobox--galat" role="alert" hidden></div>
+          <div class="field">
+            <label class="field__label" for="foto">Foto barang <span class="muted">(maksimum 5, JPG atau PNG, maksimum 5 MB)</span></label>
+            <input id="foto" type="file" accept="image/jpeg,image/png" multiple hidden>
+            <div id="foto-list" class="fotos" aria-label="Foto barang; seret untuk mengubah urutan"></div>
+            <div class="field__hint">Seret foto untuk mengubah urutan. Foto pertama dipakai sebagai foto utama pada katalog.</div>
+            <div id="foto-error" class="field__error" role="alert" hidden></div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="judul">Judul barang</label>
+            <input id="judul" name="judul" class="field__input" required maxlength="80" placeholder="Nama barang yang Anda jual">
+            <div id="judul-error" class="field__error" hidden></div>
+            <div id="judul-hitung" class="field__hint">0 / 80 karakter</div>
+          </div>
+          <div class="two">
+            <div class="field">
+              <label class="field__label" for="harga">Harga (Rp)</label>
+              <input id="harga" name="harga" type="number" min="0.01" max="9999999999.99" step="0.01" class="field__input" required placeholder="120000">
+              <div id="harga-error" class="field__error" hidden></div>
+            </div>
+            <div class="field">
+              <label class="field__label" for="idKategori">Kategori</label>
+              <select id="idKategori" name="idKategori" class="field__input select" required><option value="">Pilih kategori</option></select>
+              <div id="idKategori-error" class="field__error" hidden></div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="idLokasi">Lokasi titik temu COD</label>
+            <select id="idLokasi" name="idLokasi" class="field__input select" required><option value="">Pilih lokasi titik temu</option></select>
+            <div id="idLokasi-error" class="field__error" hidden></div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="deskripsiKondisi">Deskripsi kondisi</label>
+            <textarea id="deskripsiKondisi" name="deskripsiKondisi" class="field__area" maxlength="1000" required placeholder="Jelaskan kondisi, lama pemakaian, dan kekurangan barang"></textarea>
+            <div id="deskripsiKondisi-error" class="field__error" hidden></div>
+            <div id="deskripsi-hitung" class="field__hint">0 / 1000 karakter</div>
+          </div>
+          <div class="row gap-3">
+            <button id="simpan" type="submit" class="btn btn--primer" disabled>Publikasikan</button>
+            <button id="batal" type="button" class="btn btn--sekunder">Batal</button>
+          </div>
+        </form>
+        <aside class="preview col gap-3">
+          <div class="rail__title">Pratinjau di katalog</div>
+          <div id="pratinjau"></div>
+          <div class="infobox infobox--netral">Beginilah tampilan listing Anda pada halaman katalog. Judul yang melebihi dua baris akan dipotong secara otomatis.</div>
+        </aside>
+      </div>
+    </main>
+  </div>
+  <div id="pesan" class="toast" role="status" hidden></div>
+</div>
+</body>
+</html>

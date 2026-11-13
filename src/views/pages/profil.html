@@ -21,53 +21,30 @@
   .profil__stat { display: flex; gap: var(--sp-8); }
   .profil__stat div span { display: block; }
   .menu { display: flex; flex-direction: column; gap: 2px; }
-  .menu a { display: flex; align-items: center; padding: var(--sp-3) var(--sp-4);
-    border-radius: var(--radius-sm); color: var(--text-900); text-decoration: none; font-size: 14px; }
-  .menu a:hover { background: var(--primer-50); }
+  .menu a { display: flex; align-items: center; padding: var(--sp-3) var(--sp-3);
+    border-radius: var(--radius-md); color: var(--text-900); text-decoration: none; font: 600 15px/20px var(--font-sans); }
+  .menu a:hover { background: var(--hover); }
   .menu a.keluar { color: var(--danger); }
-  .dua { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--sp-8); align-items: start; }
   a.card { color: inherit; text-decoration: none; }
-  a.card:hover { box-shadow: var(--shadow-md); }
-  .card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  a.card:hover .card__media { filter: brightness(.94); }
   .kosong { padding: var(--sp-8); text-align: center; color: var(--text-600); }
 
-  @media (max-width: 960px) {
-    .dua { grid-template-columns: minmax(0, 1fr); }
-    .grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 959px) {
     .profil__stat { margin-left: 0; }
   }
 </style>
 <script src="/js/api.js" defer></script>
+<script src="/js/Kerangka.js" defer></script>
 <script src="/js/HalamanOtentikasi.js" defer></script>
 <script src="/js/HalamanProfil.js" defer></script>
 <script src="/js/PanelNotifikasi.js" defer></script>
 </head>
 <body data-halaman="profil">
 <div class="page">
-  <header class="topbar">
-    <a class="brand" href="/">
-      <img class="brand__mark" src="/ikon/itbeli-simbol.svg" alt="" width="40" height="40">
-      <div>
-        <img class="brand__name" src="/ikon/itbeli-nama.svg" alt="ITBELI" width="60" height="20">
-        <div class="brand__tag">Marketplace preloved sivitas ITB</div>
-      </div>
-    </a>
-  </header>
+  <header class="topbar" data-topbar></header>
 
   <div class="shell">
-    <aside class="rail">
-      <a class="btn btn--primer btn--blok" href="/listing-form">+ Jual Barang</a>
-      <div class="rail__group">
-        <div class="rail__title">Akun Saya</div>
-        <nav class="navlist">
-          <a href="/katalog"><span class="dot"></span>Katalog</a>
-          <a href="/listing-saya"><span class="dot"></span>Listing Saya</a>
-          <a href="/percakapan"><span class="dot"></span>Percakapan</a>
-          <a href="/notifikasi"><span class="dot"></span>Notifikasi</a>
-          <a href="/profil" class="is-active"><span class="dot"></span>Profil Akun</a>
-        </nav>
-      </div>
-    </aside>
+    <aside class="rail" data-judul="Profil Akun"></aside>
 
     <main class="content">
       <div class="content__inner col gap-6">
@@ -81,7 +58,7 @@
             <div class="profil">
               <div id="inisial" class="profil__avatar" aria-hidden="true"></div>
               <div class="col gap-1">
-                <h1 id="nama-akun" class="h-page" style="font-size:28px;line-height:36px"></h1>
+                <h2 id="nama-akun" class="h-page"></h2>
                 <div id="identitas-akun" class="muted"></div>
                 <div class="row gap-2 mt-2">
                   <span id="status-akun" class="badge"></span>
@@ -108,7 +85,7 @@
             <!-- I09-O02 -->
             <section class="col gap-4">
               <div class="row">
-                <h2 class="h-sec">Listing saya</h2>
+                <h3 class="h-sec">Listing saya</h3>
                 <a class="btn btn--teks btn--sm ml-auto" href="/listing-saya">Lihat semua</a>
               </div>
               <div id="daftar-listing" class="grid grid--3"></div>
@@ -120,7 +97,7 @@
 
             <!-- I09-O03 -->
             <aside class="panel col gap-3">
-              <div class="rail__title">Pengaturan akun</div>
+              <h3 class="rail__title">Pengaturan akun</h3>
               <nav class="menu">
                 <!-- I09-O04 -->
                 <a id="tautan-kebijakan" href="/legal?jenis=kebijakan-privasi">Kebijakan Privasi</a>

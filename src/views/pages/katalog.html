@@ -12,9 +12,9 @@
   <link rel="stylesheet" href="/css/tokens.css">
   <link rel="stylesheet" href="/css/components.css">
   <link rel="stylesheet" href="/css/app.css">
-  <link rel="stylesheet" href="/css/listing.css">
   <link rel="stylesheet" href="/css/katalog.css">
   <script src="/js/api.js" defer></script>
+  <script src="/js/Kerangka.js" defer></script>
   <script src="/js/ListingUI.js" defer></script>
   <script src="/js/layoutKatalog.js" defer></script>
   <script src="/js/KartuProduk.js" defer></script>
@@ -23,49 +23,53 @@
 </head>
 <body>
 <div class="page">
-  <header id="listing-topbar" class="topbar"></header>
+  <header id="listing-topbar" class="topbar" data-topbar></header>
   <div class="shell">
-    <aside id="listing-rail" class="rail"></aside>
+    <aside id="listing-rail" class="rail" data-judul="Katalog">
+      <form id="form-filter" class="filter-katalog" aria-label="Saring katalog">
+        <details id="filter-rinci" class="filter-katalog__rinci" open>
+        <summary class="rail__title">Filter</summary>
+        <label class="field">
+          <span class="field__label">Kategori</span>
+          <select name="kategori" class="field__input"><option value="">Semua kategori</option></select>
+        </label>
+        <label class="field">
+          <span class="field__label">Lokasi COD</span>
+          <select name="lokasi" class="field__input"><option value="">Semua lokasi</option></select>
+        </label>
+        <div class="filter-katalog__duo">
+          <label class="field">
+            <span class="field__label">Harga minimum (Rp)</span>
+            <input type="number" name="hargaMin" class="field__input" min="0" step="1000" inputmode="numeric" placeholder="0">
+          </label>
+          <label class="field">
+            <span class="field__label">Harga maksimum (Rp)</span>
+            <input type="number" name="hargaMaks" class="field__input" min="0" step="1000" inputmode="numeric" placeholder="Tanpa batas">
+          </label>
+        </div>
+        <label class="field">
+          <span class="field__label">Urutkan</span>
+          <select name="urut" class="field__input">
+            <option value="terbaru">Terbaru</option>
+            <option value="termurah">Harga terendah</option>
+            <option value="termahal">Harga tertinggi</option>
+          </select>
+        </label>
+        <div class="filter-katalog__aksi">
+          <button type="submit" class="btn btn--primer">Terapkan</button>
+          <button type="button" id="reset-filter" class="btn btn--sekunder">Reset</button>
+        </div>
+        </details>
+      </form>
+    </aside>
     <main class="content">
-      <div class="content__inner col gap-5">
+      <div class="content__inner col gap-4">
         <div>
-          <h1 class="h-page">Katalog</h1>
-          <p class="muted mt-2">Barang preloved dari sivitas ITB</p>
+          <h2 class="katalog-judul">Pilihan hari ini</h2>
+          <p id="info-hasil" class="muted mt-1" aria-live="polite"></p>
         </div>
 
-        <form id="form-filter" class="panel filter-katalog" aria-label="Saring katalog">
-          <label class="filter-katalog__field">
-            <span>Kategori</span>
-            <select name="kategori"><option value="">Semua kategori</option></select>
-          </label>
-          <label class="filter-katalog__field">
-            <span>Lokasi COD</span>
-            <select name="lokasi"><option value="">Semua lokasi</option></select>
-          </label>
-          <label class="filter-katalog__field">
-            <span>Harga minimum (Rp)</span>
-            <input type="number" name="hargaMin" min="0" step="1000" inputmode="numeric" placeholder="0">
-          </label>
-          <label class="filter-katalog__field">
-            <span>Harga maksimum (Rp)</span>
-            <input type="number" name="hargaMaks" min="0" step="1000" inputmode="numeric" placeholder="Tanpa batas">
-          </label>
-          <label class="filter-katalog__field">
-            <span>Urutkan</span>
-            <select name="urut">
-              <option value="terbaru">Terbaru</option>
-              <option value="termurah">Harga terendah</option>
-              <option value="termahal">Harga tertinggi</option>
-            </select>
-          </label>
-          <div class="filter-katalog__aksi">
-            <button type="submit" class="btn btn--primer btn--sm">Terapkan</button>
-            <button type="button" id="reset-filter" class="btn btn--sekunder btn--sm">Reset</button>
-          </div>
-        </form>
-
         <div id="galat-umum" class="infobox infobox--galat" role="alert" hidden></div>
-        <p id="info-hasil" class="muted" aria-live="polite"></p>
         <p id="memuat" class="muted">Memuat katalog…</p>
         <div id="daftar-katalog" class="grid"></div>
 

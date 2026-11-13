@@ -92,6 +92,13 @@ class Akun {
     return rowCount > 0;
   }
 
+  // Dipakai SSO: mengganti hash lama agar kata sandi yang dipasang sebelum surel terbukti milik pemiliknya tidak berlaku
+  async perbaruiKataSandiHash(kataSandiHash, client = db) {
+    const { rowCount } = await client.query('UPDATE akun SET kata_sandi_hash = $1 WHERE id_akun = $2', [kataSandiHash, this.idAkun]);
+    if (rowCount > 0) this.kataSandiHash = kataSandiHash;
+    return rowCount > 0;
+  }
+
   getStatusAkun() {
     return this.statusBlokir ? STATUS.DIBLOKIR : this.statusAkun;
   }

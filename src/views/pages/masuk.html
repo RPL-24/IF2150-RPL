@@ -9,57 +9,44 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0F4C97">
 <title>Masuk · ITBELI</title>
+<script>
+  // Layar pembuka cukup sekali per tab; sessionStorage bisa diblokir, maka dibungkus try.
+  try {
+    if (sessionStorage.getItem('itbeli-pembuka')) document.documentElement.classList.add('tanpa-pembuka');
+    else sessionStorage.setItem('itbeli-pembuka', '1');
+  } catch { /* tetap tampilkan pembuka */ }
+</script>
 <link rel="stylesheet" href="/css/tokens.css">
 <link rel="stylesheet" href="/css/components.css">
 <link rel="stylesheet" href="/css/app.css">
-<style>
-  /* Tombol Masuk mengikuti lebar isinya, bukan selebar kolom, seperti rancangan I-01. */
-  .authform .btn--masuk { align-self: flex-start; padding: 0 var(--sp-8); }
-</style>
 <script src="/js/api.js" defer></script>
 <script src="/js/HalamanOtentikasi.js" defer></script>
+<script src="/js/TombolSSO.js" defer></script>
 </head>
 <body data-halaman="masuk">
+<div class="pembuka" aria-hidden="true">
+  <img class="pembuka__simbol" src="/ikon/itbeli-simbol.svg" alt="" width="128" height="128">
+  <img class="pembuka__nama" src="/ikon/itbeli-nama.svg" alt="" width="144" height="48">
+</div>
 <div class="page">
-  <header class="topbar">
-    <div class="brand">
-      <img class="brand__mark" src="/ikon/itbeli-simbol.svg" alt="" width="40" height="40">
-      <div>
-        <img class="brand__name" src="/ikon/itbeli-nama.svg" alt="ITBELI" width="60" height="20">
-        <div class="brand__tag">Marketplace preloved sivitas ITB</div>
-      </div>
-    </div>
-    <div class="topbar__right">
-      <a class="btn btn--primer btn--sm" href="/daftar">Daftar</a>
-    </div>
-  </header>
-
   <main class="auth">
 
-    <section class="hero">
-      <div class="hero__eyebrow">Marketplace preloved sivitas ITB</div>
-      <h1 class="hero__title">Barang bagus tak harus selalu baru.</h1>
-      <p class="hero__text">
+    <section class="auth__merek">
+      <a class="auth__logo" href="/" aria-label="ITBELI, beranda">
+        <img class="brand__mark" src="/ikon/itbeli-simbol.svg" alt="" width="40" height="40">
+        <img class="brand__name" src="/ikon/itbeli-nama.svg" alt="ITBELI" width="60" height="20">
+      </a>
+      <h1 class="auth__tagline">Barang bagus tak harus selalu baru.</h1>
+      <p class="auth__teks">
         Temukan kebutuhan kuliah, teruskan barang yang masih berharga.
-        Mulai dari komunitas kampus sendiri.
+        Marketplace preloved khusus sivitas ITB.
       </p>
-      <div class="hero__media">
-        <div><div class="ph ph--jas"></div></div>
-        <div><div class="ph ph--kalkulator"></div></div>
-        <div><div class="ph ph--buku"></div></div>
-      </div>
     </section>
 
-    <section class="authform">
-      <div>
-        <h2 class="authform__title">Kembali ke kampus.</h2>
-        <p class="authform__sub mt-2">
-          Masuk untuk mencari barang, mengelola listing, dan melanjutkan percakapan.
-        </p>
-      </div>
+    <section class="auth__kartu" aria-label="Masuk ke ITBELI">
 
       <!-- Pengguna belum masuk -->
-      <form id="formulir-login" class="authform" style="padding-top:0" novalidate hidden>
+      <form id="formulir-login" novalidate hidden>
         <div id="pesan-galat" class="infobox infobox--galat" role="alert" hidden></div>
 
         <label class="field">
@@ -74,24 +61,37 @@
           <input id="kata-sandi" class="field__input" type="password" autocomplete="current-password" required>
         </label>
 
-        <button id="tombol-masuk" class="btn btn--primer btn--masuk" type="submit">Masuk</button>
+        <button id="tombol-masuk" class="btn btn--primer btn--lg btn--pil btn--blok" type="submit">Masuk</button>
 
-        <div class="row">
-          <span class="muted">Belum punya akun?</span>
-          <a class="btn btn--sekunder btn--sm ml-auto" href="/daftar">Daftar</a>
+        <div id="sso-masuk" hidden>
+          <div class="sso-pemisah">atau</div>
+          <a id="tombol-sso-google" class="tombol-sso" href="/api/akun/sso/google/mulai">
+            <svg class="tombol-sso__logo" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            <span class="tombol-sso__teks">
+              <span class="tombol-sso__label">Lanjut dengan Google</span>
+              <span class="tombol-sso__domain">@itb.ac.id</span>
+            </span>
+          </a>
         </div>
+
+        <hr class="auth__pemisah">
+        <a class="btn btn--garis btn--lg btn--pil auth__baru" href="/daftar">Buat akun baru</a>
       </form>
 
       <!-- Pengguna sudah masuk (I01-O08) -->
-      <div id="panel-masuk" class="authform" style="padding-top:0" hidden>
+      <div id="panel-masuk" class="col gap-3" hidden>
+        <h2>Anda sudah masuk</h2>
         <div class="infobox infobox--netral">
           Anda sedang masuk sebagai <strong id="email-masuk"></strong>
         </div>
-        <div class="row">
-          <a class="btn btn--primer" href="/">Lanjut ke beranda</a>
-          <a class="btn btn--sekunder" href="/profil">Profil saya</a>
-          <button id="tombol-keluar" class="btn btn--sekunder" type="button">Keluar</button>
-        </div>
+        <a class="btn btn--primer btn--lg btn--pil btn--blok" href="/">Lanjut ke beranda</a>
+        <a class="btn btn--sekunder btn--blok" href="/profil">Profil saya</a>
+        <button id="tombol-keluar" class="btn btn--sekunder btn--blok" type="button">Keluar</button>
       </div>
 
       <div class="infobox">
