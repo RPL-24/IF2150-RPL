@@ -1,47 +1,45 @@
-/* Susunan I-07/I-08 mengikuti src/mockup; penyesuaian hanya untuk kontrol nyata/responsif. */
-.form-wrap { display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:var(--sp-10);padding:var(--sp-8) var(--sp-16); }
-.fotos { display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--sp-3); }
-.fotos>div,.foto-tambah { position:relative;height:104px;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:var(--surface); }
-.fotos img { width:100%;height:100%;object-fit:cover;display:block; }
-.fotos .tag { position:absolute;left:4px;bottom:4px; }
-.foto-tambah { border-style:dashed;display:grid;place-items:center;cursor:pointer;color:var(--text-400);width:100%; }
-.foto-tools { position:absolute;top:4px;right:4px;display:flex;gap:2px; }
-.foto-tools button { border:1px solid var(--border);background:var(--surface);border-radius:4px;width:24px;height:24px;cursor:pointer; }
-.fotos.dragover { outline:2px dashed var(--primer-500);outline-offset:4px; }
-.two { display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4); }
-.preview { position:sticky;top:var(--sp-4);align-self:start; }
-select.field__input,textarea.field__area { width:100%;font:inherit;color:inherit; }
-textarea.field__area { resize:vertical;min-height:96px; }
-.field__input.is-error,.field__area.is-error { border-color:var(--danger);background:var(--danger-bg); }
-:focus-visible { outline:2px solid var(--primer-500);outline-offset:2px; }
-.card__media img { width:100%;height:100%;object-fit:cover;display:block; }
-.card__media { aspect-ratio:4/3; }
-.preview .card__media { aspect-ratio:1; }
-.card__title { overflow-wrap:anywhere; }
-.card__actions .btn { padding:0 12px; }
-.card__actions .hapus { flex:none;color:var(--danger); }
-.kosong { padding:var(--sp-10);text-align:center; }
-.mobile-jual { display:none; }
-.dialog { position:fixed;border:none;color:var(--text-900);max-width:calc(100vw - 32px);margin:0; }
-.dialog:not([open]) { display:none; }
-.dialog::backdrop { background:rgba(20,24,26,.55); }
-.dialog .field__error { white-space:normal; }
-.toast { z-index:30; }
-.detail { display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:var(--sp-8); }
-.gal-main { height:420px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden; }
-.gal-main img { width:100%;height:100%;object-fit:contain; }
-.gal-thumbs { display:flex;gap:12px; }
-.gal-thumbs button { width:80px;height:80px;border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer; }
-.gal-thumbs img { width:100%;height:100%;object-fit:cover; }
-#detail-deskripsi { white-space:pre-wrap;overflow-wrap:anywhere; }
-@media(max-width:1100px) { .grid { grid-template-columns:repeat(3,minmax(0,1fr)); }.card__actions { flex-wrap:wrap; } }
-@media(max-width:960px) { .form-wrap { grid-template-columns:minmax(0,1fr);padding:24px 16px; }.preview { position:static;max-width:340px; }.mobile-jual { display:inline-flex;align-self:start; }.detail { grid-template-columns:minmax(0,1fr); }.topbar .searchbar { display:none; } }
-@media(max-width:650px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.two { grid-template-columns:minmax(0,1fr); }.fotos { gap:6px; }.fotos>div,.foto-tambah { height:76px; }.foto-tools { right:1px;top:1px; }.foto-tools button { width:20px;height:20px; }.topbar__right { gap:8px; } }
-@media(max-width:400px) { .grid { grid-template-columns:minmax(0,1fr); } }
-/* Empat kartu mempertahankan rasio 4:3 meskipun foto unggahan berbentuk persegi. */
-.card__media { overflow:hidden; }
-.card__media img { position:absolute;inset:0; }
-.card__media>.ph:not([class*="ph--"]) { display:grid;place-items:center;color:var(--text-400); }
-a.avatar { text-decoration:none; }
-select.field__input { appearance:none;padding-right:36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1h8L5 5z' fill='%235a6460'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center; }
-.dialog { max-height:calc(100vh - 32px);overflow:auto;overflow-wrap:anywhere; }
+/* Listing penjual: Jual/Ubah Barang (I-07/I-08), Listing Saya, dan detail listing milik sendiri. */
+
+/* Formulir jual barang dan pratinjau */
+.form-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: var(--sp-6); align-items: start; }
+.form-wrap > form { background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); padding: var(--sp-5); }
+.preview { position: sticky; top: calc(var(--topbar-h) + var(--sp-4)); align-self: start; }
+.preview .card__media { aspect-ratio: 1; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+
+.fotos { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--sp-3); }
+.fotos > div, .foto-tambah {
+  position: relative; height: 104px; border: 1px solid var(--border); border-radius: var(--radius-md);
+  overflow: hidden; background: var(--surface);
+}
+.fotos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fotos .tag { position: absolute; left: 4px; bottom: 4px; }
+.foto-tambah { border-style: dashed; display: grid; place-items: center; cursor: pointer; color: var(--text-600); width: 100%; }
+.foto-tambah:hover { background: var(--hover); }
+.foto-tools { position: absolute; top: 4px; right: 4px; display: flex; gap: 2px; }
+.foto-tools button { border: 0; background: rgba(255, 255, 255, .92); border-radius: var(--radius-sm); width: 24px; height: 24px; cursor: pointer; }
+.fotos.dragover { outline: 2px dashed var(--primer-700); outline-offset: 4px; }
+
+/* Detail listing milik sendiri (detail.html): penampil gelap + info */
+.detail { display: grid; grid-template-columns: minmax(0, 1fr) var(--panel-w); gap: var(--sp-4); align-items: start; }
+.detail > aside { background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); padding: var(--sp-4); }
+.gal-main { height: 480px; background: #18191a; border-radius: var(--radius-md); overflow: hidden; }
+.gal-main img { width: 100%; height: 100%; object-fit: contain; }
+.gal-thumbs { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.gal-thumbs button { width: 64px; height: 64px; border: 2px solid transparent; border-radius: var(--radius-md); overflow: hidden; cursor: pointer; padding: 0; }
+.gal-thumbs button:hover { border-color: var(--primer-200); }
+.gal-thumbs img { width: 100%; height: 100%; object-fit: cover; }
+#detail-deskripsi { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+@media (max-width: 959px) {
+  .form-wrap, .detail { grid-template-columns: minmax(0, 1fr); }
+  .preview { position: static; max-width: 340px; }
+  .gal-main { height: min(100vw, 420px); }
+}
+@media (max-width: 650px) {
+  .two { grid-template-columns: minmax(0, 1fr); }
+  .fotos { gap: 6px; }
+  .fotos > div, .foto-tambah { height: 76px; }
+  .foto-tools { right: 1px; top: 1px; }
+  .foto-tools button { width: 20px; height: 20px; }
+}

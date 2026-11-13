@@ -43,20 +43,6 @@ const ListingUI = {
   },
   async mulai() {
     if (!Api.getToken()) { location.replace('/masuk'); return false; }
-    const bar = document.getElementById('listing-topbar');
-    bar.innerHTML = `<a class="brand" href="/"><div class="brand__mark">IT</div><div><div class="brand__name">ITBELI</div><div class="brand__tag">Marketplace preloved sivitas ITB</div></div></a><div class="searchbar"><span class="ic ic--search"></span><span>Cari jas praktikum, buku, kalkulator…</span></div><div class="topbar__right"><button type="button" class="iconbtn" title="Notifikasi" aria-label="Notifikasi"><span class="ic ic--bell"></span></button><a class="iconbtn" href="/percakapan" title="Percakapan" aria-label="Percakapan"><span class="ic ic--chat"></span></a><a class="avatar" href="/profil" aria-label="Profil akun">?</a></div>`;
-    const rail = document.getElementById('listing-rail');
-    if (rail) {
-      rail.innerHTML = `<a href="/listing-form" class="btn btn--primer btn--blok">+ Jual Barang</a><div class="rail__group"><div class="rail__title">Akun Saya</div><nav class="navlist"></nav></div>`;
-      for (const [nama,url] of [['Katalog',null],['Listing Saya','/listing-saya'],['Percakapan','/percakapan'],['Notifikasi','#notifikasi'],['Profil Akun','/profil']]) {
-        const a = this.el('a', nama === 'Listing Saya' ? 'is-active' : '');
-        if (url) a.href = url; else { a.setAttribute('aria-disabled','true'); a.title = 'Modul belum tersedia'; }
-        a.append(this.el('span','dot'), document.createTextNode(nama)); rail.querySelector('nav').append(a);
-      }
-    }
-    Api.kirim('GET','/api/akun/profil').then(r => {
-      if (r.sukses) bar.querySelector('.avatar').textContent = r.data.nama.split(/\s+/).slice(0,2).map(x => x[0]).join('').toUpperCase();
-    });
     const pesan = sessionStorage.getItem('listing-pesan');
     if (pesan) { sessionStorage.removeItem('listing-pesan'); this.toast(pesan); }
     return true;

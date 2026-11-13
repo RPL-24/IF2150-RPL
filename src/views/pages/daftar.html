@@ -12,42 +12,26 @@
 </head>
 <body data-halaman="daftar">
 <div class="page">
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand__mark">IT</div>
-      <div>
-        <div class="brand__name">ITBELI</div>
-        <div class="brand__tag">Marketplace preloved sivitas ITB</div>
-      </div>
-    </div>
-    <div class="topbar__right">
-      <a class="btn btn--sekunder btn--sm" href="/masuk">Masuk</a>
-    </div>
-  </header>
-
   <main class="auth">
 
-    <section class="hero">
-      <div class="hero__eyebrow">Marketplace preloved sivitas ITB</div>
-      <h1 class="hero__title">Barang bagus tak harus selalu baru.</h1>
-      <p class="hero__text">
+    <section class="auth__merek">
+      <a class="auth__logo" href="/" aria-label="ITBELI, beranda">
+        <span class="brand__mark">IT</span>
+        <span class="brand__name">ITBELI</span>
+      </a>
+      <h1 class="auth__tagline">Barang bagus tak harus selalu baru.</h1>
+      <p class="auth__teks">
         Temukan kebutuhan kuliah, teruskan barang yang masih berharga.
-        Mulai dari komunitas kampus sendiri.
+        Pendaftaran hanya terbuka untuk pemilik surel ITB, misalnya @itb.ac.id atau @mahasiswa.itb.ac.id.
       </p>
-      <div class="hero__media">
-        <div><div class="ph ph--jas"></div></div>
-        <div><div class="ph ph--kalkulator"></div></div>
-        <div><div class="ph ph--buku"></div></div>
-      </div>
     </section>
 
-    <section class="authform">
-      <div>
-        <h2 class="authform__title">Buat akun ITBELI.</h2>
-        <p class="authform__sub mt-2">Pendaftaran hanya terbuka untuk pemilik surel ITB, misalnya @itb.ac.id atau @mahasiswa.itb.ac.id.</p>
-      </div>
+    <section class="auth__kartu" aria-labelledby="judul-daftar">
+      <h2 id="judul-daftar">Buat akun ITBELI</h2>
+      <p class="auth__sub">Cepat dan mudah, khusus sivitas ITB.</p>
+      <hr class="auth__pemisah">
 
-      <form id="formulir-daftar" class="authform" style="padding-top:0" novalidate>
+      <form id="formulir-daftar" novalidate>
         <div id="pesan-galat" class="infobox infobox--galat" role="alert" hidden></div>
 
         <label class="field">
@@ -82,11 +66,12 @@
             dan <a href="/legal?jenis=ketentuan-penggunaan" target="_blank">Ketentuan Penggunaan</a> ITBELI.</span>
         </label>
 
-        <button id="tombol-daftar" class="btn btn--primer btn--blok" type="submit" disabled>Buat Akun</button>
+        <button id="tombol-daftar" class="btn btn--primer btn--lg btn--pil btn--blok" type="submit" disabled>Buat Akun</button>
 
+        <hr class="auth__pemisah">
         <div class="row">
           <span class="muted">Sudah punya akun?</span>
-          <a class="btn btn--sekunder btn--sm ml-auto" href="/masuk">Masuk</a>
+          <a class="btn btn--garis btn--pil" href="/masuk">Masuk</a>
         </div>
       </form>
 
