@@ -223,6 +223,19 @@ describe("Algo-022 pemesanan sesi (mahasiswa)", () => {
     expect(res.status).toBe(409);
   });
 
+  test("dua mahasiswa bersamaan: hanya satu yang berhasil memesan slot yang sama", async () => {
+    const hasil = await Promise.all([
+      minta(app, ctx.D1, { method: "POST", path: "/api/slots/j1/book", token: mhs }),
+      minta(app, ctx.D1, { method: "POST", path: "/api/slots/j1/book", token: mhs2 }),
+    ]);
+    expect(hasil.map((r) => r.status).sort()).toEqual([200, 409]);
+    const baris = ctx.raw
+      .prepare("SELECT status, id_mahasiswa FROM jadwal_konsultasi WHERE id_jadwal = 'j1'")
+      .get() as { status: string; id_mahasiswa: string };
+    expect(baris.status).toBe("terpesan");
+    expect(["mhs", "mhs2"]).toContain(baris.id_mahasiswa);
+  });
+
   test("slot tak dikenal -> 404", async () => {
     const res = await minta(app, ctx.D1, {
       method: "POST",

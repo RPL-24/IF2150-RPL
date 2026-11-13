@@ -1,6 +1,6 @@
 export { ambilAfirmasi, hapusAfirmasi, simpanWaktuAfirmasi, type Afirmasi } from './afirmasi';
 export { masukDemo, masukDenganGoogle } from './auth';
-export { ambilSesiBerikutnya, type SesiBerikutnya } from './konsultasi';
+export { ambilDaftarKonsultan, ambilSlotKonsultan, pesanSesi, ambilSesiBerikutnya, type Konsultan, type SlotKonsultasi, type SesiBerikutnya } from './konsultasi';
 export { daftarkanPerangkat } from './perangkat';
 export { api, ApiError, aturSaatTidakTerautentikasi, aturToken, KODE_KLIEN } from './client';
 export {

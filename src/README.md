@@ -510,3 +510,10 @@ Semua ini ada di handler `scheduled()`, bukan rute HTTP.
 ### Format commit
 
 Repositori memakai [Conventional Commits](https://www.conventionalcommits.org/), dengan lingkup `mobile`, `backend`, `docs`, atau `chore`, misalnya `feat(backend): add auth routes`.
+
+
+## 11. Pemesanan Sesi Konsultasi (Issue #12)
+
+Alur Mahasiswa: tab **Konsultasi** membuka I-07 (`src/mobile/src/app/(mahasiswa)/konsultasi.tsx`) dan mengambil daftar konsultan melalui `ambilDaftarKonsultan()` (`GET /api/consultants`). Memilih konsultan mengambil slot melalui `ambilSlotKonsultan()` (`GET /api/consultants/:id/slots`) lalu membuka I-08 (`sesi.tsx`). I-08 menampilkan slot per tanggal, menandai slot yang sudah dipesan atau bertabrakan dengan event Google Calendar, dan mengirim konfirmasi melalui `pesanSesi()` (`POST /api/slots/:id/book`).
+
+Backend berada di `src/backend/src/routes/consultation.ts`. Sebelum menyimpan, server memeriksa bentrok Google Calendar dan sesi lain milik Mahasiswa. `pesanSlot()` di `src/backend/src/db/queries.ts` menggunakan kondisi `status = 'tersedia'` dalam `UPDATE`; jika tidak tepat satu baris berubah, API mengembalikan `409 SLOT_SUDAH_DIPESAN`. Ini mencegah dua Mahasiswa memesan slot yang sama. `ambilSesiBerikutnya()` (Q-042) menyediakan sesi terdekat untuk kartu Beranda. Pengujian alur dan konflik ada di `src/backend/test/consultation.test.ts`.
