@@ -12,6 +12,8 @@ const FotoBarang = require('../models/FotoBarang');
 const NotifikasiController = require('./NotifikasiController');
 const PenyimpananBerkas = require('../penyimpanan/PenyimpananBerkas');
 
+const AWALAN_PERUBAHAN_STATUS = /^Perubahan status laporan menjadi\s*/;
+
 class ModerasiController {
   // Validasi token dan memastikan peran pengguna adalah Admin (KF56)
   static async otorisasiAdmin(token) {
@@ -100,6 +102,12 @@ class ModerasiController {
       return false;
     }
 
+    // Status yang sama bukan perubahan: laporan dan log audit tidak ditulis ulang,
+    // supaya riwayat penanganan hanya berisi perubahan yang benar-benar terjadi (KF48).
+    if (laporanSaatIni.statusPenanganan === statusBaru) {
+      return true;
+    }
+
     const berhasil = await Laporan.updateStatusPenanganan(idLaporan, statusBaru);
     if (berhasil) {
       await this.catatLogAudit(idLaporan, idAdmin, `Perubahan status laporan menjadi ${statusBaru}`);
@@ -116,7 +124,10 @@ class ModerasiController {
       const idAkun = tindakan.replace('Pemblokiran akun:', '').trim();
       await LogAudit.catatPemblokiranAkun(idLaporan, idAdmin, idAkun, client);
     } else {
-      await LogAudit.catatPerubahanStatusLaporan(idLaporan, idAdmin, tindakan, client);
+      // LogAudit.catatPerubahanStatusLaporan menyusun sendiri kalimat "Perubahan status laporan menjadi <status>",
+      // jadi awalan itu dibuang dulu agar tidak tertulis dua kali pada riwayat penanganan.
+      const statusBaru = String(tindakan ?? '').replace(AWALAN_PERUBAHAN_STATUS, '').trim();
+      await LogAudit.catatPerubahanStatusLaporan(idLaporan, idAdmin, statusBaru, client);
     }
   }
 

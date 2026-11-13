@@ -3,9 +3,17 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
+// Nilai kosong atau bukan angka memakai nilai bawaan. Tanpa pemeriksaan ini, salah isi seperti
+// DURASI_SESI_JAM=abc menjadi NaN dan waktu kedaluwarsa sesi menjadi tanggal yang tidak sah.
 function angka(nama, bawaan) {
   const nilai = process.env[nama];
-  return nilai === undefined || nilai === '' ? bawaan : Number(nilai);
+  if (nilai === undefined || nilai.trim() === '') return bawaan;
+  const hasil = Number(nilai);
+  if (!Number.isFinite(hasil)) {
+    console.warn(`Nilai ${nama} bukan angka; memakai nilai bawaan ${bawaan}.`);
+    return bawaan;
+  }
+  return hasil;
 }
 
 module.exports = {

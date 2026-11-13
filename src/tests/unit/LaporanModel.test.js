@@ -36,6 +36,24 @@ describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
       const hasil = await Laporan.updateStatusPenanganan('lap-1', 'Batal');
       expect(hasil).toBe(false);
     });
+
+    test('validasiTransisiStatus hanya memperbolehkan alur maju: Baru -> Diproses -> Selesai', () => {
+      // Alur transisi valid (KF47)
+      expect(Laporan.validasiTransisiStatus('Baru', 'Diproses')).toBe(true);
+      expect(Laporan.validasiTransisiStatus('Baru', 'Selesai')).toBe(true);
+      expect(Laporan.validasiTransisiStatus('Diproses', 'Selesai')).toBe(true);
+      expect(Laporan.validasiTransisiStatus('Diproses', 'Diproses')).toBe(true);
+      expect(Laporan.validasiTransisiStatus('Selesai', 'Selesai')).toBe(true);
+
+      // Alur transisi mundur ditolak
+      expect(Laporan.validasiTransisiStatus('Diproses', 'Baru')).toBe(false);
+      expect(Laporan.validasiTransisiStatus('Selesai', 'Diproses')).toBe(false);
+      expect(Laporan.validasiTransisiStatus('Selesai', 'Baru')).toBe(false);
+
+      // Status tidak dikenal ditolak
+      expect(Laporan.validasiTransisiStatus('Baru', 'Dihapus')).toBe(false);
+      expect(Laporan.validasiTransisiStatus(null, 'Diproses')).toBe(false);
+    });
   });
 
   describe('BuktiLaporan Model (C37)', () => {

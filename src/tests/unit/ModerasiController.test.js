@@ -243,6 +243,67 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       const sukses = await ModerasiController.ubahStatusLaporan('token-non-admin', 'lap-1', 'Diproses');
       expect(sukses).toBe(false);
     });
+
+    // catatLogAudit tidak ditiru di sini, supaya teks yang benar-benar sampai ke tabel log_audit ikut teruji.
+    test('teks tindakan pada log audit tidak tertulis dua kali (KF48)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
+        new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Baru' }),
+      );
+      jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
+      const kueri = jest.spyOn(db, 'query').mockResolvedValue({ rowCount: 1, rows: [] });
+
+      const sukses = await ModerasiController.ubahStatusLaporan('token-admin', 'lap-1', 'Diproses');
+
+      expect(sukses).toBe(true);
+      const sisipanLog = kueri.mock.calls.filter(([teks]) => /INSERT INTO log_audit/i.test(teks));
+      expect(sisipanLog).toHaveLength(1);
+      expect(sisipanLog[0][1]).toEqual([
+        expect.any(String),
+        'lap-1',
+        expect.any(Date),
+        'admin-id-123',
+        'Perubahan status laporan menjadi Diproses',
+      ]);
+    });
+
+    test('status yang sama tidak menulis ulang laporan maupun log audit (KF48)', async () => {
+      jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
+      jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
+        new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Selesai' }),
+      );
+      const ubah = jest.spyOn(Laporan, 'updateStatusPenanganan').mockResolvedValue(true);
+      const catat = jest.spyOn(ModerasiController, 'catatLogAudit').mockResolvedValue();
+
+      const sukses = await ModerasiController.ubahStatusLaporan('token-admin', 'lap-1', 'Selesai');
+
+      expect(sukses).toBe(true);
+      expect(ubah).not.toHaveBeenCalled();
+      expect(catat).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('catatLogAudit (KF48, KF49)', () => {
+    test('meneruskan status saja ke LogAudit untuk tindakan perubahan status', async () => {
+      const catat = jest.spyOn(LogAudit, 'catatPerubahanStatusLaporan').mockResolvedValue();
+
+      await ModerasiController.catatLogAudit('lap-1', 'admin-1', 'Perubahan status laporan menjadi Selesai');
+
+      expect(catat).toHaveBeenCalledWith('lap-1', 'admin-1', 'Selesai', db);
+    });
+
+    test('memilih operasi LogAudit sesuai awalan tindakan', async () => {
+      const hapus = jest.spyOn(LogAudit, 'catatPenghapusanListing').mockResolvedValue();
+      const blokir = jest.spyOn(LogAudit, 'catatPemblokiranAkun').mockResolvedValue();
+      const status = jest.spyOn(LogAudit, 'catatPerubahanStatusLaporan').mockResolvedValue();
+
+      await ModerasiController.catatLogAudit('lap-1', 'admin-1', 'Penghapusan listing: brg-9');
+      await ModerasiController.catatLogAudit('lap-1', 'admin-1', 'Pemblokiran akun: akun-7');
+
+      expect(hapus).toHaveBeenCalledWith('lap-1', 'admin-1', 'brg-9', db);
+      expect(blokir).toHaveBeenCalledWith('lap-1', 'admin-1', 'akun-7', db);
+      expect(status).not.toHaveBeenCalled();
+    });
   });
 
   describe('hapusListingDilaporkan (KF50, KF52, KF55, KF56, Algo-022)', () => {

@@ -52,6 +52,16 @@ describe('NotifikasiController (C19)', () => {
       expect(await NotifikasiController.kirimNotifikasi(ID_AKUN, 'pesan', 'Halo')).toBe(true);
     });
 
+    test('tidak menunggu push selesai: push service yang lambat tidak menahan pengirim pesan', async () => {
+      jest.spyOn(Notifikasi, 'simpan').mockResolvedValue(true);
+      jest.spyOn(Notifikasi, 'hitungBelumDibaca').mockResolvedValue(1);
+      // Janji yang tidak pernah selesai meniru push service yang tidak menjawab
+      const kirimPush = jest.spyOn(PushNotifikasiAdapter, 'kirimPush').mockReturnValue(new Promise(() => {}));
+
+      expect(await NotifikasiController.kirimNotifikasi(ID_AKUN, 'pesan', 'Halo')).toBe(true);
+      expect(kirimPush).toHaveBeenCalledWith(ID_AKUN, 'ITBELI', 'Halo', '/percakapan');
+    });
+
     test('gagal menyimpan: mengembalikan false tanpa memicu push', async () => {
       jest.spyOn(Notifikasi, 'simpan').mockResolvedValue(false);
       const kirimPush = jest.spyOn(PushNotifikasiAdapter, 'kirimPush');
