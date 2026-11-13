@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const localData = JSON.parse(localStorage.getItem('pendingStudentData') || '{}');
 
     const dataPelajar = {
-        nama: urlParams.get('nama') || localData.nama || 'Andi Pratama',
-        email: urlParams.get('email') || localData.email || 'andi.siswa@mahasehat.id',
+        nama: urlParams.get('nama') || localData.nama || 'Albert Einstein',
+        email: urlParams.get('email') || localData.email || 'albert.einstein@gmail.com',
         diminta: urlParams.get('diminta') || localData.diminta || '7 November 2026',
         telepon: urlParams.get('telepon') || localData.telepon || '081939326802'
     };

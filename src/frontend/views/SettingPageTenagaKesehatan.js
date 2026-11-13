@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '<input type="time" class="form-input" name="mulai" aria-label="Jam mulai" value="' + mulai + '">' +
             '<span class="range-sep">sampai</span>' +
             '<input type="time" class="form-input" name="selesai" aria-label="Jam selesai" value="' + selesai + '">' +
-            '<button type="button" class="btn btn--icon" aria-label="Hapus rentang jam">&times;</button>';
+            '<button type="button" class="btn btn--icon btn-icon-remove" aria-label="Hapus rentang jam">&times;</button>';
         groupRentang.appendChild(row);
         syncRemoveButtons();
     }
@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (hasil === 'granted') {
                     localStorage.setItem('notifAktif', 'ya');
                     if (textNotifInfo) textNotifInfo.textContent = '';
-                    tampilkanToast('✓ Notifikasi pemantauan diaktifkan.');
+                    showToast('✓ Notifikasi pemantauan diaktifkan.');
                 } else {
                     switchNotif.checked = false;
                     if (textNotifInfo) textNotifInfo.textContent = 'Izin ditolak oleh pengguna.';
@@ -341,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 () => {
                     localStorage.setItem('lokasiAktif', 'ya');
                     if (textLokasiInfo) textLokasiInfo.textContent = '';
-                    tampilkanToast('✓ Izin lokasi diaktifkan.');
+                    showToast('✓ Izin lokasi diaktifkan.');
                 },
                 () => {
                     switchLokasi.checked = false;

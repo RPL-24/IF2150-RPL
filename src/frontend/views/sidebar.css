@@ -4,7 +4,7 @@
    menu navigasi, pencarian, dan profil pengguna. Berlaku untuk semua peran.
 
    Menggantikan: SidebarTenagaKesehatan.css, SidebarOrangTuaWali.css, serta
-   salinan blok sidebar di DashboardPagePelajar.css dan SettingPage.css.
+   salinan blok sidebar di DashboardPagePelajar.css dan SettingPagePelajar.css.
    Dimuat setelah base.css.
    ========================================================================== */
 
@@ -64,9 +64,9 @@
 .sidebar-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 12px;
-    padding: 4px 0 0 4px;
+    padding: 4px 0 0;
 }
 
 .sidebar-panel {
@@ -86,8 +86,9 @@
 }
 
 .app-sidebar .brand-logo {
-    width: 46px;
-    height: 32px;
+    width: 200px;
+    max-width: 100%;
+    height: auto;
     object-fit: contain;
 }
 
@@ -125,7 +126,7 @@
 .nav-icon {
     width: 20px;
     height: 20px;
-    stroke: currentColor;
+    object-fit: contain;
     flex-shrink: 0;
 }
 

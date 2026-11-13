@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Model Data Awal Pelajar (Mock & Integrasi Storage)
     const storedUser = JSON.parse(localStorage.getItem('mahasehat_user') || '{}');
     const data = {
-        nama: storedUser.nama || 'Budi Pratama',
+        nama: storedUser.nama || 'Albert Einstein',
         role: 'Pelajar',
         sudahCheckIn: false,
         streak: 5,
@@ -63,20 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Helper Sapaan Berdasarkan Waktu
     function sapaanWaktu() {
         const jam = new Date().getHours();
-        if (jam < 11) return 'Selamat Pagi';
-        if (jam < 15) return 'Selamat Siang';
-        if (jam < 18) return 'Selamat Sore';
-        return 'Selamat Malam';
+        if (jam < 11) return 'Selamat pagi';
+        if (jam < 15) return 'Selamat siang';
+        if (jam < 18) return 'Selamat sore';
+        return 'Selamat malam';
     }
 
     const namaPanggilan = data.nama.split(' ')[0];
     const sapaan = `${sapaanWaktu()}, ${namaPanggilan}.`;
 
     // SVG Icons
-    const svgCentang = `
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>`;
+    const svgCentang = `<img src="../assets/check.png" alt="" class="banner-check">`;
 
     const svgSilang = `
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">

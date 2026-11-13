@@ -4,10 +4,19 @@
  * Keterlacakan DPPL: UC09 (Masuk Akun), C01 (Pengguna)
  */
 
+// Tujuan dashboard per peran (dinormalisasi: huruf kecil, hanya a-z)
+const HALAMAN_PER_ROLE = {
+    pelajar: 'DashboardPagePelajar.html',
+    orangtuawali: 'DashboardPageOrangTuaWali.html',
+    orangtua: 'DashboardPageOrangTuaWali.html',
+    wali: 'DashboardPageOrangTuaWali.html',
+    tenagakesehatan: 'DashboardPageTenagaKesehatan.html'
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Form & Panels
     const form = document.getElementById('Form_Registration') || document.querySelector('form');
-    
+
     // Input Fields
     const inputIdentifier = document.getElementById('Input_Email');
     const inputPassword = document.getElementById('Input_KataSandi');
@@ -96,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showErrorField(inputIdentifier, errorIdentifier, 'Email wajib diisi.');
                 isValid = false;
             } else if (!emailRegex.test(identifierValue)) {
-                showErrorField(inputIdentifier, errorIdentifier, 'Format email tidak valid (contoh: nama@kampus.ac.id).');
+                showErrorField(inputIdentifier, errorIdentifier, 'Format email tidak valid.');
                 isValid = false;
             }
 
@@ -136,9 +145,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     const { token, pengguna } = hasil.data;
                     localStorage.setItem('mahasehat_token', token);
                     localStorage.setItem('mahasehat_user', JSON.stringify(pengguna));
-                    // DashboardPage memilih halaman sesuai role yang tersimpan
                     localStorage.setItem('role', pengguna.role);
-                    window.location.href = 'DashboardPage.html';
+
+                    // Arahkan langsung ke dashboard sesuai role
+                    const roleKey = String(pengguna.role || '').toLowerCase().replace(/[^a-z]/g, '');
+                    const tujuan = HALAMAN_PER_ROLE[roleKey];
+
+                    if (tujuan) {
+                        window.location.href = tujuan;
+                        return;
+                    }
+
+                    showGlobalError('Peran akun tidak dikenali. Hubungi admin.');
                     return;
                 }
 

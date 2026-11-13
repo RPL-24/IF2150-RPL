@@ -199,7 +199,7 @@
 .guidance-icon {
     width: 18px;
     height: 18px;
-    stroke: var(--color-teal);
+    object-fit: contain;
     flex-shrink: 0;
     margin-top: 2px;
 }

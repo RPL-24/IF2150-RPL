@@ -44,18 +44,9 @@
 }
 
 .auth-brand__logo {
-    flex: none;
-    width: 58px;
-    height: 40px;
-    object-fit: contain;
-}
-
-.auth-brand__name {
-    font-family: var(--font-heading);
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--color-ink);
+    width: 220px;
+    height: auto;
+    max-width: 100%;
 }
 
 .auth-story {
@@ -318,10 +309,6 @@ a.auth-footer:not([hidden]) {
     .auth-brand__logo {
         width: 44px;
         height: 30px;
-    }
-
-    .auth-brand__name {
-        font-size: 20px;
     }
 
     .auth-panel {

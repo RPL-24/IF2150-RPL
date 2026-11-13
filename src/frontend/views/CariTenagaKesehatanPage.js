@@ -451,7 +451,7 @@
 
     /* ------------------------------ Inisialisasi -------------------------- */
 
-    const namaPengguna = pengguna.nama || 'Budi Pratama';
+    const namaPengguna = pengguna.nama || 'Albert Einstein';
     el('Text_NamaUser').textContent = namaPengguna;
     el('Text_RoleUser').textContent = pengguna.role || 'Pelajar';
     el('User_Avatar').textContent = namaPengguna.trim().charAt(0).toUpperCase();
