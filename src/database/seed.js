@@ -1,5 +1,6 @@
 // Mengisi data uji fiktif. Aman dijalankan berulang.
-//   npm run db:seed
+//   npm run db:seed         akun uji + dokumen legal (pengembangan lokal)
+//   npm run db:seed-legal   hanya dokumen legal (basis data produksi: akun uji berkata sandi publik tidak dibuat)
 const crypto = require('crypto');
 const db = require('../config/db');
 const Kriptografi = require('../pendukung/Kriptografi');
@@ -47,7 +48,7 @@ async function seedDokumenLegal() {
 }
 
 async function main() {
-  await seedAkun();
+  if (!process.argv.includes('--hanya-legal')) await seedAkun();
   await seedDokumenLegal();
 }
 

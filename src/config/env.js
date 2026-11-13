@@ -51,6 +51,9 @@ module.exports = {
     },
   },
 
+  // Token Vercel Blob (C45 PenyimpananBerkas). Kosong saat lokal: berkas disimpan di src/uploads/.
+  blobToken: process.env.BLOB_READ_WRITE_TOKEN || undefined,
+
   // Kunci VAPID untuk Web Push (C44 PushNotifikasiAdapter, KF34)
   vapid: {
     publicKey: process.env.VAPID_PUBLIC_KEY,
