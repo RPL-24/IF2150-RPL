@@ -5,7 +5,7 @@ class HalamanOtentikasi {
   static HALAMAN_LOGIN = '/masuk';
   static HALAMAN_VERIFIKASI = '/verifikasi';
   static TAUTAN_KEBIJAKAN = '/legal?jenis=kebijakan-privasi';
-  static DOMAIN_SUREL = '@itb.ac.id';
+  static PESAN_DOMAIN = 'Gunakan surel ITB yang berakhiran itb.ac.id, misalnya @itb.ac.id atau @mahasiswa.itb.ac.id.';
   static KUNCI_BATAS_KODE = 'itbeli_batas_kode';
 
   // Isian I-02 yang menampilkan galat dari server, berdasarkan kode hasil AkunController
@@ -56,7 +56,7 @@ class HalamanOtentikasi {
     }
     // I01-O01: validasi awal domain di sisi klien
     if (!HalamanOtentikasi.surelBerdomainItb(email)) {
-      this.tampilkanPesanGalat(`Gunakan email berdomain ${HalamanOtentikasi.DOMAIN_SUREL}.`);
+      this.tampilkanPesanGalat(HalamanOtentikasi.PESAN_DOMAIN);
       return;
     }
 
@@ -166,7 +166,7 @@ class HalamanOtentikasi {
     if (!nim) galat.nim = 'NIM wajib diisi.';
     else if (!/^\d+$/.test(nim)) galat.nim = 'NIM hanya boleh berisi angka.';
     if (!email) galat.email = 'Email institusi wajib diisi.';
-    else if (!HalamanOtentikasi.surelBerdomainItb(email)) galat.email = `Gunakan surel berdomain ${HalamanOtentikasi.DOMAIN_SUREL}.`;
+    else if (!HalamanOtentikasi.surelBerdomainItb(email)) galat.email = HalamanOtentikasi.PESAN_DOMAIN;
     if (!HalamanOtentikasi.kataSandiCukupKuat(kataSandi)) galat['kata-sandi'] = 'Minimal 8 karakter, memuat huruf dan angka.';
     if (Object.keys(galat).length > 0) {
       Object.entries(galat).forEach(([id, pesan]) => HalamanOtentikasi.tampilkanGalatIsian(id, pesan));
@@ -337,7 +337,8 @@ class HalamanOtentikasi {
   // ───────────── Pembantu ─────────────
 
   static surelBerdomainItb(email) {
-    return /^[^\s@]+@itb\.ac\.id$/i.test(email);
+    // Sama dengan AkunController: itb.ac.id beserta subdomainnya
+    return /^[^\s@]+@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)*itb\.ac\.id$/i.test(email);
   }
 
   static kataSandiCukupKuat(kataSandi) {

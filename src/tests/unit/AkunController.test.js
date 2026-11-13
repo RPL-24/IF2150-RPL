@@ -51,9 +51,21 @@ describe('AkunController Unit Test (Modul A)', () => {
       ['uji@itb.ac.id', true],
       ['UJI@ITB.AC.ID', true],
       ['  uji@itb.ac.id  ', true],
+      // Subdomain itb.ac.id diterima
+      ['uji@mahasiswa.itb.ac.id', true],
+      ['13525034@std.stei.itb.ac.id', true],
+      ['uji@MAHASISWA.ITB.AC.ID', true],
+      ['uji@sub-domain.itb.ac.id', true],
+      // Domain yang hanya "mengandung" itb.ac.id tetap ditolak
       ['uji@gmail.com', false],
       ['uji@itb.ac.id.com', false],
-      ['uji@mahasiswa.itb.ac.id', false],
+      ['uji@itb.ac.id.palsu.com', false],
+      ['uji@bukanitb.ac.id', false],
+      ['uji@itbxac.id', false],
+      ['uji@.itb.ac.id', false],
+      ['uji@mahasiswa..itb.ac.id', false],
+      ['uji@-mahasiswa.itb.ac.id', false],
+      ['uji@itb.ac.id@gmail.com', false],
       ['@itb.ac.id', false],
       ['', false],
       [null, false],
@@ -103,6 +115,20 @@ describe('AkunController Unit Test (Modul A)', () => {
 
     test('menolak surel di luar domain @itb.ac.id (KF05)', async () => {
       const hasil = await AkunController.daftarAkun('Nama', '13599999', 'uji@gmail.com', 'rahasia123', true);
+      expect(hasil.kodePesan).toBe('DOMAIN_TIDAK_VALID');
+    });
+
+    test.each(['uji@mahasiswa.itb.ac.id', '13525034@std.stei.itb.ac.id'])(
+      'menerima surel subdomain ITB %p',
+      async (email) => {
+        siapkanPendaftaranSukses();
+        const hasil = await AkunController.daftarAkun('Nama', '13599999', email, 'rahasia123', true);
+        expect(hasil).toMatchObject({ berhasil: true, email });
+      },
+    );
+
+    test('menolak domain yang hanya mengandung itb.ac.id', async () => {
+      const hasil = await AkunController.daftarAkun('Nama', '13599999', 'uji@itb.ac.id.palsu.com', 'rahasia123', true);
       expect(hasil.kodePesan).toBe('DOMAIN_TIDAK_VALID');
     });
 
