@@ -124,6 +124,22 @@ class TenagaKesehatan extends Pengguna {
     this.nomorTelepon = nomorTelepon;
     this.email = email;
   }
+
+  /**
+   * Perbarui tarif konsultasi. Tarif disimpan di fasilitas_kesehatan.estimasi_biaya,
+   * jadi nakes harus terhubung ke sebuah fasilitas.
+   * @returns {Promise<boolean>} true bila ada fasilitas yang diperbarui.
+   */
+  async setEstimasiBiaya(tarif, executor = db) {
+    if (!this.idFasilitas) return false;
+    const hasil = await executor.query(
+      `UPDATE fasilitas_kesehatan
+          SET estimasi_biaya = $1
+        WHERE id_fasilitas = $2;`,
+      [tarif, this.idFasilitas]
+    );
+    return hasil.rowCount > 0;
+  }
 }
 
 module.exports = TenagaKesehatan;

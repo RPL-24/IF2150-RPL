@@ -242,6 +242,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 const hasil = await respons.json().catch(() => ({}));
                 if (!respons.ok) throw new Error(hasil.message || 'Profil gagal disimpan.');
 
+                // Simpan tarif ke server (sebelumnya hanya tersimpan di localStorage)
+                const tarifAngka = Number(
+                    document.getElementById('Input_Tarif').value.replace(/[^\d]/g, '')
+                );
+                if (!Number.isFinite(tarifAngka) || tarifAngka <= 0) {
+                    throw new Error('Tarif konsultasi tidak valid.');
+                }
+                const resTarif = await fetch('/api/tenaga-kesehatan/me/tarif', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ estimasi_biaya: tarifAngka })
+                });
+                const hasilTarif = await resTarif.json().catch(() => ({}));
+                if (!resTarif.ok) throw new Error(hasilTarif.message || 'Tarif gagal disimpan.');
+                const tarifTampil = `Rp${tarifAngka.toLocaleString('id-ID')} / sesi`;
+                document.getElementById('Input_Tarif').value = tarifTampil;
+
                 const profil = hasil.data || {};
                 const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
                 localStorage.setItem(STORAGE_KEY, JSON.stringify({
@@ -251,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     telepon: profil.nomor_telepon,
                     spesialisasi: jenis,
                     sip: nomorStr,
-                    tarif: document.getElementById('Input_Tarif').value,
+                    tarif: tarifTampil,
                     bio: document.getElementById('Input_Bio').value
                 }));
 

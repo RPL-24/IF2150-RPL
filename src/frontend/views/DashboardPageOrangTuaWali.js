@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const teksTanggal = Number.isNaN(tanggal.getTime())
             ? menunggu.tanggal_daftar
             : tanggal.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-        data.registrasi = { nama: menunggu.nama, tanggal: teksTanggal, token: menunggu.token };
+        data.registrasi = { nama: menunggu.nama, tanggal: teksTanggal };
         data.pelajar.terverifikasi = false;
     }
 
@@ -107,16 +107,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (cardRegistrasi) {
         if (data.registrasi) {
             if (textDetailRegistrasi) {
-                textDetailRegistrasi.textContent = `${data.registrasi.nama} mengajukan registrasi pada ${data.registrasi.tanggal}. Tinjau permohonan untuk menyetujui atau menolak.`;
+                textDetailRegistrasi.textContent = `${data.registrasi.nama} mengajukan registrasi pada ${data.registrasi.tanggal}. Buka tautan konfirmasi yang dikirim ke e-mail Anda untuk menyetujui atau menolak.`;
             }
             const linkTinjau = document.getElementById('Link_TinjauRegistrasi');
             if (linkTinjau) {
-                if (data.registrasi.token) {
-                    linkTinjau.href = `KonfirmasiRegistrasiPage.html?token=${encodeURIComponent(data.registrasi.token)}`;
-                    linkTinjau.hidden = false;
-                } else {
-                    linkTinjau.hidden = true;
-                }
+                linkTinjau.hidden = true;
             }
             cardRegistrasi.hidden = false;
         } else {

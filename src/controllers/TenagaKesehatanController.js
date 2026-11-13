@@ -70,6 +70,26 @@ exports.processLocationPermission = tanganiAsync(async (req, res) => {
   return kirim(res, 200, 'Daftar tenaga kesehatan terdekat.', denganJarak(daftar, lokasi));
 });
 
+/** Ubah tarif konsultasi milik tenaga kesehatan yang sedang login. */
+exports.updateTarif = tanganiAsync(async (req, res) => {
+  const tarif = angka(req.body && req.body.estimasi_biaya);
+  if (!Number.isFinite(tarif) || tarif <= 0) {
+    throw new AppError(400, 'Tarif konsultasi tidak valid.');
+  }
+
+  const nakes = await TenagaKesehatan.findByIdPengguna(req.user.idPengguna);
+  if (!nakes) {
+    throw new AppError(403, 'Hanya tenaga kesehatan yang dapat mengubah tarif.');
+  }
+
+  const berhasil = await nakes.setEstimasiBiaya(Math.round(tarif));
+  if (!berhasil) {
+    throw new AppError(400, 'Tenaga kesehatan belum terhubung ke fasilitas, tarif tidak dapat disimpan.');
+  }
+
+  return kirim(res, 200, 'Tarif konsultasi berhasil diperbarui.', { estimasi_biaya: Math.round(tarif) });
+});
+
 /** Q-C20-02 & Algo-C04-04 */
 exports.selectTenagaKesehatan = tanganiAsync(async (req, res) => {
   const { id } = req.params;
