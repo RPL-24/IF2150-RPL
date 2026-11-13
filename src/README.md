@@ -92,7 +92,7 @@ Seluruh akun uji pada `seed.sql` menggunakan kata sandi yang sama: **`Password12
 | :--- | :--- | :--- | :--- | :--- |
 | **Pelajar (Dewasa)** | `budi.pelajar@mahasehat.id` | `Password123!` | `Aktif` | Memiliki riwayat check-in 5 hari, terhubung ke Wali `WALI-001` |
 | **Pelajar (Skenario Darurat)** | `citra.pelajar@mahasehat.id` | `Password123!` | `Aktif` | Mood rendah 3 hari beruntun lalu 4 hari tidak check-in, terhubung ke Wali `WALI-002` (UC08) |
-| **Pelajar (< 18 Thn)** | `andi.siswa@mahasehat.id` | `Password123!` | `Belum Terverifikasi` | Menunggu konfirmasi wali (`TOKEN-WALI-ANDI-2026` untuk uji UC02), belum terhubung ke wali |
+| **Pelajar (< 18 Thn)** | `andi.siswa@mahasehat.id` | `Password123!` | `Belum Terverifikasi` | Menunggu konfirmasi wali (`TOKEN-WALI-ANDI-2026` untuk uji UC02), belum terhubung ke wali. Tautan berlaku 7 hari sejak `npm run db:seed`; jalankan ulang perintah tersebut bila sudah lewat |
 | **Orang Tua / Wali** | `santoso.wali@mahasehat.id` | `Password123!` | `Aktif` | Memantau laporan Budi tanpa melihat teks jurnal pribadi (KNF02) |
 | **Orang Tua / Wali (Skenario Darurat)** | `ratna.wali@mahasehat.id` | `Password123!` | `Aktif` | Wali Citra, penerima notifikasi darurat (UC08) |
 | **Tenaga Kesehatan (Psikolog)** | `siti.psikolog@mahasehat.id` | `Password123!` | `Aktif` | Klinik Kesehatan Mental Tenang (memiliki pengajuan `JDW-003` untuk uji UC07) |
@@ -136,7 +136,7 @@ src/
 
 | NIM | Nama Anggota | Peran & Modul / Fitur yang Diimplementasikan | Use Case & Kelas DPPL Terkait |
 | :--- | :--- | :--- | :--- |
-| **13525021** | Haikal Muhammad Royyan | **Backend 1** |  |
+| **13525021** | Haikal Muhammad Royyan | **Backend 1**: fondasi basis data (skema, seed, model), konfirmasi registrasi oleh wali, notifikasi darurat beserta job harian, masuk akun dan atur ulang kata sandi, keluar akun | UC02, UC08, UC09, UC10; C01–C09, C11 (konfirmasi, masuk, keluar), C24, C27 |
 | **13525066** | Cynthia Winda Wijaya | **Frontend 1** |  |
 | **13525081** | Rendy Salastra Putra | **Fullstack** |  |
 | **13525090** | Sophia Imelda Rogate Marpaung | **Frontend 2** |  |
@@ -146,13 +146,13 @@ src/
 
 | Modul & Use Case | Method & Endpoint | Deskripsi | File Route |
 | :--- | :--- | :--- | :--- |
-| **Auth & Registrasi** (UC01, UC02, UC09, UC10) | `POST /api/auth/register`<br>`POST /api/auth/confirm/:token`<br>`POST /api/auth/login`<br>`POST /api/auth/logout`<br>`POST /api/auth/forgot-password`<br>`POST /api/auth/reset-password` | Registrasi 3 role, konfirmasi wali, login JWT, reset password | `routes/authRoutes.js` |
+| **Auth & Registrasi** (UC01, UC02, UC09, UC10) | `POST /api/auth/register`<br>`GET /api/auth/confirm/:token`<br>`POST /api/auth/confirm/:token`<br>`POST /api/auth/reject/:token`<br>`POST /api/auth/login`<br>`GET /api/auth/me`<br>`POST /api/auth/logout`<br>`POST /api/auth/forgot-password`<br>`POST /api/auth/reset-password` | Registrasi 3 role, data pendaftaran untuk wali, wali menyetujui atau menolak registrasi, login JWT, profil pengguna yang login, logout, reset password | `routes/authRoutes.js` |
 | **Daily Check-In** (UC03) | `POST /api/check-in`<br>`GET /api/check-in/status` | Simpan daily check-in (jurnal dienkripsi AES-256) & cek pengingat harian | `routes/checkInRoutes.js` |
 | **Statistik & Laporan** (UC04) | `GET /api/reports?periode=Mingguan` | Kalkulasi statistik tren & filter privasi wali (KNF02) | `routes/reportRoutes.js` |
 | **Cari Nakes** (UC05) | `GET /api/tenaga-kesehatan?lat=...&lng=...`<br>`GET /api/tenaga-kesehatan/:id`<br>`PUT /api/tenaga-kesehatan/lokasi-pelajar` | Daftar nakes beserta jarak (km) & detail profil | `routes/tenagaKesehatanRoutes.js` |
 | **Booking Jadwal** (UC06) | `GET /api/jadwal/:idTenagaKesehatan`<br>`POST /api/jadwal/pengajuan` | Cek ketersediaan slot & ajukan jadwal konsultasi | `routes/jadwalKonsultasiRoutes.js` |
 | **Kelola Konsultasi** (UC07) | `GET /api/konsultasi/pengajuan`<br>`PUT /api/konsultasi/:idJadwal/approve`<br>`PUT /api/konsultasi/:idJadwal/reschedule` | Setujui atau jadwalkan ulang pengajuan konsultasi oleh Nakes | `routes/konsultasiRoutes.js` |
-| **Notifikasi Darurat** (UC08) | `GET /api/emergency/wali`<br>`PUT /api/emergency/:id/confirm`<br>`PUT /api/emergency/:id/follow-up` | Cek deteksi darurat, konfirmasi diterima, dan tindak lanjut wali | `routes/emergencyRoutes.js` |
+| **Notifikasi Darurat** (UC08) | `GET /api/emergency/wali`<br>`PUT /api/emergency/:id/confirm`<br>`PUT /api/emergency/:id/follow-up` | Daftar notifikasi darurat aktif milik wali yang login, konfirmasi diterima, dan tandai sudah ditindaklanjuti. Deteksi dan pengiriman e-mail dijalankan job harian (`npm run job:darurat`) | `routes/emergencyRoutes.js` |
 
 ---
 
