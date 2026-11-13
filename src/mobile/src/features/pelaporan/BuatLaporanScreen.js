@@ -1,197 +1,278 @@
-/**
- * I-04 Buat Laporan — UC01 (KF01-KF04) + mode revisi (gap G7). Pemilik: P2.
- * Spesifikasi objek antarmuka: docs/M8/K02_G03_DPPL2.md (BAB 6, Tabel 6.4). Tugas: src/docs/tasks/P2.md
- *
- * Route:
- *  - /warga/lapor        -> buat laporan baru (POST /laporan)
- *  - /warga/revisi/[id]  -> komponen yang sama, isian diisi dari laporan lama (PUT /laporan/:id/revisi)
- *
- * Tombol Kirim terkunci sampai foto, kategori, lokasi, dan deskripsi lengkap (UC01 langkah 2, alternatif 1).
- * Pemeriksaan ini hanya untuk UX; server tetap memvalidasi (validasiIsianFormulir, Algo-004).
- */
 import { Ionicons } from '@expo/vector-icons';
-import { ATURAN, SEMUA_KATEGORI, STATUS, SUMBER_LOKASI } from '@silembur/shared';
+import * as Location from 'expo-location';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { ATURAN, STATUS, SUMBER_LOKASI } from '@silembur/shared';
 import { urlLengkap } from '../../api/client';
 import { laporanApi } from '../../api/laporan';
 import { wargaApi } from '../../api/warga';
-import { Isian, Kartu, Layar, TampilanGagal, TampilanKosong, TampilanMemuat, Tombol } from '../../components/ui';
-import { useApi } from '../../hooks/useApi';
+import { beritahu, konfirmasi } from '../../components/dialog/konfirmasi';
+import { PetaPilih } from '../../components/map/Peta';
+import { Isian, Kartu, Layar, TampilanMemuat, Tombol } from '../../components/ui';
 import { huruf, jarak, radius, warna } from '../../theme/tokens';
-import { kodeLaporan } from '../../utils/format';
-import PemilihFoto from './PemilihFoto';
-import PemilihKategori from './PemilihKategori';
-import PemilihLokasi from './PemilihLokasi';
+import PilihFoto from './PilihFoto';
+import PilihKategori from './PilihKategori';
+import { bagianBelumLengkap } from './validasi';
 
-const TEKS_BANTU = 'Lengkapi foto, kategori, lokasi, dan deskripsi untuk melanjutkan';
+const BATAS_TUNGGU_GPS_MS = 10_000;
+const FORM_KOSONG = { foto: null, kategori: null, koordinat: null, sumberLokasi: SUMBER_LOKASI.GPS, deskripsi: '' };
 
-const ISIAN_KOSONG = {
-  foto: null, // asset expo-image-picker { uri, mimeType, fileName } atau { uri, lama: true } (foto tersimpan)
-  kategori: null,
-  lokasi: null, // { latitude, longitude }
-  sumberLokasi: SUMBER_LOKASI.GPS,
-  lokasiDiubah: false,
-  deskripsi: '',
-};
+function denganBatasWaktu(janji, ms) {
+  return Promise.race([janji, new Promise((_, tolak) => setTimeout(() => tolak(new Error('timeout')), ms))]);
+}
 
-/** Isian awal mode revisi dari DTO LaporanSaya. */
-function isianDariLaporan(l) {
+function dariLaporan(l) {
   return {
-    foto: l.foto ? { uri: urlLengkap(l.foto), lama: true } : null,
-    kategori: SEMUA_KATEGORI.includes(l.kategori) ? l.kategori : null,
-    lokasi: l.lokasi ? { latitude: l.lokasi.latitude, longitude: l.lokasi.longitude } : null,
+    foto: l.foto ? { uri: urlLengkap(l.foto), baru: false } : null,
+    kategori: l.kategori,
+    koordinat: l.lokasi ? { latitude: l.lokasi.latitude, longitude: l.lokasi.longitude } : null,
     sumberLokasi: SUMBER_LOKASI.GPS,
-    lokasiDiubah: false,
     deskripsi: l.deskripsi ?? '',
   };
 }
 
-export default function BuatLaporanScreen() {
-  const { id } = useLocalSearchParams();
-  const idRevisi = Array.isArray(id) ? id[0] : id;
-  const modeRevisi = Boolean(idRevisi);
-
-  const muatan = useApi(() => (modeRevisi ? wargaApi.detailSaya(idRevisi) : Promise.resolve(null)), [idRevisi]);
-  const laporanLama = muatan.data?.laporan ?? null;
-
-  if (!modeRevisi) return <FormLaporan />;
-  if (muatan.memuat) return <TampilanMemuat />;
-  if (muatan.error) {
-    return (
-      <Layar tepi={[]}>
-        <TampilanGagal pesan={muatan.error.message} onCobaLagi={muatan.muatUlang} />
-      </Layar>
-    );
-  }
-  if (!laporanLama) {
-    return (
-      <Layar tepi={[]}>
-        <TampilanKosong pesan="Laporan tidak ditemukan" />
-      </Layar>
-    );
-  }
-  if (laporanLama.status !== STATUS.PERLU_REVISI) {
-    return (
-      <Layar tepi={[]}>
-        <TampilanKosong
-          ikon="lock-closed-outline"
-          pesan={`Laporan ${kodeLaporan(laporanLama.id)} berstatus "${laporanLama.status}". Revisi hanya untuk laporan berstatus "${STATUS.PERLU_REVISI}".`}
-        />
-      </Layar>
-    );
-  }
-  return <FormLaporan key={laporanLama.id} laporanLama={laporanLama} />;
+function Bagian({ judul, nomor, children, keterangan }) {
+  return (
+    <Kartu>
+      <View style={s.kepalaBagian}>
+        <View style={s.nomor}>
+          <Text style={s.nomorTeks}>{nomor}</Text>
+        </View>
+        <Text style={huruf.subjudul}>{judul}</Text>
+      </View>
+      {keterangan ? <Text style={[huruf.kecil, { marginBottom: jarak.s }]}>{keterangan}</Text> : null}
+      {children}
+    </Kartu>
+  );
 }
 
-/** Formulir I-04. Tanpa `laporanLama` = buat baru; dengan `laporanLama` = mode revisi. */
-function FormLaporan({ laporanLama = null }) {
+/**
+ * I-04 Buat Laporan (UC01). Dipakai juga untuk revisi lewat /warga/revisi/[id].
+ */
+export default function BuatLaporanScreen() {
   const router = useRouter();
-  const modeRevisi = Boolean(laporanLama);
-  const [isian, setIsian] = useState(() => (laporanLama ? isianDariLaporan(laporanLama) : ISIAN_KOSONG));
-  const [versiForm, setVersiForm] = useState(0); // dinaikkan saat form dikosongkan agar peta ikut kembali awal
-  const [mengirim, setMengirim] = useState(false);
-  const [error, setError] = useState(null);
+  const { id } = useLocalSearchParams();
+  const modeRevisi = Boolean(id);
 
-  // Tab "Lapor" tetap terpasang: kosongkan pesan error lama saat isian berubah.
-  useEffect(() => {
-    if (error) setError(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isian]);
+  const [isian, setIsian] = useState(FORM_KOSONG);
+  const [awal, setAwal] = useState(null);
+  const [laporanLama, setLaporanLama] = useState(null);
+  const [memuatAwal, setMemuatAwal] = useState(modeRevisi);
+  const [gagalMuatAwal, setGagalMuatAwal] = useState(false);
+  const [mencariGps, setMencariGps] = useState(false);
+  const [kunciPeta, setKunciPeta] = useState(0);
+  const [mengirim, setMengirim] = useState(false);
 
   const ubah = (bagian) => setIsian((i) => ({ ...i, ...bagian }));
 
-  const deskripsiBersih = isian.deskripsi.trim();
-  // O-0405: validasiIsianFormulir() di sisi tampilan, hanya untuk membuka kunci tombol.
-  const lengkap = Boolean(
-    isian.foto && isian.kategori && isian.lokasi && deskripsiBersih && deskripsiBersih.length <= ATURAN.BATAS_DESKRIPSI,
-  );
+  useEffect(() => {
+    if (!modeRevisi) return undefined;
+    let aktif = true;
+    (async () => {
+      try {
+        const { laporan } = await wargaApi.detailSaya(id);
+        if (!aktif) return;
+        const nilai = dariLaporan(laporan);
+        setLaporanLama(laporan);
+        setAwal(nilai);
+        setIsian(nilai);
+        setKunciPeta((k) => k + 1);
+      } catch {
+        if (aktif) setGagalMuatAwal(true);
+      } finally {
+        if (aktif) setMemuatAwal(false);
+      }
+    })();
+    return () => {
+      aktif = false;
+    };
+  }, [id, modeRevisi]);
+
+  const kurang = bagianBelumLengkap(isian);
+  const lengkap = kurang.length === 0;
+  const bukanPerluRevisi = modeRevisi && laporanLama && laporanLama.status !== STATUS.PERLU_REVISI;
+
+  async function gunakanLokasiSaya() {
+    setMencariGps(true);
+    try {
+      const izin = await Location.requestForegroundPermissionsAsync();
+      if (!izin.granted) {
+        beritahu('Izin lokasi ditolak', 'Ketuk peta untuk menandai lokasi kerusakan secara manual.');
+        return;
+      }
+      if (!(await Location.hasServicesEnabledAsync())) {
+        beritahu('GPS tidak aktif', 'Aktifkan GPS, atau ketuk peta untuk menandai lokasi secara manual.');
+        return;
+      }
+      let posisi;
+      try {
+        posisi = await denganBatasWaktu(
+          Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }),
+          BATAS_TUNGGU_GPS_MS,
+        );
+      } catch {
+        posisi = await Location.getLastKnownPositionAsync();
+      }
+      if (!posisi) {
+        beritahu('Lokasi belum ditemukan', 'Coba lagi di area terbuka, atau ketuk peta untuk menandai lokasi.');
+        return;
+      }
+      ubah({
+        koordinat: { latitude: posisi.coords.latitude, longitude: posisi.coords.longitude },
+        sumberLokasi: SUMBER_LOKASI.GPS,
+      });
+      setKunciPeta((k) => k + 1);
+    } catch {
+      beritahu('Lokasi gagal diambil', 'Ketuk peta untuk menandai lokasi secara manual.');
+    } finally {
+      setMencariGps(false);
+    }
+  }
+
+  function dataKirim() {
+    const data = {
+      kategori: isian.kategori,
+      deskripsi: isian.deskripsi.trim(),
+      latitude: isian.koordinat.latitude,
+      longitude: isian.koordinat.longitude,
+      sumberLokasi: isian.sumberLokasi,
+      foto: isian.foto?.baru ? isian.foto : undefined,
+    };
+    if (!modeRevisi || !awal) return data;
+    const lokasiSama =
+      awal.koordinat &&
+      awal.koordinat.latitude === isian.koordinat.latitude &&
+      awal.koordinat.longitude === isian.koordinat.longitude;
+    return {
+      foto: data.foto,
+      kategori: data.kategori !== awal.kategori ? data.kategori : undefined,
+      deskripsi: data.deskripsi !== awal.deskripsi.trim() ? data.deskripsi : undefined,
+      ...(lokasiSama ? {} : { latitude: data.latitude, longitude: data.longitude, sumberLokasi: data.sumberLokasi }),
+    };
+  }
 
   async function kirim() {
-    if (!lengkap || mengirim) return;
+    if (!lengkap) {
+      beritahu('Formulir belum lengkap', `Lengkapi ${kurang.join(', ')} untuk melanjutkan.`);
+      return;
+    }
+    const yakin = await konfirmasi({
+      judul: modeRevisi ? 'Kirim revisi laporan?' : 'Kirim laporan?',
+      pesan: modeRevisi
+        ? 'Laporan akan dikirim ulang untuk diverifikasi admin.'
+        : 'Pastikan foto, kategori, lokasi, dan deskripsi sudah sesuai.',
+      tombolYa: 'Kirim',
+    });
+    if (!yakin) return;
+
     setMengirim(true);
-    setError(null);
     try {
-      let hasil;
+      const { laporan } = modeRevisi
+        ? await laporanApi.revisi(id, dataKirim())
+        : await laporanApi.buat(dataKirim());
       if (modeRevisi) {
-        hasil = await laporanApi.revisi(laporanLama.id, {
-          foto: isian.foto.lama ? undefined : isian.foto,
-          kategori: isian.kategori,
-          deskripsi: deskripsiBersih,
-          ...(isian.lokasiDiubah
-            ? { latitude: isian.lokasi.latitude, longitude: isian.lokasi.longitude, sumberLokasi: isian.sumberLokasi }
-            : {}),
-        });
-        router.replace(`/warga/laporan/${hasil.laporan.id}?mode=saya`);
+        router.replace(`/warga/laporan/${laporan.id}?mode=saya`);
       } else {
-        hasil = await laporanApi.buat({
-          foto: isian.foto,
-          kategori: isian.kategori,
-          deskripsi: deskripsiBersih,
-          latitude: isian.lokasi.latitude,
-          longitude: isian.lokasi.longitude,
-          sumberLokasi: isian.sumberLokasi,
-        });
-        // Tab "Lapor" tetap ada di bawah detail: kosongkan form untuk laporan berikutnya.
-        setIsian(ISIAN_KOSONG);
-        setVersiForm((v) => v + 1);
-        router.push(`/warga/laporan/${hasil.laporan.id}?mode=saya`);
+        setIsian(FORM_KOSONG);
+        setKunciPeta((k) => k + 1);
+        router.push(`/warga/laporan/${laporan.id}?mode=saya`);
       }
     } catch (err) {
-      setError(err);
+      const rincian = err.details?.map((d) => `• ${d.pesan}`).join('\n');
+      beritahu(modeRevisi ? 'Revisi gagal dikirim' : 'Laporan gagal dikirim', rincian ? `${err.message}\n${rincian}` : err.message);
     } finally {
       setMengirim(false);
     }
   }
 
+  if (memuatAwal) return <TampilanMemuat />;
+
   return (
     <Layar tepi={modeRevisi ? [] : ['top']}>
-      {modeRevisi ? (
-        <Kartu style={s.infoRevisi}>
-          <Text style={huruf.subjudul}>Revisi {kodeLaporan(laporanLama.id)}</Text>
-          {laporanLama.catatanVerifikasi?.catatan ? (
-            <Text style={[huruf.isi, { marginTop: jarak.xs }]}>
-              Catatan admin: {laporanLama.catatanVerifikasi.catatan}
-            </Text>
-          ) : null}
-          <Text style={[huruf.kecil, { marginTop: jarak.xs }]}>
-            Perbaiki bagian yang diminta, lalu kirim ulang untuk diverifikasi.
-          </Text>
-        </Kartu>
-      ) : (
+      {!modeRevisi ? (
         <View style={{ marginBottom: jarak.l }}>
           <Text style={huruf.judul}>Buat Laporan</Text>
-          <Text style={huruf.kecil}>Laporkan kerusakan fasilitas umum di Kota Bandung.</Text>
+          <Text style={huruf.kecil}>Laporkan kerusakan fasilitas umum di sekitar Anda.</Text>
         </View>
-      )}
+      ) : null}
 
-      <Bagian judul="Foto Kerusakan">
-        <PemilihFoto foto={isian.foto} onUbah={(foto) => ubah({ foto })} nonaktif={mengirim} />
+      {modeRevisi && laporanLama?.catatanVerifikasi ? (
+        <View style={[s.catatan, { backgroundColor: warna.bahayaMuda }]}>
+          <Ionicons name="chatbox-ellipses-outline" size={20} color={warna.bahaya} />
+          <View style={{ flex: 1 }}>
+            <Text style={[s.catatanJudul, { color: warna.bahaya }]}>Catatan admin</Text>
+            <Text style={huruf.isi}>{laporanLama.catatanVerifikasi.catatan || 'Mohon perbaiki laporan Anda.'}</Text>
+          </View>
+        </View>
+      ) : null}
+      {gagalMuatAwal ? (
+        <View style={[s.catatan, { backgroundColor: warna.peringatanMuda }]}>
+          <Ionicons name="alert-circle-outline" size={20} color={warna.peringatan} />
+          <Text style={[huruf.isi, { flex: 1 }]}>
+            Data laporan lama tidak bisa dimuat. Isi ulang seluruh bagian formulir untuk mengirim revisi.
+          </Text>
+        </View>
+      ) : null}
+      {bukanPerluRevisi ? (
+        <View style={[s.catatan, { backgroundColor: warna.peringatanMuda }]}>
+          <Ionicons name="lock-closed-outline" size={20} color={warna.peringatan} />
+          <Text style={[huruf.isi, { flex: 1 }]}>
+            Laporan ini berstatus "{laporanLama.status}" sehingga tidak bisa direvisi.
+          </Text>
+        </View>
+      ) : null}
+
+      <Bagian nomor="1" judul="Foto kerusakan">
+        <PilihFoto nilai={isian.foto} onUbah={(foto) => ubah({ foto })} />
       </Bagian>
 
-      <Bagian judul="Kategori Kerusakan">
-        <PemilihKategori nilai={isian.kategori} onUbah={(kategori) => ubah({ kategori })} nonaktif={mengirim} />
+      <Bagian nomor="2" judul="Kategori">
+        <PilihKategori nilai={isian.kategori} onUbah={(kategori) => ubah({ kategori })} />
       </Bagian>
 
-      <Bagian judul="Lokasi Kerusakan">
-        <PemilihLokasi
-          key={versiForm}
-          nilai={isian.lokasi}
-          sumber={isian.sumberLokasi}
-          nonaktif={mengirim}
-          onUbah={(lokasi, sumberLokasi) => ubah({ lokasi, sumberLokasi, lokasiDiubah: true })}
+      <Bagian
+        nomor="3"
+        judul="Lokasi"
+        keterangan="Gunakan GPS, atau ketuk/geser pin di peta untuk menandai titik kerusakan."
+      >
+        <Tombol
+          judul="Gunakan Lokasi Saya"
+          ikon="locate"
+          varian="sekunder"
+          onPress={gunakanLokasiSaya}
+          memuat={mencariGps}
+          style={{ marginBottom: jarak.s }}
         />
+        <PetaPilih
+          key={kunciPeta}
+          nilai={isian.koordinat}
+          onUbah={(koordinat) => ubah({ koordinat, sumberLokasi: SUMBER_LOKASI.MANUAL })}
+        />
+        <View style={s.infoLokasi}>
+          <Ionicons
+            name={isian.koordinat ? 'location' : 'location-outline'}
+            size={16}
+            color={isian.koordinat ? warna.primer : warna.teksLembut}
+          />
+          <Text style={[huruf.kecil, { flex: 1 }]}>
+            {isian.koordinat
+              ? `${isian.koordinat.latitude.toFixed(5)}, ${isian.koordinat.longitude.toFixed(5)} · ${
+                  isian.sumberLokasi === SUMBER_LOKASI.GPS ? 'dari GPS' : 'dipilih di peta'
+                } · wilayah ditentukan otomatis`
+              : 'Belum ada titik lokasi'}
+          </Text>
+        </View>
       </Bagian>
 
-      <Bagian judul="Deskripsi Kerusakan">
+      <Bagian nomor="4" judul="Deskripsi">
         <Isian
-          placeholder="Jelaskan kerusakan, ukuran, dan patokan lokasi"
+          placeholder="Contoh: lubang berdiameter 50 cm di lajur kiri, dekat halte."
           value={isian.deskripsi}
           onChangeText={(deskripsi) => ubah({ deskripsi })}
-          maxLength={ATURAN.BATAS_DESKRIPSI}
           multiline
-          editable={!mengirim}
+          maxLength={ATURAN.BATAS_DESKRIPSI}
+          textAlignVertical="top"
           style={s.deskripsi}
         />
         <Text style={[huruf.kecil, s.penghitung]}>
@@ -199,59 +280,43 @@ function FormLaporan({ laporanLama = null }) {
         </Text>
       </Bagian>
 
-      {error ? (
-        <View style={s.error}>
-          <Ionicons name="alert-circle" size={18} color={warna.bahaya} />
-          <View style={{ flex: 1 }}>
-            <Text style={s.errorTeks}>{error.message}</Text>
-            {(error.details ?? []).map((d) => (
-              <Text key={`${d.field}-${d.pesan}`} style={s.errorDetail}>
-                • {d.pesan}
-              </Text>
-            ))}
-          </View>
-        </View>
-      ) : null}
-
       <Tombol
         judul={modeRevisi ? 'Kirim Revisi' : 'Kirim Laporan'}
         ikon="send"
-        nonaktif={!lengkap}
-        memuat={mengirim}
         onPress={kirim}
+        memuat={mengirim}
+        nonaktif={bukanPerluRevisi}
+        style={!lengkap && s.terkunci}
       />
-      {!lengkap ? <Text style={[huruf.kecil, s.teksBantu]}>{TEKS_BANTU}</Text> : null}
+      {!lengkap ? (
+        <Text style={[huruf.kecil, s.bantu]}>Lengkapi foto, kategori, lokasi, dan deskripsi untuk melanjutkan</Text>
+      ) : null}
     </Layar>
   );
 }
 
-function Bagian({ judul, children }) {
-  return (
-    <View style={s.bagian}>
-      <Text style={s.judulBagian}>
-        {judul}
-        <Text style={{ color: warna.bahaya }}> *</Text>
-      </Text>
-      {children}
-    </View>
-  );
-}
-
 const s = StyleSheet.create({
-  bagian: { marginBottom: jarak.xl },
-  judulBagian: { ...huruf.subjudul, fontSize: 15, marginBottom: jarak.s },
-  infoRevisi: { backgroundColor: warna.peringatanMuda, marginBottom: jarak.l },
-  deskripsi: { minHeight: 110, textAlignVertical: 'top' },
+  kepalaBagian: { flexDirection: 'row', alignItems: 'center', gap: jarak.s, marginBottom: jarak.m },
+  nomor: {
+    width: 24,
+    height: 24,
+    borderRadius: radius.pil,
+    backgroundColor: warna.primer,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nomorTeks: { color: warna.putih, fontWeight: '700', fontSize: 13 },
+  infoLokasi: { flexDirection: 'row', alignItems: 'center', gap: jarak.xs, marginTop: jarak.s },
+  deskripsi: { minHeight: 110 },
   penghitung: { textAlign: 'right', marginTop: -jarak.m },
-  teksBantu: { textAlign: 'center', marginTop: jarak.s },
-  error: {
+  catatan: {
     flexDirection: 'row',
     gap: jarak.s,
-    backgroundColor: warna.bahayaMuda,
     padding: jarak.m,
     borderRadius: radius.m,
     marginBottom: jarak.m,
   },
-  errorTeks: { color: warna.bahaya, fontWeight: '600' },
-  errorDetail: { color: warna.bahaya, fontSize: 13, marginTop: 2 },
+  catatanJudul: { fontWeight: '700', marginBottom: 2 },
+  terkunci: { opacity: 0.45 },
+  bantu: { textAlign: 'center', marginTop: jarak.s, marginBottom: jarak.xl },
 });
