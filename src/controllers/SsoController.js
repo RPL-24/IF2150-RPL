@@ -1,4 +1,4 @@
-// SsoController – masuk dengan Google (itb.ac.id) dan Microsoft Entra ID (mahasiswa.itb.ac.id).
+// SsoController – masuk dengan Google (akun ITB berdomain itb.ac.id).
 // OAuth 2.0 Authorization Code + PKCE (S256), sepenuhnya di sisi server; tanpa dependency tambahan.
 const crypto = require('crypto');
 const config = require('../config/env');
@@ -9,7 +9,6 @@ const COOKIE_PROFIL = 'itbeli_sso_profil';
 const UMUR_STATE_DETIK = 10 * 60;
 const UMUR_PROFIL_DETIK = 15 * 60;
 const BATAS_WAKTU_MS = 10_000;
-const SUREL_MICROSOFT = /^[^\s@]+@mahasiswa\.itb\.ac\.id$/i;
 const KUNCI_HEX = /^[0-9a-f]{64}$/i;
 
 const PENYEDIA = Object.freeze({
@@ -21,14 +20,6 @@ const PENYEDIA = Object.freeze({
     parameterTambahan: () => ({ hd: 'itb.ac.id', prompt: 'select_account' }),
     kredensial: () => config.sso.google,
     wajib: ['clientId', 'clientSecret'],
-  },
-  microsoft: {
-    scope: 'openid email profile',
-    otorisasi: (c) => `https://login.microsoftonline.com/${encodeURIComponent(c.tenantId)}/oauth2/v2.0/authorize`,
-    token: (c) => `https://login.microsoftonline.com/${encodeURIComponent(c.tenantId)}/oauth2/v2.0/token`,
-    parameterTambahan: () => ({ response_mode: 'query', prompt: 'select_account' }),
-    kredensial: () => config.sso.microsoft,
-    wajib: ['clientId', 'clientSecret', 'tenantId'],
   },
 });
 
@@ -68,7 +59,7 @@ class SsoController {
   }
 
   static penyediaAktif() {
-    return { google: SsoController.ambilKredensial('google') !== null, microsoft: SsoController.ambilKredensial('microsoft') !== null };
+    return { google: SsoController.ambilKredensial('google') !== null };
   }
 
   static alamatKembali(nama) {
@@ -172,24 +163,13 @@ class SsoController {
 
   // { email, nama } bila lolos; { kode } bila ditolak
   static periksaKlaim(nama, kredensial, klaim) {
-    const issSah = nama === 'google'
-      ? ['https://accounts.google.com', 'accounts.google.com']
-      : [`https://login.microsoftonline.com/${kredensial.tenantId}/v2.0`];
-    if (!issSah.includes(klaim.iss)) return { kode: 'TOKEN_TIDAK_VALID' };
+    if (!['https://accounts.google.com', 'accounts.google.com'].includes(klaim.iss)) return { kode: 'TOKEN_TIDAK_VALID' };
     if (![].concat(klaim.aud).includes(kredensial.clientId)) return { kode: 'TOKEN_TIDAK_VALID' };
     if (typeof klaim.exp !== 'number' || klaim.exp * 1000 <= Date.now()) return { kode: 'TOKEN_TIDAK_VALID' };
 
-    let email;
-    if (nama === 'google') {
-      if (klaim.email_verified !== true) return { kode: 'SUREL_BELUM_TERVERIFIKASI' };
-      email = klaim.email;
-      if (!AkunController.validasiDomainEmail(email)) return { kode: 'DOMAIN_TIDAK_VALID' };
-    } else {
-      if (klaim.tid !== kredensial.tenantId) return { kode: 'TOKEN_TIDAK_VALID' };
-      email = typeof klaim.email === 'string' && klaim.email.trim() !== '' ? klaim.email : klaim.preferred_username;
-      if (typeof email !== 'string' || !SUREL_MICROSOFT.test(email.trim())) return { kode: 'DOMAIN_TIDAK_VALID' };
-    }
-    email = email.trim().toLowerCase();
+    if (klaim.email_verified !== true) return { kode: 'SUREL_BELUM_TERVERIFIKASI' };
+    if (!AkunController.validasiDomainEmail(klaim.email)) return { kode: 'DOMAIN_TIDAK_VALID' };
+    const email = klaim.email.trim().toLowerCase();
     const namaKlaim = typeof klaim.name === 'string' ? klaim.name.trim() : '';
     return { email, nama: (namaKlaim || email.split('@')[0]).slice(0, 100) };
   }

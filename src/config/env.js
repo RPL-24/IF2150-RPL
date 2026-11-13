@@ -41,18 +41,13 @@ module.exports = {
   durasiKodeMenit: angka('DURASI_KODE_MENIT', 15),
   kunciEnkripsiPesan: process.env.KUNCI_ENKRIPSI_PESAN,
 
-  // Masuk dengan Google / Microsoft (OAuth 2.0 Authorization Code). Penyedia tanpa kredensial dianggap nonaktif.
+  // Masuk dengan Google (OAuth 2.0 Authorization Code). Penyedia tanpa kredensial dianggap nonaktif.
   sso: {
     urlDasar: (process.env.SSO_URL_DASAR || 'http://localhost:3000').replace(/\/+$/, ''),
     kunci: process.env.KUNCI_SSO,
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    },
-    microsoft: {
-      clientId: process.env.MICROSOFT_CLIENT_ID,
-      clientSecret: process.env.MICROSOFT_CLIENT_SECRET,
-      tenantId: process.env.MICROSOFT_TENANT_ID,
     },
   },
 

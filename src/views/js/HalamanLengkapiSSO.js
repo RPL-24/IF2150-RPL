@@ -1,4 +1,4 @@
-// HalamanLengkapiSSO – melengkapi akun baru yang masuk lewat Google/Microsoft: NIM + persetujuan kebijakan.
+// HalamanLengkapiSSO – melengkapi akun baru yang masuk lewat Google: NIM + persetujuan kebijakan.
 // Nama dan surel berasal dari cookie profil sementara di server. Membutuhkan api.js.
 class HalamanLengkapiSSO {
   static HALAMAN_TUJUAN = '/katalog';

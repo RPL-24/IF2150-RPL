@@ -77,7 +77,7 @@ router.post('/login', async (req, res) => {
   res.json({ sukses: true, data: { token: hasil.token, peran: hasil.peran } });
 });
 
-// ───────────── Masuk dengan Google / Microsoft (SSO) ─────────────
+// ───────────── Masuk dengan Google (SSO) ─────────────
 
 const OPSI_COOKIE = { httpOnly: true, sameSite: 'lax', path: '/api/akun/sso', secure: config.sso.urlDasar.startsWith('https://') };
 const penyediaTidakAda = (res) => res.status(404).json({ sukses: false, pesan: 'Penyedia masuk tidak tersedia.' });

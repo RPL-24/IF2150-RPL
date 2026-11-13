@@ -36,7 +36,7 @@ const PESAN = Object.freeze({
   KODE_TIDAK_ADA: 'Tidak ada kode verifikasi yang aktif. Minta kode baru.',
   KODE_SALAH: 'Kode verifikasi salah.',
   KODE_KEDALUWARSA: 'Kode verifikasi sudah kedaluwarsa. Minta kode baru.',
-  SSO_ADMIN_DILARANG: 'Akun admin tidak dapat masuk lewat Google atau Microsoft. Masuk dengan surel dan kata sandi.',
+  SSO_ADMIN_DILARANG: 'Akun admin tidak dapat masuk lewat Google. Masuk dengan surel dan kata sandi.',
   GAGAL_KIRIM_SUREL: 'Kode verifikasi gagal dikirim. Coba kirim ulang beberapa saat lagi.',
 });
 

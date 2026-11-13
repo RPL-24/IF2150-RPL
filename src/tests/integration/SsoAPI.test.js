@@ -1,5 +1,5 @@
 // src/tests/integration/SsoAPI.test.js
-// Masuk dengan Google / Microsoft: fetch ke penyedia di-mock, model Akun/SesiLogin di-spy (tanpa basis data).
+// Masuk dengan Google: fetch ke penyedia di-mock, model Akun/SesiLogin di-spy (tanpa basis data).
 const crypto = require('crypto');
 const request = require('supertest');
 const app = require('../../app');
@@ -9,10 +9,8 @@ const SesiLogin = require('../../models/SesiLogin');
 const Kriptografi = require('../../pendukung/Kriptografi');
 
 const KUNCI = 'ab'.repeat(32);
-const TENANT = '11111111-2222-3333-4444-555555555555';
 const GOOGLE = { clientId: 'google-id', clientSecret: 'google-rahasia' };
-const MICROSOFT = { clientId: 'ms-id', clientSecret: 'ms-rahasia', tenantId: TENANT };
-const KOSONG = { google: { clientId: undefined, clientSecret: undefined }, microsoft: {} };
+const KOSONG = { google: { clientId: undefined, clientSecret: undefined } };
 
 const base64url = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
 const buatJwt = (klaim) => `${base64url({ alg: 'RS256' })}.${base64url(klaim)}.tandatangan`;
@@ -22,13 +20,6 @@ function klaimGoogle(ubah = {}) {
   return {
     iss: 'https://accounts.google.com', aud: GOOGLE.clientId, exp: detik(),
     email: 'budi@itb.ac.id', email_verified: true, name: 'Budi Santoso', ...ubah,
-  };
-}
-
-function klaimMicrosoft(ubah = {}) {
-  return {
-    iss: `https://login.microsoftonline.com/${TENANT}/v2.0`, aud: MICROSOFT.clientId, exp: detik(),
-    tid: TENANT, email: 'ani@mahasiswa.itb.ac.id', name: 'Ani Wijaya', ...ubah,
   };
 }
 
@@ -59,12 +50,12 @@ async function alurKembali(penyedia, klaim, opsi = {}) {
   return { res: await req, url, mulai };
 }
 
-describe('SSO Google / Microsoft (/api/akun/sso)', () => {
+describe('SSO Google (/api/akun/sso)', () => {
   let simpanAkun;
   let simpanSesi;
 
   beforeEach(() => {
-    Object.assign(config.sso, { urlDasar: 'http://localhost:3000', kunci: KUNCI, google: { ...GOOGLE }, microsoft: { ...MICROSOFT } });
+    Object.assign(config.sso, { urlDasar: 'http://localhost:3000', kunci: KUNCI, google: { ...GOOGLE } });
     global.fetch = jest.fn();
     jest.spyOn(console, 'error').mockImplementation(() => {});
     jest.spyOn(Akun, 'cariByEmail').mockResolvedValue(null);
@@ -81,23 +72,19 @@ describe('SSO Google / Microsoft (/api/akun/sso)', () => {
   });
 
   describe('GET /sso/penyedia', () => {
-    test('true hanya untuk penyedia yang kredensialnya terisi', async () => {
-      Object.assign(config.sso, { google: { ...KOSONG.google }, microsoft: { clientId: 'x', clientSecret: 'y', tenantId: '' } });
+    test('google true hanya bila kredensialnya terisi', async () => {
+      config.sso.google = { ...KOSONG.google };
       let res = await request(app).get('/api/akun/sso/penyedia');
-      expect(res.body).toEqual({ sukses: true, data: { google: false, microsoft: false } });
+      expect(res.body).toEqual({ sukses: true, data: { google: false } });
 
       config.sso.google = { ...GOOGLE };
       res = await request(app).get('/api/akun/sso/penyedia');
-      expect(res.body.data).toEqual({ google: true, microsoft: false });
-
-      config.sso.microsoft = { ...MICROSOFT };
-      res = await request(app).get('/api/akun/sso/penyedia');
-      expect(res.body.data).toEqual({ google: true, microsoft: true });
+      expect(res.body.data).toEqual({ google: true });
     });
   });
 
   describe('GET /sso/:penyedia/mulai', () => {
-    test.each(['facebook', '__proto__', 'constructor'])('penyedia tak dikenal (%s) → 404 JSON', async (nama) => {
+    test.each(['facebook', 'microsoft', '__proto__', 'constructor'])('penyedia tak dikenal (%s) → 404 JSON', async (nama) => {
       const res = await request(app).get(`/api/akun/sso/${nama}/mulai`);
       expect(res.status).toBe(404);
       expect(res.body.sukses).toBe(false);
@@ -130,13 +117,11 @@ describe('SSO Google / Microsoft (/api/akun/sso)', () => {
       expect(cookie).toMatch(/Max-Age=600/i);
     });
 
-    test('Microsoft → endpoint tenant dan state berbeda tiap permintaan', async () => {
-      const a = await request(app).get('/api/akun/sso/microsoft/mulai');
-      const b = await request(app).get('/api/akun/sso/microsoft/mulai');
-      const urlA = new URL(a.headers.location);
-      expect(urlA.origin + urlA.pathname).toBe(`https://login.microsoftonline.com/${TENANT}/oauth2/v2.0/authorize`);
-      expect(urlA.searchParams.get('scope')).toBe('openid email profile');
-      expect(urlA.searchParams.get('state')).not.toBe(new URL(b.headers.location).searchParams.get('state'));
+    test('state berbeda tiap permintaan', async () => {
+      const a = await request(app).get('/api/akun/sso/google/mulai');
+      const b = await request(app).get('/api/akun/sso/google/mulai');
+      expect(new URL(a.headers.location).searchParams.get('state'))
+        .not.toBe(new URL(b.headers.location).searchParams.get('state'));
     });
   });
 
@@ -144,8 +129,8 @@ describe('SSO Google / Microsoft (/api/akun/sso)', () => {
     const galat = (res) => new URL(res.headers.location, 'http://x').searchParams.get('sso_galat');
 
     test('penyedia belum dikonfigurasi → 404 JSON', async () => {
-      config.sso.microsoft = {};
-      const res = await request(app).get('/api/akun/sso/microsoft/kembali').query({ code: 'c', state: 's' });
+      config.sso.google = { ...KOSONG.google };
+      const res = await request(app).get('/api/akun/sso/google/kembali').query({ code: 'c', state: 's' });
       expect(res.status).toBe(404);
     });
 
@@ -169,10 +154,11 @@ describe('SSO Google / Microsoft (/api/akun/sso)', () => {
     });
 
     test('cookie state milik penyedia lain → ditolak', async () => {
-      const mulai = await request(app).get('/api/akun/sso/microsoft/mulai');
+      const mulai = await request(app).get('/api/akun/sso/google/mulai');
       const state = new URL(mulai.headers.location).searchParams.get('state');
+      const cookieLain = nilaiCookie(mulai, 'itbeli_sso_state').replace(/^google\./, 'facebook.');
       const res = await request(app).get('/api/akun/sso/google/kembali').query({ code: 'c', state })
-        .set('Cookie', `itbeli_sso_state=${nilaiCookie(mulai, 'itbeli_sso_state')}`);
+        .set('Cookie', `itbeli_sso_state=${cookieLain}`);
       expect(galat(res)).toBe('STATE_TIDAK_VALID');
     });
 
@@ -200,6 +186,7 @@ describe('SSO Google / Microsoft (/api/akun/sso)', () => {
     test.each([
       ['non-ITB (gmail.com)', { email: 'budi@gmail.com' }, 'DOMAIN_TIDAK_VALID'],
       ['domain tiruan itb.ac.id.palsu.com', { email: 'budi@itb.ac.id.palsu.com' }, 'DOMAIN_TIDAK_VALID'],
+      ['tanpa surel sama sekali', { email: undefined }, 'DOMAIN_TIDAK_VALID'],
       ['email_verified=false', { email_verified: false }, 'SUREL_BELUM_TERVERIFIKASI'],
       ['email_verified berupa string "true"', { email_verified: 'true' }, 'SUREL_BELUM_TERVERIFIKASI'],
       ['aud bukan client id', { aud: 'aplikasi-lain' }, 'TOKEN_TIDAK_VALID'],
@@ -211,22 +198,8 @@ describe('SSO Google / Microsoft (/api/akun/sso)', () => {
       expect(simpanSesi).not.toHaveBeenCalled();
     });
 
-    test.each([
-      ['tid tenant lain', { tid: '99999999-0000-0000-0000-000000000000' }, 'TOKEN_TIDAK_VALID'],
-      ['surel @itb.ac.id (bukan mahasiswa)', { email: 'ani@itb.ac.id' }, 'DOMAIN_TIDAK_VALID'],
-      ['surel @std.stei.itb.ac.id', { email: 'ani@std.stei.itb.ac.id' }, 'DOMAIN_TIDAK_VALID'],
-      ['surel mahasiswa.itb.ac.id.palsu.com', { email: 'ani@mahasiswa.itb.ac.id.palsu.com' }, 'DOMAIN_TIDAK_VALID'],
-      ['tanpa surel sama sekali', { email: undefined }, 'DOMAIN_TIDAK_VALID'],
-      ['aud bukan client id', { aud: 'aplikasi-lain' }, 'TOKEN_TIDAK_VALID'],
-      ['iss tenant lain', { iss: 'https://login.microsoftonline.com/lain/v2.0' }, 'TOKEN_TIDAK_VALID'],
-    ])('Microsoft: %s → ditolak', async (_, ubah, kode) => {
-      const { res } = await alurKembali('microsoft', klaimMicrosoft(ubah));
-      expect(galat(res)).toBe(kode);
-      expect(simpanSesi).not.toHaveBeenCalled();
-    });
-
-    test('Microsoft: preferred_username dipakai bila email kosong, huruf besar/kecil diabaikan', async () => {
-      const { res } = await alurKembali('microsoft', klaimMicrosoft({ email: undefined, preferred_username: 'Ani@MAHASISWA.ITB.AC.ID' }));
+    test('Google: subdomain ITB (std.stei.itb.ac.id) diterima, huruf besar/kecil diabaikan', async () => {
+      const { res } = await alurKembali('google', klaimGoogle({ email: 'Ani@STD.STEI.ITB.AC.ID' }));
       expect(res.headers.location).toBe('/lengkapi-sso');
     });
 
@@ -276,14 +249,14 @@ describe('SSO Google / Microsoft (/api/akun/sso)', () => {
 
     test('akun "Belum Terverifikasi" → menjadi Terverifikasi dan kata sandi lama dibuang', async () => {
       Akun.cariByEmail.mockResolvedValue(akunUji({ statusAkun: Akun.STATUS.BELUM_TERVERIFIKASI }));
-      const { res } = await alurKembali('microsoft', klaimMicrosoft({ email: 'budi@mahasiswa.itb.ac.id' }));
+      const { res } = await alurKembali('google', klaimGoogle());
       expect(res.headers.location).toBe('/katalog');
       expect(Akun.prototype.perbaruiStatusAkun).toHaveBeenCalledWith(Akun.STATUS.TERVERIFIKASI);
       expect(Akun.prototype.perbaruiKataSandiHash).toHaveBeenCalledWith('$2b$10$hashacak');
     });
 
     test('akun baru → cookie profil httpOnly bertanda tangan, redirect /lengkapi-sso, belum ada sesi/akun', async () => {
-      const { res } = await alurKembali('microsoft', klaimMicrosoft());
+      const { res } = await alurKembali('google', klaimGoogle());
       expect(res.headers.location).toBe('/lengkapi-sso');
       const cookie = cookieDari(res, 'itbeli_sso_profil');
       expect(cookie).toMatch(/HttpOnly/i);
@@ -294,7 +267,7 @@ describe('SSO Google / Microsoft (/api/akun/sso)', () => {
 
       const profil = await request(app).get('/api/akun/sso/profil-sementara')
         .set('Cookie', `itbeli_sso_profil=${nilaiCookie(res, 'itbeli_sso_profil')}`);
-      expect(profil.body.data).toEqual({ email: 'ani@mahasiswa.itb.ac.id', nama: 'Ani Wijaya', penyedia: 'microsoft' });
+      expect(profil.body.data).toEqual({ email: 'budi@itb.ac.id', nama: 'Budi Santoso', penyedia: 'google' });
     });
   });
 
