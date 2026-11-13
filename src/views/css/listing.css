@@ -7,13 +7,13 @@
 .foto-tambah { border-style:dashed;display:grid;place-items:center;cursor:pointer;color:var(--text-400);width:100%; }
 .foto-tools { position:absolute;top:4px;right:4px;display:flex;gap:2px; }
 .foto-tools button { border:1px solid var(--border);background:var(--surface);border-radius:4px;width:24px;height:24px;cursor:pointer; }
-.fotos.dragover { outline:2px dashed var(--green-500);outline-offset:4px; }
+.fotos.dragover { outline:2px dashed var(--primer-500);outline-offset:4px; }
 .two { display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4); }
 .preview { position:sticky;top:var(--sp-4);align-self:start; }
 select.field__input,textarea.field__area { width:100%;font:inherit;color:inherit; }
 textarea.field__area { resize:vertical;min-height:96px; }
 .field__input.is-error,.field__area.is-error { border-color:var(--danger);background:var(--danger-bg); }
-:focus-visible { outline:2px solid var(--green-500);outline-offset:2px; }
+:focus-visible { outline:2px solid var(--primer-500);outline-offset:2px; }
 .card__media img { width:100%;height:100%;object-fit:cover;display:block; }
 .card__media { aspect-ratio:4/3; }
 .preview .card__media { aspect-ratio:1; }
