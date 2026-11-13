@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('Btn_KeMasuk').addEventListener('click', () => popup.close());
     popup.addEventListener('close', () => window.location.replace('LoginPage.html'));
 
-    document.querySelectorAll('.toggle-pw').forEach((btn) => {
+    document.querySelectorAll('.pw-toggle').forEach((btn) => {
         btn.addEventListener('click', () => {
             const input = document.getElementById(btn.dataset.target);
             const tampil = input.type === 'password';

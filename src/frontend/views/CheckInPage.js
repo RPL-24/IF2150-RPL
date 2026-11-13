@@ -134,7 +134,7 @@
 
     6: () => `
       <section class="card-box success-card">
-        <span class="success-icon" aria-hidden="true">✓</span>
+        <span class="success-icon" aria-hidden="true"><img src="../assets/check.png" alt=""></span>
         <h1 class="page-title page-title-sm" tabindex="-1">Check-in tersimpan.</h1>
         <p class="page-subtitle">Terima kasih sudah meluangkan waktu untuk dirimu hari ini! Catatanmu sudah aman. Sampai jumpa besok.</p>
         <button class="btn btn--primary btn--block" type="button" data-action="done">Kembali ke dashboard</button>

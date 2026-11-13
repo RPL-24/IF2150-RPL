@@ -32,8 +32,9 @@
 }
 
 .brand-logo {
-    width: 46px;
-    height: 32px;
+    width: 180px;
+    max-width: 100%;
+    height: auto;
     object-fit: contain;
 }
 
@@ -296,9 +297,14 @@
 }
 
 .success-icon {
-    background-color: var(--color-teal);
-    color: var(--color-ink);
+    background-color: transparent;
     animation: pop var(--duration-base) ease;
+}
+
+.success-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 @keyframes pop {

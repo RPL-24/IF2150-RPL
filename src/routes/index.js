@@ -33,4 +33,3 @@ mountRouteIfAvailable('/konsultasi', 'konsultasiRoutes.js');
 mountRouteIfAvailable('/emergency', 'emergencyRoutes.js');
 
 module.exports = router;
-

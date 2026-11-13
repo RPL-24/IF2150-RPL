@@ -41,8 +41,9 @@
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 18px;
-    color: var(--color-ink);
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
     pointer-events: none;
 }
 

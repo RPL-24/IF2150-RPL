@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MahaSehat - SettingPage.css
+   MahaSehat - SettingPagePelajar.css
    Desain Presisi Sesuai FigCraft (Node 3855 & Design System MahaSehat)
    Palet: Teal var(--color-teal), Cream var(--color-cream), Ink var(--color-ink), Amber var(--color-amber), Mist var(--color-mist)
    ========================================================================== *//* ==========================================================================
@@ -23,8 +23,7 @@
     font-weight: 700;
     color: var(--color-ink);
     letter-spacing: -0.02em;
-}/* Kolom Pencarian di Atas Menu */
-/* Menu Navigasi */
+}/* Menu Navigasi */
 /* Item Aktif Setelan (Node 4640 FigCraft) */
 .nav-item.active{
     background-color: var(--color-teal);

@@ -1,0 +1,339 @@
+/* ==========================================================================
+   MahaSehat - AuthLayout.css
+   Kerangka bersama halaman autentikasi: LoginPage, RegistrationPagePelajar,
+   RegistrationPageOrangTuaWali, RegistrationPageTenagaKesehatan,
+   ResetPasswordPage, dan KonfirmasiRegistrasiPage.
+
+   Dimuat setelah base.css + components.css, sebelum CSS khas halaman.
+   Halaman hanya boleh menambah gaya khasnya; berkas ini yang menentukan
+   geometri panel, brand, judul formulir, dan perilaku responsif.
+
+   Acuan: DESIGN.md §4, docs/Design-System.md
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Kerangka dua panel (desktop ≥ 901 px)
+   -------------------------------------------------------------------------- */
+
+.auth-container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-cream);
+}
+
+/* Panel kiri: kartu teal berisi brand, narasi, dan bantuan --------------- */
+.auth-aside {
+    flex: 0 0 472px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+    margin: 24px;
+    padding: 40px;
+    background-color: var(--color-teal);
+    border-radius: var(--radius-2xl);
+}
+
+.auth-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-ink);
+    text-decoration: none;
+}
+
+.auth-brand__logo {
+    width: 220px;
+    height: auto;
+    max-width: 100%;
+}
+
+.auth-story {
+    margin-block: auto;
+}
+
+.auth-story__title {
+    margin-bottom: 16px;
+    font-size: var(--text-display);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+}
+
+.auth-story__text {
+    max-width: 34ch;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--color-ink);
+}
+
+.auth-aside__help {
+    font-size: var(--text-body-sm);
+    font-weight: 500;
+    color: var(--color-ink);
+}
+
+.auth-aside__help a {
+    color: var(--color-ink);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.auth-aside__help a:hover {
+    text-decoration-thickness: 2px;
+}
+
+/* Panel kanan: formulir -------------------------------------------------- */
+.auth-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 32px;
+    overflow-y: auto;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 560px;
+}
+
+.auth-form__header {
+    margin-bottom: 28px;
+}
+
+.auth-form__title {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+}
+
+.auth-form__lead {
+    margin-top: 8px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--color-ink-subtle);
+}
+
+/* Jarak antarbagian formulir: satu skala untuk semua halaman auth -------- */
+.auth-form .form-group {
+    margin-bottom: 14px;
+}
+
+.auth-form .form-error,
+.auth-form .error-msg {
+    margin-top: 4px;
+}
+
+/* Field kata sandi + tombol Tampilkan ------------------------------------ */
+.input-control {
+    position: relative;
+    display: block;
+}
+
+.input-control .form-input {
+    padding-right: 112px;
+}
+
+.pw-toggle {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    height: 36px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background-color: transparent;
+    color: var(--color-ink-muted);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: color var(--duration-fast) ease,
+                background-color var(--duration-fast) ease;
+}
+
+.pw-toggle:hover {
+    color: var(--color-ink);
+    background-color: var(--color-mist);
+}
+
+/* Tautan sekunder formulir ----------------------------------------------- */
+.auth-forgot {
+    display: flex;
+    justify-content: flex-end;
+    margin: -4px 0 20px;
+}
+
+.auth-link {
+    font-size: var(--text-body);
+    font-weight: 600;
+    color: var(--color-ink-subtle);
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.auth-footer {
+    margin-top: 24px;
+    font-size: var(--text-body);
+    text-align: center;
+    color: var(--color-ink-subtle);
+}
+
+.auth-footer a {
+    color: var(--color-ink);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.auth-footer a:hover,
+a.auth-footer:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+a.auth-footer {
+    font-weight: 600;
+    color: var(--color-ink-subtle);
+    text-decoration: none;
+}
+
+a.auth-footer:not([hidden]) {
+    display: block;
+}
+
+/* Catatan bantuan di bawah bagian formulir ------------------------------- */
+.helper {
+    margin-top: -6px;
+    margin-bottom: 16px;
+    font-size: var(--text-body-sm);
+    line-height: 1.4;
+    color: var(--color-ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Tablet: satu kolom, kartu teal tetap ada tetapi dipadatkan
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1120px) {
+    .auth-aside {
+        flex-basis: 400px;
+        padding: 36px 32px;
+    }
+
+    .auth-story__title {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 900px) {
+    .auth-container {
+        flex-direction: column;
+    }
+
+    .auth-aside {
+        flex: none;
+        gap: 24px;
+        margin: 16px;
+        padding: 28px 24px;
+        border-radius: var(--radius-xl);
+    }
+
+    .auth-story__title {
+        margin-bottom: 12px;
+        font-size: 28px;
+    }
+
+    .auth-story__text {
+        font-size: 15px;
+    }
+
+    .auth-aside__help {
+        display: none;
+    }
+
+    .auth-panel {
+        align-items: flex-start;
+        padding: 8px 24px 40px;
+    }
+
+    .auth-form {
+        margin-inline: auto;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Ponsel (≤ 600 px): kartu teal dihilangkan.
+   Hanya logo + wordmark sebagai bilah brand, lalu formulir di dalam satu
+   permukaan putih membulat.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 600px) {
+    .auth-container {
+        min-height: 100dvh;
+        padding: 12px 16px 32px;
+    }
+
+    .auth-aside {
+        flex-direction: row;
+        align-items: center;
+        margin: 0;
+        padding: 8px 0 20px;
+        background-color: transparent;
+        border-radius: 0;
+    }
+
+    .auth-story,
+    .auth-aside__help {
+        display: none;
+    }
+
+    .auth-brand {
+        gap: 10px;
+    }
+
+    .auth-brand__logo {
+        width: 44px;
+        height: 30px;
+    }
+
+    .auth-panel {
+        align-items: flex-start;
+        padding: 0;
+    }
+
+    .auth-form {
+        max-width: none;
+        padding: 24px 20px;
+        background-color: var(--color-white);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-card);
+    }
+
+    .auth-form__header {
+        margin-bottom: 22px;
+    }
+
+    .auth-form__title {
+        font-size: 26px;
+    }
+
+    .auth-form__lead {
+        font-size: var(--text-body);
+    }
+}

@@ -1,41 +1,25 @@
 /**
- * MahaSehat - SettingPage.js
- * Logika antarmuka halaman Setelan (Profil, Keamanan, Sesi, dan Izin)
- * Keterlacakan DPPL: UC01 (Pengaturan Akun) & Seluruh Peran
+ * MahaSehat - SettingPagePelajar.js
+ * Logika antarmuka halaman Setelan pelajar (Profil, Keamanan, Sesi, dan Izin)
+ * Keterlacakan DPPL: UC01 (Pengaturan Akun)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const HALAMAN_DASHBOARD = {
-        pelajar: 'DashboardPagePelajar.html',
-        orangtuawali: 'DashboardPageOrangTuaWali.html',
-        tenagakesehatan: 'DashboardPageTenagaKesehatan.html'
-    };
-
-    const LABEL_ROLE = {
-        pelajar: 'Pelajar',
-        orangtuawali: 'Orang Tua / Wali',
-        tenagakesehatan: 'Tenaga Kesehatan'
-    };
+    const DASHBOARD_PELAJAR = 'DashboardPagePelajar.html';
 
     const DATA_DUMMY = {
-        pelajar: { nama: 'Albert Einstein', email: 'albert.einstein@gmail.com', nomorTelepon: '081234567890' },
-        orangtuawali: { nama: 'Hermann Einstein', email: 'hermann.einstein@gmail.com', nomorTelepon: '081234567890' },
-        tenagakesehatan: { nama: 'Raissa Hadiman, M. Psi.', email: 'raissa.hadiman@gmail.com', nomorTelepon: '081234567890' }
+        nama: 'Albert Einstein',
+        email: 'albert.einstein@gmail.com',
+        nomorTelepon: '081234567890'
     };
 
-    function kanonikRole(role) {
-        const r = (role || '').toLowerCase().replace(/[^a-z]/g, '');
-        return (r === 'orangtua' || r === 'wali') ? 'orangtuawali' : r;
-    }
+    localStorage.setItem('role', 'pelajar');
 
     const linkKembali = document.getElementById('Link_Kembali');
     const linkBrand = document.getElementById('Link_Brand');
     const menuDashboard = document.getElementById('Menu_Dashboard');
-    const menuLaporan = document.getElementById('Menu_Laporan');
-    const menuKonsultasi = document.getElementById('Menu_Konsultasi');
     const menuKeluar = document.getElementById('Menu_Keluar');
 
-    const viewProfil = document.getElementById('View_Profil');
     const formEdit = document.getElementById('Form_EditProfil');
     const btnEdit = document.getElementById('Btn_EditProfil');
     const btnBatalEdit = document.getElementById('Btn_BatalEdit');
@@ -50,10 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnBatal = document.getElementById('Btn_Batal');
     const btnKonfirmasi = document.getElementById('Btn_KonfirmasiKeluar');
 
-    // Ambil data akun tersimpan atau default peran
+    // Ambil data akun tersimpan atau default
     const storedUser = JSON.parse(localStorage.getItem('mahasehat_user') || '{}');
     const role = kanonikRole(localStorage.getItem('role') || storedUser.role || 'pelajar');
 
+    // Halaman ini khusus pelajar: peran lain diarahkan ke halaman setelannya
     if (role === 'orangtuawali') {
         window.location.replace('SettingPageOrangTuaWali.html' + window.location.search);
         return;
@@ -62,14 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.replace('SettingPageTenagaKesehatan.html' + window.location.search);
         return;
     }
-    const dummy = DATA_DUMMY[role] || DATA_DUMMY.pelajar;
 
     const akun = {
-        nama: storedUser.nama || dummy.nama,
-        email: storedUser.email || dummy.email,
-        nomorTelepon: storedUser.nomorTelepon || dummy.nomorTelepon
+        nama: storedUser.nama || DATA_DUMMY.nama,
+        email: storedUser.email || DATA_DUMMY.email,
+        nomorTelepon: storedUser.nomorTelepon || DATA_DUMMY.nomorTelepon
     };
-    const labelRole = LABEL_ROLE[role] || 'Pelajar';
 
     function tampilkanProfil() {
         const textNamaUser = document.getElementById('Text_NamaUser');
@@ -81,13 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const textRole = document.getElementById('Text_Role');
 
         if (textNamaUser) textNamaUser.innerText = akun.nama;
-        if (textRoleUser) textRoleUser.innerText = labelRole;
+        if (textRoleUser) textRoleUser.innerText = 'Pelajar';
         if (userAvatar) userAvatar.innerText = (akun.nama || 'A').trim().charAt(0).toUpperCase();
 
         if (textNama) textNama.innerText = akun.nama;
         if (textEmail) textEmail.innerText = akun.email;
         if (textNomorTelepon) textNomorTelepon.innerText = akun.nomorTelepon;
-        if (textRole) textRole.innerText = labelRole;
+        if (textRole) textRole.innerText = 'Pelajar';
 
         if (inputNama) inputNama.value = akun.nama === '-' ? '' : akun.nama;
         if (inputEmail) inputEmail.value = akun.email === '-' ? '' : akun.email;
@@ -95,39 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     tampilkanProfil();
 
-    // Sesuaikan navigasi dashboard sesuai peran aktif
-    const targetDashboard = HALAMAN_DASHBOARD[role] || 'DashboardPage.html';
-    if (linkKembali) linkKembali.href = targetDashboard;
-    if (linkBrand) linkBrand.href = targetDashboard;
-    if (menuDashboard) menuDashboard.href = targetDashboard;
-
-    // Sesuaikan item navbar peran
-    if (role === 'tenagakesehatan') {
-        if (menuLaporan) menuLaporan.style.display = 'none';
-        if (menuKonsultasi) {
-            menuKonsultasi.style.display = 'flex';
-            menuKonsultasi.href = 'ManajemenKonsultasiPage.html';
-        }
-    } else if (role === 'orangtuawali') {
-        if (menuLaporan) {
-            menuLaporan.style.display = 'flex';
-            menuLaporan.href = 'ReportPage.html';
-        }
-        if (menuKonsultasi) menuKonsultasi.style.display = 'none';
-    } else {
-        // Pelajar
-        if (menuLaporan) {
-            menuLaporan.style.display = 'flex';
-            menuLaporan.href = 'ReportPage.html';
-        }
-        if (menuKonsultasi) {
-            // Halaman Konsultasi pelajar belum tersedia: biarkan nonaktif, jangan pasang href
-            menuKonsultasi.style.display = 'flex';
-            menuKonsultasi.removeAttribute('href');
-            menuKonsultasi.setAttribute('aria-disabled', 'true');
-            menuKonsultasi.classList.add('nav-item--disabled');
-        }
-    }
+    // Navigasi ke dashboard pelajar
+    if (linkKembali) linkKembali.href = DASHBOARD_PELAJAR;
+    if (linkBrand) linkBrand.href = DASHBOARD_PELAJAR;
+    if (menuDashboard) menuDashboard.href = DASHBOARD_PELAJAR;
 
     // Formulir Profil Langsung Aktif (Sesuai Node 3872 FigCraft)
     function showEditForm() {

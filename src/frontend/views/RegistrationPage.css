@@ -1,383 +1,111 @@
-*{
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* ==========================================================================
+   MahaSehat - RegistrationPage.css
+   Gaya khas tiga halaman registrasi (pelajar, orang tua/wali, tenaga
+   kesehatan). Kerangka panel, brand, judul, tautan, dan perilaku ponsel
+   berasal dari AuthLayout.css; berkas ini hanya mengatur isi formulir.
+   ========================================================================== */
+
+/* Pemilih peran ---------------------------------------------------------- */
+.role-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    margin-bottom: 24px;
+    padding: 4px;
+    background-color: var(--color-mist);
+    border-radius: var(--radius-pill);
 }
 
-h1, h2, h3{
-  font-family: "Space Grotesk", sans-serif;
+.role-tabs .seg-btn {
+    padding: 8px 10px;
 }
 
-.wordmark{
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 20px;
-  color: var(--color-ink);
-  text-decoration: none;
+/* Bagian formulir -------------------------------------------------------- */
+.form-section h3 {
+    margin-bottom: 12px;
+    font-size: var(--text-h3);
+    font-weight: 700;
+    line-height: 1.3;
 }
 
-.auth-container{
-  display: grid;
-  grid-template-columns: 520px minmax(0, 1fr);
-  min-height: 100vh;
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 20px;
 }
 
-.panel-left{
-  display: flex;
-  flex-direction: column;
-  margin: 24px;
-  padding: 40px;
-  border-radius: 24px;
-  background: var(--color-teal);
+.divider {
+    height: 1px;
+    margin: 4px 0 24px;
+    background-color: var(--color-mist);
 }
 
-.narrative{
-  max-width: 400px;
-  margin-top: 22vh;
+.form-group--full,
+.field-note--full {
+    grid-column: 1 / -1;
 }
 
-.narrative h1{
-  font-size: 60px;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.05em;
+/* Tanggal lahir: tiga kolom angka ---------------------------------------- */
+.date-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
 }
 
-.narrative .lede{
-  margin-top: 32px;
-  color: var(--color-ink-subtle);
-  font-size: 18px;
-  line-height: 28px;
+.date-row .form-input {
+    padding: 0 12px;
 }
 
-.narrative .privacy{
-  margin-top: 24px;
-  color: var(--color-ink-subtle);
-  font-size: 14px;
-  line-height: 20px;
+/* Kolom dengan saran (datalist) ------------------------------------------ */
+.select-shell {
+    position: relative;
 }
 
-.help-link{
-  margin-top: auto;
-  color: var(--color-ink-subtle);
-  font-size: 14px;
-  line-height: 20px;
-  text-decoration: none;
+.select-shell .form-input {
+    padding-right: 44px;
 }
 
-.panel-right{
-  padding: 64px 80px 64px 56px;
-  overflow-y: auto;
-  background: var(--color-cream);
+.chevron {
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--color-ink);
+    border-bottom: 2px solid var(--color-ink);
+    pointer-events: none;
+    transform: translateY(-70%) rotate(45deg);
 }
 
-.form-shell{
-  width: 100%;
-  max-width: 760px;
-  margin: 0 auto;
+/* --------------------------------------------------------------------------
+   Responsif: formulir dua kolom menjadi satu kolom sebelum panel kanan
+   menyempit (bersama aturan AuthLayout.css untuk ≤ 900 px).
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1120px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-.form-shell h2{
-  margin-top: 4px;
-  font-size: 48px;
-  font-weight: 700;
-  line-height: 64px;
-  letter-spacing: -0.04em;
-}
+@media (max-width: 600px) {
+    .role-tabs {
+        margin-bottom: 20px;
+    }
 
-.subtitle{
-  margin-top: 8px;
-  color: var(--color-ink-subtle);
-  font-size: 16px;
-  line-height: 24px;
-}
+    .role-tabs .seg-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 8px 4px;
+        font-size: var(--text-label);
+        line-height: 1.25;
+        white-space: normal;
+        text-align: center;
+    }
 
-.role-tabs{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-  margin-top: 32px;
-  padding: 4px;
-  background: var(--color-mist);
-  border-radius: 999px;
-}
-
-.role-tabs .seg-btn{
-  text-align: center;
-  padding: 8px 4px;
-  white-space: no-wrap;
-}
-
-.divider{
-  height: 1px;
-  margin: 24px 0;
-  border-radius: 999px;
-  background: var(--color-mist);
-}
-
-.form-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0 24px;
-}
-
-.form-section h3{
-  margin-bottom: 12px;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 28px;
-}
-
-.form-section--full{
-  margin-top: 24px;
-}
-
-.field{
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-
-.field .field-label{
-  display: block;
-  margin-bottom: 8px;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 24px;
-}
-
-.field label{
-  margin-bottom: 8px;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 24px;
-}
-
-.req{
-  color: var(--color-danger);
-}
-
-.field input, .field textarea{
-  width: 100%;
-  height: 52px;
-  padding: 0 16px;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-mist);
-  color: var(--color-ink);
-  font: inherit;
-  font-size: 16px;
-  line-height: 24px;
-  outline: none;
-  transition: border-color 0.15s ease, background 0.15s ease;
-}
-
-.field textarea{
-  height: 88px;
-  padding: 14px 16px;
-  resize: vertical;
-}
-
-.field input::placeholder, .field textarea::placeholder{
-  color: var(--color-ink-subtle);
-}
-
-.field input:focus, .field textarea:focus{
-  padding: 0 15px;
-  border: 2px solid var(--color-ink);
-  background: var(--color-cream);
-}
-
-.field textarea:focus{
-  padding: 13px 15px;
-}
-
-.field input.is-invalid, .field textarea.is-invalid{
-  border: 2px solid var(--color-danger);
-  background: var(--color-cream);
-}
-
-.field-control{
-  position: relative;
-}
-
-.field-control input{
-  padding-right: 96px;
-}
-
-.reveal{
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  border: 0;
-  background: none;
-  color: var(--color-ink-subtle);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  cursor: pointer;
-  transform: translateY(-50%);
-}
-
-.date-row{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.date-row input{
-  padding: 0 12px;
-}
-
-.helper{
-  margin-top: -8px;
-  margin-bottom: 16px;
-  color: var(--color-ink-subtle);
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.field--full{
-  grid-column: 1 / -1;
-}
-
-.field-hint{
-  margin-top: 6px;
-  color: var(--color-ink-subtle);
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.field-note{
-  margin-top: 8px;
-  margin-bottom: 16px;
-  color: var(--color-ink-subtle);
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.field-note--full{
-  grid-column: 1 / -1;
-}
-
-.error-msg{
-  margin-top: 6px;
-  color: var(--color-danger);
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.error-msg:empty{
-  display: none;
-}
-
-.hint-text{
-  margin-top: 6px;
-  color: var(--color-danger);
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.btn-primary{
-  width: 100%;
-  height: 52px;
-  margin-top: 8px;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-amber);
-  color: var(--color-ink);
-  font: inherit;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 28px;
-  cursor: pointer;
-}
-
-.btn-primary:hover{
-  background: var(--color-amber-hover);
-}
-
-.btn-primary:active{
-  background: var(--color-amber-hover);
-}
-
-.btn-primary:focus-visible, .reveal:focus-visible, .help-link:focus-visible, .login-link a:focus-visible{
-  outline: 2px solid var(--color-ink);
-  outline-offset: 2px;
-}
-
-.login-link{
-  margin-top: 16px;
-  color: var(--color-ink-subtle);
-  font-size: 14px;
-  line-height: 20px;
-  text-align: center;
-}
-
-.login-link a{
-  color: var(--color-ink);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.select-shell{
-  position: relative;
-}
-
-.select-shell input{
-  padding-right: 44px;
-}
-
-.chevron{
-  position: absolute;
-  top: 50%;
-  right: 18px;
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid var(--color-ink);
-  border-bottom: 2px solid var(--color-ink);
-  pointer-events: none;
-  transform: translateY(-70%) rotate(45deg);
-}
-
-@media (max-width: 1100px) {.auth-container{
-    grid-template-columns: 1fr;
-  }
-
-.panel-left{
-    min-height: 320px;
-    padding: 40px 32px;
-  }
-
-.narrative{
-    margin-top: 32px;
-  }
-
-.narrative h1{
-    font-size: 40px;
-    line-height: 48px;
-  }
-
-.help-link{
-    margin-top: 32px;
-  }
-
-.panel-right{
-    padding: 40px 24px;
-  }
-
-.form-shell h2{
-    font-size: 32px;
-    line-height: 40px;
-  }
-
-.form-grid{
-    grid-template-columns: 1fr;
-  }
-
-.field-note{
-    padding-top: 0;
-    margin-bottom: 20px;
-  }
+    .divider {
+        margin-bottom: 20px;
+    }
 }

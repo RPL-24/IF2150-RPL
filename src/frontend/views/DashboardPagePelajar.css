@@ -23,8 +23,7 @@
     font-weight: 700;
     color: var(--color-ink);
     letter-spacing: -0.02em;
-}/* Kolom Pencarian di Atas Menu (Node 4076 FigCraft) */
-/* Menu Navigasi */
+}/* Menu Navigasi */
 /* State Aktif (Pill Teal 12px sesuai FigCraft) */
 .nav-item.active{
     background-color: var(--color-teal);
@@ -83,7 +82,16 @@
     color: var(--color-ink-subtle);
 }.banner-cta{
     flex-shrink: 0;
-}/* --------------------------------------------------------------------------
+}
+.banner-success .banner-icon-circle {
+    background-color: transparent;
+}
+.banner-check {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+/* --------------------------------------------------------------------------
    4 Grid Metrik Statistik (Node 3343-3358 FigCraft)
    -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- 4 Grid Metrik Statistik (Node 3343-3358 FigCraft) -------------------------------------------------------------------------- */ .stats-grid{

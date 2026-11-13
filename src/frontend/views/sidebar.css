@@ -4,7 +4,7 @@
    menu navigasi, pencarian, dan profil pengguna. Berlaku untuk semua peran.
 
    Menggantikan: SidebarTenagaKesehatan.css, SidebarOrangTuaWali.css, serta
-   salinan blok sidebar di DashboardPagePelajar.css dan SettingPage.css.
+   salinan blok sidebar di DashboardPagePelajar.css dan SettingPagePelajar.css.
    Dimuat setelah base.css.
    ========================================================================== */
 
@@ -64,9 +64,9 @@
 .sidebar-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 12px;
-    padding: 4px 0 0 4px;
+    padding: 4px 0 0;
 }
 
 .sidebar-panel {
@@ -86,8 +86,9 @@
 }
 
 .app-sidebar .brand-logo {
-    width: 46px;
-    height: 32px;
+    width: 200px;
+    max-width: 100%;
+    height: auto;
     object-fit: contain;
 }
 
@@ -97,48 +98,6 @@
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--color-ink);
-}
-
-/* Pencarian di atas menu ------------------------------------------------- */
-
-.sidebar-search {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    height: 44px;
-    padding: 0 14px;
-    background-color: var(--color-mist-light);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    transition: border-color var(--duration-base) ease,
-                background-color var(--duration-base) ease;
-}
-
-.sidebar-search:focus-within {
-    border-color: var(--color-teal);
-    background-color: var(--color-white);
-    box-shadow: 0 0 0 3px var(--color-teal-subtle);
-}
-
-.search-icon {
-    font-size: 18px;
-    line-height: 1;
-    color: var(--color-ink-subtle);
-    user-select: none;
-}
-
-.search-input {
-    width: 100%;
-    border: none;
-    background: transparent;
-    outline: none;
-    font-family: var(--font-body);
-    font-size: 14px;
-    color: var(--color-ink);
-}
-
-.search-input::placeholder {
-    color: var(--color-ink-muted);
 }
 
 /* Menu navigasi ----------------------------------------------------------- */
@@ -167,7 +126,7 @@
 .nav-icon {
     width: 20px;
     height: 20px;
-    stroke: currentColor;
+    object-fit: contain;
     flex-shrink: 0;
 }
 

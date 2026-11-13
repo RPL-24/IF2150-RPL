@@ -54,16 +54,18 @@
     width: 32px;
     height: 32px;
     stroke: var(--color-danger);
-}.success-icon-badge{
+}.success-icon-badge {
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background-color: var(--color-success-subtle);
-    color: var(--color-success);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
+}.success-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }/* Tipografi Judul & Deskripsi */
 .notif-title, #Title_Darurat{
     font-family: var(--font-heading);
