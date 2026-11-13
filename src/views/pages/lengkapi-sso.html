@@ -12,42 +12,25 @@
 </head>
 <body>
 <div class="page">
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand__mark">IT</div>
-      <div>
-        <div class="brand__name">ITBELI</div>
-        <div class="brand__tag">Marketplace preloved sivitas ITB</div>
-      </div>
-    </div>
-    <div class="topbar__right">
-      <a class="btn btn--sekunder btn--sm" href="/masuk">Masuk</a>
-    </div>
-  </header>
-
   <main class="auth">
 
-    <section class="hero">
-      <div class="hero__eyebrow">Marketplace preloved sivitas ITB</div>
-      <h1 class="hero__title">Barang bagus tak harus selalu baru.</h1>
-      <p class="hero__text">
-        Temukan kebutuhan kuliah, teruskan barang yang masih berharga.
-        Mulai dari komunitas kampus sendiri.
+    <section class="auth__merek">
+      <a class="auth__logo" href="/" aria-label="ITBELI, beranda">
+        <span class="brand__mark">IT</span>
+        <span class="brand__name">ITBELI</span>
+      </a>
+      <h1 class="auth__tagline">Satu langkah lagi.</h1>
+      <p class="auth__teks">
+        Akun ITB Anda sudah terverifikasi. Lengkapi NIM dan setujui kebijakan untuk mulai memakai ITBELI.
       </p>
-      <div class="hero__media">
-        <div><div class="ph ph--jas"></div></div>
-        <div><div class="ph ph--kalkulator"></div></div>
-        <div><div class="ph ph--buku"></div></div>
-      </div>
     </section>
 
-    <section class="authform">
-      <div>
-        <h2 class="authform__title">Satu langkah lagi.</h2>
-        <p class="authform__sub mt-2">Akun ITB Anda sudah terverifikasi. Lengkapi NIM dan setujui kebijakan untuk mulai memakai ITBELI.</p>
-      </div>
+    <section class="auth__kartu" aria-labelledby="judul-lengkapi">
+      <h2 id="judul-lengkapi">Lengkapi akun Anda</h2>
+      <p class="auth__sub">Nama dan surel diambil dari akun ITB Anda.</p>
+      <hr class="auth__pemisah">
 
-      <form id="formulir-lengkapi" class="authform" style="padding-top:0" novalidate>
+      <form id="formulir-lengkapi" novalidate>
         <div id="pesan-galat" class="infobox infobox--galat" role="alert" hidden></div>
 
         <label class="field">
@@ -72,7 +55,10 @@
             dan <a href="/legal?jenis=ketentuan-penggunaan" target="_blank">Ketentuan Penggunaan</a> ITBELI.</span>
         </label>
 
-        <button id="tombol-lengkapi" class="btn btn--primer btn--blok" type="submit" disabled>Selesaikan Pendaftaran</button>
+        <button id="tombol-lengkapi" class="btn btn--primer btn--lg btn--pil btn--blok" type="submit" disabled>Selesaikan Pendaftaran</button>
+
+        <hr class="auth__pemisah">
+        <a class="btn btn--garis btn--lg btn--pil auth__baru" href="/masuk">Kembali ke Masuk</a>
       </form>
     </section>
 
