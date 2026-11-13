@@ -1,23 +1,31 @@
 // C45 PenyimpananBerkas
-// Sesuai panduan M9 (bagian 2.2), implementasi menggunakan penyimpanan lokal
-// pada folder src/uploads/ yang disajikan secara statis, dengan antarmuka
-// simpan() dan hapus() yang tetap konsisten dengan DPPL.
+// Dua mode dengan antarmuka simpan() dan hapus() yang sama sesuai DPPL:
+// - Lokal (bawaan): berkas disimpan di src/uploads/ dan disajikan app.js lewat /uploads/... (panduan M9 bagian 2.2).
+// - Vercel Blob: aktif bila BLOB_READ_WRITE_TOKEN diisi. Dipakai saat deploy ke Vercel, karena disk serverless
+//   hanya bisa dibaca dan tidak permanen. Path yang dikembalikan berupa URL publik Blob.
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const config = require('../config/env');
 
 const DIR_UPLOADS = path.join(__dirname, '..', 'uploads');
 
 class PenyimpananBerkas {
-  constructor(direktoriBasis = DIR_UPLOADS) {
+  constructor(direktoriBasis = DIR_UPLOADS, blobToken = config.blobToken) {
     this.direktoriBasis = direktoriBasis;
-    this.pastikanDirektoriAda(this.direktoriBasis);
+    this.blobToken = blobToken;
   }
 
+  // Folder dibuat saat pertama kali menyimpan, bukan saat modul dimuat:
+  // pada Vercel, membuat folder saat server menyala akan menggagalkan seluruh aplikasi.
   pastikanDirektoriAda(dir) {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
+  }
+
+  modeBlob() {
+    return Boolean(this.blobToken);
   }
 
   // Algo-072: mengunggah berkas foto/bukti dan mengembalikan daftar path berkas (KF23, KF44)
@@ -25,7 +33,10 @@ class PenyimpananBerkas {
     if (!daftarBerkas || !Array.isArray(daftarBerkas) || daftarBerkas.length === 0) {
       return [];
     }
+    return this.modeBlob() ? this.simpanKeBlob(idObjek, daftarBerkas) : this.simpanKeDisk(idObjek, daftarBerkas);
+  }
 
+  async simpanKeDisk(idObjek, daftarBerkas) {
     const targetDir = path.join(this.direktoriBasis, String(idObjek));
     this.pastikanDirektoriAda(targetDir);
 
@@ -34,8 +45,7 @@ class PenyimpananBerkas {
 
     try {
       for (const berkas of daftarBerkas) {
-        const ekstensi = path.extname(berkas.originalname || berkas.name || '').toLowerCase() || '.png';
-        const namaUnik = `${crypto.randomUUID()}${ekstensi}`;
+        const namaUnik = `${crypto.randomUUID()}${PenyimpananBerkas.ekstensi(berkas)}`;
         const pathTujuan = path.join(targetDir, namaUnik);
 
         if (berkas.buffer) {
@@ -48,8 +58,7 @@ class PenyimpananBerkas {
           throw new Error('Format berkas tidak didukung');
         }
 
-        const pathRelatif = `/uploads/${idObjek}/${namaUnik}`;
-        daftarPath.push(pathRelatif);
+        daftarPath.push(`/uploads/${idObjek}/${namaUnik}`);
         daftarPathAbsolut.push(pathTujuan);
       }
       return daftarPath;
@@ -63,16 +72,52 @@ class PenyimpananBerkas {
     }
   }
 
+  async simpanKeBlob(idObjek, daftarBerkas) {
+    const { put, del } = require('@vercel/blob');
+    const daftarUrl = [];
+
+    try {
+      for (const berkas of daftarBerkas) {
+        const isi = berkas.buffer || (berkas.path ? await fs.promises.readFile(berkas.path) : null);
+        if (!isi) throw new Error('Format berkas tidak didukung');
+
+        const hasil = await put(`${idObjek}/${crypto.randomUUID()}${PenyimpananBerkas.ekstensi(berkas)}`, isi, {
+          access: 'public',
+          token: this.blobToken,
+          contentType: berkas.mimetype || undefined,
+        });
+        daftarUrl.push(hasil.url);
+      }
+      return daftarUrl;
+    } catch (galat) {
+      // Rollback berkas yang sempat terunggah jika terjadi kegagalan
+      if (daftarUrl.length > 0) await del(daftarUrl, { token: this.blobToken }).catch(() => {});
+      console.error('Unggah berkas ke Vercel Blob gagal:', galat);
+      return null;
+    }
+  }
+
   // Algo-073: menghapus berkas berdasarkan daftar path (KF21, KF50)
   async hapus(daftarPath) {
     if (!daftarPath || (Array.isArray(daftarPath) && daftarPath.length === 0)) {
       return true;
     }
 
-    const arr = Array.isArray(daftarPath) ? daftarPath : [daftarPath];
+    const arr = (Array.isArray(daftarPath) ? daftarPath : [daftarPath]).filter(Boolean);
+    // URL Blob dihapus lewat Blob; path /uploads/ dihapus dari disk, termasuk data lama sebelum pindah ke Blob
+    const daftarUrl = arr.filter((p) => /^https?:\/\//i.test(p));
+    const daftarLokal = arr.filter((p) => !/^https?:\/\//i.test(p));
+
     try {
-      for (const p of arr) {
-        if (!p) continue;
+      if (daftarUrl.length > 0) {
+        if (!this.modeBlob()) {
+          console.warn('URL Blob tidak dihapus karena BLOB_READ_WRITE_TOKEN tidak diisi:', daftarUrl);
+        } else {
+          const { del } = require('@vercel/blob');
+          await del(daftarUrl, { token: this.blobToken });
+        }
+      }
+      for (const p of daftarLokal) {
         // Bersihkan prefix /uploads/ untuk memperoleh path absolut
         const pBersih = p.startsWith('/uploads/') ? p.slice('/uploads/'.length) : p;
         const absolut = path.join(this.direktoriBasis, pBersih);
@@ -85,6 +130,10 @@ class PenyimpananBerkas {
       console.error('Hapus berkas gagal:', galat);
       return false;
     }
+  }
+
+  static ekstensi(berkas) {
+    return path.extname(berkas.originalname || berkas.name || '').toLowerCase() || '.png';
   }
 }
 
