@@ -61,14 +61,16 @@ Tabel B.2. Bukti Best Practices
 | Pengujian | [Riwayat CI (GitHub Actions)](https://github.com/bagasapt-spec/IF2150-RPL-K03-G07/actions) · contoh file test: [`ListTugas.test.ts`](https://github.com/bagasapt-spec/IF2150-RPL-K03-G07/blob/dev/src/server/entities/ListTugas.test.ts), [`HasilPerbaikan.test.ts`](https://github.com/bagasapt-spec/IF2150-RPL-K03-G07/blob/dev/src/server/entities/HasilPerbaikan.test.ts), [`validasi-perbaikan.test.ts`](https://github.com/bagasapt-spec/IF2150-RPL-K03-G07/blob/dev/src/lib/validasi-perbaikan.test.ts), [`StatusController.test.ts`](https://github.com/bagasapt-spec/IF2150-RPL-K03-G07/blob/dev/src/server/controllers/StatusController.test.ts), [`EvaluasiController.test.ts`](https://github.com/bagasapt-spec/IF2150-RPL-K03-G07/blob/dev/src/server/controllers/EvaluasiController.test.ts) · tangkapan layar hasil `npm run test` | *Unit test Vitest diletakkan di samping kode (`<feat>.test.ts` di dalam src/). Yang diuji: logika inti entity (urutan prioritas, validasi berkas, validasi input) dan controller dengan entitiy yang di-mock. Dijalankan dengan `npm run test`.* |
 
 Tabel B.2 Pembagian Issue & Reviewer
-| Peran | Anggota | Issue | Jumlah | Direview |
+
+| Peran | Anggota | Issue | Jumlah |
 | :--- | :--- | :--- | :--- |
-| A | Ata | #100 UC01 Tampilan Formulir Laporan dan Integrasi Geolocation GPS · #101 UC01 Validasi Media, Anti-Bot Turnstile, dan Deteksi Duplikasi Laporan | 2 | [D] Prana (utama) atau [F] Dipta (backup) |
-| B | Bagas | #93 UC02 & UC05 Layout Admin dan Sidebar Navigasi Antrean · #94 UC02 Logika Controller dan Antarmuka Validasi Laporan · #95 UC05 Logika Controller, Entity, dan Antarmuka Evaluasi Hasil Kerja · #96 Unit Testing dan Proteksi Akses Role Admin | 4 | [C] Fritz (utama) atau [F] Dipta (backup) |
-| C | Fritz | #98 UC03 Antarmuka Daftar Tugas Eksekutor Terurut Skor Prioritas · #99 UC04 Formulir Pengiriman Hasil Perbaikan dan Unggah Bukti Kerja | 2 | [B] Bagas (utama) atau [F] Dipta (backup) |
-| D | Prana | #102 UC06 Tab Riwayat Laporan Warga dan Linimasa Status Tiket · #103 UC06 Peta Sebaran Publik Anonim dan Fitur Dukungan Laporan | 2 | [A] Ata (utama) atau [F] Dipta (backup) |
-| F | Dipta | #104 Profiling Performa RPC `cari_laporan_duplikat` dan Optimasi Database · #105 Finalisasi Dokumentasi README dan Penyusunan Laporan B.1–B.5 | 2 | [D] Prana (utama) atau [B] Bagas (backup) |
+| A | Ata | #100 UC01 Tampilan Formulir Laporan dan Integrasi Geolocation GPS · #101 UC01 Validasi Media, Anti-Bot Turnstile, dan Deteksi Duplikasi Laporan | 2 |
+| B | Bagas | #93 UC02 & UC05 Layout Admin dan Sidebar Navigasi Antrean · #94 UC02 Logika Controller dan Antarmuka Validasi Laporan · #95 UC05 Logika Controller, Entity, dan Antarmuka Evaluasi Hasil Kerja · #96 Unit Testing dan Proteksi Akses Role Admin | 4 |
+| C | Fritz | #98 UC03 Antarmuka Daftar Tugas Eksekutor Terurut Skor Prioritas · #99 UC04 Formulir Pengiriman Hasil Perbaikan dan Unggah Bukti Kerja | 2 |
+| D | Pran | #102 UC06 Tab Riwayat Laporan Warga dan Linimasa Status Tiket · #103 UC06 Peta Sebaran Publik Anonim dan Fitur Dukungan Laporan | 2 |
+| F | Dipta | #104 Profiling Performa RPC `cari_laporan_duplikat` dan Optimasi Database · #105 Finalisasi Dokumentasi README dan Penyusunan Laporan B.1–B.5 | 2 |
 | | | **Total** | **12** |
+
 
 ### B.2.1 Profiling dan Optimasi
 
