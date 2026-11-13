@@ -3,8 +3,12 @@
  * Pemilik: P4. Kontrak: src/docs/API.md#uc02
  */
 import { z } from 'zod';
-import { KEPUTUSAN } from '@silembur/shared';
+//import { KEPUTUSAN } from '@silembur/shared';
 import { belumDiimplementasi } from '../utils/http.js';
+import { KEPUTUSAN, SEMUA_STATUS, STATUS } from '@silembur/shared';
+import { pool, withTransaction } from '../db/pool.js';
+import { Laporan, Verifikasi } from '../models/index.js';
+import { HttpError, paramId } from '../utils/http.js';
 
 /** Skema body POST /verifikasi. Catatan wajib untuk Ditolak & Revisi (KF05, gap G3). */
 export const skemaKeputusan = z
@@ -18,21 +22,33 @@ export const skemaKeputusan = z
   });
 
 /** GET /api/admin/laporan?status=&q= -> { data: LaporanAdmin[] } */
-export async function daftarLaporanAdmin() {
-  throw belumDiimplementasi('P4', 'GET /api/admin/laporan (KF06)');
+export async function daftarLaporanAdmin(req, res) {
+  const status = req.query.status || STATUS.MENUNGGU_VERIFIKASI;
+  if (!SEMUA_STATUS.includes(status)) throw new HttpError(400, 'Status tidak dikenal');
+  const keyword = typeof req.query.q === 'string' ? req.query.q.trim() : undefined;
+  res.json({ data: await Laporan.getLaporanUntukAdmin(pool, { status, keyword }) });
 }
+
 
 /** GET /api/admin/laporan/jumlah-baru -> { jumlah } */
 export async function jumlahLaporanBaru() {
-  throw belumDiimplementasi('P4', 'GET /api/admin/laporan/jumlah-baru');
+  res.json({ jumlah: await Laporan.hitungLaporanBaru(pool) });
 }
 
 /** GET /api/admin/laporan/:id -> { laporan: LaporanAdmin & { pratinjauSkor, riwayat } } */
-export async function detailLaporanAdmin() {
-  throw belumDiimplementasi('P4', 'GET /api/admin/laporan/:id (I-06)');
+export async function detailLaporanAdmin(req, res) {
+  const laporan = await Laporan.getDetailLaporanAdmin(pool, paramId(req));
+  if (!laporan) throw new HttpError(404, 'Laporan tidak ditemukan');
+  res.json({ laporan });
 }
 
 /** POST /api/admin/laporan/:id/verifikasi  body: { keputusan, catatan } -> { laporan, skor } */
-export async function tetapkanKeputusan() {
-  throw belumDiimplementasi('P4', 'POST /api/admin/laporan/:id/verifikasi (KF05, KF07, KF09, KF16)');
+export async function tetapkanKeputusan(req, res) {
+  const idLaporan = paramId(req);
+  const { keputusan, catatan } = req.valid.body;
+  const { skor } = await withTransaction((db) =>
+    Verifikasi.tetapkanKeputusan(db, { idLaporan, idAdmin: req.pengguna.id, keputusan, catatan }),
+  );
+  const laporan = await Laporan.getLaporanAdminById(pool, idLaporan);
+  res.json({ laporan, skor });
 }
