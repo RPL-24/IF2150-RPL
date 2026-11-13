@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SafeShe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+<header class="hdr">
+  <div class="brand"><span class="logo"><svg class="ic"><use href="icons.svg#i-shield"/></svg></span>
+    <div><b>SafeShe</b><small>Ruang aman Anda</small></div></div>
+  <div class="hdr-r">
+    <button class="exit" id="quickExit" aria-label="Keluar cepat"><svg class="ic"><use href="icons.svg#i-exit"/></svg>Keluar</button>
+  </div>
+</header>
+
+<main>
+
+<!--home   -->
+<section class="view" id="v-home"><div class="wrap">
+  <div class="status-row">
+    <span class="chip" id="netChip"><span class="dot"></span><span id="netText">Terlindungi dan terhubung</span></span>
+  </div>
+  <div class="hero">
+    <div class="sos-wrap">
+      <span class="pulse"></span><span class="aura"></span>
+      <svg class="ring" viewBox="0 0 396 396" aria-hidden="true"><circle class="track" cx="198" cy="198" r="190"/><circle class="fill" id="ringFill" cx="198" cy="198" r="190"/></svg>
+      <button class="sos-btn" id="sosBtn" aria-label="Tahan tombol SOS selama 1,5 detik untuk mengirim bantuan">
+        <svg class="ic"><use href="icons.svg#i-shield"/></svg><span class="sos-t">SOS</span><span class="sos-s">BANTUAN CEPAT</span>
+      </button>
+    </div>
+    <div class="cue" aria-live="polite">
+      <b id="cueT"><svg class="ic"><use href="icons.svg#i-lock"/></svg>Tahan tombol untuk mengirim</b>
+      <span id="cueS">Lokasi dan rekaman suara sekitar dikirim ke petugas secara senyap.</span>
+    </div>
+  </div>
+  <button class="btn link" id="recStop" hidden><svg class="ic"><use href="icons.svg#i-mic"/></svg>Hentikan rekaman suara</button>
+  <button class="banner" data-go="respons">
+    <span class="l"><span class="circ"><svg class="ic"><use href="icons.svg#i-msg"/></svg></span>
+      <span><b>Respons Petugas</b><small id="bannerS"><i></i><span>Lihat status dan balasan SOS</span></small></span></span>
+    <svg class="ic" style="color:var(--plum)"><use href="icons.svg#i-chev"/></svg>
+  </button>
+  <div class="card dial">
+    <div class="l"><span class="circ"><svg class="ic"><use href="icons.svg#i-phone"/></svg></span>
+      <div><b>Hubungi layanan</b><span class="mut" id="dialS">Sambungkan ke layanan terdekat.</span></div></div>
+    <a id="dialA" href="tel:112">Telepon</a>
+  </div>
+  <div class="reassure"><svg class="ic"><use href="icons.svg#i-shieldok"/></svg>
+    <div><b>Privasi Anda terjaga</b><p>Tidak perlu akun. Laporan disimpan terenkripsi dan Anda bisa memakai tombol Keluar kapan saja.</p></div></div>
+</div></section>
+
+<!-- map   -->
+<section class="view" id="v-peta" hidden>
+  <div class="sub"><div class="l"><button class="icon-btn" style="background:var(--chip2)" data-go="home" aria-label="Kembali ke beranda"><svg class="ic"><use href="icons.svg#i-back"/></svg></button>
+    <div><h2>Layanan Terdekat</h2><div class="mut" id="mapSub">Sekitar lokasi Anda</div></div></div>
+    <button class="icon-btn" style="background:var(--chip2);color:var(--mut)" id="refreshLoc" aria-label="Perbarui lokasi"><svg class="ic"><use href="icons.svg#i-refresh"/></svg></button></div>
+  <div class="chips" id="chips">
+    <button class="fchip" data-j="" aria-pressed="true">Semua</button>
+    <button class="fchip" data-j="rumah_sakit" aria-pressed="false">RS</button>
+    <button class="fchip" data-j="konseling" aria-pressed="false">Konseling</button>
+    <button class="fchip" data-j="shelter" aria-pressed="false">Shelter</button>
+    <button class="fchip" data-j="polisi" aria-pressed="false">Polisi</button>
+  </div>
+  <div class="alert" id="locAlert" hidden><div class="l"><svg class="ic"><use href="icons.svg#i-alert"/></svg>
+    <div><b>Lokasi tidak aktif</b><span class="mut">Memakai pusat Bandung.</span></div></div>
+    <div class="row" style="gap:0"><button class="t" id="locRetry">Aktifkan</button><button class="icon-btn" style="background:none;width:48px" id="locClose" aria-label="Tutup peringatan"><svg class="ic" style="font-size:12px"><use href="icons.svg#i-x"/></svg></button></div></div>
+  <div class="wrap" style="gap:16px">
+    <div class="mapcard"><div id="map"></div>
+      <div class="mapbadge"><span class="dot"></span><span id="mapBadge">Mencari…</span></div>
+      <button class="recenter" id="recenter" aria-label="Pusatkan peta"><svg class="ic"><use href="icons.svg#i-aim"/></svg></button></div>
+    <div class="card feat" id="feat" hidden></div>
+    <div><div class="lh"><span class="t15">Layanan lainnya</span><span class="t11" id="foundN"></span></div><div id="plist"></div></div>
+    <p class="mut" id="mapErr" style="margin:0" role="status"></p>
+  </div>
+</section>
+
+<!--details   -->
+<section class="view" id="v-detail" hidden>
+  <div class="dback"><div id="dmap"></div><button class="back" data-go="peta"><svg class="ic"><use href="icons.svg#i-back"/></svg>Kembali ke peta</button></div>
+  <div class="dsheet" id="dsheet"></div>
+</section>
+
+<!--laporn  -->
+<section class="view" id="v-lapor" hidden><div class="wrap" style="gap:16px">
+  <div class="row" style="padding-top:8px"><button class="mut row" style="gap:4px;min-height:48px;font-size:15px;font-weight:500" data-go="home"><svg class="ic"><use href="icons.svg#i-back"/></svg>Beranda</button>
+    <span class="tag"><svg class="ic"><use href="icons.svg#i-lock"/></svg>Terenkripsi</span></div>
+  <div><h1>Buat Laporan</h1><p class="mut" style="margin:6px 0 0;line-height:21px">Napas perlahan, Anda memegang kendali penuh. Ceritakan semampu dan senyaman Anda saat ini.</p></div>
+  <div class="secure"><span class="circ"><svg class="ic"><use href="icons.svg#i-lock"/></svg></span><div><b>Privasi Anda terlindungi</b>
+    <p>Laporan disimpan terenkripsi di server. Setelah terkirim, tidak ada salinan yang tersisa di perangkat ini.</p></div></div>
+  <button class="banner" data-cek="" type="button"><span class="l"><span class="circ"><svg class="ic"><use href="icons.svg#i-search"/></svg></span><span><b>Cek status laporan</b><small style="color:var(--mut)">Punya kode laporan? Lihat perkembangannya.</small></span></span><svg class="ic" style="color:var(--plum)"><use href="icons.svg#i-chev"/></svg></button>
+  <form class="form" id="laporForm" novalidate>
+    <div><label class="lbl" for="deskripsi">Deskripsi kejadian <i>*</i></label>
+      <div class="field" id="f-deskripsi"><textarea id="deskripsi" placeholder="Ceritakan apa yang terjadi bila Anda merasa nyaman."></textarea></div>
+      <div class="err"><svg class="ic"><use href="icons.svg#i-alert"/></svg>Mohon isi kolom ini</div>
+      <div class="count"><svg class="ic"><use href="icons.svg#i-lock"/></svg>Detail ini dirahasiakan.</div></div>
+    <div><label class="lbl" for="tanggal">Tanggal kejadian <i>*</i></label>
+      <div class="field" id="f-tanggal"><svg class="ic"><use href="icons.svg#i-cal"/></svg><input type="date" id="tanggal"></div>
+      <div class="err"><svg class="ic"><use href="icons.svg#i-alert"/></svg>Tanggal tidak boleh kosong atau di masa depan</div></div>
+    <div><label class="lbl" for="lokasi">Lokasi kejadian <i>*</i></label>
+      <div class="field" id="f-lokasi"><svg class="ic"><use href="icons.svg#i-pin"/></svg><input id="lokasi" placeholder="Nama tempat atau alamat"></div>
+      <div class="err"><svg class="ic"><use href="icons.svg#i-alert"/></svg>Mohon isi kolom ini</div></div>
+    <fieldset style="border:0;padding:0;margin:0"><legend class="lbl">Mode pelapor <i>*</i></legend>
+      <label class="radio"><input type="radio" name="mode" value="anonim" checked><span class="o"></span><span><h3>Anonim</h3><p>Nama dan informasi kontak Anda tidak disimpan.</p><span class="pill"><svg class="ic"><use href="icons.svg#i-shieldok"/></svg>Pilihan paling aman</span></span></label>
+      <label class="radio"><input type="radio" name="mode" value="identitas"><span class="o"></span><span><h3>Dengan nama</h3><p>Identitas diverifikasi secara internal agar pendamping dapat menindaklanjuti jika Anda meminta bantuan.</p></span></label>
+    </fieldset>
+    <div id="namaWrap" hidden><label class="lbl" for="namaLap">Nama <i>*</i></label>
+      <div class="field" id="f-nama"><svg class="ic"><use href="icons.svg#i-note"/></svg><input id="namaLap" autocomplete="name"></div>
+      <div class="err"><svg class="ic"><use href="icons.svg#i-alert"/></svg>Nama diperlukan pada mode ini</div></div>
+    <div><p class="msg" id="laporMsg" role="status"></p>
+      <button class="btn" type="submit"><svg class="ic"><use href="icons.svg#i-lock"/></svg>Kirim laporan aman</button>
+      <p class="note" style="margin-top:12px"><svg class="ic" style="color:var(--red)"><use href="icons.svg#i-alert"/></svg>Pastikan Anda berada di tempat yang aman sebelum mengirim.</p></div>
+  </form>
+</div></section>
+
+<!-- confirmation  -->
+<section class="view" id="v-konfirmasi" hidden><div class="wrap" id="konfBody"></div></section>
+
+<!-- status check laporan   -->
+<section class="view" id="v-cek" hidden><div class="wrap" style="gap:16px">
+  <div class="row" style="padding-top:8px"><button class="mut row" style="gap:4px;min-height:48px;font-size:15px;font-weight:500" data-go="lapor"><svg class="ic"><use href="icons.svg#i-back"/></svg>Laporan</button></div>
+  <div><h1>Status laporan</h1><p class="mut" style="margin:6px 0 0;line-height:21px">Masukkan kode yang Anda terima saat laporan terkirim. Hanya status yang ditampilkan, isi laporan tidak.</p></div>
+  <form id="cekForm" style="display:flex;flex-direction:column;gap:12px" novalidate>
+    <div><label class="lbl" for="cekCode">Kode laporan</label><div class="field" id="f-cek"><svg class="ic"><use href="icons.svg#i-search"/></svg><input id="cekCode" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Contoh: sRCe7dJL-ek"></div>
+      <div class="err"><svg class="ic"><use href="icons.svg#i-alert"/></svg>Masukkan kode laporan</div></div>
+    <button class="btn" type="submit">Cek status</button></form>
+  <div id="cekRes" aria-live="polite"></div>
+  <div class="sil"><svg class="ic"><use href="icons.svg#i-lock"/></svg><span>Simpan kode Anda di tempat yang aman. Kami tidak menyimpannya di perangkat ini, dan tanpa kode status tidak dapat dilihat.</span></div>
+</div></section>
+
+<!--  menu petpol -->
+<section class="view" id="v-respons" hidden><div class="wrap" id="resBody"></div></section>
+
+<!-- laporan anonim status -->
+<section class="view" id="v-status" hidden>
+  <div class="nhead"><h1>Catatan</h1><small id="ncount"></small></div>
+  <div class="toast2"><span style="display:flex;align-items:center"><svg class="ic"><use href="icons.svg#i-check"/></svg><span id="toastT">Cadangan tersimpan</span></span>
+    <button class="stealth" id="stealth" aria-label="Kembali ke beranda (ketuk dua kali)"><svg class="ic"><use href="icons.svg#i-plus"/></svg></button></div>
+  <div class="hintcard" id="hint" role="note" hidden>
+    <span><b>Tampilan ini menyamar sebagai aplikasi catatan.</b><br>Untuk kembali, <b>ketuk dua kali</b> tombol <b>+</b> di atas (yang berkedip), atau ketuk dua kali judul “Catatan”.</span>
+    <button class="btn" id="hintOk" type="button" style="min-height:44px;padding:10px">Mengerti</button>
+    <small>Petunjuk ini bisa dilihat lagi di menu Panduan.</small></div>
+  <div class="search"><svg class="ic"><use href="icons.svg#i-search"/></svg><input id="nsearch" placeholder="Cari catatan…" aria-label="Cari catatan"></div>
+  <div class="nchips" id="nchips" role="group" aria-label="Kategori catatan"><button data-tag="" aria-pressed="true">Semua catatan</button><button data-tag="Belanja" aria-pressed="false">Belanja</button><button data-tag="Jadwal" aria-pressed="false">Jadwal</button><button data-tag="Resep" aria-pressed="false">Resep</button></div>
+  <div class="notes" id="notes"></div>
+  <button class="fab" id="newNote"><svg class="ic"><use href="icons.svg#i-plus"/></svg>Catatan baru</button>
+</section>
+
+<!-- panduan  -->
+<section class="view" id="v-panduan" hidden><div class="wrap" style="gap:16px">
+  <div class="row" style="padding-top:8px"><button class="mut row" style="gap:4px;min-height:48px;font-size:15px;font-weight:500" data-go="home"><svg class="ic"><use href="icons.svg#i-back"/></svg>Beranda</button></div>
+  <h1>Panduan ringkas</h1>
+  <ul class="tips">
+    <li><svg class="ic"><use href="icons.svg#i-lock"/></svg><span>Tahan tombol SOS sekitar 1,5 detik. Lokasi dan rekaman suara sekitar dikirim ke petugas.</span></li>
+    <li><svg class="ic"><use href="icons.svg#i-exit"/></svg><span>Tombol <b>Keluar</b> di kanan atas langsung membuka situs lain. Permintaan yang sudah dikirim tetap berjalan.</span></li>
+    <li><svg class="ic"><use href="icons.svg#i-wifioff"/></svg><span>Tanpa sinyal, permintaan disimpan di perangkat dan dikirim otomatis begitu terhubung.</span></li>
+    <li><svg class="ic"><use href="icons.svg#i-mute"/></svg><span>Balasan petugas tidak berbunyi. Tab <b>Status</b> menampilkannya dalam tampilan yang sepenuhnya menyerupai aplikasi catatan, tanpa nama SafeShe. Untuk kembali, <b>ketuk dua kali</b> tombol <b>+</b> di kartu paling atas.</span></li>
+    <li><svg class="ic"><use href="icons.svg#i-phone"/></svg><span>Dalam bahaya langsung, hubungi 112.</span></li>
+  </ul>
+  <button class="btn alt" id="replayHint" type="button">Lihat petunjuk layar Status</button>
+</div></section>
+</main>
+
+<nav class="nav" aria-label="Navigasi utama">
+  <button data-go="home" aria-current="page"><svg class="ic"><use href="icons.svg#i-home"/></svg>Beranda</button>
+  <button data-go="lapor"><svg class="ic"><use href="icons.svg#i-doc"/></svg>Lapor</button>
+  <button data-go="peta"><svg class="ic"><use href="icons.svg#i-map"/></svg>Layanan</button>
+  <button data-go="panduan"><svg class="ic"><use href="icons.svg#i-book"/></svg>Panduan</button>
+  <button data-go="status"><svg class="ic"><use href="icons.svg#i-clock"/></svg>Status</button>
+</nav>
+
+<div class="scrim" id="scrim" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetT">
+  <div class="handle"></div><div id="sheetBody"></div></div></div>
+<div class="scrim" id="nscrim" hidden><div class="sheet ed" role="dialog" aria-modal="true" aria-labelledby="nT">
+  <div class="handle"></div><h2 id="nT">Catatan baru</h2>
+  <label class="lbl" for="nTitle">Judul</label><div class="field"><input id="nTitle" maxlength="80" autocomplete="off"></div>
+  <label class="lbl" for="nTag">Kategori</label><div class="field"><select id="nTag"><option>Belanja</option><option>Jadwal</option><option>Resep</option></select></div>
+  <label class="lbl" for="nText">Isi</label><div class="field"><textarea id="nText"></textarea></div>
+  <div class="btns"><button class="btn" id="nSave">Simpan</button><button class="btn alt" id="nDel" hidden>Hapus catatan</button><button class="btn ghost" id="nCancel">Batal</button></div>
+</div></div>
+<div class="toast" id="toast" role="status" hidden></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="app.js"></script>
+</body></html>
