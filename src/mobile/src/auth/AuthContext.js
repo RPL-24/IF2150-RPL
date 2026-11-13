@@ -3,7 +3,7 @@
  * Token disimpan lewat penyimpananToken.js (SecureStore di HP, localStorage di mode web).
  * Pemilik: P1.
  *
- *   const { pengguna, masuk, masukDenganGoogle, keluar, memuat } = useAuth();
+ *   const { pengguna, masuk, masukDenganGoogle, keluar, memuat, segarkanPengguna } = useAuth();
  */
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { api, setTokenApi } from '../api/client';
@@ -52,6 +52,16 @@ export function AuthProvider({ children }) {
     [terapkanSesi],
   );
 
+  /** Muat ulang profil dari server (mis. jumlahLaporan bertambah setelah membuat laporan). Gagal -> data lama dipakai. */
+  const segarkanPengguna = useCallback(async () => {
+    try {
+      const { pengguna: p } = await api.get('/auth/me');
+      setPengguna(p);
+    } catch {
+      // Biarkan data profil yang sudah ada; layar lain menangani error koneksi.
+    }
+  }, []);
+
   const keluar = useCallback(async () => {
     setTokenApi(null);
     await hapusToken(KUNCI_TOKEN).catch(() => {});
@@ -59,8 +69,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   const nilai = useMemo(
-    () => ({ pengguna, memuat, masuk, masukDenganGoogle, keluar }),
-    [pengguna, memuat, masuk, masukDenganGoogle, keluar],
+    () => ({ pengguna, memuat, masuk, masukDenganGoogle, keluar, segarkanPengguna }),
+    [pengguna, memuat, masuk, masukDenganGoogle, keluar, segarkanPengguna],
   );
   return <AuthContext.Provider value={nilai}>{children}</AuthContext.Provider>;
 }
