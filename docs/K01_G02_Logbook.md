@@ -72,13 +72,15 @@
 | *09-11-2026* | *Dhanesworo Muhammad Datiputro* | *Pengujian Modul A: uji unit AkunController, DokumenLegalController, model akun, token verifikasi, sesi, dan Otorisasi, serta uji integrasi API akun dan alur daftar sampai keluar. 4 commit, PR #55* | *-* | *Done* | *-* | 
 | *10-11-2026* | *Dhanesworo Muhammad Datiputro* | *Mengisi Tabel B.1 dan B.5 bagian Modul A pada laporan implementasi. PR #56* | *-* | *Done* | *-* | 
 | *11-11-2026* | *Ghaniyul Amri Caulava* | *Menambah indeks katalog dan pencarian pada tabel `barang` beserta profilingnya (B.2.1), menulis `src/README.md`, melengkapi laporan implementasi M9, dan mengisi identitas form asistensi. 4 commit langsung ke `develop`* | *-* | *Done* | *-* | 
+| *13-11-2026* | *Dhanesworo Muhammad Datiputro* | *Pendaftaran kini menerima surel subdomain ITB seperti `@mahasiswa.itb.ac.id` beserta 13 test baru (PR #57), dan tema warna aplikasi diganti dari hijau menjadi biru ITB (PR #59). Dua kali menggabungkan `develop` ke `main` (PR #58 dan #60)* | *-* | *Done* | *-* | 
 | *13-11-2026* | *Ghaniyul Amri Caulava* | *Review pasca-merge PR #8, #31, dan #50 dengan bantuan AI, lima commit tindak lanjut beserta 11 test pada branch `fix/tindak-lanjut-review`, pengisian Tabel B.2 dan B.2c laporan implementasi, logbook Milestone 9, dan deklarasi penggunaan AI pada branch `docs/finalisasi-m9`* | *-* | *Done* | *Tidak ada PR yang di-review sebelum digabung, sehingga review baru dapat dilakukan setelah merge dan hanya mencakup tiga PR* | 
+| *13-11-2026* | *Ghaniyul Amri Caulava* | *Merancang logo ITBELI dengan bantuan AI (dua putaran, enam konsep; terpilih tas belanja berbentuk kepala gajah), membuat favicon dan ikon web, memasangnya pada top bar semua halaman di branch `feat/logo-gajah`, lalu memperbarui angka laporan implementasi pada branch `docs/pembaruan-angka-m9`* | *-* | *Done* | *Tema aplikasi berganti menjadi biru saat logo hijau sedang dipasang, sehingga logo dan seluruh berkasnya dibuat ulang dalam biru ITB* | 
 
 **Catatan/Evaluasi Milestone 9:**
 * *Logbook milestone ini disusun dari riwayat commit dan pull request di GitHub. Kolom tanggal mengikuti tanggal commit, sehingga pekerjaan yang dimulai sebelum hari commit tercatat pada hari commit-nya.*
 * *Kolom durasi dikosongkan karena lama pengerjaan tidak terekam di git: commit tiap anggota umumnya masuk dalam satu waktu, jadi selisih waktu antarcommit tidak mencerminkan jam kerja. Kolom ini perlu dilengkapi oleh masing-masing anggota.*
 * *Pembagian tugas mengikuti modul: Modul A oleh Dhanesworo, Modul B oleh Nazhif, Modul C oleh I Made Adi, Modul D oleh Sulthan, dan Modul E oleh Ghaniyul. Rinciannya ada pada Tabel B.4 laporan implementasi.*
-* *Dari 69 commit kode, 33 masuk pada 9 November. Berkas yang dipakai banyak modul sempat tertimpa saat PR digabung berdekatan, dan dua sisanya baru ditemukan lewat review pada 13 November.*
+* *Dari 73 commit kode, 33 masuk pada 9 November. Berkas yang dipakai banyak modul sempat tertimpa saat PR digabung berdekatan, dan dua sisanya baru ditemukan lewat review pada 13 November.*
 * *Reviewer sudah ditunjuk pada 17 PR, tetapi tidak ada review yang dikirim sebelum PR digabung. Pada milestone berikutnya PR perlu ditahan sampai minimal satu anggota lain mengirim review.*
 
 ---
