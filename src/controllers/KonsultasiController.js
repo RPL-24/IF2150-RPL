@@ -116,14 +116,11 @@ exports.jadwalUlang = tanganiAsync(async (req, res) => {
  * lain. DPPL tidak mendefinisikan status "Ditolak", jadi statusnya kembali
  * "Belum Diajukan".
  */
-async tolakPengajuan() {
-  if (!['Diajukan', 'Rescheduled'].includes(this.statusPengajuan)) {
-    throw new AppError(409, 'Hanya pengajuan yang menunggu yang dapat ditolak.');
-  }
-  await db.query(
-    `UPDATE jadwal_konsultasi SET id_pelajar = NULL,keluhan = NULL,
-            status_pengajuan = 'Belum Diajukan', status_ketersediaan = TRUE
-     WHERE id_jadwal = $1;`, [this.idJadwal]);
-  this.idPelajar = null; this.keluhan = null;
-  this.statusPengajuan = 'Belum Diajukan'; this.statusKetersediaan = true;
-}
+exports.tolakPengajuan = tanganiAsync(async (req, res) => {
+  const jadwal = await jadwalMilikNakes(req);
+  await jadwal.tolakPengajuan();
+  return kirim(res, 200, 'Pengajuan konsultasi berhasil ditolak.', {
+    idJadwal: jadwal.idJadwal,
+    statusPengajuan: jadwal.statusPengajuan,
+  });
+});

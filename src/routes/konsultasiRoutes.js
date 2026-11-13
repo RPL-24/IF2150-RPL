@@ -12,6 +12,6 @@ router.get('/masuk', authenticate, authorizeRoles('TenagaKesehatan'), konsultasi
 router.get('/jadwal', authenticate, authorizeRoles('TenagaKesehatan'), konsultasi.daftarJadwal);
 router.put('/:id/status', authenticate, authorizeRoles('TenagaKesehatan'), konsultasi.ubahStatus);
 router.put('/:id/jadwal', authenticate, authorizeRoles('TenagaKesehatan'), konsultasi.jadwalUlang);
-router.post('/:id/tolak', authenticate, authorizeRoles('TenagaKesehatan'), konsultasi.tolak);
+router.post('/:id/tolak', authenticate, authorizeRoles('TenagaKesehatan'), konsultasi.tolakPengajuan);
 
 module.exports = router;
