@@ -1,0 +1,32 @@
+<%- include('partials/header', { varian: 'polos', judulHalaman: 'Selamat Datang' }) %>
+<div class="sempit">
+
+  <section class="landing-hero">
+    <h1>Konsultasi hukum, lebih mudah.</h1>
+    <p>Konsultasi langsung dengan mitra pengacara lewat <strong>HaloLaw</strong>,
+       dan temukan dasar hukum kasusmu lewat <strong>SearchLaw</strong>.</p>
+  </section>
+
+  <section class="landing-pilihan">
+    <div class="kotak kartu-peran">
+      <h2>Masyarakat</h2>
+      <p>Cari pasal, konsultasi dengan pengacara, dan pantau riwayat kasusmu.</p>
+      <a class="tombol tombol-penuh" href="/login-masyarakat">Login</a>
+      <a class="tombol tombol-garis tombol-penuh" href="/registrasi-masyarakat">Registrasi</a>
+    </div>
+
+    <div class="kotak kartu-peran">
+      <h2>Mitra Pengacara / Admin</h2>
+      <p>Layani konsultasi, kelola profil dan dokumen legalitasmu.</p>
+      <a class="tombol tombol-penuh" href="/login">Login</a>
+      <a class="tombol tombol-garis tombol-penuh" href="/registrasi-mitra">Registrasi</a>
+    </div>
+  </section>
+
+  <section class="landing-tamu">
+    <p>Kamu bisa menggunakan fitur SearchLaw tanpa login!</p>
+    <a class="tombol tombol-garis" href="/pencarian/pasal">Masuk Sebagai Tamu</a>
+  </section>
+
+</div>
+<%- include('partials/footer') %>

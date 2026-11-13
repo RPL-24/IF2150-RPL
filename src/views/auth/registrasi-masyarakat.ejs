@@ -1,0 +1,44 @@
+<%- include('../partials/header', { varian: 'polos', judulHalaman: 'Registrasi Masyarakat' }) %>
+<div class="sempit">
+
+  <section class="kotak login-panel">
+    <form id="form-registrasi" class="login-form" method="POST" action="/registrasi-masyarakat">
+      <p class="login-judul">Registrasi Masyarakat</p>
+
+      <!-- O-02: Input Fields -->
+      <input class="isian" type="text" name="nama" placeholder="Nama Lengkap (sesuai KTP)"
+             value="<%= (locals.lama && lama.nama) || '' %>" required>
+
+      <input class="isian" type="text" name="username" placeholder="Username"
+             autocomplete="username" value="<%= (locals.lama && lama.username) || '' %>" required>
+
+      <div class="isian-telepon">
+        <span class="kode-negara">+62</span>
+        <input type="tel" name="noHp" placeholder="81234567890" inputmode="numeric"
+               pattern="[0-9]{8,13}" value="<%= (locals.lama && lama.noHp) || '' %>" required>
+      </div>
+
+      <input class="isian" type="email" name="email" placeholder="Alamat Email"
+             autocomplete="email" value="<%= (locals.lama && lama.email) || '' %>" required>
+
+      <input class="isian" type="password" name="kataSandi" placeholder="Kata Sandi"
+             autocomplete="new-password" minlength="6" required>
+      <p class="bantuan-form">Minimal 6 karakter.</p>
+
+      <input class="isian" type="password" name="konfirmasi" placeholder="Konfirmasi Kata Sandi"
+             autocomplete="new-password" minlength="6" required>
+
+      <!-- O-01: Button -->
+      <div class="aksi-form">
+        <button type="submit" class="tombol tombol-penuh">Daftar</button>
+      </div>
+    </form>
+
+    <div class="login-samping">
+      <p>Sudah punya akun?</p>
+      <a class="tombol tombol-garis" href="/login">Login</a>
+    </div>
+  </section>
+
+</div>
+<%- include('../partials/footer') %>

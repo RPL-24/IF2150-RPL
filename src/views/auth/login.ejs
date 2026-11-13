@@ -1,0 +1,40 @@
+<%- include('../partials/header', { varian: 'polos', judulHalaman: 'Login' }) %>
+<div class="sempit">
+
+  <section class="kotak login-panel">
+    <form id="form-login" class="login-form" method="POST" action="/login">
+      <p class="login-judul">Login Sebagai Mitra Pengacara/Admin</p>
+      <input id="username" class="isian" type="text" name="email" placeholder="Username" autocomplete="username" required>
+      <input class="isian" type="password" name="kataSandi" placeholder="Password" autocomplete="current-password" required>
+      <div class="centang">
+        <input id="ingat" type="checkbox">
+        <label for="ingat">Ingat username</label>
+      </div>
+      <button type="submit" class="tombol tombol-penuh">Log In</button>
+    </form>
+
+    <div class="login-samping">
+      <a class="lupa" href="#">Lupa username atau password?</a>
+      <p>Kamu bisa menggunakan fitur SearchLaw tanpa login!</p>
+      <a class="tombol tombol-garis" href="/pencarian/pasal">Log In Sebagai Tamu</a>
+    </div>
+  </section>
+
+  <section class="login-bagian">
+    <h2>Ingin cek status verifikasi mitra hukum?</h2>
+    <p>Tuliskan nama akunmu untuk mengecek status verifikasi.</p>
+    <form method="GET" action="/status-verifikasi">
+      <input class="isian" type="text" name="username" placeholder="Username" required>
+      <button type="submit" class="tombol">Cek Status</button>
+    </form>
+  </section>
+
+  <section class="login-bagian">
+    <h2>Pertama kali menggunakan LawHub?</h2>
+    <p>Kamu perlu login untuk mengakses fitur lengkap LawHub sebagai pengacara!</p>
+    <a class="tombol tombol-garis" href="/registrasi/mitra">Registrasi</a>
+  </section>
+
+</div>
+<script src="/js/login.js"></script>
+<%- include('../partials/footer') %>
