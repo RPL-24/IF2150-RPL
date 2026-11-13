@@ -1,0 +1,220 @@
+<!doctype html>
+
+
+<!--menu polisi   -->>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeShe - Pusat respons polisi</title>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#FEF7FF;--side:#32204F;--plum:#432576;--chip:#F0E3FC;--soft:#F8F1FC;--line:#E8DCEE;--ink:#1F1829;--mut:#62596C;--teal:#006B5E;--tealbg:#E8F5F0;--amber:#78591A;--amberbg:#FBF3E3;--red:#BA1A1A}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:400 13px/1.5 'Inter',system-ui,sans-serif}
+.ic{width:1em;height:1em;vertical-align:middle;flex:none}button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+:focus-visible{outline:3px solid #5B3E8F;outline-offset:2px}[hidden]{display:none!important}
+.shell{display:flex;min-height:100vh}
+.side{width:192px;background:var(--side);padding:28px 16px 24px;display:flex;flex-direction:column;gap:32px;flex:none;color:#fff}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px;font-size:20px}.brand small{display:block;font-size:10px;color:#DACDEB}
+.menu{display:flex;flex-direction:column;gap:10px}
+.menu button{display:flex;align-items:center;gap:10px;height:48px;padding:0 12px;border-radius:12px;color:#fff;text-align:left;font-size:12px}
+.menu button[aria-current=page]{background:rgba(255,255,255,.1);font-weight:600}.menu .n{margin-left:auto;color:#DACDEB}
+.lockbox{margin-top:auto;padding:12px;border-radius:12px;background:rgba(255,255,255,.043);display:flex;flex-direction:column;gap:8px;font-size:11px;color:#DACDEB}
+.lockbox b{color:#fff;font-size:12px}.lockbox input{height:36px;border-radius:8px;border:0;padding:0 10px;font:inherit;width:100%}
+.work{flex:1;min-width:0}
+.top{height:80px;background:#fff;border-bottom:1px solid var(--line);padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top b{display:block;font-size:14px}.top small{color:var(--mut);font-size:11px}
+.pill{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:600;background:var(--chip);color:var(--plum);white-space:nowrap}
+.pill.dikirim{background:var(--amberbg);color:var(--amber)}.pill.diterima{background:var(--chip);color:var(--plum)}.pill.dalam_perjalanan,.pill.ok{background:var(--tealbg);color:var(--teal)}
+.av{width:36px;height:36px;border-radius:50%;background:var(--chip);color:var(--plum);display:grid;place-items:center;font-weight:600}
+.page{padding:24px;display:flex;flex-direction:column;gap:22px}
+.ttl{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.ttl h1{margin:0;font-size:27px;font-weight:400;line-height:33px}.ttl p{margin:4px 0 0;color:var(--mut)}
+.metrics{display:flex;gap:16px;flex-wrap:wrap}.metric{flex:1;min-width:200px;display:flex;align-items:center;gap:16px;padding:18px;background:#fff;border:1px solid var(--line);border-radius:16px}
+.metric .v{font-size:32px;font-weight:600;color:var(--plum);line-height:39px}.metric b{display:block;font-size:13px}.metric span{font-size:11px;color:var(--mut)}
+.grid{display:grid;grid-template-columns:280px minmax(320px,1fr) 380px;gap:20px;align-items:start}
+@media(max-width:1100px){.grid{grid-template-columns:1fr}.side{width:72px}.side .lbl,.lockbox,.brand div{display:none}}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.col h2{margin:0;font-size:16px;font-weight:400;display:flex;justify-content:space-between;align-items:center}.col h2 span{font-size:12px;color:var(--mut)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.q{text-align:left;width:100%;padding:16px;background:#fff;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;gap:10px;min-height:48px}
+.q[aria-pressed=true]{background:#F8F1FC;border:1.5px solid var(--plum)}
+.q .r{display:flex;justify-content:space-between;font-size:11px;color:var(--mut)}.q .r b{color:var(--plum)}.q strong{font-size:15px}.q .loc{font-size:11px;color:var(--mut)}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:12px}.kv span{color:var(--mut)}.kv b{font-weight:500;text-align:right}
+.map{width:100%;height:182px;border:0;border-radius:12px;background:#F1F0EB}
+.unit{display:flex;align-items:center;gap:10px;padding:12px;background:var(--soft);border-radius:12px}
+.note{font-size:11px;color:var(--mut);display:flex;gap:8px;line-height:1.5}
+select,textarea{width:100%;border:1px solid var(--plum);border-radius:12px;padding:12px;font:inherit;background:#fff}select{border-color:var(--line);background:var(--soft);font-weight:500;color:var(--plum)}textarea{min-height:140px;line-height:1.7}
+.send{display:flex;justify-content:center;align-items:center;gap:10px;min-height:52px;width:100%;border-radius:999px;background:var(--plum);color:#fff;font-weight:600;font-size:14px}
+.send[disabled]{opacity:.5;cursor:not-allowed}
+.warn{display:flex;flex-direction:column;gap:6px;padding:12px;background:var(--amberbg);border-radius:12px;color:var(--amber);font-size:11px;line-height:1.6}.warn b{font-size:12px}
+.hist p{margin:0;font-size:13px;line-height:1.65}
+.lgrid{display:grid;grid-template-columns:320px minmax(300px,1fr);gap:20px;align-items:start}@media(max-width:1100px){.lgrid{grid-template-columns:1fr}}
+.body{white-space:pre-wrap;line-height:1.7;font-size:14px;padding:14px;background:var(--soft);border-radius:12px}
+.fb{font-weight:600;color:var(--teal);min-height:18px}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:var(--soft);font-size:11px;color:var(--mut)}
+.err{color:var(--red);font-weight:600;margin:0}audio{width:100%;margin-top:6px}
+.btn2{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--plum);min-height:40px}
+</style></head>
+<body><div class="shell">
+
+
+<aside class="side">
+  <div class="brand"><svg class="ic" style="font-size:26px"><use href="icons.svg#i-shieldok"/></svg><div>SafeShe<small>Ruang kerja petugas</small></div></div>
+  <nav class="menu" aria-label="Menu petugas">
+    <button data-v="pantau" aria-current="page"><svg class="ic"><use href="icons.svg#i-aim"/></svg><span class="lbl">Pantau SOS</span><span class="n" id="navN">0</span></button>
+    <button data-v="laporan"><svg class="ic"><use href="icons.svg#i-doc"/></svg><span class="lbl">Laporan</span><span class="n" id="navL">0</span></button>
+  </nav>
+  <div class="lockbox"><svg class="ic" style="font-size:18px;color:#DACDEB"><use href="icons.svg#i-lock"/></svg><b>Akses terbatas</b>
+    <label for="key">API key petugas</label><input id="key" type="password" autocomplete="off" placeholder="Masukkan key"></div>
+</aside>
+<div class="work">
+  <header class="top"><div><b>Pusat respons</b><small>Area layanan Bandung (data fiktif)</small></div>
+    <div style="display:flex;align-items:center;gap:20px"><span class="pill ok" id="conn">Menunggu key</span><small id="clock"></small>
+      <div style="display:flex;align-items:center;gap:9px"><span class="av">P</span><div><b style="font-size:12px">Petugas</b><small>Sesi lokal</small></div></div></div></header>
+
+  <section class="page" id="v-pantau">
+    <div class="ttl"><div><h1>Pemantauan SOS</h1><p>Sinyal dari korban muncul di sini. Daftar diperbarui otomatis tiap 5 detik.</p></div><span class="pill">Pembaruan otomatis</span></div>
+    <p class="err" id="err" role="alert"></p>
+    <div class="metrics">
+      <div class="metric"><span class="v" id="m1">0</span><div><b>Menunggu</b><span>Belum ditanggapi</span></div></div>
+      <div class="metric"><span class="v" id="m2">0</span><div><b>Diterima</b><span>Sedang ditangani</span></div></div>
+      <div class="metric"><span class="v" id="m3">0</span><div><b>Dalam perjalanan</b><span>Pasukan dikirim</span></div></div>
+    </div>
+    <div class="grid">
+      <div class="col"><h2>Antrean permintaan <span id="qn"></span></h2><div class="col" id="queue"></div></div>
+      <div class="col" id="detail"><div class="card"><span>Pilih permintaan di antrean.</span></div></div>
+      <div class="col" id="composer"></div>
+    </div>
+  </section>
+
+  <section class="page" id="v-laporan" hidden>
+    <div class="ttl"><div><h1>Laporan kekerasan</h1><p>Pilih laporan untuk membaca isinya dan mencatat tindak lanjut. Isi didekripsi hanya untuk petugas dengan key yang sah.</p></div></div>
+    <div class="lgrid"><div class="col" id="lapList"></div><div class="col" id="lapDetail"></div></div>
+  </section>
+</div></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ST={dikirim:"Menunggu",diterima:"Diterima",dalam_perjalanan:"Bantuan menuju lokasi"};
+const PRESET={dalam_perjalanan:"Bantuan sedang menuju lokasi Anda. Tetap di tempat yang aman jika bisa dan jaga ponsel tetap menyala.",diterima:"Permintaan Anda sudah kami terima dan sedang ditangani. Kami akan memberi kabar berikutnya."};
+const fmt=i=>{try{return new Date(i).toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})}catch{return""}};
+let list=[],sel=null;const key=()=>$("#key").value;
+$("#key").value=sessionStorage.getItem("pk")||"";
+async function api(p,o={}){const r=await fetch(p,{...o,headers:{"X-API-Key":key(),...(o.headers||{})}});if(r.status===401)throw new Error("API key salah");if(!r.ok)throw new Error("Gagal ("+r.status+")");return r}
+document.querySelectorAll(".menu button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".menu button").forEach(x=>x.removeAttribute("aria-current"));b.setAttribute("aria-current","page");
+  $("#v-pantau").hidden=b.dataset.v!=="pantau";$("#v-laporan").hidden=b.dataset.v!=="laporan";drawnL="";refresh()});
+$("#key").addEventListener("change",()=>{sessionStorage.setItem("pk",key());refresh()});
+setInterval(()=>$("#clock").textContent=new Date().toLocaleTimeString("id-ID"),1000);
+async function refresh(){
+  if(!key()){$("#conn").textContent="Menunggu key";return}
+  try{
+    list=await (await api("/api/polisi/sos")).json();$("#err").textContent="";$("#conn").textContent="Terhubung";
+    $("#m1").textContent=list.filter(x=>x.status==="dikirim").length;$("#m2").textContent=list.filter(x=>x.status==="diterima").length;$("#m3").textContent=list.filter(x=>x.status==="dalam_perjalanan").length;
+    $("#navN").textContent=list.length;$("#qn").textContent=list.length+" sinyal";
+    if(!sel&&list[0])sel=list[0].id;
+    $("#queue").innerHTML=list.map(x=>`<button class="q" data-id="${esc(x.id)}" aria-pressed="${x.id===sel}"><div class="r"><b>SOS-${esc(x.id.slice(0,6).toUpperCase())}</b><span>${fmt(x.created_at)}</span></div><strong>${esc(x.nama||"Anonim")}</strong><div class="loc">${x.lat?.toFixed(4)}, ${x.lon?.toFixed(4)}</div><span class="pill ${x.status}" style="align-self:flex-start">${ST[x.status]||x.status}</span></button>`).join("")||'<div class="card">Belum ada sinyal.</div>';
+    drawDetail();
+    lap=await (await api("/api/polisi/laporan")).json();$("#navL").textContent=lap.length;
+    if(!$("#v-laporan").hidden)drawLap();
+  }catch(e){$("#err").textContent=e.message;$("#conn").textContent="Terputus"}
+}
+let drawn="",composerFor=null,recFor=null,recIds=new Set(),recOpen=false,recBusy=false,recActHtml="",histSig="";
+const drafts={};   
+function drawDetail(){
+  const s=list.find(x=>x.id===sel);if(!s)return;
+  
+
+
+  if(drawn!==s.id){drawn=s.id;renderCase(s)}
+  const p=$("#dPill");if(p){p.className="pill "+s.status;p.textContent=ST[s.status]||s.status}
+  renderRec(s);
+  if(composerFor!==s.id){composerFor=s.id;renderComposer(s)}
+  renderHist(s);
+}
+
+
+function renderCase(s){
+  recFor=null;const bb=`${s.lon-.004},${s.lat-.002},${s.lon+.004},${s.lat+.002}`;
+  $("#detail").innerHTML=`<div class="card"><div class="kv"><b style="color:var(--plum)">SOS-${esc(s.id.slice(0,6).toUpperCase())}</b><span class="pill ${s.status}" id="dPill">${ST[s.status]}</span></div>
+    <div><div style="font-size:23px;line-height:28px">${esc(s.nama||"Anonim")}</div><small style="color:var(--mut)">Diterima ${fmt(s.created_at)}</small></div>
+    <div class="kv"><span>Koordinat</span><b>${s.lat?.toFixed(5)}, ${s.lon?.toFixed(5)}</b></div>
+    <iframe class="map" title="Peta lokasi" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=${bb}&layer=mapnik&marker=${s.lat},${s.lon}"></iframe>
+    <a class="btn2" style="text-align:center;text-decoration:none" target="_blank" rel="noopener" href="https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lon}#map=17/${s.lat}/${s.lon}">Buka peta penuh</a>
+    <div class="note"><svg class="ic" style="color:var(--plum);font-size:14px"><use href="icons.svg#i-lock"/></svg>Data lokasi hanya untuk penanganan kasus ini.</div></div>
+    <div class="card"><b style="font-size:16px;font-weight:400">Penugasan bantuan</b>
+      ${s.unit?`<div class="unit"><svg class="ic" style="font-size:22px;color:var(--plum)"><use href="icons.svg#i-nav"/></svg><div><b>${esc(s.unit.nama)}</b><br><small style="color:var(--mut)">Unit terdekat · ${s.unit.jarak_km} km</small></div></div>`:'<div class="unit">Tidak ada unit tersedia.</div>'}
+      <div class="note">Jarak adalah garis lurus, bukan perkiraan waktu tempuh.</div></div>
+    <div id="dRec"></div>`;
+}
+
+
+
+function renderRec(s){
+  const box=$("#dRec");if(!box)return;
+  if(recFor!==s.id){recFor=s.id;recIds=new Set();recOpen=false;recActHtml="";box.innerHTML='<div class="card"><b id="recT" style="font-size:14px"></b><div id="recAct"></div><div id="recs"></div></div>'}
+  $("#recT").textContent=`Rekaman suara (${s.n_rekaman} berkas)`;
+  const act=!s.n_rekaman?'<small style="color:var(--mut)">Belum ada rekaman.</small>':recOpen?'<small style="color:var(--mut)">Rekaman baru ditambahkan otomatis di bawah.</small>':'<button class="btn2" id="loadRec">Muat rekaman</button>';
+  if(act!==recActHtml){recActHtml=act;$("#recAct").innerHTML=act;$("#loadRec")?.addEventListener("click",()=>{recOpen=true;renderRec(s);syncRecs(s)})}
+  if(recOpen&&s.n_rekaman>recIds.size)syncRecs(s);
+}
+
+
+async function syncRecs(s){ 
+  if(recBusy)return;recBusy=true;const mine=s.id;
+  try{const l=await (await api(`/api/polisi/sos/${s.id}/recordings`)).json();
+    for(const r of l){if(recIds.has(r.id)||sel!==mine)continue;const bl=await (await api(`/api/polisi/recordings/${r.id}`)).blob();
+      const a=document.createElement("audio");a.controls=true;a.src=URL.createObjectURL(bl);$("#recs")?.appendChild(a);recIds.add(r.id)}}
+  catch(e){$("#err").textContent=e.message}finally{recBusy=false}
+}
+
+
+function renderComposer(s){
+  const d=drafts[s.id]||(drafts[s.id]={jenis:"dalam_perjalanan",text:PRESET.dalam_perjalanan,edited:false});
+  $("#composer").innerHTML=`<div class="card"><div><b style="font-size:17px;font-weight:400">Balas korban</b><br><small style="color:var(--mut)">Penerima: ${esc(s.nama||"Anonim")} (SOS-${esc(s.id.slice(0,6).toUpperCase())})</small></div>
+    <select id="jenis" aria-label="Jenis balasan"><option value="dalam_perjalanan">Bantuan menuju lokasi</option><option value="diterima">Permintaan diterima</option></select>
+    <label for="txt" style="font-weight:600;font-size:12px">Isi pesan</label><textarea id="txt"></textarea>
+    <div class="note"><svg class="ic" style="color:var(--teal);font-size:16px"><use href="icons.svg#i-check"/></svg>Status yang dipilih juga memperbarui tahap penanganan di layar korban.</div>
+    <div class="warn"><b>Jika perangkat korban offline</b>Balasan baru terlihat saat perangkatnya terhubung kembali.</div>
+    <button class="send" id="sendR"><svg class="ic" style="font-size:18px"><use href="icons.svg#i-send"/></svg>Kirim balasan</button><div class="fb" id="cFb" role="status"></div>
+    <div class="note" style="justify-content:center">Di layar korban, status tampil senyap tanpa suara.</div></div>
+    <div class="card hist" id="cHist"></div>`;
+  histSig="";const j=$("#jenis"),t=$("#txt");j.value=d.jenis;t.value=d.text;
+  j.onchange=()=>{d.jenis=j.value;if(!d.edited){d.text=PRESET[d.jenis];t.value=d.text}};   // preset hanya mengganti teks yang belum diubah petugas
+  t.oninput=()=>{d.text=t.value;d.edited=true};
+  $("#sendR").onclick=async()=>{const b=$("#sendR");b.disabled=true;try{await api(`/api/polisi/sos/${s.id}/reply`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:d.jenis,reply:d.text.trim()||null,polisi_id:s.unit?.id??null})});$("#cFb").textContent="Balasan terkirim";histSig="";await refresh()}catch(e){$("#err").textContent=e.message}b.disabled=false};
+}
+
+
+function renderHist(s){
+  const sig=s.status+"|"+s.reply;if(sig===histSig)return;histSig=sig;const h=$("#cHist");if(!h)return;
+  h.innerHTML=`<b style="font-size:15px;font-weight:400">Balasan terakhir</b>${s.reply?`<p>${esc(s.reply)}</p><span class="pill ${s.status}" style="align-self:flex-start">${ST[s.status]}</span>`:'<small style="color:var(--mut)">Belum ada balasan.</small>'}`;
+}
+
+
+let lap=[],lapSel=null,drawnL="";
+const LST={baru:"Baru",ditinjau:"Ditinjau",ditindaklanjuti:"Ditindaklanjuti",selesai:"Selesai"},LCLS={baru:"dikirim",ditinjau:"diterima",ditindaklanjuti:"dalam_perjalanan",selesai:"ok"};
+const dt=i=>{try{return new Date(i).toLocaleString("id-ID",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}catch{return i}};
+function drawLap(){
+  if(!lapSel&&lap[0])lapSel=lap[0].token;
+  $("#lapList").innerHTML=lap.map(x=>`<button class="q" data-t="${esc(x.token)}" aria-pressed="${x.token===lapSel}"><div class="r"><b>LAP-${esc(x.token.slice(0,6).toUpperCase())}</b><span>${dt(x.created_at)}</span></div><strong style="font-size:13px;font-weight:500">${esc((x.deskripsi||"").slice(0,70))}${(x.deskripsi||"").length>70?"…":""}</strong><span class="pill ${LCLS[x.status]}" style="align-self:flex-start">${LST[x.status]||x.status}</span></button>`).join("")||'<div class="card">Belum ada laporan.</div>';
+  const l=lap.find(x=>x.token===lapSel);if(!l){$("#lapDetail").innerHTML="";return}
+  const sig=l.token+l.status+l.catatan+l.pesan_pelapor;if(sig===drawnL)return;drawnL=sig;
+  $("#lapDetail").innerHTML=`<div class="card"><div class="kv"><b style="color:var(--plum)">LAP-${esc(l.token.slice(0,6).toUpperCase())}</b><span class="pill ${LCLS[l.status]}">${LST[l.status]||l.status}</span></div>
+    <div class="kv"><span>Diterima</span><b>${dt(l.created_at)}</b></div><div class="kv"><span>Mode pelapor</span><b>${l.mode==="anonim"?"Anonim":"Dengan nama"}</b></div>
+    ${l.nama?`<div class="kv"><span>Nama</span><b>${esc(l.nama)}</b></div>`:""}<div class="kv"><span>Tanggal kejadian</span><b>${esc(l.tanggal)}</b></div><div class="kv"><span>Lokasi kejadian</span><b>${esc(l.lokasi)}</b></div>
+    <b style="font-size:13px">Deskripsi</b><div class="body">${esc(l.deskripsi)}</div></div>
+    <div class="card"><b style="font-size:16px;font-weight:400">Tindak lanjut</b>
+      <label for="lst" style="font-weight:600;font-size:12px">Status penanganan</label>
+      <select id="lst">${Object.entries(LST).map(([k,v])=>`<option value="${k}" ${k===l.status?"selected":""}>${v}</option>`).join("")}</select>
+      <label for="lcat" style="font-weight:600;font-size:12px">Catatan internal</label><textarea id="lcat" style="min-height:110px">${esc(l.catatan||"")}</textarea>
+      <div class="note">Catatan internal hanya terlihat petugas.</div>
+      <label for="lpesan" style="font-weight:600;font-size:12px">Pesan untuk pelapor (opsional)</label><textarea id="lpesan" style="min-height:90px" maxlength="500" placeholder="Contoh: Laporan Anda sedang kami tinjau.">${esc(l.pesan_pelapor||"")}</textarea>
+      <div class="warn"><b>Terlihat oleh siapa pun yang memegang kode laporan</b>Tulis singkat dan netral. Jangan menyebut nama, alamat, atau detail kejadian.</div>
+      <button class="send" id="lsave"><svg class="ic" style="font-size:18px"><use href="icons.svg#i-check"/></svg>Simpan tindak lanjut</button><div class="fb" id="lfb" role="status"></div></div>`;
+  $("#lsave").onclick=async()=>{const b=$("#lsave");b.disabled=true;try{await api(`/api/polisi/laporan/${l.token}/tindak`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:$("#lst").value,catatan:$("#lcat").value.trim()||null,pesan_pelapor:$("#lpesan").value.trim()||null})});drawnL="";await refresh();const f=$("#lfb");if(f)f.textContent="Tersimpan"}catch(e){$("#err").textContent=e.message}b.disabled=false};
+}
+
+
+$("#lapList").addEventListener("click",e=>{const b=e.target.closest(".q");if(b){lapSel=b.dataset.t;drawnL="";drawLap()}});
+$("#queue").addEventListener("click",e=>{const b=e.target.closest(".q");if(b){sel=b.dataset.id;refresh()}});
+setInterval(refresh,5000);refresh();
+</script></body></html>
