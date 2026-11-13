@@ -9,7 +9,7 @@ body { width: auto; height: auto; min-height: 100vh; overflow: auto; }
 /* Kerangka topbar + rail + konten: tinggi mengikuti isi, tidak lagi dikunci 1043px */
 .shell { height: auto; min-height: calc(100vh - var(--topbar-h)); }
 .rail, .content { overflow: visible; }
-.rail .navlist a.is-active, .navlist a:hover { background: var(--green-50); }
+.rail .navlist a.is-active, .navlist a:hover { background: var(--primer-50); }
 .brand { text-decoration: none; color: inherit; }
 
 [hidden] { display: none !important; }
@@ -19,7 +19,7 @@ a.btn { text-decoration: none; }
 
 /* Isian formulir asli (<input>) dengan tampilan .field__input */
 input.field__input { width: 100%; font: inherit; outline: none; }
-input.field__input:focus { border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(46, 125, 85, .15); }
+input.field__input:focus { border-color: var(--primer-500); box-shadow: 0 0 0 3px var(--fokus); }
 input.field__input::placeholder { color: var(--text-400); }
 
 input.field__input.is-error { border-color: var(--danger); background: var(--danger-bg); }
@@ -29,8 +29,8 @@ input.field__input.is-error { border-color: var(--danger); background: var(--dan
 .infobox a { color: inherit; font-weight: 600; }
 
 /* Kotak centang asli dengan warna tema (I02-O05) */
-.checkbox input { width: 18px; height: 18px; flex: none; margin-top: 1px; accent-color: var(--green-700); }
-.checkbox a { color: var(--green-700); }
+.checkbox input { width: 18px; height: 18px; flex: none; margin-top: 1px; accent-color: var(--primer-700); }
+.checkbox a { color: var(--primer-700); }
 
 /* Toast menempel di layar, bukan di dasar halaman */
 .toast { position: fixed; z-index: 10; }
@@ -43,13 +43,13 @@ input.field__input.is-error { border-color: var(--danger); background: var(--dan
   border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
   padding: var(--sp-8); display: flex; flex-direction: column; gap: var(--sp-5); }
 .verif__icon { width: 56px; height: 56px; border-radius: var(--radius-full);
-  background: var(--green-50); display: grid; place-items: center; }
+  background: var(--primer-50); display: grid; place-items: center; }
 .otp { display: flex; gap: var(--sp-3); }
 .otp input { width: 64px; min-width: 0; flex: 1; height: 72px; border: 1px solid var(--border);
   border-radius: var(--radius-md); background: var(--surface); text-align: center;
   font: 700 28px/1 var(--font-sans); color: var(--text-900); outline: none; }
-.otp input:focus { border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(46, 125, 85, .15); }
-.otp input.is-filled { border-color: var(--green-500); background: var(--green-50); color: var(--green-900); }
+.otp input:focus { border-color: var(--primer-500); box-shadow: 0 0 0 3px var(--fokus); }
+.otp input.is-filled { border-color: var(--primer-500); background: var(--primer-50); color: var(--primer-900); }
 
 @media (max-width: 960px) {
   .topbar { padding: 0 var(--sp-4); }
