@@ -1,154 +1,172 @@
 /**
  * MahaSehat - DashboardPageTenagaKesehatan.js
- * Logika antarmuka dashboard tenaga kesehatan profesional.
- * Keterlacakan DPPL: UC03 (Dashboard Nakes), C04 (Tenaga Kesehatan)
+ * Dashboard tenaga kesehatan (UC03). Data diambil dari API, bukan dummy.
+ * Keterlacakan DPPL: UC03, C04, C09, C24.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    const TOKEN_KEY = 'mahasehat_token';
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+        window.location.href = 'LoginPage.html';
+        return;
+    }
+
     const listPengajuan = document.getElementById('List_Pengajuan');
     const textPengajuanKosong = document.getElementById('Text_PengajuanKosong');
     const listKetersediaan = document.getElementById('List_Ketersediaan');
     const textKetersediaanKosong = document.getElementById('Text_KetersediaanKosong');
-    const menuKeluar = document.getElementById('Menu_Keluar');
-    const userAvatar = document.getElementById('User_Avatar');
-    const avatarNakes = document.getElementById('Avatar_Nakes');
 
     const storedUser = JSON.parse(localStorage.getItem('mahasehat_user') || '{}');
+    const idProfil = storedUser.id_profil || storedUser.idProfil;
 
-    const data = {
-        nama: storedUser.nama || 'Raissa Hadiman, M. Psi.',
-        profil: {
-            jenis: 'Psikologi Klinis',
-            lokasi: 'Rumah Sakit ABC',
-            biaya: 'Rp150.000 - Rp250.000 per sesi'
-        },
-        pengajuan: (() => {
-            const storedConsultations = JSON.parse(localStorage.getItem('mahasehat_consultations') || 'null');
-            if (storedConsultations && Array.isArray(storedConsultations)) {
-                return storedConsultations.map(c => ({
-                    pelajar: c.namaPelajar,
-                    waktu: `${c.tanggal} • ${c.waktu}`,
-                    status: c.status === 'Menunggu' ? 'Diajukan' : c.status
-                }));
-            }
-            return [
-                { pelajar: 'Albert Einstein', waktu: 'Rabu, 11 November 2026 • 10:00 - 11:00 WIB', status: 'Diajukan' },
-                { pelajar: 'Marie Curie', waktu: 'Kamis, 12 November 2026 • 13:00 - 14:00 WIB', status: 'Disetujui' },
-                { pelajar: 'Isaac Newton', waktu: 'Jumat, 13 November 2026 • 09:00 - 10:00 WIB', status: 'Dijadwal Ulang' }
-            ];
-        })(),
-        jadwal: [
-            { waktu: 'Rabu, 11 November 2026 • 08:00 - 09:00 WIB', status: 'Kosong' },
-            { waktu: 'Rabu, 11 November 2026 • 10:00 - 11:00 WIB', status: 'Terisi' },
-            { waktu: 'Kamis, 12 November 2026 • 13:00 - 14:00 WIB', status: 'Terisi' },
-            { waktu: 'Jumat, 13 November 2026 • 15:00 - 16:00 WIB', status: 'Kosong' }
-        ]
+    const STATUS_LABEL = {
+        Diajukan: 'Diajukan',
+        Disetujui: 'Disetujui',
+        Rescheduled: 'Dijadwal Ulang'
     };
 
-    // User Profile
-    const textNamaUser = document.getElementById('Text_NamaUser');
-    const textRoleUser = document.getElementById('Text_RoleUser');
-    if (textNamaUser) textNamaUser.textContent = data.nama;
-    if (textRoleUser) textRoleUser.textContent = 'Tenaga Kesehatan';
-    if (userAvatar) userAvatar.textContent = (data.nama || 'R').trim().charAt(0).toUpperCase();
-
-    // Profil Banner
-    const textNamaNakes = document.getElementById('Text_NamaNakes');
-    const textJenisNakes = document.getElementById('Text_JenisNakes');
-    const textDetailProfil = document.getElementById('Text_DetailProfil');
-
-    if (textNamaNakes) textNamaNakes.textContent = data.nama;
-    if (textJenisNakes) textJenisNakes.textContent = data.profil.jenis;
-    if (textDetailProfil) {
-        textDetailProfil.textContent = `${data.profil.lokasi} • ${data.profil.biaya}`;
-    }
-    if (avatarNakes) {
-        const initials = data.nama.split(' ').map(n => n.charAt(0)).filter((c, i) => i < 2).join('');
-        avatarNakes.textContent = initials || 'RH';
+    async function api(jalur) {
+        const respons = await fetch(jalur, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await respons.json().catch(() => ({}));
+        if (respons.status === 401) {
+            localStorage.removeItem(TOKEN_KEY);
+            window.location.href = 'LoginPage.html';
+            throw new Error('Sesi berakhir.');
+        }
+        if (!respons.ok || data.success === false) {
+            throw new Error(data.message || 'Data gagal dimuat.');
+        }
+        return data.data;
     }
 
-    // Helper Kelas Badge
+    function formatWaktu(tanggal, waktu) {
+        const opsi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        const tgl = new Date(tanggal);
+        const teksTanggal = Number.isNaN(tgl.getTime()) ? tanggal : tgl.toLocaleDateString('id-ID', opsi);
+        return `${teksTanggal} • ${String(waktu).slice(0, 5)} WIB`;
+    }
+
     function kelasBadge(status) {
         if (status === 'Diajukan') return 'badge badge--proses';
         if (status === 'Disetujui') return 'badge badge--selesai';
-        if (status === 'Dijadwal Ulang') return 'badge badge--info';
+        if (status === 'Dijadwal Ulang' || status === 'Rescheduled') return 'badge badge--info';
         if (status === 'Kosong') return 'badge badge--selesai';
         return 'badge badge--netral';
     }
 
-    function hitungPengajuan(status) {
-        return data.pengajuan.filter(p => p.status === status).length;
+    function renderProfil(profil) {
+        const textNamaUser = document.getElementById('Text_NamaUser');
+        const textRoleUser = document.getElementById('Text_RoleUser');
+        const userAvatar = document.getElementById('User_Avatar');
+        const textNamaNakes = document.getElementById('Text_NamaNakes');
+        const textJenisNakes = document.getElementById('Text_JenisNakes');
+        const textDetailProfil = document.getElementById('Text_DetailProfil');
+        const avatarNakes = document.getElementById('Avatar_Nakes');
+
+        const nama = (profil && profil.nama) || storedUser.nama || 'Tenaga Kesehatan';
+        if (textNamaUser) textNamaUser.textContent = nama;
+        if (textRoleUser) textRoleUser.textContent = 'Tenaga Kesehatan';
+        if (userAvatar) userAvatar.textContent = nama.trim().charAt(0).toUpperCase();
+        if (textNamaNakes) textNamaNakes.textContent = nama;
+        if (textJenisNakes) textJenisNakes.textContent = profil.jenis_tenaga_kesehatan || 'Tenaga Kesehatan';
+        if (textDetailProfil) {
+            const lokasi = profil.nama_fasilitas || profil.lokasi || '-';
+            const biaya = profil.estimasi_biaya
+                ? `Rp${Number(profil.estimasi_biaya).toLocaleString('id-ID')} per sesi`
+                : 'Tarif belum diisi';
+            textDetailProfil.textContent = `${lokasi} • ${biaya}`;
+        }
+        if (avatarNakes) {
+            avatarNakes.textContent = nama.split(' ').map((kata) => kata.charAt(0)).slice(0, 2).join('').toUpperCase() || 'TK';
+        }
     }
 
-    // Stat Values
-    const elDiajukan = document.getElementById('Value_Diajukan');
-    const elDisetujui = document.getElementById('Value_Disetujui');
-    const elDijadwalUlang = document.getElementById('Value_DijadwalUlang');
-    const elSlotKosong = document.getElementById('Value_SlotKosong');
+    function renderRingkasan(pengajuan, jadwal) {
+        const hitung = (status) => pengajuan.filter((item) => item.status === status).length;
+        const elDiajukan = document.getElementById('Value_Diajukan');
+        const elDisetujui = document.getElementById('Value_Disetujui');
+        const elDijadwalUlang = document.getElementById('Value_DijadwalUlang');
+        const elSlotKosong = document.getElementById('Value_SlotKosong');
 
-    if (elDiajukan) elDiajukan.textContent = hitungPengajuan('Diajukan');
-    if (elDisetujui) elDisetujui.textContent = hitungPengajuan('Disetujui');
-    if (elDijadwalUlang) elDijadwalUlang.textContent = hitungPengajuan('Dijadwal Ulang');
-    if (elSlotKosong) elSlotKosong.textContent = data.jadwal.filter(j => j.status === 'Kosong').length;
+        if (elDiajukan) elDiajukan.textContent = hitung('Diajukan');
+        if (elDisetujui) elDisetujui.textContent = hitung('Disetujui');
+        if (elDijadwalUlang) elDijadwalUlang.textContent = hitung('Dijadwal Ulang');
+        if (elSlotKosong) elSlotKosong.textContent = jadwal.filter((slot) => slot.status_ketersediaan).length;
+    }
 
-    // Render Pengajuan Konsultasi Terbaru
-    function tampilkanPengajuan() {
+    function tampilkanPengajuan(pengajuan) {
         if (!listPengajuan) return;
-        if (data.pengajuan.length === 0) {
+        if (pengajuan.length === 0) {
             listPengajuan.innerHTML = '';
-            if (textPengajuanKosong) textPengajuanKosong.style.display = 'block';
+            if (textPengajuanKosong) textPengajuanKosong.hidden = false;
             return;
         }
+        if (textPengajuanKosong) textPengajuanKosong.hidden = true;
 
-        if (textPengajuanKosong) textPengajuanKosong.style.display = 'none';
-        let html = '';
-        data.pengajuan.slice(0, 5).forEach((p) => {
-            html += `
-                <div class="list-item-row">
-                    <div class="item-top-line">
-                        <span class="item-subject-name">${p.pelajar}</span>
-                        <span class="${kelasBadge(p.status)}">${p.status}</span>
-                    </div>
-                    <span class="item-time-text">${p.waktu}</span>
-                </div>`;
-        });
-        listPengajuan.innerHTML = html;
+        listPengajuan.innerHTML = pengajuan.slice(0, 5).map((item) => `
+            <div class="list-item-row">
+                <div class="item-top-line">
+                    <span class="item-subject-name">${item.nama_pelajar || 'Pelajar'}</span>
+                    <span class="${kelasBadge(item.status)}">${item.status}</span>
+                </div>
+                <span class="item-time-text">${formatWaktu(item.tanggal, item.waktu)}</span>
+            </div>`).join('');
     }
 
-    // Render Jadwal Ketersediaan
-    function tampilkanKetersediaan() {
+    function tampilkanKetersediaan(jadwal) {
         if (!listKetersediaan) return;
-        if (data.jadwal.length === 0) {
+        if (jadwal.length === 0) {
             listKetersediaan.innerHTML = '';
-            if (textKetersediaanKosong) textKetersediaanKosong.style.display = 'block';
+            if (textKetersediaanKosong) textKetersediaanKosong.hidden = false;
             return;
         }
+        if (textKetersediaanKosong) textKetersediaanKosong.hidden = true;
 
-        if (textKetersediaanKosong) textKetersediaanKosong.style.display = 'none';
-        let html = '';
-        data.jadwal.forEach((j) => {
-            html += `
+        listKetersediaan.innerHTML = jadwal.map((slot) => {
+            const status = slot.status_ketersediaan ? 'Kosong' : 'Terisi';
+            return `
                 <div class="list-item-row">
                     <div class="item-top-line">
-                        <span class="item-time-text" style="font-weight: 500; color: var(--color-ink);">${j.waktu}</span>
-                        <span class="${kelasBadge(j.status)}">${j.status}</span>
+                        <span class="item-time-text" style="font-weight: 500; color: var(--color-ink);">${formatWaktu(slot.tanggal, slot.waktu)}</span>
+                        <span class="${kelasBadge(status)}">${status}</span>
                     </div>
                 </div>`;
-        });
-        listKetersediaan.innerHTML = html;
+        }).join('');
     }
 
-    tampilkanPengajuan();
-    tampilkanKetersediaan();
+    try {
+        const daftarPengajuan = await api('/api/konsultasi/masuk');
+        const pengajuan = daftarPengajuan.map((item) => ({
+            nama_pelajar: item.nama_pelajar,
+            tanggal: item.tanggal,
+            waktu: item.waktu,
+            status: STATUS_LABEL[item.status_pengajuan] || item.status_pengajuan
+        }));
 
-    // Aksi Keluar Akun
-    if (menuKeluar) {
-        menuKeluar.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (window.confirm('Yakin ingin keluar dari akun?')) {
-                localStorage.clear();
-                window.location.href = 'LoginPage.html';
+        const jadwal = await api('/api/konsultasi/jadwal');
+
+        let profil = {};
+        if (idProfil) {
+            try {
+                profil = await api(`/api/tenaga-kesehatan/${encodeURIComponent(idProfil)}`);
+            } catch (error) {
+                profil = {};
             }
-        });
+        }
+
+        renderProfil(profil);
+        renderRingkasan(pengajuan, jadwal);
+        tampilkanPengajuan(pengajuan);
+        tampilkanKetersediaan(jadwal);
+    } catch (error) {
+        if (!localStorage.getItem(TOKEN_KEY)) return;
+        renderProfil({});
+        renderRingkasan([], []);
+        tampilkanPengajuan([]);
+        tampilkanKetersediaan([]);
+        if (textPengajuanKosong) textPengajuanKosong.textContent = error.message || 'Data gagal dimuat.';
     }
 });

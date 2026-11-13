@@ -1,66 +1,116 @@
 /**
  * MahaSehat - DashboardPagePelajar.js
- * Logika antarmuka dashboard pelajar (Node ID 3319 / 3376)
- * Keterlacakan DPPL: UC03 (Dashboard Pelajar), C02 (Pelajar)
+ * Dashboard pelajar (UC03). Data diambil dari API: ringkasan laporan,
+ * status check-in, dan jadwal konsultasi.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Profil Pengguna
+document.addEventListener('DOMContentLoaded', async () => {
+    const TOKEN_KEY = 'mahasehat_token';
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+        window.location.href = 'LoginPage.html';
+        return;
+    }
+
     const textNamaUser = document.getElementById('Text_NamaUser');
     const textRoleUser = document.getElementById('Text_RoleUser');
     const userAvatar = document.getElementById('User_Avatar');
 
-    // Banner Elemen
     const cardCheckIn = document.getElementById('Card_CheckIn');
     const bannerHeading = document.getElementById('Banner_Heading');
     const textPesan = document.getElementById('Text_PesanCheckIn');
     const iconStatus = document.getElementById('Icon_StatusCheckIn');
     const btnAksiCheckIn = document.getElementById('Btn_AksiCheckIn');
 
-    // Indeks & Jadwal
     const fillIndeks = document.getElementById('Fill_Indeks');
     const valueIndeks = document.getElementById('Value_Indeks');
+    const badgeIndeks = document.getElementById('Badge_StatusIndeks');
+    const noteIndeks = document.getElementById('Text_IndeksNote');
+    const textIndeksKosong = document.getElementById('Text_IndeksKosong');
+    const cardIndeks = document.getElementById('Card_IndeksKesehatan');
+
     const itemJadwal = document.getElementById('Item_Jadwal');
     const textJadwalKosong = document.getElementById('Text_JadwalKosong');
-    const menuKeluar = document.getElementById('Menu_Keluar');
 
-    // Model Data Awal Pelajar (Mock & Integrasi Storage)
     const storedUser = JSON.parse(localStorage.getItem('mahasehat_user') || '{}');
+    const params = new URLSearchParams(window.location.search);
+
     const data = {
-        nama: storedUser.nama || 'Albert Einstein',
+        nama: storedUser.nama || 'Pelajar',
         role: 'Pelajar',
         sudahCheckIn: false,
-        streak: 5,
-        rerataMood: 3.2,
-        rerataTidur: 8.2,
-        polaMakan: 3.2,
-        indeks: 78,
-        indeksStatus: 'Stabil',
-        jadwal: {
-            namaNakes: 'Raissa Hadiman, M. Psi.',
-            jenisNakes: 'Psikologi Klinis',
-            initials: 'RH',
-            tanggal: 'Rabu, 28 Oktober 2026',
-            jam: '10:00 - 11:00 WIB',
-            lokasi: 'Rumah Sakit ABC'
-        }
+        streak: 0,
+        rerataMood: 0,
+        rerataTidur: 0,
+        polaMakan: '-',
+        indeks: 0,
+        indeksStatus: 'Belum Ada Data',
+        jadwal: null
     };
 
-    // Parameter URL Override (misal: ?checkin=sudah atau ?checkin=belum)
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('checkin') === 'sudah' || localStorage.getItem('checkedInToday') === 'true') {
-        data.sudahCheckIn = true;
-    }
-    if (params.get('checkin') === 'belum') {
-        data.sudahCheckIn = false;
+    async function api(jalur) {
+        const respons = await fetch(jalur, { headers: { Authorization: `Bearer ${token}` } });
+        const hasil = await respons.json().catch(() => ({}));
+        if (respons.status === 401) {
+            localStorage.removeItem(TOKEN_KEY);
+            window.location.href = 'LoginPage.html';
+            throw new Error('Sesi berakhir.');
+        }
+        if (!respons.ok || hasil.success === false) {
+            throw new Error(hasil.message || 'Data gagal dimuat.');
+        }
+        return hasil.data;
     }
 
-    // Set Info Profil
+    function formatJadwal(tanggal, waktu) {
+        const opsi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        const tgl = new Date(tanggal);
+        const teksTanggal = Number.isNaN(tgl.getTime()) ? tanggal : tgl.toLocaleDateString('id-ID', opsi);
+        return { tanggal: teksTanggal, jam: `${String(waktu).slice(0, 5)} WIB` };
+    }
+
+    try {
+        const [summary, pengajuan] = await Promise.all([
+            api('/api/reports/summary'),
+            api('/api/konsultasi/saya')
+        ]);
+
+        const statistik = (summary && summary.statistik) || {};
+        data.sudahCheckIn = Boolean(summary && summary.sudah_check_in);
+        data.streak = Number(statistik.streak) || 0;
+        data.rerataMood = Number(statistik.rerata_mood) || 0;
+        data.rerataTidur = Number(statistik.rerata_tidur) || 0;
+        data.polaMakan = statistik.pola_makan || '-';
+        data.indeks = Number(statistik.indeks) || 0;
+        data.indeksStatus = statistik.indeks_status || 'Belum Ada Data';
+
+        const aktif = (pengajuan || []).find(
+            (item) => item.status_pengajuan === 'Disetujui' || item.status_pengajuan === 'Rescheduled'
+        );
+        if (aktif) {
+            const waktu = formatJadwal(aktif.tanggal, aktif.waktu);
+            const namaNakes = aktif.nama_tenaga_kesehatan || 'Tenaga Kesehatan';
+            data.jadwal = {
+                namaNakes,
+                jenisNakes: aktif.jenis_tenaga_kesehatan || 'Konsultasi',
+                initials: namaNakes.split(' ').map((kata) => kata.charAt(0)).slice(0, 2).join('').toUpperCase(),
+                tanggal: waktu.tanggal,
+                jam: waktu.jam,
+                lokasi: 'Sesi konsultasi'
+            };
+        }
+    } catch (error) {
+        if (!localStorage.getItem(TOKEN_KEY)) return;
+        if (textPesan) textPesan.textContent = error.message || 'Data dashboard gagal dimuat.';
+    }
+
+    if (params.get('checkin') === 'sudah') data.sudahCheckIn = true;
+    if (params.get('checkin') === 'belum') data.sudahCheckIn = false;
+
     if (textNamaUser) textNamaUser.textContent = data.nama;
     if (textRoleUser) textRoleUser.textContent = data.role;
-    if (userAvatar) userAvatar.textContent = (data.nama || 'B').trim().charAt(0).toUpperCase();
+    if (userAvatar) userAvatar.textContent = (data.nama || 'P').trim().charAt(0).toUpperCase();
 
-    // Helper Sapaan Berdasarkan Waktu
     function sapaanWaktu() {
         const jam = new Date().getHours();
         if (jam < 11) return 'Selamat pagi';
@@ -69,36 +119,27 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'Selamat malam';
     }
 
-    const namaPanggilan = data.nama.split(' ')[0];
-    const sapaan = `${sapaanWaktu()}, ${namaPanggilan}.`;
-
-    // SVG Icons
+    const sapaan = `${sapaanWaktu()}, ${data.nama.split(' ')[0]}.`;
     const svgCentang = `<img src="../assets/check.png" alt="" class="banner-check">`;
-
     const svgSilang = `
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>`;
 
-    // Kondisi Banner Check-In (Sesuai Node 3336 vs 3393 FigCraft)
     if (data.sudahCheckIn) {
-        if (cardCheckIn) {
-            cardCheckIn.className = 'banner-card banner-success';
-        }
+        if (cardCheckIn) cardCheckIn.className = 'banner-card banner-success';
         if (iconStatus) iconStatus.innerHTML = svgCentang;
         if (bannerHeading) bannerHeading.textContent = 'Check-in hari ini selesai';
         if (textPesan) {
-            textPesan.textContent = `Terima kasih sudah meluangkan waktu untuk mengecek kondisimu. Terus kenali pola dan perkembangan dirimu.`;
+            textPesan.textContent = 'Terima kasih sudah meluangkan waktu untuk mengecek kondisimu. Terus kenali pola dan perkembangan dirimu.';
         }
         if (btnAksiCheckIn) {
             btnAksiCheckIn.textContent = 'Lihat ringkasan';
-            btnAksiCheckIn.href = 'ReportPage.html';
+            btnAksiCheckIn.href = 'ReportPagePelajar.html';
         }
     } else {
-        if (cardCheckIn) {
-            cardCheckIn.className = 'banner-card banner-warning';
-        }
+        if (cardCheckIn) cardCheckIn.className = 'banner-card banner-warning';
         if (iconStatus) iconStatus.innerHTML = svgSilang;
         if (bannerHeading) bannerHeading.textContent = 'Check-in hari ini belum diisi';
         if (textPesan) {
@@ -110,25 +151,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Nilai Statistik Metrik
     const elStreak = document.getElementById('Value_Streak');
     const elMood = document.getElementById('Value_RerataMood');
     const elTidur = document.getElementById('Value_RerataTidur');
     const elMakan = document.getElementById('Value_PolaMakan');
 
     if (elStreak) elStreak.textContent = data.streak;
-    if (elMood) elMood.textContent = data.rerataMood.toFixed(1);
-    if (elTidur) elTidur.textContent = data.rerataTidur.toFixed(1);
-    if (elMakan) elMakan.textContent = data.polaMakan.toFixed(1);
+    if (elMood) elMood.textContent = data.rerataMood ? data.rerataMood.toFixed(1) : '-';
+    if (elTidur) elTidur.textContent = data.rerataTidur ? data.rerataTidur.toFixed(1) : '-';
+    if (elMakan) elMakan.textContent = data.polaMakan;
 
-    // Indeks Kesehatan Mental
-    if (valueIndeks) valueIndeks.textContent = data.indeks;
-    if (fillIndeks) fillIndeks.style.width = `${Math.min(Math.max(data.indeks, 0), 100)}%`;
+    const adaIndeks = data.indeks > 0;
+    if (cardIndeks) cardIndeks.hidden = !adaIndeks;
+    if (textIndeksKosong) textIndeksKosong.hidden = adaIndeks;
+    if (adaIndeks) {
+        if (valueIndeks) valueIndeks.textContent = data.indeks;
+        if (fillIndeks) fillIndeks.style.width = `${Math.min(Math.max(data.indeks, 0), 100)}%`;
+        if (badgeIndeks) badgeIndeks.textContent = data.indeksStatus;
+        if (noteIndeks) noteIndeks.textContent = 'Dihitung dari rata-rata mood dan durasi tidur 90 hari terakhir.';
+    }
 
-    // Jadwal Konsultasi Terkini
     if (data.jadwal && itemJadwal) {
-        itemJadwal.style.display = 'block';
-        if (textJadwalKosong) textJadwalKosong.style.display = 'none';
+        itemJadwal.hidden = false;
+        if (textJadwalKosong) textJadwalKosong.hidden = true;
 
         const elNamaNakes = document.getElementById('Text_NamaNakes');
         const elJenisNakes = document.getElementById('Text_JenisNakes');
@@ -140,26 +185,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (elNamaNakes) elNamaNakes.textContent = data.jadwal.namaNakes;
         if (elJenisNakes) elJenisNakes.textContent = data.jadwal.jenisNakes;
-        if (elAvatarNakes) elAvatarNakes.textContent = data.jadwal.initials || 'RH';
+        if (elAvatarNakes) elAvatarNakes.textContent = data.jadwal.initials || 'TK';
         if (elTgl) elTgl.textContent = data.jadwal.tanggal;
         if (elJam) elJam.textContent = data.jadwal.jam;
         if (elLokasi) elLokasi.textContent = data.jadwal.lokasi;
         if (elDetailLegacy) {
             elDetailLegacy.textContent = `${data.jadwal.tanggal}\n${data.jadwal.jam}\n${data.jadwal.lokasi}`;
         }
-    } else if (textJadwalKosong) {
-        if (itemJadwal) itemJadwal.style.display = 'none';
-        textJadwalKosong.style.display = 'block';
+    } else {
+        if (itemJadwal) itemJadwal.hidden = true;
+        if (textJadwalKosong) textJadwalKosong.hidden = false;
     }
 
-    // Aksi Keluar Akun
-    if (menuKeluar) {
-        menuKeluar.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (window.confirm('Yakin ingin keluar dari akun?')) {
-                localStorage.clear();
-                window.location.href = 'LoginPage.html';
-            }
-        });
-    }
 });

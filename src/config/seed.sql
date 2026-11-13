@@ -60,13 +60,13 @@ VALUES
 -- 7. Riwayat Daily Check-In 5 Hari Terakhir (check_in)
 INSERT INTO check_in (id_check_in, id_pelajar, tanggal_check_in, skala_mood, jam_tidur, jam_bangun, pola_makan, pemicu_stres, catatan_refleksi)
 VALUES
-  ('CHK-001', 'PLJ-001', CURRENT_DATE - 4, 4, '22:30:00', '06:00:00', 'Teratur (3x sehari)', 'Tugas Akademik', NULL),
-  ('CHK-002', 'PLJ-001', CURRENT_DATE - 3, 3, '23:30:00', '06:00:00', 'Teratur (3x sehari)', 'Tugas Akademik, Ujian', NULL),
-  ('CHK-003', 'PLJ-001', CURRENT_DATE - 2, 2, '01:00:00', '06:30:00', 'Kurang teratur (2x sehari)', 'Ujian, Kurang Tidur', NULL),
-  ('CHK-004', 'PLJ-001', CURRENT_DATE - 1, 3, '23:00:00', '06:00:00', 'Teratur (3x sehari)', 'Tugas Akademik', NULL),
-  ('CHK-005', 'PLJ-001', CURRENT_DATE,     4, '22:15:00', '05:45:00', 'Teratur & Bergizi', 'Tidak ada', NULL),
+  ('CHK-001', 'PLJ-001', CURRENT_DATE - 4, 4, '22:30:00', '06:00:00', 'Teratur', 'Tugas Akademik', NULL),
+  ('CHK-002', 'PLJ-001', CURRENT_DATE - 3, 3, '23:30:00', '06:00:00', 'Teratur', 'Tugas Akademik, Ujian', NULL),
+  ('CHK-003', 'PLJ-001', CURRENT_DATE - 2, 2, '01:00:00', '06:30:00', 'Kurang teratur', 'Ujian, Kurang Tidur', NULL),
+  ('CHK-004', 'PLJ-001', CURRENT_DATE - 1, 3, '23:00:00', '06:00:00', 'Teratur', 'Tugas Akademik', NULL),
+  ('CHK-005', 'PLJ-001', CURRENT_DATE,     4, '22:15:00', '05:45:00', 'Teratur', 'Tidak ada', NULL),
   -- Skenario UC08: mood rendah tiga hari beruntun, lalu empat hari tidak check-in
-  ('CHK-101', 'PLJ-003', CURRENT_DATE - 6, 2, '02:00:00', '06:00:00', 'Kurang teratur (1x sehari)', 'Keluarga', NULL),
-  ('CHK-102', 'PLJ-003', CURRENT_DATE - 5, 1, '03:00:00', '06:30:00', 'Kurang teratur (1x sehari)', 'Keluarga, Akademik', NULL),
-  ('CHK-103', 'PLJ-003', CURRENT_DATE - 4, 2, '02:30:00', '06:00:00', 'Kurang teratur (2x sehari)', 'Akademik', NULL);
+  ('CHK-101', 'PLJ-003', CURRENT_DATE - 6, 2, '02:00:00', '06:00:00', 'Kurang teratur', 'Keluarga', NULL),
+  ('CHK-102', 'PLJ-003', CURRENT_DATE - 5, 1, '03:00:00', '06:30:00', 'Kurang teratur', 'Keluarga, Akademik', NULL),
+  ('CHK-103', 'PLJ-003', CURRENT_DATE - 4, 2, '02:30:00', '06:00:00', 'Kurang teratur', 'Akademik', NULL);
 

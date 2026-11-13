@@ -46,6 +46,11 @@
                         <span class="nav-label">Laporan Kesehatan</span>
                     </a>
 
+                                        <a href="NotifikasiDarurat.html" class="nav-item" id="Menu_Notifikasi" hidden>
+                        <img src="../assets/icon-info.png" alt="" class="nav-icon">
+                        <span class="nav-label">Notifikasi</span>
+                    </a>
+
                     <div class="menu-divider"></div>
 
                     <a href="SettingPageOrangTuaWali.html" class="nav-item" id="Menu_Setelan">
@@ -61,7 +66,7 @@
                 <div class="sidebar-user" id="Info_User">
                     <div class="user-avatar" id="User_Avatar">H</div>
                     <div class="user-meta">
-                        <p class="user-name" id="Text_NamaUser">Hermann Einstein</p>
+                        <p class="user-name" id="Text_NamaUser">-</p>
                         <p class="user-role" id="Text_RoleUser">Orang Tua / Wali</p>
                     </div>
                 </div>
@@ -77,7 +82,7 @@
             </header>
 
             <!-- Banner Konfirmasi Registrasi (Jika Ada Permintaan) -->
-            <section class="banner-card banner-warning" id="Card_Registrasi">
+            <section class="banner-card banner-warning" id="Card_Registrasi" hidden>
                 <div class="banner-icon-wrapper">
                     <div class="banner-icon-circle">
                         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -90,9 +95,7 @@
                 </div>
                 <div class="banner-text">
                     <h2 class="banner-heading">Konfirmasi Registrasi</h2>
-                    <p class="banner-message" id="Text_DetailRegistrasi">
-                        Albert Einstein mengajukan registrasi pada 6 November 2026. Mohon konfirmasi sebagai wali.
-                    </p>
+                    <p class="banner-message" id="Text_DetailRegistrasi">Memuat pengajuan registrasi...</p>
                 </div>
                 <div class="banner-cta">
                     <a href="KonfirmasiRegistrasiPage.html" class="btn btn--primary" id="Link_TinjauRegistrasi">Tinjau Registrasi</a>
@@ -104,7 +107,7 @@
                 <article class="stat-card" id="Card_HariTidakCheckIn">
                     <h3 class="stat-title">Tidak Check-In</h3>
                     <div class="stat-metric">
-                        <span class="stat-value" id="Value_HariTidakCheckIn">2</span>
+                        <span class="stat-value" id="Value_HariTidakCheckIn">0</span>
                         <span class="stat-unit">Hari</span>
                     </div>
                     <p class="stat-note">Sejak check-in terakhir</p>
@@ -113,7 +116,7 @@
                 <article class="stat-card" id="Card_RerataMood">
                     <h3 class="stat-title">Rerata Mood</h3>
                     <div class="stat-metric">
-                        <span class="stat-value" id="Value_RerataMood">3.2</span>
+                        <span class="stat-value" id="Value_RerataMood">0</span>
                         <span class="stat-unit">/ 5</span>
                     </div>
                     <p class="stat-note">Rata-rata skala suasana hati</p>
@@ -122,7 +125,7 @@
                 <article class="stat-card" id="Card_RerataTidur">
                     <h3 class="stat-title">Rerata Tidur</h3>
                     <div class="stat-metric">
-                        <span class="stat-value" id="Value_RerataTidur">7.5</span>
+                        <span class="stat-value" id="Value_RerataTidur">0</span>
                         <span class="stat-unit">Jam</span>
                     </div>
                     <p class="stat-note">Rata-rata durasi tidur</p>
@@ -131,7 +134,7 @@
                 <article class="stat-card" id="Card_Risiko">
                     <h3 class="stat-title">Indikator Risiko</h3>
                     <div class="stat-metric">
-                        <span class="stat-value stat-value-text" id="Value_Risiko">Sedang</span>
+                        <span class="stat-value stat-value-text" id="Value_Risiko">-</span>
                     </div>
                     <p class="stat-note">Berdasarkan data check-in</p>
                 </article>
@@ -146,10 +149,8 @@
                         <span class="badge badge--stabil">Laporan Aktif</span>
                     </div>
                     
-                    <p class="ringkasan-text" id="Text_RingkasanKondisi">
-                        Kondisi pelajar cukup stabil, namun durasi tidur sedikit menurun di akhir pekan. Tetap jaga komunikasi hangat.
-                    </p>
-                    <p class="empty-msg" id="Text_RingkasanKosong" style="display: none;">Ringkasan muncul setelah data check-in cukup.</p>
+                    <p class="ringkasan-text" id="Text_RingkasanKondisi">- </p>
+                    <p class="empty-msg" id="Text_RingkasanKosong" hidden>Ringkasan muncul setelah data check-in cukup.</p>
 
                     <div class="card-box-footer">
                         <a href="ReportPage.html" class="btn btn--primary" id="Link_LaporanLengkap">Lihat Laporan Lengkap</a>
@@ -165,10 +166,10 @@
                     <div class="pelajar-profile-box">
                         <div class="pelajar-avatar" id="Avatar_Pelajar">A</div>
                         <div class="pelajar-meta">
-                            <h4 class="pelajar-name" id="Text_NamaPelajar">Albert Einstein</h4>
-                            <p class="pelajar-sub" id="Text_UsiaPelajar">16 tahun</p>
+                            <h4 class="pelajar-name" id="Text_NamaPelajar">-</h4>
+                            <p class="pelajar-sub" id="Text_UsiaPelajar">-</p>
                         </div>
-                        <span class="badge badge--belum" id="Badge_StatusAkun">Belum Terverifikasi</span>
+                        <span class="badge badge--belum" id="Badge_StatusAkun">-</span>
                     </div>
 
                     <div class="pelajar-guidance-note">
@@ -180,6 +181,9 @@
         </main>
     </div>
 
+    <script src="session.js"></script>
+    <script src="feedback.js"></script>
+    <script src="emergency-alert.js"></script>
     <script src="DashboardPageOrangTuaWali.js"></script>
     <script src="sidebar.js"></script>
 </body>

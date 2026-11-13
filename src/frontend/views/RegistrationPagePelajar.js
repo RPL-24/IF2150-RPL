@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const inputTahun = document.getElementById('Input_TahunLahir');
+    if (inputTahun) inputTahun.max = String(new Date().getFullYear());
+
     const form = document.getElementById('Form_Registration');
     const roleInput = document.getElementById('Input_Role');
     const tabBtns = document.querySelectorAll('.seg-btn');
@@ -71,6 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
+    // Usia dalam tahun penuh, dipakai untuk aturan email orang tua/wali
+    function hitungUsia(day, month, year) {
+        const lahir = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
+        const sekarang = new Date();
+        let usia = sekarang.getFullYear() - lahir.getFullYear();
+        const belumUlangTahun =
+            sekarang.getMonth() < lahir.getMonth() ||
+            (sekarang.getMonth() === lahir.getMonth() && sekarang.getDate() < lahir.getDate());
+        if (belumUlangTahun) usia -= 1;
+        return usia;
+    }
+
     // Logika Utama Saat Submit Form
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -132,12 +147,17 @@ document.addEventListener('DOMContentLoaded', () => {
             hintError.hidden = true;
         }
 
-        // Validasi Email Orang Tua
+        // Validasi Email Orang Tua (wajib hanya bila pelajar di bawah 18 tahun)
         const emailOrtuValue = inputEmailOrtu.value.trim();
         const emailOrtuRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const diBawahUmur = !isValidDate(tgl, bln, thn) || hitungUsia(tgl, bln, thn) < 18;
         if (emailOrtuValue === '') {
-            showErrorField(inputEmailOrtu, errorEmailOrtu, 'Email wajib diisi');
-            isValid = false;
+            if (diBawahUmur) {
+                showErrorField(inputEmailOrtu, errorEmailOrtu, 'Email orang tua/wali wajib diisi untuk pelajar di bawah 18 tahun');
+                isValid = false;
+            } else {
+                clearError(inputEmailOrtu, errorEmailOrtu);
+            }
         } else if (!emailOrtuRegex.test(emailOrtuValue)) {
             showErrorField(inputEmailOrtu, errorEmailOrtu, 'Format email tidak valid (contoh: user@mail.com)');
             isValid = false;

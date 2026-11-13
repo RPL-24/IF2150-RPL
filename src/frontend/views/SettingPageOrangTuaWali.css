@@ -43,7 +43,7 @@
 }.form-input:focus{
     border-color: var(--color-teal);
     background-color: var(--color-white);
-    box-shadow: 0 0 0 3px rgba(120, 201, 192, 0.25);
+    box-shadow: 0 0 0 3px var(--color-teal-subtle);
 }.form-input.input-readonly{
     background-color: var(--color-border-subtle);
     color: var(--color-ink-subtle);
@@ -119,7 +119,7 @@
     background-color: var(--color-white);
     border-radius: 50%;
     transition: transform 0.2s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-card);
 }.switch-toggle input:checked + .switch-slider{
     background-color: var(--color-teal);
 }.switch-toggle input:checked + .switch-slider::before{
@@ -147,19 +147,7 @@
 }/* --------------------------------------------------------------------------
    Feedback Toast & Footer Nav
    -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- Feedback Toast & Footer Nav -------------------------------------------------------------------------- */ .feedback-toast{
-    padding: 12px 20px;
-    margin-bottom: 20px;
-    border-radius: 12px;
-    background-color: var(--color-success-tint);
-    border: 1px solid var(--color-teal);
-    color: var(--color-success-text);
-    font-size: 14px;
-    font-weight: 600;
-    animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {from{ opacity: 0; transform: translateY(-4px); }to{ opacity: 1; transform: translateY(0); }
+/* -------------------------------------------------------------------------- Feedback Toast & Footer Nav -------------------------------------------------------------------------- */ @keyframes fadeIn {from{ opacity: 0; transform: translateY(-4px); }to{ opacity: 1; transform: translateY(0); }
 }.page-footer-nav{
     margin-top: 8px;
     margin-bottom: 24px;

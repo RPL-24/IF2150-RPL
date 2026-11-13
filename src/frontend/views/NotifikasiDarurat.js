@@ -1,61 +1,100 @@
 /**
  * MahaSehat - NotifikasiDarurat.js
- * Logika antarmuka pop-up notifikasi darurat (UC08)
+ * Notifikasi darurat untuk wali (UC08). Data dan aksi lewat /api/emergency.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    const TOKEN_KEY = 'mahasehat_token';
+    const token = localStorage.getItem(TOKEN_KEY);
+
     const btnDiterima = document.getElementById('Btn_Diterima');
     const btnSudahDitindaklanjuti = document.getElementById('Btn_SudahDitindaklanjuti');
     const descDarurat = document.getElementById('Desc_Darurat');
     const cardDarurat = document.getElementById('Card_Darurat');
     const cardSelesai = document.getElementById('Card_Selesai');
 
-    // Dummy ID Notifikasi
-    const idNotifikasi = "NOTIF_EMERGENCY_001";
+    let notifikasi = null;
 
-    function loadEmergencyDetail() {
-        const emergencyData = JSON.parse(localStorage.getItem('emergencyDetail')) || {
-            ringkasanKondisi: "Pelajar tidak melakukan check-in selama 3 hari berturut-turut dan rata-rata mood berada di bawah ambang batas aman. Segera lakukan tindak lanjut dan hubungi pelajar."
-        };
-        if (descDarurat) descDarurat.innerText = emergencyData.ringkasanKondisi;
+    async function api(jalur, opsi = {}) {
+        const respons = await fetch(jalur, {
+            method: opsi.method || 'GET',
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const hasil = await respons.json().catch(() => ({}));
+        if (respons.status === 401) {
+            localStorage.removeItem(TOKEN_KEY);
+            window.location.href = 'LoginPage.html';
+            throw new Error('Sesi berakhir.');
+        }
+        if (!respons.ok || hasil.success === false) {
+            throw new Error(hasil.message || 'Permintaan gagal.');
+        }
+        return hasil.data;
     }
 
-    // Umpan balik seragam di dalam kartu (menggantikan alert bawaan peramban)
-    function tampilkanPesan(teks) {
-        let kotak = document.getElementById('Pesan_UmpanBalik');
-        if (!kotak) {
-            kotak = document.createElement('p');
-            kotak.id = 'Pesan_UmpanBalik';
-            kotak.className = 'alert-box alert-success';
-            kotak.setAttribute('role', 'status');
-            const grupTombol = cardDarurat.querySelector('.button-group') || cardDarurat;
-            cardDarurat.insertBefore(kotak, grupTombol);
+    function tampilkanPesan(teks, tipe = 'success') {
+        window.MahaSehatFeedback.show(teks, tipe === 'danger' ? 'danger' : 'success');
+    }
+
+    function tampilkanKondisi() {
+        if (!notifikasi) {
+            if (cardDarurat) cardDarurat.hidden = true;
+            if (cardSelesai) cardSelesai.hidden = false;
+            return;
         }
-        kotak.textContent = teks;
-        kotak.hidden = false;
+        if (cardDarurat) cardDarurat.hidden = false;
+        if (cardSelesai) cardSelesai.hidden = true;
+        if (descDarurat) {
+            const nama = notifikasi.nama_pelajar ? `${notifikasi.nama_pelajar}: ` : '';
+            descDarurat.innerText = `${nama}${notifikasi.ringkasan_kondisi || 'Tidak ada ringkasan kondisi.'}`;
+        }
+    }
+
+    async function muatNotifikasi() {
+        try {
+            const daftar = await api('/api/emergency/wali');
+            notifikasi = Array.isArray(daftar) && daftar.length ? daftar[0] : null;
+        } catch (error) {
+            tampilkanPesan(error.message || 'Notifikasi darurat gagal dimuat.', 'danger');
+        }
+        tampilkanKondisi();
     }
 
     if (btnDiterima) {
-        btnDiterima.addEventListener('click', () => {
+        btnDiterima.addEventListener('click', async () => {
+            if (!notifikasi) return;
             btnDiterima.disabled = true;
-            btnDiterima.innerText = "Dikonfirmasi ✓";
-            btnDiterima.classList.add('btn-confirmed');
-
-            console.log(`[NotifikasiDaruratController] confirmReceived called for idNotifikasi: ${idNotifikasi}`);
-            tampilkanPesan("Status notifikasi telah dicatat sebagai 'Diterima'. Silakan hubungi pelajar untuk tindak lanjut.");
+            btnDiterima.innerText = 'Menyimpan...';
+            try {
+                await api(`/api/emergency/${encodeURIComponent(notifikasi.id)}/confirm`, { method: 'PUT' });
+                btnDiterima.innerText = 'Dikonfirmasi';
+                tampilkanPesan('Status notifikasi dicatat sebagai "Diterima". Silakan hubungi pelajar untuk tindak lanjut.');
+            } catch (error) {
+                btnDiterima.disabled = false;
+                btnDiterima.innerText = 'Diterima';
+                tampilkanPesan(error.message || 'Status gagal disimpan.', 'danger');
+            }
         });
     }
 
     if (btnSudahDitindaklanjuti) {
-        btnSudahDitindaklanjuti.addEventListener('click', () => {
-            console.log(`[NotifikasiDaruratController] markFollowUp called for idNotifikasi: ${idNotifikasi}`);
-
-            tampilkanPesan("Status tindak lanjut berhasil dicatat sebagai 'Sudah Ditindaklanjuti'. Status darurat pelajar kini telah dipulihkan.");
-
-            if (cardDarurat) cardDarurat.style.display = 'none';
-            if (cardSelesai) cardSelesai.style.display = 'flex';
+        btnSudahDitindaklanjuti.addEventListener('click', async () => {
+            if (!notifikasi) return;
+            btnSudahDitindaklanjuti.disabled = true;
+            btnSudahDitindaklanjuti.innerText = 'Menyimpan...';
+            try {
+                await api(`/api/emergency/${encodeURIComponent(notifikasi.id)}/follow-up`, { method: 'PUT' });
+                tampilkanPesan('Status tindak lanjut dicatat. Status darurat pelajar sudah dipulihkan.');
+                notifikasi = null;
+                if (cardDarurat) cardDarurat.hidden = true;
+                if (cardSelesai) cardSelesai.hidden = false;
+            } catch (error) {
+                btnSudahDitindaklanjuti.disabled = false;
+                btnSudahDitindaklanjuti.innerText = 'Sudah Ditindaklanjuti';
+                tampilkanPesan(error.message || 'Status gagal disimpan.', 'danger');
+            }
         });
     }
 
-    loadEmergencyDetail();
+    muatNotifikasi();
 });

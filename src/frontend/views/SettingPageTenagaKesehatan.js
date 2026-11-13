@@ -4,13 +4,13 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const STORAGE_KEY = 'mahasehat_nakes_profile';
+    const STORAGE_KEY = 'mahasehat_nakes_profile_v2';
+    const USER_KEY = 'mahasehat_user';
 
     // Form elements
     const formProfil = document.getElementById('Form_ProfilNakes');
     const formTempat = document.getElementById('Form_TempatKerja');
     const formJadwal = document.getElementById('Form_JadwalPraktik');
-    const toast = document.getElementById('Feedback_Toast');
     const toggleMenerima = document.getElementById('Toggle_MenerimaPasien');
     const textStatusPenerimaan = document.getElementById('Text_StatusPenerimaan');
     const groupRentang = document.getElementById('Group_RentangJam');
@@ -196,15 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function showToast(message) {
-        if (!toast) return;
-        toast.textContent = message;
-        toast.style.display = 'block';
-        setTimeout(() => {
-            toast.style.display = 'none';
-        }, 3500);
-    }
-
     function updateToggleText(isActive) {
         if (!textStatusPenerimaan) return;
         if (isActive) {
@@ -224,20 +215,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handler Form Profil
     if (formProfil) {
-        formProfil.addEventListener('submit', (e) => {
+        formProfil.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const data = {
-                nama: document.getElementById('Input_Nama').value,
-                spesialisasi: document.getElementById('Input_Spesialisasi').value,
-                sip: document.getElementById('Input_SIP').value,
-                tarif: document.getElementById('Input_Tarif').value,
-                email: document.getElementById('Input_Email').value,
-                telepon: document.getElementById('Input_NomorTelepon').value,
-                bio: document.getElementById('Input_Bio').value
-            };
-            const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...current, ...data }));
-            showToast('✓ Profil profesional dan tarif berhasil disimpan.');
+            const nama = document.getElementById('Input_Nama').value.trim();
+            const email = document.getElementById('Input_Email').value.trim();
+            const nomorTelepon = document.getElementById('Input_NomorTelepon').value.trim();
+            const jenis = document.getElementById('Input_Spesialisasi').value.trim();
+            const nomorStr = document.getElementById('Input_SIP').value.trim();
+
+            try {
+                const token = localStorage.getItem('mahasehat_token');
+                const respons = await fetch('/api/auth/me', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        nama,
+                        email,
+                        nomor_telepon: nomorTelepon,
+                        jenis_tenaga_kesehatan: jenis,
+                        nomor_str: nomorStr
+                    })
+                });
+                const hasil = await respons.json().catch(() => ({}));
+                if (!respons.ok) throw new Error(hasil.message || 'Profil gagal disimpan.');
+
+                const profil = hasil.data || {};
+                const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    ...current,
+                    nama: profil.nama,
+                    email: profil.email,
+                    telepon: profil.nomor_telepon,
+                    spesialisasi: jenis,
+                    sip: nomorStr,
+                    tarif: document.getElementById('Input_Tarif').value,
+                    bio: document.getElementById('Input_Bio').value
+                }));
+
+                const user = JSON.parse(localStorage.getItem(USER_KEY) || '{}');
+                localStorage.setItem(USER_KEY, JSON.stringify({
+                    ...user,
+                    nama: profil.nama,
+                    email: profil.email,
+                    nomorTelepon: profil.nomor_telepon
+                }));
+
+                MahaSehatFeedback.success('Profil profesional berhasil disimpan.');
+            } catch (error) {
+                MahaSehatFeedback.error(error.message || 'Profil gagal disimpan.');
+            }
         });
     }
 
@@ -254,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
             localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...current, ...data }));
-            showToast('✓ Informasi tempat kerja dan tautan telekonsultasi berhasil diperbarui.');
+            MahaSehatFeedback.success('Informasi tempat kerja dan tautan telekonsultasi berhasil diperbarui.');
         });
     }
 
@@ -280,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
             localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...current, ...data }));
-            showToast('✓ Ketersediaan jadwal praktik dan slot konsultasi berhasil disimpan.');
+            MahaSehatFeedback.success('Ketersediaan jadwal praktik dan slot konsultasi berhasil disimpan.');
         });
     }
 
@@ -307,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (hasil === 'granted') {
                     localStorage.setItem('notifAktif', 'ya');
                     if (textNotifInfo) textNotifInfo.textContent = '';
-                    showToast('✓ Notifikasi pemantauan diaktifkan.');
+                    MahaSehatFeedback.success('Notifikasi pemantauan diaktifkan.');
                 } else {
                     switchNotif.checked = false;
                     if (textNotifInfo) textNotifInfo.textContent = 'Izin ditolak oleh pengguna.';
@@ -341,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 () => {
                     localStorage.setItem('lokasiAktif', 'ya');
                     if (textLokasiInfo) textLokasiInfo.textContent = '';
-                    showToast('✓ Izin lokasi diaktifkan.');
+                    MahaSehatFeedback.success('Izin lokasi diaktifkan.');
                 },
                 () => {
                     switchLokasi.checked = false;
@@ -353,4 +382,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadSavedData();
     initJadwalKustom();
+
+    // Lengkapi profil dari API supaya nilai di form sama dengan data di server
+    (async () => {
+        try {
+            const token = localStorage.getItem('mahasehat_token');
+            const user = JSON.parse(localStorage.getItem(USER_KEY) || '{}');
+            const idProfil = user.id_profil || user.idProfil;
+            const [me, detail] = await Promise.all([
+                fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } }).then((res) => res.json()),
+                idProfil
+                    ? fetch(`/api/tenaga-kesehatan/${encodeURIComponent(idProfil)}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    }).then((res) => res.json())
+                    : Promise.resolve({ data: {} })
+            ]);
+
+            const profil = (me && me.data) || {};
+            const rincian = (detail && detail.data) || {};
+            const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            const tarifFasilitas = Number(rincian.estimasi_biaya);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                ...current,
+                nama: profil.nama || current.nama,
+                email: profil.email || current.email,
+                telepon: profil.nomor_telepon || current.telepon,
+                spesialisasi: rincian.jenis_tenaga_kesehatan || current.spesialisasi,
+                sip: rincian.nomor_str || current.sip,
+                tarif: Number.isFinite(tarifFasilitas) && tarifFasilitas > 0
+                    ? `Rp${tarifFasilitas.toLocaleString('id-ID')} / sesi`
+                    : current.tarif,
+                instansi: rincian.nama_fasilitas || current.instansi,
+                alamat: rincian.alamat || current.alamat
+            }));
+            loadSavedData();
+
+            const namaSaya = profil.nama || 'Tenaga Kesehatan';
+            const elNama = document.getElementById('Text_NamaUser');
+            const elAvatar = document.getElementById('User_Avatar');
+            if (elNama) elNama.textContent = namaSaya;
+            if (elAvatar) elAvatar.textContent = namaSaya.trim().charAt(0).toUpperCase();
+
+            const badge = document.getElementById('Badge_PendingCount');
+            if (badge) {
+                const masuk = await fetch('/api/konsultasi/masuk', {
+                    headers: { Authorization: `Bearer ${token}` }
+                }).then((res) => (res.ok ? res.json() : null)).catch(() => null);
+                const jumlah = ((masuk && masuk.data) || []).filter(
+                    (item) => item.status_pengajuan === 'Diajukan'
+                ).length;
+                badge.textContent = String(jumlah);
+                badge.hidden = jumlah === 0;
+            }
+        } catch (error) {
+            // Biarkan nilai lokal bila API tidak terjangkau
+        }
+    })();
+
 });

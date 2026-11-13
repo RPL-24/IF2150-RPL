@@ -58,7 +58,7 @@
     color: var(--color-ink);
     outline: none;
     transition: all 0.2s ease;
-    box-shadow: 0 1px 3px rgba(42, 58, 63, 0.02);
+    box-shadow: var(--shadow-card);
 }
 
 .queue-search-input:focus {
@@ -119,18 +119,18 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    box-shadow: 0 2px 6px rgba(42, 58, 63, 0.02);
+    box-shadow: var(--shadow-card);
 }
 
 .queue-card-item:hover {
     border-color: var(--color-ink-subtle);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(42, 58, 63, 0.05);
+    box-shadow: var(--shadow-hover);
 }
 
 .queue-card-item.selected {
     border: 2px solid var(--color-ink);
-    box-shadow: 0 4px 16px rgba(42, 58, 63, 0.08);
+    box-shadow: var(--shadow-hover);
 }
 
 .queue-card-top {
@@ -225,7 +225,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    box-shadow: 0 2px 8px rgba(42, 58, 63, 0.02);
+    box-shadow: var(--shadow-card);
 }
 
 .patient-header-section {
@@ -479,7 +479,7 @@
 .btn-primary-dark:hover {
     background-color: var(--color-ink-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(42, 58, 63, 0.15);
+    box-shadow: var(--shadow-hover);
 }
 
 .btn-secondary-outline {
@@ -507,44 +507,9 @@
 
 /* Toast Feedback */
 
-.toast-notification {
-    /* Sejajar dengan tepi kanan kartu konten (padding kanvas), bukan pojok viewport */
-    position: fixed;
-    bottom: 24px;
-    right: clamp(16px, 4vw, 32px);
-    max-width: min(420px, calc(100vw - 96px));
-    background-color: var(--color-ink);
-    color: var(--color-cream);
-    padding: 14px 22px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: 0 8px 24px rgba(42, 58, 63, 0.16);
-    display: none;
-    z-index: 1000;
-    animation: slideUp 0.3s ease;
-}
 
 @media (max-width: 1023px) {
-    .toast-notification {
-        left: clamp(16px, 4vw, 32px);
-        right: clamp(16px, 4vw, 32px);
-        bottom: 16px;
-        max-width: none;
-    }
-}
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(16px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 /* Modal Dialog */
 
@@ -554,7 +519,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(42, 58, 63, 0.5);
+    background-color: var(--color-overlay);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -572,7 +537,7 @@
     display: flex;
     flex-direction: column;
     gap: 18px;
-    box-shadow: 0 16px 36px rgba(42, 58, 63, 0.15);
+    box-shadow: var(--shadow-modal);
 }
 
 .modal-form-group {
@@ -634,7 +599,7 @@
 }
 
 .consult-detail-dialog::backdrop {
-    background-color: rgba(42, 58, 63, 0.45);
+    background-color: var(--color-overlay);
     backdrop-filter: blur(4px);
 }
 

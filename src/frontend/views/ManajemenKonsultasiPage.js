@@ -1,100 +1,26 @@
 /**
  * MahaSehat - ManajemenKonsultasiPage.js
- * Logika Interaktif Manajemen Konsultasi Tenaga Kesehatan
- * Mengikuti Konvensi Desain Anti-Slop & MVC MahaSehat
+ * Manajemen pengajuan konsultasi tenaga kesehatan (UC07).
+ * Data dan aksi diambil dari /api/konsultasi.
  */
 
 (function () {
     'use strict';
 
-    // Kunci penyimpanan LocalStorage
-    const STORAGE_KEY = 'mahasehat_consultations_data';
+    const API = '/api/konsultasi';
+    const TOKEN_KEY = 'mahasehat_token';
 
-    // Data Awal Bawaan (Default Mock Data)
-    const DEFAULT_CONSULTATIONS = [
-        {
-            id: 'konsul-001',
-            nama: 'Albert Einstein',
-            inisial: 'AE',
-            avatarColor: '#78C9C0',
-            sekolah: 'Kelas XII · SMAN 1 Bandung',
-            nis: '215001',
-            status: 'Menunggu',
-            jadwal: 'Selasa, 10 Nov 2026 · 10.00 - 11.00 WIB',
-            jadwalFull: 'Selasa, 10 November 2026 · 10.00 - 11.00 WIB (60 Menit)',
-            metode: 'Daring (Google Meet) · Sesi Mandiri 1 Pelajar',
-            keluhan: 'Sering merasa cemas dan kesulitan tidur menjelang ujian akhir semester. Butuh bimbingan manajemen stres dan latihan regulasi emosi.',
-            moodRerata: '2.8 / 5.0',
-            moodBars: [36, 28, 22, 34, 40, 42, 30],
-            tidurRerata: '5.2 Jam',
-            tidurBars: [28, 24, 20, 32, 44, 48, 30],
-            linkMeet: 'https://meet.google.com/mhs-klsk-nks',
-            catatan: 'Mohon persiapkan ringkasan kendala belajar. Sesi dimulai tepat pukul 10.00 WIB.'
-        },
-        {
-            id: 'konsul-002',
-            nama: 'Marie Curie',
-            inisial: 'MC',
-            avatarColor: '#F8C16F',
-            sekolah: 'Kelas XI · SMAN 3 Bandung',
-            nis: '215002',
-            status: 'Disetujui',
-            jadwal: 'Kamis, 12 Nov 2026 · 13.00 - 14.00 WIB',
-            jadwalFull: 'Kamis, 12 November 2026 · 13.00 - 14.00 WIB (60 Menit)',
-            metode: 'Tatap Muka (Klinik Ganesha 2) · Sesi Mandiri',
-            keluhan: 'Evaluasi lanjutan teknik pernapasan dan relaksasi untuk menjaga ritme istirahat saat praktikum padat.',
-            moodRerata: '3.8 / 5.0',
-            moodBars: [40, 42, 44, 38, 46, 48, 44],
-            tidurRerata: '7.2 Jam',
-            tidurBars: [46, 44, 48, 42, 50, 52, 48],
-            linkMeet: '-',
-            catatan: 'Konsultasi tatap muka di Ruang Konseling Ganesha 2. Harap membawa lembar catatan evaluasi mandiri.'
-        },
-        {
-            id: 'konsul-003',
-            nama: 'Isaac Newton',
-            inisial: 'IN',
-            avatarColor: '#78C9C0',
-            sekolah: 'Kelas X · SMAN 1 Bandung',
-            nis: '215003',
-            status: 'Menunggu',
-            jadwal: 'Jumat, 13 Nov 2026 · 09.00 - 10.00 WIB',
-            jadwalFull: 'Jumat, 13 November 2026 · 09.00 - 10.00 WIB (60 Menit)',
-            metode: 'Daring (Google Meet) · Sesi Mandiri 1 Pelajar',
-            keluhan: 'Penyesuaian jam tidur dan ritme belajar harian akibat beban tugas kelompok yang menumpuk.',
-            moodRerata: '3.1 / 5.0',
-            moodBars: [32, 30, 26, 38, 42, 40, 34],
-            tidurRerata: '5.8 Jam',
-            tidurBars: [32, 30, 28, 40, 42, 44, 38],
-            linkMeet: 'https://meet.google.com/mhs-klsk-nks',
-            catatan: 'Siapkan jadwal aktivitas harian selama seminggu terakhir untuk bahan analisis manajemen waktu.'
-        },
-        {
-            id: 'konsul-004',
-            nama: 'Ada Lovelace',
-            inisial: 'AL',
-            avatarColor: '#E2E8F0',
-            sekolah: 'Kelas XII · SMAN 1 Bandung',
-            nis: '215004',
-            status: 'Selesai',
-            jadwal: 'Senin, 02 Nov 2026 · 14.00 - 15.00 WIB',
-            jadwalFull: 'Senin, 02 November 2026 · 14.00 - 15.00 WIB (Selesai)',
-            metode: 'Daring (Google Meet) · Selesai Dilaksanakan',
-            keluhan: 'Konsultasi regulasi fokus belajar dan strategi mengatasi prokrastinasi pada materi kalkulus.',
-            moodRerata: '4.2 / 5.0',
-            moodBars: [44, 46, 42, 48, 50, 48, 46],
-            tidurRerata: '7.5 Jam',
-            tidurBars: [48, 50, 48, 52, 54, 52, 50],
-            linkMeet: 'https://meet.google.com/mhs-klsk-nks',
-            catatan: 'Sesi telah selesai. Rencana aksi regulasi waktu 2 minggu telah diberikan kepada pelajar.'
-        }
-    ];
+    const STATUS_LABEL = {
+        Diajukan: 'Menunggu',
+        Disetujui: 'Disetujui',
+        Rescheduled: 'Dijadwal Ulang'
+    };
 
     const DAYS = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
 
     // State Aplikasi
     let consultations = [];
-    let selectedId = 'konsul-001';
+    let selectedId = null;
     let currentFilter = 'all';
     let searchQuery = '';
 
@@ -149,34 +75,91 @@
     const modalBtnBatal = document.getElementById('Modal_BtnBatalJadwal');
 
     // Elemen Toast
-    const toast = document.getElementById('Toast_Notification');
 
-    /**
-     * Inisialisasi Data dari LocalStorage
-     */
-    function initData() {
-        try {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) {
-                consultations = JSON.parse(stored);
-            } else {
-                consultations = DEFAULT_CONSULTATIONS;
-                saveData();
-            }
-        } catch (e) {
-            consultations = DEFAULT_CONSULTATIONS;
-        }
+    function token() {
+        return localStorage.getItem(TOKEN_KEY);
     }
 
-    /**
-     * Simpan Data ke LocalStorage
-     */
-    function saveData() {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(consultations));
-        } catch (e) {
-            console.error('Gagal menyimpan konsultasi ke localStorage', e);
+    async function api(jalur, opsi = {}) {
+        const { method = 'GET', body } = opsi;
+        const respons = await fetch(`${API}${jalur}`, {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token()}`
+            },
+            body: body ? JSON.stringify(body) : undefined
+        });
+        const data = await respons.json().catch(() => ({}));
+        if (respons.status === 401) {
+            localStorage.removeItem(TOKEN_KEY);
+            window.location.href = 'LoginPage.html';
+            throw new Error('Sesi kamu sudah berakhir.');
         }
+        if (!respons.ok || data.success === false) {
+            throw new Error(data.message || 'Permintaan gagal.');
+        }
+        return data;
+    }
+
+    function inisial(nama) {
+        return String(nama || 'P')
+            .trim()
+            .split(/\s+/)
+            .map((kata) => kata.charAt(0))
+            .slice(0, 2)
+            .join('')
+            .toUpperCase();
+    }
+
+    function formatTanggal(iso, opsi) {
+        const tanggal = new Date(iso);
+        if (Number.isNaN(tanggal.getTime())) return String(iso || '-');
+        return tanggal.toLocaleDateString('id-ID', opsi);
+    }
+
+    /** Samakan bentuk data API dengan kartu antrean yang sudah ada. */
+    function petakan(baris) {
+        const jam = String(baris.waktu || '').slice(0, 5);
+        return {
+            id: baris.id_jadwal,
+            nama: baris.nama_pelajar || 'Pelajar',
+            inisial: inisial(baris.nama_pelajar),
+            avatarColor: 'var(--color-teal)',
+            sekolah: 'Pelajar MahaSehat',
+            nis: '-',
+            status: STATUS_LABEL[baris.status_pengajuan] || baris.status_pengajuan,
+            statusApi: baris.status_pengajuan,
+            jadwal: `${formatTanggal(baris.tanggal, { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' })} · ${jam} WIB`,
+            jadwalFull: `${formatTanggal(baris.tanggal, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} · ${jam} WIB (60 Menit)`,
+            metode: 'Sesi konsultasi 60 menit',
+            keluhan: baris.keluhan || '-',
+            moodRerata: '-',
+            moodBars: [],
+            tidurRerata: '-',
+            tidurBars: [],
+            linkMeet: '-',
+            catatan: '',
+            tanggal: baris.tanggal,
+            waktu: jam
+        };
+    }
+
+    async function muatData() {
+        try {
+            const hasil = await api('/masuk');
+            consultations = (hasil.data || []).map(petakan);
+            if (!consultations.some((item) => item.id === selectedId)) {
+                selectedId = consultations.length ? consultations[0].id : null;
+            }
+        } catch (error) {
+            consultations = [];
+            selectedId = null;
+            showToast(error.message || 'Daftar pengajuan gagal dimuat.', 'danger');
+        }
+        if (detailColumn) detailColumn.hidden = consultations.length === 0;
+        renderQueueList();
+        if (selectedId) selectConsultation(selectedId);
     }
 
     /**
@@ -184,15 +167,18 @@
      */
     function updateCounters() {
         const total = consultations.length;
-        const menunggu = consultations.filter(c => c.status === 'Menunggu').length;
-        const disetujui = consultations.filter(c => c.status === 'Disetujui').length;
-        const riwayat = consultations.filter(c => c.status === 'Selesai' || c.status === 'Ditolak').length;
+        const menunggu = consultations.filter(c => c.statusApi === 'Diajukan').length;
+        const disetujui = consultations.filter(c => c.statusApi === 'Disetujui').length;
+        const riwayat = consultations.filter(c => c.statusApi === 'Rescheduled').length;
 
         if (countSemua) countSemua.textContent = total;
         if (countMenunggu) countMenunggu.textContent = menunggu;
         if (countDisetujui) countDisetujui.textContent = disetujui;
         if (countRiwayat) countRiwayat.textContent = riwayat;
-        if (badgePendingNav) badgePendingNav.textContent = menunggu;
+        if (badgePendingNav) {
+            badgePendingNav.textContent = menunggu;
+            badgePendingNav.hidden = menunggu === 0;
+        }
     }
 
     /**
@@ -206,9 +192,9 @@
         // Filter berdasarkan tab dan pencarian
         const filtered = consultations.filter(item => {
             let matchStatus = true;
-            if (currentFilter === 'Menunggu') matchStatus = item.status === 'Menunggu';
-            else if (currentFilter === 'Disetujui') matchStatus = item.status === 'Disetujui';
-            else if (currentFilter === 'Riwayat') matchStatus = item.status === 'Selesai' || item.status === 'Ditolak';
+            if (currentFilter === 'Menunggu') matchStatus = item.statusApi === 'Diajukan';
+            else if (currentFilter === 'Disetujui') matchStatus = item.statusApi === 'Disetujui';
+            else if (currentFilter === 'Dijadwal Ulang') matchStatus = item.statusApi === 'Rescheduled';
 
             const query = searchQuery.trim().toLowerCase();
             const matchQuery = !query || 
@@ -224,9 +210,11 @@
             tutupDetail();
         }
 
+        updateCounters();
+
         if (filtered.length === 0) {
             listContainer.innerHTML = `
-                <div style="padding: 32px 16px; text-align: center; color: var(--color-ink-muted); font-size: 14px;">
+                <div class="empty-msg">
                     Tidak ada permohonan konsultasi yang sesuai dengan kriteria.
                 </div>
             `;
@@ -244,8 +232,8 @@
 
             // Format chip status
             let chipClass = 'badge--menunggu';
-            if (item.status === 'Disetujui') chipClass = 'badge--disetujui';
-            else if (item.status === 'Selesai' || item.status === 'Ditolak') chipClass = 'badge--riwayat';
+            if (item.statusApi === 'Disetujui') chipClass = 'badge--disetujui';
+            else if (item.statusApi === 'Rescheduled') chipClass = 'badge--dijadwal-ulang';
 
             card.innerHTML = `
                 <div class="queue-card-top">
@@ -260,7 +248,7 @@
                 <div class="queue-card-divider"></div>
                 <p class="queue-card-schedule">${escapeHtml(item.jadwal)}</p>
                 <p class="queue-card-snippet">${escapeHtml(item.keluhan)}</p>
-                <span class="queue-card-tag">${item.metode.includes('Tatap Muka') ? 'Tatap Muka (Klinik)' : 'Daring (Google Meet)'}</span>
+                <span class="queue-card-tag">Sesi 60 menit</span>
             `;
 
             card.addEventListener('click', () => {
@@ -278,8 +266,6 @@
 
             listContainer.appendChild(card);
         });
-
-        updateCounters();
     }
 
     /**
@@ -301,7 +287,7 @@
             detailAvatar.style.backgroundColor = target.avatarColor;
         }
         if (detailNama) detailNama.textContent = target.nama;
-        if (detailSubInfo) detailSubInfo.textContent = `${target.sekolah} · NIS: ${target.nis}`;
+        if (detailSubInfo) detailSubInfo.textContent = `Pengajuan konsultasi · ${target.status}`;
         if (detailWaktuSesi) detailWaktuSesi.textContent = target.jadwalFull;
         if (detailMetodeSesi) detailMetodeSesi.textContent = target.metode;
         if (detailKeluhanUtama) detailKeluhanUtama.textContent = `"${target.keluhan}"`;
@@ -340,50 +326,40 @@
 
         // Update Status Tombol Tindakan Berdasarkan Status Saat Ini
         if (btnSetujui) {
-            if (target.status === 'Disetujui') {
-                btnSetujui.textContent = 'Telah Disetujui';
-                btnSetujui.disabled = true;
-                btnSetujui.style.opacity = '0.6';
-            } else {
-                btnSetujui.textContent = 'Setujui Permohonan';
-                btnSetujui.disabled = false;
-                btnSetujui.style.opacity = '1';
-            }
+            const bisaSetujui = target.statusApi === 'Diajukan';
+            btnSetujui.textContent = bisaSetujui
+                ? 'Setujui Permohonan'
+                : (target.statusApi === 'Disetujui' ? 'Telah Disetujui' : 'Sudah Dijadwal Ulang');
+            btnSetujui.disabled = !bisaSetujui;
+            btnSetujui.style.opacity = bisaSetujui ? '1' : '0.6';
         }
     }
 
-    /**
-     * Tampilkan Toast Feedback Notifikasi
-     */
-    function showToast(message) {
-        if (!toast) return;
-        toast.textContent = message;
-        toast.style.display = 'block';
-        setTimeout(() => {
-            toast.style.display = 'none';
-        }, 3500);
+    function showToast(message, type = 'success') {
+        window.MahaSehatFeedback.show(message, type);
     }
 
     /**
-     * Perbarui Status Konsultasi
+     * Perbarui Status Konsultasi lewat API
      */
-    function updateStatus(newStatus, feedbackMsg) {
+    async function updateStatus(statusApi, feedbackMsg) {
         const item = consultations.find(c => c.id === selectedId);
         if (!item) return;
 
-        item.status = newStatus;
-        if (inputMeetLink && newStatus === 'Disetujui') {
-            item.linkMeet = inputMeetLink.value.trim();
+        try {
+            await api(`/${encodeURIComponent(item.id)}/status`, {
+                method: 'PUT',
+                body: { status: statusApi }
+            });
+            item.statusApi = statusApi;
+            item.status = STATUS_LABEL[statusApi] || statusApi;
+            renderQueueList();
+            if (selectedId) selectConsultation(selectedId);
+            tutupDetail();
+            showToast(feedbackMsg);
+        } catch (error) {
+            showToast(error.message || 'Status pengajuan gagal diubah.', 'danger');
         }
-        if (textareaCatatan) {
-            item.catatan = textareaCatatan.value.trim();
-        }
-
-        saveData();
-        renderQueueList();
-        if (selectedId) selectConsultation(selectedId);
-        tutupDetail();
-        showToast(feedbackMsg);
     }
 
     /**
@@ -469,7 +445,7 @@
             btnSetujui.addEventListener('click', () => {
                 const item = consultations.find(c => c.id === selectedId);
                 const name = item ? item.nama : 'Pelajar';
-                updateStatus('Disetujui', `Permohonan konsultasi ${name} berhasil disetujui. Notifikasi konfirmasi dan tautan sesi telah dikirimkan.`);
+                updateStatus('Disetujui', `Permohonan konsultasi ${name} berhasil disetujui.`);
             });
         }
 
@@ -488,12 +464,18 @@
         }
 
         if (btnKonfirmasiTolak && modalTolak) {
-            btnKonfirmasiTolak.addEventListener('click', () => {
+            btnKonfirmasiTolak.addEventListener('click', async () => {
                 const item = consultations.find(c => c.id === selectedId);
                 if (!item) return;
                 const name = item.nama;
                 modalTolak.close();
-                updateStatus('Ditolak', `Permohonan konsultasi ${name} telah ditolak.`);
+                try {
+                    await api(`/${encodeURIComponent(item.id)}/tolak`, { method: 'POST' });
+                    await muatData();
+                    showToast(`Permohonan konsultasi ${name} ditolak dan slotnya dibuka kembali.`);
+                } catch (error) {
+                    showToast(error.message || 'Permohonan gagal ditolak.', 'danger');
+                }
             });
         }
 
@@ -516,28 +498,29 @@
 
         // Modal Simpan Jadwal Baru
         if (modalBtnSimpan && modalJadwal) {
-            modalBtnSimpan.addEventListener('click', () => {
+            modalBtnSimpan.addEventListener('click', async () => {
                 const item = consultations.find(c => c.id === selectedId);
                 if (!item) return;
 
-                const tglVal = modalInputTanggal ? modalInputTanggal.value : '2026-11-12';
-                const waktuVal = modalInputWaktu ? modalInputWaktu.value : '13.00 - 14.00 WIB';
+                const tglVal = modalInputTanggal ? modalInputTanggal.value : '';
+                const waktuVal = modalInputWaktu ? String(modalInputWaktu.value).slice(0, 5) : '';
+                if (!tglVal || !waktuVal) {
+                    showToast('Tanggal dan jam baru wajib diisi.', 'danger');
+                    return;
+                }
 
-                // Format tanggal sederhana
-                const d = new Date(tglVal);
-                const options = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
-                const tglFormatted = isNaN(d.getTime()) ? tglVal : d.toLocaleDateString('id-ID', options);
-
-                item.jadwal = `${tglFormatted} · ${waktuVal}`;
-                item.jadwalFull = `${tglFormatted} · ${waktuVal} (Dijadwal Ulang)`;
-                item.status = 'Disetujui';
-
-                modalJadwal.close();
-                saveData();
-                renderQueueList();
-                if (selectedId) selectConsultation(selectedId);
-                tutupDetail();
-                showToast(`Jadwal konsultasi ${item.nama} berhasil diperbarui ke ${item.jadwal}.`);
+                try {
+                    await api(`/${encodeURIComponent(item.id)}/jadwal`, {
+                        method: 'PUT',
+                        body: { tanggal: tglVal, waktu: waktuVal }
+                    });
+                    modalJadwal.close();
+                    await muatData();
+                    tutupDetail();
+                    showToast(`Jadwal konsultasi ${item.nama} berhasil dipindahkan.`);
+                } catch (error) {
+                    showToast(error.message || 'Jadwal gagal diperbarui.', 'danger');
+                }
             });
         }
 
@@ -545,8 +528,7 @@
         if (btnHubungiPelajar) {
             btnHubungiPelajar.addEventListener('click', () => {
                 const item = consultations.find(c => c.id === selectedId);
-                const name = item ? item.nama : 'Pelajar';
-                alert(`Membuka kanal komunikasi langsung dengan ${name} (WhatsApp / Pesan Internal MahaSehat).`);
+                showToast(`Sesi dengan ${item ? item.nama : 'pelajar'} dijadwalkan lewat jadwal konsultasi.`);
             });
         }
     }
@@ -576,11 +558,16 @@
 
     // Eksekusi Saat Dokumen Siap
     document.addEventListener('DOMContentLoaded', () => {
-        initData();
+        const user = JSON.parse(localStorage.getItem('mahasehat_user') || '{}');
+        const namaSaya = user.nama || 'Tenaga Kesehatan';
+        const elNama = document.getElementById('Text_NamaUser');
+        const elAvatar = document.getElementById('User_Avatar');
+        if (elNama) elNama.textContent = namaSaya;
+        if (elAvatar) elAvatar.textContent = namaSaya.trim().charAt(0).toUpperCase();
+
         sinkronkanModeDetail();
-        renderQueueList();
-        if (selectedId) selectConsultation(selectedId);
         setupEventListeners();
+        muatData();
     });
 
 })();

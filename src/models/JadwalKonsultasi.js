@@ -44,6 +44,42 @@ class JadwalKonsultasi {
     });
   }
 
+  /** Daftar slot milik pelajar yang sudah diajukan, lengkap dengan nama tenaga kesehatan. */
+  static async findByPelajar(idPelajar) {
+    const { rows } = await db.query(
+      `SELECT j.id_jadwal, j.id_tenaga_kesehatan, j.tanggal, j.waktu, j.status_ketersediaan,
+              j.status_pengajuan, j.id_pelajar, j.keluhan, t.nama AS nama_tenaga_kesehatan,
+              t.jenis_tenaga_kesehatan
+       FROM jadwal_konsultasi j JOIN tenaga_kesehatan t ON t.id_tenaga_kesehatan = j.id_tenaga_kesehatan
+       WHERE j.id_pelajar = $1 AND j.status_pengajuan <> 'Belum Diajukan'
+       ORDER BY j.tanggal, j.waktu;`,
+      [idPelajar]
+    );
+    return rows.map((baris) => {
+      const jadwal = new JadwalKonsultasi(baris);
+      jadwal.namaTenagaKesehatan = baris.nama_tenaga_kesehatan;
+      jadwal.jenisTenagaKesehatan = baris.jenis_tenaga_kesehatan;
+      return jadwal;
+    });
+  }
+
+  /** Seluruh slot milik tenaga kesehatan (terpakai maupun kosong). */
+  static async findByTenagaKesehatan(idTenagaKesehatan) {
+    const { rows } = await db.query(
+      `SELECT j.id_jadwal, j.id_tenaga_kesehatan, j.tanggal, j.waktu, j.status_ketersediaan,
+              j.status_pengajuan, j.id_pelajar, j.keluhan, p.nama AS nama_pelajar
+       FROM jadwal_konsultasi j LEFT JOIN pelajar p ON p.id_pelajar = j.id_pelajar
+       WHERE j.id_tenaga_kesehatan = $1
+       ORDER BY j.tanggal, j.waktu;`,
+      [idTenagaKesehatan]
+    );
+    return rows.map((baris) => {
+      const jadwal = new JadwalKonsultasi(baris);
+      jadwal.namaPelajar = baris.nama_pelajar;
+      return jadwal;
+    });
+  }
+
   /** Algo-C09-02 */
   isAvailable() {
     return this.statusKetersediaan && gabungTanggalWaktu(this.tanggal, this.waktu) > new Date();

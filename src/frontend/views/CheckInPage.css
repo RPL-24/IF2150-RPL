@@ -379,3 +379,29 @@
         gap: 12px;
     }
 }
+
+
+/* Pemicu stres: pilihan ganda */
+.trigger-group {
+    margin: 0 0 20px;
+    padding: 0;
+    border: 0;
+}
+
+.trigger-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 6px;
+}
+
+.trigger-chips .seg-btn {
+    border: 1px solid var(--color-border);
+    background-color: var(--color-white);
+}
+
+.trigger-chips .seg-btn.is-active {
+    border-color: var(--color-ink);
+    background-color: var(--color-amber);
+    font-weight: 700;
+}

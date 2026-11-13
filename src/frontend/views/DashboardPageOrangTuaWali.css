@@ -22,8 +22,8 @@
     border-radius: 20px;
     margin-bottom: 24px;
     background-color: var(--color-warning-tint);
-    border: 1px solid rgba(248, 193, 111, 0.7);
-    box-shadow: 0 2px 8px rgba(42, 58, 63, 0.02);
+    border: 1px solid var(--color-amber);
+    box-shadow: var(--shadow-card);
 }
 
 .banner-icon-wrapper {
@@ -84,7 +84,7 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 120px;
-    box-shadow: 0 2px 6px rgba(42, 58, 63, 0.02);
+    box-shadow: var(--shadow-card);
 }
 
 .stat-title {

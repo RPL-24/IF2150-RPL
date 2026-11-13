@@ -70,7 +70,7 @@
     outline: none;
     background-color: var(--color-white);
     border-color: var(--color-teal);
-    box-shadow: 0 0 0 3px rgba(120, 201, 192, 0.2);
+    box-shadow: 0 0 0 3px var(--color-teal-subtle);
 }.form-input::placeholder{
     color: var(--color-ink-muted);
 }/* --------------------------------------------------------------------------
@@ -146,11 +146,11 @@
     background-color: var(--color-white);
     border-radius: 50%;
     transition: transform 0.25s ease;
-    box-shadow: 0 1px 3px rgba(42, 58, 63, 0.15);
+    box-shadow: var(--shadow-card);
 }.switch-toggle input:checked + .switch-slider{
     background-color: var(--color-amber);
 }.switch-toggle input:focus-visible + .switch-slider{
-    box-shadow: 0 0 0 3px rgba(248, 193, 111, 0.4);
+    box-shadow: 0 0 0 3px var(--color-amber-subtle);
 }.switch-toggle input:checked + .switch-slider::before{
     transform: translateX(20px);
 }.switch-toggle input:disabled + .switch-slider{

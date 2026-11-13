@@ -17,7 +17,7 @@
 <body>
     <div class="notif-container">
         <!-- Kartu Notifikasi Darurat Utama (UC08) -->
-        <div class="notif-card" id="Card_Darurat">
+        <div class="notif-card" id="Card_Darurat" hidden>
             <!-- Badge Ikon Darurat -->
             <div class="darurat-icon-badge" id="Icon_Darurat">
                 <img src="../assets/darurat.png" alt="" class="darurat-img" onerror="this.style.display='none'; document.getElementById('Svg_Darurat_Fallback').style.display='block';">
@@ -30,7 +30,7 @@
 
             <!-- Konten Pesan Darurat -->
             <h1 class="notif-title" id="Title_Darurat">Peringatan Darurat Kesehatan Mental!</h1>
-            <p class="notif-desc" id="Desc_Darurat">Pelajar tidak melakukan check-in selama 3 hari berturut-turut dan rata-rata mood berada di bawah ambang batas aman. Segera lakukan tindak lanjut dan hubungi pelajar.</p>
+            <p class="notif-desc" id="Desc_Darurat">-</p>
 
             <!-- Aksi Tombol -->
             <div class="button-group">
@@ -40,7 +40,7 @@
         </div>
 
         <!-- Kartu Sukses / Status Pulih (Ditampilkan Setelah Ditindaklanjuti) -->
-        <div class="notif-card notif-card-success" id="Card_Selesai" style="display: none;">
+        <div class="notif-card" id="Card_Selesai" hidden>
             <div class="success-icon-badge">
                 <img src="../assets/check.png" alt="" class="success-img">
             </div>
@@ -52,6 +52,8 @@
         </div>
     </div>
 
+    <script src="session.js"></script>
+    <script src="feedback.js"></script>
     <script src="NotifikasiDarurat.js"></script>
 </body>
 </html>

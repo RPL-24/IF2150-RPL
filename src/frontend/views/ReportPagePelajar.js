@@ -18,8 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const user = Report.bacaJson('mahasehat_user');
-    Report.isiProfil(user.nama || 'Budi Pratama', 'Pelajar');
-    Report.pasangKeluar();
+    Report.isiProfil(user.nama || 'Pelajar', 'Pelajar');
 
     const hariIni = new Date();
     const tanggal7 = Array.from({ length: 7 }, (_, i) => {
@@ -27,37 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         d.setDate(hariIni.getDate() - (6 - i));
         return d;
     });
-    const namaBulan = (o) => new Date(hariIni.getFullYear(), hariIni.getMonth() - o, 1)
-        .toLocaleDateString('id-ID', { month: 'short' });
 
-    const DATA = {
-        7: {
-            label: tanggal7.map((d) => d.toLocaleDateString('id-ID', { weekday: 'short' })),
-            mood: [4, 3, 2, 4, 5, 5, 4],
-            tidur: [7, 6, 5, 8, 9, 8, 7],
-            frekuensi: [3, 2, 1, 3, 3, 1, 1],
-            jenis: { Berat: 4, Sedang: 3, Ringan: 2 },
-            stres: { Akademik: 45, Keluarga: 25, Relasi: 20, 'Lain-lain': 10 }
-        },
-        30: {
-            label: ['Mg 1', 'Mg 2', 'Mg 3', 'Mg 4'],
-            mood: [3.6, 3.2, 4.1, 3.8],
-            tidur: [7.1, 6.5, 7.8, 7.4],
-            frekuensi: [2.4, 2.1, 2.7, 2.5],
-            jenis: { Berat: 14, Sedang: 10, Ringan: 6 },
-            stres: { Akademik: 50, Keluarga: 20, Relasi: 20, 'Lain-lain': 10 }
-        },
-        90: {
-            label: [namaBulan(2), namaBulan(1), namaBulan(0)],
-            mood: [3.4, 3.7, 3.9],
-            tidur: [6.8, 7.2, 7.5],
-            frekuensi: [2.3, 2.5, 2.6],
-            jenis: { Berat: 38, Sedang: 31, Ringan: 21 },
-            stres: { Akademik: 48, Keluarga: 22, Relasi: 18, 'Lain-lain': 12 }
-        }
-    };
-
-    // Database dummy catatan refleksi harian (terindeks berdasarkan format YYYY-MM-DD)
     const formatIso = (d) => {
         const y = d.getFullYear();
         const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -65,25 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${y}-${m}-${day}`;
     };
 
-    // Peta catatan berdasarkan tanggal ISO
-    const MAP_CATATAN = {};
-    const DUMMY_NOTES_POOL = [
-        "Presentasi kelompok cukup lancar, namun masih perlu revisi bab implementasi.",
-        "Sulit fokus belajar karena begadang semalam. Mood agak menurun.",
-        "Hari ini cukup tenang dan stabil. Berhasil menyelesaikan target tugas tepat waktu.",
-        "Merasa sedikit cemas menjelang jadwal asistensi, tapi diskusi dengan teman membantu.",
-        "Pola tidur membaik setelah mengurangi screen-time sebelum tidur."
-    ];
+    const token = localStorage.getItem('mahasehat_token');
+    let DATA = null;
+    let MAP_CATATAN = {};
 
-    // Isi beberapa tanggal dengan catatan bermakna
-    tanggal7.forEach((d, idx) => {
-        const iso = formatIso(d);
-        if (idx === 1) MAP_CATATAN[iso] = DUMMY_NOTES_POOL[0];
-        else if (idx === 3) MAP_CATATAN[iso] = DUMMY_NOTES_POOL[1];
-        else if (idx === 6) MAP_CATATAN[iso] = DUMMY_NOTES_POOL[2];
-    });
-
-    const WARNA_STRES = { Akademik: '#B5453B', Keluarga: '#F8C16F', Relasi: '#78C9C0', 'Lain-lain': '#64748B' };
+    const WARNA_STRES = {
+        Akademik: 'var(--color-danger)',
+        Keluarga: 'var(--color-amber)',
+        Relasi: 'var(--color-teal)',
+        'Lain-lain': 'var(--color-ink-muted)'
+    };
 
     const gridLaporan = document.getElementById('Grid_Laporan');
     const alertKosong = document.getElementById('Alert_DataKosong');
@@ -97,7 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const list = document.getElementById('List_Stres');
         if (!list) return;
         list.innerHTML = '';
-        Object.entries(stres).forEach(([nama, persen]) => {
+        const entri = Object.entries(stres);
+        if (!entri.length) {
+            const kosong = document.createElement('li');
+            kosong.className = 'empty-msg';
+            kosong.textContent = 'Belum ada pemicu stres yang dicatat pada periode ini.';
+            list.append(kosong);
+            return;
+        }
+        entri.forEach(([nama, persen]) => {
             const li = document.createElement('li');
             const head = document.createElement('div');
             head.className = 'stres-head';
@@ -216,26 +184,76 @@ document.addEventListener('DOMContentLoaded', () => {
     function showPage(periode) {
         const d = DATA[periode];
         const nilaiJenis = Object.values(d.jenis);
-        const maksJenis = Math.max(5, Math.ceil(Math.max(...nilaiJenis)));
-        const cfgJenis = maksJenis <= 5
-            ? { min: 1, max: 5, ticks: [1, 2, 3, 4, 5] }
-            : { min: 0, max: maksJenis, ticks: [0, Math.round(maksJenis / 2), maksJenis] };
+        const maksJenis = Math.max(1, ...nilaiJenis.map((nilai) => Number(nilai) || 0));
+        const cfgJenis = {
+            min: 0,
+            max: maksJenis,
+            ticks: Array.from({ length: maksJenis + 1 }, (_, i) => i)
+        };
 
         Report.displayChart(document.getElementById('Chart_Mood'), d.label, d.mood, { min: 1, max: 5, ticks: [1, 2, 3, 4, 5] });
         Report.displayChart(document.getElementById('Chart_Tidur'), d.label, d.tidur, { min: 0, max: 10, ticks: [0, 2, 4, 6, 8, 10] });
-        Report.displayChart(document.getElementById('Chart_FrekuensiMakan'), d.label, d.frekuensi, { min: 0, max: 3, ticks: [0, 1, 2, 3] });
+        const maksFrekuensi = Math.max(1, ...d.frekuensi.map((nilai) => Number(nilai) || 0));
+        Report.displayChart(document.getElementById('Chart_FrekuensiMakan'), d.label, d.frekuensi, {
+            min: 0,
+            max: maksFrekuensi,
+            ticks: Array.from({ length: maksFrekuensi + 1 }, (_, i) => i)
+        });
         Report.displayChart(document.getElementById('Chart_JenisMakan'), Object.keys(d.jenis), nilaiJenis, cfgJenis);
         displayStres(d.stres);
     }
 
     Report.pasangPeriode(showPage);
 
-    if (params.get('data') === 'kosong') {
-        gridLaporan.hidden = true;
-        alertKosong.hidden = false;
+    async function muatLaporan() {
+        if (params.get('data') === 'kosong') {
+            gridLaporan.hidden = true;
+            alertKosong.hidden = false;
+            return;
+        }
+        try {
+            const respons = await fetch('/api/reports/summary', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const hasil = await respons.json().catch(() => ({}));
+            if (!respons.ok) throw new Error(hasil.message || 'Laporan gagal dimuat.');
+
+            const data = hasil.data || {};
+            const seri = data.seri || {};
+            const jenis = Object.fromEntries((data.jenis_makan || []).map((item) => [item.nama, item.nilai]));
+            const stres = Object.fromEntries((data.stres || []).map((item) => [item.nama, item.persen]));
+
+            const buat = (kunci) => {
+                const isi = seri[kunci] || {};
+                return {
+                    label: isi.label || [],
+                    mood: isi.mood || [],
+                    tidur: isi.tidur || [],
+                    frekuensi: isi.frekuensi || [],
+                    jenis,
+                    stres
+                };
+            };
+
+            DATA = { 7: buat('7'), 30: buat('30'), 90: buat('90') };
+            MAP_CATATAN = {};
+            (data.catatan || []).forEach((item) => {
+                if (item.tanggal && item.catatan) MAP_CATATAN[item.tanggal] = item.catatan;
+            });
+
+            const kosong = !DATA[7].label.length;
+            gridLaporan.hidden = kosong;
+            alertKosong.hidden = !kosong;
+            if (kosong) return;
+
+            showPage(7);
+            displayNotes();
+        } catch (error) {
+            gridLaporan.hidden = true;
+            alertKosong.hidden = false;
+            alertKosong.textContent = error.message || 'Laporan kesehatan gagal dimuat.';
+        }
     }
-    else {
-        showPage(7);
-        displayNotes();
-    }
+
+    muatLaporan();
 });

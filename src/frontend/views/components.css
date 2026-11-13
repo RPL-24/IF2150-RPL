@@ -469,7 +469,7 @@
 }
 
 .modal::backdrop {
-    background-color: rgba(42, 58, 63, 0.45);
+    background-color: var(--color-overlay);
     backdrop-filter: blur(4px);
 }
 
@@ -621,6 +621,7 @@
     z-index: 1000;
     max-width: min(420px, calc(100vw - 96px));
     padding: 14px 22px;
+    border: 1px solid var(--color-ink);
     border-radius: var(--radius-md);
     background-color: var(--color-ink);
     color: var(--color-cream);
@@ -629,6 +630,12 @@
     line-height: 1.4;
     box-shadow: var(--shadow-modal);
     animation: toastMasuk var(--duration-base) ease;
+}
+
+.toast-notification--danger {
+    border-color: var(--color-danger);
+    background-color: var(--color-danger);
+    color: var(--color-white);
 }
 
 @keyframes toastMasuk {
@@ -649,4 +656,18 @@
         bottom: 16px;
         max-width: none;
     }
+}
+
+/* Modal peringatan darurat (dipakai emergency-alert.js) */
+.modal--darurat {
+    border-color: var(--color-danger);
+}
+
+.modal--darurat .eyebrow {
+    margin-bottom: 4px;
+    color: var(--color-danger);
+}
+
+.modal--darurat .alert-box {
+    margin-bottom: 16px;
 }

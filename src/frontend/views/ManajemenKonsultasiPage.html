@@ -62,7 +62,7 @@
                 <div class="sidebar-user" id="Info_User">
                     <div class="user-avatar" id="User_Avatar">R</div>
                     <div class="user-meta">
-                        <p class="user-name" id="Text_NamaUser">Raissa Hadiman, M. Psi.</p>
+                        <p class="user-name" id="Text_NamaUser">-</p>
                         <p class="user-role" id="Text_RoleUser">Tenaga Kesehatan</p>
                     </div>
                 </div>
@@ -90,10 +90,10 @@
 
                     <!-- Filter Chips (Anti-Slop Pill Style) -->
                     <div class="filter-chips-row" role="tablist" aria-label="Filter status permohonan">
-                        <button type="button" class="filter-pill active" data-filter="all" id="Tab_Semua">Semua (<span id="Count_Semua">4</span>)</button>
-                        <button type="button" class="filter-pill" data-filter="Menunggu" id="Tab_Menunggu">Menunggu (<span id="Count_Menunggu">2</span>)</button>
-                        <button type="button" class="filter-pill" data-filter="Disetujui" id="Tab_Disetujui">Disetujui (<span id="Count_Disetujui">1</span>)</button>
-                        <button type="button" class="filter-pill" data-filter="Riwayat" id="Tab_Riwayat">Riwayat (<span id="Count_Riwayat">1</span>)</button>
+                        <button type="button" class="filter-pill active" data-filter="all" id="Tab_Semua">Semua (<span id="Count_Semua">0</span>)</button>
+                        <button type="button" class="filter-pill" data-filter="Menunggu" id="Tab_Menunggu">Menunggu (<span id="Count_Menunggu">0</span>)</button>
+                        <button type="button" class="filter-pill" data-filter="Disetujui" id="Tab_Disetujui">Disetujui (<span id="Count_Disetujui">0</span>)</button>
+                        <button type="button" class="filter-pill" data-filter="Dijadwal Ulang" id="Tab_Riwayat">Dijadwal Ulang (<span id="Count_Riwayat">0</span>)</button>
                     </div>
 
                     <!-- List Kartu Permohonan -->
@@ -108,10 +108,10 @@
                         
                         <!-- Header Pasien -->
                         <div class="patient-header-section">
-                            <div class="patient-avatar-circle" id="Detail_Avatar">AE</div>
+                            <div class="patient-avatar-circle" id="Detail_Avatar">-</div>
                             <div class="patient-meta-info">
-                                <h2 class="patient-name" id="Detail_Nama">Albert Einstein</h2>
-                                <p class="patient-sub" id="Detail_SubInfo">Pelajar · SMAN 1 Bandung · NIS: 215001</p>
+                                <h2 class="patient-name" id="Detail_Nama">-</h2>
+                                <p class="patient-sub" id="Detail_SubInfo">-</p>
                             </div>
                             <button type="button" class="btn btn--secondary btn-hubungi" id="Btn_HubungiPelajar">Hubungi</button>
                         </div>
@@ -123,15 +123,15 @@
                             <h3 class="section-title">Rincian Sesi Konsultasi</h3>
                             <div class="info-block">
                                 <p class="info-label">Waktu Pengajuan</p>
-                                <p class="info-value-bold" id="Detail_WaktuSesi">Selasa, 10 November 2026 · 10.00 - 11.00 WIB (60 Menit)</p>
+                                <p class="info-value-bold" id="Detail_WaktuSesi">-</p>
                             </div>
                             <div class="info-block">
                                 <p class="info-label">Metode & Kuota</p>
-                                <p class="info-value-bold" id="Detail_MetodeSesi">Daring (Google Meet) · Sesi Mandiri 1 Pelajar</p>
+                                <p class="info-value-bold" id="Detail_MetodeSesi">-</p>
                             </div>
                             <div class="info-block">
                                 <p class="info-label">Keluhan Utama dari Pelajar</p>
-                                <p class="info-quote" id="Detail_KeluhanUtama">"Sering merasa cemas dan kesulitan tidur menjelang ujian akhir semester. Butuh bimbingan manajemen stres dan latihan regulasi emosi."</p>
+                                <p class="info-quote" id="Detail_KeluhanUtama">-</p>
                             </div>
                         </div>
 
@@ -139,7 +139,7 @@
 
                         <!-- Section 2: Tren Kesehatan 7 Hari Terakhir (Agregat KNF02) -->
                         <div class="detail-section">
-                            <div class="section-header-flex">
+                            <div >
                                 <h3 class="section-title">Tren Kesehatan 7 Hari Terakhir</h3>
                             </div>
                             <p class="section-subtext">Rangkuman agregat dari catatan harian pelajar (jurnal pribadi tetap terenkripsi).</p>
@@ -150,7 +150,7 @@
                                 <div class="chart-box-mini">
                                     <div class="chart-box-header">
                                         <h4 class="chart-box-title">Data Mood</h4>
-                                        <span class="chart-box-stat" id="Stat_MoodRerata">2.8 / 5.0</span>
+                                        <span class="chart-box-stat" id="Stat_MoodRerata">-</span>
                                     </div>
                                     <div class="chart-bars-wrap" id="Bars_Mood">
                                         <!-- Mini bar chart mood akan di-render oleh JS -->
@@ -161,7 +161,7 @@
                                 <div class="chart-box-mini">
                                     <div class="chart-box-header">
                                         <h4 class="chart-box-title">Data Tidur</h4>
-                                        <span class="chart-box-stat" id="Stat_TidurRerata">5.2 Jam</span>
+                                        <span class="chart-box-stat" id="Stat_TidurRerata">-</span>
                                     </div>
                                     <div class="chart-bars-wrap" id="Bars_Tidur">
                                         <!-- Mini bar chart tidur akan di-render oleh JS -->
@@ -177,11 +177,11 @@
                             <h3 class="section-title">Tautan & Catatan Sesi</h3>
                             <div class="form-group-custom">
                                 <label class="form-label-custom" for="Input_MeetLink">Tautan Google Meet</label>
-                                <input type="url" class="form-input-custom" id="Input_MeetLink" value="https://meet.google.com/mhs-klsk-nks">
+                                <input type="url" class="form-input-custom" id="Input_MeetLink" placeholder="https://meet.google.com/...">
                             </div>
                             <div class="form-group-custom">
                                 <label class="form-label-custom" for="Textarea_Catatan">Catatan Persiapan untuk Pelajar</label>
-                                <textarea class="form-textarea-custom" id="Textarea_Catatan" rows="2">Mohon persiapkan ringkasan kendala belajar. Sesi dimulai tepat pukul 10.00 WIB.</textarea>
+                                <textarea class="form-textarea-custom" id="Textarea_Catatan" rows="2" placeholder="Catatan persiapan untuk pelajar"></textarea>
                             </div>
                         </div>
 
@@ -198,17 +198,15 @@
     </div>
 
     <!-- Toast Feedback Notification -->
-    <div class="toast-notification" id="Toast_Notification" role="alert" aria-live="assertive"></div>
-
     <!-- Modal Dialog untuk Jadwal Ulang -->
     <!-- Dialog Jadwal Ulang (dialog native: ESC + focus trap + backdrop) -->
     <dialog class="modal" id="Modal_JadwalUlang" aria-labelledby="Title_JadwalUlang">
         <div class="modal__body">
             <h2 class="modal__title" id="Title_JadwalUlang">Jadwalkan Ulang Sesi Konsultasi</h2>
-            <p class="modal__subtitle" id="Modal_JadwalSub">Tentukan tanggal dan waktu baru untuk konsultasi bersama Albert Einstein.</p>
+            <p class="modal__subtitle" id="Modal_JadwalSub">Tentukan tanggal dan waktu baru untuk konsultasi bersama pelajar.</p>
             <div class="form-group">
                 <label class="form-label" for="Modal_InputTanggal">Tanggal Sesi Baru</label>
-                <input type="date" class="form-input" id="Modal_InputTanggal" value="2026-11-12">
+                <input type="date" class="form-input" id="Modal_InputTanggal">
             </div>
             <div class="form-group">
                 <label class="form-label" for="Modal_InputWaktu">Waktu Sesi</label>
@@ -249,6 +247,8 @@
     </dialog>
 
     <!-- Script Utama -->
+    <script src="session.js"></script>
+    <script src="feedback.js"></script>
     <script src="ManajemenKonsultasiPage.js"></script>
     <script src="sidebar.js"></script>
 </body>

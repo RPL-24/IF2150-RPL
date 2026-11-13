@@ -225,6 +225,17 @@ class Pelajar extends Pengguna {
     }
     return jadwal.reservasi(this.idPelajar, isiKeluhan);
   }
+
+  /** Perbarui identitas pelajar yang tampil di profil dan konsultasi. */
+  async perbaruiProfil({ nama, nomorTelepon }, executor = db) {
+    // Email pelajar disimpan di tabel pengguna; tabel pelajar tidak punya kolom email.
+    await executor.query(
+      'UPDATE pelajar SET nama = $1, nomor_telepon = $2 WHERE id_pelajar = $3;',
+      [nama, nomorTelepon, this.idPelajar]
+    );
+    this.nama = nama;
+    this.nomorTelepon = nomorTelepon;
+  }
 }
 
 module.exports = Pelajar;

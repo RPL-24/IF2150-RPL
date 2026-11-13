@@ -44,7 +44,7 @@
                     <a href="ManajemenKonsultasiPage.html" class="nav-item" id="Menu_Konsultasi">
                         <img src="../assets/icon-konsultasi.png" alt="" class="nav-icon">
                         <span class="nav-label">Konsultasi</span>
-                        <span class="nav-badge" id="Badge_PendingCount">2</span>
+                        <span class="nav-badge" id="Badge_PendingCount" hidden>0</span>
                     </a>
 
                     <div class="menu-divider"></div>
@@ -61,9 +61,9 @@
                 </nav>
 
                 <div class="sidebar-user" id="Info_User">
-                    <div class="user-avatar" id="User_Avatar">R</div>
+                    <div class="user-avatar" id="User_Avatar">-</div>
                     <div class="user-meta">
-                        <p class="user-name" id="Text_NamaUser">Raissa Hadiman, M. Psi.</p>
+                        <p class="user-name" id="Text_NamaUser">-</p>
                         <p class="user-role" id="Text_RoleUser">Tenaga Kesehatan</p>
                     </div>
                 </div>
@@ -80,7 +80,6 @@
             </header>
 
             <!-- Feedback Toast Notifikasi -->
-            <div id="Feedback_Toast" class="feedback-toast" role="status" aria-live="polite" style="display: none;"></div>
 
             <!-- Grid Dua Kolom Setelan Nakes -->
             <div class="settings-grid-top">
@@ -95,39 +94,39 @@
                         <form id="Form_ProfilNakes" class="settings-form" novalidate>
                             <div class="form-group">
                                 <label class="form-label" for="Input_Nama">Nama Lengkap & Gelar</label>
-                                <input type="text" class="form-input" id="Input_Nama" name="nama" value="Raissa Hadiman, M. Psi., Psikolog" required>
+                                <input type="text" class="form-input" id="Input_Nama" name="nama" placeholder="Nama lengkap dan gelar" required>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label" for="Input_Spesialisasi">Spesialisasi & Bidang Keahlian</label>
-                                <input type="text" class="form-input" id="Input_Spesialisasi" name="spesialisasi" value="Psikologi Klinis & Konseling Remaja / Akademik" required>
+                                <input type="text" class="form-input" id="Input_Spesialisasi" name="spesialisasi" placeholder="Mis. Psikolog Klinis" required>
                             </div>
 
                             <div class="form-row-grid">
                                 <div class="form-group">
                                     <label class="form-label" for="Input_SIP">Nomor Izin Praktik (SIP/STR)</label>
-                                    <input type="text" class="form-input" id="Input_SIP" name="sip" value="19890412-2021-SIP-04" required>
+                                    <input type="text" class="form-input" id="Input_SIP" name="sip" placeholder="Nomor STR/SIP" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="Input_Tarif">Tarif Konsultasi per Sesi</label>
-                                    <input type="text" class="form-input" id="Input_Tarif" name="tarif" value="Rp 150.000 / 60 Menit" required>
+                                    <input type="text" class="form-input" id="Input_Tarif" name="tarif" placeholder="Mis. Rp150.000 / sesi" required>
                                 </div>
                             </div>
 
                             <div class="form-row-grid">
                                 <div class="form-group">
                                     <label class="form-label" for="Input_Email">Email Resmi</label>
-                                    <input type="email" class="form-input" id="Input_Email" name="email" value="raissa.hadiman@mahasehat.id" required>
+                                    <input type="email" class="form-input" id="Input_Email" name="email" placeholder="nama@praktik.com" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="Input_NomorTelepon">WhatsApp Kontak Praktik</label>
-                                    <input type="tel" class="form-input" id="Input_NomorTelepon" name="nomor_telp" value="081234567890" required>
+                                    <input type="tel" class="form-input" id="Input_NomorTelepon" name="nomor_telp" placeholder="08xxxxxxxxxx" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label" for="Input_Bio">Bio Singkat & Pendekatan Konseling</label>
-                                <textarea class="form-input form-textarea" id="Input_Bio" name="bio" rows="3">Berpengalaman 8 tahun mendampingi pelajar dan mahasiswa mengatasi stres akademik, kecemasan, gangguan tidur, serta adaptasi perkuliahan dengan pendekatan CBT.</textarea>
+                                <textarea class="form-input form-textarea" id="Input_Bio" name="bio" rows="3"placeholder="Ceritakan singkat pengalaman dan pendekatan praktikmu."></textarea>
                             </div>
 
                             <div class="form-actions">
@@ -194,23 +193,23 @@
                         <form id="Form_TempatKerja" class="settings-form" novalidate>
                             <div class="form-group">
                                 <label class="form-label" for="Input_Instansi">Nama Klinik / Fasilitas Kesehatan</label>
-                                <input type="text" class="form-input" id="Input_Instansi" name="instansi" value="Klinik Utama Sehat Jiwa / Unit Konseling ITB" required>
+                                <input type="text" class="form-input" id="Input_Instansi" name="instansi" placeholder="Nama klinik / instansi" required>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label" for="Input_Alamat">Alamat Praktik Tatap Muka (Offline)</label>
-                                <input type="text" class="form-input" id="Input_Alamat" name="alamat" value="Gedung Layanan Terpadu Lt. 2, Jl. Ganesa No. 10, Bandung" required>
+                                <input type="text" class="form-input" id="Input_Alamat" name="alamat" placeholder="Alamat praktik" required>
                             </div>
 
                             <div class="form-group">
                                 <span class="form-label">Metode Konsultasi yang Dilayani</span>
                                 <div class="checkbox-group-row">
                                     <label class="custom-checkbox-label">
-                                        <input type="checkbox" id="Check_Online" name="metode_online" checked>
+                                        <input type="checkbox" id="Check_Online" name="metode_online">
                                         <span>Konsultasi Daring (Telekonsultasi)</span>
                                     </label>
                                     <label class="custom-checkbox-label">
-                                        <input type="checkbox" id="Check_Offline" name="metode_offline" checked>
+                                        <input type="checkbox" id="Check_Offline" name="metode_offline">
                                         <span>Tatap Muka Langsung (Offline)</span>
                                     </label>
                                 </div>
@@ -218,7 +217,7 @@
 
                             <div class="form-group">
                                 <label class="form-label" for="Input_LinkTelekonsultasi">Tautan Google Meet Default</label>
-                                <input type="url" class="form-input" id="Input_LinkTelekonsultasi" name="link_meet" value="https://meet.google.com/mhs-psik-101">
+                                <input type="url" class="form-input" id="Input_LinkTelekonsultasi" name="link_meet" placeholder="https://meet.google.com/...">
                             </div>
 
                             <div class="form-actions">
@@ -242,7 +241,7 @@
                                 </div>
                                 <label class="switch-control" for="Toggle_MenerimaPasien">
                                     <input type="checkbox" id="Toggle_MenerimaPasien" checked aria-label="Toggle status penerimaan pasien">
-                                    <span class="slider round"></span>
+                                    <span class="slider"></span>
                                 </label>
                             </div>
 
@@ -251,23 +250,23 @@
                                 <span class="form-label">Hari Praktik Mingguan</span>
                                 <div class="days-selector-grid" id="Group_HariPraktik" role="group" aria-label="Pilih hari praktik">
                                     <label class="day-chip">
-                                        <input type="checkbox" name="hari" value="Senin" checked>
+                                        <input type="checkbox" name="hari" value="Senin">
                                         <span>Sen</span>
                                     </label>
                                     <label class="day-chip">
-                                        <input type="checkbox" name="hari" value="Selasa" checked>
+                                        <input type="checkbox" name="hari" value="Selasa">
                                         <span>Sel</span>
                                     </label>
                                     <label class="day-chip">
-                                        <input type="checkbox" name="hari" value="Rabu" checked>
+                                        <input type="checkbox" name="hari" value="Rabu">
                                         <span>Rab</span>
                                     </label>
                                     <label class="day-chip">
-                                        <input type="checkbox" name="hari" value="Kamis" checked>
+                                        <input type="checkbox" name="hari" value="Kamis">
                                         <span>Kam</span>
                                     </label>
                                     <label class="day-chip">
-                                        <input type="checkbox" name="hari" value="Jumat" checked>
+                                        <input type="checkbox" name="hari" value="Jumat">
                                         <span>Jum</span>
                                     </label>
                                     <label class="day-chip">
@@ -314,6 +313,8 @@
     </div>
 
     <!-- Script Pengendali Halaman -->
+    <script src="session.js"></script>
+    <script src="feedback.js"></script>
     <script src="SettingPageTenagaKesehatan.js"></script>
     <script src="sidebar.js"></script>
 </body>

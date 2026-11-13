@@ -62,7 +62,7 @@
                 <div class="sidebar-user" id="Info_User">
                     <div class="user-avatar" id="User_Avatar">R</div>
                     <div class="user-meta">
-                        <p class="user-name" id="Text_NamaUser">Raissa Hadiman, M. Psi.</p>
+                        <p class="user-name" id="Text_NamaUser">-</p>
                         <p class="user-role" id="Text_RoleUser">Tenaga Kesehatan</p>
                     </div>
                 </div>
@@ -80,14 +80,14 @@
             <!-- Banner Profil & Praktik Nakes -->
             <section class="banner-card banner-profile" id="Card_Profil">
                 <div class="profile-banner-left" id="Item_Profil">
-                    <div class="profile-avatar-circle" id="Avatar_Nakes">RH</div>
-                    <div class="profile-info-text">
+                    <div class="profile-avatar-circle" id="Avatar_Nakes">-</div>
+                    <div >
                         <div class="profile-header-line">
-                            <h2 class="profile-name" id="Text_NamaNakes">Raissa Hadiman, M. Psi.</h2>
+                            <h2 class="profile-name" id="Text_NamaNakes">-</h2>
                             <span class="badge badge--stabil">Praktik Aktif</span>
                         </div>
-                        <p class="profile-specialty" id="Text_JenisNakes">Psikologi Klinis</p>
-                        <p class="profile-detail-line" id="Text_DetailProfil">Rumah Sakit ABC • Rp150.000 - Rp250.000 per sesi</p>
+                        <p class="profile-specialty" id="Text_JenisNakes">-</p>
+                        <p class="profile-detail-line" id="Text_DetailProfil">-</p>
                     </div>
                 </div>
             </section>
@@ -97,7 +97,7 @@
                 <article class="stat-card" id="Card_Diajukan">
                     <h3 class="stat-title">Pengajuan Baru</h3>
                     <div class="stat-metric">
-                        <span class="stat-value" id="Value_Diajukan">1</span>
+                        <span class="stat-value" id="Value_Diajukan">0</span>
                         <span class="stat-unit">Pengajuan</span>
                     </div>
                     <p class="stat-note">Menunggu tanggapanmu</p>
@@ -106,7 +106,7 @@
                 <article class="stat-card" id="Card_Disetujui">
                     <h3 class="stat-title">Disetujui</h3>
                     <div class="stat-metric">
-                        <span class="stat-value" id="Value_Disetujui">1</span>
+                        <span class="stat-value" id="Value_Disetujui">0</span>
                         <span class="stat-unit">Pengajuan</span>
                     </div>
                     <p class="stat-note">Konsultasi terjadwal</p>
@@ -115,7 +115,7 @@
                 <article class="stat-card" id="Card_DijadwalUlang">
                     <h3 class="stat-title">Dijadwal Ulang</h3>
                     <div class="stat-metric">
-                        <span class="stat-value" id="Value_DijadwalUlang">1</span>
+                        <span class="stat-value" id="Value_DijadwalUlang">0</span>
                         <span class="stat-unit">Pengajuan</span>
                     </div>
                     <p class="stat-note">Menunggu jawaban pelajar</p>
@@ -124,7 +124,7 @@
                 <article class="stat-card" id="Card_SlotKosong">
                     <h3 class="stat-title">Slot Kosong</h3>
                     <div class="stat-metric">
-                        <span class="stat-value" id="Value_SlotKosong">2</span>
+                        <span class="stat-value" id="Value_SlotKosong">0</span>
                         <span class="stat-unit">Slot</span>
                     </div>
                     <p class="stat-note">Masih tersedia</p>
@@ -140,7 +140,7 @@
                     </div>
 
                     <div class="custom-list-group" id="List_Pengajuan"></div>
-                    <p class="empty-msg" id="Text_PengajuanKosong" style="display: none;">Belum ada pengajuan konsultasi.</p>
+                    <p class="empty-msg" id="Text_PengajuanKosong" hidden>Belum ada pengajuan konsultasi.</p>
 
                     <div class="card-box-footer">
                         <a href="ManajemenKonsultasiPage.html" class="btn btn--primary" id="Link_KelolaPengajuan">Kelola Pengajuan</a>
@@ -154,12 +154,13 @@
                     </div>
 
                     <div class="custom-list-group" id="List_Ketersediaan"></div>
-                    <p class="empty-msg" id="Text_KetersediaanKosong" style="display: none;">Belum ada slot ketersediaan.</p>
+                    <p class="empty-msg" id="Text_KetersediaanKosong" hidden>Belum ada slot ketersediaan.</p>
                 </section>
             </div>
         </main>
     </div>
 
+    <script src="session.js"></script>
     <script src="DashboardPageTenagaKesehatan.js"></script>
     <script src="sidebar.js"></script>
 </body>

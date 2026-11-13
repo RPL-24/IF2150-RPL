@@ -339,6 +339,73 @@ async function profilSaya(req, res) {
 }
 
 // ---------------------------------------------------------------------------
+// Profil pengguna - baca dan perbarui identitas
+// ---------------------------------------------------------------------------
+
+async function perbaruiProfil(req, res) {
+  const body = req.body || {};
+  const nama = teks(body.nama);
+  const nomorTelepon = teks(body.nomor_telepon ?? body.nomorTelepon);
+  const email = teks(body.email).toLowerCase();
+
+  if (nama.length < 2 || !POLA_NAMA.test(nama)) {
+    throw new AppError(400, 'Nama minimal 2 karakter dan hanya boleh berisi huruf, spasi, titik, koma, apostrof, atau tanda hubung.');
+  }
+  if (!POLA_TELEPON.test(nomorTelepon)) {
+    throw new AppError(400, 'Nomor telepon harus diawali 08 dan terdiri dari 10-14 digit angka.');
+  }
+  if (!Pengguna.POLA_EMAIL.test(email)) {
+    throw new AppError(400, 'Format email tidak valid.');
+  }
+
+  const profil = await MODEL_PROFIL[req.user.role].findByIdPengguna(req.user.idPengguna);
+  if (!profil) {
+    throw new AppError(404, 'Profil pengguna tidak ditemukan.');
+  }
+
+  if (email !== String(profil.email || '').toLowerCase()) {
+    const terpakai = await Pengguna.findByEmail(email);
+    if (terpakai && terpakai.idPengguna !== req.user.idPengguna) {
+      throw new AppError(409, 'Email sudah dipakai akun lain.');
+    }
+  }
+
+  await db.withTransaction(async (client) => {
+    if (email !== String(profil.email || '').toLowerCase()) {
+      await Pengguna.ubahEmail(req.user.idPengguna, email, client);
+    }
+    await profil.perbaruiProfil({
+      nama,
+      nomorTelepon,
+      email,
+      jenisTenagaKesehatan: teks(body.jenis_tenaga_kesehatan) || undefined,
+      nomorStr: teks(body.nomor_str) || undefined,
+      lokasi: teks(body.lokasi) || undefined
+    }, client);
+  });
+
+  return kirim(res, 200, 'Profil berhasil diperbarui.', {
+    idPengguna: req.user.idPengguna,
+    role: req.user.role,
+    nama,
+    email,
+    nomorTelepon
+  });
+}
+
+// ---------------------------------------------------------------------------
+// UC02 - pengajuan registrasi yang menunggu konfirmasi wali
+// ---------------------------------------------------------------------------
+
+async function pengajuanMenunggu(req, res) {
+  const wali = await OrangTuaWali.findByIdPengguna(req.user.idPengguna);
+  if (!wali) {
+    throw new AppError(404, 'Profil wali tidak ditemukan.');
+  }
+  return kirim(res, 200, 'Pengajuan registrasi menunggu konfirmasi.', await wali.getPengajuanMenunggu());
+}
+
+// ---------------------------------------------------------------------------
 // UC10 Keluar Akun
 // ---------------------------------------------------------------------------
 
@@ -356,4 +423,6 @@ module.exports = {
   masuk,
   profilSaya,
   keluar,
+  pengajuanMenunggu,
+  perbaruiProfil
 };

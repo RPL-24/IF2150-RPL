@@ -46,7 +46,7 @@
     margin-bottom: 24px;
     background-color: var(--color-white);
     border: 1px solid var(--color-border);
-    box-shadow: 0 2px 6px rgba(42, 58, 63, 0.02);
+    box-shadow: var(--shadow-card);
     width: 100%;
 }.banner-icon-wrapper{
     flex-shrink: 0;
@@ -109,7 +109,7 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 120px;
-    box-shadow: 0 2px 6px rgba(42, 58, 63, 0.02);
+    box-shadow: var(--shadow-card);
 }.stat-title{
     font-size: 14px;
     font-weight: 500;
@@ -125,6 +125,11 @@
     font-weight: 700;
     color: var(--color-ink);
     letter-spacing: -1px;
+}.stat-value--text {
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    overflow-wrap: anywhere;
 }.stat-unit{
     font-size: 14px;
     font-weight: 500;

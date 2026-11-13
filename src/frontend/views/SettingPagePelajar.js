@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const DASHBOARD_PELAJAR = 'DashboardPagePelajar.html';
 
     const DATA_DUMMY = {
-        nama: 'Albert Einstein',
-        email: 'albert.einstein@gmail.com',
-        nomorTelepon: '081234567890'
+        nama: 'Pelajar',
+        email: '-',
+        nomorTelepon: '-'
     };
 
     localStorage.setItem('role', 'pelajar');
@@ -36,7 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Ambil data akun tersimpan atau default
     const storedUser = JSON.parse(localStorage.getItem('mahasehat_user') || '{}');
-    const role = kanonikRole(localStorage.getItem('role') || storedUser.role || 'pelajar');
+    const roleMentah = String(localStorage.getItem('role') || storedUser.role || 'pelajar')
+        .toLowerCase()
+        .replace(/[\s/_-]+/g, '');
+    const role = roleMentah.includes('orangtua') || roleMentah === 'wali'
+        ? 'orangtuawali'
+        : roleMentah.includes('tenagakesehatan')
+            ? 'tenagakesehatan'
+            : 'pelajar';
 
     // Halaman ini khusus pelajar: peran lain diarahkan ke halaman setelannya
     if (role === 'orangtuawali') {
@@ -78,6 +85,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     tampilkanProfil();
 
+    // Sinkronkan nama, email, dan nomor telepon dengan data server
+    (async () => {
+        try {
+            const token = localStorage.getItem('mahasehat_token');
+            const respons = await fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } });
+            if (!respons.ok) return;
+            const hasil = await respons.json();
+            const profil = hasil.data || {};
+            akun.nama = profil.nama || akun.nama;
+            akun.email = profil.email || akun.email;
+            akun.nomorTelepon = profil.nomor_telepon || akun.nomorTelepon;
+            localStorage.setItem('mahasehat_user', JSON.stringify(Object.assign({}, storedUser, {
+                nama: akun.nama,
+                email: akun.email,
+                nomorTelepon: akun.nomorTelepon
+            })));
+            tampilkanProfil();
+        } catch (error) {
+            // Biarkan nilai lokal bila API tidak terjangkau
+        }
+    })();
+
     // Navigasi ke dashboard pelajar
     if (linkKembali) linkKembali.href = DASHBOARD_PELAJAR;
     if (linkBrand) linkBrand.href = DASHBOARD_PELAJAR;
@@ -95,34 +124,51 @@ document.addEventListener('DOMContentLoaded', () => {
         tampilkanProfil();
     }
 
-    function saveProfile(e) {
+    async function saveProfile(e) {
         e.preventDefault();
-        if (inputNama) akun.nama = inputNama.value.trim() || akun.nama;
-        if (inputEmail) akun.email = inputEmail.value.trim() || akun.email;
-        if (inputTelepon) akun.nomorTelepon = inputTelepon.value.trim() || akun.nomorTelepon;
+        const nama = inputNama ? inputNama.value.trim() : akun.nama;
+        const email = inputEmail ? inputEmail.value.trim() : akun.email;
+        const nomorTelepon = inputTelepon ? inputTelepon.value.trim() : akun.nomorTelepon;
+        const token = localStorage.getItem('mahasehat_token');
 
-        // Simpan ke localStorage
-        const userUpdate = Object.assign({}, storedUser, {
-            nama: akun.nama,
-            email: akun.email,
-            nomorTelepon: akun.nomorTelepon,
-            role: role
-        });
-        localStorage.setItem('mahasehat_user', JSON.stringify(userUpdate));
-
-        tampilkanProfil();
-
-        // Umpan balik tombol simpan yang halus
         if (btnSimpanProfil) {
-            const originalText = btnSimpanProfil.textContent;
-            btnSimpanProfil.textContent = 'Perubahan disimpan ✓';
-            btnSimpanProfil.style.backgroundColor = '#78C9C0';
-            btnSimpanProfil.style.color = '#2A3A3F';
-            setTimeout(() => {
-                btnSimpanProfil.textContent = originalText;
-                btnSimpanProfil.style.backgroundColor = '';
-                btnSimpanProfil.style.color = '';
-            }, 1800);
+            btnSimpanProfil.disabled = true;
+            btnSimpanProfil.textContent = 'Menyimpan...';
+        }
+
+        try {
+            const respons = await fetch('/api/auth/me', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ nama, email, nomor_telepon: nomorTelepon })
+            });
+            const hasil = await respons.json().catch(() => ({}));
+            if (!respons.ok) throw new Error(hasil.message || 'Profil gagal disimpan.');
+
+            const profil = hasil.data || {};
+            akun.nama = profil.nama;
+            akun.email = profil.email;
+            akun.nomorTelepon = profil.nomor_telepon;
+
+            localStorage.setItem('mahasehat_user', JSON.stringify(Object.assign({}, storedUser, {
+                nama: akun.nama,
+                email: akun.email,
+                nomorTelepon: akun.nomorTelepon,
+                role
+            })));
+
+            tampilkanProfil();
+
+            if (btnSimpanProfil) btnSimpanProfil.textContent = 'Simpan Perubahan';
+            MahaSehatFeedback.success('Profil berhasil diperbarui.');
+        } catch (error) {
+            MahaSehatFeedback.error(error.message || 'Profil gagal disimpan.');
+            if (btnSimpanProfil) setTimeout(() => { btnSimpanProfil.textContent = 'Simpan Perubahan'; }, 400);
+        } finally {
+            if (btnSimpanProfil) btnSimpanProfil.disabled = false;
         }
     }
 
@@ -216,8 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function confirmLogout() {
-        localStorage.clear();
-        window.location.replace('LoginPage.html');
+        window.MahaSehatSession.logout();
     }
 
     if (btnKeluar) btnKeluar.addEventListener('click', showLogoutConfirmation);

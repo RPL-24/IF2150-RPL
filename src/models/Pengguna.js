@@ -129,6 +129,14 @@ class Pengguna {
     return true;
   }
 
+  /** Ubah e-mail login dan username sekaligus (keduanya unik). */
+  static async ubahEmail(idPengguna, email, executor = db) {
+    await executor.query(
+      'UPDATE pengguna SET email = $1, username = $1 WHERE id_pengguna = $2;',
+      [email, idPengguna]
+    );
+  }
+
   async simpanResetToken(tokenHash) {
     await db.query(
       `UPDATE pengguna SET reset_token = $1, reset_token_expires = NOW() + INTERVAL '1 hour'

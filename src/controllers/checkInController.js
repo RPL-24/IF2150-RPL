@@ -34,7 +34,7 @@ function tanggalHariIni() {
 }
 
 function ambilIdPengguna(req) {
-  return req.user.id || req.user.id_pengguna;
+  return req.user.idPengguna;
 }
 
 /** Ambil profil pelajar milik pengguna yang sedang masuk. */

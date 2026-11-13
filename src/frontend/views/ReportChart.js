@@ -87,17 +87,5 @@ const Report = (() => {
         });
     }
 
-    function pasangKeluar() {
-        const menu = document.getElementById('Menu_Keluar');
-        if (!menu) return;
-        menu.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (window.confirm('Yakin ingin keluar dari akun?')) {
-                localStorage.clear();
-                window.location.href = 'LoginPage.html';
-            }
-        });
-    }
-
-    return { kanonikRole, bacaJson, bacaRole, isiProfil, displayChart, pasangPeriode, pasangKeluar };
+    return { kanonikRole, bacaJson, bacaRole, isiProfil, displayChart, pasangPeriode };
 })();

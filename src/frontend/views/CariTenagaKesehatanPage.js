@@ -1,32 +1,19 @@
 /**
  * MahaSehat - CariTenagaKesehatanPage.js
  * Pencarian tenaga kesehatan (UC05) dan pengajuan janji konsultasi (UC06).
- * Data tenaga kesehatan diambil dari /api/tenaga-kesehatan; pengajuan disimpan
- * ke localStorage agar langsung terbaca halaman Tenaga Kesehatan.
+ * Data tenaga kesehatan dari /api/tenaga-kesehatan, pengajuan dikirim ke
+ * /api/konsultasi sehingga langsung terbaca oleh tenaga kesehatan.
  */
 
 (function () {
     'use strict';
 
     const API = '/api/tenaga-kesehatan';
-    const STORAGE_KONSULTASI = 'mahasehat_consultations_data';
+    const API_KONSULTASI = '/api/konsultasi';
     const TOKEN_KEY = 'mahasehat_token';
     const USER_KEY = 'mahasehat_user';
     const ROLE_KEY = 'role';
     const LOKASI_KEY = 'lokasiAktif';
-
-    // Data cadangan bila API belum dapat dihubungi (demo tanpa server)
-    const NAKES_CADANGAN = [
-        { id: 'NAKES-RH', nama: 'Raissa Hadiman, M.Psi.', spesialisasi: 'Psikologi Klinis', fasilitas: 'RS ABC', alamat: 'Jl. Merdeka No. 12, Bandung', lat: -6.9175, lng: 107.6191, tarif: 300000, nomorStr: 'STR-PK-110293', keahlian: ['Kecemasan', 'Stres akademik'] },
-        { id: 'NAKES-BP', nama: 'dr. Bagas Pratama, Sp.KJ', spesialisasi: 'Psikiatri', fasilitas: 'Klinik Sehat Jiwa', alamat: 'Jl. Dago No. 88, Bandung', lat: -6.884, lng: 107.613, tarif: 350000, nomorStr: 'STR-PK-110294', keahlian: ['Depresi', 'Gangguan tidur'] },
-        { id: 'NAKES-NK', nama: 'Nia Kusuma, M.Psi.', spesialisasi: 'Psikologi Pendidikan', fasilitas: 'Puskesmas Cendana', alamat: 'Jl. Cendana No. 5, Bandung', lat: -6.95, lng: 107.63, tarif: 250000, nomorStr: 'STR-PK-110295', keahlian: ['Motivasi belajar', 'Relasi'] }
-    ];
-
-    const SLOT_CADANGAN = [
-        { nilai: 'Rabu, 12 November 2026 · 10.00 - 11.00 WIB', label: 'Rabu, 12 November 2026 · 10.00 - 11.00 WIB' },
-        { nilai: 'Kamis, 13 November 2026 · 13.00 - 14.00 WIB', label: 'Kamis, 13 November 2026 · 13.00 - 14.00 WIB' },
-        { nilai: 'Jumat, 14 November 2026 · 09.00 - 10.00 WIB', label: 'Jumat, 14 November 2026 · 09.00 - 10.00 WIB' }
-    ];
 
     const el = (id) => document.getElementById(id);
     const inputLokasi = el('Input_Lokasi');
@@ -37,8 +24,6 @@
     const modalLokasi = el('Modal_IzinLokasi');
     const modalDetail = el('Modal_Detail');
     const modalJanji = el('Modal_Janji');
-    const toast = el('Toast_Janji');
-    const badge = el('Badge_Konsultasi');
 
     const pengguna = bacaJson(USER_KEY) || {};
     const token = localStorage.getItem(TOKEN_KEY);
@@ -86,9 +71,9 @@
 
     /* ------------------------------ API ---------------------------------- */
 
-    async function panggilApi(jalur, opsi = {}) {
+    async function panggil(base, jalur, opsi = {}) {
         const { method = 'GET', body } = opsi;
-        const respons = await fetch(`${API}${jalur}`, {
+        const respons = await fetch(`${base}${jalur}`, {
             method,
             headers: {
                 'Content-Type': 'application/json',
@@ -97,11 +82,19 @@
             body: body ? JSON.stringify(body) : undefined
         });
         const data = await respons.json().catch(() => ({}));
+        if (respons.status === 401) {
+            localStorage.removeItem(TOKEN_KEY);
+            window.location.href = 'LoginPage.html';
+            throw new Error('Sesi kamu sudah berakhir. Silakan masuk lagi.');
+        }
         if (!respons.ok || data.success === false) {
             throw new Error(data.message || 'Permintaan gagal.');
         }
         return data;
     }
+
+    const panggilApi = (jalur, opsi) => panggil(API, jalur, opsi);
+    const panggilKonsultasi = (jalur, opsi) => panggil(API_KONSULTASI, jalur, opsi);
 
     function petakanNakes(baris) {
         const koordinat = String(baris.lokasi || baris.lokasi_kerja || '').split(',').map(Number);
@@ -129,7 +122,8 @@
                 : await panggilApi('/');
             daftarNakes = (data.data || []).map(petakanNakes);
         } catch (error) {
-            daftarNakes = NAKES_CADANGAN.map((item) => ({ ...item, jarakKm: null }));
+            daftarNakes = [];
+            tampilkanToast(error.message || 'Daftar tenaga kesehatan gagal dimuat. Coba muat ulang halaman.', 'danger');
         }
 
         isiFilter();
@@ -231,27 +225,24 @@
     }
 
     async function muatSlot(item) {
-        try {
-            const data = await panggilApi(`/${encodeURIComponent(item.id)}`);
-            const jadwal = (data.data && data.data.jadwal_tersedia) || [];
-            if (jadwal.length) {
-                return jadwal.map((slot) => {
-                    const label = `${formatTanggal(slot.tanggal)} · ${String(slot.waktu).slice(0, 5)} WIB`;
-                    return { nilai: label, label };
-                });
-            }
-        } catch (error) {
-            // pakai slot cadangan
-        }
-        return SLOT_CADANGAN;
+        const data = await panggilApi(`/${encodeURIComponent(item.id)}`);
+        const jadwal = (data.data && data.data.jadwal_tersedia) || [];
+        return jadwal.map((slot) => ({
+            idJadwal: slot.id_jadwal,
+            label: `${formatTanggal(slot.tanggal)} · ${String(slot.waktu).slice(0, 5)} WIB`
+        }));
     }
 
     async function bukaDetail(item) {
         nakesDipilih = item;
-        slotTersedia = SLOT_CADANGAN;
         isiDetail(item);
         bukaDialog(modalDetail);
-        slotTersedia = await muatSlot(item);
+        slotTersedia = [];
+        try {
+            slotTersedia = await muatSlot(item);
+        } catch (error) {
+            slotTersedia = [];
+        }
     }
 
     function renderSlot() {
@@ -268,7 +259,7 @@
             const radio = document.createElement('input');
             radio.type = 'radio';
             radio.name = 'slot';
-            radio.value = slot.nilai;
+            radio.value = slot.idJadwal;
             radio.checked = indeks === 0;
             label.appendChild(radio);
             label.appendChild(document.createTextNode(slot.label));
@@ -283,70 +274,29 @@
         el('Error_Slot').textContent = '';
         el('Error_Keluhan').textContent = '';
         el('Input_Keluhan').value = '';
-        el('Input_Metode').value = 'Daring (Google Meet)';
         el('Input_Keluhan').classList.remove('is-invalid');
+        el('Btn_BuatJanji').disabled = true;
 
-        // Tampilkan slot cadangan lebih dulu, lalu ganti dengan slot sebenarnya bila API tersedia
-        slotTersedia = SLOT_CADANGAN;
+        slotTersedia = [];
         renderSlot();
         bukaDialog(modalJanji);
 
-        const slotAsli = await muatSlot(item);
-        if (modalJanji.open && nakesDipilih === item) {
+        try {
+            const slotAsli = await muatSlot(item);
+            if (!modalJanji.open || nakesDipilih !== item) return;
             slotTersedia = slotAsli;
             renderSlot();
+            el('Btn_BuatJanji').disabled = slotAsli.length === 0;
+        } catch (error) {
+            if (!modalJanji.open) return;
+            el('Error_Slot').textContent = error.message || 'Slot gagal dimuat. Coba lagi.';
         }
     }
 
     /* --------------------------- Pengajuan ------------------------------- */
 
-    function bacaPengajuan() {
-        const data = bacaJson(STORAGE_KONSULTASI);
-        return Array.isArray(data) ? data : [];
-    }
-
-    function simpanPengajuan(item) {
-        const data = bacaPengajuan();
-        data.unshift(item);
-        localStorage.setItem(STORAGE_KONSULTASI, JSON.stringify(data));
-        perbaruiBadge();
-    }
-
-    function perbaruiBadge() {
-        if (!badge) return;
-        const jumlah = bacaPengajuan().filter((item) => item.status === 'Menunggu').length;
-        badge.textContent = String(jumlah);
-        badge.hidden = jumlah === 0;
-    }
-
-    function buatPengajuan(slot, metode, keluhan) {
-        const nama = pengguna.nama || 'Pelajar';
-        return {
-            id: `konsul-${Date.now()}`,
-            nama,
-            inisial: inisial(nama),
-            avatarColor: '#78C9C0',
-            sekolah: pengguna.sekolah || pengguna.kelas || 'Pelajar MahaSehat',
-            nis: pengguna.nis || '-',
-            status: 'Menunggu',
-            jadwal: slot,
-            jadwalFull: `${slot} (60 Menit)`,
-            metode: `${metode} · Sesi Mandiri 1 Pelajar`,
-            keluhan,
-            moodRerata: '-',
-            moodBars: [],
-            tidurRerata: '-',
-            tidurBars: [],
-            linkMeet: '-',
-            catatan: `Pengajuan untuk ${nakesDipilih.nama} (${nakesDipilih.fasilitas}).`
-        };
-    }
-
-    function tampilkanToast(pesan) {
-        toast.textContent = pesan;
-        toast.hidden = false;
-        window.clearTimeout(tampilkanToast.timer);
-        tampilkanToast.timer = window.setTimeout(() => { toast.hidden = true; }, 4000);
+    function tampilkanToast(pesan, tipe = 'success') {
+        window.MahaSehatFeedback.show(pesan, tipe === 'danger' ? 'danger' : 'success');
     }
 
     /* ----------------------------- Peristiwa ----------------------------- */
@@ -369,11 +319,11 @@
     });
     el('Btn_BatalJanji').addEventListener('click', () => tutupDialog(modalJanji));
 
-    el('Form_Janji').addEventListener('submit', (event) => {
+    el('Form_Janji').addEventListener('submit', async (event) => {
         event.preventDefault();
         const slot = document.querySelector('input[name="slot"]:checked');
         const keluhan = el('Input_Keluhan');
-        const metode = el('Input_Metode').value;
+        const tombol = el('Btn_BuatJanji');
         let valid = true;
 
         el('Error_Slot').textContent = '';
@@ -391,9 +341,23 @@
         }
         if (!valid) return;
 
-        simpanPengajuan(buatPengajuan(slot.value, metode, keluhan.value.trim()));
-        tutupDialog(modalJanji);
-        tampilkanToast(`Pengajuan konsultasi dengan ${nakesDipilih.nama} terkirim. Tenaga kesehatan akan meninjau permohonanmu.`);
+        tombol.disabled = true;
+        tombol.textContent = 'Mengirim...';
+        try {
+            await panggilKonsultasi('/', {
+                method: 'POST',
+                body: { id_jadwal: slot.value, keluhan: keluhan.value.trim() }
+            });
+            tutupDialog(modalJanji);
+            tampilkanToast(`Pengajuan konsultasi dengan ${nakesDipilih.nama} terkirim. Tenaga kesehatan akan meninjau permohonanmu.`);
+        } catch (error) {
+            el('Error_Slot').textContent = error.message || 'Pengajuan gagal dikirim. Coba lagi.';
+            slotTersedia = slotTersedia.filter((item) => item.idJadwal !== slot.value);
+            renderSlot();
+        } finally {
+            tombol.disabled = false;
+            tombol.textContent = 'Buat Janji';
+        }
     });
 
     [modalDetail, modalJanji, modalLokasi].forEach((dialog) => {
@@ -437,26 +401,13 @@
         );
     });
 
-    /* ------------------------------ Keluar -------------------------------- */
-
-    function keluar() {
-        [TOKEN_KEY, USER_KEY, ROLE_KEY].forEach((kunci) => localStorage.removeItem(kunci));
-        window.location.href = 'LoginPage.html';
-    }
-
-    el('Menu_Keluar').addEventListener('click', (event) => {
-        event.preventDefault();
-        keluar();
-    });
-
     /* ------------------------------ Inisialisasi -------------------------- */
 
-    const namaPengguna = pengguna.nama || 'Albert Einstein';
+    const namaPengguna = pengguna.nama || 'Pelajar';
     el('Text_NamaUser').textContent = namaPengguna;
     el('Text_RoleUser').textContent = pengguna.role || 'Pelajar';
     el('User_Avatar').textContent = namaPengguna.trim().charAt(0).toUpperCase();
 
-    perbaruiBadge();
     muatDaftar();
 
     if (localStorage.getItem(LOKASI_KEY) === null) {

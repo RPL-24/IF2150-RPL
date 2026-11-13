@@ -54,7 +54,7 @@
     background-color: var(--color-white);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-2xl);
-    box-shadow: 0 4px 16px rgba(42, 58, 63, 0.03);
+    box-shadow: var(--shadow-card);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -361,7 +361,7 @@
     position: fixed;
     inset: 0;
     z-index: 55;
-    background-color: rgba(42, 58, 63, 0.45);
+    background-color: var(--color-overlay);
     animation: navBackdropIn var(--duration-base) ease;
 }
 

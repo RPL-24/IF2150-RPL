@@ -22,7 +22,7 @@
     margin-bottom: 24px;
     background-color: var(--color-teal-tint);
     border: 1px solid var(--color-teal);
-    box-shadow: 0 2px 8px rgba(42, 58, 63, 0.02);
+    box-shadow: var(--shadow-card);
 }
 
 .profile-banner-left {
@@ -44,7 +44,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 2px 6px rgba(120, 201, 192, 0.4);
+    box-shadow: 0 2px 8px var(--color-teal-subtle);
 }
 
 .profile-header-line {
@@ -93,7 +93,7 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 120px;
-    box-shadow: 0 2px 6px rgba(42, 58, 63, 0.02);
+    box-shadow: var(--shadow-card);
 }
 
 .stat-title {

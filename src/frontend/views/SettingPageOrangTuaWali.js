@@ -5,7 +5,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const STORAGE_KEY = 'mahasehat_ortu_profile';
+    const STORAGE_KEY = 'mahasehat_ortu_profile_v2';
     const USER_KEY = 'mahasehat_user';
 
     // Set role kanonikal
@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputEmail = document.getElementById('Input_Email');
     const inputTelepon = document.getElementById('Input_NomorTelepon');
     const btnSimpanProfil = document.getElementById('Btn_SimpanProfil');
-    const toast = document.getElementById('Feedback_Toast');
 
     const textNamaUser = document.getElementById('Text_NamaUser');
     const textRoleUser = document.getElementById('Text_RoleUser');
@@ -36,9 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Nilai default jika belum tersimpan
     const DEFAULT_DATA = {
-        nama: 'Hermann Einstein',
-        email: 'hermann.einstein@gmail.com',
-        nomorTelepon: '081234567890'
+        nama: 'Orang Tua / Wali',
+        email: '-',
+        nomorTelepon: '-'
     };
 
     function bacaJson(key) {
@@ -66,52 +65,60 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userAvatar) userAvatar.textContent = nama.trim().charAt(0).toUpperCase() || 'H';
     }
 
-    function tampilkanToast(pesan) {
-        if (!toast) return;
-        toast.textContent = pesan;
-        toast.style.display = 'block';
-        setTimeout(() => {
-            toast.style.display = 'none';
-        }, 3000);
-    }
-
     // Simpan Perubahan Profil
     if (formProfil) {
-        formProfil.addEventListener('submit', (e) => {
+        formProfil.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const namaBaru = (inputNama?.value || '').trim() || DEFAULT_DATA.nama;
-            const emailBaru = (inputEmail?.value || '').trim() || DEFAULT_DATA.email;
-            const telpBaru = (inputTelepon?.value || '').trim() || DEFAULT_DATA.nomorTelepon;
+            const namaBaru = (inputNama?.value || '').trim();
+            const emailBaru = (inputEmail?.value || '').trim();
+            const telpBaru = (inputTelepon?.value || '').trim();
 
-            const profilUpdate = {
-                nama: namaBaru,
-                email: emailBaru,
-                nomorTelepon: telpBaru,
-                role: 'orangtuawali'
-            };
-
-            // Simpan ke storage ortu dan user
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(profilUpdate));
-            const currentUser = bacaJson(USER_KEY);
-            localStorage.setItem(USER_KEY, JSON.stringify({ ...currentUser, ...profilUpdate }));
-
-            // Update UI
-            if (textNamaUser) textNamaUser.textContent = namaBaru;
-            if (userAvatar) userAvatar.textContent = namaBaru.charAt(0).toUpperCase();
-
-            // Umpan balik visual pada tombol
             if (btnSimpanProfil) {
-                const teksSemula = btnSimpanProfil.textContent;
-                btnSimpanProfil.textContent = 'Perubahan disimpan ✓';
-                btnSimpanProfil.style.backgroundColor = 'var(--color-teal)';
-                setTimeout(() => {
-                    btnSimpanProfil.textContent = teksSemula;
-                    btnSimpanProfil.style.backgroundColor = '';
-                }, 1800);
+                btnSimpanProfil.disabled = true;
+                btnSimpanProfil.textContent = 'Menyimpan...';
             }
 
-            tampilkanToast('✓ Profil Orang Tua / Wali berhasil diperbarui.');
+            try {
+                const token = localStorage.getItem('mahasehat_token');
+                const respons = await fetch('/api/auth/me', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ nama: namaBaru, email: emailBaru, nomor_telepon: telpBaru })
+                });
+                const hasil = await respons.json().catch(() => ({}));
+                if (!respons.ok) throw new Error(hasil.message || 'Profil gagal disimpan.');
+
+                const profil = hasil.data || {};
+                const profilUpdate = {
+                    nama: profil.nama,
+                    email: profil.email,
+                    nomorTelepon: profil.nomor_telepon,
+                    role: 'orangtuawali'
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(profilUpdate));
+                const currentUser = bacaJson(USER_KEY);
+                localStorage.setItem(USER_KEY, JSON.stringify({ ...currentUser, ...profilUpdate }));
+
+                if (textNamaUser) textNamaUser.textContent = profil.nama;
+                if (userAvatar) userAvatar.textContent = String(profil.nama || 'W').charAt(0).toUpperCase();
+
+                if (btnSimpanProfil) btnSimpanProfil.textContent = 'Simpan Perubahan';
+                MahaSehatFeedback.success('Profil Orang Tua / Wali berhasil diperbarui.');
+            } catch (error) {
+                if (btnSimpanProfil) btnSimpanProfil.textContent = error.message || 'Profil gagal disimpan.';
+                MahaSehatFeedback.error(error.message || 'Profil gagal disimpan.');
+            } finally {
+                if (btnSimpanProfil) {
+                    setTimeout(() => {
+                        btnSimpanProfil.textContent = 'Simpan Perubahan';
+                        btnSimpanProfil.disabled = false;
+                    }, 2200);
+                }
+            }
         });
     }
 
@@ -138,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (hasil === 'granted') {
                     localStorage.setItem('notifAktif', 'ya');
                     if (textNotifInfo) textNotifInfo.textContent = '';
-                    tampilkanToast('✓ Notifikasi pemantauan diaktifkan.');
+                    MahaSehatFeedback.success('Notifikasi pemantauan diaktifkan.');
                 } else {
                     switchNotif.checked = false;
                     if (textNotifInfo) textNotifInfo.textContent = 'Izin ditolak oleh pengguna.';
@@ -172,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 () => {
                     localStorage.setItem('lokasiAktif', 'ya');
                     if (textLokasiInfo) textLokasiInfo.textContent = '';
-                    tampilkanToast('✓ Izin lokasi diaktifkan.');
+                    MahaSehatFeedback.success('Izin lokasi diaktifkan.');
                 },
                 () => {
                     switchLokasi.checked = false;
@@ -195,8 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function prosesKeluar() {
-        localStorage.clear();
-        window.location.replace('LoginPage.html');
+        window.MahaSehatSession.logout();
     }
 
     if (btnKeluar) btnKeluar.addEventListener('click', bukaPopupKeluar);
@@ -213,5 +219,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Muat data saat halaman dibuka
     muatDataProfil();
+
+    (async () => {
+        try {
+            const token = localStorage.getItem('mahasehat_token');
+            const respons = await fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } });
+            if (!respons.ok) return;
+            const hasil = await respons.json();
+            const profil = hasil.data || {};
+            const simpanan = {
+                nama: profil.nama,
+                email: profil.email,
+                nomorTelepon: profil.nomor_telepon,
+                role: 'orangtuawali'
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(simpanan));
+            localStorage.setItem(USER_KEY, JSON.stringify({ ...bacaJson(USER_KEY), ...simpanan }));
+            muatDataProfil();
+
+            const inputPelajar = document.getElementById('Input_PelajarDidampingi');
+            if (inputPelajar) {
+                const ringkasan = await fetch('/api/reports/summary', {
+                    headers: { Authorization: `Bearer ${token}` }
+                }).then((res) => (res.ok ? res.json() : null)).catch(() => null);
+                const siswa = ringkasan && ringkasan.data;
+                inputPelajar.value = siswa
+                    ? `${siswa.nama}${siswa.usia ? ` (${siswa.usia} tahun)` : ''}`
+                    : 'Belum terhubung dengan pelajar';
+            }
+        } catch (error) {
+            // Biarkan nilai lokal bila API tidak terjangkau
+        }
+    })();
 });
 

@@ -30,9 +30,19 @@
         </footer>
     </div>
 
+    <script src="session.js"></script>
     <script src="CheckInPage.js"></script>
     <script>
         (function () {
+            const TOKEN_KEY = 'mahasehat_token';
+            const token = localStorage.getItem(TOKEN_KEY);
+
+            // Halaman ini butuh sesi; tanpa token langsung balik ke login.
+            if (!token) {
+                window.location.href = 'LoginPage.html';
+                return;
+            }
+
             let pengguna = {};
             try {
                 pengguna = JSON.parse(localStorage.getItem('mahasehat_user') || '{}');
@@ -40,16 +50,45 @@
                 pengguna = {};
             }
 
+            const MEAL_LABEL = {
+                teratur: 'Teratur',
+                kurang: 'Kurang teratur',
+                tidak: 'Tidak teratur'
+            };
+
             const nama = String(pengguna.nama || '').trim().split(' ')[0] || 'Pelajar';
             const keDashboard = () => {
-                window.location.href = 'DashboardPagePelajar.html';
+                window.location.href = 'DashboardPagePelajar.html?checkin=sudah';
             };
 
             CheckInPage.init({
                 name: nama,
                 onSubmit: async (payload) => {
-                    // TODO(integrasi): ganti dengan request ke POST /api/check-in
-                    console.log('Payload check-in:', payload);
+                    const respons = await fetch('/api/check-in', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            mood: payload.mood,
+                            sleep: { bed: payload.sleep.bed, wake: payload.sleep.wake },
+                            meal: MEAL_LABEL[payload.meal] || payload.meal,
+                            triggers: payload.triggers || [],
+                            note: payload.note
+                        })
+                    });
+                    const hasil = await respons.json().catch(() => ({}));
+
+                    if (respons.status === 401) {
+                        localStorage.removeItem(TOKEN_KEY);
+                        window.location.href = 'LoginPage.html';
+                        throw new Error('Sesi kamu sudah berakhir. Silakan masuk lagi.');
+                    }
+                    if (!respons.ok) {
+                        throw new Error(hasil.message || 'Check-in gagal disimpan.');
+                    }
+                    return hasil;
                 },
                 onClose: keDashboard,
                 onDone: keDashboard

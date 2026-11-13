@@ -31,6 +31,8 @@
     --color-border: #E2E8F0;
     --color-border-subtle: #F1F5F9;
 
+    --color-overlay: rgba(42, 58, 63, 0.45);
+
     --color-danger: #B5453B;
     --color-danger-hover: #9E372E;
     --color-danger-subtle: rgba(181, 69, 59, 0.12);
@@ -141,7 +143,7 @@ body.body-locked {
 }
 
 [hidden] {
-    display: none;
+    display: none !important;
 }
 
 /* Elemen yang punya display sendiri tetap harus bisa disembunyikan lewat atribut hidden */

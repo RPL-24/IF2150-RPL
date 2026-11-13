@@ -46,6 +46,11 @@
                         <span class="nav-label">Laporan Kesehatan</span>
                     </a>
 
+                                        <a href="NotifikasiDarurat.html" class="nav-item" id="Menu_Notifikasi" hidden>
+                        <img src="../assets/icon-info.png" alt="" class="nav-icon">
+                        <span class="nav-label">Notifikasi</span>
+                    </a>
+
                     <div class="menu-divider"></div>
 
                     <!-- Item Setelan Aktif -->
@@ -62,7 +67,7 @@
                 <div class="sidebar-user" id="Info_User">
                     <div class="user-avatar" id="User_Avatar">H</div>
                     <div class="user-meta">
-                        <p class="user-name" id="Text_NamaUser">Hermann Einstein</p>
+                        <p class="user-name" id="Text_NamaUser">-</p>
                         <p class="user-role" id="Text_RoleUser">Orang Tua / Wali</p>
                     </div>
                 </div>
@@ -79,7 +84,6 @@
             </header>
 
             <!-- Feedback Toast Notifikasi -->
-            <div id="Feedback_Toast" class="feedback-toast" role="status" aria-live="polite" style="display: none;"></div>
 
             <!-- Grid Layout Dua Kolom Atas (Profil & Keamanan/Sesi) -->
             <div class="settings-grid-top">
@@ -93,22 +97,22 @@
                     <form id="Form_EditProfil" class="settings-form" novalidate>
                         <div class="form-group">
                             <label class="form-label" for="Input_Nama">Nama Lengkap</label>
-                            <input type="text" class="form-input" id="Input_Nama" name="nama" autocomplete="name" placeholder="Nama lengkap" value="Hermann Einstein">
+                            <input type="text" class="form-input" id="Input_Nama" name="nama" autocomplete="name" placeholder="Nama lengkap">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="Input_Email">Email</label>
-                            <input type="email" class="form-input" id="Input_Email" name="email" autocomplete="email" placeholder="nama@gmail.com" value="hermann.einstein@gmail.com">
+                            <input type="email" class="form-input" id="Input_Email" name="email" autocomplete="email" placeholder="nama@gmail.com">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="Input_NomorTelepon">Nomor Telepon</label>
-                            <input type="tel" class="form-input" id="Input_NomorTelepon" name="nomor_telp" autocomplete="tel" placeholder="08xxxxxxxxxx" value="081234567890">
+                            <input type="tel" class="form-input" id="Input_NomorTelepon" name="nomor_telp" autocomplete="tel" placeholder="08xxxxxxxxxx">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="Input_PelajarDidampingi">Pelajar yang Didampingi</label>
-                            <input type="text" class="form-input input-readonly" id="Input_PelajarDidampingi" value="Albert Einstein (16 tahun)" readonly>
+                            <input type="text" class="form-input input-readonly" id="Input_PelajarDidampingi" value="" placeholder="Memuat data pelajar..." readonly>
                             <p class="field-hint">Koneksi pelajar dikelola saat registrasi wali.</p>
                         </div>
 
@@ -199,6 +203,9 @@
         </div>
     </dialog>
 
+    <script src="session.js"></script>
+    <script src="feedback.js"></script>
+    <script src="emergency-alert.js"></script>
     <script src="SettingPageOrangTuaWali.js"></script>
     <script src="sidebar.js"></script>
 </body>

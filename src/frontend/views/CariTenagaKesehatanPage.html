@@ -62,7 +62,7 @@
                 <div class="sidebar-user" id="Info_User">
                     <div class="user-avatar" id="User_Avatar">A</div>
                     <div class="user-meta">
-                        <p class="user-name" id="Text_NamaUser">Albert Einstein</p>
+                        <p class="user-name" id="Text_NamaUser">-</p>
                         <p class="user-role" id="Text_RoleUser">Pelajar</p>
                     </div>
                 </div>
@@ -76,12 +76,12 @@
             </header>
 
             <section class="search-toolbar" aria-label="Pencarian tenaga kesehatan">
-                <div class="form-group search-field">
+                <div class="form-group">
                     <label class="form-label" for="Input_Lokasi">Cari</label>
                     <input class="form-input" type="search" id="Input_Lokasi" placeholder="Nama lokasi atau tenaga kesehatan" autocomplete="off">
                 </div>
 
-                <div class="form-group filter-field">
+                <div class="form-group">
                     <label class="form-label" for="Filter_Spesialisasi">Spesialisasi</label>
                     <select class="form-select" id="Filter_Spesialisasi">
                         <option value="">Semua spesialisasi</option>
@@ -89,7 +89,7 @@
                 </div>
             </section>
 
-            <p class="result-count" id="Text_JumlahHasil">Menampilkan tenaga kesehatan terdekat.</p>
+            <p class="result-count" id="Text_JumlahHasil">Memuat tenaga kesehatan...</p>
 
             <section id="NakesListContainer" class="nakes-list" aria-live="polite"></section>
 
@@ -170,14 +170,6 @@
                 <p class="form-error" id="Error_Slot" role="alert"></p>
 
                 <div class="form-group">
-                    <label class="form-label" for="Input_Metode">Metode konsultasi</label>
-                    <select class="form-select" id="Input_Metode">
-                        <option value="Daring (Google Meet)">Daring (Google Meet)</option>
-                        <option value="Tatap Muka (Klinik)">Tatap Muka (Klinik)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
                     <label class="form-label" for="Input_Keluhan">Keluhan utama</label>
                     <textarea class="form-textarea" id="Input_Keluhan" rows="3" maxlength="400" required placeholder="Ceritakan singkat apa yang membuatmu ingin berkonsultasi."></textarea>
                     <small class="form-error" id="Error_Keluhan" role="alert"></small>
@@ -191,8 +183,8 @@
         </div>
     </dialog>
 
-    <p class="toast-notification" id="Toast_Janji" role="status" hidden></p>
-
+    <script src="session.js"></script>
+    <script src="feedback.js"></script>
     <script src="CariTenagaKesehatanPage.js"></script>
     <script src="sidebar.js"></script>
 </body>

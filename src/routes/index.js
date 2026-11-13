@@ -28,7 +28,6 @@ mountRouteIfAvailable('/auth', 'authRoutes.js');
 mountRouteIfAvailable('/check-in', 'checkInRoutes.js');
 mountRouteIfAvailable('/reports', 'reportRoutes.js');
 mountRouteIfAvailable('/tenaga-kesehatan', 'tenagaKesehatanRoutes.js');
-mountRouteIfAvailable('/jadwal', 'jadwalKonsultasiRoutes.js');
 mountRouteIfAvailable('/konsultasi', 'konsultasiRoutes.js');
 mountRouteIfAvailable('/emergency', 'emergencyRoutes.js');
 

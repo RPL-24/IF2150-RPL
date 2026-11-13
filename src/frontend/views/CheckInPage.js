@@ -14,13 +14,14 @@
     { id: "kurang", label: "Kurang teratur", desc: "Melewatkan satu waktu makan" },
     { id: "tidak", label: "Tidak teratur", desc: "Sulit makan karena jadwal" }
   ];
+  const TRIGGERS = ["Akademik", "Keluarga", "Relasi", "Kesehatan", "Keuangan", "Lainnya"];
   const TOTAL = 5, MAX_NOTE = 500;
 
   const state = {
     step: 0, // 0 sapaan, 1-4 isian, 5 ringkasan, 6 sukses
     returnToSummary: false,
     mood: null, bed: "22:30", wake: "06:00",
-    meal: null, note: "",
+    meal: null, triggers: [], note: "",
     saving: false, error: ""
   };
   let cfg = {}, app;
@@ -39,17 +40,7 @@
   };
   const fmtHours = (h) => String(Math.round(h * 10) / 10).replace(".", ",") + " jam";
 
-  // Enkripsi catatan di browser (AES-GCM). Di produksi, kelola kunci di server / key wrapping.
-  async function encryptNote(text) {
-    if (!text.trim()) return null;
-    if (!window.crypto || !crypto.subtle) throw new Error("Web Crypto tidak tersedia (butuh HTTPS atau localhost).");
-    const b64 = (u8) => btoa(String.fromCharCode(...u8));
-    const key = await crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt"]);
-    const iv = crypto.getRandomValues(new Uint8Array(12));
-    const buf = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, new TextEncoder().encode(text));
-    const raw = new Uint8Array(await crypto.subtle.exportKey("raw", key));
-    return { cipher: b64(new Uint8Array(buf)), iv: b64(iv), key: b64(raw) };
-  }
+  // Catatan refleksi dikirim apa adanya; server yang mengenkripsi sebelum disimpan (KNF01).
 
   /* ---------- template ---------- */
   const head = (title, sub) => `
@@ -102,8 +93,19 @@
       MEALS.map((m) => option({ selected: state.meal === m.id, action: "meal", value: m.id, title: m.label, desc: m.desc, role: "radio" })).join("") +
       `</div>` + nav({ disabled: state.meal === null }),
 
-    4: () => head("Ada yang ingin kamu catat?", "Opsional. Hanya terlihat olehmu.") + `
-      <textarea class="form-textarea" id="note" rows="7" maxlength="${MAX_NOTE}" aria-label="Catatan refleksi"
+    4: () => head("Ada yang memicu stres hari ini?", "Pilih pemicu yang terasa, boleh lebih dari satu.") + `
+      <fieldset class="trigger-group">
+        <legend class="form-label">Pemicu stres</legend>
+        <div class="trigger-chips" role="group" aria-label="Pemicu stres">
+          ${TRIGGERS.map((nama) => {
+            const aktif = state.triggers.includes(nama);
+            return `<button type="button" class="seg-btn${aktif ? " is-active" : ""}" data-action="trigger" data-value="${nama}" aria-pressed="${aktif}">${nama}</button>`;
+          }).join("")}
+        </div>
+        <p class="field-hint">Boleh kosong kalau tidak ada pemicu hari ini.</p>
+      </fieldset>
+      <label class="form-label" for="note">Catatan refleksi (opsional, hanya terlihat olehmu)</label>
+      <textarea class="form-textarea" id="note" rows="6" maxlength="${MAX_NOTE}" aria-label="Catatan refleksi"
         placeholder="Apa yang paling terasa hari ini?">${esc(state.note)}</textarea>
       <p class="field-hint">Catatan ini dienkripsi. <span class="char-count" id="count">${state.note.length} / ${MAX_NOTE}</span></p>` +
       nav({ skip: true }),
@@ -114,6 +116,7 @@
         ["Mood", mood ? `${mood.v} / 5 - ${mood.label}` : "-", 1],
         ["Tidur", `${state.bed} - ${state.wake} (${fmtHours(sleepHours(state.bed, state.wake))})`, 2],
         ["Pola makan", meal ? meal.label : "-", 3],
+        ["Pemicu stres", state.triggers.length ? state.triggers.join(", ") : "Tidak ada", 4],
         ["Refleksi", state.note.trim() || "Tidak ada catatan", 4]
       ];
       return head("Cek lagi sebelum simpan.", "Kamu bisa mengubah bagian mana pun.") + `
@@ -154,18 +157,17 @@
   async function save() {
     state.saving = true; state.error = ""; render(false);
     try {
-      const note = await encryptNote(state.note);
       await (cfg.onSubmit && cfg.onSubmit({
-        date: new Date().toISOString(),
         mood: state.mood,
         sleep: { bed: state.bed, wake: state.wake, hours: sleepHours(state.bed, state.wake) },
         meal: state.meal,
-        note // { cipher, iv, key } atau null
+        triggers: state.triggers.slice(),
+        note: state.note.trim() || null
       }));
       state.saving = false; go(6);
     } catch (e) {
       state.saving = false;
-      state.error = "Check-in belum tersimpan. Periksa koneksimu lalu coba lagi.";
+      state.error = e && e.message ? e.message : "Check-in belum tersimpan. Periksa koneksimu lalu coba lagi.";
       render(false);
     }
   }
@@ -179,6 +181,12 @@
     edit: (v) => { state.returnToSummary = true; go(Number(v)); },
     mood: (v) => { state.mood = Number(v); render(false); },
     meal: (v) => { state.meal = v; render(false); },
+    trigger: (v) => {
+      const posisi = state.triggers.indexOf(v);
+      if (posisi === -1) state.triggers.push(v);
+      else state.triggers.splice(posisi, 1);
+      render(false);
+    },
     save,
     done: () => cfg.onDone && cfg.onDone()
   };

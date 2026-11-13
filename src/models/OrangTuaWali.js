@@ -65,6 +65,21 @@ class OrangTuaWali extends Pengguna {
     return rows.map((baris) => ({ idPelajar: baris.id_pelajar, nama: baris.nama }));
   }
 
+  /** Pelajar yang mencantumkan e-mail wali ini dan masih menunggu konfirmasi. */
+  async getPengajuanMenunggu() {
+    const { rows } = await db.query(
+      `SELECT p.nama, u.created_at AS tanggal_daftar, u.token_konfirmasi
+       FROM pelajar p JOIN pengguna u ON u.id_pengguna = p.id_pengguna
+       WHERE LOWER(p.email_wali) = LOWER($1) AND u.status_akun = 'Belum Terverifikasi'
+       ORDER BY u.created_at DESC
+       LIMIT 1;`,
+      [this.email]
+    );
+    return rows[0]
+      ? { nama: rows[0].nama, tanggalDaftar: rows[0].tanggal_daftar, token: rows[0].token_konfirmasi }
+      : null;
+  }
+
   /**
    * Memilih pelajar yang dilaporkan. Bila wali terhubung dengan lebih dari satu pelajar,
    * idPelajar menentukan pilihannya; yang bukan miliknya ditolak.
@@ -101,6 +116,17 @@ class OrangTuaWali extends Pengguna {
       indikatorRisiko: hasil.indikatorRisiko,
       jumlahHariTidakCheckIn: hasil.jumlahHariTidakCheckIn,
     };
+  }
+
+  /** Perbarui identitas wali. */
+  async perbaruiProfil({ nama, nomorTelepon, email }, executor = db) {
+    await executor.query(
+      'UPDATE orang_tua_wali SET nama = $1, nomor_telepon = $2, email = $3 WHERE id_wali = $4;',
+      [nama, nomorTelepon, email, this.idWali]
+    );
+    this.nama = nama;
+    this.nomorTelepon = nomorTelepon;
+    this.email = email;
   }
 }
 
