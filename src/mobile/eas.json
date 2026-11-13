@@ -19,7 +19,7 @@
     "demo": {
       "extends": "preview",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://silembur-api.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://if2150-rpl-k02-g03-production.up.railway.app"
       }
     },
     "production": {
