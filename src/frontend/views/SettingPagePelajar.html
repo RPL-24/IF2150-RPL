@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Setelan</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="SettingPagePelajar.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Floating Sidebar Navigasi (Persis Node 4073 & 4640 FigCraft) -->
+        <aside class="app-sidebar" data-role="pelajar" id="Sidebar">
+            <div class="sidebar-header">
+                <a href="DashboardPagePelajar.html" class="brand-link" id="Link_Brand">
+                    <img src="../assets/logo-mahasehat-v2.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                </a>
+                <button type="button" class="nav-toggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="SidebarPanel">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="sidebar-panel" id="SidebarPanel">
+
+                <!-- Menu Navigasi Utama -->
+                <nav class="nav-menu" aria-label="Menu navigasi">
+                    <a href="DashboardPagePelajar.html" class="nav-item" id="Menu_Dashboard">
+                        <img src="../assets/icon-dashboard.png" alt="" class="nav-icon">
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="ReportPagePelajar.html" class="nav-item" id="Menu_Laporan">
+                        <img src="../assets/icon-laporankesehatan.png" alt="" class="nav-icon">
+                        <span class="nav-label">Laporan Kesehatan</span>
+                    </a>
+                    <a href="CariTenagaKesehatanPage.html" class="nav-item" id="Menu_Konsultasi">
+                        <img src="../assets/icon-konsultasi.png" alt="" class="nav-icon">
+                        <span class="nav-label">Konsultasi</span>
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <!-- Item Setelan Aktif (Node 4640) -->
+                    <a href="SettingPagePelajar.html" class="nav-item active" aria-current="page" id="Menu_Setelan">
+                        <img src="../assets/icon-setelan.png" alt="" class="nav-icon">
+                        <span class="nav-label">Setelan</span>
+                    </a>
+                    <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
+                        <img src="../assets/icon-keluar.png" alt="" class="nav-icon">
+                        <span class="nav-label">Keluar</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-user" id="Info_User">
+                    <div class="user-avatar" id="User_Avatar">A</div>
+                    <div class="user-meta">
+                        <p class="user-name" id="Text_NamaUser">-</p>
+                        <p class="user-role" id="Text_RoleUser">Pelajar</p>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Area Konten Utama (Node 3855 FigCraft) -->
+        <main class="main-viewport" id="Panel_Setelan">
+            <!-- Header Halaman -->
+            <header class="page-header" id="Topbar">
+                <h1 class="page-title" id="Title_Setelan">Setelan</h1>
+                <p class="page-subtitle" id="Text_Subjudul">Kelola profil, keamanan, dan izin akunmu.</p>
+            </header>
+
+            <!-- Grid Layout Dua Kolom Atas (Profil & Keamanan/Sesi) -->
+            <div class="settings-grid-top">
+                <!-- Kolom Kiri: Kartu Profil (Node 3872 FigCraft) -->
+                <section class="card-box" id="Card_Profil">
+                    <div class="card-box-header">
+                        <h2 class="card-box-title">Profil</h2>
+                        <button type="button" class="btn btn--link" id="Btn_EditProfil" style="display: none;">Edit Profil</button>
+                    </div>
+
+                    <!-- Ringkasan Data Profil untuk Keterlacakan DPPL -->
+                    <div class="visually-hidden" id="View_Profil">
+                        <span class="visually-hidden" aria-hidden="true" style="display: none;"></span>
+                        <dl style="display: none;">
+                            <div><dt>Nama</dt><dd id="Text_Nama">-</dd></div>
+                            <div><dt>Email</dt><dd id="Text_Email">-</dd></div>
+                            <div><dt>Nomor Telepon</dt><dd id="Text_NomorTelepon">-</dd></div>
+                            <div><dt>Peran</dt><dd id="Text_Role">-</dd></div>
+                        </dl>
+                    </div>
+
+                    <!-- Formulir Profil Sesuai Node 3874-3884 FigCraft -->
+                    <form id="Form_EditProfil" class="settings-form" novalidate>
+                        <div class="form-group">
+                            <label class="form-label" for="Input_Nama">Nama Lengkap</label>
+                            <input type="text" class="form-input" id="Input_Nama" name="nama" autocomplete="name" placeholder="Nama lengkap">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="Input_Email">Email</label>
+                            <input type="email" class="form-input" id="Input_Email" name="email" autocomplete="email" placeholder="nama@gmail.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="Input_NomorTelepon">Nomor Telepon</label>
+                            <input type="tel" class="form-input" id="Input_NomorTelepon" name="nomor_telp" autocomplete="tel" placeholder="08xxxxxxxxxx">
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn--secondary" id="Btn_BatalEdit" style="display: none;">Batal</button>
+                            <button type="submit" class="btn btn--primary btn--block" id="Btn_SimpanProfil">Simpan perubahan</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Kolom Kanan: Keamanan (Node 3885) & Sesi (Node 5768) -->
+                <div class="settings-column-right">
+                    <!-- Kartu Keamanan (Node 3885) -->
+                    <section class="card-box" id="Card_Keamanan">
+                        <h2 class="card-box-title">Keamanan</h2>
+                        <div class="security-info">
+                            <p class="field-label-bold">Kata sandi</p>
+                            <p class="field-note">Terakhir diubah 2 minggu lalu.</p>
+                        </div>
+                        <a href="ResetPasswordPage.html" class="btn btn--secondary btn--block" id="Link_UbahSandi">Ubah kata sandi</a>
+                    </section>
+
+                    <!-- Kartu Sesi (Node 5768) -->
+                    <section class="card-box" id="Card_Keluar">
+                        <h2 class="card-box-title">Sesi</h2>
+                        <p class="field-note mb-4">Akhiri sesi di perangkat ini.</p>
+                        <button type="button" class="btn btn--danger-outline btn--block" id="Btn_Keluar">Keluar</button>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Baris Bawah: Kartu Izin Penuh (Node 5755 FigCraft) -->
+            <section class="card-box settings-card-full" id="Card_Izin">
+                <h2 class="card-box-title">Izin</h2>
+                
+                <div class="permissions-divider"></div>
+
+                <!-- Izin Notifikasi -->
+                <div class="permission-item-row">
+                    <div class="permission-text">
+                        <p class="field-label-bold" id="Label_IzinNotif">Notifikasi</p>
+                        <p class="field-description">Pengingat check-in dan kabar penting muncul di peramban.</p>
+                        <p class="field-status-note" id="Text_NotifInfo"></p>
+                    </div>
+                    <label class="switch-toggle">
+                        <input type="checkbox" role="switch" id="Switch_Notifikasi" aria-labelledby="Label_IzinNotif">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+
+                <div class="permissions-divider"></div>
+
+                <!-- Izin Lokasi -->
+                <div class="permission-item-row">
+                    <div class="permission-text">
+                        <p class="field-label-bold" id="Label_IzinLokasi">Lokasi</p>
+                        <p class="field-description">Dipakai untuk menampilkan tenaga kesehatan terdekat.</p>
+                        <p class="field-status-note" id="Text_LokasiInfo"></p>
+                    </div>
+                    <label class="switch-toggle">
+                        <input type="checkbox" role="switch" id="Switch_Lokasi" aria-labelledby="Label_IzinLokasi">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Tautan Kembali ke Dashboard -->
+            <div class="page-footer-nav">
+                <a href="DashboardPagePelajar.html" class="btn btn--link" id="Link_Kembali">&larr; Kembali ke Dashboard</a>
+            </div>
+        </main>
+    </div>
+
+    <!-- Dialog Pop-up Konfirmasi Keluar (Sesuai Desain Konsisten) -->
+    <dialog class="modal" id="Popup_KonfirmasiKeluar" aria-labelledby="Title_KonfirmasiKeluar">
+        <div class="modal__body">
+            <button type="button" class="btn btn--icon modal-close" id="Btn_TutupPopup" aria-label="Tutup pop-up">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <h2 class="modal__title" id="Title_KonfirmasiKeluar">Keluar dari akun?</h2>
+            <p class="modal__subtitle" id="Text_KonfirmasiKeluar">Sesi login akan diakhiri dan kamu akan kembali ke halaman masuk.</p>
+            <div class="modal__actions">
+                <button type="button" class="btn btn--secondary" id="Btn_Batal">Batal</button>
+                <button type="button" class="btn btn--danger" id="Btn_KonfirmasiKeluar">Keluar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="session.js"></script>
+    <script src="feedback.js"></script>
+    <script src="SettingPagePelajar.js"></script>
+    <script src="sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+/* ==========================================================================
+   MahaSehat - CariTenagaKesehatanPage.css
+   Pencarian tenaga kesehatan untuk pelajar (UC05) + pengajuan janji (UC06).
+   Token, sidebar, tombol, field, dialog, dan alert berasal dari
+   base.css + sidebar.css + components.css. Berkas ini hanya memuat gaya khas
+   halaman (toolbar pencarian, kartu tenaga kesehatan, ringkasan detail).
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Toolbar pencarian
+   -------------------------------------------------------------------------- */
+.search-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.search-toolbar .form-group {
+    margin-bottom: 0;
+}
+
+.result-count {
+    margin-block: 12px 16px;
+    font-size: var(--text-body-sm);
+    color: var(--color-ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Daftar tenaga kesehatan
+   -------------------------------------------------------------------------- */
+.nakes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.nakes-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px 20px;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--duration-fast) ease, transform var(--duration-fast) ease;
+}
+
+.nakes-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.nakes-main {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    min-width: 0;
+}
+
+.nakes-avatar {
+    grid-row: span 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--color-teal);
+    color: var(--color-ink);
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.nakes-avatar.tone-mist {
+    background-color: var(--color-mist);
+}
+
+.nakes-identity {
+    flex: 1;
+    min-width: 0;
+}
+
+.nakes-name {
+    font-family: var(--font-heading);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-ink);
+}
+
+.nakes-specialty {
+    font-size: var(--text-body-sm);
+    font-weight: 600;
+    color: var(--color-teal-dark);
+}
+
+.nakes-location {
+    margin-top: 2px;
+    font-size: var(--text-body-sm);
+    color: var(--color-ink-subtle);
+}
+
+.nakes-fee {
+    margin-left: auto;
+    text-align: right;
+}
+
+.nakes-fee strong {
+    display: block;
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--color-ink);
+    white-space: nowrap;
+}
+
+.nakes-fee span {
+    font-size: var(--text-label);
+    color: var(--color-ink-muted);
+}
+
+.nakes-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border);
+}
+
+.tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag {
+    padding: 3px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-mist-light);
+    font-size: var(--text-label);
+    font-weight: 600;
+    color: var(--color-ink-subtle);
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.empty-result {
+    padding: 32px 16px;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-white);
+    font-size: var(--text-body);
+    color: var(--color-ink-muted);
+    text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   Dialog detail
+   -------------------------------------------------------------------------- */
+.modal--wide {
+    max-width: min(640px, calc(100vw - 32px));
+}
+
+.detail-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.detail-head .modal__subtitle {
+    margin-bottom: 0;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 24px;
+    margin-bottom: 16px;
+}
+
+.detail-grid dt {
+    font-size: var(--text-label);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+}
+
+.detail-grid dd {
+    margin: 2px 0 0;
+    font-size: var(--text-body);
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+.detail-copy {
+    margin-bottom: 16px;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    color: var(--color-ink-subtle);
+}
+
+/* --------------------------------------------------------------------------
+   Pilihan slot pada dialog janji
+   -------------------------------------------------------------------------- */
+.slot-list {
+    margin-bottom: 16px;
+    padding: 0;
+    border: 0;
+}
+
+.slot-list legend {
+    margin-bottom: 8px;
+}
+
+.slot-list label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-mist-light);
+    font-size: var(--text-body);
+    cursor: pointer;
+}
+
+.slot-list label:has(input:checked) {
+    border-color: var(--color-teal);
+    background-color: var(--color-teal-subtle);
+    font-weight: 600;
+}
+
+.slot-list input[type="radio"] {
+    accent-color: var(--color-teal-dark);
+}
+
+.slot-empty {
+    font-size: var(--text-body-sm);
+    color: var(--color-ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Responsif
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+    .search-toolbar {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .nakes-card {
+        padding: 16px;
+    }
+
+    .nakes-fee {
+        margin-left: 0;
+        text-align: left;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-actions {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .card-actions .btn {
+        flex: 1;
+    }
+}

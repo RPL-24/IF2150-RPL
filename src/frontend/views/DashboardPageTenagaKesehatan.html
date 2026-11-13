@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Dashboard Tenaga Kesehatan</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="DashboardPageTenagaKesehatan.css">
+
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Floating Sidebar Navigasi Nakes -->
+        <aside class="app-sidebar" data-role="nakes" id="Sidebar">
+            <div class="sidebar-header">
+                <a href="DashboardPageTenagaKesehatan.html" class="brand-link" id="Link_Brand">
+                    <img src="../assets/logo-mahasehat-v1.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                </a>
+                <button type="button" class="nav-toggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="SidebarPanel">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="sidebar-panel" id="SidebarPanel">
+
+                <!-- Menu Navigasi Utama -->
+                <nav class="nav-menu" aria-label="Menu utama">
+                    <a href="DashboardPageTenagaKesehatan.html" class="nav-item active" aria-current="page" id="Menu_Dashboard" aria-current="page">
+                        <img src="../assets/icon-dashboard.png" alt="" class="nav-icon">
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="ManajemenKonsultasiPage.html" class="nav-item" id="Menu_Konsultasi">
+                        <img src="../assets/icon-konsultasi.png" alt="" class="nav-icon">
+                        <span class="nav-label">Konsultasi</span>
+                        <span class="nav-badge" id="Badge_PendingCount">2</span>
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="SettingPageTenagaKesehatan.html" class="nav-item" id="Menu_Setelan">
+                        <img src="../assets/icon-setelan.png" alt="" class="nav-icon">
+                        <span class="nav-label">Setelan</span>
+                    </a>
+                    <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
+                        <img src="../assets/icon-keluar.png" alt="" class="nav-icon">
+                        <span class="nav-label">Keluar</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-user" id="Info_User">
+                    <div class="user-avatar" id="User_Avatar">R</div>
+                    <div class="user-meta">
+                        <p class="user-name" id="Text_NamaUser">-</p>
+                        <p class="user-role" id="Text_RoleUser">Tenaga Kesehatan</p>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Area Konten Utama -->
+        <main class="main-viewport" id="Panel_Dashboard">
+            <header class="page-header">
+                <h1 class="page-title" id="Title_Dashboard">Dashboard</h1>
+                <p class="page-subtitle" id="Text_Subjudul">Kelola pengajuan konsultasi dan jadwal ketersediaanmu dengan mudah.</p>
+            </header>
+
+            <!-- Banner Profil & Praktik Nakes -->
+            <section class="banner-card banner-profile" id="Card_Profil">
+                <div class="profile-banner-left" id="Item_Profil">
+                    <div class="profile-avatar-circle" id="Avatar_Nakes">-</div>
+                    <div >
+                        <div class="profile-header-line">
+                            <h2 class="profile-name" id="Text_NamaNakes">-</h2>
+                            <span class="badge badge--stabil">Praktik Aktif</span>
+                        </div>
+                        <p class="profile-specialty" id="Text_JenisNakes">-</p>
+                        <p class="profile-detail-line" id="Text_DetailProfil">-</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4 Grid Metrik Nakes -->
+            <section class="stats-grid" id="Grid_Ringkasan">
+                <article class="stat-card" id="Card_Diajukan">
+                    <h3 class="stat-title">Pengajuan Baru</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value" id="Value_Diajukan">0</span>
+                        <span class="stat-unit">Pengajuan</span>
+                    </div>
+                    <p class="stat-note">Menunggu tanggapanmu</p>
+                </article>
+
+                <article class="stat-card" id="Card_Disetujui">
+                    <h3 class="stat-title">Disetujui</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value" id="Value_Disetujui">0</span>
+                        <span class="stat-unit">Pengajuan</span>
+                    </div>
+                    <p class="stat-note">Konsultasi terjadwal</p>
+                </article>
+
+                <article class="stat-card" id="Card_DijadwalUlang">
+                    <h3 class="stat-title">Dijadwal Ulang</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value" id="Value_DijadwalUlang">0</span>
+                        <span class="stat-unit">Pengajuan</span>
+                    </div>
+                    <p class="stat-note">Menunggu jawaban pelajar</p>
+                </article>
+
+                <article class="stat-card" id="Card_SlotKosong">
+                    <h3 class="stat-title">Slot Kosong</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value" id="Value_SlotKosong">0</span>
+                        <span class="stat-unit">Slot</span>
+                    </div>
+                    <p class="stat-note">Masih tersedia</p>
+                </article>
+            </section>
+
+            <!-- Grid Bawah (Pengajuan Konsultasi & Jadwal Ketersediaan) -->
+            <div class="bottom-grid">
+                <!-- Kartu Pengajuan Konsultasi Terbaru -->
+                <section class="card-box" id="Card_Pengajuan">
+                    <div class="card-box-header">
+                        <h3 class="card-box-title">Pengajuan Konsultasi Terbaru</h3>
+                    </div>
+
+                    <div class="custom-list-group" id="List_Pengajuan"></div>
+                    <p class="empty-msg" id="Text_PengajuanKosong" hidden>Belum ada pengajuan konsultasi.</p>
+
+                    <div class="card-box-footer">
+                        <a href="ManajemenKonsultasiPage.html" class="btn btn--primary" id="Link_KelolaPengajuan">Kelola Pengajuan</a>
+                    </div>
+                </section>
+
+                <!-- Kartu Jadwal Ketersediaan -->
+                <section class="card-box" id="Card_Ketersediaan">
+                    <div class="card-box-header">
+                        <h3 class="card-box-title">Jadwal Ketersediaan</h3>
+                    </div>
+
+                    <div class="custom-list-group" id="List_Ketersediaan"></div>
+                    <p class="empty-msg" id="Text_KetersediaanKosong" hidden>Belum ada slot ketersediaan.</p>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="session.js"></script>
+    <script src="DashboardPageTenagaKesehatan.js"></script>
+    <script src="sidebar.js"></script>
+</body>
+</html>

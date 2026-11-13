@@ -1,0 +1,407 @@
+/* ==========================================================================
+   MahaSehat - CheckInPage.css
+   Halaman daily check-in pelajar (UC03). Alur mandiri (wizard) tanpa sidebar,
+   seperti NotifikasiDarurat, agar pelajar fokus menyelesaikan lima langkah.
+
+   Token, tipografi, tombol, kartu, field, dan hint berasal dari base.css +
+   components.css. Skala spasi halaman ini: 4 · 8 · 12 · 16 · 24 · 32 · 48.
+   ========================================================================== */
+
+.site-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--color-cream);
+}
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 32px 32px 0;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--color-ink);
+}
+
+.brand-logo {
+    width: 180px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.brand-title {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+}
+
+.main-viewport {
+    flex: 1;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 32px 48px;
+}
+
+.site-footer {
+    padding: 24px 32px 32px;
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-body-sm);
+    color: var(--color-ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Indikator langkah
+   -------------------------------------------------------------------------- */
+.progress-track {
+    height: 4px;
+    margin-bottom: 12px;
+    background-color: var(--color-mist);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+}
+
+.progress-fill {
+    display: block;
+    height: 100%;
+    background-color: var(--color-teal);
+    border-radius: var(--radius-pill);
+    transition: width 0.35s ease;
+}
+
+.step-label {
+    margin-bottom: 8px;
+    font-size: var(--text-body-sm);
+    font-weight: 600;
+    color: var(--color-ink-muted);
+    letter-spacing: 0.01em;
+}
+
+/* Judul langkah memakai header bersama (.page-header) agar jarak ke konten
+   sama dengan halaman lain; outline dimatikan karena fokus bersifat programatis. */
+.main-viewport .page-header {
+    margin-bottom: 24px;
+}
+
+.page-title:focus {
+    outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   Pilihan jawaban
+   -------------------------------------------------------------------------- */
+.option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 64px;
+    padding: 12px 20px;
+    text-align: left;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    cursor: pointer;
+    transition: border-color var(--duration-fast) ease,
+                background-color var(--duration-fast) ease;
+}
+
+.option-card strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.option-card small {
+    font-size: var(--text-body-sm);
+    line-height: 1.4;
+    color: var(--color-ink-subtle);
+}
+
+.option-card:hover {
+    border-color: var(--color-ink);
+}
+
+.option-card.is-selected {
+    background-color: var(--color-teal);
+    border: 2px solid var(--color-ink);
+    padding: 11px 19px;
+}
+
+.option-card.is-selected small {
+    color: var(--color-ink);
+}
+
+.option-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    background-color: var(--color-mist-light);
+    border-radius: var(--radius-sm);
+    font-size: 20px;
+}
+
+.option-card.is-selected .option-icon {
+    background-color: var(--color-cream);
+}
+
+/* --------------------------------------------------------------------------
+   Jam tidur & catatan
+   -------------------------------------------------------------------------- */
+.time-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.time-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: var(--text-body-sm);
+    font-weight: 700;
+    color: var(--color-ink);
+}
+
+.time-grid input {
+    height: 48px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.form-textarea {
+    min-height: 168px;
+}
+
+.char-count {
+    float: right;
+}
+
+/* Jarak hint ke kontrol di atasnya, konsisten untuk tidur dan catatan */
+.time-grid + .field-hint,
+.form-textarea + .field-hint {
+    margin-top: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   Aksi langkah
+   -------------------------------------------------------------------------- */
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+/* --------------------------------------------------------------------------
+   Ringkasan & kartu penutup
+   -------------------------------------------------------------------------- */
+.summary-card h2 {
+    margin-bottom: 8px;
+    font-size: var(--text-h3);
+    letter-spacing: -0.01em;
+}
+
+.summary-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.summary-row dt {
+    font-size: var(--text-body-sm);
+    font-weight: 600;
+    color: var(--color-ink-muted);
+}
+
+.summary-row dd {
+    margin-top: 2px;
+    font-size: var(--text-body);
+    overflow-wrap: anywhere;
+}
+
+.summary-card + .form-actions {
+    margin-top: 24px;
+}
+
+.intro-card,
+.success-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-top: 8px;
+    padding: 28px;
+    text-align: center;
+}
+
+.intro-card .page-title,
+.success-card .page-title {
+    margin-bottom: 6px;
+}
+
+.intro-card .page-subtitle,
+.success-card .page-subtitle {
+    margin-bottom: 12px;
+}
+
+.intro-card .btn,
+.success-card .btn {
+    width: 100%;
+    max-width: 320px;
+}
+
+.intro-icon,
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 16px;
+    border-radius: 50%;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.intro-icon {
+    background-color: var(--color-amber);
+    color: var(--color-ink);
+}
+
+.success-icon {
+    background-color: transparent;
+    animation: pop var(--duration-base) ease;
+}
+
+.success-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@keyframes pop {
+    from {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Responsif
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+    .site-header {
+        padding: 24px 24px 0;
+    }
+
+    .main-viewport {
+        padding: 20px 24px 40px;
+    }
+
+    .site-footer {
+        padding: 20px 24px 24px;
+    }
+
+    .time-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 600px) {
+    .site-header {
+        padding: 16px 16px 0;
+    }
+
+    .main-viewport {
+        padding: 16px 16px 32px;
+    }
+
+    .site-footer {
+        padding: 16px;
+    }
+
+    .main-viewport .page-header {
+        margin-bottom: 20px;
+    }
+
+    .intro-card,
+    .success-card {
+        padding: 24px 20px;
+        margin-top: 0;
+    }
+
+    .option-card {
+        padding: 12px 16px;
+    }
+
+    .option-card.is-selected {
+        padding: 11px 15px;
+    }
+
+    .form-actions {
+        margin-top: 24px;
+    }
+
+    .summary-row {
+        gap: 12px;
+    }
+}
+
+
+/* Pemicu stres: pilihan ganda */
+.trigger-group {
+    margin: 0 0 20px;
+    padding: 0;
+    border: 0;
+}
+
+.trigger-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 6px;
+}
+
+.trigger-chips .seg-btn {
+    border: 1px solid var(--color-border);
+    background-color: var(--color-white);
+}
+
+.trigger-chips .seg-btn.is-active {
+    border-color: var(--color-ink);
+    background-color: var(--color-amber);
+    font-weight: 700;
+}

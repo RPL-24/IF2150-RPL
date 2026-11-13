@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Manajemen Konsultasi Tenaga Kesehatan</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="ManajemenKonsultasiPage.css">
+
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Floating Sidebar Navigasi Nakes -->
+        <aside class="app-sidebar" data-role="nakes" id="Sidebar">
+            <div class="sidebar-header">
+                <a href="DashboardPageTenagaKesehatan.html" class="brand-link" id="Link_Brand">
+                    <img src="../assets/logo-mahasehat-v1.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                </a>
+                <button type="button" class="nav-toggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="SidebarPanel">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="sidebar-panel" id="SidebarPanel">
+
+                <!-- Menu Navigasi Utama -->
+                <nav class="nav-menu" aria-label="Menu utama">
+                    <a href="DashboardPageTenagaKesehatan.html" class="nav-item" id="Menu_Dashboard">
+                        <img src="../assets/icon-dashboard.png" alt="" class="nav-icon">
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="ManajemenKonsultasiPage.html" class="nav-item active" aria-current="page" id="Menu_Konsultasi">
+                        <img src="../assets/icon-konsultasi.png" alt="" class="nav-icon">
+                        <span class="nav-label">Konsultasi</span>
+                        <span class="nav-badge" id="Badge_PendingCount">2</span>
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="SettingPageTenagaKesehatan.html" class="nav-item" id="Menu_Setelan">
+                        <img src="../assets/icon-setelan.png" alt="" class="nav-icon">
+                        <span class="nav-label">Setelan</span>
+                    </a>
+                    <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
+                        <img src="../assets/icon-keluar.png" alt="" class="nav-icon">
+                        <span class="nav-label">Keluar</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-user" id="Info_User">
+                    <div class="user-avatar" id="User_Avatar">R</div>
+                    <div class="user-meta">
+                        <p class="user-name" id="Text_NamaUser">-</p>
+                        <p class="user-role" id="Text_RoleUser">Tenaga Kesehatan</p>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Area Konten Utama -->
+        <main class="main-viewport" id="Panel_ManajemenKonsultasi">
+            <header class="page-header">
+                <h1 class="page-title" id="Title_Page">Manajemen Konsultasi</h1>
+                <p class="page-subtitle" id="Text_Subjudul">Daftar permohonan konsultasi masuk dan rekapitulasi tren kesehatan pelajar.</p>
+            </header>
+
+            <!-- Split View Layout -->
+            <div class="split-view-container" id="SplitView_Konsultasi">
+                
+                <!-- Kolom Kiri: Antrean & Pencarian Pelajar -->
+                <section class="consultation-queue-column" aria-label="Daftar Permohonan Konsultasi">
+                    <!-- Search Field -->
+                    <div class="queue-search-wrap">
+                        <img src="../assets/icon-cari.png" alt="" class="queue-search-icon" aria-hidden="true">
+                        <input type="text" class="queue-search-input" id="Input_CariPelajar" placeholder="Cari nama pelajar atau kata kunci..." aria-label="Cari nama pelajar atau kata kunci">
+                    </div>
+
+                    <!-- Filter Chips (Anti-Slop Pill Style) -->
+                    <div class="filter-chips-row" role="tablist" aria-label="Filter status permohonan">
+                        <button type="button" class="filter-pill active" data-filter="all" id="Tab_Semua">Semua (<span id="Count_Semua">0</span>)</button>
+                        <button type="button" class="filter-pill" data-filter="Menunggu" id="Tab_Menunggu">Menunggu (<span id="Count_Menunggu">0</span>)</button>
+                        <button type="button" class="filter-pill" data-filter="Disetujui" id="Tab_Disetujui">Disetujui (<span id="Count_Disetujui">0</span>)</button>
+                        <button type="button" class="filter-pill" data-filter="Dijadwal Ulang" id="Tab_Riwayat">Dijadwal Ulang (<span id="Count_Riwayat">0</span>)</button>
+                    </div>
+
+                    <!-- List Kartu Permohonan -->
+                    <div class="queue-cards-list" id="List_Permohonan">
+                        <!-- Kartu permohonan akan di-render secara dinamis oleh JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Kolom Kanan: Panel Detail Klinis & Konfirmasi Sesi -->
+                <section class="consultation-detail-column" id="Panel_Detail" aria-label="Detail Permohonan Konsultasi">
+                    <div class="detail-card-panel" id="Card_DetailPanel">
+                        
+                        <!-- Header Pasien -->
+                        <div class="patient-header-section">
+                            <div class="patient-avatar-circle" id="Detail_Avatar">-</div>
+                            <div class="patient-meta-info">
+                                <h2 class="patient-name" id="Detail_Nama">-</h2>
+                                <p class="patient-sub" id="Detail_SubInfo">-</p>
+                            </div>
+                            <button type="button" class="btn btn--secondary btn-hubungi" id="Btn_HubungiPelajar">Hubungi</button>
+                        </div>
+
+                        <hr class="panel-divider">
+
+                        <!-- Section 1: Rincian Sesi -->
+                        <div class="detail-section">
+                            <h3 class="section-title">Rincian Sesi Konsultasi</h3>
+                            <div class="info-block">
+                                <p class="info-label">Waktu Pengajuan</p>
+                                <p class="info-value-bold" id="Detail_WaktuSesi">-</p>
+                            </div>
+                            <div class="info-block">
+                                <p class="info-label">Metode & Kuota</p>
+                                <p class="info-value-bold" id="Detail_MetodeSesi">-</p>
+                            </div>
+                            <div class="info-block">
+                                <p class="info-label">Keluhan Utama dari Pelajar</p>
+                                <p class="info-quote" id="Detail_KeluhanUtama">-</p>
+                            </div>
+                        </div>
+
+                        <hr class="panel-divider">
+
+                        <!-- Section 2: Tren Kesehatan 7 Hari Terakhir (Agregat KNF02) -->
+                        <div class="detail-section">
+                            <div >
+                                <h3 class="section-title">Tren Kesehatan 7 Hari Terakhir</h3>
+                            </div>
+                            <p class="section-subtext">Rangkuman agregat dari catatan harian pelajar (jurnal pribadi tetap terenkripsi).</p>
+
+                            <!-- Grid 2 Grafik Batang Kanonikal (Mengikuti I-14 Laporan Kesehatan) -->
+                            <div class="charts-comparison-grid">
+                                <!-- Grafik Mood -->
+                                <div class="chart-box-mini">
+                                    <div class="chart-box-header">
+                                        <h4 class="chart-box-title">Data Mood</h4>
+                                        <span class="chart-box-stat" id="Stat_MoodRerata">-</span>
+                                    </div>
+                                    <div class="chart-bars-wrap" id="Bars_Mood">
+                                        <!-- Mini bar chart mood akan di-render oleh JS -->
+                                    </div>
+                                </div>
+
+                                <!-- Grafik Tidur -->
+                                <div class="chart-box-mini">
+                                    <div class="chart-box-header">
+                                        <h4 class="chart-box-title">Data Tidur</h4>
+                                        <span class="chart-box-stat" id="Stat_TidurRerata">-</span>
+                                    </div>
+                                    <div class="chart-bars-wrap" id="Bars_Tidur">
+                                        <!-- Mini bar chart tidur akan di-render oleh JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="panel-divider">
+
+                        <!-- Section 3: Tautan & Catatan Sesi -->
+                        <div class="detail-section">
+                            <h3 class="section-title">Tautan & Catatan Sesi</h3>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="Input_MeetLink">Tautan Google Meet</label>
+                                <input type="url" class="form-input-custom" id="Input_MeetLink" placeholder="https://meet.google.com/...">
+                            </div>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="Textarea_Catatan">Catatan Persiapan untuk Pelajar</label>
+                                <textarea class="form-textarea-custom" id="Textarea_Catatan" rows="2" placeholder="Catatan persiapan untuk pelajar"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Aksi Keputusan Klinis -->
+                        <div class="action-buttons-row">
+                            <button type="button" class="btn btn--dark" id="Btn_Setujui">Setujui Permohonan</button>
+                            <button type="button" class="btn btn--secondary" id="Btn_JadwalkanUlang">Jadwalkan Ulang</button>
+                            <button type="button" class="btn btn--danger-outline" id="Btn_Tolak">Tolak</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Feedback Notification -->
+    <!-- Modal Dialog untuk Jadwal Ulang -->
+    <!-- Dialog Jadwal Ulang (dialog native: ESC + focus trap + backdrop) -->
+    <dialog class="modal" id="Modal_JadwalUlang" aria-labelledby="Title_JadwalUlang">
+        <div class="modal__body">
+            <h2 class="modal__title" id="Title_JadwalUlang">Jadwalkan Ulang Sesi Konsultasi</h2>
+            <p class="modal__subtitle" id="Modal_JadwalSub">Tentukan tanggal dan waktu baru untuk konsultasi bersama pelajar.</p>
+            <div class="form-group">
+                <label class="form-label" for="Modal_InputTanggal">Tanggal Sesi Baru</label>
+                <input type="date" class="form-input" id="Modal_InputTanggal">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="Modal_InputWaktu">Waktu Sesi</label>
+                <select class="form-select" id="Modal_InputWaktu">
+                    <option value="09.00 - 10.00 WIB">09.00 - 10.00 WIB</option>
+                    <option value="10.00 - 11.00 WIB">10.00 - 11.00 WIB</option>
+                    <option value="13.00 - 14.00 WIB" selected>13.00 - 14.00 WIB</option>
+                    <option value="15.00 - 16.00 WIB">15.00 - 16.00 WIB</option>
+                </select>
+            </div>
+            <div class="modal__actions">
+                <button type="button" class="btn btn--secondary" id="Modal_BtnBatalJadwal">Batal</button>
+                <button type="button" class="btn btn--dark" id="Modal_BtnSimpanJadwal">Simpan Jadwal Baru</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Dialog Konfirmasi Tolak (dialog native: ESC + focus trap + backdrop) -->
+    <dialog class="modal" id="Modal_KonfirmasiTolak" aria-labelledby="Title_KonfirmasiTolak" aria-describedby="Text_KonfirmasiTolak">
+        <div class="modal__body">
+            <h2 class="modal__title" id="Title_KonfirmasiTolak">Tolak permohonan konsultasi?</h2>
+            <p class="modal__subtitle" id="Text_KonfirmasiTolak">Permohonan dari <strong id="Nama_Tolak">pelajar</strong> akan ditolak dan pelajar menerima notifikasi penolakan.</p>
+            <div class="modal__actions">
+                <button type="button" class="btn btn--secondary" id="Btn_BatalTolak">Batal</button>
+                <button type="button" class="btn btn--danger" id="Btn_KonfirmasiTolak">Tolak Permohonan</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Drawer Detail Konsultasi (<=1200px). Kolom detail dipindahkan ke sini oleh JS. -->
+    <dialog class="consult-detail-dialog" id="Dialog_DetailKonsultasi" aria-labelledby="Detail_Nama">
+        <button type="button" class="btn btn--icon consult-detail-close" id="Btn_TutupDetail" aria-label="Tutup detail konsultasi">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </dialog>
+
+    <!-- Script Utama -->
+    <script src="session.js"></script>
+    <script src="feedback.js"></script>
+    <script src="ManajemenKonsultasiPage.js"></script>
+    <script src="sidebar.js"></script>
+</body>
+</html>
+

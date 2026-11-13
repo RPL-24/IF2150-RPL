@@ -1,0 +1,137 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.brand {
+  position: absolute;
+  top: 40px;
+  left: 80px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-ink);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.brand img {
+  width: auto;
+  height: 32px;
+}
+
+.success-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.success-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  min-height: 400px;
+  padding: 32px;
+  border: 1px solid var(--color-mist);
+  border-radius: 16px;
+  background: var(--color-cream);
+  box-shadow: var(--shadow-modal);
+  text-align: center;
+}
+
+.success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 20px;
+  border-radius: 999px;
+  background: var(--color-teal);
+}
+
+.success-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.success-card h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+}
+
+.success-desc {
+  max-width: 440px;
+  margin-top: 8px;
+  color: var(--color-ink-subtle);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.success-note {
+  margin-top: 12px;
+  color: var(--color-ink-subtle);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.success-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  height: 52px;
+  margin-top: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-amber);
+  color: var(--color-ink);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 28px;
+  text-decoration: none;
+}
+
+.success-btn:hover {
+  background: var(--color-amber-hover);
+}
+
+.success-btn:active {
+  background: var(--color-amber-hover);
+}
+
+.brand:focus-visible,
+.success-btn:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+
+  .brand {
+    top: 24px;
+    left: 24px;
+  }
+
+  .success-card {
+    min-height: 0;
+    padding: 28px 24px;
+  }
+
+  .success-card h1 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+}

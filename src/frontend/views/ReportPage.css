@@ -1,0 +1,297 @@
+/* ==========================================================================
+   MahaSehat - ReportPage.css
+   Komponen khusus Laporan Kesehatan. Dimuat SETELAH DashboardPage*.css,
+   sehingga memakai token warna, sidebar, kartu, dan responsif dari file itu.
+   Palet: Teal var(--color-teal), Cream var(--color-cream), Ink var(--color-ink), Amber var(--color-amber), Mist var(--color-mist)
+   ========================================================================== */
+
+.report-block {
+    margin-bottom: 24px;
+}
+
+.periode-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 18px 28px;
+}
+
+.seg-btn.active {
+    background-color: var(--color-amber);
+}
+
+.seg-btn:focus-visible,
+.date-btn:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.chart {
+    padding-left: 28px;
+    margin-top: 4px;
+}
+
+.plot {
+    position: relative;
+    height: 170px;
+}
+
+.gridline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--color-mist);
+}
+
+.tick {
+    position: absolute;
+    left: -28px;
+    width: 20px;
+    text-align: right;
+    transform: translateY(50%);
+    font-size: 11px;
+    color: var(--color-ink-subtle);
+}
+
+.bars {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: 100%;
+    align-items: end;
+}
+
+.bar {
+    justify-self: center;
+    align-self: end;
+    width: 62%;
+    max-width: 44px;
+    min-height: 26px;
+    padding-top: 5px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.bar-low { background-color: var(--color-amber); color: var(--color-ink); }
+
+.bar-mid { background-color: var(--color-teal); color: var(--color-ink); }
+
+.bar-high { background-color: var(--color-teal-dark); color: var(--color-white); }
+
+.bar-top { background-color: var(--color-teal-hover); color: var(--color-white); }
+
+.xlabels {
+    display: grid;
+    margin-top: 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-ink-subtle);
+}
+
+.stres-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stres-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.track {
+    height: 8px;
+    border-radius: 999px;
+    background-color: var(--color-mist);
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    border-radius: 999px;
+}
+
+/* Kontrol Pemilih Kalender pada Card Catatan */
+
+.calendar-picker-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.calendar-native-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
+
+.btn-calendar-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background-color: var(--color-mist-light);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-calendar-trigger:hover {
+    background-color: var(--color-mist);
+    border-color: var(--color-ink-subtle);
+    transform: translateY(-1px);
+}
+
+.calendar-icon {
+    width: 15px;
+    height: 15px;
+    stroke: var(--color-ink);
+}
+
+.catatan-date-info {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink-subtle);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.date-strip {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    margin-bottom: 12px;
+    border-radius: 999px;
+    background-color: var(--color-mist);
+}
+
+.date-btn {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 2px 8px 2px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.date-btn.active {
+    background-color: var(--color-amber);
+    color: var(--color-ink);
+}
+
+.date-btn-sub {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-ink-subtle);
+    margin-top: 1px;
+}
+
+.date-btn.active .date-btn-sub {
+    color: var(--color-ink);
+    font-weight: 600;
+}
+
+.date-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--color-teal);
+    position: absolute;
+    bottom: 3px;
+}
+
+.date-btn.active .date-dot {
+    background-color: var(--color-ink);
+}
+
+.note-box {
+    min-height: 110px;
+    padding: 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    background-color: var(--color-mist-light);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-ink);
+}
+
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.risk-badge {
+    align-self: flex-start;
+    margin-bottom: 14px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.risk-rendah { background-color: var(--color-teal-subtle); color: var(--color-teal-deep); }
+
+.risk-sedang { background-color: var(--color-amber-subtle); color: var(--color-warning); }
+
+.risk-tinggi { background-color: var(--color-danger-subtle); color: var(--color-danger); }
+
+.card-text {
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.card-text.note {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--color-ink-subtle);
+}
+
+.privacy-note {
+    font-size: 13px;
+    color: var(--color-ink-subtle);
+}
+
+@media (max-width: 900px) {
+    .report-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bottom-grid {
+        grid-template-columns: 1fr;
+    }
+}

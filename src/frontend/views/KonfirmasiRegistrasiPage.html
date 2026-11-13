@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Persetujuan Akun Pelajar</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="AuthLayout.css">
+    <link rel="stylesheet" href="KonfirmasiRegistrasiPage.css">
+</head>
+<body>
+    <div class="auth-container">
+        <aside class="auth-aside" id="Panel_Left">
+            <a class="auth-brand" href="LoginPage.html" id="Logo_App">
+                <img src="../assets/logo-mahasehat-v2.png" alt="" class="auth-brand__logo">
+            </a>
+
+            <div class="auth-story">
+                <h2 class="auth-story__title" id="Text_Greeting">Konfirmasi akun pelajar.</h2>
+                <p class="auth-story__text">Satu persetujuan membuka akses pendampingan.</p>
+            </div>
+
+            <p class="auth-aside__help">
+                Butuh bantuan? <a href="mailto:support@mahasehat.id">Hubungi kami</a>
+            </p>
+        </aside>
+
+        <main class="auth-panel" id="Panel_Right">
+            <div class="auth-form">
+                <div class="auth-form__header">
+                    <p class="eyebrow">Konfirmasi</p>
+                    <h1 class="auth-form__title" id="Title_Persetujuan">Setujui akun</h1>
+                    <p class="auth-form__lead">Kamu diundang untuk menyetujui akun berikut:</p>
+                </div>
+
+                <div id="Alert_Notif" class="alert-box" role="status" hidden></div>
+
+                <div class="info-card" id="Card_DataPelajar" hidden>
+                    <div class="info-row">
+                        <span class="info-label" id="Label_NamaPelajar">Nama</span>
+                        <span class="info-value" id="Text_ValNamaPelajar">-</span>
+                    </div>
+
+                    <div class="info-divider"></div>
+
+                    <div class="info-row">
+                        <span class="info-label" id="Label_EmailPelajar">Email pelajar</span>
+                        <span class="info-value" id="Text_ValEmailPelajar">-</span>
+                    </div>
+
+                    <div class="info-divider"></div>
+
+                    <div class="info-row">
+                        <span class="info-label" id="Label_Diminta">Diminta</span>
+                        <span class="info-value" id="Text_ValDiminta">-</span>
+                    </div>
+                </div>
+
+                <div class="note-section" id="Label_Catatan">
+                    <p class="note-desc" id="Text_Catatan">
+                        Dengan menyetujui, akun pelajar aktif dan kamu bisa melihat ringkasan kondisinya.
+                    </p>
+                </div>
+
+                <div class="action-group">
+                    <button type="button" class="btn btn--primary btn--block" id="Btn_Setuju">Setujui akun</button>
+                    <button type="button" class="btn btn--link btn--link-danger" id="Btn_TidakSetuju">Tolak permintaan</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="KonfirmasiRegistrasiPage.js"></script>
+</body>
+</html>

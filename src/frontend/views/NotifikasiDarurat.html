@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Peringatan Darurat</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="NotifikasiDarurat.css">
+</head>
+<body>
+    <div class="notif-container">
+        <!-- Kartu Notifikasi Darurat Utama (UC08) -->
+        <div class="notif-card" id="Card_Darurat" hidden>
+            <!-- Badge Ikon Darurat -->
+            <div class="darurat-icon-badge" id="Icon_Darurat">
+                <img src="../assets/darurat.png" alt="" class="darurat-img" onerror="this.style.display='none'; document.getElementById('Svg_Darurat_Fallback').style.display='block';">
+                <svg id="Svg_Darurat_Fallback" class="darurat-svg" style="display: none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+            </div>
+
+            <!-- Konten Pesan Darurat -->
+            <h1 class="notif-title" id="Title_Darurat">Peringatan Darurat Kesehatan Mental!</h1>
+            <p class="notif-desc" id="Desc_Darurat">-</p>
+
+            <!-- Aksi Tombol -->
+            <div class="button-group">
+                <button type="button" class="btn btn--secondary" id="Btn_Diterima">Diterima</button>
+                <button type="button" class="btn btn--primary" id="Btn_SudahDitindaklanjuti">Sudah Ditindaklanjuti</button>
+            </div>
+        </div>
+
+        <!-- Kartu Sukses / Status Pulih (Ditampilkan Setelah Ditindaklanjuti) -->
+        <div class="notif-card" id="Card_Selesai" hidden>
+            <div class="success-icon-badge">
+                <img src="../assets/check.png" alt="" class="success-img">
+            </div>
+            <h2 class="notif-title">Status Darurat Dipulihkan</h2>
+            <p class="notif-desc">Tindak lanjut telah berhasil dicatat. Status kesehatan pelajar kembali terpantau secara normal.</p>
+            <div class="button-group">
+                <a href="DashboardPageOrangTuaWali.html" class="btn btn--primary">Kembali ke Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="session.js"></script>
+    <script src="feedback.js"></script>
+    <script src="NotifikasiDarurat.js"></script>
+</body>
+</html>

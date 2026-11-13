@@ -1,0 +1,203 @@
+/* ==========================================================================
+   MahaSehat - SettingPagePelajar.css
+   Desain Presisi Sesuai FigCraft (Node 3855 & Design System MahaSehat)
+   Palet: Teal var(--color-teal), Cream var(--color-cream), Ink var(--color-ink), Amber var(--color-amber), Mist var(--color-mist)
+   ========================================================================== *//* ==========================================================================
+   Layout Induk Aplikasi
+   ========================================================================== */
+/* --------------------------------------------------------------------------
+   Floating Sidebar Navigasi (Sesuai Node 4073 & 4640 FigCraft)
+   -------------------------------------------------------------------------- */
+.brand-link{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}.brand-logo{
+    width: 46px;
+    height: 32px;
+    object-fit: contain;
+}.brand-title{
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+}/* Menu Navigasi */
+/* Item Aktif Setelan (Node 4640 FigCraft) */
+.nav-item.active{
+    background-color: var(--color-teal);
+    color: var(--color-ink);
+    font-weight: 700;
+}/* Profil Pengguna di Bawah Sidebar */
+/* --------------------------------------------------------------------------
+   Area Konten Utama (Memenuhi Layar Tanpa Sisa Ruang Kosong Sebelah Kanan)
+   -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   Grid Layout Setelan
+   -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- Grid Layout Setelan -------------------------------------------------------------------------- */ .settings-grid-top{
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}.settings-column-right{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}/* Kotak Kartu Universal */
+.card-box-header .card-box-title{
+    margin-bottom: 0;
+}/* --------------------------------------------------------------------------
+   Formulir Profil (Node 3874-3884 FigCraft)
+   -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- Formulir Profil (Node 3874-3884 FigCraft) -------------------------------------------------------------------------- */ .settings-form{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}.form-input{
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    background-color: var(--color-mist-light);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--color-ink);
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}.form-input:focus{
+    outline: none;
+    background-color: var(--color-white);
+    border-color: var(--color-teal);
+    box-shadow: 0 0 0 3px var(--color-teal-subtle);
+}.form-input::placeholder{
+    color: var(--color-ink-muted);
+}/* --------------------------------------------------------------------------
+   Kartu Keamanan & Sesi
+   -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- Kartu Keamanan & Sesi -------------------------------------------------------------------------- */ .field-label-bold{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-ink);
+}.field-note{
+    font-size: 14px;
+    color: var(--color-ink-subtle);
+    margin-top: 4px;
+}.field-note.mb-4{
+    margin-bottom: 20px;
+}.security-info{
+    margin-bottom: 20px;
+}/* --------------------------------------------------------------------------
+   Kartu Izin (Node 5755 FigCraft)
+   -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- Kartu Izin (Node 5755 FigCraft) -------------------------------------------------------------------------- */ .settings-card-full{
+    margin-bottom: 28px;
+}.permissions-divider{
+    height: 1px;
+    background-color: var(--color-border);
+    margin: 18px 0;
+}.permission-item-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}.permission-text{
+    flex: 1;
+}.field-description{
+    font-size: 14px;
+    color: var(--color-ink-subtle);
+    margin-top: 4px;
+    line-height: 1.45;
+}.field-status-note{
+    font-size: 12px;
+    color: var(--color-danger);
+    margin-top: 4px;
+    font-weight: 500;
+}/* Toggle Switch Kustom (Node 5760-5767 FigCraft) */
+.switch-toggle{
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 28px;
+    flex-shrink: 0;
+}.switch-toggle input{
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}.switch-slider{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-mist);
+    border-radius: 999px;
+    transition: background-color 0.25s ease;
+}.switch-slider::before{
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--color-white);
+    border-radius: 50%;
+    transition: transform 0.25s ease;
+    box-shadow: var(--shadow-card);
+}.switch-toggle input:checked + .switch-slider{
+    background-color: var(--color-amber);
+}.switch-toggle input:focus-visible + .switch-slider{
+    box-shadow: 0 0 0 3px var(--color-amber-subtle);
+}.switch-toggle input:checked + .switch-slider::before{
+    transform: translateX(20px);
+}.switch-toggle input:disabled + .switch-slider{
+    opacity: 0.5;
+    cursor: not-allowed;
+}.btn-secondary-pill{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    height: 42px;
+    background-color: var(--color-white);
+    color: var(--color-ink);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}.btn-secondary-pill:hover{
+    background-color: var(--color-border-subtle);
+}.page-footer-nav{
+    margin-top: 8px;
+    display: flex;
+}.modal-message{
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-ink-subtle);
+    margin-bottom: 24px;
+}/* --------------------------------------------------------------------------
+   Responsif (Tablet & Mobile)
+   -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- Responsif (Tablet & Mobile) -------------------------------------------------------------------------- */ @media (max-width: 1120px){
+    .settings-grid-top {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-column-right {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 820px) {.settings-column-right{
+        grid-template-columns: 1fr;
+    }.permission-item-row{
+        align-items: flex-start;
+    }
+}

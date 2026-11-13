@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MahaSehat - Registrasi Tenaga Kesehatan</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="AuthLayout.css">
+    <link rel="stylesheet" href="RegistrationPage.css">
+  </head>
+  <body>
+    <div class="auth-container">
+      <aside class="auth-aside">
+        <a class="auth-brand" href="LoginPage.html">
+          <img src="../assets/logo-mahasehat-v2.png" alt="" class="auth-brand__logo">
+        </a>
+
+        <div class="auth-story">
+          <h1 class="auth-story__title">Kelola konsultasi pelajar.</h1>
+          <p class="auth-story__text">
+            Fokus pada pelajar, bukan pada administrasinya.
+          </p>
+        </div>
+
+        <p class="auth-aside__help">
+          Butuh bantuan? <a href="mailto:support@mahasehat.id">Hubungi kami</a>
+        </p>
+      </aside>
+
+      <main class="auth-panel">
+        <div class="auth-form">
+          <div class="auth-form__header">
+            <p class="eyebrow">Registrasi</p>
+            <h2 class="auth-form__title" id="Title_Registrasi">Buat akun tenaga kesehatan</h2>
+          </div>
+
+          <div class="role-tabs" id="Tab_RoleGroup" role="group" aria-label="Pilih jenis akun">
+            <button type="button" class="seg-btn" aria-pressed="false" id="Tab_Role_Pelajar" data-role="pelajar">
+              Pelajar
+            </button>
+            <button type="button" class="seg-btn" aria-pressed="false" id="Tab_Role_OrangTuaWali" data-role="orangtuawali">
+              Orang tua/wali
+            </button>
+            <button type="button" class="seg-btn active" aria-pressed="true" id="Tab_Role_TenagaKesehatan" data-role="tenagakesehatan">
+              Tenaga kesehatan
+            </button>
+          </div>
+
+          <div class="divider"></div>
+
+          <form id="Form_Registration" novalidate>
+            <input type="hidden" id="Input_Role" name="role" value="tenagakesehatan" />
+
+            <section class="form-section">
+              <h3>Identitas</h3>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="Input_Nama">Nama <span class="req" aria-hidden="true">*</span></label>
+                  <input class="form-input" type="text" id="Input_Nama" name="nama" placeholder="Masukkan nama lengkap" aria-describedby="Error_Nama" required />
+                  <small class="form-error" id="Error_Nama" role="alert"></small>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="Input_Email">Email <span class="req" aria-hidden="true">*</span></label>
+                  <input class="form-input" type="email" id="Input_Email" name="email" placeholder="Masukkan alamat e-mail" aria-describedby="Error_Email" required />
+                  <small class="form-error" id="Error_Email" role="alert"></small>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="Input_NomorTelp">Nomor telepon <span class="req" aria-hidden="true">*</span></label>
+                  <input class="form-input" type="tel" id="Input_NomorTelp" name="nomor_telp" placeholder="08xxxxxxxxxx" aria-describedby="Error_NoTelepon" required />
+                  <small class="form-error" id="Error_NoTelepon" role="alert"></small>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="Input_JenisTenagaKesehatan">Jenis tenaga kesehatan <span class="req" aria-hidden="true">*</span></label>
+                  <div class="select-shell">
+                    <input class="form-input" type="text" id="Input_JenisTenagaKesehatan" name="jenis_nakes" placeholder="Pilih jenis" list="list-nakes" aria-describedby="Error_JenisTenagaKesehatan" required />
+                    <span class="chevron" aria-hidden="true"></span>
+                  </div>
+                  <datalist id="list-nakes">
+                    <option value="Psikolog Klinis"></option>
+                    <option value="Psikolog Anak dan Remaja"></option>
+                    <option value="Psikolog Pendidikan"></option>
+                    <option value="Psikolog Industri dan Organisasi"></option>
+                    <option value="Psikolog Forensik"></option>
+                    <option value="Psikolog Olahraga"></option>
+                  </datalist>
+                  <small class="form-error" id="Error_JenisTenagaKesehatan" role="alert"></small>
+                </div>
+
+                <div class="form-group form-group--full">
+                  <label class="form-label" for="Input_Lokasi">Lokasi <span class="req" aria-hidden="true">*</span></label>
+                  <input class="form-input" type="text" id="Input_Lokasi" name="lokasi" placeholder="Kota atau klinik" aria-describedby="Error_Lokasi" required />
+                  <small class="form-error" id="Error_Lokasi" role="alert"></small>
+                  <p class="field-hint">Kota atau klinik tempat kamu praktik.</p>
+                </div>
+              </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section class="form-section">
+              <h3>Keamanan</h3>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="Input_KataSandi">Kata sandi <span class="req" aria-hidden="true">*</span></label>
+                  <div class="input-control">
+                    <input class="form-input" type="password" id="Input_KataSandi" name="password" placeholder="Minimal 8 karakter" autocomplete="new-password" required />
+                    <button type="button" class="pw-toggle" id="Toggle_KataSandi" aria-label="Tampilkan kata sandi">
+                      Tampilkan
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="Input_KonfirmasiKataSandi">Konfirmasi kata sandi <span class="req" aria-hidden="true">*</span></label>
+                  <input class="form-input" type="password" id="Input_KonfirmasiKataSandi" name="confirm_password" placeholder="Ulangi kata sandi" autocomplete="new-password" required />
+                </div>
+              </div>
+              <p class="helper">
+                Minimal 8 karakter, gunakan kombinasi huruf dan angka.
+              </p>
+            </section>
+
+            <div id="Alert_Error" class="alert-box alert-danger" role="alert" hidden></div>
+
+            <button type="submit" class="btn btn--primary btn--block" id="Btn_Daftar">Buat akun</button>
+          </form>
+
+          <p class="auth-footer">
+            Sudah punya akun? <a href="LoginPage.html">Masuk</a>
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="RegistrationPageTenagaKesehatan.js"></script>
+  </body>
+</html>

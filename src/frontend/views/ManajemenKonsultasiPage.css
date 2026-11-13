@@ -1,0 +1,661 @@
+/* ==========================================================================
+   MahaSehat - ManajemenKonsultasiPage.css
+   Desain Sesuai Konvensi Anti-Slop & Sistem Desain Resmi MahaSehat
+   Palet: Warm Cream var(--color-cream), Charcoal var(--color-ink), Teal var(--color-teal), Amber var(--color-amber), Mist var(--color-mist)
+   Kartu Putih Konsisten Selaras dengan Dashboard & Setelan
+   ========================================================================== */
+
+/* ==========================================================================
+   Viewport Utama & Split View Layout
+   (Gaya Sidebar Dikelola Terpusat di SidebarTenagaKesehatan.css)
+   ========================================================================== */
+
+.split-view-container > * {
+    min-width: 0;
+}
+
+.split-view-container {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 28px;
+    align-items: start;
+}
+
+/* --------------------------------------------------------------------------
+   Kolom Kiri: Antrean & Pencarian Pelajar
+   -------------------------------------------------------------------------- */
+
+.consultation-queue-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.queue-search-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.queue-search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.queue-search-input {
+    width: 100%;
+    padding: 13px 16px 13px 44px;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-ink);
+    outline: none;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-card);
+}
+
+.queue-search-input:focus {
+    border-color: var(--color-teal);
+    box-shadow: 0 0 0 3px var(--color-teal-subtle);
+}
+
+/* Filter Chips (Anti-Slop Pill Style) */
+
+.filter-chips-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.filter-pill {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-white);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.filter-pill:hover {
+    background-color: var(--color-mist-light);
+    border-color: var(--color-ink);
+}
+
+.filter-pill.active {
+    background-color: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-cream);
+    font-weight: 700;
+}
+
+/* List Kartu Antrean (Kartu Putih Konsisten Sesuai Dashboard) */
+
+.queue-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.queue-card-item {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: var(--shadow-card);
+}
+
+.queue-card-item:hover {
+    border-color: var(--color-ink-subtle);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+}
+
+.queue-card-item.selected {
+    border: 2px solid var(--color-ink);
+    box-shadow: var(--shadow-hover);
+}
+
+.queue-card-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.queue-card-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background-color: var(--color-teal);
+    color: var(--color-ink);
+    font-family: var(--font-heading);
+    font-size: 17px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.queue-card-meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.queue-card-name {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.queue-card-sub {
+    font-size: 13px;
+    color: var(--color-ink-muted);
+    margin-top: 2px;
+}
+
+.queue-card-divider {
+    height: 1px;
+    background-color: var(--color-border);
+}
+
+.queue-card-schedule {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-ink);
+}
+
+.queue-card-snippet {
+    font-size: 13px;
+    color: var(--color-ink-muted);
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.queue-card-tag {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background-color: var(--color-mist-light);
+    border: 1px solid var(--color-border);
+    color: var(--color-ink);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Kolom Kanan: Panel Detail Klinis & Konfirmasi Sesi
+   (Kartu Putih Konsisten Ber-radius 20px Presisi Sesuai Card-Box Dashboard)
+   -------------------------------------------------------------------------- */
+
+.consultation-detail-column {
+    min-width: 0;
+}
+
+.detail-card-panel {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: var(--shadow-card);
+}
+
+.patient-header-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.patient-avatar-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--color-teal);
+    color: var(--color-ink);
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.patient-meta-info {
+    flex: 1;
+}
+
+.patient-name {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+}
+
+.patient-sub {
+    font-size: 14px;
+    color: var(--color-ink-muted);
+    margin-top: 3px;
+}
+
+.btn-hubungi {
+    margin-left: auto;
+}
+
+.panel-divider {
+    border: none;
+    height: 1px;
+    background-color: var(--color-border);
+}
+
+.detail-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+}
+
+.section-subtext {
+    font-size: 13px;
+    color: var(--color-ink-muted);
+    margin-top: -4px;
+}
+
+.info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink-muted);
+}
+
+.info-value-bold {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-ink);
+}
+
+.info-quote {
+    font-size: 14px;
+    color: var(--color-ink);
+    line-height: 1.5;
+    background-color: var(--color-mist-light);
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-teal);
+    font-style: normal;
+}
+
+/* Grid Grafik Mini (Sesuai I-14 Laporan Kesehatan) */
+
+.charts-comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 6px;
+    min-width: 0;
+}
+
+/* Dua grafik berdampingan hanya bila kolom detail cukup lebar */
+@media (max-width: 1400px) {
+    .charts-comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.chart-box-mini {
+    background-color: var(--color-mist-light);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chart-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chart-box-title {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-ink);
+}
+
+.chart-box-stat {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-ink);
+}
+
+.chart-bars-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 80px;
+    padding-top: 8px;
+}
+
+.mini-bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.mini-bar-fill {
+    width: 22px;
+    border-radius: 4px;
+    background-color: var(--color-teal);
+    transition: height 0.3s ease;
+}
+
+.mini-bar-fill.amber {
+    background-color: var(--color-amber);
+}
+
+.mini-bar-day {
+    font-size: 11px;
+    color: var(--color-ink-muted);
+}
+
+/* Form Tautan & Catatan */
+
+.form-group-custom {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-label-custom {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+.form-input-custom {
+    width: 100%;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-mist-light);
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-ink);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.form-input-custom:focus {
+    border-color: var(--color-teal);
+    background-color: var(--color-white);
+    box-shadow: 0 0 0 3px var(--color-teal-subtle);
+}
+
+.form-textarea-custom {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-mist-light);
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-ink);
+    resize: vertical;
+    outline: none;
+    line-height: 1.45;
+    transition: all 0.2s ease;
+}
+
+.form-textarea-custom:focus {
+    border-color: var(--color-teal);
+    background-color: var(--color-white);
+    box-shadow: 0 0 0 3px var(--color-teal-subtle);
+}
+
+/* Tombol Aksi (Anti-Slop Pill Shape) */
+
+.action-buttons-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-primary-dark {
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+    flex: 1.2;
+    border: 1px solid var(--color-ink);
+}
+
+.btn-primary-dark:hover {
+    background-color: var(--color-ink-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-secondary-outline {
+    background-color: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    color: var(--color-ink);
+    flex: 1;
+}
+
+.btn-secondary-outline:hover {
+    border-color: var(--color-ink);
+    background-color: var(--color-mist-light);
+}
+
+.btn-danger-outline {
+    background-color: var(--color-white);
+    border: 1.5px solid var(--color-danger);
+    color: var(--color-danger);
+    padding: 0 20px;
+}
+
+.btn-danger-outline:hover {
+    background-color: var(--color-danger-subtle);
+}
+
+/* Toast Feedback */
+
+
+@media (max-width: 1023px) {
+
+
+/* Modal Dialog */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    backdrop-filter: blur(2px);
+}
+
+.modal-box {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    padding: 32px;
+    width: 480px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: var(--shadow-modal);
+}
+
+.modal-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.modal-buttons-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+/* Responsive */
+
+@media (max-width: 1200px) {
+    .split-view-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .charts-comparison-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons-row {
+        flex-direction: column;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Drawer detail konsultasi (<=1200px)
+   Kolom detail yang sama dipindahkan ke <dialog> oleh JS, jadi tidak ada
+   markup atau data yang diduplikasi.
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+    .split-view-container .consultation-detail-column {
+        display: none;
+    }
+}
+
+.consult-detail-dialog {
+    position: fixed;
+    top: 16px;
+    right: 12px;
+    bottom: 16px;
+    left: auto;
+    width: min(460px, calc(100vw - 24px));
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    overflow: visible;
+    color: var(--color-ink);
+}
+
+.consult-detail-dialog::backdrop {
+    background-color: var(--color-overlay);
+    backdrop-filter: blur(4px);
+}
+
+.consult-detail-dialog .detail-card-panel {
+    height: calc(100dvh - 32px);
+    max-height: none;
+    overflow-y: auto;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-modal);
+}
+
+.consult-detail-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    background-color: var(--color-white);
+}
+
+.consult-detail-dialog .patient-header-section {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px;
+    padding-right: 44px;
+}
+
+.consult-detail-dialog .patient-meta-info {
+    flex: 1 1 140px;
+    min-width: 0;
+}
+
+.consult-detail-dialog .btn-hubungi {
+    margin-left: 0;
+    width: 100%;
+}
+
+.queue-card-chevron {
+    display: none;
+    margin-left: 4px;
+    color: var(--color-ink-muted);
+}
+
+.queue-card-item[aria-haspopup="dialog"] .queue-card-chevron {
+    display: inline-flex;
+}
+
+@media (max-width: 600px) {
+    .consult-detail-dialog {
+        top: 8px;
+        right: 8px;
+        bottom: 8px;
+        left: 8px;
+        width: auto;
+    }
+
+    .consult-detail-dialog .detail-card-panel {
+        height: calc(100dvh - 16px);
+    }
+}

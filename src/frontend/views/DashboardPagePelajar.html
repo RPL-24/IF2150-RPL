@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Dashboard Pelajar</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="DashboardPagePelajar.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Floating Sidebar Navigasi (Sesuai Node 3960 & 4073 FigCraft) -->
+        <aside class="app-sidebar" data-role="pelajar" id="Sidebar">
+            <div class="sidebar-header">
+                <a href="DashboardPagePelajar.html" class="brand-link">
+                    <img src="../assets/logo-mahasehat-v1.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                </a>
+                <button type="button" class="nav-toggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="SidebarPanel">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="sidebar-panel" id="SidebarPanel">
+
+                <!-- Menu Navigasi Utama -->
+                <nav class="nav-menu" aria-label="Menu utama">
+                    <a href="DashboardPagePelajar.html" class="nav-item active" aria-current="page" id="Menu_Dashboard">
+                        <img src="../assets/icon-dashboard.png" alt="" class="nav-icon">
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="ReportPagePelajar.html" class="nav-item" id="Menu_Laporan">
+                        <img src="../assets/icon-laporankesehatan.png" alt="" class="nav-icon">
+                        <span class="nav-label">Laporan Kesehatan</span>
+                    </a>
+                    <a href="CariTenagaKesehatanPage.html" class="nav-item" id="Menu_Konsultasi">
+                        <img src="../assets/icon-konsultasi.png" alt="" class="nav-icon">
+                        <span class="nav-label">Konsultasi</span>
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="SettingPagePelajar.html" class="nav-item" id="Menu_Setelan">
+                        <img src="../assets/icon-setelan.png" alt="" class="nav-icon">
+                        <span class="nav-label">Setelan</span>
+                    </a>
+                    <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
+                        <img src="../assets/icon-keluar.png" alt="" class="nav-icon">
+                        <span class="nav-label">Keluar</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-user" id="Info_User">
+                    <div class="user-avatar" id="User_Avatar">A</div>
+                    <div class="user-meta">
+                        <p class="user-name" id="Text_NamaUser">-</p>
+                        <p class="user-role" id="Text_RoleUser">Pelajar</p>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Area Konten Utama (Memenuhi Seluruh Sisi Kanan Tanpa Ruang Kosong) -->
+        <main class="main-viewport" id="Panel_Dashboard">
+            <header class="page-header">
+                <h1 class="page-title" id="Title_Dashboard">Dashboard</h1>
+                <p class="page-subtitle" id="Text_Subjudul">Pantau kesehatan mentalmu dan kenal dirimu lebih baik.</p>
+            </header>
+
+            <!-- Banner Check-In Status (Node 3336 & 3393 FigCraft) -->
+            <section class="banner-card banner-warning" id="Card_CheckIn">
+                <div class="banner-icon-wrapper">
+                    <div class="banner-icon-circle" id="Icon_StatusCheckIn" aria-label="Status check-in hari ini">
+                        <span class="banner-mark">×</span>
+                    </div>
+                </div>
+                <div class="banner-text">
+                    <h2 class="banner-heading" id="Banner_Heading">Check-in hari ini belum diisi</h2>
+                    <p class="banner-message" id="Text_PesanCheckIn">
+                        Hari ini kamu belum mengisi refleksi harian.
+                    </p>
+                </div>
+                <div class="banner-cta">
+                    <a href="CheckInPage.html" class="btn btn--primary" id="Btn_AksiCheckIn">Mulai check-in</a>
+                </div>
+            </section>
+
+            <!-- 4 Grid Metrik Statistik (Node 3343-3358 FigCraft) -->
+            <section class="stats-grid" id="Grid_Ringkasan">
+                <article class="stat-card" id="Card_Streak">
+                    <h3 class="stat-title">Streak Check-In</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value" id="Value_Streak">0</span>
+                        <span class="stat-unit">Hari</span>
+                    </div>
+                    <p class="stat-note">Berturut-turut</p>
+                </article>
+
+                <article class="stat-card" id="Card_RerataMood">
+                    <h3 class="stat-title">Rerata Mood</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value" id="Value_RerataMood">0</span>
+                        <span class="stat-unit">/ 5</span>
+                    </div>
+                    <p class="stat-note">7 hari terakhir</p>
+                </article>
+
+                <article class="stat-card" id="Card_RerataTidur">
+                    <h3 class="stat-title">Rerata Tidur</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value" id="Value_RerataTidur">0</span>
+                        <span class="stat-unit">Jam</span>
+                    </div>
+                    <p class="stat-note">Rata-rata</p>
+                </article>
+
+                <article class="stat-card" id="Card_PolaMakan">
+                    <h3 class="stat-title">Pola Makan</h3>
+                    <div class="stat-metric">
+                        <span class="stat-value stat-value--text" id="Value_PolaMakan">-</span>
+                    </div>
+                    <p class="stat-note">Dari check-in terakhir</p>
+                </article>
+            </section>
+
+            <!-- Grid Bawah (Indeks Kesehatan & Jadwal Konsultasi) -->
+            <div class="bottom-grid">
+                <!-- Kartu Indeks Kesehatan Mental (Node 3359-3365 FigCraft) -->
+                <section class="card-box" id="Card_IndeksKesehatan">
+                    <div class="card-box-header">
+                        <h3 class="card-box-title">Indeks Kesehatan Mental</h3>
+                        <span class="badge badge--stabil" id="Badge_StatusIndeks">-</span>
+                    </div>
+                    <div class="index-score-wrap">
+                        <span class="index-score-value" id="Value_Indeks">0</span>
+                        <span class="index-score-scale">/ 100</span>
+                    </div>
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-fill" id="Fill_Indeks" style="width: 0%;"></div>
+                    </div>
+                    <p class="card-box-note" id="Text_IndeksNote">-</p>
+                    <p class="empty-msg" id="Text_IndeksKosong" hidden>Indeks muncul setelah data check-in lengkap.</p>
+                </section>
+
+                <!-- Kartu Jadwal Konsultasi (Node 3366-3375 FigCraft) -->
+                <section class="card-box" id="Card_JadwalKonsultasi">
+                    <div class="card-box-header">
+                        <h3 class="card-box-title">Jadwal konsultasi</h3>
+                    </div>
+
+                    <div  id="Item_Jadwal">
+                        <div class="nakes-profile">
+                            <div class="nakes-avatar" id="Avatar_Nakes">-</div>
+                            <div >
+                                <h4 class="nakes-name" id="Text_NamaNakes">-</h4>
+                                <p class="nakes-spec" id="Text_JenisNakes">-</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-details">
+                            <div class="detail-row">
+                                <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                <span id="Text_JadwalTanggal">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                <span id="Text_JadwalJam">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                <span id="Text_JadwalLokasi">-</span>
+                            </div>
+                            <!-- Legacy ID support -->
+                            <p id="Text_DetailJadwal" style="display: none;"></p>
+                        </div>
+
+                        <div class="schedule-footer">
+                            <a class="schedule-link" aria-disabled="true" title="Halaman belum tersedia">Lihat detail</a>
+                        </div>
+                    </div>
+
+                    <p class="empty-msg" id="Text_JadwalKosong" hidden>Belum ada konsultasi terjadwal.</p>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="session.js"></script>
+    <script src="DashboardPagePelajar.js"></script>
+    <script src="sidebar.js"></script>
+</body>
+</html>

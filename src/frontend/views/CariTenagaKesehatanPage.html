@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Cari Tenaga Kesehatan</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS bersama, lalu CSS halaman -->
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="CariTenagaKesehatanPage.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar pelajar -->
+        <aside class="app-sidebar" data-role="pelajar" id="Sidebar">
+            <div class="sidebar-header">
+                <a href="DashboardPagePelajar.html" class="brand-link">
+                    <img src="../assets/logo-mahasehat-v1.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                </a>
+                <button type="button" class="nav-toggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="SidebarPanel">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="sidebar-panel" id="SidebarPanel">
+                <nav class="nav-menu" aria-label="Menu utama">
+                    <a href="DashboardPagePelajar.html" class="nav-item" id="Menu_Dashboard">
+                        <img src="../assets/icon-dashboard.png" alt="" class="nav-icon">
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="ReportPagePelajar.html" class="nav-item" id="Menu_Laporan">
+                        <img src="../assets/icon-laporankesehatan.png" alt="" class="nav-icon">
+                        <span class="nav-label">Laporan Kesehatan</span>
+                    </a>
+                    <a href="CariTenagaKesehatanPage.html" class="nav-item active" aria-current="page" id="Menu_Konsultasi">
+                        <img src="../assets/icon-konsultasi.png" alt="" class="nav-icon">
+                        <span class="nav-label">Konsultasi</span>
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="SettingPagePelajar.html" class="nav-item" id="Menu_Setelan">
+                        <img src="../assets/icon-setelan.png" alt="" class="nav-icon">
+                        <span class="nav-label">Setelan</span>
+                    </a>
+                    <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
+                        <img src="../assets/icon-keluar.png" alt="" class="nav-icon">
+                        <span class="nav-label">Keluar</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-user" id="Info_User">
+                    <div class="user-avatar" id="User_Avatar">A</div>
+                    <div class="user-meta">
+                        <p class="user-name" id="Text_NamaUser">-</p>
+                        <p class="user-role" id="Text_RoleUser">Pelajar</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-viewport" id="Panel_CariTenagaKesehatan">
+            <header class="page-header">
+                <h1 class="page-title" id="Title_Cari">Cari Tenaga Kesehatan</h1>
+                <p class="page-subtitle" id="Text_Subjudul">Psikolog dan konselor terverifikasi di sekitarmu.</p>
+            </header>
+
+            <section class="search-toolbar" aria-label="Pencarian tenaga kesehatan">
+                <div class="form-group">
+                    <label class="form-label" for="Input_Lokasi">Cari</label>
+                    <input class="form-input" type="search" id="Input_Lokasi" placeholder="Nama lokasi atau tenaga kesehatan" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="Filter_Spesialisasi">Spesialisasi</label>
+                    <select class="form-select" id="Filter_Spesialisasi">
+                        <option value="">Semua spesialisasi</option>
+                    </select>
+                </div>
+            </section>
+
+            <p class="result-count" id="Text_JumlahHasil">Memuat tenaga kesehatan...</p>
+
+            <section id="NakesListContainer" class="nakes-list" aria-live="polite"></section>
+
+            <p class="empty-result" id="Text_Kosong" hidden>
+                Tidak ada tenaga kesehatan yang cocok dengan pencarian atau filter ini.
+            </p>
+        </main>
+    </div>
+
+    <!-- Dialog izin lokasi -->
+    <dialog class="modal" id="Modal_IzinLokasi" aria-labelledby="Title_IzinLokasi" aria-describedby="Desc_IzinAksesLokasiPengguna">
+        <div class="modal__body">
+            <h2 class="modal__title" id="Title_IzinLokasi">Akses lokasi</h2>
+            <p class="modal__subtitle" id="Desc_IzinAksesLokasiPengguna">Izinkan MahaSehat mengakses lokasi Anda agar tenaga kesehatan terdekat muncul lebih dulu.</p>
+            <div class="modal__actions">
+                <button type="button" class="btn btn--secondary" id="Btn_JanganIzinkan">Jangan Izinkan</button>
+                <button type="button" class="btn btn--primary" id="Btn_Izinkan">Izinkan</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Dialog detail tenaga kesehatan -->
+    <dialog class="modal modal--wide" id="Modal_Detail" aria-labelledby="Title_Detail">
+        <div class="modal__body">
+            <div class="detail-head">
+                <div class="nakes-avatar" id="Detail_Avatar" aria-hidden="true">RH</div>
+                <div>
+                    <h2 class="modal__title" id="Title_Detail">Profil Tenaga Kesehatan</h2>
+                    <p class="modal__subtitle" id="Detail_Spesialisasi"></p>
+                </div>
+            </div>
+            <dl class="detail-grid">
+                <div>
+                    <dt>Fasilitas</dt>
+                    <dd id="Detail_Fasilitas"></dd>
+                </div>
+                <div>
+                    <dt>Alamat</dt>
+                    <dd id="Detail_Alamat"></dd>
+                </div>
+                <div>
+                    <dt>Jarak</dt>
+                    <dd id="Detail_Jarak"></dd>
+                </div>
+                <div>
+                    <dt>Tarif</dt>
+                    <dd id="Detail_Tarif"></dd>
+                </div>
+                <div>
+                    <dt>Nomor STR</dt>
+                    <dd id="Detail_Str"></dd>
+                </div>
+                <div>
+                    <dt>Jam reguler</dt>
+                    <dd id="Detail_Jam">Senin–Jumat, 08.00–17.00</dd>
+                </div>
+            </dl>
+            <p class="detail-copy" id="Detail_Deskripsi"></p>
+            <div class="tag-row" id="Detail_Tags"></div>
+            <div class="modal__actions">
+                <button type="button" class="btn btn--secondary" id="Btn_TutupDetail">Tutup</button>
+                <button type="button" class="btn btn--primary" id="Btn_JadwalkanDariDetail">Jadwalkan</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Dialog buat janji -->
+    <dialog class="modal" id="Modal_Janji" aria-labelledby="Title_Janji">
+        <div class="modal__body">
+            <h2 class="modal__title" id="Title_Janji">Buat janji</h2>
+            <p class="modal__subtitle" id="Janji_Nama"></p>
+
+            <form id="Form_Janji" novalidate>
+                <fieldset class="slot-list">
+                    <legend class="form-label">Pilih slot</legend>
+                    <div id="Slot_Container"></div>
+                </fieldset>
+                <p class="form-error" id="Error_Slot" role="alert"></p>
+
+                <div class="form-group">
+                    <label class="form-label" for="Input_Keluhan">Keluhan utama</label>
+                    <textarea class="form-textarea" id="Input_Keluhan" rows="3" maxlength="400" required placeholder="Ceritakan singkat apa yang membuatmu ingin berkonsultasi."></textarea>
+                    <small class="form-error" id="Error_Keluhan" role="alert"></small>
+                </div>
+
+                <div class="modal__actions">
+                    <button type="button" class="btn btn--secondary" id="Btn_BatalJanji">Batal</button>
+                    <button type="submit" class="btn btn--primary" id="Btn_BuatJanji">Buat Janji</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <script src="session.js"></script>
+    <script src="feedback.js"></script>
+    <script src="CariTenagaKesehatanPage.js"></script>
+    <script src="sidebar.js"></script>
+</body>
+</html>

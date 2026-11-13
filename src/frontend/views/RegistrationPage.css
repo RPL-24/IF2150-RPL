@@ -1,0 +1,111 @@
+/* ==========================================================================
+   MahaSehat - RegistrationPage.css
+   Gaya khas tiga halaman registrasi (pelajar, orang tua/wali, tenaga
+   kesehatan). Kerangka panel, brand, judul, tautan, dan perilaku ponsel
+   berasal dari AuthLayout.css; berkas ini hanya mengatur isi formulir.
+   ========================================================================== */
+
+/* Pemilih peran ---------------------------------------------------------- */
+.role-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    margin-bottom: 24px;
+    padding: 4px;
+    background-color: var(--color-mist);
+    border-radius: var(--radius-pill);
+}
+
+.role-tabs .seg-btn {
+    padding: 8px 10px;
+}
+
+/* Bagian formulir -------------------------------------------------------- */
+.form-section h3 {
+    margin-bottom: 12px;
+    font-size: var(--text-h3);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 20px;
+}
+
+.divider {
+    height: 1px;
+    margin: 4px 0 24px;
+    background-color: var(--color-mist);
+}
+
+.form-group--full,
+.field-note--full {
+    grid-column: 1 / -1;
+}
+
+/* Tanggal lahir: tiga kolom angka ---------------------------------------- */
+.date-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.date-row .form-input {
+    padding: 0 12px;
+}
+
+/* Kolom dengan saran (datalist) ------------------------------------------ */
+.select-shell {
+    position: relative;
+}
+
+.select-shell .form-input {
+    padding-right: 44px;
+}
+
+.chevron {
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--color-ink);
+    border-bottom: 2px solid var(--color-ink);
+    pointer-events: none;
+    transform: translateY(-70%) rotate(45deg);
+}
+
+/* --------------------------------------------------------------------------
+   Responsif: formulir dua kolom menjadi satu kolom sebelum panel kanan
+   menyempit (bersama aturan AuthLayout.css untuk ≤ 900 px).
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1120px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .role-tabs {
+        margin-bottom: 20px;
+    }
+
+    .role-tabs .seg-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 8px 4px;
+        font-size: var(--text-label);
+        line-height: 1.25;
+        white-space: normal;
+        text-align: center;
+    }
+
+    .divider {
+        margin-bottom: 20px;
+    }
+}

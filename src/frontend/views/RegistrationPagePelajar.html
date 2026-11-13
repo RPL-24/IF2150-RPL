@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MahaSehat - Registrasi Pelajar</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="AuthLayout.css">
+    <link rel="stylesheet" href="RegistrationPage.css">
+  </head>
+  <body>
+    <div class="auth-container">
+      <aside class="auth-aside">
+        <a class="auth-brand" href="LoginPage.html">
+          <img src="../assets/logo-mahasehat-v2.png" alt="" class="auth-brand__logo">
+        </a>
+
+        <div class="auth-story">
+          <h1 class="auth-story__title">Catat kondisi harianmu.</h1>
+          <p class="auth-story__text">
+            Sedikit demi sedikit, kamu jadi lebih paham apa yang kamu butuhkan.
+          </p>
+        </div>
+
+        <p class="auth-aside__help">
+          Butuh bantuan? <a href="mailto:support@mahasehat.id">Hubungi kami</a>
+        </p>
+      </aside>
+
+      <main class="auth-panel">
+        <div class="auth-form">
+          <div class="auth-form__header">
+            <p class="eyebrow">Registrasi</p>
+            <h2 class="auth-form__title" id="Title_Registrasi">Buat akun pelajar</h2>
+          </div>
+
+          <div class="role-tabs" id="Tab_RoleGroup" role="group" aria-label="Pilih jenis akun">
+            <button type="button" class="seg-btn active" aria-pressed="true" id="Tab_Role_Pelajar" data-role="pelajar">
+              Pelajar
+            </button>
+            <button type="button" class="seg-btn" aria-pressed="false" id="Tab_Role_OrangTuaWali" data-role="orangtuawali">
+              Orang tua/wali
+            </button>
+            <button type="button" class="seg-btn" aria-pressed="false" id="Tab_Role_TenagaKesehatan" data-role="tenagakesehatan">
+              Tenaga kesehatan
+            </button>
+          </div>
+
+          <div class="divider"></div>
+
+          <form id="Form_Registration" novalidate>
+            <input type="hidden" id="Input_Role" name="role" value="pelajar" />
+
+            <section class="form-section">
+              <h3>Identitas</h3>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="Input_Nama">Nama <span class="req" aria-hidden="true">*</span></label>
+                  <input class="form-input" type="text" id="Input_Nama" name="nama" placeholder="Masukkan nama lengkap" aria-describedby="Error_Nama" required />
+                  <small class="form-error" id="Error_Nama" role="alert"></small>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="Input_Email">Email <span class="req" aria-hidden="true">*</span></label>
+                  <input class="form-input" type="email" id="Input_Email" name="email" placeholder="Masukkan alamat e-mail" aria-describedby="Error_Email" required />
+                  <small class="form-error" id="Error_Email" role="alert"></small>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="Input_NomorTelp">Nomor telepon <span class="req" aria-hidden="true">*</span></label>
+                  <input class="form-input" type="tel" id="Input_NomorTelp" name="nomor_telp" placeholder="08xxxxxxxxxx" aria-describedby="Error_NoTelepon" required />
+                  <small class="form-error" id="Error_NoTelepon" role="alert"></small>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="Input_EmailOrangTua">Email orang tua/wali</label>
+                  <input class="form-input" type="email" id="Input_EmailOrangTua" name="email_orang_tua" placeholder="Masukkan alamat e-mail" aria-describedby="Error_EmailOrangTua" />
+                  <small class="form-error" id="Error_EmailOrangTua" role="alert"></small>
+                  <p class="field-hint">Wajib untuk pelajar di bawah 18 tahun; dipakai untuk konfirmasi akun dan notifikasi darurat.</p>
+                </div>
+
+                <div class="form-group form-group--full" id="Group_TglLahir">
+                  <span class="form-label" id="Label_TanggalLahir">Tanggal lahir <span class="req" aria-hidden="true">*</span></span>
+                  <div class="date-row" role="group" aria-labelledby="Label_TanggalLahir">
+                    <input class="form-input" type="number" id="Input_TanggalLahir" name="tanggal_lahir" placeholder="Tanggal" min="1" max="31" aria-label="Tanggal" required />
+                    <input class="form-input" type="number" id="Input_BulanLahir" name="bulan_lahir" placeholder="Bulan" min="1" max="12" aria-label="Bulan" required />
+                    <input class="form-input" type="number" id="Input_TahunLahir" name="tahun_lahir" placeholder="Tahun" min="1900" max="2026" aria-label="Tahun" required />
+                  </div>
+                  <small class="hint-text" id="Hint_TglError" role="alert" hidden></small>
+                </div>
+              </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section class="form-section">
+              <h3>Tentang kamu</h3>
+
+              <div class="form-group">
+                <label class="form-label" for="Input_RiwayatKesehatan">Riwayat kesehatan <span class="req" aria-hidden="true">*</span></label>
+                <textarea class="form-input form-textarea" id="Input_RiwayatKesehatan" name="riwayat_kesehatan" placeholder="Ceritakan singkat kondisi yang ingin kamu pantau." required></textarea>
+              </div>
+              <p class="helper">
+                Hanya terlihat olehmu dan tenaga kesehatan yang kamu pilih.
+              </p>
+            </section>
+
+            <div class="divider"></div>
+
+            <section class="form-section">
+              <h3>Keamanan</h3>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="Input_KataSandi">Kata sandi <span class="req" aria-hidden="true">*</span></label>
+                  <div class="input-control">
+                    <input class="form-input" type="password" id="Input_KataSandi" name="password" placeholder="Minimal 8 karakter" autocomplete="new-password" required />
+                    <button type="button" class="pw-toggle" id="Toggle_KataSandi" aria-label="Tampilkan kata sandi">
+                      Tampilkan
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="Input_KonfirmasiKataSandi">Konfirmasi kata sandi <span class="req" aria-hidden="true">*</span></label>
+                  <input class="form-input" type="password" id="Input_KonfirmasiKataSandi" name="confirm_password" placeholder="Ulangi kata sandi" autocomplete="new-password" required />
+                </div>
+              </div>
+              <p class="helper">
+                Minimal 8 karakter, gunakan kombinasi huruf dan angka.
+              </p>
+            </section>
+
+            <div id="Alert_Error" class="alert-box alert-danger" role="alert" hidden></div>
+
+            <button type="submit" class="btn btn--primary btn--block" id="Btn_Daftar">Buat akun</button>
+          </form>
+
+          <p class="auth-footer">
+            Sudah punya akun? <a href="LoginPage.html">Masuk</a>
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="RegistrationPagePelajar.js"></script>
+  </body>
+</html>

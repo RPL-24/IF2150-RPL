@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Masuk ke akun</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="AuthLayout.css">
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Panel Kiri: brand & narasi -->
+        <aside class="auth-aside" id="Panel_Left">
+            <a class="auth-brand" href="LoginPage.html" id="Logo_App">
+                <img src="../assets/logo-mahasehat-v2.png" alt="" class="auth-brand__logo">
+            </a>
+
+            <div class="auth-story">
+                <h2 class="auth-story__title" id="Text_Greeting">Kembali ke catatanmu.</h2>
+                <p class="auth-story__text">Satu langkah kecil hari ini tetap berarti.</p>
+            </div>
+
+            <p class="auth-aside__help">
+                Butuh bantuan? <a href="mailto:support@mahasehat.id">Hubungi kami</a>
+            </p>
+        </aside>
+
+        <!-- Panel Kanan: formulir masuk -->
+        <main class="auth-panel" id="Panel_Right">
+            <div class="auth-form">
+                <div class="auth-form__header">
+                    <span class="eyebrow">Masuk</span>
+                    <h1 class="auth-form__title" id="Title_Login">Masuk ke akun</h1>
+                </div>
+
+                <div id="Alert_Error" class="alert-box alert-danger" role="alert" hidden></div>
+
+                <form id="Form_Registration" novalidate>
+                    <div class="form-group">
+                        <label class="form-label" for="Input_Email">Email <span class="req" aria-hidden="true">*</span></label>
+                        <input
+                            class="form-input"
+                            type="text"
+                            id="Input_Email"
+                            name="identifier"
+                            placeholder="Masukkan alamat e-mail"
+                            autocomplete="username"
+                            aria-describedby="Error_Email"
+                            required
+                        >
+                        <small class="form-error" id="Error_Email" role="alert"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="Input_KataSandi">Kata sandi <span class="req" aria-hidden="true">*</span></label>
+                        <div class="input-control">
+                            <input
+                                class="form-input"
+                                type="password"
+                                id="Input_KataSandi"
+                                name="password"
+                                placeholder="Masukkan kata sandi"
+                                autocomplete="current-password"
+                                aria-describedby="Error_KataSandi"
+                                required
+                            >
+                            <button type="button" id="Toggle_Password" class="pw-toggle" aria-label="Tampilkan kata sandi">
+                                Tampilkan
+                            </button>
+                        </div>
+                        <small class="form-error" id="Error_KataSandi" role="alert"></small>
+                    </div>
+
+                    <div class="auth-forgot">
+                        <a href="ResetPasswordPage.html" id="Link_LupaPass" class="auth-link">Lupa kata sandi?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--block" id="Btn_Masuk">Masuk</button>
+                </form>
+
+                <p class="auth-footer" id="Link_Daftar">
+                    Belum punya akun? <a href="RegistrationPagePelajar.html">Daftar</a>
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script src="LoginPage.js"></script>
+</body>
+</html>

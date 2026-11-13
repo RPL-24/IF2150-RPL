@@ -1,0 +1,341 @@
+/* ==========================================================================
+   MahaSehat - SettingPageTenagaKesehatan.css
+   Gaya Halaman Setelan Praktik & Akun Tenaga Kesehatan
+   Anti-slop & Frontend-design: Tipografi Space Grotesk + DM Sans,
+   palet Warm Cream var(--color-cream) + Charcoal var(--color-ink) + Teal var(--color-teal) + Amber var(--color-amber),
+   dan kartu putih konsisten dengan Dashboard & Konsultasi.
+   ========================================================================== *//* ==========================================================================
+   Viewport Utama & Formulir Setelan
+   (Gaya Sidebar Dikelola Terpusat di SidebarTenagaKesehatan.css)
+   ========================================================================== */
+/* ========================================================================== Viewport Utama & Formulir Setelan (Gaya Sidebar Dikelola Terpusat di SidebarTenagaKesehatan.css) ========================================================================== */ /* Toast Notifikasi Feedback */
+.settings-grid-top > *{
+    min-width: 0;
+}
+
+.settings-grid-top{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}.settings-column-left, .settings-column-right{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}/* Kartu Putih Anti-Slop (Konsisten Presisi dengan Dashboard & Konsultasi) */
+/* Form Styles */
+.settings-form{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}.form-input{
+    width: 100%;
+    height: 46px;
+    padding: 0 16px;
+    background-color: var(--color-mist-light);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-ink);
+    outline: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}.form-input:focus{
+    border-color: var(--color-teal);
+    background-color: var(--color-white);
+    box-shadow: 0 0 0 3px var(--color-teal-subtle);
+}.form-textarea{
+    height: auto;
+    min-height: 90px;
+    padding: 12px 16px;
+    resize: vertical;
+    line-height: 1.5;
+}.form-row-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}/* Checkboxes (Metode Konsultasi) */
+.checkbox-group-row{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+}.custom-checkbox-label{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background-color: var(--color-mist-light);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-ink);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}.custom-checkbox-label:hover{
+    background-color: var(--color-white);
+    border-color: var(--color-teal);
+}.custom-checkbox-label input[type="checkbox"]{
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-teal);
+    cursor: pointer;
+}/* Toggle Switch Ketersediaan Pasien */
+.toggle-container-box{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background-color: var(--color-mist-light);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    margin-bottom: 4px;
+}.toggle-info{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}.toggle-title{
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-ink);
+}.toggle-desc{
+    font-size: 12px;
+    color: var(--color-teal-dark);
+    font-weight: 600;
+}.switch-control{
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+    flex-shrink: 0;
+}.switch-control input{
+    opacity: 0;
+    width: 0;
+    height: 0;
+}.slider{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-mist);
+    transition: 0.3s;
+    border-radius: 26px;
+}.slider:before{
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}input:checked + .slider{
+    background-color: var(--color-teal);
+}input:checked + .slider:before{
+    transform: translateX(22px);
+}/* Day Selector Chips */
+.days-selector-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}.day-chip{
+    cursor: pointer;
+}.day-chip input{
+    display: none;
+}.day-chip span{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-mist-light);
+    color: var(--color-ink);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+}.day-chip:hover span{
+    background-color: var(--color-white);
+    border-color: var(--color-teal);
+}.day-chip input:checked + span{
+    background-color: var(--color-teal);
+    border-color: var(--color-teal);
+    color: var(--color-ink);
+    font-weight: 700;
+}
+.permissions-divider{
+    height: 1px;
+    background-color: var(--color-mist);
+    margin: 16px 0;
+}.permission-item-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 4px 0;
+}.permission-text{
+    flex: 1;
+}.field-description{
+    font-size: 13px;
+    color: var(--color-ink-subtle);
+    line-height: 1.4;
+}.field-status-note{
+    font-size: 12px;
+    color: var(--color-danger);
+    margin-top: 4px;
+}/* Custom Toggle Switch */
+.switch-toggle{
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+    flex-shrink: 0;
+}.switch-toggle input{
+    opacity: 0;
+    width: 0;
+    height: 0;
+}.switch-slider{
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: var(--color-mist);
+    border-radius: 999px;
+    transition: background-color 0.2s ease;
+}.switch-slider::before{
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--color-white);
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+    box-shadow: var(--shadow-card);
+}.switch-toggle input:checked + .switch-slider{
+    background-color: var(--color-teal);
+}.switch-toggle input:checked + .switch-slider::before{
+    transform: translateX(22px);
+}.switch-toggle input:focus-visible + .switch-slider{
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+}/* Slot Time Chips (Pill Style Konsisten Anti-Slop) */
+.time-slots-grid{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}.slot-chip{
+    cursor: pointer;
+}.slot-chip input{
+    display: none;
+}.slot-chip span{
+    display: flex;
+    align-items: center;
+    padding: 11px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-mist-light);
+    color: var(--color-ink);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+}.slot-chip:hover span{
+    background-color: var(--color-white);
+    border-color: var(--color-teal);
+}.slot-chip input:checked + span{
+    background-color: var(--color-teal-subtle);
+    border-color: var(--color-teal);
+    color: var(--color-ink);
+    font-weight: 700;
+}/* Keamanan Akun Card Box */
+.security-info{
+    margin-bottom: 20px;
+}.field-label-bold{
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-ink);
+}.field-note{
+    font-size: 13px;
+    color: var(--color-ink-muted);
+    margin-top: 2px;
+}/* Pill Buttons (Kanonikal Sesuai Dashboard & Setting MahaSehat) */
+.range-list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+}.range-row{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}.range-row .form-input{
+    flex: 1;
+    min-width: 0;
+}.range-sep{
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink-muted);
+}.btn-icon-remove{
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-white);
+    color: var(--color-ink);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}.btn-icon-remove:hover:not(:disabled){
+    border-color: var(--color-danger);
+    background-color: var(--color-danger-subtle);
+    color: var(--color-danger);
+}.btn-icon-remove:disabled{
+    opacity: 0.4;
+    cursor: not-allowed;
+}.slot-pill{
+    display: flex;
+    align-items: center;
+    padding: 11px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--color-teal);
+    background-color: var(--color-teal-subtle);
+    color: var(--color-ink);
+    font-size: 13px;
+    font-weight: 700;
+}.form-error{
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-danger);
+}.form-error[hidden]{
+    display: none;
+}select.form-input {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 44px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232A3A3F' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 16px;
+}
+
+/* Responsivitas */
+
+@media (max-width: 1024px) {.settings-grid-top{
+        grid-template-columns: 1fr;
+    }
+}

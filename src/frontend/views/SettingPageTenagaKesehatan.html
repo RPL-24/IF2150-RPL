@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Setelan Praktik & Akun</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="SettingPageTenagaKesehatan.css">
+
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Floating Sidebar Navigasi Nakes -->
+        <aside class="app-sidebar" data-role="nakes" id="Sidebar">
+            <div class="sidebar-header">
+                <a href="DashboardPageTenagaKesehatan.html" class="brand-link" id="Link_Brand">
+                    <img src="../assets/logo-mahasehat-v1.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                </a>
+                <button type="button" class="nav-toggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="SidebarPanel">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="sidebar-panel" id="SidebarPanel">
+
+                <!-- Menu Navigasi Utama -->
+                <nav class="nav-menu" aria-label="Menu utama">
+                    <a href="DashboardPageTenagaKesehatan.html" class="nav-item" id="Menu_Dashboard">
+                        <img src="../assets/icon-dashboard.png" alt="" class="nav-icon">
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="ManajemenKonsultasiPage.html" class="nav-item" id="Menu_Konsultasi">
+                        <img src="../assets/icon-konsultasi.png" alt="" class="nav-icon">
+                        <span class="nav-label">Konsultasi</span>
+                        <span class="nav-badge" id="Badge_PendingCount" hidden>0</span>
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <!-- Item Setelan Aktif -->
+                    <a href="SettingPageTenagaKesehatan.html" class="nav-item active" aria-current="page" id="Menu_Setelan" aria-current="page">
+                        <img src="../assets/icon-setelan.png" alt="" class="nav-icon">
+                        <span class="nav-label">Setelan</span>
+                    </a>
+                    <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
+                        <img src="../assets/icon-keluar.png" alt="" class="nav-icon">
+                        <span class="nav-label">Keluar</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-user" id="Info_User">
+                    <div class="user-avatar" id="User_Avatar">-</div>
+                    <div class="user-meta">
+                        <p class="user-name" id="Text_NamaUser">-</p>
+                        <p class="user-role" id="Text_RoleUser">Tenaga Kesehatan</p>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Area Konten Utama -->
+        <main class="main-viewport" id="Panel_SetelanNakes">
+            <!-- Header Halaman -->
+            <header class="page-header" id="Topbar">
+                <h1 class="page-title" id="Title_Setelan">Setelan Praktik & Akun</h1>
+                <p class="page-subtitle" id="Text_Subjudul">Kelola profil profesional, jadwal praktik, tempat kerja, dan tarif konsultasi.</p>
+            </header>
+
+            <!-- Feedback Toast Notifikasi -->
+
+            <!-- Grid Dua Kolom Setelan Nakes -->
+            <div class="settings-grid-top">
+                <!-- Kolom Kiri: Profil & Keamanan -->
+                <div class="settings-column-left">
+                    <!-- Kartu Profil & Praktik Profesional -->
+                    <section class="card-box" id="Card_ProfilNakes">
+                        <div class="card-box-header">
+                            <h2 class="card-box-title">Profil & Praktik Profesional</h2>
+                        </div>
+
+                        <form id="Form_ProfilNakes" class="settings-form" novalidate>
+                            <div class="form-group">
+                                <label class="form-label" for="Input_Nama">Nama Lengkap & Gelar</label>
+                                <input type="text" class="form-input" id="Input_Nama" name="nama" placeholder="Nama lengkap dan gelar" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="Input_Spesialisasi">Spesialisasi & Bidang Keahlian</label>
+                                <input type="text" class="form-input" id="Input_Spesialisasi" name="spesialisasi" placeholder="Mis. Psikolog Klinis" required>
+                            </div>
+
+                            <div class="form-row-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="Input_SIP">Nomor Izin Praktik (SIP/STR)</label>
+                                    <input type="text" class="form-input" id="Input_SIP" name="sip" placeholder="Nomor STR/SIP" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="Input_Tarif">Tarif Konsultasi per Sesi</label>
+                                    <input type="text" class="form-input" id="Input_Tarif" name="tarif" placeholder="Mis. Rp150.000 / sesi" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="Input_Email">Email Resmi</label>
+                                    <input type="email" class="form-input" id="Input_Email" name="email" placeholder="nama@praktik.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="Input_NomorTelepon">WhatsApp Kontak Praktik</label>
+                                    <input type="tel" class="form-input" id="Input_NomorTelepon" name="nomor_telp" placeholder="08xxxxxxxxxx" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="Input_Bio">Bio Singkat & Pendekatan Konseling</label>
+                                <textarea class="form-input form-textarea" id="Input_Bio" name="bio" rows="3"placeholder="Ceritakan singkat pengalaman dan pendekatan praktikmu."></textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn--primary btn--block" id="Btn_SimpanProfil">Simpan Profil Profesional</button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Kartu Keamanan Akun -->
+                    <section class="card-box" id="Card_Keamanan">
+                        <div class="card-box-header">
+                            <h2 class="card-box-title">Keamanan Akun</h2>
+                        </div>
+                        <div class="security-info">
+                            <p class="field-label-bold">Kata sandi</p>
+                            <p class="field-note">Terakhir diperbarui 3 minggu lalu.</p>
+                        </div>
+                        <a href="ResetPasswordPage.html" class="btn btn--secondary btn--block" id="Link_UbahSandi">Ubah kata sandi</a>
+                    </section>
+                
+                    <!-- Baris Bawah: Kartu Izin & Notifikasi -->
+                    <section class="card-box settings-card-full" id="Card_Izin">
+                        <h2 class="card-box-title">Izin & Notifikasi</h2>
+                        
+                        <div class="permissions-divider"></div>
+
+                        <!-- Izin Notifikasi Pemantauan -->
+                        <div class="permission-item-row">
+                            <div class="permission-text">
+                                <p class="field-label-bold" id="Label_IzinNotif">Notifikasi Pengajuan Konsultasi</p>
+                                <p class="field-description">Dapatkan pengingat bila ada pelajar yang mengajukan konsultasi.</p>
+                                <p class="field-status-note" id="Text_NotifInfo"></p>
+                            </div>
+                            <label class="switch-toggle">
+                                <input type="checkbox" role="switch" id="Switch_Notifikasi" aria-labelledby="Label_IzinNotif">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="permissions-divider"></div>
+
+                        <!-- Izin Lokasi -->
+                        <div class="permission-item-row">
+                            <div class="permission-text">
+                                <p class="field-label-bold" id="Label_IzinLokasi">Lokasi</p>
+                                <p class="field-description">Digunakan untuk menyesuaikan rekomendasi fasilitas kesehatan terdekat.</p>
+                                <p class="field-status-note" id="Text_LokasiInfo"></p>
+                            </div>
+                            <label class="switch-toggle">
+                                <input type="checkbox" role="switch" id="Switch_Lokasi" aria-labelledby="Label_IzinLokasi">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </section>
+                </div>
+                <!-- Kolom Kanan: Tempat Kerja & Ketersediaan Jadwal -->
+                <div class="settings-column-right">
+                    <!-- Kartu Tempat Kerja & Metode Konsultasi -->
+                    <section class="card-box" id="Card_TempatKerja">
+                        <div class="card-box-header">
+                            <h2 class="card-box-title">Tempat Kerja & Lokasi</h2>
+                        </div>
+
+                        <form id="Form_TempatKerja" class="settings-form" novalidate>
+                            <div class="form-group">
+                                <label class="form-label" for="Input_Instansi">Nama Klinik / Fasilitas Kesehatan</label>
+                                <input type="text" class="form-input" id="Input_Instansi" name="instansi" placeholder="Nama klinik / instansi" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="Input_Alamat">Alamat Praktik Tatap Muka (Offline)</label>
+                                <input type="text" class="form-input" id="Input_Alamat" name="alamat" placeholder="Alamat praktik" required>
+                            </div>
+
+                            <div class="form-group">
+                                <span class="form-label">Metode Konsultasi yang Dilayani</span>
+                                <div class="checkbox-group-row">
+                                    <label class="custom-checkbox-label">
+                                        <input type="checkbox" id="Check_Online" name="metode_online">
+                                        <span>Konsultasi Daring (Telekonsultasi)</span>
+                                    </label>
+                                    <label class="custom-checkbox-label">
+                                        <input type="checkbox" id="Check_Offline" name="metode_offline">
+                                        <span>Tatap Muka Langsung (Offline)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="Input_LinkTelekonsultasi">Tautan Google Meet Default</label>
+                                <input type="url" class="form-input" id="Input_LinkTelekonsultasi" name="link_meet" placeholder="https://meet.google.com/...">
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn--primary btn--block" id="Btn_SimpanTempatKerja">Simpan Tempat Kerja</button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Kartu Ketersediaan Jadwal & Slot Waktu -->
+                    <section class="card-box" id="Card_JadwalPraktik">
+                        <div class="card-box-header">
+                            <h2 class="card-box-title">Jadwal Praktik & Ketersediaan Slot</h2>
+                        </div>
+
+                        <form id="Form_JadwalPraktik" class="settings-form" novalidate>
+                            <!-- Toggle Menerima Pasien Baru -->
+                            <div class="toggle-container-box">
+                                <div class="toggle-info">
+                                    <span class="toggle-title">Status Penerimaan Pasien</span>
+                                    <span class="toggle-desc" id="Text_StatusPenerimaan">Saat ini menerima pengajuan konsultasi baru</span>
+                                </div>
+                                <label class="switch-control" for="Toggle_MenerimaPasien">
+                                    <input type="checkbox" id="Toggle_MenerimaPasien" checked aria-label="Toggle status penerimaan pasien">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <!-- Pemilihan Hari Praktik -->
+                            <div class="form-group">
+                                <span class="form-label">Hari Praktik Mingguan</span>
+                                <div class="days-selector-grid" id="Group_HariPraktik" role="group" aria-label="Pilih hari praktik">
+                                    <label class="day-chip">
+                                        <input type="checkbox" name="hari" value="Senin">
+                                        <span>Sen</span>
+                                    </label>
+                                    <label class="day-chip">
+                                        <input type="checkbox" name="hari" value="Selasa">
+                                        <span>Sel</span>
+                                    </label>
+                                    <label class="day-chip">
+                                        <input type="checkbox" name="hari" value="Rabu">
+                                        <span>Rab</span>
+                                    </label>
+                                    <label class="day-chip">
+                                        <input type="checkbox" name="hari" value="Kamis">
+                                        <span>Kam</span>
+                                    </label>
+                                    <label class="day-chip">
+                                        <input type="checkbox" name="hari" value="Jumat">
+                                        <span>Jum</span>
+                                    </label>
+                                    <label class="day-chip">
+                                        <input type="checkbox" name="hari" value="Sabtu">
+                                        <span>Sab</span>
+                                    </label>
+                                    <label class="day-chip">
+                                        <input type="checkbox" name="hari" value="Minggu">
+                                        <span>Min</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <span class="form-label">Rentang Jam Praktik</span>
+                                <div class="range-list" id="Group_RentangJam" role="group" aria-label="Rentang jam praktik"></div>
+                                <button type="button" class="btn btn--link" id="Btn_TambahRentang">+ Tambah rentang jam</button>
+                                <p class="form-error" id="Text_ErrorJam" role="alert" hidden></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="Select_DurasiSesi">Durasi per Sesi</label>
+                                <select class="form-input" id="Select_DurasiSesi">
+                                    <option value="30">30 menit</option>
+                                    <option value="45">45 menit</option>
+                                    <option value="60" selected>60 menit</option>
+                                    <option value="90">90 menit</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <span class="form-label">Slot yang Akan Tersedia</span>
+                                <div class="time-slots-grid" id="Group_SlotWaktu" aria-live="polite"></div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn--primary btn--block" id="Btn_SimpanJadwal">Simpan Ketersediaan Jadwal</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script Pengendali Halaman -->
+    <script src="session.js"></script>
+    <script src="feedback.js"></script>
+    <script src="SettingPageTenagaKesehatan.js"></script>
+    <script src="sidebar.js"></script>
+</body>
+</html>
+

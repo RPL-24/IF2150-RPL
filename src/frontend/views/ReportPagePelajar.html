@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MahaSehat - Laporan Kesehatan</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="DashboardPagePelajar.css">
+    <link rel="stylesheet" href="ReportPage.css">
+
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="app-sidebar" data-role="pelajar" id="Sidebar">
+            <div class="sidebar-header">
+                <a href="DashboardPagePelajar.html" class="brand-link">
+                    <img src="../assets/logo-mahasehat-v1.png" alt="Logo MahaSehat" class="brand-logo" id="Logo_App">
+                </a>
+                <button type="button" class="nav-toggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="SidebarPanel">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="sidebar-panel" id="SidebarPanel">
+
+                <nav class="nav-menu" aria-label="Menu utama">
+                    <a href="DashboardPagePelajar.html" class="nav-item" id="Menu_Dashboard">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="ReportPagePelajar.html" class="nav-item active" aria-current="page" id="Menu_Laporan" aria-current="page">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <span class="nav-label">Laporan Kesehatan</span>
+                    </a>
+                    <a href="CariTenagaKesehatanPage.html" class="nav-item" id="Menu_Konsultasi">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        <span class="nav-label">Konsultasi</span>
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="SettingPagePelajar.html" class="nav-item" id="Menu_Setelan">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        <span class="nav-label">Setelan</span>
+                    </a>
+                    <a href="LoginPage.html" class="nav-item nav-item-danger" id="Menu_Keluar">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        <span class="nav-label">Keluar</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-user" id="Info_User">
+                    <div class="user-avatar" id="User_Avatar">B</div>
+                    <div class="user-meta">
+                        <p class="user-name" id="Text_NamaUser">-</p>
+                        <p class="user-role" id="Text_RoleUser">Pelajar</p>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <main class="main-viewport" id="Panel_Laporan">
+            <header class="page-header">
+                <h1 class="page-title" id="Title_Laporan">Laporan Kesehatan</h1>
+                <p class="page-subtitle" id="Text_Subjudul">Pantau perkembangan kondisimu dari data daily check-in.</p>
+            </header>
+
+            <!-- Filter Periode (DPPL: Filter_Periode) -->
+            <section class="card-box periode-card report-block" id="Filter_Periode" data-legacy-id="Card_Periode">
+                <h2 class="card-box-title">Periode</h2>
+                <div class="segmented" id="Group_Periode" role="group" aria-label="Pilih periode">
+                    <button type="button" class="seg-btn active" id="Btn_Periode7" data-periode="7" aria-pressed="true">7 Hari</button>
+                    <button type="button" class="seg-btn" id="Btn_Periode30" data-periode="30" aria-pressed="false">30 Hari</button>
+                    <button type="button" class="seg-btn" id="Btn_Periode90" data-periode="90" aria-pressed="false">3 Bulan</button>
+                </div>
+            </section>
+
+            <section class="card-box report-block" id="Alert_DataKosong" hidden>
+                <div class="card-box-header">
+                    <h2 class="card-box-title">Data belum cukup</h2>
+                </div>
+                <p class="empty-msg">Data check-in belum cukup untuk divisualisasikan. Isi daily check-in secara rutin agar laporan dapat ditampilkan.</p>
+                <div class="card-box-footer">
+                    <a href="CheckInPage.html" class="btn btn--primary" id="Link_CheckIn">Isi Check-In</a>
+                </div>
+            </section>
+
+            <div class="report-grid" id="Grid_Laporan">
+                <section class="card-box" id="Card_DataMood">
+                    <div class="card-box-header"><h2 class="card-box-title">Data Mood</h2></div>
+                    <div class="chart" id="Chart_Mood"></div>
+                </section>
+                <section class="card-box" id="Card_DataTidur">
+                    <div class="card-box-header"><h2 class="card-box-title">Data Tidur</h2></div>
+                    <div class="chart" id="Chart_Tidur"></div>
+                </section>
+                <section class="card-box" id="Card_DataFrekuensiMakan">
+                    <div class="card-box-header"><h2 class="card-box-title">Pemicu per Hari</h2></div>
+                    <div class="chart" id="Chart_FrekuensiMakan"></div>
+                </section>
+                <section class="card-box" id="Card_DataJenisMakan">
+                    <div class="card-box-header"><h2 class="card-box-title">Data Jenis Makan</h2></div>
+                    <div class="chart" id="Chart_JenisMakan"></div>
+                </section>
+                <section class="card-box" id="Card_FaktorPemicuStress">
+                    <div class="card-box-header"><h2 class="card-box-title">Faktor Pemicu Stress</h2></div>
+                    <ul class="stres-list" id="List_Stres"></ul>
+                </section>
+                <section class="card-box" id="Card_Catatan">
+                    <div class="card-box-header">
+                        <h2 class="card-box-title">Catatan</h2>
+                        <!-- Tombol Cek Kalender Terintegrasi -->
+                        <div class="calendar-picker-wrapper">
+                            <input type="date" id="Input_KalenderCatatan" class="calendar-native-input" aria-label="Pilih tanggal catatan di kalender">
+                            <button type="button" class="btn btn--sm btn--secondary" id="Btn_BukaKalender" title="Buka Kalender Catatan">
+                                <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span  id="Label_Kalender">Kalender</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Pemilih Tanggal Harian (DPPL: Picker_TanggalCatatan) -->
+                    <div class="date-strip" id="Picker_TanggalCatatan" role="group" aria-label="Pilih tanggal catatan"></div>
+                    <div class="catatan-date-info" id="Label_TanggalAktif"></div>
+                    <!-- Kotak Teks Jurnal Refleksi (DPPL: Text_CatatanRefleksi) -->
+                    <p class="note-box" id="Text_CatatanRefleksi" aria-live="polite"></p>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="session.js"></script>
+    <script src="ReportChart.js"></script>
+    <script src="ReportPagePelajar.js"></script>
+    <script src="sidebar.js"></script>
+</body>
+</html>
