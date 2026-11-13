@@ -1,5 +1,8 @@
 node_modules/
 .env
+.env.local
 uploads/
 coverage/
 *.log
+public/
+.vercel/
