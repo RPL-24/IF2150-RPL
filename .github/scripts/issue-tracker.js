@@ -11,6 +11,8 @@ const MODUL = [
   ['modul-C', 'C. Katalog & Pencarian + Setup'],
   ['modul-D', 'D. Percakapan & Notifikasi'],
   ['modul-E', 'E. Laporan & Moderasi'],
+  // Fitur tambahan di luar SRS (mis. SSO, redesain): label `bonus`
+  ['bonus', 'Bonus (di luar SRS)'],
 ];
 
 // Kata kunci penutup issue versi GitHub: close(s/d), fix(es/ed), resolve(s/d) + #N
