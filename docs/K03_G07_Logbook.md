@@ -172,6 +172,19 @@
 | 26-10-2026 | Bagas Anugrah Putra | mengerjakan rincian class C09 C10 C15 C21 C23 | 1 | Unfinished | Penyelarasan signature operasi dengan diagram use case |
 | 28-10-2026 | Bagas Anugrah Putra | menyelesaikan implementasi algoritma dan query C09 C10 C15 C21 C23 serta audit | 1 | Done | - |
 
+### Milestone 9
+**Periode:** 29-10-2026 - 13-11-2026 
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / Blocker | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 07-11-2026 | Pasaribu Fritz T.A.M. | Mengerjakan fondasi tampilan Daftar Tugas Eksekutor  | 1 | Unfinished |  |
+| 08-11-2026 | Pasaribu Fritz T.A.M. | Mengerjakan fondasi tampilan Daftar Tugas Eksekutor | 2 | Done |  |
+| 09-11-2026 | Pasaribu Fritz T.A.M. | Implementasi tampilan rincian tugas Eksekutor  | 2 | Done |  |
+| 11-11-2026 | Pasaribu Fritz T.A.M. | Implementasi tampilan formulir hasil perbaikan  | 2 | Done |  |
+| 12-11-2026 | Pasaribu Fritz T.A.M. | Implementasi submitForm untuk mengumpulkan hasil perbaikan Eksekutor  | 2 | Done |  |
+
+
+
 
 
 ---
