@@ -13,6 +13,7 @@
 </style>
 <script src="/js/api.js" defer></script>
 <script src="/js/HalamanOtentikasi.js" defer></script>
+<script src="/js/TombolSSO.js" defer></script>
 </head>
 <body data-halaman="masuk">
 <div class="page">
@@ -76,6 +77,13 @@
           <a class="btn btn--sekunder btn--sm ml-auto" href="/daftar">Daftar</a>
         </div>
       </form>
+
+      <!-- Masuk dengan akun ITB; tampil hanya bila penyedia dikonfigurasi (TombolSSO.js) -->
+      <div id="sso-masuk" class="authform" style="padding-top:0" hidden>
+        <span class="muted">atau masuk dengan akun ITB</span>
+        <a id="tombol-sso-google" class="btn btn--sekunder btn--blok" href="/api/akun/sso/google/mulai">Masuk dengan Google (itb.ac.id)</a>
+        <a id="tombol-sso-microsoft" class="btn btn--sekunder btn--blok" href="/api/akun/sso/microsoft/mulai">Masuk dengan Microsoft (mahasiswa.itb.ac.id)</a>
+      </div>
 
       <!-- Pengguna sudah masuk (I01-O08) -->
       <div id="panel-masuk" class="authform" style="padding-top:0" hidden>

@@ -2,6 +2,7 @@
 const express = require('express');
 const config = require('../config/env');
 const AkunController = require('../controllers/AkunController');
+const SsoController = require('../controllers/SsoController');
 const Otorisasi = require('../pendukung/Otorisasi');
 
 const router = express.Router();
@@ -21,9 +22,11 @@ const STATUS_HTTP = {
   KREDENSIAL_SALAH: 401,
   BELUM_TERVERIFIKASI: 403,
   AKUN_DIBLOKIR: 403,
+  SSO_ADMIN_DILARANG: 403,
   AKUN_TIDAK_DITEMUKAN: 404,
   SUREL_TERDAFTAR: 409,
   SUDAH_TERVERIFIKASI: 409,
+  PROFIL_SSO_TIDAK_VALID: 401,
   GAGAL_KIRIM_SUREL: 502,
 };
 
@@ -72,6 +75,54 @@ router.post('/login', async (req, res) => {
   const hasil = await AkunController.login(email, kataSandi);
   if (!hasil.berhasil) return kirimGagal(res, hasil);
   res.json({ sukses: true, data: { token: hasil.token, peran: hasil.peran } });
+});
+
+// ───────────── Masuk dengan Google / Microsoft (SSO) ─────────────
+
+const OPSI_COOKIE = { httpOnly: true, sameSite: 'lax', path: '/api/akun/sso', secure: config.sso.urlDasar.startsWith('https://') };
+const penyediaTidakAda = (res) => res.status(404).json({ sukses: false, pesan: 'Penyedia masuk tidak tersedia.' });
+const galatSso = (res, kode) => res.redirect(`/masuk?sso_galat=${encodeURIComponent(kode)}`);
+
+router.get('/sso/penyedia', (req, res) => {
+  res.json({ sukses: true, data: SsoController.penyediaAktif() });
+});
+
+router.get('/sso/profil-sementara', (req, res) => {
+  const profil = SsoController.profilSementara(req.headers.cookie);
+  if (profil === null) {
+    return res.status(401).json({ sukses: false, pesan: 'Sesi pendaftaran SSO tidak valid atau sudah kedaluwarsa.' });
+  }
+  res.json({ sukses: true, data: profil });
+});
+
+router.post('/sso/lengkapi', async (req, res) => {
+  const { nim, setujuKebijakan } = req.body ?? {};
+  const hasil = await SsoController.lengkapi(req.headers.cookie, nim, setujuKebijakan);
+  if (!hasil.berhasil) return kirimGagal(res, hasil);
+  res.clearCookie(SsoController.COOKIE_PROFIL, OPSI_COOKIE);
+  res.status(201).json({ sukses: true, data: { token: hasil.token, peran: hasil.peran } });
+});
+
+router.get('/sso/:penyedia/mulai', (req, res) => {
+  const mulai = SsoController.mulai(req.params.penyedia);
+  if (mulai === null) return penyediaTidakAda(res);
+  res.cookie(SsoController.COOKIE_STATE, mulai.nilaiCookieState, { ...OPSI_COOKIE, maxAge: SsoController.UMUR_STATE_DETIK * 1000 });
+  res.redirect(mulai.url);
+});
+
+router.get('/sso/:penyedia/kembali', async (req, res) => {
+  if (SsoController.ambilKredensial(req.params.penyedia) === null) return penyediaTidakAda(res);
+  const hasil = await SsoController.selesaikan(req.params.penyedia, req.query, req.headers.cookie);
+  res.clearCookie(SsoController.COOKIE_STATE, OPSI_COOKIE); // state sekali pakai
+  if (hasil.tipe === 'galat') return galatSso(res, hasil.kode);
+  if (hasil.tipe === 'lengkapi') {
+    res.cookie(SsoController.COOKIE_PROFIL, hasil.nilaiCookieProfil, { ...OPSI_COOKIE, maxAge: SsoController.UMUR_PROFIL_DETIK * 1000 });
+    return res.redirect('/lengkapi-sso');
+  }
+  // Sesi disimpan View di localStorage seperti login biasa; api.js memindahkannya dari cookie singkat ini.
+  res.cookie('itbeli_sso_sesi', JSON.stringify({ token: hasil.token, peran: hasil.peran, email: hasil.email }),
+    { httpOnly: false, sameSite: 'lax', path: '/', secure: OPSI_COOKIE.secure, maxAge: 60 * 1000 });
+  res.redirect('/katalog');
 });
 
 router.get('/profil', Otorisasi.wajibLogin, async (req, res) => {

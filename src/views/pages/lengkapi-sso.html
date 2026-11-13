@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lengkapi Akun · ITBELI</title>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/app.css">
+<script src="/js/api.js" defer></script>
+<script src="/js/HalamanLengkapiSSO.js" defer></script>
+</head>
+<body>
+<div class="page">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand__mark">IT</div>
+      <div>
+        <div class="brand__name">ITBELI</div>
+        <div class="brand__tag">Marketplace preloved sivitas ITB</div>
+      </div>
+    </div>
+    <div class="topbar__right">
+      <a class="btn btn--sekunder btn--sm" href="/masuk">Masuk</a>
+    </div>
+  </header>
+
+  <main class="auth">
+
+    <section class="hero">
+      <div class="hero__eyebrow">Marketplace preloved sivitas ITB</div>
+      <h1 class="hero__title">Barang bagus tak harus selalu baru.</h1>
+      <p class="hero__text">
+        Temukan kebutuhan kuliah, teruskan barang yang masih berharga.
+        Mulai dari komunitas kampus sendiri.
+      </p>
+      <div class="hero__media">
+        <div><div class="ph ph--jas"></div></div>
+        <div><div class="ph ph--kalkulator"></div></div>
+        <div><div class="ph ph--buku"></div></div>
+      </div>
+    </section>
+
+    <section class="authform">
+      <div>
+        <h2 class="authform__title">Satu langkah lagi.</h2>
+        <p class="authform__sub mt-2">Akun ITB Anda sudah terverifikasi. Lengkapi NIM dan setujui kebijakan untuk mulai memakai ITBELI.</p>
+      </div>
+
+      <form id="formulir-lengkapi" class="authform" style="padding-top:0" novalidate>
+        <div id="pesan-galat" class="infobox infobox--galat" role="alert" hidden></div>
+
+        <label class="field">
+          <span class="field__label">Nama lengkap</span>
+          <input id="nama" class="field__input" type="text" readonly>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Email institusi</span>
+          <input id="email" class="field__input" type="email" readonly>
+        </label>
+
+        <label class="field">
+          <span class="field__label">NIM</span>
+          <input id="nim" class="field__input" type="text" inputmode="numeric" maxlength="20" required>
+          <span id="galat-nim" class="field__error" hidden></span>
+        </label>
+
+        <label class="checkbox">
+          <input id="setuju-kebijakan" type="checkbox">
+          <span>Saya menyetujui <a data-tautan-kebijakan href="/legal?jenis=kebijakan-privasi" target="_blank">Kebijakan Privasi</a>
+            dan <a href="/legal?jenis=ketentuan-penggunaan" target="_blank">Ketentuan Penggunaan</a> ITBELI.</span>
+        </label>
+
+        <button id="tombol-lengkapi" class="btn btn--primer btn--blok" type="submit" disabled>Selesaikan Pendaftaran</button>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="footerlinks">
+    <a href="/legal?jenis=kebijakan-privasi">Kebijakan Privasi</a><span>·</span>
+    <a href="/legal?jenis=ketentuan-penggunaan">Ketentuan Penggunaan</a>
+  </footer>
+</div>
+</body>
+</html>

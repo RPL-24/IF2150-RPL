@@ -45,3 +45,15 @@ const Api = {
     return { status: res.status, ...isi };
   },
 };
+
+// Serah-terima sesi SSO: server menaruh sesi di cookie berumur 60 detik, dipindahkan ke localStorage
+// supaya sama dengan login biasa, lalu cookie dihapus.
+(() => {
+  const cocok = document.cookie.match(/(?:^|;\s*)itbeli_sso_sesi=([^;]+)/);
+  if (!cocok) return;
+  document.cookie = 'itbeli_sso_sesi=; Max-Age=0; path=/';
+  try {
+    const sesi = JSON.parse(decodeURIComponent(cocok[1]));
+    Api.simpanSesi(sesi.token, sesi.peran, sesi.email);
+  } catch { /* cookie rusak: abaikan, pengguna tetap dapat masuk biasa */ }
+})();
