@@ -165,12 +165,6 @@
   position: relative;
 }
 
-.iconbtn {
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-}
-
 .notif {
   position: fixed;
   top: 72px;
