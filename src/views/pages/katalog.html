@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0F4C97">
+  <title>Katalog · ITBELI</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/katalog.css">
+  <script src="/js/api.js" defer></script>
+  <script src="/js/Kerangka.js" defer></script>
+  <script src="/js/ListingUI.js" defer></script>
+  <script src="/js/layoutKatalog.js" defer></script>
+  <script src="/js/KartuProduk.js" defer></script>
+  <script src="/js/HalamanKatalog.js" defer></script>
+  <script src="/js/PanelNotifikasi.js" defer></script>
+</head>
+<body>
+<div class="page">
+  <header id="listing-topbar" class="topbar" data-topbar></header>
+  <div class="shell">
+    <aside id="listing-rail" class="rail" data-judul="Katalog">
+      <form id="form-filter" class="filter-katalog" aria-label="Saring katalog">
+        <details id="filter-rinci" class="filter-katalog__rinci" open>
+        <summary class="rail__title">Filter</summary>
+        <label class="field">
+          <span class="field__label">Kategori</span>
+          <select name="kategori" class="field__input"><option value="">Semua kategori</option></select>
+        </label>
+        <label class="field">
+          <span class="field__label">Lokasi COD</span>
+          <select name="lokasi" class="field__input"><option value="">Semua lokasi</option></select>
+        </label>
+        <div class="filter-katalog__duo">
+          <label class="field">
+            <span class="field__label">Harga minimum (Rp)</span>
+            <input type="number" name="hargaMin" class="field__input" min="0" step="1000" inputmode="numeric" placeholder="0">
+          </label>
+          <label class="field">
+            <span class="field__label">Harga maksimum (Rp)</span>
+            <input type="number" name="hargaMaks" class="field__input" min="0" step="1000" inputmode="numeric" placeholder="Tanpa batas">
+          </label>
+        </div>
+        <label class="field">
+          <span class="field__label">Urutkan</span>
+          <select name="urut" class="field__input">
+            <option value="terbaru">Terbaru</option>
+            <option value="termurah">Harga terendah</option>
+            <option value="termahal">Harga tertinggi</option>
+          </select>
+        </label>
+        <div class="filter-katalog__aksi">
+          <button type="submit" class="btn btn--primer">Terapkan</button>
+          <button type="button" id="reset-filter" class="btn btn--sekunder">Reset</button>
+        </div>
+        </details>
+      </form>
+    </aside>
+    <main class="content">
+      <div class="content__inner col gap-4">
+        <div>
+          <h2 class="katalog-judul">Pilihan hari ini</h2>
+          <p id="info-hasil" class="muted mt-1" aria-live="polite"></p>
+        </div>
+
+        <div id="galat-umum" class="infobox infobox--galat" role="alert" hidden></div>
+        <p id="memuat" class="muted">Memuat katalog…</p>
+        <div id="daftar-katalog" class="grid"></div>
+
+        <div id="katalog-kosong" class="panel kosong" hidden>
+          <h2 class="h-sec" id="kosong-judul">Barang tidak ditemukan</h2>
+          <p class="muted mt-2" id="kosong-teks">Coba kata kunci lain atau ubah filter pencarian.</p>
+          <button type="button" id="kosong-reset" class="btn btn--sekunder mt-4">Hapus pencarian &amp; filter</button>
+        </div>
+
+        <nav id="paginasi" class="paginasi-katalog" aria-label="Navigasi halaman katalog" hidden>
+          <button type="button" id="hal-sebelum" class="btn btn--sekunder btn--sm">‹ Sebelumnya</button>
+          <span id="hal-info" class="muted"></span>
+          <button type="button" id="hal-berikut" class="btn btn--sekunder btn--sm">Berikutnya ›</button>
+        </nav>
+      </div>
+    </main>
+  </div>
+  <div id="pesan" class="toast" role="status" hidden></div>
+</div>
+</body>
+</html>

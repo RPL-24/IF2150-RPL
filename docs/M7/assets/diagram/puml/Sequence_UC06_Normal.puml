@@ -1,0 +1,25 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC06 — Normal
+actor "Pengguna" as User
+
+boundary ":HalamanDokumenLegal" as UI
+control ":DokumenLegalController" as DC
+entity ":DokumenLegal" as Dok
+User -> UI: bukaDokumen("Kebijakan Privasi")
+UI -> DC: getDokumen("Kebijakan Privasi")
+DC -> Dok: getVersiTerbaru("Kebijakan Privasi")
+Dok --> DC: dokumenAktif
+DC -> Dok: getIsi()
+Dok --> DC: isiDokumen
+DC -> DC: getKlausaPrivasi()
+DC --> UI: {judul, isi, klausaPrivasi}
+UI -> UI: tampilkanDokumen(judul, isi)
+UI -> UI: sorotKlausaPrivasi(klausaPrivasi)
+note right of UI: Isi percakapan pribadi tidak dapat diakses\nadmin maupun pengembang (KF38)
+@enduml

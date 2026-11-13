@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-10 Percakapan</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  .chat { display: flex; height: calc(1043px - var(--topbar-h)); }
+  .chat__list { width: 360px; flex: none; background: var(--surface);
+    border-right: 1px solid var(--border); padding: var(--sp-4);
+    display: flex; flex-direction: column; gap: var(--sp-2); overflow: hidden; }
+  .chat__room { flex: 1; display: flex; flex-direction: column; }
+  .chat__header { height: 80px; flex: none; background: var(--surface);
+    border-bottom: 1px solid var(--border); display: flex; align-items: center;
+    gap: var(--sp-3); padding: 0 var(--sp-6); }
+  .chat__thumb { width: 48px; height: 48px; border-radius: var(--radius-sm);
+    overflow: hidden; border: 1px solid var(--border); }
+  .chat__body { flex: 1; padding: var(--sp-6); display: flex;
+    flex-direction: column; justify-content: flex-end; gap: var(--sp-2); overflow: hidden; }
+  .chat__body .infobox { margin-bottom: auto; }
+  .chat__composer { flex: none; background: var(--surface);
+    border-top: 1px solid var(--border); padding: var(--sp-4) var(--sp-6);
+    display: flex; gap: var(--sp-3); align-items: center; }
+  .chat__composer .field__input { flex: 1; }
+  .sendbtn { width: 44px; height: 44px; flex: none; border-radius: var(--radius-md);
+    background: var(--green-700); display: grid; place-items: center; }
+  .daystamp { text-align: center; font: 400 12px/16px var(--font-sans); color: var(--text-400); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar></div>
+
+  <div class="chat">
+
+    <section class="chat__list">
+      <div class="row" style="padding:0 var(--sp-2) var(--sp-2)">
+        <h1 class="h-sec">Percakapan</h1>
+        <span class="badge ml-auto">2 belum dibaca</span>
+      </div>
+
+      <div class="convitem is-active">
+        <div class="convitem__avatar"><div class="ph ph--avatar"></div></div>
+        <div class="grow" style="min-width:0">
+          <div class="row"><span class="convitem__name">Rani Permatasari</span>
+            <span class="t-caption faint ml-auto">09:41</span></div>
+          <div class="convitem__snippet">Bisa COD di Labtek V jam 4 sore?</div>
+          <div class="t-caption faint">Jas Praktikum Kimia Ukuran M</div>
+        </div>
+      </div>
+
+      <div class="convitem">
+        <div class="convitem__avatar"><div class="ph ph--avatar"></div></div>
+        <div class="grow" style="min-width:0">
+          <div class="row"><span class="convitem__name">Bagas Adi Nugroho</span>
+            <span class="t-caption faint ml-auto">Kemarin</span></div>
+          <div class="convitem__snippet">Kalkulatornya masih ada kak?</div>
+          <div class="t-caption faint">Kalkulator Casio FX-991EX</div>
+        </div>
+        <span class="iconbtn__badge" style="position:static;align-self:center">2</span>
+      </div>
+
+      <div class="convitem">
+        <div class="convitem__avatar"><div class="ph ph--avatar"></div></div>
+        <div class="grow" style="min-width:0">
+          <div class="row"><span class="convitem__name">Dinda Ayu Lestari</span>
+            <span class="t-caption faint ml-auto">2 hari</span></div>
+          <div class="convitem__snippet">Oke, saya ambil yang jilid 1 saja ya</div>
+          <div class="t-caption faint">Kalkulus Jilid 1 — Purcell</div>
+        </div>
+      </div>
+
+      <div class="convitem">
+        <div class="convitem__avatar"><div class="ph ph--avatar"></div></div>
+        <div class="grow" style="min-width:0">
+          <div class="row"><span class="convitem__name">Fajar Ramadhan</span>
+            <span class="t-caption faint ml-auto">5 hari</span></div>
+          <div class="convitem__snippet">Terima kasih kak, barangnya sesuai</div>
+          <div class="t-caption faint">Jaket Himpunan HMIF 2023</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chat__room">
+
+      <header class="chat__header">
+        <div class="convitem__avatar" style="width:44px;height:44px"><div class="ph ph--avatar"></div></div>
+        <div>
+          <div style="font-weight:600">Rani Permatasari</div>
+          <div class="t-caption muted">Teknik Kimia 2023</div>
+        </div>
+        <div class="row gap-3 ml-auto">
+          <div class="chat__thumb"><div class="ph ph--jas"></div></div>
+          <div>
+            <div class="t-caption muted">Membicarakan</div>
+            <div style="font-size:13px;font-weight:600">Jas Praktikum Kimia · Rp120.000</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="chat__body">
+
+        <div class="infobox row gap-3">
+          <span class="ic ic--lock"></span>
+          <span>Isi percakapan ini terenkripsi dan tidak dapat diakses oleh admin maupun pengembang.
+            <a href="#" style="color:var(--green-700);font-weight:600">Baca Kebijakan Privasi</a></span>
+        </div>
+
+        <div class="daystamp mt-4">Hari ini</div>
+
+        <div class="bubble bubble--lawan">Halo kak, jas praktikumnya masih tersedia?</div>
+        <div class="bubble__time">09:12</div>
+
+        <div class="bubble bubble--saya">Masih ada kok. Ukuran M, kondisi masih bagus.</div>
+        <div class="bubble__time">09:20</div>
+
+        <div class="bubble bubble--lawan">Boleh nego jadi Rp100.000 nggak kak?</div>
+        <div class="bubble__time">09:28</div>
+
+        <div class="bubble bubble--saya">Rp110.000 ya, sudah termasuk tas jinjingnya.</div>
+        <div class="bubble__time">09:35</div>
+
+        <div class="bubble bubble--lawan">Bisa COD di Labtek V jam 4 sore?</div>
+        <div class="bubble__time">09:41</div>
+
+      </div>
+
+      <div class="chat__composer">
+        <div class="field__input is-placeholder">Tulis pesan…</div>
+        <div class="sendbtn"><span class="ic ic--send"></span></div>
+      </div>
+
+    </section>
+  </div>
+</div>
+</body>
+</html>

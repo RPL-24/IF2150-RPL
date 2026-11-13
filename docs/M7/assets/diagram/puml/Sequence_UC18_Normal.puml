@@ -1,0 +1,43 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC18 — Normal
+actor "Pengguna" as User
+boundary ":HalamanPercakapan" as UI
+control ":PercakapanController" as PC
+control ":Otorisasi" as Oto
+entity ":SesiLogin" as Sesi
+entity ":Percakapan" as Perc
+entity ":Pesan" as Pesan
+control ":Kriptografi" as Kr
+User -> UI: bukaDaftarPercakapan()
+UI -> PC: getDaftarPercakapan(token)
+PC -> Oto: verifikasiToken(token)
+Oto -> Sesi: cariSesiAktif(token)
+Sesi --> Oto: sesiLogin
+Oto --> PC: sesiLogin
+PC -> Sesi: getIdAkun()
+Sesi --> PC: idAkun
+PC -> Perc: getDaftarPercakapanByPengguna(idAkun)
+Perc --> PC: daftarPercakapan
+loop setiap percakapan
+  PC -> Perc: getLawanBicara(idAkun)
+  Perc --> PC: identitasLawanBicara
+  PC -> PC: ambilCuplikanPesanTerakhir(idPercakapan)
+  PC -> Pesan: getCuplikanPesanTerakhir(idPercakapan)
+  Pesan --> PC: pesanTerakhir (terenkripsi)
+  PC -> PC: dekripsiPesan([pesanTerakhir])
+  PC -> Kr: dekripsi(isiPesanTerenkripsi)
+  Kr --> PC: cuplikan
+  PC -> PC: hitungPesanBelumDibaca(idPercakapan, idAkun)
+  PC -> Pesan: hitungPesanBelumDibaca(idPercakapan, idAkun)
+  Pesan --> PC: jumlahBelumDibaca
+end
+note right of PC: Diurutkan dari aktivitas terbaru;\npercakapan milik pengguna lain tidak diambil (KF35)
+PC --> UI: daftar
+UI -> UI: showDaftarPercakapan(daftar)
+@enduml

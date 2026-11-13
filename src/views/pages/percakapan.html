@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0F4C97">
+<title>Percakapan · ITBELI</title>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/app.css">
+<link rel="stylesheet" href="/css/percakapan.css">
+<script src="/js/api.js" defer></script>
+<script src="/js/Kerangka.js" defer></script>
+<script src="/js/PanelNotifikasi.js" defer></script>
+<script src="/js/HalamanPercakapan.js" defer></script>
+</head>
+<body data-halaman="percakapan">
+<div class="page">
+  <header id="percakapan-topbar" class="topbar" data-topbar></header>
+
+  <div class="chat">
+
+    <!-- I10-O01: Kolom daftar percakapan -->
+    <section class="chat__list" aria-label="Daftar percakapan">
+      <div class="chat__list-head">
+        <h1>Percakapan</h1>
+        <span id="badge-belum-dibaca" class="badge ml-auto" hidden>0 belum dibaca</span>
+      </div>
+
+      <div id="galat-daftar" class="infobox infobox--galat" role="alert" hidden></div>
+
+      <div id="daftar-percakapan" class="chat__list-items"></div>
+
+      <!-- I10-O08: Keadaan kosong daftar percakapan -->
+      <div id="daftar-kosong" class="empty" hidden>
+        <div class="empty__icon"><span class="ic ic--chat"></span></div>
+        <div class="empty__title">Belum ada percakapan</div>
+        <div class="empty__text">Hubungi penjual dari halaman detail barang untuk memulai percakapan.</div>
+      </div>
+    </section>
+
+    <!-- Kolom ruang pesan -->
+    <section class="chat__room" aria-label="Ruang percakapan">
+
+      <!-- Keadaan awal sebelum memilih percakapan -->
+      <div id="ruang-kosong" class="chat__empty-wrap">
+        <div class="empty">
+          <div class="empty__icon"><span class="ic ic--chat"></span></div>
+          <div class="empty__title">Pilih percakapan</div>
+          <div class="empty__text">Pilih salah satu percakapan di sebelah kiri untuk membaca dan mengirim pesan.</div>
+        </div>
+      </div>
+
+      <!-- I10-O07: Keadaan akses ditolak / gagal memuat ruang (KF35) -->
+      <div id="ruang-akses-ditolak" class="chat__empty-wrap" hidden>
+        <div class="empty">
+          <div class="empty__icon"><span class="ic ic--lock"></span></div>
+          <div id="judul-akses-ditolak" class="empty__title">Akses ditolak</div>
+          <div id="pesan-akses-ditolak" class="empty__text">Anda tidak memiliki akses ke ruang percakapan ini.</div>
+        </div>
+      </div>
+
+      <!-- Ruang percakapan aktif -->
+      <div id="ruang-aktif" class="chat__room-panel" hidden>
+
+        <!-- I10-O02: Kepala ruang percakapan -->
+        <header class="chat__header">
+          <div class="convitem__avatar">
+            <div class="ph ph--avatar"></div>
+          </div>
+          <div>
+            <div id="nama-lawan" class="chat__lawan"></div>
+            <div id="info-lawan" class="t-caption muted">Sivitas ITB</div>
+          </div>
+          <div id="kartu-barang-header" class="row gap-3 ml-auto">
+            <div id="thumb-barang" class="chat__thumb">
+              <div class="ph ph--jas"></div>
+            </div>
+            <div>
+              <div class="t-caption muted">Membicarakan</div>
+              <div id="judul-barang-header" class="chat__barang-judul"></div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Badan pesan -->
+        <div id="badan-percakapan" class="chat__body">
+
+          <!-- I10-O06: Info enkripsi & tautan Kebijakan Privasi (KF36, KF39) -->
+          <div class="infobox row gap-3">
+            <span class="ic ic--lock"></span>
+            <span>Isi percakapan ini terenkripsi dan tidak dapat diakses oleh admin maupun pengembang.
+              <a id="tautan-kebijakan" href="/legal?jenis=kebijakan-privasi">Baca Kebijakan Privasi</a></span>
+          </div>
+
+          <div id="galat-pesan" class="infobox infobox--galat" role="alert" hidden></div>
+
+          <div id="hari-percakapan" class="daystamp mt-4">Hari ini</div>
+
+          <!-- I10-O03: Urutan gelembung pesan -->
+          <div id="daftar-pesan" class="chat__messages"></div>
+
+        </div>
+
+        <!-- I10-O04 & I10-O05: Kolom input & tombol kirim pesan -->
+        <form id="form-pesan" class="chat__composer" novalidate>
+          <input id="input-pesan" type="text" class="field__input" placeholder="Tulis pesan…" maxlength="2000" autocomplete="off" aria-label="Tulis pesan">
+          <button id="tombol-kirim" type="submit" class="sendbtn" aria-label="Kirim pesan" disabled>
+            <span class="ic ic--send"></span>
+          </button>
+        </form>
+
+      </div>
+
+    </section>
+  </div>
+</div>
+</body>
+</html>

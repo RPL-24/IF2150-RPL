@@ -1,0 +1,32 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC24 - Membuka Blokir Akun Pengguna
+class "C11 DasborAdmin" as C11
+class "C21 ModerasiController" as C21
+class "C23 Akun" as C23
+class "C26 Admin" as C26
+class "C29 Barang" as C29
+class "C39 LogAdmin" as C39
+C11 --> C21
+C21 ..> C23
+C21 ..> C26
+C21 ..> C29
+C21 ..> C39
+C23 <|-- C26
+C26 "1" -- "0..*" C39
+@enduml

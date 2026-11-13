@@ -1,0 +1,320 @@
+===== SEBELUM (skema sebelum perubahan), n=40 =====
+
+## A beranda katalog (tanpa filter, terbaru, hal 1)
+   total=39500 baris, dikembalikan=20
+   median getKatalog: 30.2 ms (COUNT 11.9 ms + data 17.8 ms), min 26.9, maks 35.0
+   -- rencana kueri 1:
+      Aggregate  (cost=3829.24..3829.25 rows=1 width=4) (actual time=13.399..13.403 rows=1 loops=1)
+        Buffers: shared hit=2890
+        ->  Hash Join  (cost=223.25..3731.29 rows=39180 width=0) (actual time=1.048..12.194 rows=39500 loops=1)
+              Hash Cond: (b.id_penjual = a.id_akun)
+              Buffers: shared hit=2890
+              ->  Seq Scan on barang b  (cost=0.00..3403.00 rows=39980 width=16) (actual time=0.011..7.600 rows=40000 loops=1)
+                    Filter: ((status)::text = 'Tersedia'::text)
+                    Rows Removed by Filter: 10000
+                    Buffers: shared hit=2778
+              ->  Hash  (cost=162.00..162.00 rows=4900 width=16) (actual time=1.025..1.027 rows=4900 loops=1)
+                    Buckets: 8192  Batches: 1  Memory Usage: 294kB
+                    Buffers: shared hit=112
+                    ->  Seq Scan on akun a  (cost=0.00..162.00 rows=4900 width=16) (actual time=0.006..0.563 rows=4900 loops=1)
+                          Filter: (NOT status_blokir)
+                          Rows Removed by Filter: 100
+                          Buffers: shared hit=112
+      Planning:
+        Buffers: shared hit=12
+      Planning Time: 0.314 ms
+      Execution Time: 13.494 ms
+   -- rencana kueri 2:
+      Limit  (cost=4773.85..5098.67 rows=20 width=652) (actual time=18.686..18.929 rows=20 loops=1)
+        Buffers: shared hit=3010
+        ->  Result  (cost=4773.85..641087.49 rows=39180 width=652) (actual time=18.686..18.927 rows=20 loops=1)
+              Buffers: shared hit=3010
+              ->  Sort  (cost=4773.85..4871.80 rows=39180 width=136) (actual time=18.577..18.582 rows=20 loops=1)
+                    Sort Key: b.waktu_unggah DESC, b.id_barang
+                    Sort Method: top-N heapsort  Memory: 33kB
+                    Buffers: shared hit=2890
+                    ->  Hash Join  (cost=223.25..3731.29 rows=39180 width=136) (actual time=0.801..13.577 rows=39500 loops=1)
+                          Hash Cond: (b.id_penjual = a.id_akun)
+                          Buffers: shared hit=2890
+                          ->  Seq Scan on barang b  (cost=0.00..3403.00 rows=39980 width=123) (actual time=0.005..7.836 rows=40000 loops=1)
+                                Filter: ((status)::text = 'Tersedia'::text)
+                                Rows Removed by Filter: 10000
+                                Buffers: shared hit=2778
+                          ->  Hash  (cost=162.00..162.00 rows=4900 width=29) (actual time=0.781..0.781 rows=4900 loops=1)
+                                Buckets: 8192  Batches: 1  Memory Usage: 360kB
+                                Buffers: shared hit=112
+                                ->  Seq Scan on akun a  (cost=0.00..162.00 rows=4900 width=29) (actual time=0.004..0.424 rows=4900 loops=1)
+                                      Filter: (NOT status_blokir)
+                                      Rows Removed by Filter: 100
+                                      Buffers: shared hit=112
+              SubPlan 1
+                ->  Limit  (cost=16.23..16.23 rows=1 width=91) (actual time=0.016..0.016 rows=1 loops=20)
+                      Buffers: shared hit=120
+                      ->  Sort  (cost=16.23..16.23 rows=3 width=91) (actual time=0.016..0.016 rows=1 loops=20)
+                            Sort Key: f.urutan
+                            Sort Method: top-N heapsort  Memory: 25kB
+                            Buffers: shared hit=120
+                            ->  Bitmap Heap Scan on foto_barang f  (cost=4.44..16.21 rows=3 width=91) (actual time=0.008..0.011 rows=3 loops=20)
+                                  Recheck Cond: (id_barang = b.id_barang)
+                                  Heap Blocks: exact=60
+                                  Buffers: shared hit=120
+                                  ->  Bitmap Index Scan on foto_barang_id_barang  (cost=0.00..4.44 rows=3 width=0) (actual time=0.005..0.005 rows=3 loops=20)
+                                        Index Cond: (id_barang = b.id_barang)
+                                        Buffers: shared hit=60
+      Planning:
+        Buffers: shared hit=12
+      Planning Time: 0.303 ms
+      Execution Time: 19.069 ms
+
+## B cari "jas praktikum"
+   total=6667 baris, dikembalikan=20
+   median getKatalog: 63.4 ms (COUNT 29.7 ms + data 32.9 ms), min 60.7, maks 70.5
+   -- rencana kueri 1:
+      Aggregate  (cost=4145.70..4145.71 rows=1 width=4) (actual time=29.521..29.525 rows=1 loops=1)
+        Buffers: shared hit=2890
+        ->  Hash Join  (cost=223.25..4136.31 rows=3753 width=0) (actual time=0.758..29.312 rows=6667 loops=1)
+              Hash Cond: (b.id_penjual = a.id_akun)
+              Buffers: shared hit=2890
+              ->  Seq Scan on barang b  (cost=0.00..3903.00 rows=3830 width=16) (actual time=0.012..27.536 rows=6667 loops=1)
+                    Filter: (((status)::text = 'Tersedia'::text) AND (((judul)::text ~~* '%jas%'::text) OR (deskripsi_kondisi ~~* '%jas%'::text)) AND (((judul)::text ~~* '%praktikum%'::text) OR (deskripsi_kondisi ~~* '%praktikum%'::text)))
+                    Rows Removed by Filter: 43333
+                    Buffers: shared hit=2778
+              ->  Hash  (cost=162.00..162.00 rows=4900 width=16) (actual time=0.708..0.709 rows=4900 loops=1)
+                    Buckets: 8192  Batches: 1  Memory Usage: 294kB
+                    Buffers: shared hit=112
+                    ->  Seq Scan on akun a  (cost=0.00..162.00 rows=4900 width=16) (actual time=0.004..0.396 rows=4900 loops=1)
+                          Filter: (NOT status_blokir)
+                          Rows Removed by Filter: 100
+                          Buffers: shared hit=112
+      Planning:
+        Buffers: shared hit=12
+      Planning Time: 0.357 ms
+      Execution Time: 29.607 ms
+   -- rencana kueri 2:
+      Limit  (cost=4236.18..4561.00 rows=20 width=652) (actual time=31.011..31.297 rows=20 loops=1)
+        Buffers: shared hit=3010
+        ->  Result  (cost=4236.18..65187.82 rows=3753 width=652) (actual time=31.010..31.295 rows=20 loops=1)
+              Buffers: shared hit=3010
+              ->  Sort  (cost=4236.18..4245.56 rows=3753 width=136) (actual time=30.900..30.906 rows=20 loops=1)
+                    Sort Key: b.waktu_unggah DESC, b.id_barang
+                    Sort Method: top-N heapsort  Memory: 34kB
+                    Buffers: shared hit=2890
+                    ->  Hash Join  (cost=223.25..4136.31 rows=3753 width=136) (actual time=0.883..29.989 rows=6667 loops=1)
+                          Hash Cond: (b.id_penjual = a.id_akun)
+                          Buffers: shared hit=2890
+                          ->  Seq Scan on barang b  (cost=0.00..3903.00 rows=3830 width=123) (actual time=0.011..27.827 rows=6667 loops=1)
+                                Filter: (((status)::text = 'Tersedia'::text) AND (((judul)::text ~~* '%jas%'::text) OR (deskripsi_kondisi ~~* '%jas%'::text)) AND (((judul)::text ~~* '%praktikum%'::text) OR (deskripsi_kondisi ~~* '%praktikum%'::text)))
+                                Rows Removed by Filter: 43333
+                                Buffers: shared hit=2778
+                          ->  Hash  (cost=162.00..162.00 rows=4900 width=29) (actual time=0.820..0.821 rows=4900 loops=1)
+                                Buckets: 8192  Batches: 1  Memory Usage: 360kB
+                                Buffers: shared hit=112
+                                ->  Seq Scan on akun a  (cost=0.00..162.00 rows=4900 width=29) (actual time=0.006..0.417 rows=4900 loops=1)
+                                      Filter: (NOT status_blokir)
+                                      Rows Removed by Filter: 100
+                                      Buffers: shared hit=112
+              SubPlan 1
+                ->  Limit  (cost=16.23..16.23 rows=1 width=91) (actual time=0.018..0.018 rows=1 loops=20)
+                      Buffers: shared hit=120
+                      ->  Sort  (cost=16.23..16.23 rows=3 width=91) (actual time=0.018..0.018 rows=1 loops=20)
+                            Sort Key: f.urutan
+                            Sort Method: top-N heapsort  Memory: 25kB
+                            Buffers: shared hit=120
+                            ->  Bitmap Heap Scan on foto_barang f  (cost=4.44..16.21 rows=3 width=91) (actual time=0.009..0.013 rows=3 loops=20)
+                                  Recheck Cond: (id_barang = b.id_barang)
+                                  Heap Blocks: exact=60
+                                  Buffers: shared hit=120
+                                  ->  Bitmap Index Scan on foto_barang_id_barang  (cost=0.00..4.44 rows=3 width=0) (actual time=0.006..0.006 rows=3 loops=20)
+                                        Index Cond: (id_barang = b.id_barang)
+                                        Buffers: shared hit=60
+      Planning:
+        Buffers: shared hit=12
+      Planning Time: 0.386 ms
+      Execution Time: 31.453 ms
+
+## C kategori Kalkulator + harga 50rb-200rb + termurah
+   total=980 baris, dikembalikan=20
+   median getKatalog: 23.7 ms (COUNT 11.0 ms + data 12.0 ms), min 20.7, maks 27.9
+   -- rencana kueri 1:
+      Aggregate  (cost=4006.52..4006.53 rows=1 width=4) (actual time=9.794..9.796 rows=1 loops=1)
+        Buffers: shared hit=2890
+        ->  Hash Join  (cost=223.25..4003.98 rows=1018 width=0) (actual time=0.655..9.761 rows=980 loops=1)
+              Hash Cond: (b.id_penjual = a.id_akun)
+              Buffers: shared hit=2890
+              ->  Seq Scan on barang b  (cost=0.00..3778.00 rows=1039 width=16) (actual time=0.013..8.910 rows=1004 loops=1)
+                    Filter: ((harga >= '50000'::numeric) AND (harga <= '200000'::numeric) AND ((status)::text = 'Tersedia'::text) AND ((id_kategori)::text = 'Kalkulator'::text))
+                    Rows Removed by Filter: 48996
+                    Buffers: shared hit=2778
+              ->  Hash  (cost=162.00..162.00 rows=4900 width=16) (actual time=0.633..0.634 rows=4900 loops=1)
+                    Buckets: 8192  Batches: 1  Memory Usage: 294kB
+                    Buffers: shared hit=112
+                    ->  Seq Scan on akun a  (cost=0.00..162.00 rows=4900 width=16) (actual time=0.003..0.395 rows=4900 loops=1)
+                          Filter: (NOT status_blokir)
+                          Rows Removed by Filter: 100
+                          Buffers: shared hit=112
+      Planning:
+        Buffers: shared hit=12
+      Planning Time: 0.248 ms
+      Execution Time: 9.825 ms
+   -- rencana kueri 2:
+      Limit  (cost=4031.07..4355.88 rows=20 width=652) (actual time=12.677..12.896 rows=20 loops=1)
+        Buffers: shared hit=3010
+        ->  Result  (cost=4031.07..20564.18 rows=1018 width=652) (actual time=12.676..12.894 rows=20 loops=1)
+              Buffers: shared hit=3010
+              ->  Sort  (cost=4031.07..4033.61 rows=1018 width=136) (actual time=12.595..12.599 rows=20 loops=1)
+                    Sort Key: b.harga, b.waktu_unggah DESC, b.id_barang
+                    Sort Method: top-N heapsort  Memory: 34kB
+                    Buffers: shared hit=2890
+                    ->  Hash Join  (cost=223.25..4003.98 rows=1018 width=136) (actual time=1.925..12.340 rows=980 loops=1)
+                          Hash Cond: (b.id_penjual = a.id_akun)
+                          Buffers: shared hit=2890
+                          ->  Seq Scan on barang b  (cost=0.00..3778.00 rows=1039 width=123) (actual time=0.011..10.091 rows=1004 loops=1)
+                                Filter: ((harga >= '50000'::numeric) AND (harga <= '200000'::numeric) AND ((status)::text = 'Tersedia'::text) AND ((id_kategori)::text = 'Kalkulator'::text))
+                                Rows Removed by Filter: 48996
+                                Buffers: shared hit=2778
+                          ->  Hash  (cost=162.00..162.00 rows=4900 width=29) (actual time=1.866..1.867 rows=4900 loops=1)
+                                Buckets: 8192  Batches: 1  Memory Usage: 360kB
+                                Buffers: shared hit=112
+                                ->  Seq Scan on akun a  (cost=0.00..162.00 rows=4900 width=29) (actual time=0.003..0.842 rows=4900 loops=1)
+                                      Filter: (NOT status_blokir)
+                                      Rows Removed by Filter: 100
+                                      Buffers: shared hit=112
+              SubPlan 1
+                ->  Limit  (cost=16.23..16.23 rows=1 width=91) (actual time=0.014..0.014 rows=1 loops=20)
+                      Buffers: shared hit=120
+                      ->  Sort  (cost=16.23..16.23 rows=3 width=91) (actual time=0.014..0.014 rows=1 loops=20)
+                            Sort Key: f.urutan
+                            Sort Method: top-N heapsort  Memory: 25kB
+                            Buffers: shared hit=120
+                            ->  Bitmap Heap Scan on foto_barang f  (cost=4.44..16.21 rows=3 width=91) (actual time=0.007..0.010 rows=3 loops=20)
+                                  Recheck Cond: (id_barang = b.id_barang)
+                                  Heap Blocks: exact=60
+                                  Buffers: shared hit=120
+                                  ->  Bitmap Index Scan on foto_barang_id_barang  (cost=0.00..4.44 rows=3 width=0) (actual time=0.004..0.004 rows=3 loops=20)
+                                        Index Cond: (id_barang = b.id_barang)
+                                        Buffers: shared hit=60
+      Planning:
+        Buffers: shared hit=12
+      Planning Time: 0.266 ms
+      Execution Time: 13.011 ms
+
+## D beranda halaman 500 (offset 9980)
+   total=39500 baris, dikembalikan=20
+   median getKatalog: 115.6 ms (COUNT 11.8 ms + data 103.6 ms), min 108.6, maks 223.7
+   -- rencana kueri 1:
+      Aggregate  (cost=3829.24..3829.25 rows=1 width=4) (actual time=11.379..11.382 rows=1 loops=1)
+        Buffers: shared hit=2890
+        ->  Hash Join  (cost=223.25..3731.29 rows=39180 width=0) (actual time=0.632..10.314 rows=39500 loops=1)
+              Hash Cond: (b.id_penjual = a.id_akun)
+              Buffers: shared hit=2890
+              ->  Seq Scan on barang b  (cost=0.00..3403.00 rows=39980 width=16) (actual time=0.007..6.558 rows=40000 loops=1)
+                    Filter: ((status)::text = 'Tersedia'::text)
+                    Rows Removed by Filter: 10000
+                    Buffers: shared hit=2778
+              ->  Hash  (cost=162.00..162.00 rows=4900 width=16) (actual time=0.620..0.621 rows=4900 loops=1)
+                    Buckets: 8192  Batches: 1  Memory Usage: 294kB
+                    Buffers: shared hit=112
+                    ->  Seq Scan on akun a  (cost=0.00..162.00 rows=4900 width=16) (actual time=0.004..0.379 rows=4900 loops=1)
+                          Filter: (NOT status_blokir)
+                          Rows Removed by Filter: 100
+                          Buffers: shared hit=112
+      Planning:
+        Buffers: shared hit=12
+      Planning Time: 0.196 ms
+      Execution Time: 11.410 ms
+   -- rencana kueri 2:
+      Limit  (cost=169626.68..169954.89 rows=20 width=652) (actual time=117.206..117.404 rows=20 loops=1)
+        Buffers: shared hit=74171, temp read=494 written=680
+        ->  Nested Loop  (cost=5853.53..648802.64 rows=39180 width=652) (actual time=33.382..117.136 rows=10000 loops=1)
+              Buffers: shared hit=74171, temp read=494 written=680
+              ->  Gather Merge  (cost=5853.24..10409.78 rows=39980 width=123) (actual time=33.290..35.485 rows=10134 loops=1)
+                    Workers Planned: 1
+                    Workers Launched: 1
+                    Buffers: shared hit=2822, temp read=494 written=680
+                    ->  Sort  (cost=4853.23..4912.02 rows=23518 width=123) (actual time=16.449..17.191 rows=5067 loops=2)
+                          Sort Key: b.waktu_unggah DESC, b.id_barang
+                          Sort Method: external merge  Disk: 5432kB
+                          Buffers: shared hit=2822, temp read=494 written=680
+                          Worker 0:  Sort Method: quicksort  Memory: 25kB
+                          ->  Parallel Seq Scan on barang b  (cost=0.00..3145.65 rows=23518 width=123) (actual time=0.009..5.248 rows=20000 loops=2)
+                                Filter: ((status)::text = 'Tersedia'::text)
+                                Rows Removed by Filter: 5000
+                                Buffers: shared hit=2778
+              ->  Memoize  (cost=0.29..0.32 rows=1 width=29) (actual time=0.001..0.001 rows=1 loops=10134)
+                    Cache Key: b.id_penjual
+                    Cache Mode: logical
+                    Hits: 6351  Misses: 3783  Evictions: 0  Overflows: 0  Memory Usage: 521kB
+                    Buffers: shared hit=11349
+                    ->  Index Scan using akun_pkey on akun a  (cost=0.28..0.31 rows=1 width=29) (actual time=0.001..0.001 rows=1 loops=3783)
+                          Index Cond: (id_akun = b.id_penjual)
+                          Filter: (NOT status_blokir)
+                          Rows Removed by Filter: 0
+                          Buffers: shared hit=11349
+              SubPlan 1
+                ->  Limit  (cost=16.23..16.23 rows=1 width=91) (actual time=0.007..0.007 rows=1 loops=10000)
+                      Buffers: shared hit=60000
+                      ->  Sort  (cost=16.23..16.23 rows=3 width=91) (actual time=0.007..0.007 rows=1 loops=10000)
+                            Sort Key: f.urutan
+                            Sort Method: top-N heapsort  Memory: 25kB
+                            Buffers: shared hit=60000
+                            ->  Bitmap Heap Scan on foto_barang f  (cost=4.44..16.21 rows=3 width=91) (actual time=0.003..0.005 rows=3 loops=10000)
+                                  Recheck Cond: (id_barang = b.id_barang)
+                                  Heap Blocks: exact=30000
+                                  Buffers: shared hit=60000
+                                  ->  Bitmap Index Scan on foto_barang_id_barang  (cost=0.00..4.44 rows=3 width=0) (actual time=0.002..0.002 rows=3 loops=10000)
+                                        Index Cond: (id_barang = b.id_barang)
+                                        Buffers: shared hit=30000
+      Planning:
+        Buffers: shared hit=12
+      Planning Time: 0.463 ms
+      Execution Time: 119.534 ms
+
+## E cari kata yang tidak ada
+   total=0 baris, dikembalikan=0
+   median getKatalog: 62.3 ms (COUNT 30.5 ms + data 30.6 ms), min 55.9, maks 67.4
+   -- rencana kueri 1:
+      Aggregate  (cost=3686.21..3686.23 rows=1 width=4) (actual time=26.371..26.372 rows=1 loops=1)
+        Buffers: shared hit=2778
+        ->  Nested Loop  (cost=0.28..3686.20 rows=4 width=0) (actual time=26.367..26.368 rows=0 loops=1)
+              Buffers: shared hit=2778
+              ->  Seq Scan on barang b  (cost=0.00..3653.00 rows=4 width=16) (actual time=26.366..26.366 rows=0 loops=1)
+                    Filter: (((status)::text = 'Tersedia'::text) AND (((judul)::text ~~* '%zzzqqq%'::text) OR (deskripsi_kondisi ~~* '%zzzqqq%'::text)))
+                    Rows Removed by Filter: 50000
+                    Buffers: shared hit=2778
+              ->  Index Scan using akun_pkey on akun a  (cost=0.28..8.30 rows=1 width=16) (never executed)
+                    Index Cond: (id_akun = b.id_penjual)
+                    Filter: (NOT status_blokir)
+      Planning:
+        Buffers: shared hit=12
+      Planning Time: 0.215 ms
+      Execution Time: 26.397 ms
+   -- rencana kueri 2:
+      Limit  (cost=3686.24..3751.21 rows=4 width=652) (actual time=27.142..27.144 rows=0 loops=1)
+        Buffers: shared hit=2778
+        ->  Result  (cost=3686.24..3751.21 rows=4 width=652) (actual time=27.142..27.143 rows=0 loops=1)
+              Buffers: shared hit=2778
+              ->  Sort  (cost=3686.24..3686.25 rows=4 width=136) (actual time=27.141..27.142 rows=0 loops=1)
+                    Sort Key: b.waktu_unggah DESC, b.id_barang
+                    Sort Method: quicksort  Memory: 25kB
+                    Buffers: shared hit=2778
+                    ->  Nested Loop  (cost=0.28..3686.20 rows=4 width=136) (actual time=27.136..27.137 rows=0 loops=1)
+                          Buffers: shared hit=2778
+                          ->  Seq Scan on barang b  (cost=0.00..3653.00 rows=4 width=123) (actual time=27.135..27.135 rows=0 loops=1)
+                                Filter: (((status)::text = 'Tersedia'::text) AND (((judul)::text ~~* '%zzzqqq%'::text) OR (deskripsi_kondisi ~~* '%zzzqqq%'::text)))
+                                Rows Removed by Filter: 50000
+                                Buffers: shared hit=2778
+                          ->  Index Scan using akun_pkey on akun a  (cost=0.28..8.30 rows=1 width=29) (never executed)
+                                Index Cond: (id_akun = b.id_penjual)
+                                Filter: (NOT status_blokir)
+              SubPlan 1
+                ->  Limit  (cost=16.23..16.23 rows=1 width=91) (never executed)
+                      ->  Sort  (cost=16.23..16.23 rows=3 width=91) (never executed)
+                            Sort Key: f.urutan
+                            ->  Bitmap Heap Scan on foto_barang f  (cost=4.44..16.21 rows=3 width=91) (never executed)
+                                  Recheck Cond: (id_barang = b.id_barang)
+                                  ->  Bitmap Index Scan on foto_barang_id_barang  (cost=0.00..4.44 rows=3 width=0) (never executed)
+                                        Index Cond: (id_barang = b.id_barang)
+      Planning:
+        Buffers: shared hit=12
+      Planning Time: 0.256 ms
+      Execution Time: 27.178 ms

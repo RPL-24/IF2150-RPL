@@ -1,0 +1,45 @@
+/* Listing penjual: Jual/Ubah Barang (I-07/I-08), Listing Saya, dan detail listing milik sendiri. */
+
+/* Formulir jual barang dan pratinjau */
+.form-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: var(--sp-6); align-items: start; }
+.form-wrap > form { background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); padding: var(--sp-5); }
+.preview { position: sticky; top: calc(var(--topbar-h) + var(--sp-4)); align-self: start; }
+.preview .card__media { aspect-ratio: 1; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+
+.fotos { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--sp-3); }
+.fotos > div, .foto-tambah {
+  position: relative; height: 104px; border: 1px solid var(--border); border-radius: var(--radius-md);
+  overflow: hidden; background: var(--surface);
+}
+.fotos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fotos .tag { position: absolute; left: 4px; bottom: 4px; }
+.foto-tambah { border-style: dashed; display: grid; place-items: center; cursor: pointer; color: var(--text-600); width: 100%; }
+.foto-tambah:hover { background: var(--hover); }
+.foto-tools { position: absolute; top: 4px; right: 4px; display: flex; gap: 2px; }
+.foto-tools button { border: 0; background: rgba(255, 255, 255, .92); border-radius: var(--radius-sm); width: 24px; height: 24px; cursor: pointer; }
+.fotos.dragover { outline: 2px dashed var(--primer-700); outline-offset: 4px; }
+
+/* Detail listing milik sendiri (detail.html): penampil gelap + info */
+.detail { display: grid; grid-template-columns: minmax(0, 1fr) var(--panel-w); gap: var(--sp-4); align-items: start; }
+.detail > aside { background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); padding: var(--sp-4); }
+.gal-main { height: 480px; background: #18191a; border-radius: var(--radius-md); overflow: hidden; }
+.gal-main img { width: 100%; height: 100%; object-fit: contain; }
+.gal-thumbs { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.gal-thumbs button { width: 64px; height: 64px; border: 2px solid transparent; border-radius: var(--radius-md); overflow: hidden; cursor: pointer; padding: 0; }
+.gal-thumbs button:hover { border-color: var(--primer-200); }
+.gal-thumbs img { width: 100%; height: 100%; object-fit: cover; }
+#detail-deskripsi { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+@media (max-width: 959px) {
+  .form-wrap, .detail { grid-template-columns: minmax(0, 1fr); }
+  .preview { position: static; max-width: 340px; }
+  .gal-main { height: min(100vw, 420px); }
+}
+@media (max-width: 650px) {
+  .two { grid-template-columns: minmax(0, 1fr); }
+  .fotos { gap: 6px; }
+  .fotos > div, .foto-tambah { height: 76px; }
+  .foto-tools { right: 1px; top: 1px; }
+  .foto-tools button { width: 20px; height: 20px; }
+}

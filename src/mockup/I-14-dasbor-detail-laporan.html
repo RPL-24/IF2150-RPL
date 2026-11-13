@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-14 Dasbor Admin: Detail Laporan</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  .dua { display: grid; grid-template-columns: 1fr 360px; gap: var(--sp-8); align-items: start; }
+  .baris { display: flex; padding: var(--sp-3) 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .baris:last-child { border-bottom: none; }
+  .baris > span:first-child { width: 160px; color: var(--text-600); flex: none; }
+  .bukti { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); }
+  .bukti > div { height: 150px; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); overflow: hidden; background: var(--surface); }
+  .objek { display: flex; gap: var(--sp-4); align-items: center; }
+  .objek__thumb { width: 72px; height: 72px; border-radius: var(--radius-sm);
+    overflow: hidden; border: 1px solid var(--border); flex: none; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar="admin"></div>
+
+  <div class="shell">
+    <aside data-rail="admin" data-aktif="Daftar Laporan"></aside>
+
+    <main class="content">
+      <div class="content__inner col gap-5">
+
+        <div>
+          <p class="t-caption muted">Daftar Laporan · LP-0033</p>
+          <div class="row gap-3 mt-2">
+            <h1 class="h-page">Laporan LP-0033</h1>
+            <span class="badge">Baru</span>
+          </div>
+        </div>
+
+        <div class="dua">
+
+          <section class="col gap-5">
+
+            <div class="panel col gap-2">
+              <div class="rail__title">Rincian laporan</div>
+              <div class="baris"><span>Pelapor</span><span>Dinda Ayu Lestari · 13525077</span></div>
+              <div class="baris"><span>Kategori</span><span>Penipuan</span></div>
+              <div class="baris"><span>Waktu laporan</span><span>28 Oktober 2026, 14:22</span></div>
+              <div class="baris" style="align-items:flex-start">
+                <span>Alasan</span>
+                <span style="line-height:21px">
+                  Penjual meminta transfer di muka padahal kesepakatan awal COD di Labtek V,
+                  lalu memblokir saya setelah pembayaran dikirim.
+                </span>
+              </div>
+            </div>
+
+            <div class="panel col gap-3">
+              <div class="rail__title">Objek yang dilaporkan</div>
+              <div class="objek">
+                <div class="objek__thumb"><div class="ph ph--jas"></div></div>
+                <div>
+                  <div style="font-weight:600">Jas Praktikum Kimia Ukuran M</div>
+                  <div class="t-caption muted">Rp120.000 · Labtek V · Tersedia</div>
+                  <div class="t-caption muted">Penjual: Rani Permatasari · 13525088</div>
+                </div>
+                <button class="btn btn--sekunder btn--sm ml-auto">Buka listing</button>
+              </div>
+            </div>
+
+            <div class="panel col gap-3">
+              <div class="rail__title">Bukti tangkapan layar</div>
+              <div class="bukti">
+                <div><div class="ph ph--bukti"></div></div>
+                <div><div class="ph ph--bukti"></div></div>
+                <div><div class="ph ph--bukti"></div></div>
+              </div>
+            </div>
+
+          </section>
+
+          <aside class="col gap-4">
+
+            <div class="panel col gap-4">
+              <div class="rail__title">Tindakan moderasi</div>
+
+              <div class="field">
+                <div class="field__label">Status penanganan</div>
+                <div class="field__input select">Baru</div>
+              </div>
+
+              <div class="divider"></div>
+
+              <button class="btn btn--merusak btn--blok">Hapus Listing</button>
+              <button class="btn btn--merusak btn--blok">Blokir Akun Penjual</button>
+              <button class="btn btn--sekunder btn--blok">Buka Blokir Akun</button>
+              <button class="btn btn--sekunder btn--blok">Tandai Selesai</button>
+            </div>
+
+            <div class="infobox row gap-3">
+              <span class="ic ic--lock"></span>
+              <span>Isi percakapan antarpengguna tidak tersedia bagi admin. Laporan ini hanya
+                memuat metadata percakapan tanpa kutipan pesan.</span>
+            </div>
+
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</div>
+</body>
+</html>
