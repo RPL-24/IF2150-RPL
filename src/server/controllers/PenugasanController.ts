@@ -6,7 +6,8 @@ import { gagal, ok, type ActionResult } from "@/lib/action-result";
 import { requireRole } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getByStatus, getRincian } from "@/server/entities/Laporan";
-import { isKategori, isTugasAktif, ListTugas, type EvaluasiTerakhir, type RincianTugas, type TugasLaporan } from "@/server/entities/ListTugas";
+import { isKategori, isTugasAktif, ListTugas, type RincianTugas, type TugasLaporan } from "@/server/entities/ListTugas";
+import { getEvaluasiTerakhir } from "../entities/Evaluasi";
 
 const PESAN_TANPA_AKSES = "Anda tidak memiliki akses ke daftar tugas Eksekutor Lapangan.";
 const PESAN_GAGAL_LOAD = "Gagal memuat daftar tugas. Coba muat ulang halaman!";
@@ -68,8 +69,10 @@ export async function bukaLaporan(idTiket: string): Promise<ActionResult<Rincian
         if (error) return gagal(PESAN_GAGAL_RINCIAN);
         if (!data || !isTugasAktif(data)) return gagal(PESAN_TUGAS_TAK_ADA);
 
-        // DITAHAN: evaluasi menunggu ... Peran B
-        const evaluasiTerakhir: EvaluasiTerakhir | null = null;
+        
+        const { data: evaluasiTerakhir, error: errorEvaluasi } = await getEvaluasiTerakhir(supabase, data.id);
+        if (errorEvaluasi) return gagal(PESAN_GAGAL_RINCIAN);
+
 
         return ok({
             id: data.id,
