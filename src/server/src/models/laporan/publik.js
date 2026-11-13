@@ -8,90 +8,88 @@
 import { STATUS, STATUS_PUBLIK } from '@silembur/shared';
 import { urlFoto } from '../../utils/http.js';
 
+/** Kelompok tab I-02 (O-0203) -> status laporan yang termasuk di dalamnya. */
+export const KELOMPOK_STATUS_PUBLIK = Object.freeze({
+  menunggu: [STATUS.MENUNGGU_VERIFIKASI],
+  diproses: [STATUS.TERVERIFIKASI, STATUS.DIPROSES],
+  selesai: [STATUS.SELESAI],
+});
+
+// Sengaja tanpa JOIN ke tabel pengguna (KNF02).
+const KOLOM_PUBLIK = `
+  l.id_laporan, l.kategori_kerusakan, l.deskripsi_laporan, l.foto_laporan, l.status_laporan,
+  l.tanggal_laporan, l.id_fasilitas, f.nama_fasilitas,
+  lo.latitude, lo.longitude, lo.wilayah, lo.alamat`;
+
+const FROM_PUBLIK = `
+  FROM laporan l
+  LEFT JOIN lokasi lo ON lo.id_laporan = l.id_laporan
+  LEFT JOIN fasilitas f ON f.id_fasilitas = l.id_fasilitas`;
+
 /**
- * Daftar laporan publik (status di STATUS_PUBLIK), terbaru dulu.
- * @param {{ status?: string, wilayah?: string, kategori?: string, limit?: number, offset?: number }} filter
+ * Daftar laporan publik (status di STATUS_PUBLIK), terbaru dulu (KF10, UC04 alt 1).
+ * @param {{ kelompok?: 'menunggu'|'diproses'|'selesai', status?: string, wilayah?: string,
+ *           kategori?: string, limit?: number, offset?: number }} filter
+ * @returns {Promise<object[]>} LaporanPublik[]
  */
 export async function getDaftarLaporanPublik(db, filter = {}) {
-  const params = [];
-  const clauses = [`l.status_laporan = ANY($${params.length + 1})`];
-  params.push(STATUS_PUBLIK);
+  const { kelompok, status, wilayah, kategori, limit = 20, offset = 0 } = filter;
 
-  const kelompok = filter.kelompok ?? filter.status;
-  if (kelompok) {
-    const mapped = {
-      menunggu: [STATUS.MENUNGGU_VERIFIKASI],
-      diproses: [STATUS.TERVERIFIKASI, STATUS.DIPROSES],
-      selesai: [STATUS.SELESAI],
-    }[String(kelompok).toLowerCase()];
+  let daftarStatus = STATUS_PUBLIK;
+  if (kelompok) daftarStatus = KELOMPOK_STATUS_PUBLIK[kelompok] ?? [];
+  if (status) daftarStatus = daftarStatus.filter((s) => s === status);
 
-    if (mapped) {
-      clauses.push(`l.status_laporan = ANY($${params.length + 1})`);
-      params.push(mapped);
-    }
+  const params = [daftarStatus];
+  const kondisi = ['l.status_laporan = ANY($1)'];
+  if (wilayah) {
+    params.push(wilayah);
+    kondisi.push(`lo.wilayah = $${params.length}`);
   }
-
-  if (filter.wilayah) {
-    clauses.push(`lo.wilayah = $${params.length + 1}`);
-    params.push(filter.wilayah);
+  if (kategori) {
+    params.push(kategori);
+    kondisi.push(`l.kategori_kerusakan = $${params.length}`);
   }
-
-  if (filter.kategori) {
-    clauses.push(`l.kategori_kerusakan = $${params.length + 1}`);
-    params.push(filter.kategori);
-  }
-
-  const limit = Number(filter.limit ?? 20);
-  const offset = Number(filter.offset ?? 0);
+  params.push(limit, offset);
 
   const { rows } = await db.query(
-    `SELECT l.id_laporan, l.foto_laporan, l.deskripsi_laporan, l.kategori_kerusakan, l.status_laporan,
-            l.tanggal_laporan, lo.latitude, lo.longitude, lo.wilayah, lo.alamat,
-            f.id_fasilitas, f.nama_fasilitas
-     FROM laporan l
-     LEFT JOIN lokasi lo ON lo.id_laporan = l.id_laporan
-     LEFT JOIN fasilitas f ON f.id_fasilitas = l.id_fasilitas
-     WHERE ${clauses.join(' AND ')}
-     ORDER BY l.tanggal_laporan DESC, l.id_laporan DESC
-     LIMIT $${params.length + 1} OFFSET $${params.length + 2}`,
-    [...params, limit, offset],
+    `SELECT ${KOLOM_PUBLIK} ${FROM_PUBLIK}
+      WHERE ${kondisi.join(' AND ')}
+      ORDER BY l.tanggal_laporan DESC, l.id_laporan DESC
+      LIMIT $${params.length - 1} OFFSET $${params.length}`,
+    params,
   );
-
   return rows.map(toLaporanPublik);
 }
 
 /** Detail satu laporan publik: foto, lokasi, deskripsi, status (KF11). null jika tidak ada/tidak publik. */
 export async function getDetailLaporanPublik(db, idLaporan) {
   const { rows } = await db.query(
-    `SELECT l.id_laporan, l.foto_laporan, l.deskripsi_laporan, l.kategori_kerusakan, l.status_laporan,
-            l.tanggal_laporan, lo.latitude, lo.longitude, lo.wilayah, lo.alamat,
-            f.id_fasilitas, f.nama_fasilitas
-     FROM laporan l
-     LEFT JOIN lokasi lo ON lo.id_laporan = l.id_laporan
-     LEFT JOIN fasilitas f ON f.id_fasilitas = l.id_fasilitas
-     WHERE l.id_laporan = $1 AND l.status_laporan = ANY($2)`,
+    `SELECT ${KOLOM_PUBLIK} ${FROM_PUBLIK}
+      WHERE l.id_laporan = $1 AND l.status_laporan = ANY($2)`,
     [idLaporan, STATUS_PUBLIK],
   );
-
   return rows[0] ? toLaporanPublik(rows[0]) : null;
 }
 
-/** Ringkasan jumlah laporan per kelompok status untuk kartu I-02 (O-0202). */
+/**
+ * Ringkasan jumlah laporan untuk kartu I-02 (O-0202).
+ *  masuk    = laporan publik yang dibuat bulan ini
+ *  diproses = Terverifikasi + Diproses
+ *  selesai  = Selesai
+ * @returns {Promise<{ masuk: number, diproses: number, selesai: number }>}
+ */
 export async function getRingkasanLaporan(db) {
   const { rows } = await db.query(
     `SELECT
-       COUNT(*) FILTER (WHERE tanggal_laporan >= date_trunc('month', NOW())) AS masuk,
-       COUNT(*) FILTER (WHERE status_laporan IN ('Terverifikasi', 'Diproses')) AS diproses,
-       COUNT(*) FILTER (WHERE status_laporan = 'Selesai') AS selesai
+       COUNT(*) FILTER (WHERE status_laporan = ANY($1)
+                          AND tanggal_laporan >= date_trunc('month', NOW())) AS masuk,
+       COUNT(*) FILTER (WHERE status_laporan = ANY($2)) AS diproses,
+       COUNT(*) FILTER (WHERE status_laporan = ANY($3)) AS selesai
      FROM laporan`,
+    [STATUS_PUBLIK, KELOMPOK_STATUS_PUBLIK.diproses, KELOMPOK_STATUS_PUBLIK.selesai],
   );
-
-  const row = rows[0] ?? {};
-  return {
-    masuk: Number(row.masuk ?? 0),
-    diproses: Number(row.diproses ?? 0),
-    selesai: Number(row.selesai ?? 0),
-  };
+  const { masuk, diproses, selesai } = rows[0];
+  return { masuk, diproses, selesai };
 }
 
 /** DTO publik: hanya field yang aman ditampilkan. Bentuk lihat src/docs/API.md#laporanpublik */
@@ -103,12 +101,10 @@ export function toLaporanPublik(row) {
     foto: urlFoto(row.foto_laporan),
     status: row.status_laporan,
     tanggalLaporan: row.tanggal_laporan,
-    lokasi: row.latitude == null ? null : {
-      latitude: Number(row.latitude),
-      longitude: Number(row.longitude),
-      wilayah: row.wilayah,
-      alamat: row.alamat,
-    },
+    lokasi:
+      row.latitude === null || row.latitude === undefined
+        ? null
+        : { latitude: row.latitude, longitude: row.longitude, wilayah: row.wilayah, alamat: row.alamat },
     fasilitas: row.id_fasilitas ? { id: row.id_fasilitas, nama: row.nama_fasilitas } : null,
   };
 }

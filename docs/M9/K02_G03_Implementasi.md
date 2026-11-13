@@ -7,24 +7,27 @@ IMPLEMENTASI PERANGKAT LUNAK
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
-### *[Logo Perangkat Lunak]*
+## *SILEMBUR*
+### *LOGO*
+<p align="center">
+<img alt="Logo SILEMBUR" src="./assets/logo.jpeg" width="40%">
+</p>
 
-### Untuk: *[Nama Asisten]*
+### Untuk: *Amanda Aurellia Salsabila*
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | *K02* |
+| Kelompok | *G03* |
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| *13525059* | *Muhammad Pandu Pulunggana* |
+| *13525128* | *Mochamad Fachri Alfaridzi* |
+| *13525101* | *Kevin Lincoln Hutabarat* |
+| *13525035* | *Muhammad Dhiya Rafi* |
+| *13525098* | *Satya Radhityan Yahya* |
 ---
 
 > **Petunjuk pengerjaan:** *[Silahkan hapus bagian ini setelah selesai mengerjakan]*
@@ -33,8 +36,8 @@ Dipersiapkan oleh:
 
 ---
 
-**Deadline:** Rabu, 11 November 2026, 21.50 WIB
-**Asistensi akbar:** *[Hari, DD Bulan YYYY, HH.MM WIB, lokasi/link]*
+**Deadline:** Jumat, 13 November 2026, 21.00 WIB
+**Asistensi akbar:** Senin, 2 November 2026, 19.00 WIB, Microsoft Teams
 
 ---
 
@@ -229,21 +232,32 @@ Tabel B.4. Kontribusi Anggota
 
 | NIM | Nama | Modul / Fitur yang Dikerjakan | Persentase Kontribusi |
 | :--- | :--- | :--- | :--- |
-| *[NIM 1]* | *[Nama]* | *[Modul/fitur]* | *[%]* |
-| *...* | *...* | *...* | *...* |
+| 13525128 | Mochamad Fachri Alfaridzi | P1: Fondasi proyek, autentikasi (email + kata sandi dan Google Sign-In), integrasi eksternal (adapter Google Maps, Cloud Storage), penggabungan laporan duplikat (UC07), CI. | *[%]* |
+| 13525059 | Muhammad Pandu Pulunggana | P2: Pembuatan dan revisi laporan (UC01). Validasi isian, penyimpanan laporan, pencocokan fasilitas radius 30 m, lokasi laporan, endpoint `POST /api/laporan` dan `PUT /api/laporan/:id/revisi`, layar I-04, serta pengujiannya. | *[%]* |
+| 13525098 | Satya Radhityan Yahya | P3: Tampilan warga, yaitu laporan publik, laporan saya, notifikasi, dan UI kit (UC04, UC05). | *[%]* |
+| 13525101 | Kevin Lincoln Hutabarat | P4: Verifikasi admin, skor prioritas, dan pengiriman notifikasi (UC02). | *[%]* |
+| 13525035 | Muhammad Dhiya Rafi | P5: Dashboard pemerintah daerah, yaitu prioritas laporan, fasilitas rusak berulang, riwayat fasilitas (UC03, UC06, UC08), serta profiling Q-004. | *[%]* |
 
 ## B.5 Traceability Kelas Perancangan ke Implementasi
 
-Pemetaan dari **setiap kelas perancangan** pada DPPL (Tabel 4.1) ke wujud implementasinya. Bentuk implementasi bebas (kelas, fungsi, komponen, *route/handler*, *stored procedure*, skrip, dsb.), tetapi tiap kelas perancangan harus muncul pada tabel ini. Jika implementasi berupa kelas dengan nama yang sama, tetap dicantumkan.
+Seluruh model server dikumpulkan di `src/server/src/models/index.js` dengan nama sesuai kelas DPPL (`Pengguna`, `Laporan`, `Lokasi`, `Fasilitas`, `Verifikasi`, `SkorPrioritas`, `RiwayatStatus`, `Notifikasi`, `KonfirmasiDuplikat`). Setiap objek tersebut menggabungkan fungsi dari beberapa file.
 
 Tabel B.5. Traceability Kelas Perancangan ke Implementasi
 
 | ID Kelas | Nama Kelas Perancangan | Bentuk Implementasi | Lokasi (File dan Nama) | Keterangan |
 | :--- | :--- | :--- | :--- | :--- |
-| *[C01]* | *[Nama kelas pada DPPL]* | *[mis. Kelas / Fungsi / Komponen / Route / Tabel]* | *[mis. `src/models/user.py` - `User`]* | *[Cara atribut dan operasi kelas diwujudkan; "-" jika tidak ada penjelasan tambahan]* |
-| *[C02]* | *[Nama kelas pada DPPL]* | *[Bentuk implementasi]* | *[mis. `src/components/LoginForm.tsx` - `LoginForm`]* | *[mis. atribut menjadi *state*, operasi menjadi *handler*]* |
-| *[C03]* | *[Nama kelas pada DPPL]* | *[Bentuk implementasi]* | *[mis. `src/routes/auth.js` - `POST /login`]* | *[Keterangan]* |
-| *...* | *...* | *...* | *...* | *...* |
+| C01 | Pelapor | Tabel, fungsi model, komponen | Tabel `pengguna` (peran `PELAPOR`). `src/server/src/models/laporan/buat.js` - `konfirmasiSimpanLaporan()`. `src/server/src/models/laporan/saya.js` - `getDaftarLaporanSaya()`, `getDetailLaporanSaya()`. `src/server/src/models/notifikasi/inbox.js` - `getNotifikasiPelapor()`. `src/mobile/src/features/warga/` - `DetailLaporanScreen`, `LaporanSayaScreen`, `NotifikasiScreen` | Pelapor, Admin, dan PemerintahDaerah disimpan di satu tabel `pengguna` yang dibedakan oleh kolom `peran`. Atribut `jumlahLaporan` menjadi kolom `jumlah_laporan`. `konfirmasiSimpanLaporan()` = Algo-001. `bukaLaporan()` dan `bukaRiwayatLaporan()` diwujudkan oleh detail laporan saya beserta riwayat statusnya. `terimaNotifikasi()` diwujudkan oleh kotak masuk notifikasi. |
+| C02 | Admin | Tabel, fungsi model, route, komponen | Tabel `pengguna` (peran `ADMIN`). `src/server/src/models/laporan/verifikasi.js` - `getLaporanAdmin()`. `src/server/src/models/verifikasi/verifikasi.js` - `tetapkanKeputusan()`. `src/server/src/models/fasilitas/berulang.js` - `getFasilitasBerulang()`. `src/server/src/controllers/VerifikasiController.js`. `src/mobile/src/features/verifikasi/DashboardAdminScreen.js`, `src/mobile/src/features/duplikat/DuplikatScreen.js` | `lihatDaftarLaporan()` = `GET /api/admin/laporan`. `tetapkanKeputusan()` = `POST /api/admin/laporan/:id/keputusan`. `konfirmasiGabungLaporan()` diwujudkan oleh dialog konfirmasi di `DuplikatScreen`. `lihatFasilitasRusakBerulang()` = `GET /api/fasilitas/berulang`. |
+| C03 | PemerintahDaerah | Tabel, fungsi model, route, komponen | Tabel `pengguna` (peran `PEMDA`, kolom `nama_instansi`, `wilayah_kerja`). `src/server/src/models/laporan/prioritas.js` - `getLaporanTerverifikasi()`, `getLaporanPrioritas()`. `src/server/src/controllers/PrioritasController.js` - `GET /api/prioritas`. `src/mobile/src/features/prioritas/PrioritasScreen.js` | `lihatLaporanTerverifikasi()` = `GET /api/prioritas`. `pilihFilter(kategori, wilayah)` diwujudkan oleh parameter query dan pilihan filter di layar. `lihatFasilitasRusakBerulang()` memakai endpoint yang sama dengan Admin. |
+| C04 | Laporan | Tabel, fungsi model, route, komponen | Tabel `laporan`. `src/server/src/models/laporan/` - `buat.js` (`validasiIsianFormulir()`, `simpanLaporan()`, `revisiLaporan()`), `status.js` (`ubahStatus()`), `verifikasi.js` (`getLaporanAdmin()`, `getDetailLaporanAdmin()`), `publik.js`, `saya.js`, `prioritas.js` (`getLaporanTerverifikasi()`). `src/server/src/controllers/laporan/`. `src/mobile/src/features/pelaporan/BuatLaporanScreen.js` | `buatLaporanBaru()`, `tampilkanFormulir()`, dan `bukaKunciSimpan()` diwujudkan oleh `BuatLaporanScreen` (*state* `lengkap` mengatur tombol Kirim). `validasiIsianFormulir()` = Algo-004. `simpanLaporan()` = Q-001. `getLaporanMenungguVerifikasi()` = `getLaporanAdmin()`. `getDetailLaporan()` = detail admin, publik, dan saya. `updateStatus()` = `ubahStatus()` (Q-002). `urutkanBerdasarkanPrioritas()` dan `filterLaporan()` ada di SQL Q-004 (lihat B.1 no. 14). `pilihDuplikat()` = `getKandidatDuplikat()`. `getRiwayatStatus()` memakai model RiwayatStatus. |
+| C05 | Lokasi | Tabel, fungsi model | Tabel `lokasi`. `src/server/src/models/lokasi/lokasi.js` - `setLokasiLaporan()`, `getWilayah()` | `setLokasiLaporan(koordinat)` = Algo-006 dan Q-005. Wilayah diambil dari `googleMapsAdapter.getWilayahFromCoordinates()`. Di mobile, lokasi dipilih melalui GPS (`expo-location`) atau pin peta (`PetaPilih`). |
+| C06 | Fasilitas | Tabel, fungsi model, route, komponen | Tabel `fasilitas`. `src/server/src/models/fasilitas/` - `cocokkan.js` (`cariAtauBuatFasilitas()`), `berulang.js` (`getJumlahLaporan()`, `getFasilitasBerulang()`), `riwayat.js` (`cariFasilitas()`, `getDetailFasilitas()`). `src/server/src/models/laporan/prioritas.js` - `getLaporanPerFasilitas()`. `src/server/src/controllers/FasilitasController.js`. `src/mobile/src/features/fasilitas/` - `DaftarFasilitasScreen`, `DetailFasilitasScreen` | `getLaporan()` = `getLaporanPerFasilitas()`. `cariFasilitas(keyword)` = `GET /api/fasilitas`. `getDetailFasilitas()` = `GET /api/fasilitas/:id`. `getJumlahLaporan()` memperbarui `jumlah_kerusakan_berulang` dan `kandidat_evaluasi`. `cariAtauBuatFasilitas()` adalah operasi tambahan (B.1 no. 1). |
+| C07 | Verifikasi | Tabel, fungsi model | Tabel `verifikasi`. `src/server/src/models/verifikasi/verifikasi.js` - `simpanVerifikasi()`, `teruskanKePemerintah()`, `tetapkanKeputusan()` | `simpanVerifikasi()` = Algo-002 dan Q-003. `teruskanKePemerintah()` mengubah status menjadi Terverifikasi. `tahanLaporan()` tidak memerlukan query, karena laporan yang tidak disetujui otomatis tertahan oleh statusnya. |
+| C08 | SkorPrioritas | Tabel, fungsi model | Tabel `skor_prioritas`. `src/server/src/models/skorPrioritas/skor.js` - `hitungSkor()`, `getSkor()`, `hitungNilaiSkor()`, `getKomponenSkor()` | `hitungSkor()` = Algo-009, dihitung dari jumlah pelapor, lama menunggu, dan frekuensi berulang. Skor dihitung ulang jika berumur lebih dari 1 jam (KF17). |
+| C09 | RiwayatStatus | Tabel, fungsi model | Tabel `riwayat_status`. `src/server/src/models/riwayatStatus/riwayat.js` - `getRiwayatStatus()`, `getPerubahan()`. `src/server/src/models/laporan/status.js` - `catatRiwayat()` | Setiap perubahan status lewat `ubahStatus()` otomatis tercatat sebagai riwayat. Ditampilkan di detail laporan saya dan detail fasilitas. |
+| C10 | Notifikasi | Tabel, fungsi model, route, komponen | Tabel `notifikasi`. `src/server/src/models/notifikasi/kirim.js` - `kirimNotifikasi()`. `src/server/src/models/notifikasi/inbox.js` - `getNotifikasiPelapor()`, `tandaiDibaca()`. `src/server/src/controllers/NotifikasiController.js`. `src/mobile/src/features/warga/NotifikasiScreen.js` | `kirimNotifikasi()` dipanggil saat keputusan verifikasi dan perubahan status. Kotak masuk pelapor = `GET /api/notifikasi` dan `PATCH /api/notifikasi/:id/dibaca`. |
+| C11 | KonfirmasiDuplikat | Fungsi model, route, komponen | `src/server/src/models/konfirmasiDuplikat/duplikat.js` - `getKandidatDuplikat()`, `gabungLaporan()`. `src/server/src/controllers/DuplikatController.js`. `src/mobile/src/features/duplikat/DuplikatScreen.js` | `simpanKandidat()` dan `warning()` diwujudkan di mobile (*state* pilihan dan dialog konfirmasi). `gabungLaporan()` = Algo-012 (`POST /api/admin/duplikat/gabung`). Atribut `daftarKandidat` dan `namaFasilitasInduk` diwujudkan sebagai *state* layar dan kolom `id_laporan_induk` pada tabel `laporan`. |
+
 
 Catatan:
 - Satu kelas perancangan boleh diwujudkan oleh beberapa file/unit, dan satu file/unit boleh mewujudkan beberapa kelas perancangan. Tuliskan semuanya.

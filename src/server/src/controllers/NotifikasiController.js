@@ -4,21 +4,16 @@
  */
 import { pool } from '../db/pool.js';
 import { Notifikasi } from '../models/index.js';
-import { HttpError } from '../utils/http.js';
+import { HttpError, paramId } from '../utils/http.js';
 
 /** GET /api/notifikasi -> { data: Notifikasi[], belumDibaca } */
 export async function daftarNotifikasi(req, res) {
-  const data = await Notifikasi.getNotifikasiPelapor(pool, req.pengguna.id);
-  const belumDibaca = data.filter((n) => !n.dibaca).length;
-  res.json({ data, belumDibaca });
+  res.json(await Notifikasi.getNotifikasiPelapor(pool, req.pengguna.id));
 }
 
 /** PATCH /api/notifikasi/:id/dibaca -> 204 */
 export async function tandaiDibaca(req, res) {
-  const ok = await Notifikasi.tandaiDibaca(pool, {
-    idNotifikasi: Number(req.params.id),
-    idPelapor: req.pengguna.id,
-  });
-  if (!ok) throw new HttpError(404, 'Notifikasi tidak ditemukan atau bukan milik Anda');
-  res.status(204).send();
+  const berhasil = await Notifikasi.tandaiDibaca(pool, { idNotifikasi: paramId(req), idPelapor: req.pengguna.id });
+  if (!berhasil) throw new HttpError(404, 'Notifikasi tidak ditemukan');
+  res.status(204).end();
 }

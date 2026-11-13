@@ -14,8 +14,7 @@ export async function daftarSaya(req, res) {
 
 /** GET /api/laporan/saya/:id -> { laporan: LaporanSaya & { riwayat, catatanVerifikasi } } ; 404 bila bukan miliknya */
 export async function detailSaya(req, res) {
-  const id = paramId(req, 'id');
-  const laporan = await Laporan.getDetailLaporanSaya(pool, { idLaporan: id, idPelapor: req.pengguna.id });
-  if (!laporan) throw new HttpError(404, 'Laporan tidak ditemukan atau bukan milik Anda');
+  const laporan = await Laporan.getDetailLaporanSaya(pool, { idLaporan: paramId(req), idPelapor: req.pengguna.id });
+  if (!laporan) throw new HttpError(404, 'Laporan tidak ditemukan');
   res.json({ laporan });
 }

@@ -4,7 +4,21 @@
  * Pemilik: P3 (getRiwayatStatus untuk UC05). P5 membaca riwayat per fasilitas di models/fasilitas/riwayat.js.
  */
 
-/** Laporan.getRiwayatStatus(): semua riwayat satu laporan, urut tanggal_perubahan naik. */
+/** DTO Riwayat (lihat src/docs/API.md). Identitas pengubah tidak disertakan. */
+export function toRiwayat(row) {
+  return {
+    id: row.id_riwayat,
+    statusLama: row.status_lama,
+    statusBaru: row.status_baru,
+    deskripsi: row.deskripsi_perubahan,
+    tanggal: row.tanggal_perubahan,
+  };
+}
+
+/**
+ * Laporan.getRiwayatStatus(): semua riwayat satu laporan, urut tanggal_perubahan naik (KF24, UC05 langkah 2).
+ * @returns {Promise<object[]>} Riwayat[]
+ */
 export async function getRiwayatStatus(db, idLaporan) {
   const { rows } = await db.query(
     `SELECT id_riwayat, status_lama, status_baru, deskripsi_perubahan, tanggal_perubahan
@@ -23,7 +37,10 @@ export async function getRiwayatStatus(db, idLaporan) {
   }));
 }
 
-/** Algo-010 / Q-011 getPerubahan(): satu entri riwayat, null jika tidak ada. */
+/**
+ * Algo-010 / Q-011 getPerubahan(): tanggal dan deskripsi satu entri riwayat.
+ * @returns {Promise<{ id: number, tanggal: string, deskripsi: string }|null>} null jika tidak ada.
+ */
 export async function getPerubahan(db, idRiwayat) {
   const { rows } = await db.query(
     `SELECT id_riwayat, id_laporan, status_lama, status_baru, deskripsi_perubahan, tanggal_perubahan
