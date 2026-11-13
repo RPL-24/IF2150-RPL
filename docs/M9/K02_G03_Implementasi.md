@@ -217,11 +217,11 @@ Tabel B.2. Bukti Best Practices
 
 | Praktik | Bukti | Keterangan |
 | :--- | :--- | :--- |
-| Branching | *[Tautan ke daftar branch / graph commit]* | *[Skema yang dipakai]* |
-| Semantic commit | *[Tautan ke riwayat commit]* | *[Ringkasan]* |
-| Track tasks | *[Tautan ke Issues/Projects]* | *[Jumlah issue, pembagian]* |
-| Pull request dan review | *[Tautan ke 2-3 PR representatif]* | *[Siapa me-review siapa]* |
-| Pengujian | *[Tautan ke `src/tests/` dan hasil test]* | *[Apa yang diuji, cara menjalankan]* |
+| Branching | [Daftar branch](https://github.com/laksamada/IF2150-RPL-K02-G03/branches) dan PR [#2](https://github.com/laksamada/IF2150-RPL-K02-G03/pull/2), [#3](https://github.com/laksamada/IF2150-RPL-K02-G03/pull/3), [#4](https://github.com/laksamada/IF2150-RPL-K02-G03/pull/4) | Fitur dikembangkan pada branch terpisah (contoh `feat/p1`, `feat/implementation`, `chore/deploy-railway`) lalu digabung ke `main`. |
+| Semantic commit | [Riwayat commit](https://github.com/laksamada/IF2150-RPL-K02-G03/commits/main) | Contoh: `fix(notifikasi): restore data and unread count response` dan `build(deploy): switch to dockerfile for railway`. Format sudah dipakai pada sebagian besar commit|
+| Track tasks | [Issues #5–#30](https://github.com/laksamada/IF2150-RPL-K02-G03/issues?q=is%3Aissue+label%3Aenhancement) | Terdapat 26 issue fitur. Issue dibagi menurut pemilik P1–P5; contoh yang ditutup: [#10 validasi laporan](https://github.com/laksamada/IF2150-RPL-K02-G03/issues/10), [#15 API laporan publik](https://github.com/laksamada/IF2150-RPL-K02-G03/issues/15), [#19 layar detail warga](https://github.com/laksamada/IF2150-RPL-K02-G03/issues/19). Daftar [issue yang masih terbuka](https://github.com/laksamada/IF2150-RPL-K02-G03/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) mencakup fitur verifikasi admin (#20–#24) dan prioritas/fasilitas (#25–#30). |
+| Pull request dan review | PR [#2](https://github.com/laksamada/IF2150-RPL-K02-G03/pull/2), [#3](https://github.com/laksamada/IF2150-RPL-K02-G03/pull/3), [#4](https://github.com/laksamada/IF2150-RPL-K02-G03/pull/4) | Ketiga PR tercatat merged ke `main`. GitHub tidak menampilkan review formal pada PR #3 dan #4; bukti reviewer untuk PR tersebut belum tercatat, sehingga pemenuhan review oleh anggota lain tidak dapat diverifikasi dari repo. |
+| Pengujian | [14 test server](../../src/server/tests/) · [workflow CI](../../.github/workflows/ci.yml) · [run CI terbaru](https://github.com/laksamada/IF2150-RPL-K02-G03/actions/runs/43419379555) | Test mencakup autentikasi, laporan dan revisi, anonimitas/public, notifikasi, verifikasi/skor, prioritas, fasilitas, duplikat, status, dan adapter. Run CI terbaru berstatus sukses; CI menjalankan test dengan PostgreSQL 18 serta bundle Android dan iOS. Untuk menjalankan lokal: `npm run db:up`, lalu `npm test` dari `src/`. |
 
 ### B.2.1 Profiling dan Optimasi
 
@@ -229,17 +229,22 @@ Pilih minimal satu fitur yang diprofil.
 
 | Informasi | Keterangan |
 | :--- | :--- |
-| Fitur / proses yang diprofil | *[Nama fitur]* |
-| Alat | *[mis. Chrome DevTools, cProfile, EXPLAIN]* |
-| Temuan (sebelum) | *[Bottleneck yang ditemukan, sertakan angka/tangkapan layar]* |
-| Perbaikan | *[Yang diubah]* |
-| Hasil (sesudah) | *[Perbandingan dengan sebelumnya]* |
-
-Jika tidak ada perbaikan yang perlu dilakukan, jelaskan hasil profiling dan alasan kenapa fitur tersebut sudah memadai.
+| Fitur / proses yang diprofil | Q-004: daftar prioritas PEMDA (`GET /api/prioritas`) dengan 10.016 laporan (seed + 10.000 data fiktif deterministik). |
+| Alat | PostgreSQL `EXPLAIN (ANALYZE)` sebanyak 30 pengukuran dan waktu endpoint dengan `curl -w "%{time_total}"` sebanyak 20 pengukuran; hasil median dicatat di [`src/server/scripts/PROFILING.md`](../../src/server/scripts/PROFILING.md). |
+| Temuan (sebelum) | Filter kategori + wilayah membutuhkan 0,834 ms pada query dan 2,6 ms pada endpoint median; query melakukan sequential scan pada tabel laporan dan lokasi. |
+| Perbaikan | Menambahkan indeks `laporan(status_laporan, kategori_kerusakan)`, `lokasi(wilayah)`, serta `skor_prioritas(dihitung_pada)` melalui migrasi `501_indeks_prioritas.sql`. Indeks skor menargetkan pencarian skor kedaluwarsa KF17. |
+| Hasil (sesudah) | Filter kategori + wilayah turun menjadi 0,187 ms (query, sekitar 4,5× lebih cepat) dan 1,6 ms (endpoint). Endpoint tanpa filter relatif tetap, 15,2 menjadi 15,4 ms median, karena serialisasi ribuan laporan mendominasi. Seluruh angka dan kasus lain dijelaskan di laporan profiling. |
 
 ## B.3 Kendala dan Catatan Penting
 
-Tuliskan kendala yang ditemui, fitur yang belum sempurna (*known issues*), serta hal yang perlu diketahui asisten saat menjalankan atau menilai aplikasi (misalnya akun uji khusus, urutan menjalankan, atau batasan).
+- **Urutan menjalankan:** dari `src/`, jalankan `npm install`, `npm run db:up`, `npm run db:migrate`, dan `npm run db:seed`; setelah itu jalankan `npm run dev:server` dan `npm run dev:mobile` di terminal terpisah. Petunjuk rinci tersedia di [`src/README.md`](../../src/README.md).
+- **Test mengosongkan database test:** `npm test` memigrasikan ulang skema `silembur_test` dan mengisi seed. Jangan arahkan `TEST_DATABASE_URL` ke basis data pengembangan/demo karena setup test menjalankan reset skema.
+- **Akun uji:** kata sandi seluruh akun seed adalah `silembur123`. Akun peran Pelapor, Admin, dan PEMDA dicantumkan di bagian Akun uji pada README.
+- **Integrasi opsional:** Google Geocoding, Google Cloud Storage, dan Google Sign-In membutuhkan konfigurasi masing-masing. Tanpa konfigurasi, geocoding dan penyimpanan foto menggunakan fallback lokal; tombol Google Sign-In tidak aktif. Google Sign-In pada Android membutuhkan development build, bukan Expo Go. Peta pada APK Android memerlukan kunci Maps Android; petunjuk platform dan konfigurasi ada di README.
+- **Foto saat deployment:** penyimpanan lokal menjadi fallback; untuk mempertahankan foto pada deployment Railway, konfigurasi volume persisten atau gunakan Google Cloud Storage. Tanpa penyimpanan persisten, file lokal tidak boleh dianggap tahan terhadap penggantian instance.
+- **Batas skala yang diketahui:** profiling menemukan hitung ulang semua 3.529 skor kedaluwarsa dalam satu permintaan prioritas membutuhkan 1,09 detik dan bertumbuh linear terhadap jumlah laporan. Waktu ini masih di bawah target KNF03 (<4 detik), tetapi implementasi berbasis banyak transaksi per laporan perlu dievaluasi ulang bila data bertambah jauh.
+- **Batas pengukuran profiling:** angka Q-004 diukur pada PostgreSQL 18.0 dan Node.js 26 pada mesin macOS/Apple Silicon, sedangkan runtime proyek yang ditargetkan Node.js 24. Hasil tersebut merupakan pengukuran pada lingkungan profil, bukan jaminan waktu identik di semua perangkat.
+- **Status verifikasi pull request:** PR #2–#4 tercatat merged; GitHub tidak menunjukkan review formal pada PR #3 dan #4. Jika review dilakukan melalui kanal lain, bukti dan nama reviewer perlu ditambahkan agar dapat diverifikasi.
 
 ## B.4 Kontribusi Anggota
 
