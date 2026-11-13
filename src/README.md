@@ -116,7 +116,7 @@ Data PostgreSQL tetap tersimpan di volume `itbeli-db`. Tambahkan `-v` pada perin
 npm test
 ```
 
-Ada 334 test dalam 23 suite (16 unit dan 7 integrasi). Test tidak memerlukan PostgreSQL maupun Mailpit karena kueri diganti tiruan, jadi perintah ini bisa dijalankan tepat setelah `npm ci`. Laporan cakupan dicetak dengan `npx jest --coverage`.
+Ada 345 test dalam 24 suite (17 unit dan 7 integrasi). Test tidak memerlukan PostgreSQL maupun Mailpit karena kueri diganti tiruan, jadi perintah ini bisa dijalankan tepat setelah `npm ci`. Laporan cakupan dicetak dengan `npx jest --coverage`.
 
 ## Akun dan Data Uji
 
