@@ -23,6 +23,7 @@ export function bangunCsv(rekap: RekapitulasiDTO): string {
   return `﻿${teks}`;
 }
 
+
 export function bangunPdf(rekap: RekapitulasiDTO, periode?: PeriodeDTO): Uint8Array {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const kiri = 20;
