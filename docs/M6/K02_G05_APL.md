@@ -1,0 +1,114 @@
+<h1>
+IF2150 REKAYASA PERANGKAT LUNAK
+<br>
+TUGAS 6
+<br>
+ARSITEKTUR PERANGKAT LUNAK (APL)
+</h1>
+<br>
+
+## EcoTrack
+
+### Untuk: Agatha Tatianingseto
+
+Dipersiapkan oleh:
+| Informasi | Keterangan |
+| --- | --- |
+| Kelas | K2 |
+| Kelompok | 5 |
+
+| NIM | Nama |
+|---|---|
+| 13525038 | Mochammad Adhitya Nur Rohman |
+| 13525068 | Kelvin Sebastian Yen |
+| 13525086 | Arla Salsabila |
+| 13525137 | Maharani Puan Satira |
+| 13525146 | Muhammad Reffah |
+---
+
+<br>
+<br>
+
+# BAB 1: Style/Pattern Arsitektur Acuan
+
+## 1.1 Style/Pattern yang Dipilih
+*Style/pattern* yang dipilih pada PL EcoTrack yaitu MVC (*Model-View-Controller*). MVC merupakan salah satu pola arsitektur perangkat lunak yang dipakai dalam pengembangan aplikasi, khusunya berbasis web. Pola ini membagi aplikasi menjadi tiga komponen:
+1. *Model* yang berfungsi untuk merepresentasikan data dan logika bisnis
+2. *View* yang berfungsi sebagai komponen yang bertanggung jawab menampilkan data kepada pengguna (*interface*).
+3. *Controller* yang berfungsi sebagai penghubung antara *Model* dan *View* 
+
+## 1.2 Alasan Pemilihan
+### 1.2.1 Kesesuaian dengan Karakteristik Sistem
+MVC dipilih karena EcoTrack memiliki beberapa jenis pengguna dan fitur dengan antarmuka serta proses yang berbeda, seperti pemindaian sampah, pengelolaan jadwal, akses informasi sampah, dan autentikasi petugas. Pemisahan antara View, Controller, dan Model memungkinkan antarmuka, proses aplikasi, dan data dikelola secara terpisah sehingga tanggung jawab setiap komponen menjadi lebih jelas.
+
+### 1.2.2 Kesesuaian dengan Kebutuhan Fungsional
+Struktur MVC sesuai dengan kebutuhan fungsional EcoTrack karena setiap fitur dapat memiliki *interface* sebagai View, *controller* sebagai pengolah proses, dan *entity* sebagai Model. Sebagai contoh, proses pengelolaan jadwal melibatkan Jadwal Interface untuk interaksi pengguna, Jadwal Controller untuk menangani proses pengelolaan, dan Jadwal untuk mengelola data jadwal. Pembagian ini juga dapat diterapkan pada fitur autentikasi, pemindaian sampah, dan informasi sampah.
+
+## 1.3 Gambar style/pattern EcoTrack
+
+<p align="center">
+<img alt="Contoh Arsitektur MVC" src="./assets/diagram/arsitektur-mvc.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 1. Arsitektur MVC EcoTrack</i>
+</p>
+
+Tabel 1.1. Lingkungan Operasi Perangkat Lunak
+
+Perangkat lunak menggunakan layanan server Firebase, dengan DBMS Firebase. Aplikasi client berbasis android, dan terhubung dengan model computer vision Roboflow.
+
+| Komponen | Spesifikasi |
+| :--- | :--- |
+| Server | Firebase |
+| Client | Aplikasi Android |
+| DBMS | Firebase |
+| OS | Android |
+| Computer Vision | Roboflow |
+
+Teknologi yang digunakan pada EcoTrack mendukung penerapan Model-View-Controller (MVC), dengan aplikasi Android sebagai lingkungan antarmuka (View), Firebase sebagai server dan DBMS yang mendukung pengelolaan data (Model), serta Roboflow sebagai computer vision model yang digunakan dalam proses pemindaian melalui Controller. Dengan demikian, teknologi tersebut mendukung pembagian tanggung jawab antara View, Controller, dan Model pada EcoTrack.
+
+---
+
+# BAB 2: Identifikasi Komponen / Modul / Subsistem
+
+Tabel 2.1. Identifikasi Komponen/Modul/Subsistem
+
+| Nama Komponen/Modul/Subsistem | Jenis                 | Penjelasan                                                                                                           |
+| :---------------------------- | :-------------------- | :------------------------------------------------------------------------------------------------------------------- |
+| AkunPetugasInterface                 | View                | Menampilkan antarmuka Log In, Sign Up, Log Out, dan akun petugas. Lalu meneruskan aksi ke AkunPetugasController     |
+| JadwalInterface               | View                | Menampilkan antarmuka daftar jadwal pembuangan sampah, pencarian lokasi TPS, dan pengaturan jadwal. Lalu meneruskan aksi ke JadwalController.                                                       |
+| InformasiSampahInterface                | View                | Menampilkan antarmuka daftar katalog informasi sampah dan cara mendaur ulang.                                        |
+| PemindaiInterface          | View                | Menampilkan antarmuka pemindaian sampah.                                         |
+| AkunPetugasController           | Controller          | Memproses logika autentikasi petugas (Log In, Sign Up, Log Out), melakukan validasi kredensial, dan melakukan enkripsi dan dekripsi data kredensial.                                             |
+| JadwalController         | Controller          | Memproses permintaan penambahan, perubahan, dan penghapusan jadwal pengambilan sampah, serta mencari lokasi TPS.                                          |
+| InformasiSampahController        | Controller          | Memproses permintaan data informasi sampah dan cara daur ulang yang sesuai.                |
+| PemindaiController           | Controller          | Memproses pemindaian sampah.                                                              |
+| AkunPetugas                      | Model               | Merepresentasikan data akun petugas kebersihan serta metode untuk verifikasi dan mengelola kredensial.                        |
+| Jadwal                   | Model               | Merepresentasikan data jadwal pengambilan sampah serta metode untuk mengakses dan mengubahnya.       |
+| InformasiSampah                     | Model               | Merepresentasikan data informasi sampah serta metode untuk mengakses detailnya.          |
+| Database                     | Penyimpanan Data               | Menyimpan seluruh data model secara terpusat di Firebase.          |
+
+---
+
+# BAB 3: Model Arsitektur Perangkat Lunak
+
+## 3.1 Logical View
+
+<p align="center">
+<img alt="Logical View Perangkat Lunak EcoTrack" src="./assets/diagram/logical-view.png" width="100%">
+</p>
+<p align="center">
+<i>Gambar 2. Logical View pada P/L EcoTrack</i>
+</p>
+
+
+Alasan penggunaan Logical View sebagai arsitektur model perangkat lunak EcoTrack adalah pemisahan tanggung jawab, ketertelusuran komponen, dan tingkat abstraksi logis.  Melalui logical view, tanggung jawab setiap kelas terisolasi dengan jelas menurut perannya selaras arsitektur Modell-View-Controller (MVC). Selain itu, Logical View menjamin setiap komponen yang diidentifikasi pada bab 2 terpetakan secara lengkap dan konsisten pada diagram perancangan selama pengembangan. Relasi dan alur interaksi logis antar setiap komponen juga dapat dipahami dengan mudah. 
+
+---
+
+# Referensi
+
+- https://www.rumahweb.com/journal/mvc-adalah/
+
+- Sommerville, I. (2016). *Software Engineering* (10th ed.). Pearson. Chapter 6: *Architectural Design*: [https://software-engineering-book.com/slides/](https://software-engineering-book.com/slides/)
+- Diagram arsitektur: [https://www.drawio.com/](https://www.drawio.com/), [https://staruml.io/](https://staruml.io/)
