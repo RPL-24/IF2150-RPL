@@ -22,15 +22,18 @@
 ---
 
 ### Daftar Isi
-* [Milestone 1](#milestone-1)
-* [Milestone 2](#milestone-2)
-* [Milestone 3](#milestone-3)
-* [Milestone 4](#milestone-4)
-* [Milestone 5](#milestone-5)
-* [Milestone 6](#milestone-6)
-* [Milestone 7](#milestone-7)
-* [Milestone 8](#milestone-8)
-* [Milestone 9](#milestone-9)
+- [Logbook Pekerjaan](#logbook-pekerjaan)
+  - [Tugas Besar IF2150 - Rekayasa Perangkat Lunak](#tugas-besar-if2150---rekayasa-perangkat-lunak)
+    - [Daftar Isi](#daftar-isi)
+    - [Milestone 1](#milestone-1)
+    - [Milestone 2](#milestone-2)
+    - [Milestone 3](#milestone-3)
+    - [Milestone 4](#milestone-4)
+    - [Milestone 5](#milestone-5)
+    - [Milestone 6](#milestone-6)
+    - [Milestone 7](#milestone-7)
+    - [Milestone 8](#milestone-8)
+    - [Milestone 9](#milestone-9)
 
 ---
 
@@ -241,6 +244,7 @@
 | *10-11-2026* | *Rendy Salastra Putra* | *Penyesuaian konsistensi desain antarmuka lintas halaman* | *2* | *Done* | *-* |
 | *10-11-2026* | *Rendy Salastra Putra* | *Perbaikan gutter, navbar, dan tampilan detail konsultasi di layar kecil* | *1,5* | *Done* | *Detail konsultasi terpotong di layar sempit* |
 | *10-11-2026* | *Rendy Salastra Putra* | *Perbaikan ikon silang navbar saat panel menu terbuka* | *0,5* | *Done* | *-* |
+| *10-11-2026* | *Rendy Salastra Putra* | *Implementasi halaman setelan orang tua/wali dan perbaikan ikon sidebar* | *0.5* | *Done* | *-* |
 | *10-11-2026* | *Sophia Imelda Rogate Marpaung* | *Implementasi ResetPasswordPage* | *3* | *Done* | *-* |
 | *11-11-2026* | *Cynthia Winda Wijaya* | *Menambahkan pengaturan izin & notifikasi dan perbaikan gap registrasi* | *2* | *Done* | *-* |
 | *11-11-2026* | *Haikal Muhammad Royyan* | *Batas waktu 7 hari untuk tautan konfirmasi wali (UC02)* | *1* | *Done* | *-* |
