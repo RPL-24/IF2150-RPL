@@ -20,6 +20,7 @@ import { useApi } from '../../hooks/useApi';
 import { huruf, jarak, radius, warna } from '../../theme/tokens';
 import { judulLaporan } from '../../utils/format';
 import FasilitasBerulangPreview from '../fasilitas/FasilitasBerulangPreview';
+import { useMuatSaatFokus } from '../warga/useMuatSaatFokus';
 import KartuLaporanPrioritas from './KartuLaporanPrioritas';
 import { PilihanChip, PilihWilayah } from './komponen';
 
@@ -33,6 +34,8 @@ export default function PrioritasScreen() {
     () => pemdaApi.prioritas({ kategori, wilayah }),
     [kategori, wilayah],
   );
+  // Kembali dari I-10 (status bisa sudah diubah di sana): muat ulang agar tombol aksi tidak usang (409).
+  useMuatSaatFokus(muatUlang);
   const laporan = data?.data ?? [];
   const titik = laporan
     .filter((l) => l.lokasi?.latitude !== undefined && l.lokasi?.latitude !== null)

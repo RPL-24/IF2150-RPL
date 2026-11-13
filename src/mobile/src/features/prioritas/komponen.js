@@ -101,6 +101,8 @@ export function AksiStatusLaporan({ laporan, onBerhasil }) {
     try {
       const res = await pemdaApi.ubahStatus(laporan.id, { status: aksi.ke, keterangan: keterangan.trim() });
       setKeterangan('');
+      // KF12 / G8: konfirmasi singkat, karena kartu bisa langsung hilang dari daftar setelah dimuat ulang.
+      beritahu('Status diperbarui', `${kodeLaporan(laporan.id)} kini berstatus "${res.laporan?.status ?? aksi.ke}".`);
       onBerhasil?.(res.laporan);
     } catch (err) {
       beritahu('Gagal memperbarui status', err.message);

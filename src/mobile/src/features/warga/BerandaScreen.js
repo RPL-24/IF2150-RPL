@@ -37,8 +37,8 @@ export default function BerandaScreen() {
   const referensi = useApi(() => referensiApi.ambil(), []);
   const daftar = useApi(() => wargaApi.daftarPublik({ kelompok, wilayah }), [kelompok, wilayah]);
 
-  // Kembali dari layar notifikasi/detail: perbarui badge lonceng dan ringkasan.
-  useMuatSaatFokus(notifikasi.muatUlang, ringkasan.muatUlang);
+  // Kembali dari layar notifikasi/detail/Lapor: perbarui badge lonceng, ringkasan, dan daftar laporan.
+  useMuatSaatFokus(notifikasi.muatUlang, ringkasan.muatUlang, daftar.muatUlang);
 
   async function segarkan() {
     setMenyegarkan(true);
