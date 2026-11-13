@@ -15,18 +15,26 @@ function keNilai(hasil) {
 
 export default function PilihFoto({ nilai, onUbah }) {
   async function ambilFoto() {
-    const izin = await ImagePicker.requestCameraPermissionsAsync();
-    if (!izin.granted) {
-      beritahu('Izin kamera ditolak', 'Izinkan akses kamera di pengaturan, atau pilih foto dari galeri.');
-      return;
+    try {
+      const izin = await ImagePicker.requestCameraPermissionsAsync();
+      if (!izin.granted) {
+        beritahu('Izin kamera ditolak', 'Izinkan akses kamera di pengaturan, atau pilih foto dari galeri.');
+        return;
+      }
+      const foto = keNilai(await ImagePicker.launchCameraAsync(OPSI));
+      if (foto) onUbah(foto);
+    } catch {
+      beritahu('Foto gagal diambil', 'Coba lagi atau pilih foto dari galeri.');
     }
-    const foto = keNilai(await ImagePicker.launchCameraAsync(OPSI));
-    if (foto) onUbah(foto);
   }
 
   async function pilihGaleri() {
-    const foto = keNilai(await ImagePicker.launchImageLibraryAsync(OPSI));
-    if (foto) onUbah(foto);
+    try {
+      const foto = keNilai(await ImagePicker.launchImageLibraryAsync(OPSI));
+      if (foto) onUbah(foto);
+    } catch {
+      beritahu('Foto gagal dipilih', 'Coba lagi atau ambil foto dengan kamera.');
+    }
   }
 
   return (
