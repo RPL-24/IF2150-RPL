@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { LoncengNotifikasi } from "@/client/components/shared/LoncengNotifikasi";
+import { NavigasiUtama } from "@/client/components/shared/NavigasiUtama";
 import { TombolKeluar } from "@/client/components/shared/TombolKeluar";
 import { getCurrentUser } from "@/lib/auth";
 
@@ -28,16 +29,18 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {user && (
-          <header className="flex items-center justify-between border-b border-gray-200 px-4 py-2 text-sm">
-            <span className="truncate">{user.nama}</span>
+        <header className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-gray-200 px-4 py-2 text-sm sm:px-6">
+          <span className="min-w-0 flex-1 truncate font-medium sm:flex-none">{user ? user.nama : "LaporKota"}</span>
+          {/* Mobile: navigasi turun ke baris kedua; ≥ sm: satu baris. */}
+          <NavigasiUtama peran={user?.role ?? null} />
+          {user && (
             <div className="flex items-center gap-2">
               {/* Admin tidak pernah menerima notifikasi (trigger hanya ke pelapor & eksekutor). */}
               {user.role !== "admin" && <LoncengNotifikasi userId={user.id} role={user.role} />}
               <TombolKeluar />
             </div>
-          </header>
-        )}
+          )}
+        </header>
         {children}
       </body>
     </html>
