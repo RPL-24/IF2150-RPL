@@ -13,12 +13,13 @@ type Props = {
   pesanDukungan?: string;
   gagalDukungan?: boolean;
   onDukung?: () => void;
+  onTutup?: () => void;
 };
 
 /** I02-13..14: ringkasan anonim dan aksi dukungan untuk tiket terpilih. */
 export function KartuLaporanPublik({
   laporan, peran = null, memuatDukungan = false, sudahDidukung = laporan.sudahDidukung,
-  pesanDukungan, gagalDukungan = false, onDukung,
+  pesanDukungan, gagalDukungan = false, onDukung, onTutup,
 }: Props): React.ReactElement {
   const aktif = laporan.status === "diterima" || laporan.status === "dikerjakan";
   const statusBelumDiketahui = peran === "warga" && sudahDidukung == null;
@@ -30,7 +31,21 @@ export function KartuLaporanPublik({
           <p className="text-sm font-semibold text-gray-600">{laporan.id_tiket}</p>
           <h3 className="text-base leading-snug font-semibold">{KATEGORI[laporan.kategori]}</h3>
         </div>
-        <StatusBadge status={laporan.status} />
+        <div className="flex shrink-0 items-center gap-2">
+          <StatusBadge status={laporan.status} />
+          {onTutup && (
+            <button
+              type="button"
+              aria-label="Tutup ringkasan laporan"
+              onClick={onTutup}
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            >
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="m6 6 12 12M18 6 6 18" />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
       <p className="mt-4 text-sm text-gray-600">{laporan.jumlah_upvote} dukungan</p>
       {!aktif ? (

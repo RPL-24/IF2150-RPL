@@ -44,6 +44,7 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal, tiketAwal = nu
   const permintaanDetail = useRef(0);
   const tabRiwayat = useRef<HTMLButtonElement>(null);
   const tabPeta = useRef<HTMLButtonElement>(null);
+  const pilihanPeta = useRef<HTMLSelectElement>(null);
   const id = useId();
 
   useEffect(() => {
@@ -309,6 +310,7 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal, tiketAwal = nu
           <label className="pointer-events-auto flex max-w-full items-center gap-2 rounded-xl bg-white px-3 py-2 text-sm text-gray-700 shadow-sm">
             <span className="shrink-0 font-medium">Tiket</span>
             <select
+              ref={pilihanPeta}
               aria-label="Pilih laporan pada peta"
               value={laporanTerpilih?.id_tiket ?? ""}
               onChange={(event) => pilihMarker(event.target.value)}
@@ -335,6 +337,10 @@ export function StatusLaporanPage({ peran, riwayatAwal, petaAwal, tiketAwal = nu
               pesanDukungan={dukunganTiket[laporanTerpilih.id_tiket]?.pesan}
               gagalDukungan={dukunganTiket[laporanTerpilih.id_tiket]?.gagal}
               onDukung={() => void onUpvoteClicked()}
+              onTutup={() => {
+                setPilihanTiket(null);
+                pilihanPeta.current?.focus();
+              }}
             />
           ) : (
             <p className="rounded-xl bg-white px-4 py-3 text-sm text-gray-600 shadow-md">
