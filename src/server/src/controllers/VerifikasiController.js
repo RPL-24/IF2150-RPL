@@ -3,8 +3,6 @@
  * Pemilik: P4. Kontrak: src/docs/API.md#uc02
  */
 import { z } from 'zod';
-//import { KEPUTUSAN } from '@silembur/shared';
-import { belumDiimplementasi } from '../utils/http.js';
 import { KEPUTUSAN, SEMUA_STATUS, STATUS } from '@silembur/shared';
 import { pool, withTransaction } from '../db/pool.js';
 import { Laporan, Verifikasi } from '../models/index.js';
@@ -24,18 +22,20 @@ export const skemaKeputusan = z
 /** GET /api/admin/laporan?status=&q= -> { data: LaporanAdmin[] } */
 export async function daftarLaporanAdmin(req, res) {
   const status = req.query.status || STATUS.MENUNGGU_VERIFIKASI;
-  if (!SEMUA_STATUS.includes(status)) throw new HttpError(400, 'Status tidak dikenal');
-  const keyword = typeof req.query.q === 'string' ? req.query.q.trim() : undefined;
-  res.json({ data: await Laporan.getLaporanUntukAdmin(pool, { status, keyword }) });
+  if (typeof status !== 'string' || !SEMUA_STATUS.includes(status)) {
+    throw new HttpError(400, 'Status laporan tidak dikenal');
+  }
+  const keyword = typeof req.query.q === 'string' && req.query.q.trim() ? req.query.q.trim() : undefined;
+  const data = await Laporan.getLaporanUntukAdmin(pool, { status, keyword });
+  res.json({ data });
 }
 
-
 /** GET /api/admin/laporan/jumlah-baru -> { jumlah } */
-export async function jumlahLaporanBaru() {
+export async function jumlahLaporanBaru(_req, res) {
   res.json({ jumlah: await Laporan.hitungLaporanBaru(pool) });
 }
 
-/** GET /api/admin/laporan/:id -> { laporan: LaporanAdmin & { pratinjauSkor, riwayat } } */
+/** GET /api/admin/laporan/:id -> { laporan: LaporanAdmin & { pratinjauSkor, riwayat, verifikasi } } */
 export async function detailLaporanAdmin(req, res) {
   const laporan = await Laporan.getDetailLaporanAdmin(pool, paramId(req));
   if (!laporan) throw new HttpError(404, 'Laporan tidak ditemukan');
