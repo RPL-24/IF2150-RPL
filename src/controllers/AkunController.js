@@ -10,7 +10,9 @@ const Kriptografi = require('../pendukung/Kriptografi');
 const Otorisasi = require('../pendukung/Otorisasi');
 const NotifikasiController = require('./NotifikasiController');
 
-const DOMAIN_SUREL = /^[^\s@]+@itb\.ac\.id$/i;
+// Domain itb.ac.id beserta subdomainnya (mis. @mahasiswa.itb.ac.id, @std.stei.itb.ac.id).
+// Sengaja tidak memakai "mengandung itb.ac.id" agar domain seperti itb.ac.id.palsu.com atau bukanitb.ac.id ditolak.
+const DOMAIN_SUREL = /^[^\s@]+@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)*itb\.ac\.id$/i;
 const FORMAT_NIM = /^\d{1,20}$/;
 // Mengikuti petunjuk I-02: minimal 8 karakter, memuat huruf dan angka.
 const KATA_SANDI_KUAT = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
@@ -23,7 +25,7 @@ const PESAN = Object.freeze({
 
   FORMULIR_TIDAK_LENGKAP: 'Lengkapi nama, NIM, surel, dan kata sandi.',
   KEBIJAKAN_BELUM_DISETUJUI: 'Anda harus menyetujui Kebijakan Privasi dan Ketentuan Penggunaan.',
-  DOMAIN_TIDAK_VALID: 'Gunakan surel berdomain @itb.ac.id.',
+  DOMAIN_TIDAK_VALID: 'Gunakan surel ITB yang berakhiran itb.ac.id, misalnya @itb.ac.id atau @mahasiswa.itb.ac.id.',
   NIM_TIDAK_VALID: 'NIM hanya boleh berisi angka.',
   KATA_SANDI_LEMAH: 'Kata sandi minimal 8 karakter dan memuat huruf serta angka.',
   SUREL_TERDAFTAR: 'Surel sudah terdaftar. Silakan masuk atau gunakan surel lain.',
