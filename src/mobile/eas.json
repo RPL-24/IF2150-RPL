@@ -16,6 +16,12 @@
         "buildType": "apk"
       }
     },
+    "demo": {
+      "extends": "preview",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://silembur-api.onrender.com"
+      }
+    },
     "production": {
       "android": {
         "buildType": "app-bundle"
