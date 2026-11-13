@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ATURAN, STATUS, SUMBER_LOKASI } from '@silembur/shared';
 import { urlLengkap } from '../../api/client';
@@ -63,8 +63,46 @@ export default function BuatLaporanScreen() {
   const [mencariGps, setMencariGps] = useState(false);
   const [kunciPeta, setKunciPeta] = useState(0);
   const [mengirim, setMengirim] = useState(false);
+  // Bertambah setiap formulir baru dikosongkan setelah terkirim, agar GPS otomatis berjalan lagi.
+  const [putaranForm, setPutaranForm] = useState(0);
+  // Titik dari tombol GPS / peta tidak boleh ditimpa hasil GPS otomatis yang datang belakangan.
+  const dipilihPengguna = useRef(false);
 
   const ubah = (bagian) => setIsian((i) => ({ ...i, ...bagian }));
+
+  // KF03: "ketika layanan GPS tersedia, sistem mengambil data lokasi laporan secara otomatis".
+  // Hanya untuk laporan baru, hanya bila izin lokasi sudah ada (tanpa memunculkan dialog izin).
+  useEffect(() => {
+    if (modeRevisi) return undefined;
+    dipilihPengguna.current = false;
+    let aktif = true;
+    (async () => {
+      try {
+        const izin = await Location.getForegroundPermissionsAsync();
+        if (!aktif || !izin.granted || !(await Location.hasServicesEnabledAsync())) return;
+        let posisi;
+        try {
+          posisi = await denganBatasWaktu(
+            Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }),
+            BATAS_TUNGGU_GPS_MS,
+          );
+        } catch {
+          posisi = await Location.getLastKnownPositionAsync();
+        }
+        if (!aktif || !posisi || dipilihPengguna.current) return;
+        ubah({
+          koordinat: { latitude: posisi.coords.latitude, longitude: posisi.coords.longitude },
+          sumberLokasi: SUMBER_LOKASI.GPS,
+        });
+        setKunciPeta((k) => k + 1);
+      } catch {
+        // Diam: pengguna tetap bisa menekan "Gunakan Lokasi Saya" atau memilih titik di peta.
+      }
+    })();
+    return () => {
+      aktif = false;
+    };
+  }, [modeRevisi, putaranForm]);
 
   useEffect(() => {
     if (!modeRevisi) return undefined;
@@ -94,6 +132,7 @@ export default function BuatLaporanScreen() {
   const bukanPerluRevisi = modeRevisi && laporanLama && laporanLama.status !== STATUS.PERLU_REVISI;
 
   async function gunakanLokasiSaya() {
+    dipilihPengguna.current = true;
     setMencariGps(true);
     try {
       const izin = await Location.requestForegroundPermissionsAsync();
@@ -176,6 +215,7 @@ export default function BuatLaporanScreen() {
       } else {
         setIsian(FORM_KOSONG);
         setKunciPeta((k) => k + 1);
+        setPutaranForm((p) => p + 1);
         router.push(`/warga/laporan/${laporan.id}?mode=saya`);
       }
     } catch (err) {
@@ -247,7 +287,10 @@ export default function BuatLaporanScreen() {
         <PetaPilih
           key={kunciPeta}
           nilai={isian.koordinat}
-          onUbah={(koordinat) => ubah({ koordinat, sumberLokasi: SUMBER_LOKASI.MANUAL })}
+          onUbah={(koordinat) => {
+            dipilihPengguna.current = true;
+            ubah({ koordinat, sumberLokasi: SUMBER_LOKASI.MANUAL });
+          }}
         />
         <View style={s.infoLokasi}>
           <Ionicons
