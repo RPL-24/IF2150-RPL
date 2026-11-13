@@ -107,7 +107,15 @@ export default function DaftarFasilitasScreen() {
       </View>
 
       <View style={s.filter}>
-        <PilihanChip label="Semua" aktif={!hanyaBerulang} onPress={() => setHanyaBerulang(false)} />
+        <PilihanChip
+          label="Semua"
+          aktif={!hanyaBerulang}
+          onPress={() => {
+            setHanyaBerulang(false);
+            // Kosongkan param agar "Tampilkan lebih banyak" berikutnya memicu filter berulang lagi.
+            if (berulang) router.setParams({ berulang: '' });
+          }}
+        />
         <PilihanChip label="Kerusakan Berulang" aktif={hanyaBerulang} onPress={() => setHanyaBerulang(true)} />
       </View>
 

@@ -126,7 +126,11 @@ export default function DashboardAdminScreen() {
         {isi}
 
         <View style={{ marginTop: jarak.l }}>
-          <FasilitasBerulangPreview key={kunciPreview} onLihatSemua={() => router.push('/admin/fasilitas')} />
+          <FasilitasBerulangPreview
+            key={kunciPreview}
+            onLihatSemua={() => router.push({ pathname: '/admin/fasilitas', params: { berulang: 'true' } })}
+            onPilih={(idFasilitas) => router.push(`/admin/fasilitas/${idFasilitas}`)}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
