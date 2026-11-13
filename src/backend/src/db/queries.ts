@@ -346,17 +346,27 @@ export function konsultanAda(db: Db, idKonsultan: string) {
     .limit(1);
 }
 
-/** Q-013 — slots that overlap the requested calendar window. */
+/**
+ * Q-013 — slots that overlap the requested calendar window, with their consultant
+ * and the student who booked them (`gabungkanJadwal` decides what each student sees).
+ */
 export function semuaJadwal(db: Db, dari: string, sampai: string) {
   return db
     .select({
       idJadwal: schema.jadwalKonsultasi.idJadwal,
       idKonsultan: schema.jadwalKonsultasi.idKonsultan,
+      namaKonsultan: schema.konsultan.nama,
+      spesialisasi: schema.konsultan.spesialisasi,
       waktu: schema.jadwalKonsultasi.waktu,
       waktuSelesai: schema.jadwalKonsultasi.waktuSelesai,
       status: schema.jadwalKonsultasi.status,
+      idMahasiswa: schema.jadwalKonsultasi.idMahasiswa,
     })
     .from(schema.jadwalKonsultasi)
+    .innerJoin(
+      schema.konsultan,
+      eq(schema.konsultan.idKonsultan, schema.jadwalKonsultasi.idKonsultan),
+    )
     // Include events that start before the window but end inside it.
     .where(
       and(
@@ -418,6 +428,19 @@ export function sesiTumpangTindih(
         gt(schema.jadwalKonsultasi.waktuSelesai, data.waktu),
       ),
     )
+    .limit(1);
+}
+
+/** Issue #11 — whether a student already has a booked session on a calendar day. */
+export function sesiMahasiswaPadaHari(db: Db, idMahasiswa: string, tanggal: string) {
+  return db
+    .select({ idJadwal: schema.jadwalKonsultasi.idJadwal })
+    .from(schema.jadwalKonsultasi)
+    .where(and(
+      eq(schema.jadwalKonsultasi.idMahasiswa, idMahasiswa),
+      eq(schema.jadwalKonsultasi.status, "terpesan"),
+      sql`substr(${schema.jadwalKonsultasi.waktu}, 1, 10) = ${tanggal}`,
+    ))
     .limit(1);
 }
 

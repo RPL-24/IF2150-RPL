@@ -5,6 +5,8 @@ import { json, minta } from "./util";
 
 const SLOT_1 = "2031-06-01T03:00:00Z";
 const SLOT_1_END = "2031-06-01T04:00:00Z";
+/** The seeded slots are in 2031, outside the default window (now to +30 days). */
+const JALUR_KALENDER = "/api/calendar?dari=2031-05-31T00:00:00Z&sampai=2031-06-08T00:00:00Z";
 
 function seedJadwal(ctx: ReturnType<typeof buatDbUji>) {
   ctx.raw.exec(`
@@ -41,6 +43,15 @@ describe("ConsultationController — daftar & slot (C-29)", () => {
     );
     expect(body.slots.map((s: any) => s.idJadwal)).toEqual(["j1", "j2"]);
     expect(body.slots[0]).toHaveProperty("waktuSelesai");
+  });
+
+  test("GET slots menyembunyikan semua slot pada hari yang sudah memiliki sesi Sehati", async () => {
+    ctx.raw.exec(`
+      INSERT INTO jadwal_konsultasi (id_jadwal, id_konsultan, waktu, waktu_selesai, status, id_mahasiswa)
+      VALUES ('j-lama', 'k2', '2031-06-01T06:00:00Z', '2031-06-01T07:00:00Z', 'terpesan', 'mhs');
+    `);
+    const body = await json(await minta(app, ctx.D1, { path: "/api/consultants/k1/slots", token: mhs }));
+    expect(body.slots.map((s: any) => s.idJadwal)).toEqual(["j2"]);
   });
 
   test("GET /api/consultants/:id/slots 404 untuk konsultan tak dikenal (Q-019)", async () => {
@@ -260,6 +271,28 @@ describe("Algo-022 pemesanan sesi (mahasiswa)", () => {
     expect((await json(res)).error.kode).toBe("JADWAL_BENTROK");
   });
 
+  test("menolak sesi lain pada hari yang sama meskipun jam tidak bertumpang tindih", async () => {
+    ctx.raw.exec(`
+      INSERT INTO jadwal_konsultasi (id_jadwal, id_konsultan, waktu, waktu_selesai, status, id_mahasiswa)
+      VALUES ('j-lama', 'k2', '2031-06-01T08:00:00Z', '2031-06-01T09:00:00Z', 'terpesan', 'mhs');
+    `);
+    const res = await minta(app, ctx.D1, { method: "POST", path: "/api/slots/j1/book", token: mhs });
+    expect(res.status).toBe(409);
+    expect((await json(res)).error.kode).toBe("JADWAL_BENTROK");
+  });
+
+  test("override Google tidak melewati larangan sesi Sehati pada hari yang sama", async () => {
+    ctx.raw.exec(`
+      INSERT INTO jadwal_konsultasi (id_jadwal, id_konsultan, waktu, waktu_selesai, status, id_mahasiswa)
+      VALUES ('j-lama', 'k2', '2031-06-01T08:00:00Z', '2031-06-01T09:00:00Z', 'terpesan', 'mhs');
+    `);
+    const res = await minta(app, ctx.D1, {
+      method: "POST", path: "/api/slots/j1/book", token: mhs, body: { overrideGoogle: true },
+    });
+    expect(res.status).toBe(409);
+    expect((await json(res)).error.kode).toBe("JADWAL_BENTROK");
+  });
+
   test("409 bila Google Calendar menyatakan sibuk (Algo-010)", async () => {
     // Give the student an unexpired Google token so the freeBusy path is used.
     const { enkripsiAES256GCM } = await import("../src/lib/crypto");
@@ -288,13 +321,31 @@ describe("Algo-022 pemesanan sesi (mahasiswa)", () => {
       token: mhs,
     });
     expect(res.status).toBe(409);
-    expect((await json(res)).error.kode).toBe("JADWAL_BENTROK");
+    expect((await json(res)).error.kode).toBe("GOOGLE_CALENDAR_CONFLICT");
 
     // The slot must remain available.
     const baris = ctx.raw
       .prepare("SELECT status FROM jadwal_konsultasi WHERE id_jadwal = 'j1'")
       .get() as { status: string };
     expect(baris.status).toBe("tersedia");
+  });
+
+  test("override melewati konflik Google Calendar tetapi tetap menyimpan sesi Sehati", async () => {
+    const { enkripsiAES256GCM } = await import("../src/lib/crypto");
+    const { KUNCI_UJI } = await import("./harness");
+    const enc = await enkripsiAES256GCM("ya29.akses", KUNCI_UJI);
+    ctx.raw.prepare("INSERT INTO token_google (id_pengguna, access_token, refresh_token, kedaluwarsa) VALUES (?,?,?,?)")
+      .run("mhs", enc, null, new Date(Date.now() + 3600_000).toISOString());
+    globalThis.fetch = vi.fn(async (input: any) => {
+      if (String(input?.url ?? input).includes("freeBusy")) {
+        return new Response(JSON.stringify({ calendars: { primary: { busy: [{ start: SLOT_1, end: SLOT_1_END }] } } }), { status: 200 });
+      }
+      return new Response("{}", { status: 200 });
+    }) as any;
+    const res = await minta(app, ctx.D1, { method: "POST", path: "/api/slots/j1/book", token: mhs, body: { overrideGoogle: true } });
+    expect(res.status).toBe(200);
+    const row = ctx.raw.prepare("SELECT status, id_mahasiswa FROM jadwal_konsultasi WHERE id_jadwal = 'j1'").get() as any;
+    expect(row).toEqual({ status: "terpesan", id_mahasiswa: "mhs" });
   });
 
   test("pesanan muncul di /api/sessions/next", async () => {
@@ -365,16 +416,34 @@ describe("CalendarController — Algo-011 gabungkanJadwal", () => {
     }) as any;
 
     const body = await json(
-      await minta(app, ctx.D1, { path: "/api/calendar", token: mhs }),
+      await minta(app, ctx.D1, { path: JALUR_KALENDER, token: mhs }),
     );
 
     expect(body.peringatan).toBeUndefined();
     const judul = body.events.map((e: any) => e.judul);
     expect(judul).toContain("Kuliah");
-    expect(judul).toContain("Sesi konsultasi");
+    expect(judul).toContain("Slot konsultasi tersedia");
     // Sorted ascending by start time.
     const mulai = body.events.map((e: any) => e.mulai);
     expect([...mulai].sort()).toEqual(mulai);
+  });
+
+  test("hanya sesi milik sendiri yang tampil; slot hari yang sama hilang (issue #11)", async () => {
+    buatSesiUji(ctx.raw, { idPengguna: "mhs2", peran: "mahasiswa", token: "tm2" });
+    ctx.raw.exec(`
+      UPDATE jadwal_konsultasi SET status = 'terpesan', id_mahasiswa = 'mhs' WHERE id_jadwal = 'j1';
+      INSERT INTO jadwal_konsultasi (id_jadwal, id_konsultan, waktu, waktu_selesai, status, id_mahasiswa) VALUES
+        ('j3', 'k2', '2031-06-01T07:00:00Z', '2031-06-01T08:00:00Z', 'tersedia', NULL),
+        ('j4', 'k2', '2031-06-03T03:00:00Z', '2031-06-03T04:00:00Z', 'terpesan', 'mhs2');
+    `);
+    globalThis.fetch = vi.fn(async () => new Response("boom", { status: 500 })) as any;
+
+    const body = await json(await minta(app, ctx.D1, { path: JALUR_KALENDER, token: mhs }));
+    const kons = body.events.filter((e: any) => e.idJadwal);
+    // j1 is mine and j2 (another day) is open; j3 (same day as j1) and j4 (booked by mhs2) are gone.
+    expect(kons.map((e: any) => e.idJadwal)).toEqual(["j1", "j2"]);
+    expect(kons[0]).toMatchObject({ milikSaya: true, konsultan: "Dr. Raisa", sumber: "terpesan" });
+    expect(kons[1]).toMatchObject({ milikSaya: false, konsultan: "Dr. Raisa", sumber: "tersedia" });
   });
 
   test("Google gagal -> tetap mengembalikan slot + peringatan", async () => {
@@ -389,7 +458,7 @@ describe("CalendarController — Algo-011 gabungkanJadwal", () => {
 
     globalThis.fetch = vi.fn(async () => new Response("boom", { status: 500 })) as any;
 
-    const res = await minta(app, ctx.D1, { path: "/api/calendar", token: mhs });
+    const res = await minta(app, ctx.D1, { path: JALUR_KALENDER, token: mhs });
     expect(res.status).toBe(200);
     const body = await json(res);
     expect(body.peringatan).toBeTruthy();

@@ -4,7 +4,7 @@ import CalendarDays from 'lucide-react-native/icons/calendar-days';
 import RefreshCw from 'lucide-react-native/icons/refresh-cw';
 
 import { ambilKalender, type EventKalender } from '@/api';
-import { eventPadaTanggal, labelWaktuEvent } from '@/lib/kalender';
+import { eventPadaTanggal, labelKonsultan, labelWaktuEvent, penandaEvent } from '@/lib/kalender';
 import { AppBar, Banner, Lencana, Teks, Tombol } from '@/components';
 import { jarak, sudut, warna } from '@/theme';
 
@@ -116,7 +116,8 @@ export default function Kalender() {
 
         <View style={styles.legend}>
           <Lencana label="Google Calendar" jenis="info" />
-          <Lencana label="Sesi konsultasi" jenis="merah" />
+          <Lencana label="Sesi saya" jenis="merah" />
+          <Lencana label="Slot tersedia" jenis="netral" />
         </View>
 
         <View style={styles.barisDaftar}>
@@ -133,14 +134,16 @@ export default function Kalender() {
             <Teks gaya="keterangan">Tidak ada jadwal pada hari yang dipilih.</Teks>
           </View>
         ) : eventsHariIni.map((event, index) => {
-          const google = event.sumber === 'google';
+          const penanda = penandaEvent(event.sumber);
+          const konsultan = labelKonsultan(event);
           return (
             <View key={`${event.mulai}-${event.judul}-${index}`} style={styles.kartu}>
-              <View style={[styles.garisWarna, { backgroundColor: google ? warna.info : warna.merah }]} />
+              <View style={[styles.garisWarna, { backgroundColor: warna[penanda.garis] }]} />
               <View style={styles.detailEvent}>
                 <Teks gaya="isiTebal">{event.judul}</Teks>
                 <Teks gaya="keterangan">{labelWaktuEvent(event)}</Teks>
-                <Lencana label={google ? 'Google Calendar' : 'Sesi konsultasi'} jenis={google ? 'info' : 'merah'} />
+                {konsultan ? <Teks gaya="keterangan">{konsultan}</Teks> : null}
+                <Lencana label={penanda.label} jenis={penanda.lencana} />
               </View>
             </View>
           );

@@ -47,3 +47,7 @@ export const slotSudahDipesan = (pesan = "Slot sudah dipesan orang lain") =>
 
 export const gagalUpstream = (pesan: string) =>
   new AppError(502, "GAGAL_LAYANAN_EKSTERNAL", pesan);
+
+/** Issue #11 — Google Calendar conflict is confirmable by an explicit override. */
+export const bentrokGoogleCalendar = (pesan = "Ada jadwal Google Calendar pada hari yang sama") =>
+  new AppError(409, "GOOGLE_CALENDAR_CONFLICT", pesan);

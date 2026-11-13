@@ -10,12 +10,14 @@ import {
   pesanSlot,
   semuaJadwal,
   sesiTumpangTindih,
+  sesiMahasiswaPadaHari,
   slotKonsultanTumpang,
   ubahJadwal,
 } from "../db/queries";
 import { bacaConfig } from "../config";
 import {
   bentrokJadwal,
+  bentrokGoogleCalendar,
   gagalValidasi,
   slotSudahDipesan,
   tidakDitemukan,
@@ -52,6 +54,7 @@ calendarRoutes.get("/", auth, requireRole("mahasiswa"), async (c) => {
   const dari = rentang.mulai.toISOString();
   const sampai = rentang.selesai.toISOString();
 
+  const idMahasiswa = c.get("idPengguna");
   const jadwal = await semuaJadwal(db, dari, sampai); // Q-013
 
   let google: EventGoogle[] = [];
@@ -68,7 +71,7 @@ calendarRoutes.get("/", auth, requireRole("mahasiswa"), async (c) => {
   }
 
   return c.json({
-    events: gabungkanJadwal(google, jadwal),
+    events: gabungkanJadwal(google, jadwal, idMahasiswa), // Algo-011: per-student visibility
     mode,
     peringatan,
   });
@@ -98,7 +101,13 @@ consultantRoutes.get("/:id/slots", auth, async (c) => {
 
   const sekarang = new Date().toISOString();
   const slots = await jadwalKonsultan(db, idKonsultan, sekarang); // Q-014
-  return c.json({ slots });
+  // Issue #11: hide every slot on a day where this student already has a Sehati session.
+  const bookedDays = new Set<string>();
+  const booked = await db.$client.prepare(
+    "SELECT DISTINCT substr(waktu, 1, 10) AS tanggal FROM jadwal_konsultasi WHERE id_mahasiswa = ? AND status = 'terpesan'",
+  ).bind(c.get("idPengguna")).all<{ tanggal: string }>();
+  for (const row of booked.results ?? []) bookedDays.add(row.tanggal);
+  return c.json({ slots: slots.filter((slot) => slot.status === "tersedia" && !bookedDays.has(slot.waktu.slice(0, 10))) });
 });
 
 /** C-29 `ambilSesiBerikutnya()` — Q-042, for the beranda card. */
@@ -114,9 +123,9 @@ sessionRoutes.get("/next", auth, requireRole("mahasiswa"), async (c) => {
 /**
  * UC-04 — Algo-022 student branch + Algo-012 `jadwalBentrok` + Algo-029 Q-028.
  *  1. slot must exist and still be available
- *  2. Google Calendar free/busy clash  -> 409 JADWAL_BENTROK
- *  3. another booked session overlaps  -> 409 JADWAL_BENTROK (Q-011)
- *  4. Q-028 with `status = 'tersedia'`; 0 rows updated means someone else won the race
+ *  2. an existing Sehati session on the same day -> hard 409
+ *  3. Google Calendar day conflict -> confirmable 409 unless overrideGoogle=true
+ *  4. another booked session overlap + guarded Q-028 remain hard conflicts
  */
 slotRoutes.post("/:id/book", auth, requireRole("mahasiswa"), async (c) => {
   const db = c.get("db");
@@ -128,21 +137,28 @@ slotRoutes.post("/:id/book", auth, requireRole("mahasiswa"), async (c) => {
   if (!slot) throw tidakDitemukan("Slot jadwal tidak ditemukan");
   if (slot.status !== "tersedia") throw slotSudahDipesan();
 
-  // Algo-012 step 1: Google Calendar free/busy (Algo-010), including token refresh.
-  const bentrokGoogle = await cekBentrokJadwal(
-    db,
-    idMahasiswa,
-    cfg,
-    slot.waktu,
-    slot.waktuSelesai,
-  );
-  if (bentrokGoogle) throw bentrokJadwal("Jadwal bentrok dengan event Google Calendar Anda");
+  const body = await c.req.json().catch(() => ({})) as Record<string, unknown>;
+  const overrideGoogle = body.overrideGoogle === true;
 
-  // Algo-012 step 2: another booked session overlap (Q-011).
+  // A Sehati session blocks the entire calendar day, not merely overlapping hours.
+  const [sesiHariItu] = await sesiMahasiswaPadaHari(db, idMahasiswa, slot.waktu.slice(0, 10));
+  if (sesiHariItu) throw bentrokJadwal("Anda sudah memiliki sesi konsultasi Sehati pada hari tersebut");
+
+  // Google Calendar is advisory: require an explicit override, but never mutate Google events.
+  if (!overrideGoogle) {
+    const awalHari = new Date(slot.waktu);
+    awalHari.setUTCHours(0, 0, 0, 0);
+    const akhirHari = new Date(awalHari);
+    akhirHari.setUTCDate(akhirHari.getUTCDate() + 1);
+    const bentrokGoogle = await cekBentrokJadwal(
+      db, idMahasiswa, cfg, awalHari.toISOString(), akhirHari.toISOString(),
+    );
+    if (bentrokGoogle) throw bentrokGoogleCalendar();
+  }
+
+  // Keep overlap validation as a separate hard guard (including race-safe slot update below).
   const [tumpang] = await sesiTumpangTindih(db, {
-    idMahasiswa,
-    waktu: slot.waktu,
-    waktuSelesai: slot.waktuSelesai,
+    idMahasiswa, waktu: slot.waktu, waktuSelesai: slot.waktuSelesai,
   });
   if (tumpang) throw bentrokJadwal("Anda sudah memiliki sesi lain pada waktu tersebut");
 

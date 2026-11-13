@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { eventPadaTanggal, labelWaktuEvent, tanggalEvent } from '../src/lib/kalender';
+import { eventPadaTanggal, labelKonsultan, labelWaktuEvent, penandaEvent, tanggalEvent } from '../src/lib/kalender';
 
 describe('kalender mobile — tanggal lokal dan event multi-hari', () => {
   test('membaca tanggal all-day sebagai tanggal lokal, bukan UTC', () => {
@@ -25,5 +25,21 @@ describe('kalender mobile — tanggal lokal dan event multi-hari', () => {
   test('menolak tanggal event yang tidak valid', () => {
     const event = { judul: 'Invalid', mulai: 'bukan-tanggal', selesai: 'juga-bukan', sumber: 'google' };
     expect(eventPadaTanggal(event, new Date())).toBe(false);
+  });
+});
+
+describe('kalender mobile — konsultan dan penanda sumber (issue #11)', () => {
+  test('penandaEvent membedakan Google, sesi saya, dan slot tersedia', () => {
+    expect(penandaEvent('google')).toMatchObject({ label: 'Google Calendar', lencana: 'info' });
+    expect(penandaEvent('terpesan')).toMatchObject({ label: 'Sesi saya', lencana: 'merah' });
+    expect(penandaEvent('tersedia')).toMatchObject({ label: 'Slot tersedia', lencana: 'netral' });
+  });
+
+  test('labelKonsultan menyebut nama dan spesialisasi, atau null untuk event Google', () => {
+    const dasar = { judul: 'Slot konsultasi tersedia', mulai: '2031-06-01T03:00:00Z', selesai: '2031-06-01T04:00:00Z' };
+    expect(labelKonsultan({ ...dasar, sumber: 'tersedia', konsultan: 'Dr. Raisa', spesialisasi: 'Psikologi Klinis' }))
+      .toBe('Bersama Dr. Raisa (Psikologi Klinis)');
+    expect(labelKonsultan({ ...dasar, sumber: 'tersedia', konsultan: 'Bagas' })).toBe('Bersama Bagas');
+    expect(labelKonsultan({ ...dasar, sumber: 'google' })).toBeNull();
   });
 });

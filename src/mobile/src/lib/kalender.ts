@@ -36,3 +36,22 @@ export function labelWaktuEvent(event: EventKalender): string {
   const opsi: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
   return `${mulai.toLocaleTimeString('id-ID', opsi)} – ${selesai.toLocaleTimeString('id-ID', opsi)}`;
 }
+
+/** Badge and colour for an event's source (I-06-05, I-06-06). */
+export function penandaEvent(sumber: string): {
+  label: string;
+  lencana: 'info' | 'merah' | 'netral';
+  garis: 'info' | 'merah' | 'teksSekunder';
+} {
+  if (sumber === 'google') return { label: 'Google Calendar', lencana: 'info', garis: 'info' };
+  if (sumber === 'terpesan') return { label: 'Sesi saya', lencana: 'merah', garis: 'merah' };
+  return { label: 'Slot tersedia', lencana: 'netral', garis: 'teksSekunder' };
+}
+
+/** "Bersama Dr. Raisa (Psikologi Klinis)" for consultation entries, otherwise `null`. */
+export function labelKonsultan(event: EventKalender): string | null {
+  if (!event.konsultan) return null;
+  return event.spesialisasi
+    ? `Bersama ${event.konsultan} (${event.spesialisasi})`
+    : `Bersama ${event.konsultan}`;
+}
