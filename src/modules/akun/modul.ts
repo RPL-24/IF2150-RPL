@@ -1,12 +1,20 @@
 /**
  * ModulAkun (Business Layer): fasad modul akun di atas DataAkunBoundary.
  * Boundary diberikan lewat konstruktor agar mudah diganti dengan palsu pada tes.
- *
- * Operasi lain (autentikasi, daftarAkunMenunggu, ubahStatusPersetujuan,
- * ambilWarga) ditambahkan pada feat login dan persetujuan.
  */
+import { hashPassword, verifyPassword } from '@/lib/auth/password';
 import type { DataAkunBoundary } from './boundary';
-import type { AkunRingkas, CalonPengguna } from './entity';
+import type { Akun, AkunRingkas, CalonPengguna, StatusAkun, Warga } from './entity';
+
+/**
+ * Hash palsu untuk menyamakan waktu respons saat email tidak ditemukan,
+ * supaya keberadaan email tidak bisa ditebak dari lamanya respons.
+ */
+let hashPalsu: Promise<string> | null = null;
+function ambilHashPalsu(): Promise<string> {
+  if (!hashPalsu) hashPalsu = hashPassword('kata-sandi-palsu-penyama-waktu');
+  return hashPalsu;
+}
 
 export class ModulAkun {
   private readonly data: DataAkunBoundary;
@@ -38,5 +46,43 @@ export class ModulAkun {
       peran: akun.peran,
       statusAkun: akun.statusAkun,
     };
+  }
+
+  /**
+   * Algo-032: akun bila email dan kata sandi cocok, selain itu null.
+   * Status akun diperiksa oleh pemanggil setelah kredensial terbukti benar,
+   * sehingga status tidak bocor kepada pihak yang tidak tahu kata sandinya.
+   */
+  async autentikasi(email: string, password: string): Promise<Akun | null> {
+    const akun = await this.data.ambilAkun(email);
+    if (!akun) {
+      await verifyPassword(password, await ambilHashPalsu());
+      return null;
+    }
+    return (await akun.cocokKredensial(email, password)) ? akun : null;
+  }
+
+  /**
+   * Data warga terkini (UC03). Keanggotaan dibaca dari basis data setiap kali,
+   * bukan dari sesi lama, sehingga perubahan keanggotaan langsung berlaku.
+   */
+  ambilWarga(idWarga: number): Promise<Warga | null> {
+    return this.data.cariWarga(idWarga);
+  }
+
+  /** UC14: akun yang berstatus MENUNGGU. */
+  daftarAkunMenunggu(): Promise<AkunRingkas[]> {
+    return this.data.ambilBerdasarkanStatus('MENUNGGU');
+  }
+
+  /**
+   * UC14: mengubah akun dari MENUNGGU menjadi DISETUJUI atau DITOLAK.
+   * Mengembalikan false bila akun tidak ada atau sudah diproses.
+   */
+  ubahStatusPersetujuan(
+    email: string,
+    status: Extract<StatusAkun, 'DISETUJUI' | 'DITOLAK'>,
+  ): Promise<boolean> {
+    return this.data.perbaruiStatusAkun(email, 'MENUNGGU', status);
   }
 }
