@@ -26,13 +26,8 @@ export async function getNotifikasiPelapor(db, idPelapor) {
     [idPelapor],
   );
 
-  return rows.map((r) => ({
-    id: r.id_notifikasi,
-    idLaporan: r.id_laporan,
-    isiPesan: r.isi_pesan,
-    dibaca: r.dibaca,
-    waktuKirim: r.waktu_kirim,
-  }));
+  // Kontrak API.md: GET /notifikasi -> { data: Notifikasi[], belumDibaca }, dipakai lonceng Beranda & layar Notifikasi.
+  return { data: rows.map(keNotifikasi), belumDibaca: rows.filter((r) => !r.dibaca).length };
 }
 
 /** Tandai satu notifikasi milik pelapor sebagai dibaca. false jika bukan miliknya. */
