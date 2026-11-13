@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 /**
  * Tes persetujuan akun (UC14) dan ModulAkun.ambilWarga (UC03) dengan boundary
  * palsu, jadi tidak butuh basis data.

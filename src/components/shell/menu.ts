@@ -8,7 +8,7 @@ export const NAMA_PERAN: Record<Peran, string> = {
 
 export const NAMA_KOMUNITAS = "Komunitas Cempaka";
 
-export const URL_KELUAR = "/api/akun/logout";
+export const URL_KELUAR = "/api/auth/logout";
 
 export interface ItemMenu {
   label: string;
