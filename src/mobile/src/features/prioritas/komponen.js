@@ -115,7 +115,10 @@ export function AksiStatusLaporan({ laporan, onBerhasil }) {
         label="Keterangan penanganan"
         wajib
         value={keterangan}
-        onChangeText={setKeterangan}
+        onChangeText={(teks) => {
+          setKeterangan(teks);
+          if (error && teks.trim()) setError(null);
+        }}
         placeholder={aksi.ke === STATUS.DIPROSES ? 'mis. Tim lapangan dijadwalkan besok' : 'mis. Lubang sudah ditambal'}
         maxLength={300}
         error={error}

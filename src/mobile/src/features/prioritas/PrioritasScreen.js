@@ -89,7 +89,7 @@ export default function PrioritasScreen() {
         <PilihWilayah nilai={wilayah} daftar={referensi.data?.wilayah ?? []} onUbah={setWilayah} />
 
         <Text style={[huruf.label, s.labelFilter]}>Kategori</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: jarak.l }}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.filterKategori}>
           <PilihanChip label="Semua" aktif={!kategori} onPress={() => setKategori('')} />
           {SEMUA_KATEGORI.map((k) => (
             <PilihanChip key={k} label={k} aktif={kategori === k} onPress={() => setKategori(k)} />
@@ -115,5 +115,7 @@ const s = StyleSheet.create({
   judulAtas: { fontSize: 22, fontWeight: '800', color: warna.putih },
   subAtas: { fontSize: 13, color: warna.primerMuda, marginTop: jarak.xs },
   isi: { padding: jarak.l, paddingBottom: jarak.xxl, flexGrow: 1 },
+  // ScrollView horizontal bawaan RN ber-flexGrow 1; tanpa ini baris chip melar saat daftar masih memuat.
+  filterKategori: { marginBottom: jarak.l, flexGrow: 0 },
   labelFilter: { marginBottom: jarak.xs, marginTop: jarak.s },
 });
