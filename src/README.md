@@ -125,10 +125,10 @@ Kata sandi semua akun: `silembur123` (data fiktif dari seed).
 | Kode | Modul / fitur | Use case | Anggota |
 | :--- | :--- | :--- | :--- |
 | P1 | Fondasi, autentikasi, integrasi Google, gabung duplikat, CI | UC07 | Mochamad Fachri Alfaridzi (13525128) |
-| P2 | Membuat & merevisi laporan | UC01 | *(isi nama)* |
-| P3 | Laporan publik, laporan saya, notifikasi, UI kit | UC04, UC05 | *(isi nama)* |
-| P4 | Verifikasi admin, skor prioritas | UC02 | *(isi nama)* |
-| P5 | Prioritas pemda, fasilitas berulang, riwayat fasilitas | UC03, UC06, UC08 | *(isi nama)* |
+| P2 | Membuat & merevisi laporan | UC01 | Muhammad Pandu Pulunggana (13525059) |
+| P3 | Laporan publik, laporan saya, notifikasi, UI kit | UC04, UC05 | Satya Radhityan Yahya (13525098) |
+| P4 | Verifikasi admin, skor prioritas | UC02 | Kevin Lincoln Hutabarat (13525101) |
+| P5 | Prioritas pemda, fasilitas berulang, riwayat fasilitas | UC03, UC06, UC08 | Muhammad Dhiya Rafi (13525035) |
 
 ## Basis data
 
