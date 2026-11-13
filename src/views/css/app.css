@@ -14,8 +14,8 @@
 }
 .auth__merek { display: flex; flex-direction: column; gap: var(--sp-4); max-width: 560px; }
 .auth__logo { display: flex; align-items: center; gap: var(--sp-3); text-decoration: none; }
-.auth__logo .brand__mark { width: 72px; height: 72px; font-size: 30px; }
-.auth__logo .brand__name { font-size: 44px; }
+.auth__logo .brand__mark { width: 80px; height: 80px; }
+.auth__logo .brand__name { height: 40px; }
 .auth__tagline { font: 700 30px/38px var(--font-sans); color: var(--text-900); }
 .auth__teks { font-size: 17px; line-height: 24px; color: var(--text-600); }
 
@@ -134,8 +134,8 @@
 
   .auth { grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); padding: var(--sp-8) var(--sp-4); min-height: 0; }
   .auth__merek { align-items: center; text-align: center; max-width: none; }
-  .auth__logo .brand__mark { width: 56px; height: 56px; font-size: 24px; }
-  .auth__logo .brand__name { font-size: 36px; }
+  .auth__logo .brand__mark { width: 60px; height: 60px; }
+  .auth__logo .brand__name { height: 30px; }
   .auth__tagline { font-size: 24px; line-height: 32px; }
   .auth__kartu { width: 100%; max-width: 440px; margin: 0 auto; }
 
@@ -149,4 +149,22 @@
   .brand__name { display: none; }
   .table { display: block; overflow-x: auto; }
   .baris { flex-direction: column; gap: 2px; }
+}
+
+/* ───────────── Layar pembuka di /masuk (sekali per tab) ───────────── */
+/* Simbol lalu nama muncul pelan, kemudian seluruh layar memudar memperlihatkan formulir masuk.
+   Kelas .tanpa-pembuka dipasang skrip di <head> bila pembuka sudah tampil di tab ini. */
+.pembuka {
+  position: fixed; inset: 0; z-index: 1000; background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-5);
+  animation: pembuka-tutup 700ms ease-in-out 2100ms forwards;
+}
+.pembuka__simbol { width: 128px; height: 128px; opacity: 0; animation: pembuka-muncul 1000ms cubic-bezier(.2, .8, .2, 1) 150ms forwards; }
+.pembuka__nama { width: auto; height: 48px; opacity: 0; animation: pembuka-muncul 1000ms cubic-bezier(.2, .8, .2, 1) 650ms forwards; }
+@keyframes pembuka-muncul { from { opacity: 0; transform: translateY(14px) scale(.92); } to { opacity: 1; transform: none; } }
+@keyframes pembuka-tutup { to { opacity: 0; visibility: hidden; } }
+.tanpa-pembuka .pembuka { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .pembuka__simbol, .pembuka__nama { animation-name: pembuka-pudar; }
+  @keyframes pembuka-pudar { to { opacity: 1; } }
 }

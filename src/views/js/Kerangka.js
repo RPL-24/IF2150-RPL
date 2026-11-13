@@ -32,7 +32,7 @@ const Kerangka = {
       return `<a class="topbar__tab${aktif ? ' is-active' : ''}" href="${url}" title="${nama}" aria-label="${nama}"${aktif ? ' aria-current="page"' : ''}><span class="ic ic--${ikon}"></span></a>`;
     }).join('');
     return `<div class="topbar__left">
-        <a class="brand" href="/" aria-label="ITBELI, beranda"><span class="brand__mark">IT</span></a>
+        <a class="brand" href="/" aria-label="ITBELI, beranda"><img class="brand__mark" src="/ikon/itbeli-simbol.svg" alt="" width="40" height="40"></a>
         <form class="searchbar" role="search" action="/katalog" method="get">
           <span class="ic ic--search" aria-hidden="true"></span>
           <input class="searchbar__input" type="search" name="q" maxlength="100" placeholder="Cari di ITBELI" aria-label="Cari barang">

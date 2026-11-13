@@ -3,7 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0F4C97">
 <title>Masuk · ITBELI</title>
+<script>
+  // Layar pembuka cukup sekali per tab; sessionStorage bisa diblokir, maka dibungkus try.
+  try {
+    if (sessionStorage.getItem('itbeli-pembuka')) document.documentElement.classList.add('tanpa-pembuka');
+    else sessionStorage.setItem('itbeli-pembuka', '1');
+  } catch { /* tetap tampilkan pembuka */ }
+</script>
 <link rel="stylesheet" href="/css/tokens.css">
 <link rel="stylesheet" href="/css/components.css">
 <link rel="stylesheet" href="/css/app.css">
@@ -12,13 +24,17 @@
 <script src="/js/TombolSSO.js" defer></script>
 </head>
 <body data-halaman="masuk">
+<div class="pembuka" aria-hidden="true">
+  <img class="pembuka__simbol" src="/ikon/itbeli-simbol.svg" alt="" width="128" height="128">
+  <img class="pembuka__nama" src="/ikon/itbeli-nama.svg" alt="" width="144" height="48">
+</div>
 <div class="page">
   <main class="auth">
 
     <section class="auth__merek">
       <a class="auth__logo" href="/" aria-label="ITBELI, beranda">
-        <span class="brand__mark">IT</span>
-        <span class="brand__name">ITBELI</span>
+        <img class="brand__mark" src="/ikon/itbeli-simbol.svg" alt="" width="40" height="40">
+        <img class="brand__name" src="/ikon/itbeli-nama.svg" alt="ITBELI" width="60" height="20">
       </a>
       <h1 class="auth__tagline">Barang bagus tak harus selalu baru.</h1>
       <p class="auth__teks">
