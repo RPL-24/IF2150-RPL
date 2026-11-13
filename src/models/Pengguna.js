@@ -176,5 +176,6 @@ class Pengguna {
 }
 
 Pengguna.POLA_EMAIL = POLA_EMAIL;
+Pengguna.MASA_BERLAKU_KONFIRMASI = MASA_BERLAKU_KONFIRMASI;
 
 module.exports = Pengguna;

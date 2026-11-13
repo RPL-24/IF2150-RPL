@@ -65,19 +65,22 @@ class OrangTuaWali extends Pengguna {
     return rows.map((baris) => ({ idPelajar: baris.id_pelajar, nama: baris.nama }));
   }
 
-  /** Pelajar yang mencantumkan e-mail wali ini dan masih menunggu konfirmasi. */
+  /**
+   * Pelajar yang mencantumkan e-mail wali ini dan masih menunggu konfirmasi.
+   * Token konfirmasi tidak ikut dikembalikan: e-mail akun wali tidak diverifikasi, sehingga
+   * persetujuan hanya boleh lewat tautan yang dikirim ke e-mail wali (UC02).
+   */
   async getPengajuanMenunggu() {
     const { rows } = await db.query(
-      `SELECT p.nama, u.created_at AS tanggal_daftar, u.token_konfirmasi
+      `SELECT p.nama, u.created_at AS tanggal_daftar
        FROM pelajar p JOIN pengguna u ON u.id_pengguna = p.id_pengguna
        WHERE LOWER(p.email_wali) = LOWER($1) AND u.status_akun = 'Belum Terverifikasi'
+         AND u.created_at >= NOW() - INTERVAL '${Pengguna.MASA_BERLAKU_KONFIRMASI}'
        ORDER BY u.created_at DESC
        LIMIT 1;`,
       [this.email]
     );
-    return rows[0]
-      ? { nama: rows[0].nama, tanggalDaftar: rows[0].tanggal_daftar, token: rows[0].token_konfirmasi }
-      : null;
+    return rows[0] ? { nama: rows[0].nama, tanggalDaftar: rows[0].tanggal_daftar } : null;
   }
 
   /**

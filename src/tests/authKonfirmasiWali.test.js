@@ -115,6 +115,54 @@ async function daftarPelajarDiBawahUmur(email, emailWali) {
     expect((await akun('tanpawali@contoh.test')).id_wali).toBeNull();
   });
 
+  describe('pengajuan menunggu di dashboard wali', () => {
+    async function daftarWaliDanMasuk(email) {
+      await request(app)
+        .post('/api/auth/register')
+        .send({
+          nama: 'Wali Uji',
+          email,
+          telepon: '081200000098',
+          role: 'orangtuawali',
+          password: PASSWORD,
+          confirm_password: PASSWORD,
+        })
+        .expect(201);
+      const res = await request(app).post('/api/auth/login').send({ email, password: PASSWORD }).expect(200);
+      return res.body.data.token;
+    }
+
+    test('token konfirmasi tidak dikirim ke akun wali yang e-mailnya belum diverifikasi', async () => {
+      const emailWali = 'wali.belum.verifikasi@contoh.test';
+      const tokenKonfirmasi = await daftarPelajarDiBawahUmur('anak.menunggu@contoh.test', emailWali);
+      const tokenWali = await daftarWaliDanMasuk(emailWali);
+
+      const res = await request(app)
+        .get('/api/auth/wali/menunggu')
+        .set('Authorization', `Bearer ${tokenWali}`)
+        .expect(200);
+
+      expect(res.body.data).toEqual({ nama: 'Siswa Uji', tanggal_daftar: expect.any(String) });
+      expect(JSON.stringify(res.body)).not.toContain(tokenKonfirmasi);
+      expect((await akun('anak.menunggu@contoh.test')).status_akun).toBe('Belum Terverifikasi');
+    });
+
+    test('pengajuan yang tautannya sudah kedaluwarsa tidak ditampilkan', async () => {
+      const emailWali = 'wali.kedaluwarsa@contoh.test';
+      await daftarPelajarDiBawahUmur('anak.lewat@contoh.test', emailWali);
+      await db.query(
+        "UPDATE pengguna SET created_at = NOW() - INTERVAL '8 days' WHERE email = 'anak.lewat@contoh.test';"
+      );
+      const tokenWali = await daftarWaliDanMasuk(emailWali);
+
+      const res = await request(app)
+        .get('/api/auth/wali/menunggu')
+        .set('Authorization', `Bearer ${tokenWali}`)
+        .expect(200);
+      expect(res.body.data).toBeNull();
+    });
+  });
+
   describe('batas waktu tautan 7 hari (SKPL UC02 skenario alternatif 1)', () => {
     async function mundurkanPendaftaran(email, hari) {
       await db.query(
