@@ -5,11 +5,11 @@
  * dan meneruskan isiannya ke API. Dasbor tujuan ditentukan server dari akun;
  * parameter `next` hanya dipakai bila lolos penyaringan dan tetap dibatasi
  * peran oleh middleware.
- * Ganti elemen dasar dengan components/ui dari shell bila sudah tersedia.
  */
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
+import { Alert, Button, Card, Field, Input } from '@/components/ui';
 import { urlTujuanAman } from './tujuan';
 
 export default function LoginView() {
@@ -52,66 +52,55 @@ export default function LoginView() {
   }
 
   return (
-    <main className="mx-auto max-w-md p-6">
-      <h1 className="text-2xl font-semibold">Masuk</h1>
-
-      <form onSubmit={tekanMasuk} className="mt-4 space-y-4" noValidate>
-        {pesan && (
-          <p role="alert" className="text-red-600">
-            {pesan}
-          </p>
-        )}
-        {berhasil && (
-          <p role="status">Berhasil masuk. Mengalihkan ke dasbor…</p>
-        )}
-
-        <div>
-          <label htmlFor="email" className="block font-medium">
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded border p-2"
-          />
+    <main className="auth">
+      <Card className="auth-card">
+        <div className="brand">
+          fajar<span>.tech</span>
         </div>
+        <h1>Masuk</h1>
+        <p className="auth-sub">Pemantauan air dan energi komunitas.</p>
 
-        <div>
-          <label htmlFor="password" className="block font-medium">
-            Kata sandi
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded border p-2"
-          />
-        </div>
+        <form onSubmit={tekanMasuk} noValidate>
+          {pesan && <Alert nada="bahaya">{pesan}</Alert>}
+          {berhasil && <Alert>Berhasil masuk. Mengalihkan ke dasbor…</Alert>}
 
-        <button
-          type="submit"
-          disabled={sedangKirim}
-          className="w-full rounded bg-blue-700 p-2 text-white disabled:opacity-60"
-        >
-          {sedangKirim ? 'Memproses…' : 'Masuk'}
-        </button>
-      </form>
+          <Field label="Email">
+            {(f) => (
+              <Input
+                {...f}
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            )}
+          </Field>
 
-      <p className="mt-4">
-        Belum punya akun?{' '}
-        <Link href="/registrasi" className="underline">
-          Daftar akun
-        </Link>
-      </p>
+          <Field label="Kata sandi">
+            {(f) => (
+              <Input
+                {...f}
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            )}
+          </Field>
+
+          <Button type="submit" varian="primary" className="penuh" disabled={sedangKirim}>
+            {sedangKirim ? 'Memproses…' : 'Masuk'}
+          </Button>
+        </form>
+
+        <p className="auth-alt">
+          Belum punya akun? <Link href="/registrasi">Daftar akun</Link>
+        </p>
+      </Card>
     </main>
   );
 }

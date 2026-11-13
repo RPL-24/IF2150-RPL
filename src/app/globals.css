@@ -129,3 +129,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .table td { display: block; border: 0; padding: 0 !important; }
   .table td:first-child { flex-basis: 100%; }
 }
+
+/* Halaman masuk dan registrasi (di luar shell dasbor) */
+.auth { min-height: 100dvh; display: grid; place-items: center; padding: 24px; }
+.auth-card { width: 100%; max-width: 440px; padding: 34px; border: 1px solid var(--line); }
+.auth-card h1 { font-size: 30px; margin: 22px 0 6px; }
+.auth-sub { color: var(--muted); margin-bottom: 22px; }
+.auth-card .note { margin-bottom: 18px; }
+.auth-card .btn.penuh { width: 100%; }
+.auth-alt { margin-top: 20px; font-size: 14px; color: var(--muted); }
+.auth-alt a { color: var(--teal); font-weight: 700; text-decoration: underline; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+@media (max-width: 800px) { .auth { padding: 16px; place-items: start center; } .auth-card { padding: 24px; } }
+.panel h2 + .table-wrap { margin-top: 16px; }

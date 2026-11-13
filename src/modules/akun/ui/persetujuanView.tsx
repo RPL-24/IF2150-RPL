@@ -6,9 +6,10 @@
  * ditampilkan. Notifikasi berhasil hanya muncul setelah server melaporkan
  * perubahan tersimpan; konflik atau kegagalan menampilkan galat dan memuat
  * ulang daftar.
- * Ganti elemen dasar dengan components/ui dari shell bila sudah tersedia.
  */
 import { useEffect, useState } from 'react';
+import PageTitle from '@/components/shell/PageTitle';
+import { Alert, Badge, Button, Card, EmptyState, Table } from '@/components/ui';
 
 type Pengajuan = { email: string; nama: string; peran: string };
 type Pesan = { jenis: 'sukses' | 'galat'; teks: string };
@@ -87,108 +88,88 @@ export default function PersetujuanView() {
   const terpilih = daftar?.find((p) => p.email === dipilih) ?? null;
 
   return (
-    <main className="mx-auto max-w-3xl p-6">
-      <h1 className="text-2xl font-semibold">Persetujuan akun</h1>
+    <>
+      <PageTitle judul="Persetujuan akun" deskripsi="Tinjau pengajuan akun baru, lalu setujui atau tolak." />
 
-      {pesan && (
-        <p
-          role={pesan.jenis === 'galat' ? 'alert' : 'status'}
-          className={pesan.jenis === 'galat' ? 'mt-3 text-red-600' : 'mt-3 text-green-700'}
-        >
-          {pesan.teks}
-        </p>
-      )}
+      {pesan && <Alert nada={pesan.jenis === 'galat' ? 'bahaya' : 'info'}>{pesan.teks}</Alert>}
 
       {galatMuat && (
-        <p role="alert" className="mt-3 text-red-600">
+        <Alert nada="bahaya">
           {galatMuat}{' '}
-          <button type="button" className="underline" onClick={() => setVersi((v) => v + 1)}>
+          <Button varian="link" onClick={() => setVersi((v) => v + 1)}>
             Muat ulang
-          </button>
-        </p>
+          </Button>
+        </Alert>
       )}
 
-      {daftar === null && !galatMuat && <p className="mt-3">Memuat…</p>}
+      {daftar === null && !galatMuat && <EmptyState>Memuat…</EmptyState>}
 
-      {daftar !== null && daftar.length === 0 && (
-        <p className="mt-3">Tidak ada akun menunggu persetujuan.</p>
-      )}
+      {daftar !== null && daftar.length === 0 && <EmptyState>Tidak ada akun menunggu persetujuan.</EmptyState>}
 
       {daftar !== null && daftar.length > 0 && (
-        <>
-          <p className="mt-3 font-medium">Menunggu persetujuan · {daftar.length} akun</p>
-          <table className="mt-2 w-full border-collapse text-left">
+        <Card>
+          <h2>Menunggu persetujuan · {daftar.length} akun</h2>
+          <Table>
             <thead>
-              <tr className="border-b">
-                <th className="p-2">Nama</th>
-                <th className="p-2">Peran diajukan</th>
-                <th className="p-2">
+              <tr>
+                <th>Nama</th>
+                <th>Peran diajukan</th>
+                <th>
                   <span className="sr-only">Aksi</span>
                 </th>
               </tr>
             </thead>
             <tbody>
               {daftar.map((p) => (
-                <tr key={p.email} className="border-b">
-                  <td className="p-2">{p.nama}</td>
-                  <td className="p-2">{NAMA_PERAN[p.peran] ?? p.peran}</td>
-                  <td className="p-2">
-                    <button
-                      type="button"
-                      className="underline"
-                      onClick={() => setDipilih(p.email)}
-                      disabled={sedangProses}
-                      aria-pressed={dipilih === p.email}
-                    >
+                <tr key={p.email}>
+                  <td>{p.nama}</td>
+                  <td>
+                    <Badge nada="netral">{NAMA_PERAN[p.peran] ?? p.peran}</Badge>
+                  </td>
+                  <td className="num">
+                    <Button onClick={() => setDipilih(p.email)} disabled={sedangProses} aria-pressed={dipilih === p.email}>
                       Tinjau
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
-        </>
+          </Table>
+        </Card>
       )}
 
       {terpilih && (
-        <section className="mt-6 rounded border p-4" aria-label={`Pengajuan ${terpilih.nama}`}>
-          <h2 className="text-lg font-semibold">Pengajuan {terpilih.nama}</h2>
-          <p className="text-sm uppercase tracking-wide">Menunggu</p>
-          <dl className="mt-2 space-y-1">
+        <Card aria-label={`Pengajuan ${terpilih.nama}`}>
+          <h2>Pengajuan {terpilih.nama}</h2>
+          <p>
+            <Badge nada="peringatan">Menunggu</Badge>
+          </p>
+          <hr className="garis" />
+          <dl className="facts">
             <div>
-              <dt className="inline font-medium">Nama: </dt>
-              <dd className="inline">{terpilih.nama}</dd>
+              <dt>Nama</dt>
+              <dd>{terpilih.nama}</dd>
             </div>
             <div>
-              <dt className="inline font-medium">Email: </dt>
-              <dd className="inline">{terpilih.email}</dd>
+              <dt>Email</dt>
+              <dd>{terpilih.email}</dd>
             </div>
             <div>
-              <dt className="inline font-medium">Peran diajukan: </dt>
-              <dd className="inline">{NAMA_PERAN[terpilih.peran] ?? terpilih.peran}</dd>
+              <dt>Peran diajukan</dt>
+              <dd>{NAMA_PERAN[terpilih.peran] ?? terpilih.peran}</dd>
             </div>
           </dl>
-
-          <div className="mt-4 flex gap-3">
-            <button
-              type="button"
-              onClick={() => proses(true)}
-              disabled={sedangProses}
-              className="rounded bg-blue-700 px-4 py-2 text-white disabled:opacity-60"
-            >
+          <hr className="garis" />
+          <div className="actions">
+            <Button varian="primary" onClick={() => proses(true)} disabled={sedangProses}>
               {sedangProses ? 'Memproses…' : 'Setujui akun'}
-            </button>
-            <button
-              type="button"
-              onClick={() => proses(false)}
-              disabled={sedangProses}
-              className="rounded border px-4 py-2 disabled:opacity-60"
-            >
+            </Button>
+            <Button varian="danger" onClick={() => proses(false)} disabled={sedangProses}>
               Tolak
-            </button>
+            </Button>
           </div>
-        </section>
+        </Card>
       )}
-    </main>
+    </>
   );
 }

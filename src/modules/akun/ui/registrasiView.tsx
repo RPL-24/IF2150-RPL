@@ -3,10 +3,10 @@
 /**
  * AuthView, bagian registrasi (I-02, UC12). View pasif: hanya menampilkan
  * formulir dan meneruskan isiannya ke API; validasi sebenarnya di server.
- * Ganti elemen dasar dengan components/ui dari shell bila sudah tersedia.
  */
 import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
+import { Alert, Button, Card, Field, Input, Select } from '@/components/ui';
 
 type Kolom = 'nama' | 'email' | 'password' | 'peran';
 type Galat = Partial<Record<Kolom, string>>;
@@ -54,144 +54,81 @@ export default function RegistrasiView() {
 
   if (berhasil) {
     return (
-      <main className="mx-auto max-w-md p-6">
-        <h1 className="text-2xl font-semibold">Pendaftaran diajukan</h1>
-        <p className="mt-3" role="status">
-          Akun Anda menunggu persetujuan Pengurus. Anda belum bisa masuk sebelum
-          akun disetujui.
-        </p>
-        <p className="mt-4">
-          <Link href="/login" className="underline">
-            Masuk
-          </Link>
-        </p>
+      <main className="auth">
+        <Card className="auth-card">
+          <div className="brand">
+            fajar<span>.tech</span>
+          </div>
+          <h1>Pendaftaran diajukan</h1>
+          <Alert>
+            Akun Anda menunggu persetujuan Pengurus. Anda belum bisa masuk sebelum akun disetujui.
+          </Alert>
+          <p className="auth-alt">
+            <Link href="/login">Kembali ke halaman masuk</Link>
+          </p>
+        </Card>
       </main>
     );
   }
 
   return (
-    <main className="mx-auto max-w-md p-6">
-      <h1 className="text-2xl font-semibold">Registrasi akun</h1>
-
-      <form onSubmit={tekanDaftar} className="mt-4 space-y-4" noValidate>
-        {pesan && (
-          <p role="alert" className="text-red-600">
-            {pesan}
-          </p>
-        )}
-
-        <div>
-          <label htmlFor="nama" className="block font-medium">
-            Nama lengkap
-          </label>
-          <input
-            id="nama"
-            name="nama"
-            type="text"
-            autoComplete="name"
-            required
-            value={nama}
-            onChange={(e) => setNama(e.target.value)}
-            aria-invalid={Boolean(galat.nama)}
-            aria-describedby={galat.nama ? 'galat-nama' : undefined}
-            className="w-full rounded border p-2"
-          />
-          {galat.nama && (
-            <p id="galat-nama" role="alert" className="text-sm text-red-600">
-              {galat.nama}
-            </p>
-          )}
+    <main className="auth">
+      <Card className="auth-card">
+        <div className="brand">
+          fajar<span>.tech</span>
         </div>
+        <h1>Registrasi akun</h1>
+        <p className="auth-sub">Akun baru perlu disetujui Pengurus sebelum bisa dipakai.</p>
 
-        <div>
-          <label htmlFor="email" className="block font-medium">
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            aria-invalid={Boolean(galat.email)}
-            aria-describedby={galat.email ? 'galat-email' : undefined}
-            className="w-full rounded border p-2"
-          />
-          {galat.email && (
-            <p id="galat-email" role="alert" className="text-sm text-red-600">
-              {galat.email}
-            </p>
-          )}
-        </div>
+        <form onSubmit={tekanDaftar} noValidate>
+          {pesan && <Alert nada="bahaya">{pesan}</Alert>}
 
-        <div>
-          <label htmlFor="password" className="block font-medium">
-            Kata sandi
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="new-password"
-            required
-            minLength={8}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            aria-invalid={Boolean(galat.password)}
-            aria-describedby={galat.password ? 'galat-password' : 'bantuan-password'}
-            className="w-full rounded border p-2"
-          />
-          <p id="bantuan-password" className="text-sm text-gray-600">
-            Minimal 8 karakter.
-          </p>
-          {galat.password && (
-            <p id="galat-password" role="alert" className="text-sm text-red-600">
-              {galat.password}
-            </p>
-          )}
-        </div>
+          <Field label="Nama lengkap" galat={galat.nama}>
+            {(f) => (
+              <Input {...f} name="nama" type="text" autoComplete="name" required value={nama} onChange={(e) => setNama(e.target.value)} />
+            )}
+          </Field>
 
-        <div>
-          <label htmlFor="peran" className="block font-medium">
-            Peran yang diajukan
-          </label>
-          <select
-            id="peran"
-            name="peran"
-            value={peran}
-            onChange={(e) => setPeran(e.target.value)}
-            aria-invalid={Boolean(galat.peran)}
-            aria-describedby={galat.peran ? 'galat-peran' : undefined}
-            className="w-full rounded border p-2"
-          >
-            <option value="WARGA">Warga</option>
-            <option value="TEKNISI">Teknisi</option>
-            <option value="PENGURUS">Pengurus</option>
-          </select>
-          {galat.peran && (
-            <p id="galat-peran" role="alert" className="text-sm text-red-600">
-              {galat.peran}
-            </p>
-          )}
-        </div>
+          <Field label="Email" galat={galat.email}>
+            {(f) => (
+              <Input {...f} name="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+            )}
+          </Field>
 
-        <button
-          type="submit"
-          disabled={sedangKirim}
-          className="w-full rounded bg-blue-700 p-2 text-white disabled:opacity-60"
-        >
-          {sedangKirim ? 'Memproses…' : 'Ajukan akun'}
-        </button>
-      </form>
+          <Field label="Kata sandi (minimal 8 karakter)" galat={galat.password}>
+            {(f) => (
+              <Input
+                {...f}
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                required
+                minLength={8}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            )}
+          </Field>
 
-      <p className="mt-4">
-        Sudah memiliki akun?{' '}
-        <Link href="/login" className="underline">
-          Masuk
-        </Link>
-      </p>
+          <Field label="Peran yang diajukan" galat={galat.peran}>
+            {(f) => (
+              <Select {...f} name="peran" value={peran} onChange={(e) => setPeran(e.target.value)}>
+                <option value="WARGA">Warga</option>
+                <option value="TEKNISI">Teknisi</option>
+                <option value="PENGURUS">Pengurus</option>
+              </Select>
+            )}
+          </Field>
+
+          <Button type="submit" varian="primary" className="penuh" disabled={sedangKirim}>
+            {sedangKirim ? 'Memproses…' : 'Ajukan akun'}
+          </Button>
+        </form>
+
+        <p className="auth-alt">
+          Sudah memiliki akun? <Link href="/login">Masuk</Link>
+        </p>
+      </Card>
     </main>
   );
 }
