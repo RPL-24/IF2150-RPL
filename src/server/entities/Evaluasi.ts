@@ -115,3 +115,13 @@ export async function cariIdLaporan(supabase: SupabaseClient<Database>, idTiket:
 export async function simpanEvaluasi(supabase: SupabaseClient<Database>, data: DataEvaluasiBaru) {
   return supabase.from("evaluasi").insert(data).select("id_evaluasi").single();
 }
+
+export async function getEvaluasiTerakhir(supabase: SupabaseClient<Database>, idLaporan: string) {
+  return supabase
+    .from("evaluasi")
+    .select("keputusan, catatan, waktu_evaluasi")
+    .eq("id_laporan", idLaporan)
+    .order("waktu_evaluasi", { ascending: false})
+    .limit(1)
+    .maybeSingle();
+}
