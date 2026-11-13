@@ -13,8 +13,9 @@ import { AreaBerkas } from "@/client/components/lapor/AreaBerkas";
 import { AreaLokasi } from "@/client/components/lapor/AreaLokasi";
 import { DialogTerkirim } from "@/client/components/lapor/DialogTerkirim";
 import { DialogDuplikat } from "@/client/components/lapor/DialogDuplikat";
+import { WidgetAntiBot } from "@/client/components/lapor/WidgetAntiBot";
 import { dukungLaporanDuplikat, kirimLaporan } from "@/server/controllers/LaporanController";
-import { PESAN_FORM_TIDAK_LENGKAP } from "@/server/controllers/laporan-validasi";
+import { PESAN_ANTIBOT_BELUM, PESAN_FORM_TIDAK_LENGKAP } from "@/server/controllers/laporan-validasi";
 
 const KELAS_LABEL = "block text-sm font-semibold";
 const KELAS_INPUT =
@@ -53,6 +54,9 @@ export function LaporPage({ idUser }: Props) {
   const [pesanLokasi, setPesanLokasi] = useState<string | null>(null);
   const [mengirim, setMengirim] = useState(false);
   const [idTiketDuplikat, setIdTiketDuplikat] = useState<string | null>(null);
+  const [tokenAntiBot, setTokenAntiBot] = useState<string | null>(null);
+  // Token Turnstile sekali pakai: angka ini dinaikkan untuk me-reset widget (lewat `key`).
+  const [putaranAntiBot, setPutaranAntiBot] = useState(0);
 
   // I01-13: dihitung dari lokasi, bukan disimpan terpisah, supaya selalu sinkron dengan titik di peta.
   const diLuarWilayah = lokasi !== null && !dalamWilayah(lokasi);
@@ -101,11 +105,20 @@ export function LaporPage({ idUser }: Props) {
     setPesanLokasi(null);
   }
 
+  // DPPL ambilTokenAntiBot(): token dari widget Turnstile, null jika verifikasi belum selesai.
+  function ambilTokenAntiBot(): string | null {
+    return tokenAntiBot;
+  }
   // DPPL submitForm() (Algo-021): upload berkas → kirimLaporan → dialog sukses / konfirmasi duplikat.
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (inputKategori === "" || lokasi === null || berkasKosong) {
       setPesanError(PESAN_FORM_TIDAK_LENGKAP);
+      return;
+    }
+    const token = ambilTokenAntiBot();
+    if (token === null) {
+      setPesanError(PESAN_ANTIBOT_BELUM);
       return;
     }
     setPesanError(null);
@@ -118,13 +131,16 @@ export function LaporPage({ idUser }: Props) {
         return;
       }
       // 2. Server memvalidasi ulang, mengecek duplikat, lalu menyimpan.
-      const hasil = await kirimLaporan({
-        kategori: inputKategori,
-        deskripsi: inputDeskripsi,
-        latitude: lokasi.latitude,
-        longitude: lokasi.longitude,
-        media: unggah.data,
-      });
+      const hasil = await kirimLaporan(
+        {
+          kategori: inputKategori,
+          deskripsi: inputDeskripsi,
+          latitude: lokasi.latitude,
+          longitude: lokasi.longitude,
+          media: unggah.data,
+        },
+        token,
+      );
       if (!hasil.ok) {
         setPesanError(hasil.error);
         return;
@@ -136,6 +152,9 @@ export function LaporPage({ idUser }: Props) {
       setPesanError(PESAN_UMUM);
     } finally {
       setMengirim(false);
+      // Token sudah terpakai: minta token baru untuk pengiriman berikutnya.
+      setTokenAntiBot(null);
+      setPutaranAntiBot((n) => n + 1);
     }
   }
 
@@ -221,6 +240,7 @@ export function LaporPage({ idUser }: Props) {
             onPilihTitik={(k) => tandaiLokasiManual(k.latitude, k.longitude)}
           />
 
+          <WidgetAntiBot key={putaranAntiBot} onToken={setTokenAntiBot} />
           {pesanError && (
             <p role="alert" className="text-sm text-red-600 dark:text-red-400">
               {pesanError}
