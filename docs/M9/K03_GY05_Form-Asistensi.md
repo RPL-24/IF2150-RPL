@@ -1,0 +1,46 @@
+# Form Asistensi
+
+## Tugas Besar IF2150 - Rekayasa Perangkat Lunak
+
+| Informasi | Keterangan |
+| --- | --- |
+| **Hari** | Senin |
+| **Tanggal** | 2/11/2026 |
+| **Kelas** | K03 |
+| **Nomor Kelompok** | G05  |
+| **Nama Kelompok** | HEYSRIUSLAH  |
+| **Nama Perangkat Lunak** | LawHub  |
+| **Dokumen** | K03_G05_DPPL2 |
+
+### Anggota Kelompok
+
+| NIM | Nama |
+| --- | --- |
+| 13525003 | Cherinette Corsane Khassyah Purceria |
+| 13525057 | Raya Medina Farrelin |
+| 13525108 | Khasya Nurul Amini |
+| 13525138 | Cathrine Angel Siburian |
+| 13525150 | Livy Chandra |
+
+### Catatan
+
+| Catatan |
+| --- |
+| 1. Bahasa, framework, dan basis data dibebaskan, namun harus sesuai dengan rancangan  |
+| 2. Dependensi lewat file standar (package.json, requirements.txt, pom.xml, dst.), jangan commit node_modules/, venv/, build/ |
+| 3. Model jadi tempat kode SQL kalian nanti ditulis |
+| 4. Controller mengimpor kelas view dan model, kemudian menggabungkan keduanya |
+
+**Notes for this section:**  
+*Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
+
+## Dokumentasi
+
+<!-- ![](./assets/foto-asistensi.jpg) -->
+<p align="center">
+  <img src="./assets/foto-asistensi.jpg" width="100%">
+</p>
+
+<p align="center">
+  <i>Gambar 1. Dokumentasi kegiatan asistensi.</i>
+</p>
