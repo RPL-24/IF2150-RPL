@@ -35,12 +35,12 @@ class NotifikasiController {
     // 2. Hitung notifikasi belum dibaca penerima (penanda di PanelNotifikasi diambil lewat GET /api/notifikasi)
     await Notifikasi.hitungBelumDibaca(idPenerima);
 
-    // 3. Picu Web Push; kegagalan push tidak menggagalkan notifikasi dalam aplikasi
-    try {
-      await NotifikasiController.kirimPushNotifikasi(idPenerima, isi, jenis);
-    } catch (galat) {
-      console.error('Gagal memicu Web Push:', galat.message);
-    }
+    // 3. Picu Web Push tanpa menunggu hasilnya. Pengiriman ke push service adalah panggilan jaringan
+    //    yang bisa lambat, sedangkan pemanggil (kirimPesan) harus segera menjawab pengirim pesan.
+    //    Kegagalan push hanya dicatat dan tidak menggagalkan notifikasi dalam aplikasi.
+    Promise.resolve()
+      .then(() => NotifikasiController.kirimPushNotifikasi(idPenerima, isi, jenis))
+      .catch((galat) => console.error('Gagal memicu Web Push:', galat.message));
     return true;
   }
 

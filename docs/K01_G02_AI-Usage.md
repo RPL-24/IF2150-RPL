@@ -23,6 +23,7 @@
 
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
+* [Milestone 9](#milestone-9)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 ---
@@ -66,6 +67,15 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | :--- | :--- | :--- | :--- |
 | | | | | |
 | | | | | |
+
+### Milestone 9
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Claude Fable 5.2 melalui Claude Code* | *Review kode pasca-merge terhadap PR #8, #31, dan #50 serta perbaikan temuannya (penanggung jawab: Ghaniyul Amri Caulava). AI membaca diff tiap PR dan kode akhirnya, menulis 12 temuan pada Tabel B.2c laporan implementasi, lalu menulis lima commit pada branch `fix/tindak-lanjut-review` beserta 11 test.* | *"kerjakan milestone 9 dengan lengkap dan detail. Isi semua bagian yang kosong." Untuk baris review PR: "tulis sendiri aja berdasarkan review kamu lalu langsung perbaiki berdasarkan review yang kamu buat".* | *Penanggung jawab memutuskan review dicatat apa adanya sebagai review pasca-merge, bukan sebagai review anggota lain. Setiap perbaikan didahului test yang gagal pada kode lama, lalu seluruh 345 test dijalankan ulang dan lulus. Enam temuan lainnya tidak diubah dan dicatat sebagai known issue pada B.3.3 No. 9 sampai 14.* |
+| *Claude Fable 5.2 melalui Claude Code* | *Melengkapi laporan implementasi M9 (penanggung jawab: Ghaniyul Amri Caulava): baris review PR pada Tabel B.2, Tabel B.2c, pembaruan angka branch, commit, test, dan cakupan, B.1 No. 36 dan 37, serta B.3.3 No. 9 sampai 14.* | *Sama dengan baris di atas.* | *Setiap angka dihitung ulang dari `git log`, keluaran `npx jest --coverage`, serta data PR dan issue di GitHub, bukan dari perkiraan AI. Form asistensi tidak diisi AI karena isinya hanya diketahui peserta asistensi.* |
+| *Claude Fable 5.2 melalui Claude Code* | *Menyusun logbook Milestone 9 dari riwayat commit dan pull request (penanggung jawab: Ghaniyul Amri Caulava).* | *Sama dengan baris di atas.* | *Tanggal, nama anggota, dan pekerjaan diambil dari riwayat git. Kolom durasi dikosongkan karena tidak terekam di git dan tidak dikarang.* |
+
+**Catatan Milestone 9:** *Entri di atas hanya mencakup sesi pada 13 November 2026 oleh Ghaniyul Amri Caulava. Berbeda dari milestone dokumen sebelumnya, pada sesi ini AI ikut menulis kode, test, dan isi laporan, sehingga hal itu dinyatakan secara terbuka di sini. Bila anggota lain memakai AI selama implementasi, penggunaannya belum tercatat di sini dan perlu ditambahkan oleh masing-masing anggota.*
 
 ---
 ### Pernyataan Integritas dan Persetujuan

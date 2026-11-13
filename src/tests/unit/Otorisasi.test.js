@@ -131,5 +131,14 @@ describe('Otorisasi Unit Test (C41)', () => {
       expect(next).toHaveBeenCalled();
       expect(req.akun).toEqual({ idAkun: 'akun-admin' });
     });
+
+    test('admin → sesi hanya dicari satu kali ke basis data', async () => {
+      const cariSesi = jest.spyOn(SesiLogin, 'cariSesiAktif').mockResolvedValue(sesiAktif('akun-admin'));
+      jest.spyOn(Admin, 'verifikasiPeran').mockResolvedValue(true);
+      const next = jest.fn();
+      await Otorisasi.wajibAdmin(reqDenganHeader('Bearer tkn'), resPalsu(), next);
+      expect(next).toHaveBeenCalled();
+      expect(cariSesi).toHaveBeenCalledTimes(1);
+    });
   });
 });
