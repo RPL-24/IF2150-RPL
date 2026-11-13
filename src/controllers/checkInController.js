@@ -3,6 +3,7 @@ const CheckIn = require('../models/CheckIn');
 const AppError = require('../utils/AppError');
 const { encryptAES256 } = require('../utils/encryption');
 const { kirim, tanganiAsync } = require('../utils/respon');
+const { hariIni } = require('../utils/waktu');
 
 const POLA_MAKAN_BAWAAN = 'Teratur';
 const JAM_TIDUR_BAWAAN = '22:30';
@@ -15,7 +16,7 @@ exports.validateCheckInFormat = (data = {}) => {
     return false;
   }
   const moodNum = Number(moodValue);
-  return Number.isFinite(moodNum) && moodNum >= 1 && moodNum <= 5;
+  return Number.isInteger(moodNum) && moodNum >= 1 && moodNum <= 5;
 };
 
 /**
@@ -28,10 +29,6 @@ exports.encryptJournal = (catatan) => {
   if (teks.trim() === '') return null;
   return encryptAES256(teks);
 };
-
-function tanggalHariIni() {
-  return new Date().toISOString().split('T')[0];
-}
 
 function ambilIdPengguna(req) {
   return req.user.idPengguna;
@@ -59,7 +56,6 @@ exports.submitCheckIn = tanganiAsync(async (req, res) => {
 
   const checkInData = CheckIn.createCheckIn({
     idPelajar: pelajar.idPelajar || pelajar.id_pelajar,
-    tanggalCheckIn: tanggalHariIni(),
     skalaMood: Number(mood),
     jamTidur: sleep.bed || JAM_TIDUR_BAWAAN,
     jamBangun: sleep.wake || JAM_BANGUN_BAWAAN,
@@ -82,7 +78,7 @@ exports.getHistory = tanganiAsync(async (req, res) => {
 exports.getTodayStatus = tanganiAsync(async (req, res) => {
   const pelajar = await pelajarDariSesi(req);
 
-  const checkInHariIni = await pelajar.getCheckInSejak(tanggalHariIni());
+  const checkInHariIni = await pelajar.getCheckInSejak(hariIni());
   const sudahCheckIn = checkInHariIni.length > 0;
 
   return kirim(res, 200, 'Status daily check-in hari ini.', {
