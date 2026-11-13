@@ -1,0 +1,22 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+hide circle
+hide members
+
+class EksekutorLapangan
+class ListTugas
+class Laporan
+class HasilPerbaikan
+class Foto
+
+' Relasi Antarkelas
+EksekutorLapangan "1" -- "1" ListTugas
+ListTugas "1" o-- "0..*" Laporan
+Laporan "1" *-- "0..*" HasilPerbaikan
+HasilPerbaikan "1" *-- "1..*" Foto
+Laporan "1" *-- "1..*" Foto
+EksekutorLapangan -- HasilPerbaikan
+@enduml

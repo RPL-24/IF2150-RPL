@@ -1,0 +1,77 @@
+// C07 · ListTugas (kelas entity DPPL). Pemilik: Peran C.
+// Nama fungsi mengikuti nama operasi di DPPL.
+
+import { Constants, type Enums, type Tables } from "@/types/database";
+
+export type Kategori = Enums<"kategori_kerusakan">;
+
+const DAFTAR_KATEGORI: readonly string[] = Constants.public.Enums.kategori_kerusakan;
+
+//Periksa apakah input kategori terdapat di database
+export function isKategori(nilai: string): nilai is Kategori {
+    return DAFTAR_KATEGORI.includes(nilai);
+}
+
+export type TugasLaporan = Pick<
+    Tables<"laporan">,
+    |   "id"
+    |   "id_tiket"
+    |   "kategori"
+    |   "deskripsi"
+    |   "latitude"
+    |   "longitude"
+    |   "jumlah_upvote"
+    |   "skor_prioritas"
+    |   "waktu_masuk"
+>;
+
+export class ListTugas {
+    private readonly daftarLaporan: readonly TugasLaporan[];
+
+    constructor(daftarLaporan: readonly TugasLaporan[]) {
+        this.daftarLaporan = [...daftarLaporan];
+    }
+
+    // Atribut jumlahLaporanAktif
+    get jumlahLaporanAktif(): number {
+        return this.daftarLaporan.length;
+    }
+
+    // Algo-012
+    urutPrioritas(): TugasLaporan[] {
+        return [...this.daftarLaporan].sort(bandingkanPrioritas);
+    }
+
+    // Algo-013
+    filterKategori(kategori: Kategori): TugasLaporan[] {
+        return this.urutPrioritas().filter((laporan) => laporan.kategori === kategori);
+    }
+
+    getLaporanById(idTiket: string): TugasLaporan | null {
+        return this.daftarLaporan.find((laporan) => laporan.id_tiket === idTiket) ?? null;
+    }
+}
+
+function bandingkanPrioritas(a: TugasLaporan, b: TugasLaporan): number {
+    const selisihSkor = Number(b.skor_prioritas) - Number(a.skor_prioritas);
+    if (selisihSkor !== 0) return selisihSkor;
+    return Date.parse(a.waktu_masuk) - Date.parse(b.waktu_masuk);
+}
+
+// Mengecek tugas yang berstatus Dikerjakan namun hasilnya belum dikirim
+export function isTugasAktif(laporan: Pick<Tables<"laporan">, "status" | "tahap">): boolean {
+    return laporan.status === "dikerjakan" && laporan.tahap === "menunggu_eksekusi";
+}
+
+// Berkas media dari tugas/laporan
+export type MediaTugas = { path: string };
+
+// Evaluasi terakhir yang diberikan Tim Administrasi untuk tugas tersebut
+export type EvaluasiTerakhir = Pick<Tables<"evaluasi">, "keputusan" | "catatan" | "waktu_evaluasi">;
+
+// Panel rincian tugas (I05-06 s.d. I05-11)
+export type RincianTugas = TugasLaporan & Pick<Tables<"laporan">, "status" | "tahap"> & {
+    foto: MediaTugas[];
+    video: MediaTugas[];
+    evaluasiTerakhir: EvaluasiTerakhir | null;
+}
