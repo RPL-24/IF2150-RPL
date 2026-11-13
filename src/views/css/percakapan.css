@@ -111,7 +111,7 @@
   flex: none;
   border: none;
   border-radius: var(--radius-md);
-  background: var(--green-700);
+  background: var(--primer-700);
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -140,7 +140,7 @@
 }
 
 .convitem:hover {
-  background: var(--green-50);
+  background: var(--primer-50);
 }
 
 .bubble {
@@ -212,11 +212,11 @@
 }
 
 .notif__item.is-baru {
-  background: var(--green-50);
+  background: var(--primer-50);
 }
 
 .notif__item:hover {
-  background: var(--green-50);
+  background: var(--primer-50);
 }
 
 .notif__ic {
@@ -237,7 +237,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--green-700);
+  background: var(--primer-700);
   flex: none;
   align-self: center;
 }
