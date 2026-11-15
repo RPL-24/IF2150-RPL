@@ -9,7 +9,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
   });
 
   describe('Barang Model', () => {
-    test('berhasil membuat instance Barang dari objek data dan baris basis data', () => {
+    test('C29-UT01 [Normal] konstruktor dan dariBaris: data dan baris basis data → objek Barang dengan harga numerik', () => {
       const dataBaris = {
         id_barang: 'b-01',
         id_penjual: 'p-01',
@@ -32,7 +32,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
       expect(Barang.dariBaris(null)).toBeNull();
     });
 
-    test('simpan() mengeksekusi kueri INSERT dan mengembalikan idBarang', async () => {
+    test('C29-UT02 [Normal] simpan: data listing → INSERT dan mengembalikan idBarang', async () => {
       const mockClient = {
         query: jest.fn().mockResolvedValue({ rows: [{ id_barang: 'b-999' }] }),
       };
@@ -55,7 +55,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
       );
     });
 
-    test('cariById() mengembalikan data model barang yang cocok', async () => {
+    test('C29-UT03 [Normal] cariById: id barang yang ada → objek Barang', async () => {
       jest.spyOn(db, 'query').mockResolvedValue({
         rows: [
           {
@@ -75,7 +75,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
       expect(res.harga).toBe(500000);
     });
 
-    test('hapus() mengeksekusi DELETE pada tabel barang', async () => {
+    test('C29-UT04 [Normal] hapus: id barang yang ada → DELETE, true', async () => {
       const mockClient = {
         query: jest.fn().mockResolvedValue({ rowCount: 1 }),
       };
@@ -88,7 +88,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
       );
     });
 
-    test('nonaktifkanByPemilik() mengubah status seluruh barang Tersedia menjadi Dinonaktifkan (KF54)', async () => {
+    test('C29-UT05 [Normal] nonaktifkanByPemilik: listing Tersedia milik akun → Dinonaktifkan (KF54)', async () => {
       const mockClient = {
         query: jest.fn().mockResolvedValue({ rowCount: 3 }),
       };
@@ -101,7 +101,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
       );
     });
 
-    test('pulihkanKatalog() memulihkan status barang Dinonaktifkan menjadi Tersedia (UC24)', async () => {
+    test('C29-UT06 [Normal] pulihkanKatalog: listing Dinonaktifkan milik akun → Tersedia (UC24)', async () => {
       const mockClient = {
         query: jest.fn().mockResolvedValue({ rowCount: 3 }),
       };
@@ -116,7 +116,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
   });
 
   describe('FotoBarang Model', () => {
-    test('validasiFormat() hanya menerima file berekstensi jpg, jpeg, png', () => {
+    test('C30-UT01 [Normal] validasiFormat: jpg, .JPEG, png → true; pdf, exe, kosong → false', () => {
       expect(FotoBarang.validasiFormat('jpg')).toBe(true);
       expect(FotoBarang.validasiFormat('.JPEG')).toBe(true);
       expect(FotoBarang.validasiFormat('png')).toBe(true);
@@ -125,7 +125,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
       expect(FotoBarang.validasiFormat('')).toBe(false);
     });
 
-    test('validasiUkuran() memvalidasi batas maksimum 5MB', () => {
+    test('C30-UT02 [Batas] validasiUkuran: 1 KB dan tepat 5 MB → true; 5 MB + 1 byte, 0, negatif → false', () => {
       expect(FotoBarang.validasiUkuran(1024)).toBe(true);
       expect(FotoBarang.validasiUkuran(5 * 1024 * 1024)).toBe(true);
       expect(FotoBarang.validasiUkuran(5 * 1024 * 1024 + 1)).toBe(false);
@@ -133,7 +133,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
       expect(FotoBarang.validasiUkuran(-10)).toBe(false);
     });
 
-    test('simpan() menyimpan rekaman foto barang', async () => {
+    test('C30-UT03 [Normal] simpan: metadata foto → INSERT ke foto_barang, true', async () => {
       const mockClient = {
         query: jest.fn().mockResolvedValue({ rowCount: 1 }),
       };
@@ -155,7 +155,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
       );
     });
 
-    test('getGaleri() mengambil daftar foto terurut', async () => {
+    test('C30-UT04 [Normal] getGaleri: id barang → daftar foto urut menurut kolom urutan', async () => {
       jest.spyOn(db, 'query').mockResolvedValue({
         rows: [
           {
@@ -176,7 +176,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
       expect(daftar[0].pathBerkas).toBe('/uploads/b-01/f1.jpg');
     });
 
-    test('hapus() menghapus metadata foto barang', async () => {
+    test('C30-UT05 [Normal] hapus: id barang → DELETE seluruh metadata foto', async () => {
       const mockClient = {
         query: jest.fn().mockResolvedValue({ rowCount: 2 }),
       };
@@ -240,16 +240,14 @@ describe('Barang dan FotoBarang lanjutan HIUPL (C29, C30)', () => {
     await expect(Barang.nonaktifkanByPemilik('akun-tanpa-listing')).resolves.toBe(true);
   });
 
-  test('C30-UT06 [Batas] validasiFormat: huruf besar dan titik di depan (".PNG") → true; null atau "gif" → false', () => {
+  test('C30-UT06 [Negatif] validasiFormat: null atau "gif" → false; ".PNG" → true', () => {
     expect(FotoBarang.validasiFormat('.PNG')).toBe(true);
     expect(FotoBarang.validasiFormat(null)).toBe(false);
     expect(FotoBarang.validasiFormat('gif')).toBe(false);
   });
 
-  test('C30-UT07 [Batas] validasiUkuran: tepat 5.242.880 byte → true; 0 byte, 5.242.881 byte, atau teks → false', () => {
-    expect(FotoBarang.validasiUkuran(5 * 1024 * 1024)).toBe(true);
-    expect(FotoBarang.validasiUkuran(0)).toBe(false);
-    expect(FotoBarang.validasiUkuran(5 * 1024 * 1024 + 1)).toBe(false);
+  test('C30-UT07 [Negatif] validasiUkuran: ukuran berupa teks "100" atau undefined → false', () => {
     expect(FotoBarang.validasiUkuran('100')).toBe(false);
+    expect(FotoBarang.validasiUkuran(undefined)).toBe(false);
   });
 });

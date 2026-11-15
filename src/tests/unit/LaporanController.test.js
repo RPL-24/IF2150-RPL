@@ -5,7 +5,7 @@ const db = require('../../config/db');
 
 describe('LaporanController Unit Test (UC19)', () => {
   describe('validasiDataLaporan', () => {
-    test('berhasil memvalidasi data lengkap dengan kategori valid', () => {
+    test('C20-UT01 [Normal] validasiDataLaporan: objek, kategori Penipuan, dan alasan terisi → true', () => {
       const data = {
         objekDilaporkan: 'Barang #123 (Jas Lab)',
         jenisPelanggaran: 'Penipuan',
@@ -14,7 +14,7 @@ describe('LaporanController Unit Test (UC19)', () => {
       expect(LaporanController.validasiDataLaporan(data)).toBe(true);
     });
 
-    test('gagal jika objek yang dilaporkan kosong', () => {
+    test('C20-UT02 [Negatif] validasiDataLaporan: objek yang dilaporkan kosong → false', () => {
       const data = {
         objekDilaporkan: '   ',
         jenisPelanggaran: 'Penipuan',
@@ -23,7 +23,7 @@ describe('LaporanController Unit Test (UC19)', () => {
       expect(LaporanController.validasiDataLaporan(data)).toBe(false);
     });
 
-    test('gagal jika kategori pelanggaran tidak terdaftar', () => {
+    test('C20-UT03 [Negatif] validasiDataLaporan: kategori di luar tiga pilihan → false', () => {
       const data = {
         objekDilaporkan: 'Akun #456',
         jenisPelanggaran: 'Kategori Sembarangan',
@@ -32,7 +32,7 @@ describe('LaporanController Unit Test (UC19)', () => {
       expect(LaporanController.validasiDataLaporan(data)).toBe(false);
     });
 
-    test('gagal jika teks alasan kosong atau hanya spasi', () => {
+    test('C20-UT04 [Batas] validasiDataLaporan: alasan kosong atau hanya spasi → false', () => {
       const data = {
         objekDilaporkan: 'Akun #456',
         jenisPelanggaran: 'Konten tidak pantas',
@@ -43,12 +43,12 @@ describe('LaporanController Unit Test (UC19)', () => {
   });
 
   describe('validasiBukti (KF44)', () => {
-    test('gagal jika tidak ada berkas bukti yang dilampirkan', () => {
+    test('C20-UT05 [Negatif] validasiBukti: tanpa berkas bukti → false', () => {
       expect(LaporanController.validasiBukti([])).toBe(false);
       expect(LaporanController.validasiBukti(null)).toBe(false);
     });
 
-    test('gagal jika salah satu berkas melebihi batas 5 MB', () => {
+    test('C20-UT06 [Batas] validasiBukti: satu berkas melebihi 5 MB → false', () => {
       const berkas = [
         {
           originalname: 'bukti1.png',
@@ -59,7 +59,7 @@ describe('LaporanController Unit Test (UC19)', () => {
       expect(LaporanController.validasiBukti(berkas)).toBe(false);
     });
 
-    test('gagal jika format berkas bukan JPG atau PNG', () => {
+    test('C20-UT07 [Negatif] validasiBukti: berkas bukan JPG atau PNG → false', () => {
       const berkas = [
         {
           originalname: 'bukti.pdf',
@@ -70,7 +70,7 @@ describe('LaporanController Unit Test (UC19)', () => {
       expect(LaporanController.validasiBukti(berkas)).toBe(false);
     });
 
-    test('berhasil jika berkas berupa JPG/PNG dan ukuran <= 5 MB', () => {
+    test('C20-UT08 [Normal] validasiBukti: JPG dan PNG berukuran di bawah 5 MB → true', () => {
       const berkas = [
         {
           originalname: 'bukti1.jpg',
@@ -88,7 +88,7 @@ describe('LaporanController Unit Test (UC19)', () => {
   });
 
   describe('susunMetadataPercakapan (KF37 Privasi Percakapan)', () => {
-    test('hanya memuat ID percakapan, pelapor, dan waktu, tanpa isi pesan teks', () => {
+    test('C20-UT09 [Normal] susunMetadataPercakapan: ID percakapan dan pelapor → metadata tanpa isi pesan (KF37)', () => {
       const idChat = 'chat-uuid-123';
       const idPelapor = 'user-uuid-456';
       const metadata = LaporanController.susunMetadataPercakapan(idChat, idPelapor);
@@ -107,7 +107,7 @@ describe('LaporanController Unit Test (UC19)', () => {
       jest.restoreAllMocks();
     });
 
-    test('menolak jika pengguna belum terotentikasi', async () => {
+    test('C20-UT10 [Negatif] buatLaporan: token tidak sah → TIDAK_TEROTENTIKASI', async () => {
       jest.spyOn(Otorisasi, 'verifikasiToken').mockResolvedValue(null);
       const hasil = await LaporanController.buatLaporan('token-palsu', {}, []);
 
@@ -115,7 +115,7 @@ describe('LaporanController Unit Test (UC19)', () => {
       expect(hasil.kodePesan).toBe('TIDAK_TEROTENTIKASI');
     });
 
-    test('menolak jika data formulir tidak lengkap', async () => {
+    test('C20-UT11 [Negatif] buatLaporan: objek yang dilaporkan kosong → DATA_TIDAK_LENGKAP', async () => {
       jest.spyOn(Otorisasi, 'verifikasiToken').mockResolvedValue({
         getIdAkun: () => 'user-1',
       });
@@ -125,7 +125,7 @@ describe('LaporanController Unit Test (UC19)', () => {
       expect(hasil.kodePesan).toBe('DATA_TIDAK_LENGKAP');
     });
 
-    test('menolak jika bukti tidak valid', async () => {
+    test('C20-UT12 [Negatif] buatLaporan: data lengkap tanpa bukti → BUKTI_TIDAK_VALID', async () => {
       jest.spyOn(Otorisasi, 'verifikasiToken').mockResolvedValue({
         getIdAkun: () => 'user-1',
       });

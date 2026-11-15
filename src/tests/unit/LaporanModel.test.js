@@ -8,7 +8,7 @@ const path = require('path');
 
 describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
   describe('Laporan Model (C36)', () => {
-    test('dariBaris berhasil memetakan snake_case DB ke camelCase model', () => {
+    test('C36-UT01 [Normal] dariBaris: baris snake_case dari basis data → objek Laporan camelCase', () => {
       const baris = {
         id_laporan: 'lap-1',
         id_pelapor: 'usr-1',
@@ -27,17 +27,17 @@ describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
       expect(model.statusPenanganan).toBe('Baru');
     });
 
-    test('filterByStatus menolak status di luar ketentuan', async () => {
+    test('C36-UT02 [Negatif] filterByStatus: status di luar Baru, Diproses, Selesai → [] tanpa kueri', async () => {
       const hasil = await Laporan.filterByStatus('StatusTidakDikenal');
       expect(hasil).toEqual([]);
     });
 
-    test('updateStatusPenanganan menolak status tujuan di luar ketentuan', async () => {
+    test('C36-UT03 [Negatif] updateStatusPenanganan: status tujuan "Batal" → false', async () => {
       const hasil = await Laporan.updateStatusPenanganan('lap-1', 'Batal');
       expect(hasil).toBe(false);
     });
 
-    test('validasiTransisiStatus hanya memperbolehkan alur maju: Baru -> Diproses -> Selesai', () => {
+    test('C36-UT04 [Batas] validasiTransisiStatus: alur maju dan status sama → true; mundur, tidak dikenal, atau null → false', () => {
       // Alur transisi valid (KF47)
       expect(Laporan.validasiTransisiStatus('Baru', 'Diproses')).toBe(true);
       expect(Laporan.validasiTransisiStatus('Baru', 'Selesai')).toBe(true);
@@ -57,17 +57,17 @@ describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
   });
 
   describe('BuktiLaporan Model (C37)', () => {
-    test('validasiLampiranWajib mengembalikan true jika ada berkas tidak kosong', () => {
+    test('C37-UT01 [Normal] validasiLampiranWajib: satu berkas tidak kosong → true', () => {
       const berkas = [{ size: 1024, name: 'foto.png' }];
       expect(BuktiLaporan.validasiLampiranWajib(berkas)).toBe(true);
     });
 
-    test('validasiLampiranWajib mengembalikan false jika berkas berukuran 0', () => {
+    test('C37-UT02 [Batas] validasiLampiranWajib: berkas berukuran 0 byte → false', () => {
       const berkas = [{ size: 0, name: 'foto.png' }];
       expect(BuktiLaporan.validasiLampiranWajib(berkas)).toBe(false);
     });
 
-    test('dariBaris berhasil memetakan metadata berkas bukti', () => {
+    test('C37-UT03 [Normal] dariBaris: baris bukti_laporan → objek BuktiLaporan', () => {
       const baris = {
         id_bukti: 'buk-1',
         id_laporan: 'lap-1',
@@ -82,7 +82,7 @@ describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
   });
 
   describe('LogAudit Model (C38 - Immutable KF48, KF49)', () => {
-    test('dariBaris berhasil memetakan riwayat audit', () => {
+    test('C38-UT01 [Normal] dariBaris: baris log_audit → objek LogAudit', () => {
       const baris = {
         id_log: 'log-1',
         id_laporan: 'lap-1',
@@ -96,7 +96,7 @@ describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
       expect(model.tindakan).toBe('Penerimaan laporan');
     });
 
-    test('tidak menyediakan metode untuk mengubah atau menghapus catatan audit (immutable KF48, KF49)', () => {
+    test('C38-UT02 [Negatif] tidak ada operasi ubah atau hapus catatan audit (KF48, KF49)', () => {
       // Tidak ada fungsi update/edit baik statis maupun pada instance
       expect(LogAudit.prototype.update).toBeUndefined();
       expect(LogAudit.prototype.edit).toBeUndefined();
@@ -108,7 +108,7 @@ describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
       expect(LogAudit.delete).toBeUndefined();
     });
 
-    test('seluruh operasi pencatatan bertambah secara append-only menggunakan query INSERT', async () => {
+    test('C38-UT03 [Normal] empat operasi catat → masing-masing satu INSERT ke log_audit dengan teks tindakan yang benar', async () => {
       const mockClient = {
         query: jest.fn().mockResolvedValue({ rowCount: 1 }),
       };
@@ -152,7 +152,7 @@ describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
       }
     });
 
-    test('berhasil menyimpan berkas buffer ke folder lokal', async () => {
+    test('C45-UT01 [Normal] simpan lalu hapus: satu berkas buffer → tersimpan di /uploads/<idObjek>/ lalu terhapus, hasil true', async () => {
       PenyimpananBerkas.direktoriBasis = tempDir;
       const berkas = [
         {
