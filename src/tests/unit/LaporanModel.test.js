@@ -37,7 +37,7 @@ describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
       expect(hasil).toBe(false);
     });
 
-    test('C36-UT04 [Batas] validasiTransisiStatus: alur maju dan status sama → true; mundur, tidak dikenal, atau null → false', () => {
+    test('C36-UT04 [Batas] validasiTransisiStatus: alur maju, status sama, alur mundur, status tidak dikenal, null → hanya alur maju dan status sama yang true', () => {
       // Alur transisi valid (KF47)
       expect(Laporan.validasiTransisiStatus('Baru', 'Diproses')).toBe(true);
       expect(Laporan.validasiTransisiStatus('Baru', 'Selesai')).toBe(true);
@@ -96,7 +96,7 @@ describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
       expect(model.tindakan).toBe('Penerimaan laporan');
     });
 
-    test('C38-UT02 [Negatif] tidak ada operasi ubah atau hapus catatan audit (KF48, KF49)', () => {
+    test('C38-UT02 [Negatif] struktur kelas: cari operasi update, edit, hapus, delete → tidak ada satu pun (KF48, KF49)', () => {
       // Tidak ada fungsi update/edit baik statis maupun pada instance
       expect(LogAudit.prototype.update).toBeUndefined();
       expect(LogAudit.prototype.edit).toBeUndefined();
@@ -108,7 +108,7 @@ describe('Model & Penyimpanan Laporan Unit Test (UC19)', () => {
       expect(LogAudit.delete).toBeUndefined();
     });
 
-    test('C38-UT03 [Normal] empat operasi catat → masing-masing satu INSERT ke log_audit dengan teks tindakan yang benar', async () => {
+    test('C38-UT03 [Normal] empat operasi catat: id laporan, aktor, dan objek → tiap operasi menjalankan satu INSERT ke log_audit dengan teks tindakan yang benar', async () => {
       const mockClient = {
         query: jest.fn().mockResolvedValue({ rowCount: 1 }),
       };
@@ -302,7 +302,7 @@ describe('Model laporan lanjutan HIUPL (C36, C37, C38, C45)', () => {
       expect(kueri.mock.calls[0][0]).toMatch(/ORDER BY waktu ASC/);
     });
 
-    test('C38-UT05 [Normal] catatPenerimaanLaporan tanpa klien transaksi → memakai koneksi bawaan db', async () => {
+    test('C38-UT05 [Normal] catatPenerimaanLaporan: dipanggil tanpa klien transaksi → memakai koneksi bawaan db', async () => {
       const kueri = jest.spyOn(db, 'query').mockResolvedValue({ rowCount: 1 });
       await LogAudit.catatPenerimaanLaporan('lap-1', 'akun-1');
       expect(kueri).toHaveBeenCalledWith(expect.stringMatching(/INSERT INTO log_audit/), expect.arrayContaining(['lap-1', 'akun-1']));

@@ -116,7 +116,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
   });
 
   describe('FotoBarang Model', () => {
-    test('C30-UT01 [Normal] validasiFormat: jpg, .JPEG, png → true; pdf, exe, kosong → false', () => {
+    test('C30-UT01 [Normal] validasiFormat: jpg, .JPEG, png, pdf, exe, kosong → hanya jpg, jpeg, dan png yang true', () => {
       expect(FotoBarang.validasiFormat('jpg')).toBe(true);
       expect(FotoBarang.validasiFormat('.JPEG')).toBe(true);
       expect(FotoBarang.validasiFormat('png')).toBe(true);
@@ -125,7 +125,7 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
       expect(FotoBarang.validasiFormat('')).toBe(false);
     });
 
-    test('C30-UT02 [Batas] validasiUkuran: 1 KB dan tepat 5 MB → true; 5 MB + 1 byte, 0, negatif → false', () => {
+    test('C30-UT02 [Batas] validasiUkuran: 1 KB, tepat 5 MB, 5 MB + 1 byte, 0, negatif → hanya 1 KB dan tepat 5 MB yang true', () => {
       expect(FotoBarang.validasiUkuran(1024)).toBe(true);
       expect(FotoBarang.validasiUkuran(5 * 1024 * 1024)).toBe(true);
       expect(FotoBarang.validasiUkuran(5 * 1024 * 1024 + 1)).toBe(false);
@@ -202,7 +202,7 @@ describe('Barang dan FotoBarang lanjutan HIUPL (C29, C30)', () => {
     expect(new Barang({ status: 'Terjual' }).getStatus()).toBe('Terjual');
   });
 
-  test('C29-UT08 [Batas] konstruktor tanpa status dan tanpa harga → status Tersedia dan harga 0', () => {
+  test('C29-UT08 [Batas] konstruktor: data tanpa status dan tanpa harga → status Tersedia dan harga 0', () => {
     const barang = new Barang({ idBarang: 'brg-1' });
     expect(barang.getStatus()).toBe('Tersedia');
     expect(barang.harga).toBe(0);
@@ -240,7 +240,7 @@ describe('Barang dan FotoBarang lanjutan HIUPL (C29, C30)', () => {
     await expect(Barang.nonaktifkanByPemilik('akun-tanpa-listing')).resolves.toBe(true);
   });
 
-  test('C30-UT06 [Negatif] validasiFormat: null atau "gif" → false; ".PNG" → true', () => {
+  test('C30-UT06 [Negatif] validasiFormat: null atau "gif" → false (".PNG" tetap diterima)', () => {
     expect(FotoBarang.validasiFormat('.PNG')).toBe(true);
     expect(FotoBarang.validasiFormat(null)).toBe(false);
     expect(FotoBarang.validasiFormat('gif')).toBe(false);

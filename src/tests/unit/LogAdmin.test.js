@@ -20,7 +20,7 @@ describe('LogAdmin (C39)', () => {
     expect(nilai[5]).toBe('Penipuan berulang');
   });
 
-  test('C39-UT02 [Normal] catatTindakan di dalam transaksi → memakai klien transaksi, bukan koneksi bawaan', async () => {
+  test('C39-UT02 [Normal] catatTindakan: dipanggil dengan klien transaksi → klien itu yang dipakai, bukan koneksi bawaan', async () => {
     const kueriBawaan = jest.spyOn(db, 'query');
     const klien = { query: jest.fn().mockResolvedValue({ rowCount: 1 }) };
 
@@ -54,7 +54,7 @@ describe('LogAdmin (C39)', () => {
     expect(LogAdmin.dariBaris(undefined)).toBeNull();
   });
 
-  test('C39-UT06 [Negatif] tidak ada operasi untuk mengubah atau menghapus catatan (KF55)', () => {
+  test('C39-UT06 [Negatif] struktur kelas: cari operasi update, ubah, hapus, delete → tidak ada satu pun (KF55)', () => {
     ['update', 'ubah', 'hapus', 'delete'].forEach((nama) => {
       expect(LogAdmin[nama]).toBeUndefined();
       expect(LogAdmin.prototype[nama]).toBeUndefined();

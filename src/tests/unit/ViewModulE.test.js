@@ -150,7 +150,7 @@ describe('DasborAdmin (C11)', () => {
     expect(dasbor.validasiTransisiStatus('Baru', 'Ditutup')).toBe(false);
   });
 
-  test('C11-UT03 [Negatif] onClickUbahStatus di halaman detail: laporan Selesai diubah ke Diproses → pesan galat, API tidak dipanggil', async () => {
+  test('C11-UT03 [Negatif] onClickUbahStatus: di halaman detail, laporan Selesai diubah ke Diproses → pesan galat, API tidak dipanggil', async () => {
     const dasbor = dasborSiap();
     dasbor.detailLaporan = { laporan: { idLaporan: 'lap-1', statusPenanganan: 'Selesai' } };
     await dasbor.onClickUbahStatus('lap-1', 'Diproses');
@@ -158,7 +158,7 @@ describe('DasborAdmin (C11)', () => {
     expect(global.Api.kirim).not.toHaveBeenCalled();
   });
 
-  test('C11-UT04 [Normal] onClickUbahStatus dari daftar laporan I-13 (detail belum dibuka) → PATCH terkirim, statistik dan daftar dimuat ulang', async () => {
+  test('C11-UT04 [Normal] onClickUbahStatus: dari daftar laporan I-13, detail belum dibuka → PATCH terkirim, statistik dan daftar dimuat ulang', async () => {
     const dasbor = dasborSiap();
     dasbor.filterStatus = 'Baru';
 

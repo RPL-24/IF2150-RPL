@@ -245,7 +245,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
     });
 
     // catatLogAudit tidak ditiru di sini, supaya teks yang benar-benar sampai ke tabel log_audit ikut teruji.
-    test('C21-UT18 [Normal] ubahStatusLaporan: teks tindakan log audit tertulis satu kali (KF48)', async () => {
+    test('C21-UT18 [Normal] ubahStatusLaporan: Baru ke Diproses, kueri log_audit diperiksa → teks tindakan tertulis satu kali (KF48)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
         new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Baru' }),
