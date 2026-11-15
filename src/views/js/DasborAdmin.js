@@ -313,7 +313,7 @@ class DasborAdmin {
     if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
       this.bukaDetailLaporan(idLaporan);
     } else {
-      this.memuatStatistik();
+      this.muatStatistik();
       this.filterLaporan(this.filterStatus);
     }
   }
@@ -494,7 +494,7 @@ class DasborAdmin {
         if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
       this.bukaDetailLaporan(idLaporan);
     } else {
-      this.memuatStatistik();
+      this.muatStatistik();
       this.filterLaporan(this.filterStatus);
     }
       }
@@ -518,7 +518,7 @@ class DasborAdmin {
         if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
       this.bukaDetailLaporan(idLaporan);
     } else {
-      this.memuatStatistik();
+      this.muatStatistik();
       this.filterLaporan(this.filterStatus);
     }
       }
@@ -547,7 +547,7 @@ class DasborAdmin {
         if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
       this.bukaDetailLaporan(idLaporan);
     } else {
-      this.memuatStatistik();
+      this.muatStatistik();
       this.filterLaporan(this.filterStatus);
     }
       }

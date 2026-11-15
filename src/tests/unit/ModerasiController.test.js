@@ -19,7 +19,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
   });
 
   describe('otorisasiAdmin (KF56)', () => {
-    test('mengembalikan idAdmin jika token valid dan berperan admin', async () => {
+    test('C21-UT01 [Normal] otorisasiAdmin: token sesi admin → idAdmin', async () => {
       jest.spyOn(Otorisasi, 'verifikasiAdmin').mockResolvedValue({
         getIdAkun: () => 'admin-id-123',
       });
@@ -28,7 +28,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(res).toBe('admin-id-123');
     });
 
-    test('mengembalikan null jika bukan admin atau token tidak sah', async () => {
+    test('C21-UT02 [Negatif] otorisasiAdmin: token bukan admin atau tidak sah → null (KF56)', async () => {
       jest.spyOn(Otorisasi, 'verifikasiAdmin').mockResolvedValue(null);
 
       const res = await ModerasiController.otorisasiAdmin('token-user-biasa');
@@ -37,7 +37,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
   });
 
   describe('getAllLaporan (KF45, KF56)', () => {
-    test('berhasil mengambil seluruh daftar laporan untuk admin yang terotorisasi', async () => {
+    test('C21-UT03 [Normal] getAllLaporan: admin sah → seluruh laporan', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       const laporanContoh = [
         new Laporan({
@@ -57,7 +57,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(hasil[0].statusPenanganan).toBe('Baru');
     });
 
-    test('menolak akses dan mengembalikan null jika bukan admin', async () => {
+    test('C21-UT04 [Negatif] getAllLaporan: bukan admin → null (KF56)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
       const hasil = await ModerasiController.getAllLaporan('token-non-admin');
       expect(hasil).toBeNull();
@@ -65,7 +65,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
   });
 
   describe('filterByStatus (KF46, KF56)', () => {
-    test('berhasil menyaring laporan berdasarkan status "Baru"', async () => {
+    test('C21-UT05 [Normal] filterByStatus: status "Baru" → hanya laporan Baru (KF46)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       const laporanBaru = [
         new Laporan({
@@ -84,7 +84,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(Laporan.filterByStatus).toHaveBeenCalledWith('Baru');
     });
 
-    test('mengambil seluruh laporan jika filter status adalah "Semua"', async () => {
+    test('C21-UT06 [Batas] filterByStatus: status "Semua" → seluruh laporan', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Laporan, 'getAllLaporan').mockResolvedValue([]);
 
@@ -93,7 +93,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(Laporan.getAllLaporan).toHaveBeenCalled();
     });
 
-    test('menolak akses jika bukan admin saat menyaring laporan', async () => {
+    test('C21-UT07 [Negatif] filterByStatus: bukan admin → null (KF56)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
       const hasil = await ModerasiController.filterByStatus('token-non-admin', 'Diproses');
       expect(hasil).toBeNull();
@@ -101,7 +101,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
   });
 
   describe('getDetailLaporan (KF45, KF56)', () => {
-    test('berhasil mengambil rincian lengkap laporan termasuk pelapor, bukti, dan riwayat audit', async () => {
+    test('C21-UT08 [Normal] getDetailLaporan: laporan yang ada → laporan, pelapor, bukti, dan riwayat audit', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const dataLaporan = new Laporan({
@@ -152,7 +152,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(hasil.riwayatAudit[0].tindakan).toBe('Penerimaan laporan');
     });
 
-    test('mengembalikan null jika laporan tidak ditemukan', async () => {
+    test('C21-UT09 [Negatif] getDetailLaporan: laporan tidak ditemukan → null', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(null);
 
@@ -160,7 +160,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(hasil).toBeNull();
     });
 
-    test('menolak akses jika bukan admin', async () => {
+    test('C21-UT10 [Negatif] getDetailLaporan: bukan admin → null (KF56)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
       const hasil = await ModerasiController.getDetailLaporan('token-non-admin', 'lap-1');
       expect(hasil).toBeNull();
@@ -168,7 +168,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
   });
 
   describe('getStatistik & ubahStatusLaporan', () => {
-    test('berhasil mengambil data statistik laporan', async () => {
+    test('C21-UT11 [Normal] getStatistik: admin sah → jumlah laporan per status', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Laporan, 'getStatistikStatus').mockResolvedValue({
         Baru: 5,
@@ -182,7 +182,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(stats.Baru).toBe(5);
     });
 
-    test('berhasil memperbarui status laporan dan mencatat ke audit log (KF47, KF48)', async () => {
+    test('C21-UT12 [Normal] ubahStatusLaporan: Baru ke Diproses → status diperbarui dan log audit dicatat (KF47, KF48)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
         new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Baru' }),
@@ -200,13 +200,13 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       );
     });
 
-    test('menolak pembaruan jika status baru tidak sah', async () => {
+    test('C21-UT13 [Negatif] ubahStatusLaporan: status tujuan tidak sah → false', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       const sukses = await ModerasiController.ubahStatusLaporan('token-admin', 'lap-1', 'StatusPalsu');
       expect(sukses).toBe(false);
     });
 
-    test('berhasil memperbarui status laporan dari Diproses ke Selesai', async () => {
+    test('C21-UT14 [Normal] ubahStatusLaporan: Diproses ke Selesai → true', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
         new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Diproses' }),
@@ -219,7 +219,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(Laporan.updateStatusPenanganan).toHaveBeenCalledWith('lap-1', 'Selesai');
     });
 
-    test('menolak jika laporan sasaran tidak ditemukan', async () => {
+    test('C21-UT15 [Negatif] ubahStatusLaporan: laporan tidak ditemukan → false', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(null);
 
@@ -227,7 +227,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(sukses).toBe(false);
     });
 
-    test('menolak transisi status mundur (misalnya Selesai -> Diproses)', async () => {
+    test('C21-UT16 [Negatif] ubahStatusLaporan: transisi mundur Selesai ke Diproses → false', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
         new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Selesai' }),
@@ -237,7 +237,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(sukses).toBe(false);
     });
 
-    test('menolak pembaruan status jika pengguna bukan admin (KF56)', async () => {
+    test('C21-UT17 [Negatif] ubahStatusLaporan: bukan admin → false (KF56)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
 
       const sukses = await ModerasiController.ubahStatusLaporan('token-non-admin', 'lap-1', 'Diproses');
@@ -245,7 +245,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
     });
 
     // catatLogAudit tidak ditiru di sini, supaya teks yang benar-benar sampai ke tabel log_audit ikut teruji.
-    test('teks tindakan pada log audit tidak tertulis dua kali (KF48)', async () => {
+    test('C21-UT18 [Normal] ubahStatusLaporan: teks tindakan log audit tertulis satu kali (KF48)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
         new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Baru' }),
@@ -267,7 +267,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       ]);
     });
 
-    test('status yang sama tidak menulis ulang laporan maupun log audit (KF48)', async () => {
+    test('C21-UT19 [Batas] ubahStatusLaporan: status sama dengan status sekarang → true tanpa menulis laporan maupun log audit', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(
         new Laporan({ idLaporan: 'lap-1', statusPenanganan: 'Selesai' }),
@@ -284,7 +284,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
   });
 
   describe('catatLogAudit (KF48, KF49)', () => {
-    test('meneruskan status saja ke LogAudit untuk tindakan perubahan status', async () => {
+    test('C21-UT20 [Normal] catatLogAudit: tindakan perubahan status → hanya status yang diteruskan ke LogAudit', async () => {
       const catat = jest.spyOn(LogAudit, 'catatPerubahanStatusLaporan').mockResolvedValue();
 
       await ModerasiController.catatLogAudit('lap-1', 'admin-1', 'Perubahan status laporan menjadi Selesai');
@@ -292,7 +292,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(catat).toHaveBeenCalledWith('lap-1', 'admin-1', 'Selesai', db);
     });
 
-    test('memilih operasi LogAudit sesuai awalan tindakan', async () => {
+    test('C21-UT21 [Normal] catatLogAudit: awalan "Penghapusan listing:" dan "Pemblokiran akun:" → operasi LogAudit yang sesuai', async () => {
       const hapus = jest.spyOn(LogAudit, 'catatPenghapusanListing').mockResolvedValue();
       const blokir = jest.spyOn(LogAudit, 'catatPemblokiranAkun').mockResolvedValue();
       const status = jest.spyOn(LogAudit, 'catatPerubahanStatusLaporan').mockResolvedValue();
@@ -317,7 +317,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       jest.spyOn(db.pool, 'connect').mockResolvedValue(mockClient);
     });
 
-    test('berhasil menghapus listing dilaporkan, galeri foto, ubah status laporan, catat log audit & admin, serta kirim surel peringatan', async () => {
+    test('C21-UT22 [Normal] hapusListingDilaporkan: admin sah dan alasan terisi → listing dan foto dihapus, laporan Selesai, log audit dan admin dicatat, surel terkirim (Algo-022)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const barangMock = new Barang({
@@ -394,7 +394,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       );
     });
 
-    test('menolak jika pemohon bukan admin (KF56)', async () => {
+    test('C21-UT23 [Negatif] hapusListingDilaporkan: bukan admin → false (KF56)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
 
       const hasil = await ModerasiController.hapusListingDilaporkan(
@@ -408,7 +408,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(db.pool.connect).not.toHaveBeenCalled();
     });
 
-    test('menolak jika alasan penghapusan kosong atau hanya spasi (KF55)', async () => {
+    test('C21-UT24 [Batas] hapusListingDilaporkan: alasan kosong atau hanya spasi → false (KF55)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const hasil1 = await ModerasiController.hapusListingDilaporkan('token-admin', 'lap-1', 'brg-1', '');
@@ -419,7 +419,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(db.pool.connect).not.toHaveBeenCalled();
     });
 
-    test('mengembalikan false jika listing barang tidak ditemukan (404)', async () => {
+    test('C21-UT25 [Negatif] hapusListingDilaporkan: listing tidak ditemukan → false', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Barang, 'cariById').mockResolvedValue(null);
 
@@ -434,7 +434,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(db.pool.connect).not.toHaveBeenCalled();
     });
 
-    test('berhasil menghapus listing jika idLaporan null/kosong (tanpa pembaruan laporan)', async () => {
+    test('C21-UT26 [Normal] hapusListingDilaporkan: tanpa idLaporan → listing terhapus tanpa mengubah laporan', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const barangMock = new Barang({
@@ -473,7 +473,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       );
     });
 
-    test('melakukan rollback jika transaksi database mengalami kegagalan', async () => {
+    test('C21-UT27 [Negatif] hapusListingDilaporkan: galat basis data di tengah transaksi → ROLLBACK dan galat dilempar', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const barangMock = new Barang({
@@ -512,7 +512,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       jest.spyOn(db.pool, 'connect').mockResolvedValue(mockClient);
     });
 
-    test('berhasil memblokir akun sasaran, menonaktifkan seluruh listing, mencabut seluruh sesi, update laporan, catat log audit & admin, serta kirim surel penangguhan', async () => {
+    test('C21-UT28 [Normal] blokirAkun: admin sah dan alasan terisi → akun diblokir, listing dinonaktifkan, sesi dicabut, laporan Selesai, log dicatat, surel terkirim (Algo-023)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const akunSasaranMock = new Akun({
@@ -569,7 +569,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       );
     });
 
-    test('menolak jika pemohon bukan admin (KF56)', async () => {
+    test('C21-UT29 [Negatif] blokirAkun: bukan admin → false (KF56)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
 
       const hasil = await ModerasiController.blokirAkun(
@@ -583,7 +583,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(db.pool.connect).not.toHaveBeenCalled();
     });
 
-    test('menolak jika alasan pemblokiran kosong atau hanya spasi (KF55)', async () => {
+    test('C21-UT30 [Batas] blokirAkun: alasan kosong atau hanya spasi → false (KF55)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const hasil1 = await ModerasiController.blokirAkun('token-admin', 'lap-1', 'akun-1', '');
@@ -594,7 +594,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(db.pool.connect).not.toHaveBeenCalled();
     });
 
-    test('mengembalikan false jika akun sasaran tidak ditemukan (404)', async () => {
+    test('C21-UT31 [Negatif] blokirAkun: akun sasaran tidak ditemukan → false', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Akun, 'cariById').mockResolvedValue(null);
 
@@ -609,7 +609,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(db.pool.connect).not.toHaveBeenCalled();
     });
 
-    test('berhasil memblokir akun jika idLaporan null/kosong (tanpa pembaruan laporan)', async () => {
+    test('C21-UT32 [Normal] blokirAkun: tanpa idLaporan → akun diblokir tanpa mengubah laporan', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const akunSasaranMock = new Akun({
@@ -648,7 +648,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       );
     });
 
-    test('melakukan rollback jika transaksi database mengalami kegagalan', async () => {
+    test('C21-UT33 [Negatif] blokirAkun: galat basis data di tengah transaksi → ROLLBACK dan galat dilempar', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const akunSasaranMock = new Akun({
@@ -685,7 +685,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       jest.spyOn(db.pool, 'connect').mockResolvedValue(mockClient);
     });
 
-    test('berhasil membuka blokir akun, memulihkan listing, dan mencatat log admin (KF51, KF54, KF55)', async () => {
+    test('C21-UT34 [Normal] bukaBlokirAkun: admin sah → blokir dibuka, listing dipulihkan, log admin dicatat (Algo-024)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const akunSasaranMock = new Akun({
@@ -720,7 +720,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(mockClient.release).toHaveBeenCalled();
     });
 
-    test('menolak akses dan mengembalikan false jika bukan admin (KF56)', async () => {
+    test('C21-UT35 [Negatif] bukaBlokirAkun: bukan admin → false (KF56)', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
 
       const hasil = await ModerasiController.bukaBlokirAkun('token-invalid', 'akun-1', 'Alasan');
@@ -729,7 +729,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(db.pool.connect).not.toHaveBeenCalled();
     });
 
-    test('mengembalikan false jika akun sasaran tidak ditemukan', async () => {
+    test('C21-UT36 [Negatif] bukaBlokirAkun: akun sasaran tidak ditemukan → false', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
       jest.spyOn(Akun, 'cariById').mockResolvedValue(null);
 
@@ -739,7 +739,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       expect(db.pool.connect).not.toHaveBeenCalled();
     });
 
-    test('menggunakan alasan default jika parameter alasan kosong', async () => {
+    test('C21-UT37 [Batas] bukaBlokirAkun: alasan kosong → memakai alasan bawaan pada log admin', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const akunSasaranMock = new Akun({
@@ -764,7 +764,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
       );
     });
 
-    test('melakukan rollback jika transaksi database mengalami kegagalan', async () => {
+    test('C21-UT38 [Negatif] bukaBlokirAkun: galat basis data di tengah transaksi → ROLLBACK dan galat dilempar', async () => {
       jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-id-123');
 
       const akunSasaranMock = new Akun({
@@ -791,7 +791,7 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
   });
 
   describe('pulihkanListingPengguna (KF54)', () => {
-    test('memanggil Barang.pulihkanKatalog dengan idAkun dan client', async () => {
+    test('C21-UT39 [Normal] pulihkanListingPengguna: id akun → Barang.pulihkanKatalog dipanggil dengan klien transaksi', async () => {
       jest.spyOn(Barang, 'pulihkanKatalog').mockResolvedValue(3);
 
       const hasil = await ModerasiController.pulihkanListingPengguna('id-penjual-1', 'client-dummy');
@@ -800,4 +800,32 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
     });
   });
 
+});
+
+// Tambahan HIUPL (M10): operasi public C21 yang belum diuji secara langsung.
+describe('ModerasiController (C21) lanjutan HIUPL', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('C21-UT40 [Negatif] getStatistik: pemohon bukan admin → null tanpa membaca tabel laporan (KF56)', async () => {
+    jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
+    const statistik = jest.spyOn(Laporan, 'getStatistikStatus');
+    await expect(ModerasiController.getStatistik('token-pengguna')).resolves.toBeNull();
+    expect(statistik).not.toHaveBeenCalled();
+  });
+
+  test('C21-UT41 [Normal] catatLogAdmin: tindakan admin → diteruskan ke LogAdmin.catatTindakan dengan klien yang sama', async () => {
+    const catat = jest.spyOn(LogAdmin, 'catatTindakan').mockResolvedValue();
+    const klien = { query: jest.fn() };
+    await ModerasiController.catatLogAdmin('admin-1', 'BLOKIR_AKUN', 'akun-7', 'Penipuan', klien);
+    expect(catat).toHaveBeenCalledWith('admin-1', 'BLOKIR_AKUN', 'akun-7', 'Penipuan', klien);
+  });
+
+  test('C21-UT42 [Normal] nonaktifkanListingPengguna: id akun → Barang.nonaktifkanByPemilik dipanggil dengan klien transaksi', async () => {
+    const nonaktifkan = jest.spyOn(Barang, 'nonaktifkanByPemilik').mockResolvedValue(true);
+    const klien = { query: jest.fn() };
+    await expect(ModerasiController.nonaktifkanListingPengguna('akun-7', klien)).resolves.toBe(true);
+    expect(nonaktifkan).toHaveBeenCalledWith('akun-7', klien);
+  });
 });
