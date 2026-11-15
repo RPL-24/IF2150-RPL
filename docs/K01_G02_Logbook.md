@@ -24,6 +24,7 @@
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
 * [Milestone 9](#milestone-9)
+* [Milestone 10](#milestone-10)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -82,6 +83,16 @@
 * *Pembagian tugas mengikuti modul: Modul A oleh Dhanesworo, Modul B oleh Nazhif, Modul C oleh I Made Adi, Modul D oleh Sulthan, dan Modul E oleh Ghaniyul. Rinciannya ada pada Tabel B.4 laporan implementasi.*
 * *Dari 73 commit kode, 33 masuk pada 9 November. Berkas yang dipakai banyak modul sempat tertimpa saat PR digabung berdekatan, dan dua sisanya baru ditemukan lewat review pada 13 November.*
 * *Reviewer sudah ditunjuk pada 17 PR, tetapi tidak ada review yang dikirim sebelum PR digabung. Pada milestone berikutnya PR perlu ditahan sampai minimal satu anggota lain mengirim review.*
+
+
+---
+
+### Milestone 10
+**Periode:** 14-11-2026 - *[deadline M10]*
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| *15-11-2026* | *Dhanesworo Muhammad Datiputro* | *Pengujian Modul A untuk HIUPL pada branch `test/hiupl-modul-a`: ID pengujian pada nama test Modul A; 63 test baru pada `npm test` (408 menjadi 471) sehingga coverage kelas Mendalam Modul A menjadi 98 sampai 100%; 12 test integrasi dengan PostgreSQL, Mailpit, dan token endpoint Google (`npm run test:db`); 13 skenario UC01 sampai UC06 di aplikasi lokal beserta tangkapan layar; uji KNF03; serta HIUPL 3.1, 4.1 sampai 4.6, dan BAB 5 bagian Modul A langsung di `docs/M10/K01_G02_HIUPL.md` (templat diganti nama)* | *2 hari* | *Done* | *Infrastruktur test integrasi K1 belum ada, sehingga `npm run test:db` dibuat di branch ini. Skenario berhasil masuk lewat Google belum dapat diuji dengan Google sungguhan karena `GOOGLE_CLIENT_ID` belum diatur di lokal maupun Vercel* |
 
 ---
 

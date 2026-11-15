@@ -1,0 +1,12 @@
+Bukti unit test C01-UT. Perintah: cd src && npm test (Jest 30, Node.js v25.6.1)
+Waktu: 15/11/2026, 18.15.05 WIB
+
+PASS tests/unit/HalamanOtentikasi.test.js
+  ✓ C01-UT01 kirimFormulirPendaftaran: isian valid dikirim ke API lalu diarahkan ke halaman verifikasi (15 ms)
+  ✓ C01-UT02 kirimFormulirPendaftaran: domain bukan ITB, NIM berhuruf, dan kata sandi lemah ditandai tanpa memanggil API (11 ms)
+  ✓ C01-UT03 kirimFormulirPendaftaran: kebijakan belum disetujui → pesan galat tanpa memanggil API (KF14) (13 ms)
+  ✓ C01-UT04 kirimFormulirLogin: kredensial diterima server → sesi disimpan dan diarahkan ke beranda (4 ms)
+  ✓ C01-UT05 kirimFormulirLogin: surel di luar domain ITB ditolak di sisi klien (3 ms)
+  ✓ C01-UT06 kirimKodeVerifikasi: kode yang bukan 6 digit ditolak tanpa memanggil API (3 ms)
+
+Tests: 6 passed, 6 total

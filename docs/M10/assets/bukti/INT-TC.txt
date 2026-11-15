@@ -1,0 +1,22 @@
+Bukti pengujian integrasi Modul A dengan komponen nyata: PostgreSQL 16 (docker postgres:16-alpine, basis data itbeli_uji), Mailpit v1.21 (SMTP localhost:1025), token endpoint Google (https://oauth2.googleapis.com/token). Perintah: cd src && docker compose up -d && npm run test:db
+Waktu: 15/11/2026, 18.16.52 WIB
+
+PASS tests/db/ModulA.test.js
+  ✓ INT-TC01 daftarAkun menyimpan akun "Belum Terverifikasi" dengan hash bcrypt dan token aktif 15 menit (2393 ms)
+  ✓ INT-TC02 surel yang sama dengan huruf berbeda ditolak indeks unik akun_email_unik (1770 ms)
+  ✓ INT-TC03 kode verifikasi benar-benar terkirim ke kotak masuk SMTP (Mailpit) dan sama dengan kode di basis data (1675 ms)
+  ✓ INT-TC04 SMTP tidak dapat dihubungi: kirimSurel mengembalikan false tanpa melempar galat (18 ms)
+  ✓ INT-TC05 kode dari surel memverifikasi akun, token menjadi "Terpakai", dan kode tidak dapat dipakai ulang (1432 ms)
+  ✓ INT-TC06 kode kedaluwarsa ditolak; kirim ulang menghanguskan kode lama dan kode baru diterima (3200 ms)
+  ✓ INT-TC07 login membuat sesi 24 jam di sesi_login; logout menonaktifkannya sehingga token ditolak Otorisasi (3436 ms)
+  ✓ INT-TC08 sesi kedaluwarsa ditolak; blokir akun dalam satu transaksi mencabut sesi dan menolak login (5652 ms)
+  ✓ INT-TC09 Admin.verifikasiPeran dan Otorisasi.verifikasiAdmin membaca peran dan status blokir dari tabel akun (1266 ms)
+  ✓ INT-TC10 DokumenLegalController mengambil versi terbaru yang terbit dan sudah berlaku dari tabel dokumen_legal (148 ms)
+  ✓ INT-TC11 token endpoint Google menolak kode dan kredensial tidak sah → SSO gagal tanpa membuat akun atau sesi (183 ms)
+  ✓ INT-TC12 alur HTTP /api/akun: daftar → kode dari Mailpit → verifikasi → profil → logout (3012 ms)
+
+Tests: 12 passed, 12 total
+
+docker compose ps:
+itbeli-db-1  postgres:16-alpine  Up 28 minutes  0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+itbeli-mailpit-1  axllent/mailpit:v1.21  Up 28 minutes (healthy)  0.0.0.0:1025->1025/tcp, [::]:1025->1025/tcp, 0.0.0.0:8025->8025/tcp, [::]:8025->8025/tcp

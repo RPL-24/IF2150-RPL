@@ -1,0 +1,12 @@
+Bukti unit test C43-UT. Perintah: cd src && npm test (Jest 30, Node.js v25.6.1)
+Waktu: 15/11/2026, 18.15.05 WIB
+
+PASS tests/unit/SurelAdapter.test.js
+  ✓ C43-UT01 kirimSurel meneruskan pengirim, tujuan, subjek, dan isi ke SMTP lalu mengembalikan true (3 ms)
+  ✓ C43-UT02 kirimSurel mengembalikan false tanpa melempar galat bila SMTP menolak (1 ms)
+  ✓ C43-UT03 port 465 → secure true (465 TLS langsung, selain itu STARTTLS/tanpa TLS) (1 ms)
+  ✓ C43-UT03 port 587 → secure false (465 TLS langsung, selain itu STARTTLS/tanpa TLS) (0 ms)
+  ✓ C43-UT03 port 1025 → secure false (465 TLS langsung, selain itu STARTTLS/tanpa TLS) (1 ms)
+  ✓ C43-UT04 autentikasi SMTP hanya dipasang bila nama pengguna diisi (1 ms)
+
+Tests: 6 passed, 6 total
