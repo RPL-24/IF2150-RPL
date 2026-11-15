@@ -24,6 +24,7 @@
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
 * [Milestone 9](#milestone-9)
+* [Milestone 10](#milestone-10)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 ---
@@ -77,6 +78,12 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | *Claude Fable 5.2 melalui Claude Code, dengan skill `logo-design`* | *Merancang logo ITBELI dan memasangnya di aplikasi (penanggung jawab: Ghaniyul Amri Caulava). AI menggambar enam konsep dalam dua putaran sebagai SVG, lalu membuat berkas master, favicon, dan ikon web untuk konsep terpilih, serta mengganti kotak "IT" pada top bar dan menambah tautan favicon di semua halaman pada branch `feat/logo-gajah`.* | *"buatkan logo ITBELI pakai skill logo-design", lalu "coba buatkan lagi", dan pilihan "A, Gajah Belanja".* | *Penanggung jawab menolak putaran pertama, memilih konsep Gajah Belanja dari putaran kedua, dan memutuskan warnanya mengikuti biru ITB setelah tema aplikasi diganti. Hasil diperiksa dengan audit SVG, lembar uji ukuran 16 sampai 256 px, 358 test otomatis, dan pemeriksaan halaman masuk di peramban. Kemiripan dengan merek dagang lain belum diperiksa.* |
 
 **Catatan Milestone 9:** *Entri di atas hanya mencakup sesi pada 13 November 2026 oleh Ghaniyul Amri Caulava. Berbeda dari milestone dokumen sebelumnya, pada sesi ini AI ikut menulis kode, test, dan isi laporan, sehingga hal itu dinyatakan secara terbuka di sini. Bila anggota lain memakai AI selama implementasi, penggunaannya belum tercatat di sini dan perlu ditambahkan oleh masing-masing anggota.*
+
+
+### Milestone 10
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Claude Opus 5.5* | *Membantu bagian pengujian Modul A untuk HIUPL yang secara teknis sulit (penanggung jawab: Dhanesworo Muhammad Datiputro): (1) basis data uji terpisah untuk test integrasi, yaitu `jest.db.config.js`, `src/tests/db/siapkanBasisData.js`, dan skrip `npm run test:db`; (2) unit test C01 HalamanOtentikasi, yang memuat script browser lewat modul `vm` Node dengan DOM tiruan; (3) *mock* nodemailer untuk unit test C43 SurelAdapter; (4) test integrasi `src/tests/db/ModulA.test.js`, termasuk pengambilan kode verifikasi dari API Mailpit dan pemanggilan *token endpoint* Google; (5) analisis laporan coverage untuk menemukan cabang yang belum teruji, beserta unit test C13, C27, dan C28 untuk cabang tersebut; (6) kueri `psql` untuk uji KNF03; (7) pemformatan keluaran Jest `--json` menjadi berkas bukti.* | *"Gimana cara bikin test integrasi pakai PostgreSQL tanpa ngerusak database development?" "Kenapa HalamanOtentikasi.js nggak bisa di-require di Jest, terus gimana cara ngetesnya?" "Cara ambil kode verifikasi dari email di test otomatis gimana?" "Cara baca laporan coverage buat nyari cabang yang belum dites gimana?"* | *Bagian berikut dikerjakan sendiri oleh penanggung jawab: ID pengujian pada nama test; unit test C22, C25, dan C40 serta kueri C23 dan C26; klasifikasi tingkat pengujian pada Tabel 4.1; rancangan kasus normal, batas, dan negatif pada 4.2; pelaksanaan UC01 sampai UC06 secara manual di browser beserta tangkapan layarnya; pengisian tabel HIUPL dan traceability BAB 5; serta logbook. Hasil aktual pada setiap tabel diambil dari keluaran Jest, isi basis data (`psql`), kotak masuk Mailpit, dan tangkapan layar, bukan dari perkiraan AI. Kode aplikasi tidak diubah; yang ditambahkan hanya berkas test, `jest.db.config.js`, dan skrip `test:db`.* |
 
 ---
 ### Pernyataan Integritas dan Persetujuan

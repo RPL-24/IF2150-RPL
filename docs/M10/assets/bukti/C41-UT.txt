@@ -1,0 +1,27 @@
+Bukti unit test C41-UT. Perintah: cd src && npm test (Jest 30, Node.js v25.6.1)
+Waktu: 15/11/2026, 18.15.05 WIB
+
+PASS tests/unit/Otorisasi.test.js
+  ✓ C41-UT01 header "Bearer abc123" → "abc123" (10 ms)
+  ✓ C41-UT01 header "bearer abc123" → null (1 ms)
+  ✓ C41-UT01 header "Basic abc123" → null (0 ms)
+  ✓ C41-UT01 header "Bearer" → null (1 ms)
+  ✓ C41-UT01 header "" → null (0 ms)
+  ✓ C41-UT01 header undefined → null (0 ms)
+  ✓ C41-UT03 token null ditolak tanpa query ke basis data (1 ms)
+  ✓ C41-UT03 token undefined ditolak tanpa query ke basis data (1 ms)
+  ✓ C41-UT03 token "" ditolak tanpa query ke basis data (2 ms)
+  ✓ C41-UT03 token "   " ditolak tanpa query ke basis data (1 ms)
+  ✓ C41-UT04 token tidak dikenal, nonaktif, atau kedaluwarsa → null (KF11) (2 ms)
+  ✓ C41-UT02 token valid → objek SesiLogin (2 ms)
+  ✓ C41-UT06 sesi tidak valid → null tanpa memeriksa peran (1 ms)
+  ✓ C41-UT07 akun bukan admin → null (1 ms)
+  ✓ C41-UT05 akun admin → sesi (1 ms)
+  ✓ C41-UT09 tanpa token → 401 dan handler tidak dijalankan (2 ms)
+  ✓ C41-UT08 token valid → req.akun dan req.token terisi, lalu next() (2 ms)
+  ✓ C41-UT11 belum masuk → 401 (2 ms)
+  ✓ C41-UT12 masuk tetapi bukan admin → 403 (7 ms)
+  ✓ C41-UT10 admin → next() dengan req.akun terisi (2 ms)
+  ✓ C41-UT13 admin → sesi hanya dicari satu kali ke basis data (1 ms)
+
+Tests: 21 passed, 21 total
