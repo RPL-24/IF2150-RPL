@@ -11,6 +11,7 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "test": "jest --runInBand",
+    "test:db": "jest --runInBand --config jest.db.config.js",
     "db:init": "node database/init.js",
     "db:seed": "node database/seed.js",
     "db:seed-legal": "node database/seed.js --hanya-legal",
@@ -32,5 +33,11 @@
   },
   "overrides": {
     "zod": "^4.6.6"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/tests/db/"
+    ]
   }
 }
