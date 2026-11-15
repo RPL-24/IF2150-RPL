@@ -24,6 +24,7 @@
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
 * [Milestone 9](#milestone-9)
+* [Milestone 10](#milestone-10)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -82,6 +83,21 @@
 * *Pembagian tugas mengikuti modul: Modul A oleh Dhanesworo, Modul B oleh Nazhif, Modul C oleh I Made Adi, Modul D oleh Sulthan, dan Modul E oleh Ghaniyul. Rinciannya ada pada Tabel B.4 laporan implementasi.*
 * *Dari 73 commit kode, 33 masuk pada 9 November. Berkas yang dipakai banyak modul sempat tertimpa saat PR digabung berdekatan, dan dua sisanya baru ditemukan lewat review pada 13 November.*
 * *Reviewer sudah ditunjuk pada 17 PR, tetapi tidak ada review yang dikirim sebelum PR digabung. Pada milestone berikutnya PR perlu ditahan sampai minimal satu anggota lain mengirim review.*
+
+---
+
+
+### Milestone 10
+**Periode:** 13-11-2026 - (berjalan)
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *14-11-2026* | *Ghaniyul Amri Caulava* | *Membaca templat HIUPL, memetakan kondisi repo terhadap ketentuannya (55 skenario use case, 4 KNF, coverage per kelas), dan menyusun rencana pembagian tugas M10* | *-* | *Done* | *Deadline M10 belum tercantum di templat* | 
+| *15-11-2026* | *Ghaniyul Amri Caulava* | *Menambah dan memberi ID 135 unit test Modul E (C10, C11, C20, C21, C29, C30, C36 sampai C39, C45), memperbaiki cacat dasbor admin yang ditemukan C11-UT04, membuat skrip penyusun Tabel 4.2 dari keluaran Jest, serta menyusun kerangka `K01_G02_HIUPL.md` beserta BAB 1, Subbab 3.2 sampai 3.4, dan bagian Modul E. Branch `test/hiupl-modul-e` dan `docs/hiupl-kerangka`* | *-* | *On Progress* | *Test integrasi dan uji use case Modul E belum dapat dijalankan karena PostgreSQL dan Docker tidak tersedia di laptop; menunggu suite PostgreSQL nyata* | 
+
+**Catatan/Evaluasi Milestone 10:**
+* *Baris anggota lain diisi masing-masing sesuai bagian mereka di HIUPL.*
+* *Kolom durasi diisi oleh anggota yang bersangkutan.*
 
 ---
 

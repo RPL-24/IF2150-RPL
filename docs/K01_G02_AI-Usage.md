@@ -24,6 +24,7 @@
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
 * [Milestone 9](#milestone-9)
+* [Milestone 10](#milestone-10)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 ---
@@ -77,6 +78,14 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | *Claude Fable 5.2 melalui Claude Code, dengan skill `logo-design`* | *Merancang logo ITBELI dan memasangnya di aplikasi (penanggung jawab: Ghaniyul Amri Caulava). AI menggambar enam konsep dalam dua putaran sebagai SVG, lalu membuat berkas master, favicon, dan ikon web untuk konsep terpilih, serta mengganti kotak "IT" pada top bar dan menambah tautan favicon di semua halaman pada branch `feat/logo-gajah`.* | *"buatkan logo ITBELI pakai skill logo-design", lalu "coba buatkan lagi", dan pilihan "A, Gajah Belanja".* | *Penanggung jawab menolak putaran pertama, memilih konsep Gajah Belanja dari putaran kedua, dan memutuskan warnanya mengikuti biru ITB setelah tema aplikasi diganti. Hasil diperiksa dengan audit SVG, lembar uji ukuran 16 sampai 256 px, 358 test otomatis, dan pemeriksaan halaman masuk di peramban. Kemiripan dengan merek dagang lain belum diperiksa.* |
 
 **Catatan Milestone 9:** *Entri di atas hanya mencakup sesi pada 13 November 2026 oleh Ghaniyul Amri Caulava. Berbeda dari milestone dokumen sebelumnya, pada sesi ini AI ikut menulis kode, test, dan isi laporan, sehingga hal itu dinyatakan secara terbuka di sini. Bila anggota lain memakai AI selama implementasi, penggunaannya belum tercatat di sini dan perlu ditambahkan oleh masing-masing anggota.*
+
+### Milestone 10
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Claude Opus 5.5 melalui Claude Code* | *Membaca templat HIUPL dan kondisi repo, lalu menyusun rencana pembagian tugas M10 (penanggung jawab: Ghaniyul Amri Caulava).* | *"coba cek tugas terbaru dan buat rencana pembagian tugas dalam .md"* | *Angka pada rencana (jumlah skenario, KF, KNF, test, dan coverage per kelas) dihitung dari SKPL, DPPL, dan keluaran `npx jest --coverage`. Pembagian tugas dan tujuh keputusan awal masih harus disepakati kelompok.* |
+| *Claude Opus 5.5 melalui Claude Code, dengan skill `anti-ai-writing`* | *Mengerjakan bagian Ghaniyul pada HIUPL: menulis dan memberi ID unit test Modul E, memperbaiki cacat yang ditemukan test, membuat skrip penyusun tabel, serta menulis kerangka dokumen, BAB 1, Subbab 3.2 sampai 3.4, dan bagian Modul E (penanggung jawab: Ghaniyul Amri Caulava).* | *"kerjakan bagian saya"* | *Setiap test baru dijalankan dan lulus; C11-UT04 dibiarkan gagal lebih dulu untuk menyimpan bukti cacat, baru kemudian diperbaiki. Kolom hasil unit test disusun skrip dari keluaran Jest, bukan ditulis tangan. Test integrasi, test use case, dan sebagian KNF02 hanya dirancang dan ditandai belum dijalankan; hasilnya tidak dikarang.* |
+
+**Catatan Milestone 10:** *Bila anggota lain memakai AI untuk bagian HIUPL mereka, penggunaannya ditambahkan di tabel ini oleh masing-masing anggota.*
 
 ---
 ### Pernyataan Integritas dan Persetujuan
