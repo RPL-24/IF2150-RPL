@@ -190,3 +190,66 @@ describe('Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)', ()
     });
   });
 });
+
+// Tambahan HIUPL (M10): operasi C29 dan C30 milik Modul E yang belum diuji.
+// Operasi katalog C29 (getKatalog, getDetailKatalog) diuji Modul C.
+describe('Barang dan FotoBarang lanjutan HIUPL (C29, C30)', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('C29-UT07 [Normal] getStatus: objek Barang berstatus Terjual → "Terjual"', () => {
+    expect(new Barang({ status: 'Terjual' }).getStatus()).toBe('Terjual');
+  });
+
+  test('C29-UT08 [Batas] konstruktor tanpa status dan tanpa harga → status Tersedia dan harga 0', () => {
+    const barang = new Barang({ idBarang: 'brg-1' });
+    expect(barang.getStatus()).toBe('Tersedia');
+    expect(barang.harga).toBe(0);
+  });
+
+  test('C29-UT09 [Negatif] cariById: id barang tidak ada → null', async () => {
+    jest.spyOn(db, 'query').mockResolvedValue({ rows: [] });
+    await expect(Barang.cariById('brg-hilang')).resolves.toBeNull();
+  });
+
+  test('C29-UT10 [Negatif] hapus: id barang tidak ada (0 baris terhapus) → false', async () => {
+    jest.spyOn(db, 'query').mockResolvedValue({ rowCount: 0 });
+    await expect(Barang.hapus('brg-hilang')).resolves.toBe(false);
+  });
+
+  test('C29-UT11 [Normal] getListingPenjual: listing Tersedia dan Terjual milik penjual → objek Barang beserta fotoUtama', async () => {
+    const kueri = jest.spyOn(db, 'query').mockResolvedValue({
+      rows: [
+        { id_barang: 'brg-2', id_penjual: 'akun-1', judul: 'Kalkulator', harga: '150000', status: 'Terjual', foto_utama: '/uploads/brg-2/a.png' },
+        { id_barang: 'brg-1', id_penjual: 'akun-1', judul: 'Jas lab', harga: '80000', status: 'Tersedia', foto_utama: null },
+      ],
+    });
+
+    const hasil = await Barang.getListingPenjual('akun-1');
+
+    expect(hasil.map((b) => [b.idBarang, b.getStatus(), b.harga, b.fotoUtama])).toEqual([
+      ['brg-2', 'Terjual', 150000, '/uploads/brg-2/a.png'],
+      ['brg-1', 'Tersedia', 80000, null],
+    ]);
+    expect(kueri.mock.calls[0][1]).toEqual(['akun-1', 'Tersedia', 'Terjual']);
+  });
+
+  test('C29-UT12 [Batas] nonaktifkanByPemilik: penjual tanpa listing Tersedia (0 baris berubah) → tetap true', async () => {
+    jest.spyOn(db, 'query').mockResolvedValue({ rowCount: 0 });
+    await expect(Barang.nonaktifkanByPemilik('akun-tanpa-listing')).resolves.toBe(true);
+  });
+
+  test('C30-UT06 [Batas] validasiFormat: huruf besar dan titik di depan (".PNG") → true; null atau "gif" → false', () => {
+    expect(FotoBarang.validasiFormat('.PNG')).toBe(true);
+    expect(FotoBarang.validasiFormat(null)).toBe(false);
+    expect(FotoBarang.validasiFormat('gif')).toBe(false);
+  });
+
+  test('C30-UT07 [Batas] validasiUkuran: tepat 5.242.880 byte → true; 0 byte, 5.242.881 byte, atau teks → false', () => {
+    expect(FotoBarang.validasiUkuran(5 * 1024 * 1024)).toBe(true);
+    expect(FotoBarang.validasiUkuran(0)).toBe(false);
+    expect(FotoBarang.validasiUkuran(5 * 1024 * 1024 + 1)).toBe(false);
+    expect(FotoBarang.validasiUkuran('100')).toBe(false);
+  });
+});

@@ -801,3 +801,31 @@ describe('ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)', () => {
   });
 
 });
+
+// Tambahan HIUPL (M10): operasi public C21 yang belum diuji secara langsung.
+describe('ModerasiController (C21) lanjutan HIUPL', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('C21-UT40 [Negatif] getStatistik: pemohon bukan admin → null tanpa membaca tabel laporan (KF56)', async () => {
+    jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue(null);
+    const statistik = jest.spyOn(Laporan, 'getStatistikStatus');
+    await expect(ModerasiController.getStatistik('token-pengguna')).resolves.toBeNull();
+    expect(statistik).not.toHaveBeenCalled();
+  });
+
+  test('C21-UT41 [Normal] catatLogAdmin: tindakan admin → diteruskan ke LogAdmin.catatTindakan dengan klien yang sama', async () => {
+    const catat = jest.spyOn(LogAdmin, 'catatTindakan').mockResolvedValue();
+    const klien = { query: jest.fn() };
+    await ModerasiController.catatLogAdmin('admin-1', 'BLOKIR_AKUN', 'akun-7', 'Penipuan', klien);
+    expect(catat).toHaveBeenCalledWith('admin-1', 'BLOKIR_AKUN', 'akun-7', 'Penipuan', klien);
+  });
+
+  test('C21-UT42 [Normal] nonaktifkanListingPengguna: id akun → Barang.nonaktifkanByPemilik dipanggil dengan klien transaksi', async () => {
+    const nonaktifkan = jest.spyOn(Barang, 'nonaktifkanByPemilik').mockResolvedValue(true);
+    const klien = { query: jest.fn() };
+    await expect(ModerasiController.nonaktifkanListingPengguna('akun-7', klien)).resolves.toBe(true);
+    expect(nonaktifkan).toHaveBeenCalledWith('akun-7', klien);
+  });
+});
