@@ -151,19 +151,18 @@ Bagian ini diisi dengan informasi tentang elemen P/L yang dikembangkan (*executa
 
 ## 3.1 Lingkungan Implementasi
 
-Tuliskan *hardware* dan *software* yang digunakan untuk implementasi, mencakup *operating system*, bahasa pemrograman beserta versinya, *framework*/*library*, DBMS, *development tools*, dan *version control*. Lingkungan ini harus konsisten dengan **Subbab 2.1 DPPL**; jelaskan jika ada perubahan. Cantumkan juga *framework* dan alat pengujian yang dipakai.
+Lingkungan implementasi mengikuti Subbab 2.1 DPPL, dengan tambahan kerangka kerja, pustaka, dan alat pengujian yang digunakan pada tahap implementasi.
 
 Tabel 3.1. Lingkungan Implementasi
 
 | Aspek | Keterangan |
 | :--- | :--- |
-| *Hardware* | *[Spesifikasi perangkat keras]* |
-| *Operating System* | *Android 16 melalui Expo Go* |
-| *Bahasa Pemrograman* | *TypeScript ~6.0.3** |
-| *Framework/Library* | *Expo ~58.0.23, React Native 0.88.1, React 19.3.0, React Navigation ^7, @supabase/supabase-js ^2.118.0, expo-notifications ~58.1.8, expo-linking ~58.0.16, @expo/vector-icons ^15.0.2, react-native-chart-kit ^7.0.4, react-native-svg 15.16.0, AsyncStorage 2.2.0* |
-| *DBMS* | *[Nama dan versi DBMS]* |
-| *Development Tools* | *Visual Studio Code, Git, GitHub, Supabase Dashboard, Expo Go* |
-| *Testing Tools* | *[Framework unit test, alat ukur performa, alat coverage]* |
+| *Hardware* | *Pengembangan: Lenovo IdeaPad 3 14ALC6 dengan prosessor AMD64 Family 23 Model 104 Stepping 1 AuthenticAMD ~2084 Mhz dan RAM 19.301 MB. Pengujian: [isi model perangkat Android].* |
+| *Operating System* | *Pengembangan: [isi OS dan versi]. Pengujian aplikasi: Android 16 melalui Expo Go.* |
+| *Bahasa Pemrograman* | *TypeScript ~6.0.3* |
+| *DBMS* | *Supabase (PostgreSQL [isi versi])* |
+| *Development Tools* | *Visual Studio Code, Node.js v24.17.0, npm 11.13.0, Git, GitHub, Supabase Dashboard, Expo Go* |
+| *Testing Tools* | *Vitest ^5.0.5, @vitest/coverage-v8 ^5.0.5* |
 
 ## 3.2 Implementasi Modul
 
@@ -199,7 +198,7 @@ Tabel 3.2. Implementasi Modul
 | 24 | *C25* | *ProfilePage* | *`src/views/ProfilePage.tsx`* | *-* |
 | 25 | *C26* | *ProfileController* | *`src/controllers/ProfileController.ts`* | *-* |
 
-#C24 belum ada
+Catatan: kelas C24 PriceHistoryController tidak dicantumkan karena berkas `src/controllers/PriceHistoryController.ts` masih kosong pada tag v9.0.
 
 ## 3.3 Implementasi Antarmuka
 
@@ -296,7 +295,7 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 
 Pengujian unit dilakukan pada kelas bertingkat Mendalam dan Sedang. Kelas Mendalam diuji pada seluruh operasi public dengan kasus normal, batas, dan negatif, serta mencapai *coverage* minimal 70%. Kelas Sedang diuji minimal dengan satu kasus normal dan satu kasus gagal pada operasi public utama.
 
-Cara menjalankan unit test: `npm test` pada direktori `src/`.
+Cara menjalankan unit test: `npm test` pada direktori `src/`. Untuk laporan coverage: `npm run test:coverage`.
 
 Lokasi file test: `src/tests/`.
 
