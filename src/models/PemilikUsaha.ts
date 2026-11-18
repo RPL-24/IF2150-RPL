@@ -9,27 +9,6 @@ export class PemilikUsaha {
     private noTelp: string = '',
   ) {}
 
-  static async muatSaatIni(): Promise<PemilikUsaha> {
-    const { data: userData, error: userError } = await supabase.auth.getUser();
-
-    if (userError || !userData.user) {
-      throw new Error('Pengguna belum login');
-    }
-
-    const { data } = await supabase
-      .from('tbl_pemilik_usaha')
-      .select('*')
-      .eq('id', userData.user.id)
-      .maybeSingle();
-
-    const email = userData.user.email ?? '';
-    const username = data?.username ?? (userData.user.user_metadata?.username as string) ?? '';
-    const namaUsaha = data?.nama_usaha ?? '';
-    const noTelp = data?.no_telp ?? '';
-
-    return new PemilikUsaha(username, email, '', namaUsaha, noTelp);
-  }
-
   async createUser(): Promise<void> {
     const { error } = await supabase.auth.signUp({
       email: this.email.trim().toLowerCase(),

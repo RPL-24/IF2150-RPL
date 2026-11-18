@@ -300,35 +300,53 @@ Cara menjalankan unit test: `npm test` pada direktori `src/`.
 
 Lokasi file test: `src/tests/`.
 
-### 4.2.1 Kelas [Nama Kelas 1]
+### 4.2.1 Kelas PemilikUsaha
 
-**ID Kelas:** *[C02]*  
-**Nama Kelas:** *[Pesanan]*  
-**Tingkat:** *[Mendalam]*
+**ID Kelas:** *C01*<br>
+**Nama Kelas:** *PemilikUsaha*<br>
+**Tingkat:** *Sedang*
 
-Tabel 4.2.1. Hasil Pengujian Unit Kelas [C02]
+Pengujian operasi `createUser()` (`Algo-C01-01`) dijalankan dengan Vitest melalui `src/tests/pemilikUsaha.test.ts`. Pemanggilan Supabase Auth disimulasikan dengan *mock*.
+
+Tabel 4.2.1. Hasil Pengujian Unit Kelas C01
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *C02-UT01* | *`hitungTotal(): Decimal`* | *Normal* | *Pesanan berisi 2 item: 10.000 x 2 dan 5.000 x 1* | *Total = 25.000* | *[Hasil aktual]* | *Pass/Fail* |
-| *C02-UT02* | *`hitungTotal(): Decimal`* | *Batas* | *Pesanan berisi tepat 1 item dengan jumlah 1* | *Total = harga item tersebut* | *[...]* | *Pass/Fail* |
-| *C02-UT03* | *`hitungTotal(): Decimal`* | *Negatif* | *Pesanan tanpa item* | *Total = 0 atau melempar kesalahan sesuai rancangan* | *[...]* | *Pass/Fail* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| *C01-UT01* | *`createUser()`* | *Normal* | *Buat objek dengan username dan email yang mengandung spasi tepi dan huruf kapital. Jalankan `createUser()` dengan respons sukses dari mock Supabase.* | *Supabase Auth menerima username dan email yang sudah dinormalisasi. Operasi selesai tanpa error.* | *Mock `signUp()` menerima username `kevin_uji` dan email `kevin@example.com`. Operasi selesai tanpa error.* | *Pass* |
+| *C01-UT02* | *`createUser()`* | *Negatif* | *Jalankan `createUser()` dengan mock Supabase yang mengembalikan error “User already registered”.* | *Operasi menghasilkan error dengan pesan yang dikembalikan Supabase.* | *Operasi menghasilkan error “User already registered”.* | *Pass* |
 
-Khusus kelas **Mendalam**:
+### 4.2.2 Kelas AuthController
 
-Tabel 4.2.1b. Ringkasan Cakupan Kelas [C02]
+**ID Kelas:** *C06*<br>
+**Nama Kelas:** *AuthController*<br>
+**Tingkat:** *Mendalam*
+
+Pengujian operasi `validateData()` (`Algo-C06-01`) dijalankan dengan Vitest melalui `src/tests/authController.test.ts`. Respons Supabase dan Edge Function disimulasikan dengan *mock*.
+
+Tabel 4.2.2. Hasil Pengujian Unit Kelas C06
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C06-UT01* | *`validateData()`* | *Normal* | *Kirim data registrasi valid untuk akun baru. Mock pengecekan akun mengembalikan `false` dan mock `signUp()` berhasil.* | *Controller meminta pembuatan akun dan mengembalikan `true`.* | *`signUp()` dipanggil dengan data yang sesuai dan hasilnya `true`.* | *Pass* |
+| *C06-UT02* | *`validateData()`* | *Batas* | *Kirim username kosong dengan email dan password valid.* | *Registrasi ditolak dengan pesan “Data Registrasi Belum Lengkap”.* | *Pesan sesuai dan `signUp()` tidak dipanggil.* | *Pass* |
+| *C06-UT03* | *`validateData()`* | *Negatif* | *Kirim data registrasi dengan format email tidak valid.* | *Registrasi ditolak dengan pesan “Format email tidak valid”.* | *Pesan sesuai dan `signUp()` tidak dipanggil.* | *Pass* |
+| *C06-UT04* | *`validateData()`* | *Negatif* | *Kirim data registrasi valid saat mock pengecekan akun mengembalikan `true`.* | *Registrasi ditolak dengan pesan “Akun sudah dibuat”.* | *Pesan sesuai dan `signUp()` tidak dipanggil.* | *Pass* |
+| *C06-UT05* | *`validateData()`* | *Negatif* | *Kirim data registrasi akun baru dengan password lemah.* | *Registrasi ditolak dengan pesan “Password terlalu lemah”.* | *Pesan sesuai dan `signUp()` tidak dipanggil.* | *Pass* |
+| *C06-UT06* | *`validateData()`* | *Normal* | *Kirim email terdaftar dan password benar pada jalur login.* | *`signInWithPassword()` dipanggil dengan kredensial yang sesuai dan operasi mengembalikan `true`.* | *Pemanggilan dan hasil sesuai.* | *Pass* |
+| *C06-UT07* | *`validateData()`* | *Negatif* | *Kirim email terdaftar dengan password salah. Mock `signInWithPassword()` mengembalikan error.* | *Login ditolak dengan pesan “Username atau Password Salah”.* | *Operasi menghasilkan pesan yang diharapkan.* | *Pass* |
+| *C06-UT08* | *`validateData()`* | *Negatif* | *Kirim email yang belum terdaftar pada jalur login.* | *Login ditolak dengan pesan “Tidak dapat menemukan akun”.* | *Pesan sesuai dan `signInWithPassword()` tidak dipanggil.* | *Pass* |
+| *C06-UT09* | *`validateData()`* | *Normal* | *Kirim username dengan spasi tepi dan huruf kapital. Mock Edge Function mengembalikan dua token sesi.* | *Controller mengirim username yang sudah dinormalisasi, menyimpan sesi, dan mengembalikan `true`.* | *`login-with-username` menerima username `kevin_uji`, `setSession()` menerima kedua token, dan hasilnya `true`.* | *Pass* |
+| *C06-UT10* | *`validateData()`* | *Negatif* | *Kirim username dengan password salah. Mock Edge Function mengembalikan `INVALID_CREDENTIALS`.* | *Login ditolak dengan pesan “Username atau Password Salah”.* | *Pesan sesuai dan `setSession()` tidak dipanggil.* | *Pass* |
+| *C06-UT11* | *`validateData()`* | *Negatif* | *Simulasikan respons sukses dari Edge Function yang hanya memuat `access_token`.* | *Login ditolak dengan pesan “Session login tidak diterima”.* | *Pesan sesuai dan `setSession()` tidak dipanggil.* | *Pass* |
+
+Tabel 4.2.2b. Ringkasan Cakupan Kelas C06
 
 | Informasi | Keterangan |
 | :--- | :--- |
-| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
-| Operasi yang diuji | *[op1(), op2(), ...]* |
-| ID Algoritma yang tercakup | *[Algo-001, ...]* |
-| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
-
-### 4.2.2 Kelas [Nama Kelas 2]
-
-*[Ulangi pola 4.2.1 untuk setiap kelas bertingkat Mendalam atau Sedang.]*
+| Daftar operasi public pada DPPL | *`validateData(username, email, password)`* |
+| Operasi yang diuji | *`validateData()` untuk registrasi, login via email, dan login via username.* |
+| ID Algoritma yang tercakup | *`Algo-C06-01`* |
+| Coverage (wajib ≥ 70%) | *Vitest 5.0.5 dengan provider V8 melaporkan 88,63% baris, 86,11% cabang, 88,63% pernyataan, dan 100% fungsi untuk `AuthController.ts`. Bukti dicantumkan pada Subbab 4.6.* |
 
 <br>
 
@@ -340,19 +358,22 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 
 | ID Antarmuka | Komponen Asal | Komponen Tujuan | Jenis Batas | Test Case |
 | :--- | :--- | :--- | :--- | :--- |
-| *I-01* | *KeranjangController* | *Keranjang (Model)* | *Controller - Model* | *INT-TC01, INT-TC02* |
-| *I-02* | *Pesanan (Model)* | *Database* | *Aplikasi - Basis data* | *INT-TC03* |
-| *I-03* | *PaymentGatewayAdapter* | *Payment Gateway (dummy)* | *Aplikasi - Sistem eksternal* | *INT-TC04, INT-TC05* |
-| *[I-XX]* | *[Komponen asal]* | *[Komponen tujuan]* | *[Jenis batas]* | *[ID test case]* |
+| *INT-AUTH-01* | *C06 `AuthController`* | *C01 `PemilikUsaha`* | *Controller–Model* | *INT-TC-AUTH-01* |
+| *INT-AUTH-02* | *C01 `PemilikUsaha`* | *Supabase Auth (`signUp()`)* | *Aplikasi–Sistem eksternal* | *INT-TC-AUTH-02* |
+| *INT-AUTH-03* | *Supabase Auth (`auth.users`)* | *`public.tbl_pemilik_usaha` melalui trigger `on_auth_user_created` dan fungsi `handle_new_user()`* | *Autentikasi–Basis data profil* | *INT-TC-AUTH-03* |
+| *INT-AUTH-04* | *C06 `AuthController`* | *Supabase Auth (`signInWithPassword()`)* | *Aplikasi–Sistem eksternal* | *INT-TC-AUTH-04* |
+| *INT-AUTH-05* | *C06 `AuthController`* | *Supabase Edge Function `login-with-username`* | *Aplikasi–Sistem eksternal* | *INT-TC-AUTH-05* |
 | *...* | *...* | *...* | *...* | *...* |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
 
 | ID Pengujian | ID Antarmuka | Skenario | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *INT-TC01* | *I-01* | *Normal: tambah item ke keranjang* | *Panggil `tambahItem()` melalui KeranjangController dengan produk valid* | *Item tersimpan pada Keranjang dan tampil pada daftar item* | *[Hasil aktual]* | *Pass/Fail* |
-| *INT-TC03* | *I-02* | *Normal: simpan pesanan* | *Buat pesanan, lalu baca ulang langsung dari basis data* | *Baris pesanan ada dengan nilai total dan status yang sama* | *[...]* | *Pass/Fail* |
-| *INT-TC05* | *I-03* | *Gagal: gateway mengembalikan status gagal* | *Kirim otorisasi dengan saldo dummy tidak cukup* | *Status pesanan tidak berubah menjadi "Lunas", pesan gagal diteruskan ke pengguna* | *[...]* | *Pass/Fail* |
+| *INT-TC-AUTH-01* | *INT-AUTH-01* | *Controller meneruskan registrasi ke model* | *Daftarkan akun uji dengan username dan email baru serta password yang valid.* | *Controller memvalidasi masukan dan meneruskan pembuatan akun ke model `PemilikUsaha`.* | *Registrasi berhasil, Beranda tampil, dan profil akun uji ditemukan. Hasil ini diamati melalui alur UC01-TC01.* | *Pass* |
+| *INT-TC-AUTH-02* | *INT-AUTH-02* | *Pembuatan akun melalui Supabase Auth* | *Kirim formulir registrasi valid pada UC01-TC01 menggunakan Supabase proyek uji.* | *Supabase Auth menerima pendaftaran akun baru dan aplikasi menyelesaikan alur registrasi.* | *Registrasi berhasil dan aplikasi membuka Beranda.* | *Pass* |
+| *INT-TC-AUTH-03* | *INT-AUTH-03* | *Pembuatan profil melalui trigger basis data* | *Setelah registrasi berhasil, buka `public.tbl_pemilik_usaha` dan filter berdasarkan username akun uji.* | *Profil untuk username yang baru didaftarkan tersedia di tabel.* | *Filter menampilkan profil akun uji yang baru dibuat pada UC01-TC01.* | *Pass* |
+| *INT-TC-AUTH-04* | *INT-AUTH-04* | *Autentikasi melalui email* | *Dari kondisi logout, masuk dengan email dan password akun uji seperti pada UC02-TC01.* | *Supabase Auth memverifikasi kredensial dan aplikasi membuka Beranda.* | *Login melalui email berhasil dan Beranda tampil.* | *Pass* |
+| *INT-TC-AUTH-05* | *INT-AUTH-05* | *Autentikasi melalui Edge Function* | *Dari kondisi logout, masuk dengan username dan password akun uji seperti pada UC02-TC02.* | *Edge Function memverifikasi kredensial dan aplikasi menggunakan sesi yang diterima untuk membuka Beranda.* | *Login melalui username berhasil dan Beranda tampil.* | *Pass* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
 <br>
@@ -361,22 +382,33 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 
 Pengujian use case dilakukan pada seluruh skenario normal dan alternatif sesuai Subbab 4.4 SKPL, dengan minimal satu test case untuk setiap skenario. Kolom ID KF menunjukkan KF yang diverifikasi oleh test case tersebut.
 
-### 4.4.1 Use Case [Nama Use Case 1]
+### 4.4.1 Use Case UC01 — Mendaftarkan Akun
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** *UC01*<br>
+**Nama Use Case:** *Mendaftarkan Akun*
 
-Tabel 4.4.1. Hasil Pengujian Use Case [UC01]
+Tabel 4.4.1. Hasil Pengujian Use Case UC01
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *UC01-TC01* | *KF01* | *Normal* | *1. Buka halaman login.<br>2. Masukkan kredensial.<br>3. Klik tombol "Login".* | *User: rpl@gmail.com<br>Pass: 123456* | *Pengguna diarahkan ke Halaman Dashboard.* | *Pengguna diarahkan ke Halaman Dashboard sesuai hasil yang diharapkan.* | *Pass* |
-| *UC01-TC02* | *KF01* | *Alternatif 1: [Nama skenario]* | *[Langkah-langkah pengujian]* | *[Data masukan]* | *[Hasil yang diharapkan]* | *[Hasil aktual]* | *[Pass/Fail. Jika Fail: penjelasan dan solusi]* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| *UC01-TC01* | *KF01, KF02* | *Normal — registrasi berhasil* | *Buka halaman Daftar, isi formulir, tekan Daftar, lalu cek profil akun uji di Supabase.* | *Username dan email baru, password valid, serta konfirmasi yang sesuai.* | *Akun berhasil dibuat, profil tersimpan di basis data, dan Beranda tampil.* | *Beranda tampil dan profil akun uji ditemukan di `public.tbl_pemilik_usaha`.* | *Pass* |
+| *UC01-TC02* | *KF01* | *Alternatif 1 — data registrasi belum lengkap* | *Isi semua kolom kecuali email, lalu coba tekan Daftar.* | *Email kosong. Kolom lainnya terisi dengan data valid.* | *Registrasi ditolak dan aplikasi menampilkan pesan “Data Registrasi Belum Lengkap”.* | *Tombol Daftar tidak aktif dan aplikasi tetap di halaman registrasi. Pesan yang ditentukan di SKPL tidak muncul.* | *Fail terhadap SKPL. Formulir mencegah pengiriman. Tambahkan pesan validasi ketika kolom wajib belum diisi.* |
+| *UC01-TC03* | *KF01* | *Alternatif 2 — akun sudah terdaftar* | *Isi formulir dengan username dan email akun uji yang sudah terdaftar, lalu tekan Daftar.* | *Username dan email terdaftar, password valid, serta konfirmasi yang sesuai.* | *Registrasi ditolak dan aplikasi menampilkan pesan “Akun sudah dibuat”.* | *Registrasi ditolak dan aplikasi menampilkan pesan “Akun sudah dibuat”.* | *Pass* |
+| *UC01-TC04* | *KF01* | *Alternatif 3 — password terlalu lemah* | *Isi formulir dengan username dan email baru, masukkan password lemah, lalu tekan Daftar.* | *Username dan email baru, password lemah, serta konfirmasi yang sesuai.* | *Registrasi ditolak dan aplikasi menampilkan pesan validasi password lemah.* | *Aplikasi tetap di halaman registrasi dan menampilkan “Password terlalu lemah. Gunakan minimal 8 karakter, huruf dan angka.”* | *Pass* |
 
-### 4.4.2 Use Case [Nama Use Case 2]
+### 4.4.2 Use Case UC02 — Login dengan Akun yang Sudah Terdaftar
 
-*[Lanjutkan untuk seluruh use case dengan pola yang sama, hingga 4.4.N.]*
+**ID Use Case:** *UC02*<br>
+**Nama Use Case:** *Login dengan Akun yang Sudah Terdaftar*
+
+Tabel 4.4.2. Hasil Pengujian Use Case UC02
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *UC02-TC01* | *KF03, KF04* | *Jalur tambahan — login via email berhasil* | *Buka halaman Login, masukkan email dan password akun uji, lalu tekan Masuk.* | *Email terdaftar dan password benar.* | *Login berhasil dan Beranda tampil.* | *Aplikasi membuka Beranda setelah login dengan email.* | *Pass* |
+| *UC02-TC02* | *KF03, KF04* | *Normal — login via username berhasil* | *Buka halaman Login, masukkan username dan password akun uji, lalu tekan Masuk.* | *Username terdaftar dan password benar.* | *Login berhasil dan Beranda tampil.* | *Aplikasi membuka Beranda setelah login dengan username.* | *Pass* |
+| *UC02-TC03* | *KF04* | *Alternatif 1 — password salah* | *Masukkan email akun uji dan password yang salah, lalu tekan Masuk.* | *Email terdaftar dan password salah.* | *Login ditolak dan aplikasi menampilkan pesan “Username atau Password Salah”.* | *Pesan “Username atau Password Salah” tampil dan aplikasi tetap di halaman Login.* | *Pass* |
+| *UC02-TC04* | *KF04* | *Alternatif 2 — akun belum terdaftar* | *Masukkan email yang belum terdaftar dan password uji, lalu tekan Masuk.* | *Email berformat valid yang belum terdaftar dan password uji.* | *Login ditolak dan aplikasi menampilkan pesan “Tidak dapat menemukan akun”.* | *Pesan “Tidak dapat menemukan akun” tampil dan aplikasi tetap di halaman Login.* | *Pass* |
 
 <br>
 
@@ -388,9 +420,9 @@ Tabel 4.5. Hasil Pengujian KNF
 
 | ID Pengujian | ID KNF | Parameter | Target Terukur | Metode dan Alat | Hasil Aktual | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *KNF01-TC01* | *KNF01* | *Reliability* | *Tidak ada data hilang/ganda saat jaringan putus di tengah transaksi* | *Simulasi putus koneksi saat bayar, lalu cek status di DB* | *[Hasil aktual]* | *Pass/Fail* |
-| *KNF02-TC01* | *KNF02* | *Security* | *Password tersimpan sebagai hash, bukan plain-text* | *Inspeksi tabel pengguna di DB* | *[...]* | *Pass/Fail* |
-| *KNFXX-TC01* | *KNFXX* | *Response time* | *Halaman tampil ≤ 4 detik* | *Chrome DevTools, 5 kali ukur, ambil rata-rata* | *[Rata-rata ... detik, maks ... detik]* | *Pass/Fail* |
+| *KNF01-TC01* | *KNF01* | *Response time* | *Pendaftaran akun baru ke basis data selesai dalam waktu kurang dari 3 detik.* | *Tiga percobaan dengan akun baru pada Samsung Galaxy S25 FE melalui jaringan XL. Durasi diukur dari rekaman layar sejak tombol Daftar ditekan hingga Beranda pertama kali tampil. Keberadaan profil diperiksa terpisah di Supabase.* | *Durasi 2,18 detik, 1,96 detik, dan 1,14 detik. Rata-rata 1,76 detik dan maksimum 2,18 detik. Profil akun uji ditemukan di `public.tbl_pemilik_usaha` pada pemeriksaan UC01-TC01.* | *Pass berdasarkan waktu respons yang teramati dari sisi aplikasi.* |
+| *KNF02-TC01* | *KNF02* | *Ergonomi* | *Formulir registrasi hanya berisi tiga kolom yang mencakup nama, email, dan password.* | *Inspeksi visual dan tangkapan layar formulir registrasi I-02.* | *Formulir menampilkan empat kolom yang mencakup username, email, password, dan konfirmasi password.* | *Fail. Jumlah dan nama kolom berbeda dari SKPL. Tindak lanjutnya adalah menyelaraskan formulir dan spesifikasi, termasuk keputusan penggunaan username dan konfirmasi password.* |
+| *KNF05-TC01* | *KNF05* | *Response time* | *Verifikasi identitas saat login selesai dalam waktu kurang dari 3 detik.* | *Tiga percobaan login via email dan tiga percobaan via username. Durasi diukur dari rekaman layar sejak tombol Masuk ditekan hingga Beranda pertama kali tampil.* | *Email 1,76 detik, 0,79 detik, dan 0,47 detik, dengan rata-rata 1,01 detik. Username 1,27 detik, 0,75 detik, dan 0,56 detik, dengan rata-rata 0,86 detik. Durasi maksimum dari keenam percobaan adalah 1,76 detik.* | *Pass berdasarkan waktu respons yang teramati dari sisi aplikasi.* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
 <br>
@@ -399,17 +431,31 @@ Tabel 4.5. Hasil Pengujian KNF
 
 Bukti pengujian dilampirkan sesuai ID Pengujian pada Subbab 4.2 sampai 4.5, berupa tangkapan layar aplikasi, keluaran *test runner*, laporan *coverage* untuk setiap kelas Mendalam, atau hasil alat ukur.
 
+## 4.6 Tangkapan Layar dan Bukti Hasil Pengujian
+
+Bukti pengujian dilampirkan sesuai ID Pengujian pada Subbab 4.2 sampai 4.5, berupa tangkapan layar aplikasi, keluaran *test runner*, laporan *coverage* untuk kelas Mendalam, dan rekaman pengukuran waktu respons.
+
 Tabel 4.6. Bukti Hasil Pengujian
 
 | ID Pengujian | Bukti Hasil Pengujian |
 | :--- | :--- |
-| *C02-UT01 – C02-UT08* | *[Sisipkan hasil keluaran unit test]* |
-| *C02 (coverage)* | *[Sisipkan laporan coverage kelas C02]* |
-| *INT-TC01* | *[Sisipkan bukti pengujian integrasi]* |
-| *UC01-TC01* | *[Sisipkan tangkapan layar UC01-TC01 sesuai prosedur pengujian]* |
-| *UC01-TC02* | *[Sisipkan tangkapan layar UC01-TC02 sesuai prosedur pengujian]* |
-| *KNF01-TC01* | *[Sisipkan bukti pengukuran parameter KNF01-TC01]* |
-| *...* | *...* |
+| *C01-UT01 – C01-UT02* | *[Keluaran Vitest untuk dua unit test `PemilikUsaha`](./assets/bukti-pengujian/C01-unit-test.png).* |
+| *C06-UT01 – C06-UT11, C06 (coverage)* | *[Keluaran Vitest dan coverage `AuthController.ts`](./assets/bukti-pengujian/C06-unit-test-coverage.png).* |
+| *INT-TC-AUTH-01, INT-TC-AUTH-02* | *[Beranda setelah registrasi berhasil](./assets/bukti-pengujian/UC01-01-registrasi-berhasil-beranda.jpeg). Bukti juga digunakan pada UC01-TC01.* |
+| *INT-TC-AUTH-03* | *[Profil akun uji pada hasil filter Supabase](./assets/bukti-pengujian/UC01-01-profil-terbuat-supabase.png). Bukti juga digunakan pada UC01-TC01.* |
+| *INT-TC-AUTH-04* | *Gunakan bukti proses verifikasi akun via email pada UC02-TC01.* |
+| *INT-TC-AUTH-05* | *Gunakan bukti proses verifikasi akun via username pada UC02-TC02.* |
+| *UC01-TC01* | *[Beranda setelah registrasi](./assets/bukti-pengujian/UC01-01-registrasi-berhasil-beranda.jpeg) dan [profil akun uji di Supabase](./assets/bukti-pengujian/UC01-01-profil-terbuat-supabase.png).* |
+| *UC01-TC02* | *[Kolom email kosong dan tombol Daftar nonaktif](./assets/bukti-pengujian/UC01-02-data-belum-lengkap.jpeg).* |
+| *UC01-TC03* | *[Pesan “Akun sudah dibuat”](./assets/bukti-pengujian/UC01-03-akun-sudah-terdaftar.jpeg).* |
+| *UC01-TC04* | *[Pesan validasi password terlalu lemah](./assets/bukti-pengujian/UC01-04-password-terlalu-lemah.jpeg).* |
+| *UC02-TC01* | *[Tampilan “Memeriksa akun…” saat login via email](./assets/bukti-pengujian/UC02-01-login-email-berhasil.jpeg).* |
+| *UC02-TC02* | *[Tampilan “Memeriksa akun…” saat login via username](./assets/bukti-pengujian/UC02-02-login-username-berhasil.jpeg).* |
+| *UC02-TC03* | *[Pesan “Username atau Password Salah”](./assets/bukti-pengujian/UC02-03-login-password-salah.jpeg).* |
+| *UC02-TC04* | *[Pesan “Tidak dapat menemukan akun”](./assets/bukti-pengujian/UC02-04-login-akun-belum-terdaftar.jpeg).* |
+| *KNF01-TC01* | *Rekaman registrasi [percobaan 1](./assets/bukti-pengujian/KNF01-registrasi-01.mp4), [percobaan 2](./assets/bukti-pengujian/KNF01-registrasi-02.mp4), dan [percobaan 3](./assets/bukti-pengujian/KNF01-registrasi-03.mp4).* |
+| *KNF02-TC01* | *[Tangkapan layar empat kolom formulir registrasi I-02](./assets/bukti-pengujian/KNF02-form-registrasi.jpeg).* |
+| *KNF05-TC01* | *Rekaman login via email [1](./assets/bukti-pengujian/KNF05-login-email-01.mp4), [2](./assets/bukti-pengujian/KNF05-login-email-02.mp4), dan [3](./assets/bukti-pengujian/KNF05-login-email-03.mp4). Rekaman login via username [1](./assets/bukti-pengujian/KNF05-login-username-01.mp4), [2](./assets/bukti-pengujian/KNF05-login-username-02.mp4), dan [3](./assets/bukti-pengujian/KNF05-login-username-03.mp4).* |
 
 <br>
 
@@ -423,16 +469,17 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 
 | KF ID | KNF Terkait | Use Case ID | Kelas Terkait | Implementasi File Terkait | Test Case (UC) | Test Case (Unit/Integrasi/KNF) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *KF05* | *KNF01* | *UC03* | *C02 - Pesanan* | *`src/...`* | *UC03-TC01* | *C02-UT05, INT-TC04, KNF01-TC01* |
-| *KF01* | *-* | *UC01<br>UC02* | *[C01 - Nama kelas]<br>[C02 - Nama kelas]* | *[path/ke/file1]<br>[path/ke/file2]* | *UC01-TC01, UC01-TC02<br>UC02-TC01* | *-* |
-| *KF02* | *[KNFXX atau -]* | *[UCXX]* | *[CXX - Nama kelas]* | *[path/ke/file]* | *[UCXX-TCYY]* | *[CXX-UTYY, INT-TCYY, KNFXX-TCYY atau -]* |
-| *KFXX* | *-* | *[UCXX atau -]* | *[CXX - Nama kelas atau -]* | *Tidak diimplementasikan: [alasan]* | *-* | *-* |
+| *KF01* | *KNF01, KNF02* | *UC01* | *C05 — RegistrationPage<br>C06 — AuthController* | *`src/views/RegistrationPage.tsx`<br>`src/controllers/AuthController.ts`<br>`src/controllers/validators.ts`* | *UC01-TC01, UC01-TC02, UC01-TC03, UC01-TC04* | *C06-UT01 – C06-UT05, INT-TC-AUTH-01, KNF01-TC01, KNF02-TC01* |
+| *KF02* | *KNF01, KNF03* | *UC01* | *C01 — PemilikUsaha<br>C05 — RegistrationPage<br>C06 — AuthController* | *`src/models/PemilikUsaha.ts`<br>`src/views/RegistrationPage.tsx`<br>`src/controllers/AuthController.ts`<br>`src/supabase/schema.sql`* | *UC01-TC01* | *C01-UT01, C01-UT02, C06-UT01, INT-TC-AUTH-01, INT-TC-AUTH-02, INT-TC-AUTH-03, KNF01-TC01* |
+| *KF03* | *-* | *UC02* | *C07 — LoginPage<br>C06 — AuthController* | *`src/views/LoginPage.tsx`<br>`src/controllers/AuthController.ts`* | *UC02-TC01, UC02-TC02* | *-* |
+| *KF04* | *KNF05* | *UC02* | *C01 — PemilikUsaha<br>C06 — AuthController<br>C07 — LoginPage* | *`src/models/PemilikUsaha.ts`<br>`src/controllers/AuthController.ts`<br>`src/views/LoginPage.tsx`<br>`src/supabase/functions/login-with-username/index.ts`* | *UC02-TC01, UC02-TC02, UC02-TC03, UC02-TC04* | *C06-UT06 – C06-UT11, INT-TC-AUTH-04, INT-TC-AUTH-05, KNF05-TC01* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
 Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 
 | ID KNF | Parameter | KF/UC Terkait | Test Case |
 | :--- | :--- | :--- | :--- |
-| *KNF01* | *Reliability* | *KF05 / UC03* | *KNF01-TC01* |
-| *KNFXX* | *[Parameter]* | *[KFXX / UCXX atau -]* | *[KNFXX-TCYY]* |
+| *KNF01* | *Response time* | *KF01, KF02 / UC01* | *KNF01-TC01* |
+| *KNF02* | *Ergonomi* | *KF01 / UC01* | *KNF02-TC01* |
+| *KNF05* | *Response time* | *KF04 / UC02* | *KNF05-TC01* |
 | *...* | *...* | *...* | *...* |
