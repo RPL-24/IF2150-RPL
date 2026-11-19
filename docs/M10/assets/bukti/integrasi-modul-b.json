@@ -1,0 +1,106 @@
+[
+  {
+    "id": "INT-TC13",
+    "status": "Pass",
+    "actual": {
+      "http": 201,
+      "status": "Tersedia",
+      "foto": 1,
+      "berkasAda": true
+    }
+  },
+  {
+    "id": "INT-TC14",
+    "status": "Pass",
+    "actual": {
+      "http": 200,
+      "hanyaPemilik": true,
+      "jumlah": 1
+    }
+  },
+  {
+    "id": "INT-TC15",
+    "status": "Pass",
+    "actual": {
+      "http": 200,
+      "harga": 90000,
+      "judul": "Jas Uji UC09"
+    }
+  },
+  {
+    "id": "INT-TC16",
+    "status": "Pass",
+    "actual": {
+      "http": [
+        403,
+        403,
+        403
+      ],
+      "dataTidakBerubah": true
+    }
+  },
+  {
+    "id": "INT-TC17",
+    "status": "Pass",
+    "actual": {
+      "http": 200,
+      "status": "Terjual",
+      "katalog": false,
+      "riwayat": true
+    }
+  },
+  {
+    "id": "INT-TC18",
+    "status": "Pass",
+    "actual": {
+      "http": 409,
+      "status": "Terjual"
+    }
+  },
+  {
+    "id": "INT-TC19",
+    "status": "Pass",
+    "actual": {
+      "http": 200,
+      "status": "Tersedia",
+      "katalog": true
+    }
+  },
+  {
+    "id": "INT-TC20",
+    "status": "Pass",
+    "actual": {
+      "http": 409,
+      "status": "Tersedia"
+    }
+  },
+  {
+    "id": "INT-TC21",
+    "status": "Pass",
+    "actual": {
+      "http": 201,
+      "jumlahFoto": 5
+    }
+  },
+  {
+    "id": "INT-TC22",
+    "status": "Pass",
+    "actual": {
+      "http": [
+        400,
+        400,
+        400
+      ]
+    }
+  },
+  {
+    "id": "INT-TC23",
+    "status": "Pass",
+    "actual": {
+      "http": 200,
+      "barang": null,
+      "metadataFoto": 0,
+      "berkasAda": false
+    }
+  }
+]

@@ -1,0 +1,60 @@
+PASS docs/M10/assets/bukti/modul-b.test.js
+  ✓ C14-UT01 normal: normalisasi data dan harga numerik (5 ms)
+  ✓ C14-UT02 batas: judul 80, deskripsi 1000, harga 0.01 dan maksimum (1 ms)
+  ✓ C14-UT03 negatif: kolom kosong, panjang lebih, kategori/lokasi asing, harga salah (10 ms)
+  ✓ C14-UT04 normal/batas: JPG/PNG asli 1 byte metadata sampai tepat 5 MB
+  ✓ C14-UT05 negatif: foto kosong, ukuran lebih, ekstensi/MIME/signature palsu (2 ms)
+  ✓ C14-UT06 normal: get pemilik mengembalikan data dan galeri (2 ms)
+  ✓ C14-UT07 negatif: get tidak ada/bukan pemilik/dinonaktifkan (2 ms)
+  ✓ C14-UT08 normal/batas: buat listing dengan 1 dan 5 foto (3 ms)
+  ✓ C14-UT09 negatif: urutan foto JSON salah, 0/6 foto, duplikat, bukan array/string (2 ms)
+  ✓ C14-UT10 negatif: akun tidak aktif serta foto asing/tidak dirujuk (1 ms)
+  ✓ C14-UT11 normal: ubah data, pertahankan foto, hapus foto lama (1 ms)
+  ✓ C14-UT12 negatif: storage gagal dan DB gagal, bersihkan foto baru (1 ms)
+  ✓ C14-UT13 normal: hapus listing milik sendiri beserta berkas (1 ms)
+  ✓ C14-UT14 negatif: hapus akun tidak aktif/bukan pemilik
+  ✓ C14-UT15 normal: transisi tersedia-terjual dan terjual-tersedia
+  ✓ C14-UT16 negatif: transisi salah, akun tidak aktif, bukan pemilik, konflik status (1 ms)
+  ✓ C14-UT17 normal: seluruh handler memetakan parameter, respons dan id sesi (1 ms)
+  ✓ C14-UT18 negatif: kegagalan service diteruskan handler (1 ms)
+  ✓ C29-UT01 normal/negatif: mapping data dan lookup listing (1 ms)
+  ✓ C29-UT02 normal: insert dan delete berparameter (1 ms)
+  ✓ C29-UT03 normal/negatif: transaksi COMMIT/ROLLBACK dan release (2 ms)
+  ✓ C29-UT04 normal/negatif: lock, akun aktif, update dan status bersyarat (1 ms)
+  ✓ C30-UT01 normal/batas/negatif: format dan ukuran foto (1 ms)
+  ✓ C30-UT02 normal/negatif: mapping, simpan, galeri terurut dan hapus (1 ms)
+  ✓ C30-UT03 normal/batas: galeri mengganti foto dan nomor urut 1..N (1 ms)
+  ✓ C31-UT01 normal/negatif: referensi tetap, masukan bebas ditolak (38 ms)
+  ✓ C32-UT01 normal/negatif: referensi COD tetap, masukan bebas ditolak (1 ms)
+  ✓ C03-UT01 normal: muat daftar kemudian render (331 ms)
+  ✓ C03-UT02 negatif: gagal API ditampilkan tanpa render (64 ms)
+  ✓ C04-UT01 normal/batas/negatif: penambahan foto 1/5, urutan dan penolakan foto salah (168 ms)
+  ✓ C04-UT02 normal/negatif: validasi semua isian dan foto wajib (86 ms)
+  ✓ C04-UT03 normal: simpan membentuk FormData, tujuan detail, sesi pesan (330 ms)
+  ✓ C04-UT04 negatif: simpan gagal menampilkan galat dan mengaktifkan tombol (76 ms)
+  ✓ C04-UT05 normal/negatif: batal tanpa perubahan dan konfirmasi perubahan kotor (139 ms)
+  ✓ C04-UT06 normal/negatif: mulai formulir baru, prefilled ubah, dan gagal memuat (160 ms)
+  ✓ C03-UT03 normal/negatif: mulai, dialog aksi, status usang dan gagal akses (19 ms)
+
+---------------------------|---------|----------|---------|---------|--------------------
+File                       | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s  
+---------------------------|---------|----------|---------|---------|--------------------
+All files                  |    77.6 |    68.72 |   72.72 |      85 |                    
+ controllers               |     100 |      100 |     100 |     100 |                    
+  BarangController.js      |     100 |      100 |     100 |     100 |                    
+ models                    |   66.92 |    46.47 |   75.86 |   68.64 |                    
+  Barang.js                |   43.24 |       36 |   53.33 |   45.58 | 21,126-195,209-226 
+  FotoBarang.js            |     100 |    72.22 |     100 |     100 | 11,23,43-65        
+  ListingPenjual.js        |     100 |    66.66 |     100 |     100 | 22                 
+  ReferensiListing.js      |     100 |      100 |     100 |     100 |                    
+ services                  |     100 |    92.94 |     100 |     100 |                    
+  ListingService.js        |     100 |    92.94 |     100 |     100 | 14-15,28,39-43     
+ views/js                  |   73.03 |    63.72 |      54 |    91.2 |                    
+  FormulirBarang.js        |   76.38 |    63.63 |   55.26 |   95.45 | 57-60              
+  HalamanListingPenjual.js |   63.23 |    63.88 |      50 |   81.08 | 23-28,46           
+---------------------------|---------|----------|---------|---------|--------------------
+Test Suites: 1 passed, 1 total
+Tests:       36 passed, 36 total
+Snapshots:   0 total
+Time:        2.537 s
+Ran all test suites.

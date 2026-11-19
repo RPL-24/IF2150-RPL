@@ -1,0 +1,160 @@
+[
+  {
+    "id": "UC07-TC01",
+    "status": "Fail",
+    "actual": "Listing berhasil dibuat tetapi tujuan setelah simpan /detail; SKPL meminta /listing-saya. Kategori juga berbeda dari SKPL.\n+ actual - expected\n\n+ '/detail'\n- '/listing-saya'\n",
+    "url": "http://localhost:3117/detail?id=4d8b942a-44cc-45f9-a00c-4edd9bbf76b9"
+  },
+  {
+    "id": "UC07-TC02",
+    "status": "Pass",
+    "actual": {
+      "kolomDitandai": true,
+      "fotoWajib": true,
+      "tersimpan": false
+    },
+    "url": "http://localhost:3117/listing-form"
+  },
+  {
+    "id": "UC07-TC03",
+    "status": "Pass",
+    "actual": {
+      "kesalahan": [
+        "Foto harus JPG/PNG, maksimum 5 MB per foto.",
+        "Foto harus JPG/PNG, maksimum 5 MB per foto.",
+        "Maksimum 5 foto. Hapus foto terlebih dahulu."
+      ],
+      "tersimpan": false
+    },
+    "url": "http://localhost:3117/listing-form"
+  },
+  {
+    "id": "UC08-TC01",
+    "status": "Pass",
+    "actual": {
+      "listingPemilik": true,
+      "tabTersedia": "Tersedia (10)",
+      "tabTerjual": "Terjual (0)"
+    },
+    "url": "http://localhost:3117/listing-saya#tersedia"
+  },
+  {
+    "id": "UC09-TC01",
+    "status": "Pass",
+    "actual": {
+      "prefilled": true,
+      "harga": 90000,
+      "tujuan": "/detail"
+    },
+    "url": "http://localhost:3117/detail?id=52bf4af5-63b8-439e-8c0a-a102f298cde8"
+  },
+  {
+    "id": "UC09-TC02",
+    "status": "Pass",
+    "actual": {
+      "kosongDitolak": true,
+      "dataLamaUtuh": true,
+      "perbaikanDisimpan": true
+    },
+    "url": "http://localhost:3117/detail?id=52bf4af5-63b8-439e-8c0a-a102f298cde8"
+  },
+  {
+    "id": "UC09-TC03",
+    "status": "Fail",
+    "actual": "Foto PDF ditolak, tetapi tombol Simpan tetap menyimpan harga 80000 memakai foto lama. SKPL meminta seluruh penyimpanan ditolak sampai pelanggaran diperbaiki.\n\n80000 !== 90000\n",
+    "url": "http://localhost:3117/detail?id=52bf4af5-63b8-439e-8c0a-a102f298cde8"
+  },
+  {
+    "id": "UC09-TC04",
+    "status": "Pass",
+    "actual": {
+      "formDinonaktifkan": true,
+      "http": 403,
+      "dataTidakBerubah": true
+    },
+    "url": "http://localhost:3117/listing-saya"
+  },
+  {
+    "id": "UC10-TC02",
+    "status": "Pass",
+    "actual": {
+      "dialogDibatalkan": true,
+      "listingTetapAda": true
+    },
+    "url": "http://localhost:3117/listing-saya#tersedia"
+  },
+  {
+    "id": "UC10-TC03",
+    "status": "Pass",
+    "actual": {
+      "http": 403,
+      "listingTetapAda": true
+    },
+    "url": "http://localhost:3117/listing-saya#tersedia"
+  },
+  {
+    "id": "UC10-TC01",
+    "status": "Pass",
+    "actual": {
+      "httpSesudahHapus": 404,
+      "kartuHilang": true
+    },
+    "url": "http://localhost:3117/listing-saya#tersedia"
+  },
+  {
+    "id": "UC11-TC02",
+    "status": "Pass",
+    "actual": {
+      "status": "Tersedia",
+      "dialogDibatalkan": true
+    },
+    "url": "http://localhost:3117/listing-saya#tersedia"
+  },
+  {
+    "id": "UC11-TC01",
+    "status": "Pass",
+    "actual": {
+      "status": "Terjual",
+      "adaDiRiwayat": true
+    },
+    "url": "http://localhost:3117/listing-saya#terjual"
+  },
+  {
+    "id": "UC11-TC03",
+    "status": "Pass",
+    "actual": {
+      "status": "Terjual",
+      "dialogTidakDibuka": true,
+      "pesan": "Status listing berubah. Silakan pilih aksi kembali."
+    },
+    "url": "http://localhost:3117/listing-saya#tersedia"
+  },
+  {
+    "id": "UC12-TC02",
+    "status": "Pass",
+    "actual": {
+      "status": "Terjual",
+      "dialogDibatalkan": true
+    },
+    "url": "http://localhost:3117/listing-saya#terjual"
+  },
+  {
+    "id": "UC12-TC01",
+    "status": "Pass",
+    "actual": {
+      "status": "Tersedia",
+      "kembaliKeTabTersedia": true
+    },
+    "url": "http://localhost:3117/listing-saya#tersedia"
+  },
+  {
+    "id": "UC12-TC03",
+    "status": "Pass",
+    "actual": {
+      "status": "Tersedia",
+      "dialogTidakDibuka": true,
+      "pesan": "Status listing berubah. Silakan pilih aksi kembali."
+    },
+    "url": "http://localhost:3117/listing-saya#terjual"
+  }
+]
