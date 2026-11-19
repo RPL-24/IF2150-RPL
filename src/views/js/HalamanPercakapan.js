@@ -276,9 +276,22 @@ class HalamanPercakapan {
       }
     }
 
+    this.tampilkanTautanLapor(ruang.idPercakapan);
     this.tampilkanTautanKebijakan(ruang.tautanKebijakanPrivasi);
     this.tampilkanUrutanPesan(ruang.pesan || []);
     this.gulirKePesanTerakhir();
+  }
+
+  // UC19: tombol Laporkan membuka formulir laporan dengan ID percakapan saja, tanpa isi pesan (KF37)
+  tampilkanTautanLapor(idPercakapan) {
+    const elLapor = document.getElementById('tautan-lapor-percakapan');
+    if (!elLapor) return;
+    if (!idPercakapan) {
+      elLapor.hidden = true;
+      return;
+    }
+    elLapor.href = `/laporan-form?${new URLSearchParams({ objek: idPercakapan, jenis: 'Percakapan' })}`;
+    elLapor.hidden = false;
   }
 
   // I10-O06 (KF39): menampilkan tautan dokumen Kebijakan Privasi

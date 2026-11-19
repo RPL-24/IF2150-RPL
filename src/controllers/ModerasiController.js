@@ -8,11 +8,13 @@ const LogAdmin = require('../models/LogAdmin');
 const Akun = require('../models/Akun');
 const SesiLogin = require('../models/SesiLogin');
 const Barang = require('../models/Barang');
+const Percakapan = require('../models/Percakapan');
 const FotoBarang = require('../models/FotoBarang');
 const NotifikasiController = require('./NotifikasiController');
 const PenyimpananBerkas = require('../penyimpanan/PenyimpananBerkas');
 
 const AWALAN_PERUBAHAN_STATUS = /^Perubahan status laporan menjadi\s*/;
+const POLA_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 class ModerasiController {
   // Validasi token dan memastikan peran pengguna adalah Admin (KF56)
@@ -54,10 +56,11 @@ class ModerasiController {
       return null;
     }
 
-    const [akunPelapor, daftarBukti, riwayatAudit] = await Promise.all([
+    const [akunPelapor, daftarBukti, riwayatAudit, akunTerlapor] = await Promise.all([
       Akun.cariById(laporan.idPelapor),
       BuktiLaporan.cariByLaporan(idLaporan),
       LogAudit.getRiwayatByLaporan(idLaporan),
+      this.cariAkunTerlapor(laporan),
     ]);
 
     return {
@@ -70,9 +73,34 @@ class ModerasiController {
             nim: akunPelapor.nim,
           }
         : null,
+      terlapor: akunTerlapor
+        ? {
+            idAkun: akunTerlapor.idAkun,
+            nama: akunTerlapor.nama,
+            email: akunTerlapor.email,
+            statusBlokir: akunTerlapor.statusBlokir === true,
+          }
+        : null,
       daftarBukti: daftarBukti || [],
       riwayatAudit: riwayatAudit || [],
     };
+  }
+
+  // Akun yang dilaporkan: pemilik listing bila objeknya listing, atau lawan bicara pelapor bila objeknya percakapan.
+  // Dipakai tombol Blokir dan Buka Blokir di I-14 (UC23, UC24). null bila objek sudah tidak ada.
+  static async cariAkunTerlapor(laporan) {
+    const objek = String(laporan.objekDilaporkan || '').trim();
+    if (!POLA_UUID.test(objek)) return null;
+
+    const barang = await Barang.cariById(objek);
+    if (barang) return Akun.cariById(barang.idPenjual);
+
+    const percakapan = await Percakapan.cariById(objek);
+    if (percakapan) {
+      const idLawan = percakapan.idPembeli === laporan.idPelapor ? percakapan.idPenjual : percakapan.idPembeli;
+      return Akun.cariById(idLawan);
+    }
+    return null;
   }
 
   // Mengambil statistik jumlah laporan per status penanganan untuk kartu metrik dasbor

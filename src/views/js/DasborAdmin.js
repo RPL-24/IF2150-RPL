@@ -313,15 +313,17 @@ class DasborAdmin {
     if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
       this.bukaDetailLaporan(idLaporan);
     } else {
-      this.memuatStatistik();
+      this.muatStatistik();
       this.filterLaporan(this.filterStatus);
     }
   }
 
   // Menampilkan peringatan Akses Ditolak dan mengalihkan pengguna bukan admin (KF56)
+  // Pengguna yang sudah masuk tetapi bukan admin dikembalikan ke beranda (SKPL UC20 alternatif 1);
+  // yang belum masuk diarahkan ke halaman masuk.
   tampilkanAksesDitolak() {
     alert('Akses Ditolak: Anda harus masuk menggunakan akun Admin untuk mengakses Dasbor Moderasi.');
-    window.location.href = '/masuk';
+    window.location.href = Api.getToken() ? '/' : '/masuk';
   }
 
   // Menampilkan umpan balik berhasil
@@ -398,16 +400,16 @@ class DasborAdmin {
     const btnBlokir = document.getElementById('btn-blokir-akun');
     if (btnBlokir) {
       btnBlokir.addEventListener('click', () => {
-        const idAkun = this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
-        this.onClickBlokirAkun(idAkun);
+        // Sasaran tindakan adalah akun yang dilaporkan, bukan pelapor (UC23, UC24)
+        this.onClickBlokirAkun(this.detailLaporan?.terlapor?.idAkun);
       });
     }
 
     const btnBukaBlokir = document.getElementById('btn-buka-blokir');
     if (btnBukaBlokir) {
       btnBukaBlokir.addEventListener('click', () => {
-        const idAkun = this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
-        this.onClickBukaBlokir(idAkun);
+        // Sasaran tindakan adalah akun yang dilaporkan, bukan pelapor (UC23, UC24)
+        this.onClickBukaBlokir(this.detailLaporan?.terlapor?.idAkun);
       });
     }
   }
@@ -420,13 +422,21 @@ class DasborAdmin {
 
   // Tindakan moderasi blokir akun (UC23)
   onClickBlokirAkun(idAkun) {
-    this.targetIdAkun = idAkun || this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
+    if (!idAkun) {
+      this.tampilkanPesanGalat('Akun pemilik objek yang dilaporkan tidak ditemukan, sehingga tidak ada akun yang dapat diblokir.');
+      return;
+    }
+    this.targetIdAkun = idAkun;
     this.tampilkanModalKonfirmasi('BLOKIR_AKUN');
   }
 
   // Tindakan moderasi buka blokir akun (UC24)
   onClickBukaBlokir(idAkun) {
-    this.targetIdAkun = idAkun || this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
+    if (!idAkun) {
+      this.tampilkanPesanGalat('Akun pemilik objek yang dilaporkan tidak ditemukan, sehingga tidak ada akun yang dapat dibuka blokirnya.');
+      return;
+    }
+    this.targetIdAkun = idAkun;
     this.tampilkanModalKonfirmasi('BUKA_BLOKIR');
   }
 
@@ -469,7 +479,7 @@ class DasborAdmin {
     }
 
     if (this.tindakanAktif === 'BLOKIR_AKUN') {
-      const idAkun = this.targetIdAkun || this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
+      const idAkun = this.targetIdAkun;
       if (!idAkun) {
         this.tampilkanPesanGalat('ID Akun yang akan diblokir tidak ditemukan.');
         return;
@@ -494,7 +504,7 @@ class DasborAdmin {
         if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
       this.bukaDetailLaporan(idLaporan);
     } else {
-      this.memuatStatistik();
+      this.muatStatistik();
       this.filterLaporan(this.filterStatus);
     }
       }
@@ -518,12 +528,12 @@ class DasborAdmin {
         if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
       this.bukaDetailLaporan(idLaporan);
     } else {
-      this.memuatStatistik();
+      this.muatStatistik();
       this.filterLaporan(this.filterStatus);
     }
       }
     } else if (this.tindakanAktif === 'BUKA_BLOKIR') {
-      const idAkun = this.targetIdAkun || this.detailLaporan?.pelapor?.idAkun || this.detailLaporan?.laporan?.idPelapor;
+      const idAkun = this.targetIdAkun;
       if (!idAkun) {
         this.tampilkanPesanGalat('ID Akun yang akan dibuka blokirnya tidak ditemukan.');
         return;
@@ -547,7 +557,7 @@ class DasborAdmin {
         if (this.detailLaporan && this.detailLaporan.laporan && this.detailLaporan.laporan.idLaporan === idLaporan) {
       this.bukaDetailLaporan(idLaporan);
     } else {
-      this.memuatStatistik();
+      this.muatStatistik();
       this.filterLaporan(this.filterStatus);
     }
       }

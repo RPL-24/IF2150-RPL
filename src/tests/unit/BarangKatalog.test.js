@@ -28,7 +28,7 @@ const BARIS_KATALOG = {
 };
 
 describe('C29 Barang.getKatalog', () => {
-  test('C29-UT05 kriteria bawaan: hanya Tersedia, akun tidak diblokir, terbaru, 20 baris dari offset 0', async () => {
+  test('C29-UT17 kriteria bawaan: hanya Tersedia, akun tidak diblokir, terbaru, 20 baris dari offset 0', async () => {
     const klien = klienKatalog(1, [BARIS_KATALOG]);
 
     await Barang.getKatalog({}, klien);
@@ -45,7 +45,7 @@ describe('C29 Barang.getKatalog', () => {
     expect(nilaiData).toEqual(['Tersedia', 20, 0]);
   });
 
-  test('C29-UT06 memetakan baris menjadi objek Barang beserta fotoUtama dan namaPenjual', async () => {
+  test('C29-UT18 memetakan baris menjadi objek Barang beserta fotoUtama dan namaPenjual', async () => {
     const { daftar, total } = await Barang.getKatalog({}, klienKatalog(1, [BARIS_KATALOG]));
 
     expect(total).toBe(1);
@@ -61,7 +61,7 @@ describe('C29 Barang.getKatalog', () => {
     });
   });
 
-  test('C29-UT07 setiap kata kunci menjadi syarat ILIKE pada judul atau deskripsi, digabung dengan AND (KF25)', async () => {
+  test('C29-UT19 setiap kata kunci menjadi syarat ILIKE pada judul atau deskripsi, digabung dengan AND (KF25)', async () => {
     const klien = klienKatalog(0);
 
     await Barang.getKatalog({ daftarKata: ['jas', 'praktikum'] }, klien);
@@ -72,7 +72,7 @@ describe('C29 Barang.getKatalog', () => {
     expect(nilai).toEqual(['Tersedia', '%jas%', '%praktikum%']);
   });
 
-  test('C29-UT08 karakter %, _, dan \\ pada kata kunci diloloskan agar dicocokkan apa adanya', async () => {
+  test('C29-UT20 karakter %, _, dan \\ pada kata kunci diloloskan agar dicocokkan apa adanya', async () => {
     const klien = klienKatalog(0);
 
     await Barang.getKatalog({ daftarKata: ['50%', 'a_b', 'c\\d'] }, klien);
@@ -80,7 +80,7 @@ describe('C29 Barang.getKatalog', () => {
     expect(klien.query.mock.calls[0][1]).toEqual(['Tersedia', '%50\\%%', '%a\\_b%', '%c\\\\d%']);
   });
 
-  test('C29-UT09 seluruh filter aktif digabung dengan AND dan nilainya dikirim sebagai parameter (KF26)', async () => {
+  test('C29-UT21 seluruh filter aktif digabung dengan AND dan nilainya dikirim sebagai parameter (KF26)', async () => {
     const klien = klienKatalog(0);
 
     await Barang.getKatalog(
@@ -96,7 +96,7 @@ describe('C29 Barang.getKatalog', () => {
     expect(nilai).toEqual(['Tersedia', 'Kalkulator', 'Labtek V', 50000, 200000]);
   });
 
-  test('C29-UT10 harga minimum 0 tetap dipakai sebagai syarat (batas)', async () => {
+  test('C29-UT22 harga minimum 0 tetap dipakai sebagai syarat (batas)', async () => {
     const klien = klienKatalog(0);
 
     await Barang.getKatalog({ hargaMin: 0 }, klien);
@@ -108,7 +108,7 @@ describe('C29 Barang.getKatalog', () => {
   test.each([
     ['termurah', 'ORDER BY b.harga ASC, b.waktu_unggah DESC, b.id_barang'],
     ['termahal', 'ORDER BY b.harga DESC, b.waktu_unggah DESC, b.id_barang'],
-  ])('C29-UT11 urutan "%s" dipetakan ke klausa tetap (KF27)', async (urut, klausa) => {
+  ])('C29-UT23 urutan "%s" dipetakan ke klausa tetap (KF27)', async (urut, klausa) => {
     const klien = klienKatalog(0);
 
     await Barang.getKatalog({ urut }, klien);
@@ -116,7 +116,7 @@ describe('C29 Barang.getKatalog', () => {
     expect(klien.query.mock.calls[1][0]).toContain(klausa);
   });
 
-  test('C29-UT12 urutan di luar daftar tetap jatuh ke "terbaru" dan tidak masuk ke SQL', async () => {
+  test('C29-UT24 urutan di luar daftar tetap jatuh ke "terbaru" dan tidak masuk ke SQL', async () => {
     const klien = klienKatalog(0);
 
     await Barang.getKatalog({ urut: 'b.harga; DROP TABLE barang' }, klien);
@@ -126,7 +126,7 @@ describe('C29 Barang.getKatalog', () => {
     expect(sqlData).not.toContain('DROP TABLE');
   });
 
-  test('C29-UT13 batas dan offset paginasi dikirim sebagai parameter (KF28)', async () => {
+  test('C29-UT25 batas dan offset paginasi dikirim sebagai parameter (KF28)', async () => {
     const klien = klienKatalog(45);
 
     await Barang.getKatalog({ kategori: 'Buku kuliah', batas: 20, offset: 40 }, klien);
@@ -137,7 +137,7 @@ describe('C29 Barang.getKatalog', () => {
 });
 
 describe('C29 Barang.getDetailKatalog', () => {
-  test('C29-UT14 mengembalikan detail beserta daftar foto dan identitas penjual (KF17)', async () => {
+  test('C29-UT26 mengembalikan detail beserta daftar foto dan identitas penjual (KF17)', async () => {
     const klien = {
       query: jest.fn().mockResolvedValue({
         rows: [
@@ -176,7 +176,7 @@ describe('C29 Barang.getDetailKatalog', () => {
     expect(barang.daftarFoto.map((f) => f.idFoto)).toEqual(['f1', 'f2']);
   });
 
-  test('C29-UT15 mengembalikan null bila listing tidak ada, dinonaktifkan, atau milik akun diblokir', async () => {
+  test('C29-UT27 mengembalikan null bila listing tidak ada, dinonaktifkan, atau milik akun diblokir', async () => {
     const klien = { query: jest.fn().mockResolvedValue({ rows: [] }) };
 
     await expect(Barang.getDetailKatalog('tidak-ada', klien)).resolves.toBeNull();

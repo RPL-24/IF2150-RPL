@@ -1,0 +1,24 @@
+# Keluaran npm run test:db (suite Modul E), 2026-11-19 23:17 WIB
+# PostgreSQL 16.15 (paket Ubuntu, dijalankan di WSL); basis data itbeli_uji dibuat ulang oleh globalSetup.
+# Server SMTP: penangkap SMTP lokal berbasis Node.js (docs/M10/assets/skrip/penangkap-smtp.cjs) yang meniru API
+# Mailpit /api/v1/search dan /api/v1/message, karena mailpit.exe diblokir kebijakan Application Control di laptop penguji.
+
+PASS tests/db/ModulE.test.js
+  Integrasi Modul E dengan PostgreSQL, disk, server SMTP, dan Vercel Blob (komponen nyata)
+    √ INT-TC24 buatLaporan menyimpan laporan Baru, metadata bukti, berkas di disk, dan log audit penerimaan (43 ms)
+    √ INT-TC25 penyimpanan bukti gagal di tengah transaksi → GALAT_SERVER dan tidak ada baris baru di laporan maupun log audit (9 ms)
+    √ INT-TC26 ubahStatusLaporan Baru ke Diproses memperbarui status dan waktu perubahan serta menambah tepat satu log audit (20 ms)
+    √ INT-TC27 blokirAkun dalam satu transaksi: akun diblokir, listing dinonaktifkan, sesi dicabut, laporan Selesai, log admin dan audit tercatat (98 ms)
+    √ INT-TC28 galat di tengah blokirAkun (ID laporan tidak ada) → transaksi dibatalkan, akun, listing, dan sesi tidak berubah (20 ms)
+    √ INT-TC29 bukaBlokirAkun mengaktifkan akun, memulihkan listing ke katalog, dan mencatat BUKA_BLOKIR (29 ms)
+    √ INT-TC30 hapusListingDilaporkan menghapus baris barang dan foto, berkas foto di disk, dan mencatat HAPUS_LISTING (47 ms)
+    √ INT-TC31 POST /api/laporan multipart: berkas bukti tersimpan di src/uploads/<idLaporan>/ dan dapat diunduh lewat /uploads (32 ms)
+    √ INT-TC33 blokirAkun mengirim surel penangguhan beserta alasannya ke kotak masuk server SMTP (31 ms)
+    √ INT-TC34 GET /api/admin/laporan: token admin → 200 berisi laporan; token pengguna biasa → 403 (KF56) (25 ms)
+    ○ skipped INT-TC32 PenyimpananBerkas mode Vercel Blob: URL publik dapat diunduh setelah simpan dan hilang setelah hapus
+
+Test Suites: 1 passed, 1 total
+Tests:       1 skipped, 10 passed, 11 total
+Snapshots:   0 total
+Time:        0.965 s, estimated 1 s
+Ran all test suites matching tests/db/ModulE.test.js.

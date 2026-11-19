@@ -1,0 +1,350 @@
+{
+  "label": "v9.0",
+  "waktu": "2026-11-19T16:07:35.859Z",
+  "basis": "http://localhost:3000",
+  "hasil": {
+    "UC19-TC01": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Tombol \"Laporkan\" tampil di detail listing",
+          "lulus": true,
+          "teramati": "1 tombol"
+        },
+        {
+          "pemeriksaan": "Notifikasi \"Laporan berhasil dikirim\"",
+          "lulus": true,
+          "teramati": "Laporan berhasil dikirim dan akan segera ditinjau admin."
+        },
+        {
+          "pemeriksaan": "Laporan tersimpan berstatus Baru",
+          "lulus": true,
+          "teramati": "badge: Baru"
+        },
+        {
+          "pemeriksaan": "Bukti dapat dilihat admin",
+          "lulus": true,
+          "teramati": "1 gambar bukti"
+        },
+        {
+          "pemeriksaan": "Riwayat berisi \"Penerimaan laporan\"",
+          "lulus": true,
+          "teramati": "Penerimaan laporan Oleh: 587703ee-ea36-4a04-86ca-d70a6ce7e025 19 Nov 2026, 23.06"
+        }
+      ],
+      "tangkapan": [
+        "UC19-TC01-kirim-v9.0.png",
+        "UC19-TC01-admin-v9.0.png"
+      ],
+      "kesimpulan": "Pass"
+    },
+    "idR1": "b09a0bbe-2830-45c0-b289-12c6d20b640f",
+    "UC19-TC02": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Tombol \"Laporkan\" tersedia di ruang percakapan (I-10)",
+          "lulus": false,
+          "teramati": "0 elemen bertuliskan \"Laporkan\""
+        },
+        {
+          "pemeriksaan": "Formulir menampilkan pemberitahuan privasi percakapan",
+          "lulus": true,
+          "teramati": "tampil"
+        },
+        {
+          "pemeriksaan": "Objek laporan berupa ID percakapan",
+          "lulus": true,
+          "teramati": "43799345-fca1-483c-a893-8c553d9b5bdb"
+        },
+        {
+          "pemeriksaan": "Isi pesan tidak ikut tampil pada laporan (KF37)",
+          "lulus": true,
+          "teramati": "isi pesan tidak tampil"
+        },
+        {
+          "pemeriksaan": "Baris laporan di basis data tidak memuat isi pesan",
+          "lulus": true,
+          "teramati": "{\"objek_dilaporkan\":\"43799345-fca1-483c-a893-8c553d9b5bdb\",\"teks_alasan\":\"Meminta transfer ke rekening pribadi\"}"
+        }
+      ],
+      "tangkapan": [
+        "UC19-TC02-percakapan-v9.0.png",
+        "UC19-TC02-admin-v9.0.png"
+      ],
+      "kesimpulan": "Fail"
+    },
+    "idR2": "4d0b8465-0f61-4947-9d93-9c53b2ed3f88",
+    "UC19-TC03": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Pengiriman dihentikan dengan pesan galat (alasan kosong)",
+          "lulus": true,
+          "teramati": "Alasan dan sedikitnya satu bukti tangkapan layar (JPG/PNG) wajib diisi."
+        },
+        {
+          "pemeriksaan": "Kolom alasan diberi penanda merah",
+          "lulus": true,
+          "teramati": "borderColor: \"var(--merah)\""
+        },
+        {
+          "pemeriksaan": "Tidak ada laporan baru tersimpan",
+          "lulus": true,
+          "teramati": "jumlah laporan atas objek: 0 → 0"
+        }
+      ],
+      "tangkapan": [
+        "UC19-TC03-v9.0.png"
+      ],
+      "kesimpulan": "Pass"
+    },
+    "UC19-TC04": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Pengiriman dihentikan dengan pesan galat (tanpa bukti)",
+          "lulus": true,
+          "teramati": "Alasan dan sedikitnya satu bukti tangkapan layar (JPG/PNG) wajib diisi."
+        },
+        {
+          "pemeriksaan": "Tidak ada laporan baru tersimpan",
+          "lulus": true,
+          "teramati": "jumlah laporan atas objek: 0 → 0"
+        }
+      ],
+      "tangkapan": [
+        "UC19-TC04-v9.0.png"
+      ],
+      "kesimpulan": "Pass"
+    },
+    "UC20-TC01": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Tabel menampilkan seluruh laporan",
+          "lulus": true,
+          "teramati": "4 baris"
+        },
+        {
+          "pemeriksaan": "Kolom pelapor, objek, kategori, waktu, dan status tersedia",
+          "lulus": true,
+          "teramati": "ID Objek dilaporkan Kategori Pelapor Tanggal Status Aksi "
+        },
+        {
+          "pemeriksaan": "Kartu jumlah per status sesuai",
+          "lulus": true,
+          "teramati": "{\"baru\":\"2\",\"diproses\":\"1\",\"selesai\":\"1\",\"total\":\"4\"}"
+        }
+      ],
+      "tangkapan": [
+        "UC20-TC01-v9.0.png"
+      ],
+      "kesimpulan": "Pass"
+    },
+    "UC20-TC02": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Hanya laporan berstatus Baru yang tampil",
+          "lulus": true,
+          "teramati": "2 baris"
+        }
+      ],
+      "tangkapan": [
+        "UC20-TC02-v9.0.png"
+      ],
+      "kesimpulan": "Pass"
+    },
+    "UC20-TC03": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Muncul peringatan \"Akses Ditolak\"",
+          "lulus": true,
+          "teramati": "Akses Ditolak: Anda harus masuk menggunakan akun Admin untuk mengakses Dasbor Moderasi."
+        },
+        {
+          "pemeriksaan": "Pengguna dialihkan ke beranda",
+          "lulus": false,
+          "teramati": "alamat akhir: /masuk"
+        }
+      ],
+      "tangkapan": [
+        "UC20-TC03-v9.0.png"
+      ],
+      "kesimpulan": "Fail"
+    },
+    "UC21-TC01": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Status dan waktu perubahan tersimpan",
+          "lulus": true,
+          "teramati": "Diproses, waktu berubah: true"
+        },
+        {
+          "pemeriksaan": "Riwayat bertambah \"Perubahan status laporan menjadi Diproses\"",
+          "lulus": true,
+          "teramati": "Penerimaan laporan Oleh: 587703ee-ea36-4a04-86ca-d70a6ce7e025 19 Nov 2026, 23.06 Perubahan status laporan menjadi Diproses Oleh: a56e3027-271d-46f6-8087-75e40d3304bb 19 Nov 2026, 23.07"
+        },
+        {
+          "pemeriksaan": "Pilihan status mundur (Baru) tidak dapat dipilih",
+          "lulus": true,
+          "teramati": "option Baru disabled: true"
+        }
+      ],
+      "tangkapan": [
+        "UC21-TC01-v9.0.png"
+      ],
+      "kesimpulan": "Pass"
+    },
+    "UC21-TC02": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Status tersimpan di server",
+          "lulus": true,
+          "teramati": "Selesai"
+        },
+        {
+          "pemeriksaan": "Kartu jumlah per status diperbarui tanpa memuat ulang halaman",
+          "lulus": false,
+          "teramati": "Selesai: 1 → 1"
+        },
+        {
+          "pemeriksaan": "Tidak ada galat JavaScript di halaman",
+          "lulus": false,
+          "teramati": "this.memuatStatistik is not a function"
+        }
+      ],
+      "tangkapan": [
+        "UC21-TC02-v9.0.png"
+      ],
+      "kesimpulan": "Fail"
+    },
+    "UC22-TC01": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Listing tidak dapat dibuka lagi",
+          "lulus": true,
+          "teramati": "GET /api/katalog/:id → 404"
+        },
+        {
+          "pemeriksaan": "Surel peringatan berisi alasan terkirim ke penjual",
+          "lulus": true,
+          "teramati": "Peringatan Penghapusan Listing ITBELI"
+        },
+        {
+          "pemeriksaan": "Laporan menjadi Selesai",
+          "lulus": true,
+          "teramati": "Selesai"
+        },
+        {
+          "pemeriksaan": "Tercatat di log admin dan log audit",
+          "lulus": true,
+          "teramati": "log_admin: [{\"jenis_tindakan\":\"HAPUS_LISTING\",\"alasan\":\"Barang palsu\"}]; log_audit: Penerimaan laporan / Perubahan status laporan menjadi Diproses / Penghapusan listing: af5e55eb-9db6-4d08-8056-9a2c5c4bd7f9"
+        }
+      ],
+      "tangkapan": [
+        "UC22-TC01-admin-v9.0.png",
+        "UC22-TC01-katalog-v9.0.png"
+      ],
+      "kesimpulan": "Pass"
+    },
+    "UC23-TC01": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Akun penjual (pemilik listing yang dilaporkan) menjadi Diblokir",
+          "lulus": false,
+          "teramati": "status_blokir penjual: false; pelapor: true"
+        },
+        {
+          "pemeriksaan": "Sesi penjual yang sedang aktif berakhir",
+          "lulus": false,
+          "teramati": "GET /api/barang/saya dengan sesi lama → 200"
+        },
+        {
+          "pemeriksaan": "Login ulang penjual ditolak dengan pesan penangguhan",
+          "lulus": false,
+          "teramati": "200"
+        },
+        {
+          "pemeriksaan": "Listing penjual hilang dari katalog dan pencarian",
+          "lulus": false,
+          "teramati": "GET /api/katalog?q=Samsung → 200; listing Samsung milik penjual masih tampil: true"
+        },
+        {
+          "pemeriksaan": "Surel penangguhan berisi alasan terkirim ke penjual",
+          "lulus": false,
+          "teramati": "tidak ada surel ke penjual"
+        },
+        {
+          "pemeriksaan": "Log admin mencatat pemblokiran akun penjual",
+          "lulus": false,
+          "teramati": "[{\"email\":\"pembeli.uji@itb.ac.id\",\"alasan\":\"Penipuan berulang\"}]"
+        },
+        {
+          "pemeriksaan": "Halaman penjual berpindah ke /masuk setelah dimuat ulang",
+          "lulus": false,
+          "teramati": "alamat: /listing-saya"
+        }
+      ],
+      "tangkapan": [
+        "UC23-TC01-admin-v9.0.png",
+        "UC23-TC01-penjual-v9.0.png"
+      ],
+      "kesimpulan": "Fail"
+    },
+    "UC24-TC01": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Penjual dapat masuk kembali",
+          "lulus": true,
+          "teramati": "200 berhasil"
+        },
+        {
+          "pemeriksaan": "Listing penjual tampil di katalog setelah buka blokir",
+          "lulus": true,
+          "teramati": "GET /api/katalog?q=Samsung → 200; listing Samsung milik penjual tampil: true"
+        },
+        {
+          "pemeriksaan": "Log admin mencatat BUKA_BLOKIR untuk penjual beserta alasan",
+          "lulus": false,
+          "teramati": "[{\"email\":\"pembeli.uji@itb.ac.id\",\"alasan\":\"Banding diterima\"}]"
+        }
+      ],
+      "tangkapan": [
+        "UC24-TC01-admin-v9.0.png",
+        "UC24-TC01-katalog-v9.0.png"
+      ],
+      "kesimpulan": "Fail"
+    },
+    "KNF02-TC01": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Setiap tindakan moderasi menghasilkan satu baris log_admin yang lengkap",
+          "lulus": true,
+          "teramati": "[[\"HAPUS_LISTING\",\"Barang palsu\"],[\"BLOKIR_AKUN\",\"Penipuan berulang\"],[\"BUKA_BLOKIR\",\"Banding diterima\"]]"
+        }
+      ],
+      "tangkapan": [],
+      "kesimpulan": "Pass"
+    },
+    "KNF02-TC02": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Riwayat di I-14 memuat setiap catatan log_audit laporan",
+          "lulus": true,
+          "teramati": "log_audit: Penerimaan laporan / Perubahan status laporan menjadi Diproses / Penghapusan listing: af5e55eb-9db6-4d08-8056-9a2c5c4bd7f9"
+        }
+      ],
+      "tangkapan": [
+        "KNF02-TC02-v9.0.png"
+      ],
+      "kesimpulan": "Pass"
+    },
+    "KNF02-TC04": {
+      "pemeriksaan": [
+        {
+          "pemeriksaan": "Admin dapat membaca laporan dan riwayatnya; pengguna biasa ditolak",
+          "lulus": true,
+          "teramati": "admin → 200; pengguna → 403"
+        }
+      ],
+      "tangkapan": [],
+      "kesimpulan": "Pass"
+    }
+  }
+}

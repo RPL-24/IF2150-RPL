@@ -60,19 +60,19 @@
 
 FAIL tests/db/ModulC.test.js
   Integrasi Modul C dengan PostgreSQL (komponen nyata)
-    ✓ INT-TC24 katalog membagi 25 listing menjadi halaman 20 dan 5, terbaru lebih dulu (UC13, KF28) (195 ms)
-    ✓ INT-TC25 katalog hanya memuat listing Tersedia milik akun tidak diblokir, termasuk setelah pemblokiran (UC13 Alt 2, KF30) (75 ms)
-    ✓ INT-TC26 pencarian tidak peka huruf besar, mencari di judul dan deskripsi, dan setiap kata harus muncul (UC14, KF25) (49 ms)
-    ✓ INT-TC27 filter kategori, rentang harga (inklusif), dan lokasi berlaku sekaligus (UC14, KF26) (37 ms)
-    ✓ INT-TC28 pengurutan termurah dan termahal mengikuti harga (UC14, KF27) (38 ms)
-    ✓ INT-TC29 kriteria tanpa hasil membalas daftar kosong dan pesan "Barang tidak ditemukan." (UC14 Alt 1, KF29) (13 ms)
-    ✓ INT-TC30 rentang harga terbalik dan parameter tidak sah ditolak 400 (UC14 Alt 2) (23 ms)
-    ✓ INT-TC31 detail memuat seluruh atribut, foto berurutan, identitas penjual, dan penanda pemilik (UC15, UC15 Alt 1, KF17) (42 ms)
-    ✓ INT-TC32 detail listing Terjual tetap tampil, sedangkan yang dinonaktifkan, milik akun diblokir, atau tidak ada membalas 404 (UC15 Alt 2, Alt 3) (74 ms)
-    ✓ INT-TC33 katalog dan detail menolak permintaan tanpa sesi login yang sah (401) (16 ms)
-    ✕ INT-TC34 nomor halaman sangat besar tidak menimbulkan galat server (batas) (73 ms)
+    ✓ INT-TC35 katalog membagi 25 listing menjadi halaman 20 dan 5, terbaru lebih dulu (UC13, KF28) (134 ms)
+    ✓ INT-TC36 katalog hanya memuat listing Tersedia milik akun tidak diblokir, termasuk setelah pemblokiran (UC13 Alt 2, KF30) (35 ms)
+    ✓ INT-TC37 pencarian tidak peka huruf besar, mencari di judul dan deskripsi, dan setiap kata harus muncul (UC14, KF25) (15 ms)
+    ✓ INT-TC38 filter kategori, rentang harga (inklusif), dan lokasi berlaku sekaligus (UC14, KF26) (16 ms)
+    ✓ INT-TC39 pengurutan termurah dan termahal mengikuti harga (UC14, KF27) (21 ms)
+    ✓ INT-TC40 kriteria tanpa hasil membalas daftar kosong dan pesan "Barang tidak ditemukan." (UC14 Alt 1, KF29) (6 ms)
+    ✓ INT-TC41 rentang harga terbalik dan parameter tidak sah ditolak 400 (UC14 Alt 2) (9 ms)
+    ✓ INT-TC42 detail memuat seluruh atribut, foto berurutan, identitas penjual, dan penanda pemilik (UC15, UC15 Alt 1, KF17) (23 ms)
+    ✓ INT-TC43 detail listing Terjual tetap tampil, sedangkan yang dinonaktifkan, milik akun diblokir, atau tidak ada membalas 404 (UC15 Alt 2, Alt 3) (39 ms)
+    ✓ INT-TC44 katalog dan detail menolak permintaan tanpa sesi login yang sah (401) (5 ms)
+    ✕ INT-TC45 nomor halaman sangat besar tidak menimbulkan galat server (batas) (25 ms)
 
-  ● Integrasi Modul C dengan PostgreSQL (komponen nyata) › INT-TC34 nomor halaman sangat besar tidak menimbulkan galat server (batas)
+  ● Integrasi Modul C dengan PostgreSQL (komponen nyata) › INT-TC45 nomor halaman sangat besar tidak menimbulkan galat server (batas)
 
     expect(received).toBeLessThan(expected)
 
@@ -92,5 +92,5 @@ FAIL tests/db/ModulC.test.js
 Test Suites: 1 failed, 1 total
 Tests:       1 failed, 10 passed, 11 total
 Snapshots:   0 total
-Time:        2.398 s
+Time:        0.801 s, estimated 3 s
 Ran all test suites matching tests/db/ModulC.test.js.

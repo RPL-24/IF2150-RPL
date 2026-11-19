@@ -89,7 +89,7 @@ describe('Integrasi Modul C dengan PostgreSQL (komponen nyata)', () => {
     await db.pool.end();
   });
 
-  test('INT-TC24 katalog membagi 25 listing menjadi halaman 20 dan 5, terbaru lebih dulu (UC13, KF28)', async () => {
+  test('INT-TC35 katalog membagi 25 listing menjadi halaman 20 dan 5, terbaru lebih dulu (UC13, KF28)', async () => {
     for (let i = 1; i <= 25; i += 1) {
       await buatBarang(penjual.idAkun, { judul: `Barang ${String(i).padStart(2, '0')}`, kategori: KATEGORI_KATALOG, urutanWaktu: i });
     }
@@ -108,7 +108,7 @@ describe('Integrasi Modul C dengan PostgreSQL (komponen nyata)', () => {
     expect(irisan).toEqual([]);
   });
 
-  test('INT-TC25 katalog hanya memuat listing Tersedia milik akun tidak diblokir, termasuk setelah pemblokiran (UC13 Alt 2, KF30)', async () => {
+  test('INT-TC36 katalog hanya memuat listing Tersedia milik akun tidak diblokir, termasuk setelah pemblokiran (UC13 Alt 2, KF30)', async () => {
     const penjualLain = await buatAkun('Penjual Akan Diblokir');
     const diblokirSejakAwal = await buatAkun('Penjual Diblokir', { diblokir: true });
     await buatBarang(penjual.idAkun, { judul: 'Tersedia A', kategori: KATEGORI_STATUS, urutanWaktu: 1 });
@@ -127,7 +127,7 @@ describe('Integrasi Modul C dengan PostgreSQL (komponen nyata)', () => {
     expect(sesudah.body.data.paginasi.totalItem).toBe(1);
   });
 
-  test('INT-TC26 pencarian tidak peka huruf besar, mencari di judul dan deskripsi, dan setiap kata harus muncul (UC14, KF25)', async () => {
+  test('INT-TC37 pencarian tidak peka huruf besar, mencari di judul dan deskripsi, dan setiap kata harus muncul (UC14, KF25)', async () => {
     await buatBarang(penjual.idAkun, { judul: 'Jas Praktikum Kimia', kategori: KATEGORI_CARI });
     await buatBarang(penjual.idAkun, { judul: 'Jas Himpunan', deskripsi: 'Dipakai saat praktikum fisika', kategori: KATEGORI_CARI });
     await buatBarang(penjual.idAkun, { judul: 'Jas Hujan', kategori: KATEGORI_CARI });
@@ -143,7 +143,7 @@ describe('Integrasi Modul C dengan PostgreSQL (komponen nyata)', () => {
     expect(judulDari(persen)).toEqual(['Diskon 50% Buku']);
   });
 
-  test('INT-TC27 filter kategori, rentang harga (inklusif), dan lokasi berlaku sekaligus (UC14, KF26)', async () => {
+  test('INT-TC38 filter kategori, rentang harga (inklusif), dan lokasi berlaku sekaligus (UC14, KF26)', async () => {
     await buatBarang(penjual.idAkun, { judul: 'Harga 49999', harga: 49999, kategori: KATEGORI_FILTER, lokasi: 'Labtek V' });
     await buatBarang(penjual.idAkun, { judul: 'Harga 50000', harga: 50000, kategori: KATEGORI_FILTER, lokasi: 'Labtek V' });
     await buatBarang(penjual.idAkun, { judul: 'Harga 150000', harga: 150000, kategori: KATEGORI_FILTER, lokasi: 'Labtek V' });
@@ -161,7 +161,7 @@ describe('Integrasi Modul C dengan PostgreSQL (komponen nyata)', () => {
     expect(judulDari(res).sort()).toEqual(['Harga 150000', 'Harga 50000']);
   });
 
-  test('INT-TC28 pengurutan termurah dan termahal mengikuti harga (UC14, KF27)', async () => {
+  test('INT-TC39 pengurutan termurah dan termahal mengikuti harga (UC14, KF27)', async () => {
     const termurah = await katalog(pembeli.token, { kategori: KATEGORI_FILTER, urut: 'termurah' });
     const termahal = await katalog(pembeli.token, { kategori: KATEGORI_FILTER, urut: 'termahal' });
 
@@ -171,7 +171,7 @@ describe('Integrasi Modul C dengan PostgreSQL (komponen nyata)', () => {
     expect(hargaMahal).toEqual([150001, 150000, 100000, 50000, 49999]);
   });
 
-  test('INT-TC29 kriteria tanpa hasil membalas daftar kosong dan pesan "Barang tidak ditemukan." (UC14 Alt 1, KF29)', async () => {
+  test('INT-TC40 kriteria tanpa hasil membalas daftar kosong dan pesan "Barang tidak ditemukan." (UC14 Alt 1, KF29)', async () => {
     const res = await katalog(pembeli.token, { q: 'zzzqqq', kategori: KATEGORI_KOSONG });
 
     expect(res.status).toBe(200);
@@ -180,7 +180,7 @@ describe('Integrasi Modul C dengan PostgreSQL (komponen nyata)', () => {
     expect(res.body.pesan).toBe('Barang tidak ditemukan.');
   });
 
-  test('INT-TC30 rentang harga terbalik dan parameter tidak sah ditolak 400 (UC14 Alt 2)', async () => {
+  test('INT-TC41 rentang harga terbalik dan parameter tidak sah ditolak 400 (UC14 Alt 2)', async () => {
     const terbalik = await katalog(pembeli.token, { hargaMin: 200000, hargaMaks: 50000 });
     const urutan = await katalog(pembeli.token, { urut: 'acak' });
 
@@ -192,7 +192,7 @@ describe('Integrasi Modul C dengan PostgreSQL (komponen nyata)', () => {
     expect(urutan.status).toBe(400);
   });
 
-  test('INT-TC31 detail memuat seluruh atribut, foto berurutan, identitas penjual, dan penanda pemilik (UC15, UC15 Alt 1, KF17)', async () => {
+  test('INT-TC42 detail memuat seluruh atribut, foto berurutan, identitas penjual, dan penanda pemilik (UC15, UC15 Alt 1, KF17)', async () => {
     const idBarang = await buatBarang(penjual.idAkun, {
       judul: 'Kalkulator Casio fx-991',
       harga: 150000,
@@ -222,7 +222,7 @@ describe('Integrasi Modul C dengan PostgreSQL (komponen nyata)', () => {
     expect(olehPemilik.body.data.milikSendiri).toBe(true);
   });
 
-  test('INT-TC32 detail listing Terjual tetap tampil, sedangkan yang dinonaktifkan, milik akun diblokir, atau tidak ada membalas 404 (UC15 Alt 2, Alt 3)', async () => {
+  test('INT-TC43 detail listing Terjual tetap tampil, sedangkan yang dinonaktifkan, milik akun diblokir, atau tidak ada membalas 404 (UC15 Alt 2, Alt 3)', async () => {
     const diblokir = await buatAkun('Penjual Diblokir Detail', { diblokir: true });
     const terjual = await buatBarang(penjual.idAkun, { judul: 'Detail Terjual', kategori: 'Kalkulator', status: 'Terjual' });
     const nonaktif = await buatBarang(penjual.idAkun, { judul: 'Detail Nonaktif', kategori: 'Kalkulator', status: 'Dinonaktifkan' });
@@ -243,7 +243,7 @@ describe('Integrasi Modul C dengan PostgreSQL (komponen nyata)', () => {
     expect(resIdSalah.status).toBe(400);
   });
 
-  test('INT-TC33 katalog dan detail menolak permintaan tanpa sesi login yang sah (401)', async () => {
+  test('INT-TC44 katalog dan detail menolak permintaan tanpa sesi login yang sah (401)', async () => {
     const tanpaToken = await request(app).get('/api/katalog');
     const tokenPalsu = await katalog('token-palsu', {});
     const detailTanpaToken = await request(app).get(`/api/katalog/${crypto.randomUUID()}`);
@@ -253,7 +253,7 @@ describe('Integrasi Modul C dengan PostgreSQL (komponen nyata)', () => {
     expect(detailTanpaToken.status).toBe(401);
   });
 
-  test('INT-TC34 nomor halaman sangat besar tidak menimbulkan galat server (batas)', async () => {
+  test('INT-TC45 nomor halaman sangat besar tidak menimbulkan galat server (batas)', async () => {
     const besar = await katalog(pembeli.token, { kategori: KATEGORI_KATALOG, halaman: 100000 });
     const sangatBesar = await katalog(pembeli.token, { kategori: KATEGORI_KATALOG, halaman: '99999999999999999999' });
 
