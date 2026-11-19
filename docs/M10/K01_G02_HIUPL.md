@@ -208,6 +208,8 @@ Pembagian pengujian mengikuti pembagian modul pada Tabel B.4 dokumen Implementas
 
 Pengujian UC07–UC12 dilaksanakan pada 19 November 2026 terhadap kode produksi tag `v9.0` (`485af76`), menggunakan basis data uji `itbeli_modulb_20261119_uji`.
 
+Pengujian unit dan integrasi Modul C (C15, C16, C17, dan operasi katalog C29) dilaksanakan pada 19 November 2026 terhadap kode produksi tag `v9.0` (`485af76`); yang ditambahkan hanya berkas di `src/tests/`.
+
 ## 4.1 Strategi dan Kedalaman Pengujian Kelas
 
 Setiap kelas perancangan pada Tabel 4.1 DPPL diklasifikasikan ke dalam tiga tingkat kedalaman pengujian. Tingkat **Mendalam** diberikan pada kelas yang memuat logika bisnis, perhitungan, validasi, aturan status, algoritma, integrasi eksternal, atau keamanan. Tingkat **Sedang** diberikan pada kelas yang hanya mengoordinasikan atau mendelegasikan proses. Tingkat **Tidak perlu** diberikan pada kelas tanpa logika, seperti *entity/DTO* dan kelas konfigurasi, yang teruji secara tidak langsung melalui test case use case. Seluruh kelas wajib dicantumkan beserta alasan penentuan tingkatnya.
@@ -241,6 +243,10 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C31 | Kategori | Sedang | Pada implementasi menjadi daftar tetap `ReferensiListing.kategori`; validasi keanggotaan didelegasikan ke `validasiData` (M9 B.1 No. 19) | C31-UT01, C14-UT03, UC07-TC01 |
 | C32 | LokasiCOD | Sedang | Pada implementasi menjadi daftar tetap `ReferensiListing.lokasi`; validasi keanggotaan didelegasikan ke `validasiData` (M9 B.1 No. 19) | C32-UT01, C14-UT03, UC07-TC01 |
 | C45 | PenyimpananBerkas | Mendalam | Menulis dan menghapus berkas foto; merupakan komponen bersama. Bukti Modul B saat ini mencakup integrasi disk lokal, belum unit/coverage kelas lengkap atau integrasi Blob nyata | C14-UT12; INT-TC13, INT-TC21, INT-TC23 |
+| C15 | KatalogController | Mendalam | Alur inti UC13 s.d. UC15: menyusun kriteria dari C16 dan C17, menghitung total halaman (KF28), memberi pesan hasil kosong (KF29), galat 404 pada detail, dan penanda `milikSendiri` (Algo-013) | C15-UT01 s.d. C15-UT11, INT-TC24 s.d. INT-TC34 |
+| C16 | PencarianController | Mendalam | Mengolah masukan bebas pengguna: normalisasi NFKC, huruf kecil, perapian spasi, batas 100 karakter dan 5 kata (KF25, Algo-014) | C16-UT01 s.d. C16-UT11, INT-TC26 |
+| C17 | FilterController | Mendalam | Gerbang validasi seluruh parameter katalog (harga, kategori, lokasi, urutan, halaman) dan perhitungan offset paginasi (KF26 s.d. KF28, Algo-015) | C17-UT01 s.d. C17-UT14, INT-TC27, INT-TC28, INT-TC30, INT-TC34 |
+| C29 (operasi katalog) | Barang: `getKatalog`, `getDetailKatalog` | Mendalam | SQL dinamis berparameter, peloloskan pola `ILIKE`, klausa urutan dari daftar tetap, serta aturan hanya listing "Tersedia" milik akun tidak diblokir (KF17, KF25 s.d. KF30, Algo-032). Operasi C29 lainnya diklasifikasikan Modul B | C29-UT05 s.d. C29-UT15, INT-TC24 s.d. INT-TC32 |
 | *[CXX]* | *[Nama kelas]* | *[Mendalam/Sedang/Tidak perlu]* | *[Alasan penentuan tingkat pengujian]* | *[ID test case atau -]* |
 
 ## 4.2 Pengujian Unit Kelas
@@ -807,6 +813,145 @@ Kelengkapan unit test dan coverage C45 belum tersedia; jalur penyimpanan foto pa
 
 <br>
 
+### 4.2.21 Kelas KatalogController
+
+**ID Kelas:** C15  
+**Nama Kelas:** KatalogController  
+**Tingkat:** Mendalam
+
+Barang (C29) diganti tiruan; C16 dan C17 dipakai apa adanya (`src/tests/unit/KatalogController.test.js`).
+
+Tabel 4.2.21. Hasil Pengujian Unit Kelas C15
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C15-UT01 | `getProduk(req, res)` | Normal | Query kosong (katalog UC13); Barang membalas 1 listing | `getKatalog` dipanggil dengan urutan "terbaru", batas 20, offset 0; status 200 tanpa pesan; paginasi `{halaman: 1, totalHalaman: 1, totalItem: 1, ukuranHalaman: 20}` | Argumen dan paginasi sama persis; status 200; `pesan` tidak ada | Pass |
+| C15-UT02 | `getProduk(req, res)` | Normal | `q = "  Jas PRAKTIKUM "`, kategori "Jas praktikum", harga 50000–150000, lokasi "Labtek V", urut "termurah", halaman 2; total 45 | `daftarKata ["jas","praktikum"]`, harga berupa angka, offset 20; paginasi 2 dari 3 halaman; `kriteria.kataKunci = "jas praktikum"` | Sesuai seluruhnya | Pass |
+| C15-UT03 | `getProduk(req, res)` | Batas | Total 0, 20, 21, 40, 41 listing | Total halaman 1, 1, 2, 2, 3 | 1, 1, 2, 2, 3 | Pass |
+| C15-UT04 | `getProduk(req, res)` | Negatif | `q = "tidakada"`; Barang membalas daftar kosong | Daftar `[]`, total halaman 1, pesan "Barang tidak ditemukan." (KF29) | Sesuai | Pass |
+| C15-UT05 | `getProduk(req, res)` | Batas | Halaman 5 dengan total 21 listing | Offset 80; status 200 dengan daftar kosong dan pesan "Barang tidak ditemukan.", bukan galat | Offset 80; status 200; `paginasi {halaman: 5, totalHalaman: 2}` | Pass |
+| C15-UT06 | `getProduk(req, res)` | Negatif | `hargaMin = 200000`, `hargaMaks = 50000` | Galat berstatus 400; `getKatalog` tidak dipanggil | Galat 400; `getKatalog` dipanggil 0 kali | Pass |
+| C15-UT07 | `getProduk(req, res)` | Negatif | `getKatalog` melempar "koneksi putus" | Galat diteruskan ke penangan galat | Promise ditolak dengan galat "koneksi putus" | Pass |
+| C15-UT08 | `getDetailProduk(req, res)` | Normal | ID listing milik penjual lain, dibuka pembeli | Status 200; data listing dengan `milikSendiri = false`; `getDetailKatalog` dipanggil dengan ID tersebut | Sesuai | Pass |
+| C15-UT09 | `getDetailProduk(req, res)` | Normal | Dibuka oleh pemilik listing (UC15 Alternatif 1) | `milikSendiri = true` | `true` | Pass |
+| C15-UT10 | `getDetailProduk(req, res)` | Batas | Permintaan tanpa `req.akun` | `milikSendiri = false` | `false` | Pass |
+| C15-UT11 | `getDetailProduk(req, res)` | Negatif | `getDetailKatalog` membalas `null` (UC15 Alternatif 2) | Galat 404 "Listing tidak ditemukan atau sudah tidak tersedia." | Galat 404 dengan pesan tersebut | Pass |
+
+Tabel 4.2.21b. Ringkasan Cakupan Kelas C15
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `getProduk()`, `paginasi()`, `urutkanHasil()` |
+| Operasi yang diuji | `getProduk`, `getDetailProduk` (tambahan untuk UC15). `paginasi` dan `urutkanHasil` pindah ke C17 dan C29 (M9 B.1 No. 22, 24) dan diuji di sana |
+| ID Algoritma yang tercakup | Algo-013 |
+| Coverage (wajib ≥ 70%) | `KatalogController.js` 100% baris, 100% cabang, 100% fungsi |
+
+### 4.2.22 Kelas PencarianController
+
+**ID Kelas:** C16  
+**Nama Kelas:** PencarianController  
+**Tingkat:** Mendalam
+
+Fungsi murni tanpa basis data (`src/tests/unit/PencarianController.test.js`).
+
+Tabel 4.2.22. Hasil Pengujian Unit Kelas C16
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C16-UT01 | `normalisasiKataKunci(kataKunci): String` | Normal | `"  Meja   BELAJAR  "` | `"meja belajar"` | `"meja belajar"` | Pass |
+| C16-UT02 | `normalisasiKataKunci(kataKunci)` | Negatif | `undefined`, `null`, `"   "` | `""` untuk ketiganya | `""` | Pass |
+| C16-UT03 | `normalisasiKataKunci(kataKunci)` | Batas | 500 huruf "a" | Dipotong menjadi 100 karakter | Panjang 100 | Pass |
+| C16-UT04 | `normalisasiKataKunci(kataKunci)` | Batas | Tepat 100 huruf "b" | Tidak berubah | Sama dengan masukan | Pass |
+| C16-UT05 | `normalisasiKataKunci(kataKunci)` | Batas | `"ＭＥＪＡ"` + spasi ideografis + `"Belajar"` | `"meja belajar"` (normalisasi NFKC) | `"meja belajar"` | Pass |
+| C16-UT06 | `normalisasiKataKunci(kataKunci)` | Batas | `"Diskon 50%_baru"` | `%` dan `_` tetap ada: `"diskon 50%_baru"` | `"diskon 50%_baru"` | Pass |
+| C16-UT07 | `pecahKataKunci(kataKunciNormal): List` | Normal | `"meja meja belajar"` | `["meja", "belajar"]` | `["meja", "belajar"]` | Pass |
+| C16-UT08 | `pecahKataKunci(kataKunciNormal)` | Batas | `"a b c d e f g"` | 5 kata pertama | `["a","b","c","d","e"]` | Pass |
+| C16-UT09 | `pecahKataKunci(kataKunciNormal)` | Negatif | `""` | `[]` | `[]` | Pass |
+| C16-UT10 | `siapkanPencarian(kataKunci)` | Normal | `" Kalkulator  Casio "` | `{kataKunci: "kalkulator casio", daftarKata: ["kalkulator","casio"]}` | Sesuai | Pass |
+| C16-UT11 | `siapkanPencarian(kataKunci)` | Negatif | `undefined` (katalog tanpa pencarian) | `{kataKunci: "", daftarKata: []}` | Sesuai | Pass |
+
+Tabel 4.2.22b. Ringkasan Cakupan Kelas C16
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `cocokkanKataKunci()`, `normalisasiKataKunci()` |
+| Operasi yang diuji | `normalisasiKataKunci`, `pecahKataKunci`, `siapkanPencarian` (mewujudkan `cocokkanKataKunci`, M9 B.1 No. 23). Pencocokan `ILIKE` diuji pada C29-UT07, C29-UT08, dan INT-TC26 |
+| ID Algoritma yang tercakup | Algo-014 |
+| Coverage (wajib ≥ 70%) | `PencarianController.js` 100% baris, 100% cabang, 100% fungsi |
+
+### 4.2.23 Kelas FilterController
+
+**ID Kelas:** C17  
+**Nama Kelas:** FilterController  
+**Tingkat:** Mendalam
+
+Fungsi murni tanpa basis data (`src/tests/unit/FilterController.test.js`).
+
+Tabel 4.2.23. Hasil Pengujian Unit Kelas C17
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C17-UT01 | `validasiFilter(query): Map` | Normal | `{}` dan tanpa argumen | Kategori, lokasi, dan harga `null`; urut "terbaru"; halaman 1 | Sesuai untuk keduanya | Pass |
+| C17-UT02 | `validasiFilter(query)` | Normal | Kategori "Kalkulator", lokasi "Labtek V", harga "10000"–"50000", urut "TERMURAH", halaman "3" | Harga menjadi angka, urut "termurah", halaman 3 | Sesuai | Pass |
+| C17-UT03 | `validasiFilter(query)` | Negatif | Harga minimum 200000, maksimum 50000 (UC14 Alternatif 2) | Galat "Harga minimum tidak boleh lebih besar dari harga maksimum." | Galat dengan pesan tersebut | Pass |
+| C17-UT04 | `validasiFilter(query)` | Batas | Minimum = maksimum = 50000; minimum = maksimum = 0 | Diterima | Diterima, nilai 50000 dan 0 | Pass |
+| C17-UT05 | `validasiFilter(query)` | Negatif | `hargaMin "-1"`, `hargaMaks "murah"`, `hargaMaks "Infinity"` | Ketiganya ditolak "... harus berupa angka tidak negatif." | Ketiganya ditolak | Pass |
+| C17-UT06 | `validasiFilter(query)` | Negatif | Urut "acak" dan "harga; DROP TABLE barang" | Ditolak dengan pesan urutan | Keduanya ditolak | Pass |
+| C17-UT07 | `validasiFilter(query)` | Batas | Urut `" Termahal "` | "termahal" | "termahal" | Pass |
+| C17-UT08 | `validasiFilter(query)` | Negatif | Halaman "0", "-1", "1.5", "dua" | Keempatnya ditolak "Nomor halaman harus bilangan bulat mulai dari 1." | Keempatnya ditolak | Pass |
+| C17-UT09 | `validasiFilter(query)` | Batas | Kategori dan lokasi tepat 50 karakter | Diterima | Diterima | Pass |
+| C17-UT10 | `validasiFilter(query)` | Batas | Kategori atau lokasi 51 karakter | Ditolak "Kategori tidak valid." / "Lokasi COD tidak valid." | Keduanya ditolak dengan pesan tersebut | Pass |
+| C17-UT11 | `validasiFilter(query)` | Negatif | Urut "acak" | Galat berstatus HTTP 400 | `status = 400` | Pass |
+| C17-UT12 | `hitungPaginasi(halaman, ukuranHalaman)` | Normal | Halaman 1 | `{batas: 20, offset: 0}` (KF28) | Sesuai | Pass |
+| C17-UT13 | `hitungPaginasi(halaman, ukuranHalaman)` | Normal | Halaman 3 | `{batas: 20, offset: 40}` | Sesuai | Pass |
+| C17-UT14 | `hitungPaginasi(halaman, ukuranHalaman)` | Batas | Halaman 2, ukuran 5 | `{batas: 5, offset: 5}` | Sesuai | Pass |
+
+Tabel 4.2.23b. Ringkasan Cakupan Kelas C17
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `filterCategory()`, `filterPrice()`, `filterLocation()`, `validasiParameterFilter()` |
+| Operasi yang diuji | `validasiFilter` (mewujudkan `validasiParameterFilter`) dan `hitungPaginasi`. `filterCategory`, `filterPrice`, dan `filterLocation` menjadi klausa `WHERE` di `Barang.getKatalog` (M9 B.1 No. 23) dan diuji pada C29-UT09, C29-UT10, INT-TC27 |
+| ID Algoritma yang tercakup | Algo-015 |
+| Coverage (wajib ≥ 70%) | `FilterController.js` 100% baris, 100% cabang, 100% fungsi |
+
+Catatan: `validasiFilter` tidak membatasi nomor halaman dari atas. Dampaknya terlihat pada INT-TC34 (Subbab 4.3).
+
+### 4.2.24 Kelas Barang (operasi katalog)
+
+**ID Kelas:** C29  
+**Nama Kelas:** Barang (`getKatalog`, `getDetailKatalog`)  
+**Tingkat:** Mendalam
+
+Lanjutan Subbab 4.2.17 untuk operasi katalog Modul C. Klien basis data diganti tiruan yang merekam teks SQL dan parameternya (`src/tests/unit/BarangKatalog.test.js`); pengujian dengan PostgreSQL sungguhan ada pada INT-TC24 s.d. INT-TC32.
+
+Tabel 4.2.24. Hasil Pengujian Unit Kelas C29 (operasi katalog)
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C29-UT05 | `getKatalog(kriteria, client)` | Normal | Kriteria kosong | Kueri COUNT dan data memuat `b.status = $1` dan `a.status_blokir = FALSE`; urutan `b.waktu_unggah DESC`; parameter `["Tersedia", 20, 0]` | Sesuai | Pass |
+| C29-UT06 | `getKatalog(kriteria, client)` | Normal | Satu baris dengan harga `"150000.00"`, foto utama, nama penjual | Objek `Barang` dengan harga 150000, `fotoUtama`, `namaPenjual`; total 1 | Sesuai | Pass |
+| C29-UT07 | `getKatalog(kriteria, client)` | Normal | `daftarKata ["jas", "praktikum"]` | Dua syarat `(b.judul ILIKE $n OR b.deskripsi_kondisi ILIKE $n)` digabung AND; parameter `"%jas%"`, `"%praktikum%"` (KF25) | Sesuai | Pass |
+| C29-UT08 | `getKatalog(kriteria, client)` | Batas | `daftarKata ["50%", "a_b", "c\d"]` | Parameter `"%50\%%"`, `"%a\_b%"`, `"%c\\d%"` (karakter pola diloloskan) | Sesuai | Pass |
+| C29-UT09 | `getKatalog(kriteria, client)` | Normal | Kategori, lokasi, harga 50000–200000 | Empat syarat `WHERE` berparameter `$2` s.d. `$5` (KF26) | Sesuai | Pass |
+| C29-UT10 | `getKatalog(kriteria, client)` | Batas | `hargaMin = 0` | Syarat `b.harga >= $2` tetap dipakai dengan nilai 0 | Sesuai | Pass |
+| C29-UT11 | `getKatalog(kriteria, client)` | Normal | Urut "termurah" dan "termahal" | `ORDER BY b.harga ASC, ...` dan `ORDER BY b.harga DESC, ...` (KF27) | Sesuai | Pass |
+| C29-UT12 | `getKatalog(kriteria, client)` | Negatif | Urut `"b.harga; DROP TABLE barang"` | Jatuh ke urutan "terbaru"; teks masukan tidak muncul di SQL | Sesuai; SQL tidak memuat "DROP TABLE" | Pass |
+| C29-UT13 | `getKatalog(kriteria, client)` | Normal | Kategori, batas 20, offset 40 | `LIMIT $3 OFFSET $4` dengan parameter 20 dan 40 (KF28) | Sesuai | Pass |
+| C29-UT14 | `getDetailKatalog(idBarang, client)` | Normal | Baris listing "Terjual" dengan dua foto | Syarat `b.status IN ($2, $3)` dan akun tidak diblokir; parameter `["b1", "Tersedia", "Terjual"]`; `daftarFoto` berurutan dan `penjual {idAkun, nama}` (KF17) | Sesuai | Pass |
+| C29-UT15 | `getDetailKatalog(idBarang, client)` | Negatif | Kueri membalas nol baris | `null` | `null` | Pass |
+
+Tabel 4.2.24b. Ringkasan Cakupan Kelas C29
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Lihat Tabel 4.2.17b. Bagian Modul C: `getKatalog()`; `getDetailKatalog()` ditambahkan untuk UC15 (M9 B.1 No. 24) |
+| Operasi yang diuji | `getKatalog`, `getDetailKatalog` |
+| ID Algoritma yang tercakup | Algo-032 |
+| Coverage (wajib ≥ 70%) | `Barang.js` (seluruh berkas, `npx jest --coverage` pada seluruh unit test) **100% baris, 82% cabang, 100% fungsi**. Cabang yang belum tercakup berada di konstruktor dan `dariBaris` (baris 46–57), nilai bawaan parameter, serta `nonaktifkanByPemilik` dan `pulihkanKatalog` (baris 199–219). Angka ini menggantikan angka 45,58% pada Tabel 4.2.17b, yang diukur sebelum C29-UT05 s.d. C29-UT15 ditambahkan |
+
+<br>
+
 ## 4.3 Pengujian Integrasi
 
 Pengujian integrasi memeriksa interaksi antarkomponen yang melewati batas, yaitu *Controller* ke *Model*, aplikasi ke basis data, dan aplikasi ke sistem eksternal. Daftar antarmuka mengacu pada dokumen DPPL, dengan minimal satu test case untuk setiap antarmuka. Pengujian memakai komponen nyata, bukan *mock*. Apabila ada antarmuka tambahan yang belum didaftarkan pada dokumen DPPL, cantumkan juga.
@@ -829,6 +974,9 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | AK-08 | BarangController (C14) | ListingService, Barang dan ListingPenjual (C29) | Controller - Service - Model | INT-TC13 s.d. INT-TC23 |
 | AK-09 | Barang, FotoBarang, ListingPenjual (C29, C30) | PostgreSQL (`barang`, `foto_barang`, serta akun/sesi fixture) | Aplikasi - Basis data | INT-TC13 s.d. INT-TC23 |
 | AK-10 | ListingService | PenyimpananBerkas (C45), disk lokal | Aplikasi - Penyimpanan berkas | INT-TC13, INT-TC21, INT-TC23 |
+| AK-11 | KatalogController (C15) | PencarianController (C16), FilterController (C17), Barang (C29) | Controller - Model | INT-TC24 s.d. INT-TC32, INT-TC34 |
+| AK-12 | Barang (C29): `getKatalog`, `getDetailKatalog` | PostgreSQL (tabel `barang`, `akun`, `foto_barang`) | Aplikasi - Basis data | INT-TC24 s.d. INT-TC32, INT-TC34 |
+| AK-13 | Klien HTTP (dipakai C05 HalamanKatalog dan C07 HalamanDetailBarang) ke `/api/katalog` | `katalogRoutes`, Otorisasi (C41), dan KatalogController (C15) | View - Controller | INT-TC24 s.d. INT-TC34 |
 | *[AK-XX]* | *[Komponen asal]* | *[Komponen tujuan]* | *[Jenis batas]* | *[ID test case]* |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
@@ -858,11 +1006,26 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC21 | AK-08, AK-09, AK-10 | Batas: lima foto (UC07) | POST listing dengan lima PNG dan urutan baru:0 s.d. baru:4 | Diterima, lima metadata foto | 201; jumlah metadata foto = 5 | Pass |
 | INT-TC22 | AK-08, AK-09 | Negatif: data/foto tidak sah (UC07) | POST judul kosong, tanpa foto, lalu enam foto | Seluruhnya 400 | [400, 400, 400] | Pass |
 | INT-TC23 | AK-08, AK-09, AK-10 | Normal: hapus permanen (UC10) | DELETE listing; periksa barang, metadata foto, dan path berkas | Listing/metadata/berkas hilang | 200; barang null; metadata = 0; berkas tidak ada | Pass |
+| INT-TC24 | AK-11, AK-12, AK-13 | Normal dan batas: paginasi katalog (UC13, KF28) | 25 listing "Tersedia" dengan waktu unggah berbeda pada satu kategori; `GET /api/katalog?kategori=...` halaman 1 dan 2 | Halaman 1 berisi 20 listing, terbaru lebih dulu; halaman 2 berisi 5 sisanya; tidak ada listing ganda; total 25, 2 halaman | Halaman 1: 20 listing, "Barang 25" s.d. "Barang 06"; halaman 2: "Barang 05" s.d. "Barang 01"; irisan kosong; paginasi `{totalItem: 25, totalHalaman: 2}` | Pass |
+| INT-TC25 | AK-11, AK-12, AK-13 | Normal: aturan tampil katalog dan pemblokiran (UC13 Alternatif 2, KF30) | Listing Tersedia, Terjual, Dinonaktifkan, milik akun yang sudah diblokir, dan milik penjual lain; lalu `UPDATE akun SET status_blokir = TRUE` untuk penjual lain dan muat ulang katalog | Sebelum: hanya dua listing Tersedia milik akun aktif. Sesudah: listing milik akun yang baru diblokir hilang | Sebelum: ["Tersedia B", "Tersedia A"], total 2. Sesudah: ["Tersedia A"], total 1 | Pass |
+| INT-TC26 | AK-11, AK-12, AK-13 | Normal dan batas: pencarian kata kunci (UC14, KF25) | `q = "JAS praktikum"` terhadap "Jas Praktikum Kimia", "Jas Himpunan" (deskripsi memuat "praktikum"), "Jas Hujan"; lalu `q = "50%"` terhadap "Diskon 50% Buku" dan "Buku 500 Soal" | Cocok tanpa peka huruf besar pada judul atau deskripsi, setiap kata harus muncul; `%` dicocokkan apa adanya | ["Jas Himpunan", "Jas Praktikum Kimia"]; `kataKunci = "jas praktikum"`; pencarian "50%" hanya ["Diskon 50% Buku"] | Pass |
+| INT-TC27 | AK-11, AK-12, AK-13 | Normal dan batas: filter gabungan (UC14, KF26) | Harga 49999, 50000, 150000, 150001 di Labtek V dan satu listing di Labtek VI; filter kategori, harga 50000–150000, lokasi Labtek V | Hanya harga 50000 dan 150000 (batas inklusif) di Labtek V | ["Harga 150000", "Harga 50000"] | Pass |
+| INT-TC28 | AK-11, AK-12, AK-13 | Normal: pengurutan (UC14, KF27) | Data INT-TC27 dengan `urut = termurah` dan `urut = termahal` | Harga naik dan harga turun | [49999, 50000, 100000, 150000, 150001] dan kebalikannya | Pass |
+| INT-TC29 | AK-11, AK-12, AK-13 | Negatif: tidak ada hasil (UC14 Alternatif 1, KF29) | `q = "zzzqqq"` pada kategori kosong | 200 dengan daftar kosong, total 0, 1 halaman, pesan "Barang tidak ditemukan." | Sesuai | Pass |
+| INT-TC30 | AK-11, AK-13 | Negatif: parameter tidak sah (UC14 Alternatif 2) | `hargaMin = 200000, hargaMaks = 50000`; lalu `urut = acak` | 400 `{sukses: false, pesan: "Harga minimum tidak boleh lebih besar dari harga maksimum."}`; urutan tidak dikenal juga 400 | 400 dengan isi tersebut; 400 | Pass |
+| INT-TC31 | AK-11, AK-12, AK-13 | Normal: detail listing (UC15, UC15 Alternatif 1, KF17) | Listing "Kalkulator Casio fx-991" Rp150.000 di Labtek VI dengan dua foto yang disisipkan terbalik (urutan 1 lalu 0); dibuka pembeli dan pemilik | Seluruh atribut, identitas penjual, foto urut 0 lalu 1; `milikSendiri` false untuk pembeli dan true untuk pemilik | Sesuai; urutan foto [foto urutan 0, foto urutan 1] | Pass |
+| INT-TC32 | AK-11, AK-12, AK-13 | Normal dan negatif: detail dengan status khusus (UC15 Alternatif 2 dan 3) | Detail listing Terjual, Dinonaktifkan, milik akun diblokir, UUID acak, dan ID "bukan-uuid" | Terjual 200 berstatus "Terjual"; tiga berikutnya 404 "Listing tidak ditemukan atau sudah tidak tersedia."; ID tidak sah 400 | 200 "Terjual"; 404, 404, 404 dengan pesan tersebut; 400 | Pass |
+| INT-TC33 | AK-13 | Negatif: tanpa sesi login | `GET /api/katalog` tanpa token dan dengan token palsu; `GET /api/katalog/:id` tanpa token | Ketiganya 401 | 401, 401, 401 | Pass |
+| INT-TC34 | AK-11, AK-12, AK-13 | Batas: nomor halaman sangat besar | `halaman = 100000`, lalu `halaman = 99999999999999999999` | Halaman 100000: 200 dengan daftar kosong. Halaman 99999999999999999999: ditolak 400 atau dibalas daftar kosong, bukan galat server | Halaman 100000: 200, daftar kosong. Halaman 99999999999999999999: **500** "Terjadi galat pada server."; log PostgreSQL `invalid input syntax for type bigint: "2e+21"` (kode 22P02) | Fail |
 | *[INT-TCYY]* | *[AK-XX]* | *[...]* | *[...]* | *[...]* | *[Hasil aktual]* | *Pass/Fail* |
 
 Skenario berhasil masuk lewat Google belum dapat diuji dengan Google sungguhan karena `GOOGLE_CLIENT_ID` belum diatur, baik di lingkungan lokal maupun di versi daring (`/api/akun/sso/penyedia` membalas `google: false`). Alur tersebut diuji dengan *token endpoint* tiruan pada SSO-UT06 dan SSO-UT16 s.d. SSO-UT21.
 
 INT-TC13 s.d. INT-TC23 menggunakan PostgreSQL dan penyimpanan disk lokal tanpa mock. Hasil aktual dilampirkan pada Subbab 4.6.
+
+INT-TC24 s.d. INT-TC34 berada di `src/tests/db/ModulC.test.js` dan berjalan melalui HTTP (Supertest ke aplikasi Express) sampai PostgreSQL 16 tanpa mock. Karena basis data uji dipakai bersama modul lain, setiap putaran memakai kategori unik sehingga jumlah dan urutan hasil tidak terpengaruh data modul lain.
+
+**Penyebab INT-TC34 gagal:** `FilterController.bacaHalaman` menerima bilangan bulat berapa pun besarnya. `Number("99999999999999999999")` menjadi 1e20 sehingga offset (1e20 − 1) × 20 dikirim pustaka `pg` sebagai teks `"2e+21"`, yang ditolak PostgreSQL karena bukan bilangan `bigint`. Galat tersebut tidak ditangani sehingga pengguna menerima 500. **Usulan perbaikan:** beri batas atas nomor halaman di `bacaHalaman` (misalnya `Number.isSafeInteger(halaman * UKURAN_HALAMAN)`) dan balas 400 "Nomor halaman tidak valid." bila dilampaui, lalu tambahkan kasus batas tersebut ke C17-UT08. Kode `v9.0` tidak diubah selama pengujian.
 
 <br>
 
@@ -1113,6 +1276,12 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC12-TC02 | <img src="assets/bukti/UC12-TC02.png" width="600"> |
 | UC12-TC03 | <img src="assets/bukti/UC12-TC03.png" width="600"> |
 | KNF01-TC01 | Belum tersedia; pengujian belum dilakukan |
+| C15-UT01 s.d. C15-UT11 | [unit-modul-c.txt](assets/bukti/unit-modul-c.txt) |
+| C16-UT01 s.d. C16-UT11 | [unit-modul-c.txt](assets/bukti/unit-modul-c.txt) |
+| C17-UT01 s.d. C17-UT14 | [unit-modul-c.txt](assets/bukti/unit-modul-c.txt) |
+| C29-UT05 s.d. C29-UT15 | [unit-modul-c.txt](assets/bukti/unit-modul-c.txt) |
+| C15, C16, C17, C29 (coverage) | [coverage-modul-c.txt](assets/bukti/coverage-modul-c.txt) |
+| INT-TC24 s.d. INT-TC34 | [int-modul-c.txt](assets/bukti/int-modul-c.txt) |
 | *[ID pengujian]* | *[Bukti hasil pengujian]* |
 
 <br>

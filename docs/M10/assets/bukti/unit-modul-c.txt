@@ -1,0 +1,81 @@
+PASS tests/unit/BarangKatalog.test.js
+  C29 Barang.getKatalog
+    ✓ C29-UT05 kriteria bawaan: hanya Tersedia, akun tidak diblokir, terbaru, 20 baris dari offset 0 (9 ms)
+    ✓ C29-UT06 memetakan baris menjadi objek Barang beserta fotoUtama dan namaPenjual (4 ms)
+    ✓ C29-UT07 setiap kata kunci menjadi syarat ILIKE pada judul atau deskripsi, digabung dengan AND (KF25) (4 ms)
+    ✓ C29-UT08 karakter %, _, dan \ pada kata kunci diloloskan agar dicocokkan apa adanya (3 ms)
+    ✓ C29-UT09 seluruh filter aktif digabung dengan AND dan nilainya dikirim sebagai parameter (KF26) (3 ms)
+    ✓ C29-UT10 harga minimum 0 tetap dipakai sebagai syarat (batas) (1 ms)
+    ✓ C29-UT11 urutan "termurah" dipetakan ke klausa tetap (KF27) (1 ms)
+    ✓ C29-UT11 urutan "termahal" dipetakan ke klausa tetap (KF27) (2 ms)
+    ✓ C29-UT12 urutan di luar daftar tetap jatuh ke "terbaru" dan tidak masuk ke SQL (1 ms)
+    ✓ C29-UT13 batas dan offset paginasi dikirim sebagai parameter (KF28) (1 ms)
+  C29 Barang.getDetailKatalog
+    ✓ C29-UT14 mengembalikan detail beserta daftar foto dan identitas penjual (KF17) (2 ms)
+    ✓ C29-UT15 mengembalikan null bila listing tidak ada, dinonaktifkan, atau milik akun diblokir (1 ms)
+
+PASS tests/unit/KatalogController.test.js
+  C15 KatalogController.getProduk
+    ✓ C15-UT01 katalog tanpa kriteria memakai urutan terbaru dan halaman 1 (UC13) (6 ms)
+    ✓ C15-UT02 meneruskan kata kunci, filter, urutan, dan halaman ke Barang.getKatalog (UC14) (4 ms)
+    ✓ C15-UT03 total 0 listing menghasilkan 1 halaman (batas 20 per halaman, KF28) (2 ms)
+    ✓ C15-UT03 total 20 listing menghasilkan 1 halaman (batas 20 per halaman, KF28) (2 ms)
+    ✓ C15-UT03 total 21 listing menghasilkan 2 halaman (batas 20 per halaman, KF28) (2 ms)
+    ✓ C15-UT03 total 40 listing menghasilkan 2 halaman (batas 20 per halaman, KF28) (2 ms)
+    ✓ C15-UT03 total 41 listing menghasilkan 3 halaman (batas 20 per halaman, KF28) (2 ms)
+    ✓ C15-UT04 memberi pesan "Barang tidak ditemukan." saat hasil kosong (KF29) (2 ms)
+    ✓ C15-UT05 halaman melewati halaman terakhir mengembalikan daftar kosong, bukan galat (4 ms)
+    ✓ C15-UT06 tidak memanggil basis data jika filter tidak valid (UC14 Alternatif 2) (3 ms)
+    ✓ C15-UT07 galat basis data diteruskan ke penangan galat (7 ms)
+  C15 KatalogController.getDetailProduk
+    ✓ C15-UT08 mengembalikan detail listing untuk pembeli (UC15) (2 ms)
+    ✓ C15-UT09 menandai milikSendiri bila pembuka adalah pemilik listing (UC15 Alternatif 1) (1 ms)
+    ✓ C15-UT10 tanpa data akun pada permintaan, milikSendiri bernilai false (1 ms)
+    ✓ C15-UT11 mengembalikan galat 404 jika listing tidak tersedia (UC15 Alternatif 2) (1 ms)
+
+PASS tests/unit/FilterController.test.js
+  C17 FilterController
+    validasiFilter
+      ✓ C17-UT01 memberi nilai bawaan saat query kosong (2 ms)
+      ✓ C17-UT02 membaca seluruh kriteria sekaligus (1 ms)
+      ✓ C17-UT03 menolak harga minimum lebih besar dari maksimum (UC14 Alternatif 2) (7 ms)
+      ✓ C17-UT04 harga minimum sama dengan maksimum, termasuk 0, diterima (2 ms)
+      ✓ C17-UT05 menolak hargaMin = "-1" (negatif atau bukan angka) (2 ms)
+      ✓ C17-UT05 menolak hargaMaks = "murah" (negatif atau bukan angka) (1 ms)
+      ✓ C17-UT05 menolak hargaMaks = "Infinity" (negatif atau bukan angka) (2 ms)
+      ✓ C17-UT06 menolak urutan yang tidak dikenal (3 ms)
+      ✓ C17-UT07 urutan tidak peka huruf besar dan spasi (1 ms)
+      ✓ C17-UT08 menolak nomor halaman "0" (3 ms)
+      ✓ C17-UT08 menolak nomor halaman "-1" (1 ms)
+      ✓ C17-UT08 menolak nomor halaman "1.5" (1 ms)
+      ✓ C17-UT08 menolak nomor halaman "dua" (1 ms)
+      ✓ C17-UT09 kategori dan lokasi tepat 50 karakter diterima (1 ms)
+      ✓ C17-UT10 kategori atau lokasi 51 karakter ditolak (3 ms)
+      ✓ C17-UT11 galat validasi berstatus HTTP 400 (1 ms)
+    hitungPaginasi
+      ✓ C17-UT12 halaman 1 dimulai dari offset 0 dengan 20 item (KF28) (1 ms)
+      ✓ C17-UT13 halaman 3 dimulai dari offset 40 (1 ms)
+      ✓ C17-UT14 ukuran halaman dapat diganti pemanggil (1 ms)
+
+PASS tests/unit/PencarianController.test.js
+  C16 PencarianController
+    normalisasiKataKunci
+      ✓ C16-UT01 mengubah ke huruf kecil dan merapikan spasi (2 ms)
+      ✓ C16-UT02 mengembalikan string kosong untuk masukan kosong (1 ms)
+      ✓ C16-UT03 memotong kata kunci yang lebih dari 100 karakter (1 ms)
+      ✓ C16-UT04 kata kunci tepat 100 karakter tidak terpotong
+      ✓ C16-UT05 huruf lebar penuh (fullwidth) dinormalisasi NFKC
+      ✓ C16-UT06 karakter khusus pola LIKE (% dan _) dipertahankan apa adanya
+    pecahKataKunci
+      ✓ C16-UT07 memecah menjadi kata unik (1 ms)
+      ✓ C16-UT08 membatasi jumlah kata menjadi 5 (1 ms)
+      ✓ C16-UT09 kata kunci kosong menghasilkan daftar kosong (1 ms)
+    siapkanPencarian
+      ✓ C16-UT10 menggabungkan normalisasi dan pemecahan (1 ms)
+      ✓ C16-UT11 tanpa kata kunci (katalog biasa) menghasilkan kriteria kosong
+
+Test Suites: 4 passed, 4 total
+Tests:       57 passed, 57 total
+Snapshots:   0 total
+Time:        1.928 s
+Ran all test suites matching tests/unit/PencarianController.test.js|tests/unit/FilterController.test.js|tests/unit/KatalogController.test.js|tests/unit/BarangKatalog.test.js.
