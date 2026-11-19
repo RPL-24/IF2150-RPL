@@ -247,6 +247,8 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C16 | PencarianController | Mendalam | Mengolah masukan bebas pengguna: normalisasi NFKC, huruf kecil, perapian spasi, batas 100 karakter dan 5 kata (KF25, Algo-014) | C16-UT01 s.d. C16-UT11, INT-TC26 |
 | C17 | FilterController | Mendalam | Gerbang validasi seluruh parameter katalog (harga, kategori, lokasi, urutan, halaman) dan perhitungan offset paginasi (KF26 s.d. KF28, Algo-015) | C17-UT01 s.d. C17-UT14, INT-TC27, INT-TC28, INT-TC30, INT-TC34 |
 | C29 (operasi katalog) | Barang: `getKatalog`, `getDetailKatalog` | Mendalam | SQL dinamis berparameter, peloloskan pola `ILIKE`, klausa urutan dari daftar tetap, serta aturan hanya listing "Tersedia" milik akun tidak diblokir (KF17, KF25 s.d. KF30, Algo-032). Operasi C29 lainnya diklasifikasikan Modul B | C29-UT05 s.d. C29-UT15, INT-TC24 s.d. INT-TC32 |
+| C05 | HalamanKatalog | Sedang | Memuat validasi rentang harga sisi klien, penyimpanan kriteria di URL, dan pemilihan keadaan kosong; aturan yang menentukan tetap divalidasi ulang di C17 | C05-UT01 s.d. C05-UT06; UC13-TC01, UC13-TC02, UC14-TC01 s.d. UC14-TC03 |
+| C07 | HalamanDetailBarang | Sedang | Memilih tombol aksi menurut pemilik dan status listing, serta menolak ID listing yang bukan UUID sebelum memanggil API | C07-UT01 s.d. C07-UT05; UC15-TC01 s.d. UC15-TC04 |
 | *[CXX]* | *[Nama kelas]* | *[Mendalam/Sedang/Tidak perlu]* | *[Alasan penentuan tingkat pengujian]* | *[ID test case atau -]* |
 
 ## 4.2 Pengujian Unit Kelas
@@ -952,6 +954,45 @@ Tabel 4.2.24b. Ringkasan Cakupan Kelas C29
 
 <br>
 
+### 4.2.25 Kelas HalamanKatalog
+
+**ID Kelas:** C05  
+**Nama Kelas:** HalamanKatalog  
+**Tingkat:** Sedang
+
+Skrip View dijalankan di konteks `vm` Node.js dengan DOM, `Api`, `history`, dan `location` tiruan, bersama `ListingUI.js` yang asli (`src/tests/unit/ViewKatalog.test.js`).
+
+Tabel 4.2.25. Hasil Pengujian Unit Kelas C05
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C05-UT01 | `terapkan(kriteriaBaru): void` | Normal | `q` "jas", kategori "Jas praktikum", harga 50000–150000, urut "termurah"; API membalas 1 listing | `history.pushState` ke `/katalog?q=jas&kategori=Jas+praktikum&hargaMin=50000&hargaMaks=150000&urut=termurah`; `GET /api/katalog` dengan query yang sama; formulir terisi kategori tersebut | Sesuai | Pass |
+| C05-UT02 | `terapkan(kriteriaBaru): void` | Negatif | Harga minimum 200000, maksimum 50000 | Pesan "Harga minimum tidak boleh lebih besar dari harga maksimum." tampil; URL tidak berubah; API tidak dipanggil | Pesan tampil; `pushState` dan `Api.kirim` dipanggil 0 kali | Pass |
+| C05-UT03 | `keQuery(kriteria): String` | Normal | `{halaman: 2, q: "  meja ", kategori: "", lokasi: "   ", urut: "terbaru"}` dan `{}` | `"q=meja&urut=terbaru&halaman=2"` dan `""` | Sesuai | Pass |
+| C05-UT04 | `render(data): void` | Normal | 20 listing dari total 24 pada halaman 1 | 20 kartu, "24 barang ditemukan", keadaan kosong tersembunyi, navigasi "Halaman 1 dari 2", Sebelumnya nonaktif, Berikutnya aktif | Sesuai | Pass |
+| C05-UT05 | `render(data): void` | Negatif | Daftar kosong, total 0 | Keadaan kosong "Barang tidak ditemukan" tampil; navigasi tersembunyi | Sesuai | Pass |
+| C05-UT06 | `render(data): void` | Batas | Daftar kosong, total 24, halaman 5 | "Halaman tidak tersedia" dan "Katalog hanya memiliki 2 halaman." | Sesuai | Pass |
+
+### 4.2.26 Kelas HalamanDetailBarang
+
+**ID Kelas:** C07  
+**Nama Kelas:** HalamanDetailBarang  
+**Tingkat:** Sedang
+
+Diuji dengan konteks `vm` yang sama (`src/tests/unit/ViewKatalog.test.js`).
+
+Tabel 4.2.26. Hasil Pengujian Unit Kelas C07
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C07-UT01 | `renderAksi(barang): void` | Normal | Listing Tersedia, `milikSendiri = false` | Tombol "Kirim pesan", tautan Laporkan ke `/laporan-form?objek=<id>&jenis=Listing`, kotak pesan tampil | Sesuai | Pass |
+| C07-UT02 | `renderAksi(barang): void` | Normal | `milikSendiri = true` (UC15 Alternatif 1) | Hanya "Ini listing milik Anda." dan tautan "Ubah Listing" ke `/listing-form?id=<id>`; kotak pesan tersembunyi | Sesuai; tidak ada tombol Hapus atau Tandai Terjual (bandingkan UC15-TC02) | Pass |
+| C07-UT03 | `renderAksi(barang): void` | Batas | Listing Terjual (UC15 Alternatif 3) | "Barang ini sudah terjual."; tidak ada "Kirim pesan"; kotak pesan tersembunyi | Sesuai | Pass |
+| C07-UT04 | `mulai(): void` | Negatif | `?id=bukan-uuid` | API tidak dipanggil; pesan "ID listing tidak valid."; detail tidak dirender | Sesuai | Pass |
+| C07-UT05 | `mulai(): void` | Negatif | ID sah; API membalas 404 "Listing tidak ditemukan atau sudah tidak tersedia." | `GET /api/katalog/<id>` dipanggil; pesan server ditampilkan | Sesuai | Pass |
+
+<br>
+
 ## 4.3 Pengujian Integrasi
 
 Pengujian integrasi memeriksa interaksi antarkomponen yang melewati batas, yaitu *Controller* ke *Model*, aplikasi ke basis data, dan aplikasi ke sistem eksternal. Daftar antarmuka mengacu pada dokumen DPPL, dengan minimal satu test case untuk setiap antarmuka. Pengujian memakai komponen nyata, bukan *mock*. Apabila ada antarmuka tambahan yang belum didaftarkan pada dokumen DPPL, cantumkan juga.
@@ -1324,6 +1365,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C16-UT01 s.d. C16-UT11 | [unit-modul-c.txt](assets/bukti/unit-modul-c.txt) |
 | C17-UT01 s.d. C17-UT14 | [unit-modul-c.txt](assets/bukti/unit-modul-c.txt) |
 | C29-UT05 s.d. C29-UT15 | [unit-modul-c.txt](assets/bukti/unit-modul-c.txt) |
+| C05-UT01 s.d. C05-UT06, C07-UT01 s.d. C07-UT05 | [view-modul-c.txt](assets/bukti/view-modul-c.txt) |
 | C15, C16, C17, C29 (coverage) | [coverage-modul-c.txt](assets/bukti/coverage-modul-c.txt) |
 | INT-TC24 s.d. INT-TC34 | [int-modul-c.txt](assets/bukti/int-modul-c.txt) |
 | UC13-TC01 | <img src="assets/bukti/UC13-TC01.png" width="600"><br><img src="assets/bukti/UC13-TC01-navigasi.png" width="600"><br><img src="assets/bukti/UC13-TC01-hasil.png" width="600"><br><img src="assets/bukti/UC13-TC01-detail.png" width="600"> |
