@@ -148,3 +148,38 @@ describe('Pelengkap C01, C14, C28', () => {
     assert.ok(!admin.restoranId);
   });
 });
+
+describe('Pelengkap C28 (cabang validasi dan profil)', () => {
+  test('C28-UT10 gantiKataSandi: kata sandi baru < 8 karakter atau konfirmasi beda ditolak 400, sandi lama tetap berlaku', async () => {
+    const u = await loginSebagai(app, 'pelanggan@antri.in', 'pelanggan123');
+    const pendek = await gagal(app.controllers.auth.gantiKataSandi(u, { lama: 'pelanggan123', baru: 'pendek', konfirmasi: 'pendek' }));
+    assert.equal(pendek.status, 400);
+    assert.ok(pendek.details.fields.baru);
+    const beda = await gagal(app.controllers.auth.gantiKataSandi(u, { lama: 'pelanggan123', baru: 'barubaru1', konfirmasi: 'barubaru2' }));
+    assert.equal(beda.status, 400);
+    const tanpaIsi = await gagal(app.controllers.auth.gantiKataSandi(u, {}));
+    assert.equal(tanpaIsi.status, 400);
+    await loginSebagai(app, 'pelanggan@antri.in', 'pelanggan123');
+  });
+
+  test('C28-UT11 getProfil: akun restoran tanpa restoran memuat status pengajuan mitra, pelanggan tidak', async () => {
+    const c = app.controllers.auth;
+    await c.createAccount({ nama: 'Calon Mitra', email: 'calonmitra@contoh.id', noHp: '081288880001', password: 'restoran123',
+      konfirmasiPassword: 'restoran123', role: 'RESTORAN', setuju: true } as never);
+    const mitra = await loginSebagai(app, 'calonmitra@contoh.id', 'restoran123');
+    const kosong = await c.getProfil(mitra);
+    assert.equal(kosong.pengajuan, null);
+    assert.equal(kosong.restoran, null);
+    const berkas = (jenis: string) => ({ fieldname: jenis, originalname: `${jenis}.pdf`, mimetype: 'application/pdf', size: 1000, path: '/tmp/tidak-ada' });
+    await app.controllers.mitra.simpanPengajuan(mitra, {
+      namaRestoran: 'Warung Calon', kategori: 'Makanan', lokasi: 'Dago', alamat: 'Jl. Dago No. 9, Bandung',
+      emailKontak: 'calonmitra@contoh.id', noHp: '081288880001',
+      daftarMenu: JSON.stringify([{ namaMenu: 'Nasi Goreng', harga: '15000' }]),
+    }, [berkas('nib'), berkas('izinUsaha')]);
+    const profil = await c.getProfil(mitra);
+    assert.equal(profil.pengajuan?.status, 'MENUNGGU');
+    assert.equal(profil.pengajuan?.namaRestoran, 'Warung Calon');
+    const pel = await c.getProfil(await loginSebagai(app, 'pelanggan@antri.in', 'pelanggan123'));
+    assert.equal(pel.pengajuan, null);
+  });
+});
