@@ -206,6 +206,8 @@ Pengujian dijalankan pada 15 November 2026 terhadap kode tag `v9.0` (`485af76`).
 
 Pembagian pengujian mengikuti pembagian modul pada Tabel B.4 dokumen Implementasi (Tugas 9): Modul A Akun dan Otentikasi (UC01 sampai UC06), Modul B Listing Penjual (UC07 sampai UC12), Modul C Katalog dan Pencarian (UC13 sampai UC15), Modul D Percakapan dan Notifikasi (UC16 sampai UC18), dan Modul E Laporan dan Moderasi (UC19 sampai UC24).
 
+Pengujian UC07–UC12 dilaksanakan pada 19 November 2026 terhadap kode produksi tag `v9.0` (`485af76`), menggunakan basis data uji `itbeli_modulb_20261119_uji`.
+
 ## 4.1 Strategi dan Kedalaman Pengujian Kelas
 
 Setiap kelas perancangan pada Tabel 4.1 DPPL diklasifikasikan ke dalam tiga tingkat kedalaman pengujian. Tingkat **Mendalam** diberikan pada kelas yang memuat logika bisnis, perhitungan, validasi, aturan status, algoritma, integrasi eksternal, atau keamanan. Tingkat **Sedang** diberikan pada kelas yang hanya mengoordinasikan atau mendelegasikan proses. Tingkat **Tidak perlu** diberikan pada kelas tanpa logika, seperti *entity/DTO* dan kelas konfigurasi, yang teruji secara tidak langsung melalui test case use case. Seluruh kelas wajib dicantumkan beserta alasan penentuan tingkatnya.
@@ -230,6 +232,15 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C42 | Kriptografi (bagian `hash` dan `cocokkanHash`) | Mendalam | Keamanan: hash bcrypt kata sandi (Algo-066, Algo-067). Bagian AES-256-GCM diklasifikasikan oleh Modul D | C42-UT01 s.d. C42-UT04, KNF03-TC02 |
 | C43 | SurelAdapter | Mendalam | Integrasi eksternal ke server SMTP, termasuk penanganan kegagalan kirim | C43-UT01 s.d. C43-UT04, INT-TC03, INT-TC04 |
 | SSO (tanpa ID DPPL) | SsoController | Mendalam | Kelas tambahan B.1 No. 41. Keamanan dan integrasi eksternal: OAuth 2.0 dengan PKCE, pemeriksaan *state*, klaim `id_token`, domain surel, dan *cookie* bertanda tangan HMAC | SSO-UT01 s.d. SSO-UT30, INT-TC11 |
+| C03 | HalamanListingPenjual | Sedang | Mengoordinasikan pemuatan daftar, pengelompokan tab, dialog konfirmasi, dan penerusan aksi hapus/status | C03-UT01 s.d. C03-UT03; UC08-TC01; UC10-TC01 s.d. UC12-TC03 |
+| C04 | FormulirBarang | Mendalam | Validasi isian/foto sisi klien, batas 1–5 foto dan 5 MB, pengurutan foto, serta pengiriman formulir | C04-UT01 s.d. C04-UT06; UC07-TC01 s.d. UC07-TC03; UC09-TC01 s.d. UC09-TC04 |
+| C06 | KartuProduk | Tidak perlu | Rendering foto utama, harga, judul, dan label status melalui `ListingUI.kartu`; aturan bisnis tetap di layanan | UC08-TC01, UC11-TC01, UC12-TC01 |
+| C14 | BarangController | Mendalam | Validasi server, kepemilikan, penyimpanan/pengubahan/penghapusan, serta aturan transisi status | C14-UT01 s.d. C14-UT18; INT-TC13 s.d. INT-TC23 |
+| C29 | Barang | Mendalam | Query listing pemilik, transaksi, penguncian baris, dan pembaruan status atomik. Operasi katalog umum dan moderasi tetap menjadi bagian modul terkait | C29-UT01 s.d. C29-UT04; INT-TC13 s.d. INT-TC23 |
+| C30 | FotoBarang | Mendalam | Batas ukuran/format, metadata foto, urutan galeri, dan penghapusan metadata | C30-UT01 s.d. C30-UT03; INT-TC13, INT-TC15, INT-TC21, INT-TC23 |
+| C31 | Kategori | Sedang | Pada implementasi menjadi daftar tetap `ReferensiListing.kategori`; validasi keanggotaan didelegasikan ke `validasiData` (M9 B.1 No. 19) | C31-UT01, C14-UT03, UC07-TC01 |
+| C32 | LokasiCOD | Sedang | Pada implementasi menjadi daftar tetap `ReferensiListing.lokasi`; validasi keanggotaan didelegasikan ke `validasiData` (M9 B.1 No. 19) | C32-UT01, C14-UT03, UC07-TC01 |
+| C45 | PenyimpananBerkas | Mendalam | Menulis dan menghapus berkas foto; merupakan komponen bersama. Bukti Modul B saat ini mencakup integrasi disk lokal, belum unit/coverage kelas lengkap atau integrasi Blob nyata | C14-UT12; INT-TC13, INT-TC21, INT-TC23 |
 | *[CXX]* | *[Nama kelas]* | *[Mendalam/Sedang/Tidak perlu]* | *[Alasan penentuan tingkat pengujian]* | *[ID test case atau -]* |
 
 ## 4.2 Pengujian Unit Kelas
@@ -637,9 +648,162 @@ Tabel 4.2.13b. Ringkasan Cakupan Kelas SsoController
 | ID Algoritma yang tercakup | - (tidak ada pada DPPL) |
 | Coverage (wajib ≥ 70%) | 98,14% baris / 92,47% cabang (pernyataan 94,77%, fungsi 100%); bukti `coverage-modul-a.txt` |
 
-### 4.2.14 Kelas [Nama Kelas]
+### 4.2.14 Kelas HalamanListingPenjual
 
-*[Ulangi pola 4.2.1 untuk setiap kelas bertingkat Mendalam atau Sedang.]*
+**ID Kelas:** C03  
+**Nama Kelas:** HalamanListingPenjual  
+**Tingkat:** Sedang
+
+Cara menjalankan unit test UC07–UC12: `node docs/M10/assets/bukti/jalankan-unit-modul-b.cjs` dari root proyek.
+
+Lokasi file test: `docs/M10/assets/bukti/modul-b.test.js`.
+
+Tabel 4.2.14. Hasil Pengujian Unit Kelas C03
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C03-UT01 | `muat()` | Normal | API membalas satu listing Tersedia | Daftar disimpan, render dipanggil, indikator memuat disembunyikan | Ketiganya terpenuhi | Pass |
+| C03-UT02 | `muat()` | Negatif | API menolak dengan `jaringan gagal` | Pesan tampil, render tidak dipanggil | Pesan diteruskan dan render tidak dipanggil | Pass |
+| C03-UT03 | `mulai()`, `render()`, `aksi()` | Normal, Negatif | Muat daftar, konfirmasi hapus/status, status berubah sebelum aksi, API gagal | GET daftar; DELETE/PATCH sesuai aksi; status usang dimuat ulang; galat diteruskan | Semua pemeriksaan sesuai; konfirmasi diuji melalui callback tiruan | Pass |
+
+### 4.2.15 Kelas FormulirBarang
+
+**ID Kelas:** C04  
+**Nama Kelas:** FormulirBarang  
+**Tingkat:** Mendalam
+
+Tabel 4.2.15. Hasil Pengujian Unit Kelas C04
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C04-UT01 | `tambahFoto()`, `pindah()` | Normal, Batas, Negatif | 1 lalu 5 foto, tepat 5 MB; tambah foto keenam; 0 byte, >5 MB, PDF; pindah urutan valid/tidak valid | Maksimum 5 foto; berkas salah tidak ditambahkan; urutan hanya berubah untuk indeks sah | Seluruh assertion sesuai | Pass |
+| C04-UT02 | `validasi()`, `error()` | Normal, Negatif | Isian lengkap dan satu foto; judul kosong; tanpa foto | Lengkap diterima; isian/foto kosong ditolak dan ditandai | `true`, `false`, `false` sesuai kondisi | Pass |
+| C04-UT03 | `data()`, `simpan()` | Normal | Data valid dengan satu foto lama; API tiruan sukses | FormData dikirim; pesan disimpan; diarahkan ke detail sesuai implementasi M9 | POST, FormData, dan tujuan `/detail?id=id` sesuai kontrak implementasi | Pass |
+| C04-UT04 | `simpan()` | Negatif | API menolak `server gagal` | Galat tampil, tombol kembali aktif | Sesuai; `busy=false`, tombol aktif | Pass |
+| C04-UT05 | `batal()` | Normal, Negatif | Formulir bersih; formulir memiliki perubahan belum disimpan | Bersih langsung kembali; perubahan meminta konfirmasi | Tujuan `/listing-saya` dan pemanggilan konfirmasi sesuai | Pass |
+| C04-UT06 | `mulai()`, `renderFoto()`, `preview()` | Normal, Negatif | Formulir baru; ubah dengan data dan foto lama; API gagal | Referensi/prefill/foto tampil, tombol aktif; kegagalan ditampilkan | Seluruh pemeriksaan sesuai | Pass |
+
+Tabel 4.2.15b. Ringkasan Cakupan Kelas C04
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `bukaFormulir()`, `tampilkanFormulir()`, `suntingIsian()`, `pilihFoto()`, `validasiTipeData()`, `validasiFotoSisiKlien()`, `validasiIsianWajib()`, `tandaiIsianKosong()`, `tolakPratinjau()`, `kirimFormulir()`, `onClickUpdate()`, `arahkanKeDetail()`, `tampilkanNotifikasi()` |
+| Operasi yang diuji | `mulai`, `tambahFoto`, `pindah`, `renderFoto`, `data`, `preview`, `error`, `validasi`, `simpan`, `batal` |
+| ID Algoritma yang tercakup | - |
+| Coverage (wajib ≥ 70%) | **95,45% baris / 63,63% cabang**; bukti `unit-modul-b.txt` |
+
+### 4.2.16 Kelas BarangController
+
+**ID Kelas:** C14  
+**Nama Kelas:** BarangController  
+**Tingkat:** Mendalam
+
+Aturan bisnis C14 diimplementasikan pada `ListingService` sesuai Tabel B.5 dokumen Implementasi (Tugas 9).
+
+Tabel 4.2.16. Hasil Pengujian Unit Kelas C14
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C14-UT01 | `validasiData()` | Normal | Judul berspasi, harga `120000` | Judul di-trim, harga menjadi angka | `Jas kimia`, 120000 | Pass |
+| C14-UT02 | `validasiData()` | Batas | Judul 80 karakter, deskripsi 1000; harga 0,01 dan 9.999.999.999,99 | Semua diterima | Seluruh batas diterima | Pass |
+| C14-UT03 | `validasiData()` | Negatif | Isian kosong, judul 81/deskripsi 1001, kategori/lokasi asing, delapan harga salah | Ditolak dengan galat validasi | Seluruh masukan ditolak | Pass |
+| C14-UT04 | `validasiFoto()` | Normal, Batas | Signature PNG/JPEG sah; metadata ukuran 1 byte dan tepat 5 MB | Format/ukuran diterima sesuai pemeriksaan kode | Diterima. Ini pemeriksaan metadata/signature, bukan pengujian decoder gambar | Pass |
+| C14-UT05 | `validasiFoto()` | Negatif | 0 byte, >5 MB, ekstensi/MIME/signature tidak sesuai | Ditolak | Seluruh masukan ditolak | Pass |
+| C14-UT06 | `get()` | Normal | Pemilik sah, listing dan galeri tersedia | Data, foto, referensi dikembalikan | Sesuai | Pass |
+| C14-UT07 | `get()` / pemeriksaan kepemilikan | Negatif | Listing tidak ada, pemilik lain, Dinonaktifkan | 404, 403, 409; galeri tidak dibaca | Ketiga galat sesuai | Pass |
+| C14-UT08 | `simpan()` (buat) | Normal, Batas | Satu dan lima foto; urutan sah | Pemilik dari sesi, data/foto diteruskan untuk disimpan | Pemilik dan jumlah galeri sesuai | Pass |
+| C14-UT09 | `simpan()` | Negatif | JSON urutan salah, 0/6 entri, duplikat, bukan array/string | 400 | Seluruh variasi menghasilkan 400 | Pass |
+| C14-UT10 | `simpan()` | Negatif | Akun tidak aktif, foto asing atau unggahan tidak dirujuk urutan | 403 untuk akun; 400 untuk foto/urutan | Sesuai | Pass |
+| C14-UT11 | `simpan()` (ubah) | Normal | Satu foto baru, satu dipertahankan, satu dibuang | Data diperbarui, urutan baru sesuai, berkas lama terbuang dihapus | Urutan baru/lama dan penghapusan sesuai | Pass |
+| C14-UT12 | `simpan()` | Negatif | Storage mengembalikan null; database gagal setelah unggah | 500 untuk storage; galat DB diteruskan; foto baru dibersihkan | Sesuai, termasuk pemanggilan penghapusan foto baru | Pass |
+| C14-UT13 | `hapus()` | Normal | Pemilik sah dan satu foto | Hapus listing, lalu berkas fotonya | Kedua operasi dipanggil dengan ID/path yang sesuai | Pass |
+| C14-UT14 | `hapus()` | Negatif | Akun tidak aktif atau bukan pemilik | 403; operasi hapus tidak dipanggil | Sesuai | Pass |
+| C14-UT15 | `status()` | Normal | Tersedia → Terjual dan Terjual → Tersedia | Transisi diteruskan dengan ID pemilik/status asal | Kedua transisi sesuai | Pass |
+| C14-UT16 | `status()` | Negatif | Status sama, akun tidak aktif, bukan pemilik, status usang | 400, 403, 403, 409 | Seluruh hasil sesuai | Pass |
+| C14-UT17 | Ketujuh handler C14 | Normal | Referensi, daftar, detail pemilik, buat, ubah, hapus, status | Parameter diteruskan sesuai sesi; buat menghasilkan 201 | Semua handler dijalankan; parameter dan 201 sesuai | Pass |
+| C14-UT18 | `buatBarang()` | Negatif | Service menolak | Galat diteruskan ke Express | Promise ditolak dengan galat yang sama | Pass |
+
+Tabel 4.2.16b. Ringkasan Cakupan Kelas C14
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `getDataFormulir()`, `buatBarang()`, `getIdPenjualDariSesi()`, `validasiKelengkapanIsian()`, `validasiFoto()`, `simpanFoto()`, `terbitkanKeKatalog()`, `getListingSaya()`, `getBarang()`, `updateBarang()`, `verifikasiKepemilikan()`, `siapkanPenghapusan()`, `deleteBarang()`, `siapkanPerubahanStatus()`, `ubahStatusBarang()` |
+| Operasi yang diuji | Ketujuh handler; `ListingService.get/simpan/hapus/status`, `validasiData`, `validasiFoto`, fungsi kepemilikan; middleware sesi diuji melalui 26 test awal dan integrasi nyata |
+| ID Algoritma yang tercakup | Algo-007 s.d. Algo-012, dengan pemetaan implementasi M9 B.5 |
+| Coverage (wajib ≥ 70%) | **BarangController 100% baris / 100% cabang; ListingService 100% baris / 92,94% cabang**. Bukti `unit-modul-b.txt` |
+
+### 4.2.17 Kelas Barang
+
+**ID Kelas:** C29  
+**Nama Kelas:** Barang  
+**Tingkat:** Mendalam
+
+Tabel 4.2.17. Hasil Pengujian Unit Kelas C29
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C29-UT01 | `dariBaris`, `cariById`, `getListingPenjual`, `getStatus` | Normal, Negatif | Baris harga string, foto utama, baris null, objek tanpa status | Mapping angka/foto sesuai; null tetap null; status bawaan Tersedia | Sesuai | Pass |
+| C29-UT02 | `simpan`, `hapus` | Normal, Negatif | Client query tiruan; penghapusan satu/nol baris | ID hasil INSERT; hasil hapus true/false | Sesuai | Pass |
+| C29-UT03 | `ListingPenjual.transaksi` | Normal, Negatif | Callback sukses dan melempar galat | BEGIN–COMMIT atau BEGIN–ROLLBACK; koneksi selalu dilepas | Sesuai; release dipanggil dua kali | Pass |
+| C29-UT04 | `kunci`, `akunAktif`, `update`, `setStatus` | Normal, Negatif | Baris ada/tidak ada, akun terverifikasi/diblokir, update status satu/nol baris | Mapping/otorisasi sesuai; status atomik true hanya untuk satu baris | Sesuai | Pass |
+
+Tabel 4.2.17b. Ringkasan Cakupan Kelas C29
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `simpan()`, `cariById()`, `getListingPenjual()`, `getStatus()`, `setStatus()`, `getKatalog()`, `hapus()`, `nonaktifkanByPemilik()`, `pulihkanKatalog()` |
+| Operasi yang diuji | `simpan`, `cariById`, `getListingPenjual`, `getStatus`, `hapus`; `setStatus` pada `ListingPenjual`, bersama `transaksi`, `kunci`, `akunAktif`, `update` (M9 B.1 No. 18) |
+| ID Algoritma yang tercakup | Algo-033; dampak status terhadap hasil katalog diperiksa secara integrasi, tanpa memperluas pengujian ke fitur pencarian/filter UC13–UC15 |
+| Coverage (wajib ≥ 70%) | **ListingPenjual 100% baris / 66,66% cabang. Barang.js 45,58% baris / 36% cabang untuk seluruh berkas**. Nilai Barang.js belum mencapai 70%; operasi katalog umum/detail dan moderasi pada berkas bersama tidak diuji ulang dalam pekerjaan UC07–UC12. Pemenuhan coverage kelas bersama secara keseluruhan belum dapat diklaim |
+
+### 4.2.18 Kelas FotoBarang
+
+**ID Kelas:** C30  
+**Nama Kelas:** FotoBarang  
+**Tingkat:** Mendalam
+
+Tabel 4.2.18. Hasil Pengujian Unit Kelas C30
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C30-UT01 | `validasiFormat`, `validasiUkuran` | Normal, Batas, Negatif | jpg/.JPEG/png dan pdf/kosong; 1 byte, tepat 5 MB, 0/negatif/>5 MB/string | Format sah dan ukuran (0, 5 MB] diterima; lainnya ditolak | Seluruh masukan sesuai | Pass |
+| C30-UT02 | `dariBaris`, `simpan`, `getGaleri`, `hapus` | Normal, Negatif | Mapping null/ukuran string; INSERT satu/nol baris; SELECT galeri; DELETE | Mapping dan hasil true/false sesuai; query galeri memakai urutan | Sesuai dengan kontrak model | Pass |
+| C30-UT03 | `ListingPenjual.galeri` | Normal, Batas | Dua foto disimpan ulang | Metadata lama dihapus; foto bernomor urut 1, 2 | Kedua nomor urut sesuai | Pass |
+
+Tabel 4.2.18b. Ringkasan Cakupan Kelas C30
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `validasiFormat()`, `validasiUkuran()`, `simpan()`, `getGaleri()`, `perbaruiGaleri()`, `getFotoUtama()`, `hapus()` |
+| Operasi yang diuji | Operasi fisik FotoBarang; `perbaruiGaleri` dipetakan ke `ListingPenjual.galeri`, foto utama diambil subquery `Barang.getListingPenjual` (M9 B.1 No. 18) |
+| ID Algoritma yang tercakup | Algo-034; padanan foto utama Algo-035 diperiksa melalui kueri listing |
+| Coverage (wajib ≥ 70%) | **FotoBarang 100% baris / 72,22% cabang**; bukti `unit-modul-b.txt` |
+
+### 4.2.19 Kelas Kategori
+
+**ID Kelas:** C31  
+**Nama Kelas:** Kategori  
+**Tingkat:** Sedang
+
+Tabel 4.2.19. Hasil Pengujian Unit Kelas C31
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C31-UT01 | Daftar kategori dan validasi keanggotaan | Normal, Negatif | Baca enam kategori implementasi; kirim kategori bebas | Enam pilihan tersedia; masukan bebas ditolak | Sesuai kontrak implementasi. Kecocokan nama kategori dengan SKPL dinilai terpisah pada UC07-TC01 | Pass |
+
+### 4.2.20 Kelas LokasiCOD
+
+**ID Kelas:** C32  
+**Nama Kelas:** LokasiCOD  
+**Tingkat:** Sedang
+
+Tabel 4.2.20. Hasil Pengujian Unit Kelas C32
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C32-UT01 | Daftar lokasi dan validasi keanggotaan | Normal, Negatif | Baca enam lokasi; kirim lokasi bebas | Enam pilihan tersedia; masukan bebas ditolak | Sesuai | Pass |
+
+Kelengkapan unit test dan coverage C45 belum tersedia; jalur penyimpanan foto pada disk lokal diuji melalui INT-TC13, INT-TC21, dan INT-TC23.
 
 <br>
 
@@ -662,6 +826,9 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | AK-05 | SsoController | Google OAuth 2.0 (`oauth2.googleapis.com/token`) | Aplikasi - Sistem eksternal | INT-TC11 |
 | AK-06 | DokumenLegalController (C22) | DokumenLegal (C40) dan tabel `dokumen_legal` | Controller - Model - Basis data | INT-TC10 |
 | AK-07 | HalamanOtentikasi dan HalamanProfil (C01, C02) melalui HTTP `/api/akun/*` | `akunRoutes` dan AkunController (C13) | View - Controller | INT-TC12 |
+| AK-08 | BarangController (C14) | ListingService, Barang dan ListingPenjual (C29) | Controller - Service - Model | INT-TC13 s.d. INT-TC23 |
+| AK-09 | Barang, FotoBarang, ListingPenjual (C29, C30) | PostgreSQL (`barang`, `foto_barang`, serta akun/sesi fixture) | Aplikasi - Basis data | INT-TC13 s.d. INT-TC23 |
+| AK-10 | ListingService | PenyimpananBerkas (C45), disk lokal | Aplikasi - Penyimpanan berkas | INT-TC13, INT-TC21, INT-TC23 |
 | *[AK-XX]* | *[Komponen asal]* | *[Komponen tujuan]* | *[Jenis batas]* | *[ID test case]* |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
@@ -680,9 +847,22 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC10 | AK-06 | Normal: dokumen legal berlaku | Tambah versi 1.1 belum terbit dan versi 2.0 berlaku 30 hari lagi, lalu `getDokumen("kebijakan-privasi")`, `getKlausaPrivasi()`, `getTautanDokumenLegal()`, `getDokumen("bukan-jenis")` | Versi 1.0 (berlaku 2026-11-01); klausul "tidak dapat diakses admin maupun pengembang"; tautan "/legal?jenis=kebijakan-privasi"; jenis lain `null` | Sesuai | Pass |
 | INT-TC11 | AK-05 | Gagal: Google menolak pertukaran kode | `mulai("google")` dengan *client* uji, lalu `selesaikan` dengan state benar dan kode tidak sah, sehingga permintaan sungguhan dikirim ke *token endpoint* Google | URL otorisasi mengarah ke `accounts.google.com`; Google membalas 4xx; hasil `PERTUKARAN_GAGAL`; jumlah sesi tidak bertambah | Sesuai; log mencatat "token endpoint membalas 4xx" dari Google | Pass |
 | INT-TC12 | AK-07 | Normal: alur HTTP lengkap | `POST /api/akun/daftar`, kode dari Mailpit, `POST /verifikasi`, `GET /profil`, `POST /logout`, `GET /profil` | 201, 200 dengan token, profil berisi identitas tanpa hash, logout 200, profil sesudahnya 401 | Sesuai | Pass |
+| INT-TC13 | AK-08, AK-09, AK-10 | Normal: buat listing (UC07) | POST multipart: Buku Introduction to Algorithms, Rp120.000, kategori Buku kuliah, Labtek V, satu PNG; baca DB dan disk | 201, pemilik sesuai sesi, status Tersedia, satu metadata dan berkas foto | 201; status Tersedia; satu foto; berkas benar-benar ada | Pass |
+| INT-TC14 | AK-08, AK-09 | Normal: daftar pemilik (UC08) | GET `/api/barang/saya` dengan sesi penjual pertama | Daftar hanya milik akun sesi dan memuat listing baru | 200; seluruh ID pemilik sesuai sesi; listing baru ditemukan | Pass |
+| INT-TC15 | AK-08, AK-09 | Normal: ubah listing (UC09) | PUT judul Buku Introduction to Algorithms Edisi Ketiga dan harga 90.000, pertahankan ID foto lama; baca DB | Perubahan tersimpan, foto lama tetap dipakai | 200; DB judul Buku Introduction to Algorithms Edisi Ketiga, harga 90000 | Pass |
+| INT-TC16 | AK-08, AK-09 | Negatif: bukan pemilik (UC09, UC10) | GET/PUT/DELETE listing penjual pertama memakai sesi penjual kedua | Seluruhnya 403; data listing tidak berubah | [403, 403, 403]; harga tetap 90000 | Pass |
+| INT-TC17 | AK-08, AK-09 | Normal: tandai terjual (UC11) | PATCH Tersedia → Terjual; baca status DB, katalog, dan daftar pemilik | Terjual, hilang dari katalog, tetap ada di riwayat pemilik | 200; Terjual; katalog tidak memuat ID; daftar pemilik memuatnya sebagai Terjual | Pass |
+| INT-TC18 | AK-08, AK-09 | Negatif: penandaan ganda (UC11) | Ulang PATCH dengan status asal Tersedia ketika DB sudah Terjual | Konflik 409; status tidak berubah | 409; tetap Terjual | Pass |
+| INT-TC19 | AK-08, AK-09 | Normal: batal terjual (UC12) | PATCH Terjual → Tersedia; baca DB dan katalog | Tersedia dan kembali tampil di katalog | 200; Tersedia; ID ditemukan di katalog | Pass |
+| INT-TC20 | AK-08, AK-09 | Negatif: pembatalan ganda (UC12) | Ulang PATCH dengan status asal Terjual ketika DB sudah Tersedia | Konflik 409; status tidak berubah | 409; tetap Tersedia | Pass |
+| INT-TC21 | AK-08, AK-09, AK-10 | Batas: lima foto (UC07) | POST listing dengan lima PNG dan urutan baru:0 s.d. baru:4 | Diterima, lima metadata foto | 201; jumlah metadata foto = 5 | Pass |
+| INT-TC22 | AK-08, AK-09 | Negatif: data/foto tidak sah (UC07) | POST judul kosong, tanpa foto, lalu enam foto | Seluruhnya 400 | [400, 400, 400] | Pass |
+| INT-TC23 | AK-08, AK-09, AK-10 | Normal: hapus permanen (UC10) | DELETE listing; periksa barang, metadata foto, dan path berkas | Listing/metadata/berkas hilang | 200; barang null; metadata = 0; berkas tidak ada | Pass |
 | *[INT-TCYY]* | *[AK-XX]* | *[...]* | *[...]* | *[...]* | *[Hasil aktual]* | *Pass/Fail* |
 
 Skenario berhasil masuk lewat Google belum dapat diuji dengan Google sungguhan karena `GOOGLE_CLIENT_ID` belum diatur, baik di lingkungan lokal maupun di versi daring (`/api/akun/sso/penyedia` membalas `google: false`). Alur tersebut diuji dengan *token endpoint* tiruan pada SSO-UT06 dan SSO-UT16 s.d. SSO-UT21.
+
+INT-TC13 s.d. INT-TC23 menggunakan PostgreSQL dan penyimpanan disk lokal tanpa mock. Hasil aktual dilampirkan pada Subbab 4.6.
 
 <br>
 
@@ -766,9 +946,84 @@ Tabel 4.4.6. Hasil Pengujian Use Case UC06
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | UC06-TC01 | KF13, KF38, KF39 | Normal | 1. Buka `/daftar`.<br>2. Klik tautan "Kebijakan Privasi" pada kotak persetujuan.<br>3. Baca halaman yang terbuka. | - | Dokumen kebijakan tampil penuh, dengan klausul bahwa isi percakapan pribadi tidak dapat diakses admin maupun pengembang ditampilkan menonjol | Tab baru `/legal?jenis=kebijakan-privasi` menampilkan "Kebijakan Privasi", "Versi 1.0 · Berlaku sejak 1 November 2026", 7 bagian dengan daftar isi, dan kotak klausul yang kalimat pertamanya dicetak tebal: "Isi percakapan tidak dapat diakses admin maupun pengembang." | Pass |
 
-### 4.4.7 Use Case [Nama Use Case]
+### 4.4.7 Use Case Membuat Listing
 
-*[Lanjutkan untuk seluruh use case dengan pola yang sama, hingga 4.4.N.]*
+**ID Use Case:** UC07  
+**Nama Use Case:** Membuat Listing
+
+Pengujian UC07–UC12 menggunakan Chrome melalui Playwright pada `http://localhost:3117`, dengan dua akun penjual sebagai pemilik dan bukan pemilik. Data uji memakai nama/deskripsi sesuai foto produk, harga awal Rp120.000, lokasi "Labtek V", dan satu JPEG sah. Buku memakai kategori Buku kuliah; listing lainnya memakai pilihan Perlengkapan kos yang tersedia pada aplikasi.
+
+Tabel 4.4.7. Hasil Pengujian Use Case UC07
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC07-TC01 | KF15, KF16, KF19, KF23 | Normal | Buka `/listing-form`; periksa isian/pilihan kategori; isi data normal dan unggah JPEG; klik Publikasikan; periksa status listing dan tujuan navigasi | Judul Buku Introduction to Algorithms, data normal, satu JPEG | Formulir sesuai KF15 dan enam kategori SKPL; listing Tersedia diterbitkan; diarahkan ke Listing Saya sesuai skenario SKPL | Listing berhasil dibuat Tersedia dan membuka `/detail?id=...`, bukan `/listing-saya`. Pilihan implementasi: Jas praktikum, Buku kuliah, Alat laboratorium, Kalkulator, Jaket himpunan, Perlengkapan kos; berbeda dari daftar SKPL (antara lain Buku dan diktat, Elektronik, Pakaian dan jaket himpunan, Lain-lain). Penyimpanan normal diverifikasi INT-TC13. Perbedaan tujuan/nilai referensi sudah tercatat pada M9 B.1 No. 19 dan 21, tetapi belum mengubah dasar harapan SKPL | Fail — daftar kategori dan tujuan navigasi berbeda dari SKPL. Perbaikan: sesuaikan keduanya dengan SKPL dan uji ulang |
+| UC07-TC02 | KF18 | Alternatif 1: formulir tidak lengkap | Buka formulir baru; biarkan isian/foto kosong; klik Publikasikan | Isian kosong, tanpa foto | Publikasi ditolak; kolom wajib diberi penanda dan pesan | Tetap di formulir; judul `aria-invalid=true`; pesan minimal satu foto tampil; penyimpanan tidak dilakukan | Pass |
+| UC07-TC03 | KF23, KF24 | Alternatif 2: unggahan melanggar ketentuan | Isi formulir; secara bergantian pilih PDF, JPEG >5 MB, dan enam JPEG; tekan Publikasikan | PDF, 5 MB + 1 byte, enam berkas | Berkas salah ditolak, pesan sesuai ketentuan, listing tidak tersimpan | PDF/berkas besar memunculkan "Foto harus JPG/PNG, maksimum 5 MB per foto."; enam foto memunculkan "Maksimum 5 foto. Hapus foto terlebih dahulu."; formulir tetap terbuka tanpa foto sah | Pass |
+
+### 4.4.8 Use Case Melihat Daftar Listing Milik Sendiri
+
+**ID Use Case:** UC08  
+**Nama Use Case:** Melihat Daftar Listing Milik Sendiri
+
+Tabel 4.4.8. Hasil Pengujian Use Case UC08
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC08-TC01 | KF20, KF42 | Normal | Buka `/listing-saya`; lihat kartu fixture dan jumlah tab; pindah ke tab Terjual lalu kembali Tersedia | Sesi pemilik dan listing Earbuds ATARU | Daftar milik akun sesi ditampilkan per status; tab riwayat tersedia | Kartu fixture tampil beserta status; tab Tersedia/Terjual dapat dipilih. Jumlah pada kedua tab mengikuti fixture dalam DB uji dan tercatat pada JSON hasil pengujian. Isi riwayat Terjual diverifikasi UC11-TC01 dan INT-TC17, isolasi pemilik pada INT-TC14 | Pass |
+
+### 4.4.9 Use Case Mengubah Listing
+
+**ID Use Case:** UC09  
+**Nama Use Case:** Mengubah Listing
+
+Tabel 4.4.9. Hasil Pengujian Use Case UC09
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC09-TC01 | KF21, KF22, KF23 | Normal | Buka formulir ubah fixture; periksa prefill; ubah harga; pertahankan foto; Simpan Perubahan | Samsung Galaxy Z Flip; harga 120000 → 90000 | Data lama terisi; perubahan sah tersimpan; halaman detail menampilkan hasil baru | Judul terisi Samsung Galaxy Z Flip; harga aktual 90000; diarahkan ke `/detail?id=...`. Penggantian/urutan foto diuji terisolasi pada C14-UT11 dan C30-UT03 | Pass |
+| UC09-TC02 | KF18, KF21 | Alternatif 1: kolom wajib dikosongkan | Kosongkan judul lalu Simpan; periksa data lama; isi kembali judul lalu Simpan | Judul kosong, kemudian Samsung Galaxy Z Flip Pink | Kosong ditolak tanpa mengubah data; setelah diperbaiki perubahan disimpan | Judul ditandai tidak valid; data lama tetap Samsung Galaxy Z Flip; setelah dilengkapi judul menjadi Samsung Galaxy Z Flip Pink | Pass |
+| UC09-TC03 | KF21, KF23, KF24 | Alternatif 2: foto tidak sah saat pengubahan | Buka formulir dengan foto lama; ubah harga menjadi 80000; pilih PDF; tanpa memperbaiki unggahan, klik Simpan; tunggu respons PUT dan baca ulang data | Foto lama sah; PDF; harga awal 90000 | PDF ditolak dan seluruh penyimpanan ditahan sampai unggahan diperbaiki; harga tetap 90000 | Pesan penolakan PDF tampil, tetapi Simpan mengirim PUT dan menyimpan harga **80000** dengan foto lama. Halaman berpindah ke detail; nilai lama tidak dipertahankan sebagaimana skenario alternatif SKPL | Fail — kesalahan unggahan tidak menghalangi penyimpanan. Perbaikan: cegah submit sampai kesalahan unggahan diperbaiki, lalu uji ulang |
+| UC09-TC04 | KF22 | Alternatif 3: bukan pemilik | Dengan sesi akun kedua, buka URL ubah fixture akun pertama; coba PUT langsung dengan data valid | ID listing akun pertama, token akun kedua | Formulir tidak dapat dipakai, server menolak perubahan, data tetap | Tombol Simpan dinonaktifkan dan pesan bukan pemilik tampil; PUT menghasilkan 403; harga tidak berubah. Screenshot penolakan ada pada UC09-TC04-akses.png | Pass |
+
+### 4.4.10 Use Case Menghapus Listing
+
+**ID Use Case:** UC10  
+**Nama Use Case:** Menghapus Listing
+
+Tabel 4.4.10. Hasil Pengujian Use Case UC10
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC10-TC01 | KF21, KF22 | Normal | Pada kartu Paket Burger dan Kentang, pilih Hapus; baca dialog permanen; konfirmasi Hapus Listing; baca ulang ID | Listing pemilik | Listing terhapus dan hilang dari daftar; foto/metadata ikut dibersihkan | Dialog dapat dikonfirmasi; kartu hilang; GET ID menghasilkan 404. Penghapusan metadata dan berkas fisik dibuktikan INT-TC23 | Pass |
+| UC10-TC02 | KF21 | Alternatif 1: batal konfirmasi | Pilih Hapus pada fixture yang sama, lalu Batal; muat ulang/periksa ID | Listing pemilik | Dialog ditutup; listing tetap ada | Dialog ditutup; GET tetap sukses dan kartu masih tampil | Pass |
+| UC10-TC03 | KF22 | Alternatif 2: bukan pemilik | Kirim DELETE ID fixture memakai token akun kedua; buka lagi daftar pemilik | Token bukan pemilik | Ditolak; listing utuh | HTTP 403; GET pemilik tetap sukses; kartu masih tampil | Pass |
+
+### 4.4.11 Use Case Menandai Listing Terjual
+
+**ID Use Case:** UC11  
+**Nama Use Case:** Menandai Listing Terjual
+
+Tabel 4.4.11. Hasil Pengujian Use Case UC11
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC11-TC01 | KF40, KF42 | Normal | Buka tab Tersedia; klik Tandai Terjual pada Paket Burger dan Kentang; konfirmasi; buka tab Terjual; baca status aktual | Listing Tersedia milik pemohon | Berubah Terjual, masuk riwayat, tidak muncul pada katalog | Status aktual Terjual; kartu ada di tab riwayat. Ketidakhadiran pada katalog diverifikasi dengan komponen nyata pada INT-TC17 | Pass |
+| UC11-TC02 | KF40 | Alternatif 1: batal dialog | Pada listing Tersedia, klik Tandai Terjual lalu Batal | Listing Tersedia | Status tetap Tersedia | Dialog ditutup; status aktual tetap Tersedia | Pass |
+| UC11-TC03 | KF40, KF42 | Alternatif 2: tampilan usang, sudah Terjual | Muat kartu Tersedia; ubah ke Terjual lewat permintaan lain; klik Tandai Terjual pada kartu lama | Tampilan lama dan DB Terjual | Tidak ada perubahan ganda; tampilan disegarkan sesuai status aktual | Dialog aksi tidak dibuka; status tetap Terjual; toast "Status listing berubah. Silakan pilih aksi kembali." tampil. Redaksi pesan berbeda dari contoh SKPL, tetapi konflik status ditangani; server menolak PATCH usang pada INT-TC18 | Pass |
+
+### 4.4.12 Use Case Membatalkan Penandaan Terjual
+
+**ID Use Case:** UC12  
+**Nama Use Case:** Membatalkan Penandaan Terjual
+
+Tabel 4.4.12. Hasil Pengujian Use Case UC12
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC12-TC01 | KF41, KF42 | Normal | Buka tab Terjual; klik Batalkan Terjual; konfirmasi; buka tab Tersedia; baca status aktual | Listing Terjual milik pemohon | Menjadi Tersedia dan kembali tampil pada katalog | Status aktual Tersedia; kartu kembali ke tab Tersedia. Kemunculan kembali pada katalog diperiksa melalui INT-TC19 | Pass |
+| UC12-TC02 | KF41, KF42 | Alternatif 1: batal dialog | Klik Batalkan Terjual, kemudian Batal pada dialog | Listing Terjual | Status tetap Terjual dan riwayat tidak berubah | Dialog ditutup; status aktual tetap Terjual | Pass |
+| UC12-TC03 | KF41, KF42 | Alternatif 2: tampilan usang, sudah Tersedia | Muat kartu Terjual; pulihkan ke Tersedia lewat permintaan lain; klik Batalkan Terjual dari kartu lama | Tampilan lama dan DB Tersedia | Tidak ada pembatalan ganda; status aktual dipertahankan | Dialog aksi tidak dibuka; status tetap Tersedia; toast penyegaran status tampil. Penolakan PATCH usang diverifikasi INT-TC20 | Pass |
 
 <br>
 
@@ -783,6 +1038,7 @@ Tabel 4.5. Hasil Pengujian KNF
 | KNF03-TC01 | KNF03 | Security | 100% percobaan daftar dan masuk dengan surel di luar domain itb.ac.id (termasuk domain tiruan) ditolak, surel itb.ac.id dan subdomainnya diterima, dan 0 akun berdomain non-ITB di tabel `akun` | 11 permintaan HTTP ke `POST /api/akun/daftar` dan `POST /api/akun/login` (8 surel non-ITB atau tiruan, 3 surel ITB), lalu inspeksi tabel `akun` dengan `psql`. Masuk dengan Google diuji pada SSO-UT13 | 11 dari 11 sesuai harapan. 8 surel non-ITB ditolak saat daftar (400 `DOMAIN_TIDAK_VALID`) dan saat masuk (401). 3 surel ITB diterima (201), tetapi tetap tidak dapat masuk (403 `BELUM_TERVERIFIKASI`) sebelum diverifikasi. Akun berdomain non-ITB: 0 dari 23 | Pass |
 | KNF03-TC02 | KNF03 | Security | 100% nilai `kata_sandi_hash` berupa hash bcrypt (60 karakter, cost ≥ 10) dan 0 nilai sama dengan kata sandi teks asli | Inspeksi tabel `akun` dengan `psql`: pola `^\$2[aby]\$\d{2}\$.{53}$` dan perbandingan dengan kata sandi uji "ujicoba123" dan "Rahasia2026" | 23 dari 23 hash bcrypt `$2b$10$` sepanjang 60 karakter; 0 nilai sama dengan teks asli | Pass |
 | KNF03-TC03 | KNF03 | Security | Isi pesan di tabel `pesan` tidak memuat teks asli, termasuk setelah *base64* didekode; peserta dapat membaca pesannya, akun admin yang bukan peserta ditolak | Pembeli Uji mengirim pesan lewat `POST /api/percakapan/:id/pesan`, penjual dan admin membacanya lewat `GET /api/percakapan/:id`, lalu tabel `pesan` diinspeksi dengan `psql` (berkoordinasi dengan Modul D) | Kolom `isi_pesan_terenkripsi` berisi teks *base64* 140 karakter yang tidak memuat teks asli, baik sebelum maupun setelah didekode. Penjual menerima teks asli (200), sedangkan admin ditolak (403 "Anda bukan peserta percakapan ini.") | Pass |
+| KNF01-TC01 | KNF01 | Usability/Ergonomy | Pengguna pertama kali memahami pengelolaan listing dalam waktu <600 detik | Observasi pengguna pertama kali dan stopwatch | Belum diuji karena belum tersedia partisipan dan data observasi. Rencana: lakukan observasi dan catat waktu pemahaman aktual | - (belum diuji) |
 | *[KNFXX-TCYY]* | *[KNFXX]* | *[Parameter]* | *[Target terukur]* | *[Metode dan alat]* | *[Hasil aktual]* | *Pass/Fail* |
 
 <br>
@@ -830,6 +1086,33 @@ Tabel 4.6. Bukti Hasil Pengujian
 | KNF03-TC01 | [KNF03-TC01.txt](assets/bukti/KNF03-TC01.txt) |
 | KNF03-TC02 | [KNF03-TC02.txt](assets/bukti/KNF03-TC02.txt) |
 | KNF03-TC03 | [KNF03-TC03.txt](assets/bukti/KNF03-TC03.txt) |
+| C03-UT01 s.d. C03-UT03 | [Hasil unit test](assets/bukti/unit-modul-b.txt) |
+| C04-UT01 s.d. C04-UT06 | [Hasil unit test](assets/bukti/unit-modul-b.txt) |
+| C14-UT01 s.d. C14-UT18 | [Hasil unit test](assets/bukti/unit-modul-b.txt) |
+| C29-UT01 s.d. C29-UT04 | [Hasil unit test](assets/bukti/unit-modul-b.txt) |
+| C30-UT01 s.d. C30-UT03 | [Hasil unit test](assets/bukti/unit-modul-b.txt) |
+| C31-UT01 | [Hasil unit test](assets/bukti/unit-modul-b.txt) |
+| C32-UT01 | [Hasil unit test](assets/bukti/unit-modul-b.txt) |
+| C04, C14, C29, C30 (coverage) | [Laporan coverage per berkas](assets/bukti/unit-modul-b.txt) |
+| INT-TC13 s.d. INT-TC23 | [Hasil pengujian integrasi](assets/bukti/integrasi-modul-b.json) |
+| UC07-TC01 | <img src="assets/bukti/UC07-TC01.png" width="600"> |
+| UC07-TC02 | <img src="assets/bukti/UC07-TC02.png" width="600"> |
+| UC07-TC03 | <img src="assets/bukti/UC07-TC03.png" width="600"> |
+| UC08-TC01 | <img src="assets/bukti/UC08-TC01.png" width="600"> |
+| UC09-TC01 | <img src="assets/bukti/UC09-TC01.png" width="600"> |
+| UC09-TC02 | <img src="assets/bukti/UC09-TC02.png" width="600"> |
+| UC09-TC03 | <img src="assets/bukti/UC09-TC03.png" width="600"> |
+| UC09-TC04 | <img src="assets/bukti/UC09-TC04-akses.png" width="600"><br><img src="assets/bukti/UC09-TC04.png" width="600"> |
+| UC10-TC01 | <img src="assets/bukti/UC10-TC01.png" width="600"> |
+| UC10-TC02 | <img src="assets/bukti/UC10-TC02.png" width="600"> |
+| UC10-TC03 | <img src="assets/bukti/UC10-TC03.png" width="600"> |
+| UC11-TC01 | <img src="assets/bukti/UC11-TC01.png" width="600"> |
+| UC11-TC02 | <img src="assets/bukti/UC11-TC02.png" width="600"> |
+| UC11-TC03 | <img src="assets/bukti/UC11-TC03.png" width="600"> |
+| UC12-TC01 | <img src="assets/bukti/UC12-TC01.png" width="600"> |
+| UC12-TC02 | <img src="assets/bukti/UC12-TC02.png" width="600"> |
+| UC12-TC03 | <img src="assets/bukti/UC12-TC03.png" width="600"> |
+| KNF01-TC01 | Belum tersedia; pengujian belum dilakukan |
 | *[ID pengujian]* | *[Bukti hasil pengujian]* |
 
 <br>
@@ -860,6 +1143,18 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | KF14 | KNF03 | UC01 | C01 - HalamanOtentikasi<br>C13 - AkunController | `src/views/js/HalamanOtentikasi.js`<br>`src/controllers/AkunController.js` | - (bukan skenario SKPL UC01) | C01-UT03, C13-UT04 s.d. C13-UT06, C13-UT09, C13-UT51 |
 | KF38 | KNF03 | UC06 | C12 - HalamanDokumenLegal<br>C22 - DokumenLegalController<br>C40 - DokumenLegal | `src/views/js/HalamanDokumenLegal.js`<br>`src/controllers/DokumenLegalController.js`<br>`src/database/seedDokumenLegal.js` | UC06-TC01 | C22-UT04, C22-UT05, C40-UT01, INT-TC10 |
 | KF39 | KNF03 | UC05<br>UC06<br>UC16, UC17 | C01 - HalamanOtentikasi<br>C02 - HalamanProfil<br>C08 - HalamanPercakapan<br>C13 - AkunController | `src/views/pages/daftar.html`<br>`src/views/pages/profil.html`<br>`src/views/pages/percakapan.html` | UC05-TC01, UC06-TC01, test case UC16 dan UC17 (Modul D) | C13-UT41, INT-TC10 |
+| KF15 | KNF01 | UC07 | C04 - FormulirBarang<br>C14 - BarangController<br>C31 - Kategori<br>C32 - LokasiCOD | `src/views/pages/listing-form.html`<br>`src/views/js/FormulirBarang.js`<br>`src/controllers/BarangController.js`<br>`src/models/ReferensiListing.js` | UC07-TC01 | C04-UT06, C14-UT17, C31-UT01, C32-UT01; KNF01-TC01 |
+| KF16 | KNF01 | UC07 | C04 - FormulirBarang<br>C14 - BarangController<br>C25 - Penjual<br>C28 - SesiLogin<br>C29 - Barang<br>C30 - FotoBarang<br>C41 - Otorisasi<br>C45 - PenyimpananBerkas | `src/services/ListingService.js`<br>`src/models/Barang.js`<br>`src/models/ListingPenjual.js`<br>`src/models/FotoBarang.js`<br>`src/routes/barangRoutes.js`<br>`src/penyimpanan/PenyimpananBerkas.js` | UC07-TC01 | C14-UT08, C29-UT02, C30-UT02; INT-TC13, INT-TC21; KNF01-TC01 |
+| KF18 | - | UC07, UC09 | C04 - FormulirBarang<br>C14 - BarangController<br>C29 - Barang | `src/views/js/FormulirBarang.js`<br>`src/services/ListingService.js` | UC07-TC02, UC09-TC02 | C04-UT02, C14-UT03, C14-UT09; INT-TC22 |
+| KF19 | - | UC07, UC09 | C04 - FormulirBarang<br>C14 - BarangController<br>C31 - Kategori | `src/models/ReferensiListing.js`<br>`src/services/ListingService.js`<br>`src/views/js/FormulirBarang.js` | UC07-TC01 | C31-UT01, C14-UT03, C04-UT06 |
+| KF20 | - | UC08 | C03 - HalamanListingPenjual<br>C06 - KartuProduk<br>C14 - BarangController<br>C25 - Penjual<br>C28 - SesiLogin<br>C29 - Barang<br>C41 - Otorisasi | `src/views/pages/listing-saya.html`<br>`src/views/js/HalamanListingPenjual.js`<br>`src/views/js/ListingUI.js`<br>`src/controllers/BarangController.js`<br>`src/models/Barang.js` | UC08-TC01 | C03-UT01, C03-UT02, C14-UT17, C29-UT01; INT-TC14 |
+| KF21 | - | UC09, UC10 | C03 - HalamanListingPenjual<br>C04 - FormulirBarang<br>C14 - BarangController<br>C25 - Penjual<br>C29 - Barang<br>C30 - FotoBarang<br>C31 - Kategori<br>C32 - LokasiCOD<br>C45 - PenyimpananBerkas | `src/services/ListingService.js`<br>`src/models/ListingPenjual.js`<br>`src/models/Barang.js`<br>`src/models/FotoBarang.js`<br>`src/views/js/FormulirBarang.js`<br>`src/views/js/HalamanListingPenjual.js`<br>`src/penyimpanan/PenyimpananBerkas.js` | UC09-TC01, UC09-TC02, UC09-TC03, UC10-TC01, UC10-TC02 | C04-UT03, C04-UT04, C14-UT11 s.d. C14-UT14, C29-UT02, C29-UT03, C30-UT03; INT-TC15, INT-TC23 |
+| KF22 | - | UC09, UC10 | C03 - HalamanListingPenjual<br>C04 - FormulirBarang<br>C14 - BarangController<br>C25 - Penjual<br>C28 - SesiLogin<br>C29 - Barang<br>C41 - Otorisasi | `src/routes/barangRoutes.js`<br>`src/services/ListingService.js`<br>`src/models/ListingPenjual.js`<br>`src/pendukung/Otorisasi.js` | UC09-TC04, UC10-TC03 | C14-UT07, C14-UT10, C14-UT14; INT-TC16 |
+| KF23 | - | UC07, UC09 | C04 - FormulirBarang<br>C14 - BarangController<br>C30 - FotoBarang<br>C45 - PenyimpananBerkas | `src/views/js/FormulirBarang.js`<br>`src/routes/barangRoutes.js`<br>`src/services/ListingService.js`<br>`src/models/FotoBarang.js`<br>`src/penyimpanan/PenyimpananBerkas.js` | UC07-TC01, UC07-TC03, UC09-TC01, UC09-TC03 | C04-UT01, C14-UT04, C14-UT05, C14-UT08, C30-UT01; INT-TC13, INT-TC21, INT-TC22 |
+| KF24 | - | UC07, UC09 | C04 - FormulirBarang<br>C14 - BarangController<br>C30 - FotoBarang | `src/views/js/FormulirBarang.js`<br>`src/routes/barangRoutes.js`<br>`src/services/ListingService.js`<br>`src/models/FotoBarang.js` | UC07-TC03, UC09-TC03 | C04-UT01, C14-UT05, C14-UT09, C30-UT01; INT-TC22 |
+| KF40 | KNF01 | UC11 | C03 - HalamanListingPenjual<br>C14 - BarangController<br>C25 - Penjual<br>C28 - SesiLogin<br>C29 - Barang<br>C41 - Otorisasi | `src/views/js/HalamanListingPenjual.js`<br>`src/services/ListingService.js`<br>`src/models/ListingPenjual.js` | UC11-TC01, UC11-TC02, UC11-TC03 | C03-UT03, C14-UT15, C14-UT16, C29-UT04; INT-TC17, INT-TC18; KNF01-TC01 |
+| KF41 | KNF01 | UC12 | C03 - HalamanListingPenjual<br>C14 - BarangController<br>C25 - Penjual<br>C28 - SesiLogin<br>C29 - Barang<br>C41 - Otorisasi | `src/views/js/HalamanListingPenjual.js`<br>`src/services/ListingService.js`<br>`src/models/ListingPenjual.js` | UC12-TC01, UC12-TC02, UC12-TC03 | C03-UT03, C14-UT15, C14-UT16, C29-UT04; INT-TC19, INT-TC20; KNF01-TC01 |
+| KF42 | - | UC08, UC11, UC12 | C03 - HalamanListingPenjual<br>C06 - KartuProduk<br>C14 - BarangController<br>C29 - Barang | `src/views/js/HalamanListingPenjual.js`<br>`src/views/js/ListingUI.js`<br>`src/models/Barang.js`<br>`src/models/ListingPenjual.js` | UC08-TC01; UC11-TC01, UC11-TC03; UC12-TC01, UC12-TC02, UC12-TC03 | C29-UT01, C29-UT04; INT-TC17 s.d. INT-TC20 |
 | *[KFXX]* | *[KNFXX atau -]* | *[UCXX]* | *[CXX - Nama kelas]* | *[path/ke/file]* | *[UCXX-TCYY]* | *[CXX-UTYY, INT-TCYY, KNFXX-TCYY atau -]* |
 
 Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
@@ -867,4 +1162,5 @@ Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 | ID KNF | Parameter | KF/UC Terkait | Test Case |
 | :--- | :--- | :--- | :--- |
 | KNF03 | Security | KF01 s.d. KF14, KF36, KF38, KF39 / UC01 s.d. UC06, UC16, UC17 | KNF03-TC01, KNF03-TC02, KNF03-TC03 |
+| KNF01 | Usability/Ergonomy | KF15, KF16, KF40, KF41 / UC07, UC11, UC12 | KNF01-TC01 |
 | *[KNFXX]* | *[Parameter]* | *[KFXX / UCXX atau -]* | *[KNFXX-TCYY]* |
