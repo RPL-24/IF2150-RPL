@@ -187,6 +187,18 @@ describe('model Notifikasi', () => {
   it('menolak pesan kosong', () => {
     expect(() => new Notifikasi('1', 'Judul', '   ', new Date(0), 'harga_bahan')).toThrow();
   });
+
+  it('getter mengembalikan data yang dirapikan dan nilai bawaan', () => {
+    const waktu = new Date(0);
+    const n = new Notifikasi('9', '  Harga naik  ', ' Telur naik ', waktu, 'harga_bahan');
+    expect(n.getIdNotifikasi()).toBe('9');
+    expect(n.getJudul()).toBe('Harga naik');
+    expect(n.getPesanAlert()).toBe('Telur naik');
+    expect(n.getWaktuKirim()).toBe(waktu);
+    expect(n.getTipe()).toBe('harga_bahan');
+    expect(n.getIdProduk()).toBeNull();
+    expect(n.getIsRead()).toBe(false);
+  });
 });
 
 describe('Produk.statusPeringatan', () => {
