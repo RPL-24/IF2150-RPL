@@ -63,7 +63,7 @@ async function surelUntuk(tujuan) {
   throw new Error(`Tidak ada surel untuk ${tujuan} di Mailpit`);
 }
 
-describe('Integrasi Modul E dengan PostgreSQL, disk, Mailpit, dan Vercel Blob (komponen nyata)', () => {
+describe('Integrasi Modul E dengan PostgreSQL, disk, server SMTP, dan Vercel Blob (komponen nyata)', () => {
   const folderDibuat = [];
 
   beforeAll(async () => {
