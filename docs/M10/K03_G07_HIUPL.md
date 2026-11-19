@@ -480,6 +480,34 @@ Tabel 4.4.1. Hasil Pengujian Use Case [UC01]
 
 *[Lanjutkan untuk seluruh use case dengan pola yang sama, hingga 4.4.N.]*
 
+### 4.4.3 Use Case Melihat Penugasan Lapangan
+
+**ID Use Case:** UC03
+**Nama Use Case:** Melihat Penugasan Lapangan
+
+Tabel 4.4.3. Hasil Pengujian Use Case UC03
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *UC03-TC01* | *KFXX* | *Normal* | *1. Login eksekutor.<br>2. Buka daftar tugas* | *Akun eksekutor* | *Tugas "Dikerjakan" tampil, terurut skor (jika seri sesuai waktu masuk)* | *xxx* | *Pass/Fail* |
+| *UC03-TC02* | *KFXX* | *Normal (rincian)* | *1. Klik kartu LK-X.* | *LK-X* | *Rincian lengkap: ID, kategori, deskripsi, foto, peta, koordinat, dukungan, tombol Gmaps, Laporkan hasil* | *xxx* | *Pass/Fail* |
+| *UC03-TC03* | *KFXX* | *Alternatif 1: menyaring berdasarkan kategori* | *1. Pilih "Rambu / marka jalan rusak".<br>2. Pilih "Semua kategori".* | *Kategori rambu_marka_rusak* | *Hanya kategori itu yang tampil, setelah itu semua kembali tanpa error.* | *xxx* | *Pass/Fail* |
+| *UC03-TC04* | *KFXX* | *Alternatif 2: belum ada penugasan* | *1. Pilih kategori tanpa tugas* | *Kategori X yang tidak ada tugasnya* | *Pesan belum ada penugasan, tanpa error* | *xxx* | *Pass/Fail* |
+| *UC03-TC05* | *KFXX* | *Tambahan: tugas hasil revisi* | *1. Admin "Minta ulang bukti" LK-X.<br>2. Eksekutor buka LK-X.* | *LK-X* | *Kotak "Dikembalikan Tim Administrasi" + catatan admin* | *xxx* | *Pass/Fail* |
+| *...* | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+
+### 4.4.4 Use Case [Nama Use Case 1]
+
+**ID Use Case:** *[UC01 sesuai SKPL]*  
+**Nama Use Case:** *[Nama use case sesuai SKPL]*
+
+Tabel 4.4.1. Hasil Pengujian Use Case [UC01]
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *UCXX-TCXX* | *KFXX* | *xxx* | *xxx* | *Pass/Fail* |
+| *...* | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+
 <br>
 
 ## 4.5 Pengujian Kebutuhan Non-Fungsional (KNF)
