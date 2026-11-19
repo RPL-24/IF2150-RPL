@@ -1,5 +1,197 @@
+# Keluaran npx jest --verbose untuk test unit Modul E, 2026-11-19 23:10 WIB
+
+PASS tests/unit/ModerasiController.test.js
+  ModerasiController Unit Test (UC20, UC21, UC22, UC23, UC24)
+    otorisasiAdmin (KF56)
+      √ C21-UT01 [Normal] otorisasiAdmin: token sesi admin → idAdmin (2 ms)
+      √ C21-UT02 [Negatif] otorisasiAdmin: token bukan admin atau tidak sah → null (KF56)
+    getAllLaporan (KF45, KF56)
+      √ C21-UT03 [Normal] getAllLaporan: admin sah → seluruh laporan
+      √ C21-UT04 [Negatif] getAllLaporan: bukan admin → null (KF56) (1 ms)
+    filterByStatus (KF46, KF56)
+      √ C21-UT05 [Normal] filterByStatus: status "Baru" → hanya laporan Baru (KF46)
+      √ C21-UT06 [Batas] filterByStatus: status "Semua" → seluruh laporan
+      √ C21-UT07 [Negatif] filterByStatus: bukan admin → null (KF56)
+    getDetailLaporan (KF45, KF56)
+      √ C21-UT08 [Normal] getDetailLaporan: laporan yang ada → laporan, pelapor, bukti, dan riwayat audit (1 ms)
+      √ C21-UT09 [Negatif] getDetailLaporan: laporan tidak ditemukan → null
+      √ C21-UT10 [Negatif] getDetailLaporan: bukan admin → null (KF56)
+    getStatistik & ubahStatusLaporan
+      √ C21-UT11 [Normal] getStatistik: admin sah → jumlah laporan per status (1 ms)
+      √ C21-UT12 [Normal] ubahStatusLaporan: Baru ke Diproses → status diperbarui dan log audit dicatat (KF47, KF48)
+      √ C21-UT13 [Negatif] ubahStatusLaporan: status tujuan tidak sah → false
+      √ C21-UT14 [Normal] ubahStatusLaporan: Diproses ke Selesai → true (1 ms)
+      √ C21-UT15 [Negatif] ubahStatusLaporan: laporan tidak ditemukan → false
+      √ C21-UT16 [Negatif] ubahStatusLaporan: transisi mundur Selesai ke Diproses → false
+      √ C21-UT17 [Negatif] ubahStatusLaporan: bukan admin → false (KF56)
+      √ C21-UT18 [Normal] ubahStatusLaporan: Baru ke Diproses, kueri log_audit diperiksa → teks tindakan tertulis satu kali (KF48) (3 ms)
+      √ C21-UT19 [Batas] ubahStatusLaporan: status sama dengan status sekarang → true tanpa menulis laporan maupun log audit
+    catatLogAudit (KF48, KF49)
+      √ C21-UT20 [Normal] catatLogAudit: tindakan perubahan status → hanya status yang diteruskan ke LogAudit
+      √ C21-UT21 [Normal] catatLogAudit: awalan "Penghapusan listing:" dan "Pemblokiran akun:" → operasi LogAudit yang sesuai (1 ms)
+    hapusListingDilaporkan (KF50, KF52, KF55, KF56, Algo-022)
+      √ C21-UT22 [Normal] hapusListingDilaporkan: admin sah dan alasan terisi → listing dan foto dihapus, laporan Selesai, log audit dan admin dicatat, surel terkirim (Algo-022) (1 ms)
+      √ C21-UT23 [Negatif] hapusListingDilaporkan: bukan admin → false (KF56)
+      √ C21-UT24 [Batas] hapusListingDilaporkan: alasan kosong atau hanya spasi → false (KF55)
+      √ C21-UT25 [Negatif] hapusListingDilaporkan: listing tidak ditemukan → false
+      √ C21-UT26 [Normal] hapusListingDilaporkan: tanpa idLaporan → listing terhapus tanpa mengubah laporan (1 ms)
+      √ C21-UT27 [Negatif] hapusListingDilaporkan: galat basis data di tengah transaksi → ROLLBACK dan galat dilempar (4 ms)
+    blokirAkun (KF51, KF52, KF53, KF54, KF55, KF56, Algo-023)
+      √ C21-UT28 [Normal] blokirAkun: admin sah dan alasan terisi → akun diblokir, listing dinonaktifkan, sesi dicabut, laporan Selesai, log dicatat, surel terkirim (Algo-023) (1 ms)
+      √ C21-UT29 [Negatif] blokirAkun: bukan admin → false (KF56)
+      √ C21-UT30 [Batas] blokirAkun: alasan kosong atau hanya spasi → false (KF55)
+      √ C21-UT31 [Negatif] blokirAkun: akun sasaran tidak ditemukan → false
+      √ C21-UT32 [Normal] blokirAkun: tanpa idLaporan → akun diblokir tanpa mengubah laporan
+      √ C21-UT33 [Negatif] blokirAkun: galat basis data di tengah transaksi → ROLLBACK dan galat dilempar (1 ms)
+    bukaBlokirAkun (KF51, KF54, KF55, KF56, Algo-024)
+      √ C21-UT34 [Normal] bukaBlokirAkun: admin sah → blokir dibuka, listing dipulihkan, log admin dicatat (Algo-024) (1 ms)
+      √ C21-UT35 [Negatif] bukaBlokirAkun: bukan admin → false (KF56)
+      √ C21-UT36 [Negatif] bukaBlokirAkun: akun sasaran tidak ditemukan → false (1 ms)
+      √ C21-UT37 [Batas] bukaBlokirAkun: alasan kosong → memakai alasan bawaan pada log admin
+      √ C21-UT38 [Negatif] bukaBlokirAkun: galat basis data di tengah transaksi → ROLLBACK dan galat dilempar
+    pulihkanListingPengguna (KF54)
+      √ C21-UT39 [Normal] pulihkanListingPengguna: id akun → Barang.pulihkanKatalog dipanggil dengan klien transaksi (1 ms)
+  ModerasiController (C21) lanjutan HIUPL
+    √ C21-UT40 [Negatif] getStatistik: pemohon bukan admin → null tanpa membaca tabel laporan (KF56)
+    √ C21-UT41 [Normal] catatLogAdmin: tindakan admin → diteruskan ke LogAdmin.catatTindakan dengan klien yang sama
+    √ C21-UT42 [Normal] nonaktifkanListingPengguna: id akun → Barang.nonaktifkanByPemilik dipanggil dengan klien transaksi (1 ms)
+  ModerasiController (C21) akun terlapor
+    √ C21-UT43 [Normal] getDetailLaporan: laporan atas listing → terlapor berisi akun penjual listing, bukan pelapor
+    √ C21-UT44 [Normal] cariAkunTerlapor: laporan atas percakapan oleh pembeli → akun lawan bicara (penjual)
+    √ C21-UT45 [Negatif] cariAkunTerlapor: objek bukan UUID, atau listing dan percakapan sudah tidak ada → null (1 ms)
+
+PASS tests/unit/ViewModulE.test.js
+  FormulirLaporan (C10)
+    √ C10-UT01 [Normal] validasiIsianWajib: objek, kategori, alasan, dan satu bukti terisi → true (2 ms)
+    √ C10-UT02 [Negatif] validasiIsianWajib: alasan hanya berisi spasi → false
+    √ C10-UT03 [Negatif] validasiIsianWajib: belum ada bukti tangkapan layar → false
+    √ C10-UT04 [Normal] unggahBukti: satu PNG dan satu JPG di bawah 5 MB → keduanya masuk daftar bukti (1 ms)
+    √ C10-UT05 [Negatif] unggahBukti: berkas 6 MB dan berkas .gif → keduanya ditolak dengan pesan galat (1 ms)
+    √ C10-UT06 [Batas] unggahBukti: tujuh berkas sah → hanya lima pertama yang disimpan (1 ms)
+    √ C10-UT07 [Negatif] kirimLaporan: pengguna belum masuk → pesan galat dan tidak ada permintaan ke /api/laporan (1 ms)
+    √ C10-UT08 [Normal] kirimLaporan: isian lengkap → POST /api/laporan berisi objek, kategori, alasan, jenis objek, dan bukti (1 ms)
+  DasborAdmin (C11)
+    √ C11-UT01 [Normal] validasiTransisiStatus: Baru ke Diproses, Diproses ke Selesai, Baru ke Selesai → true
+    √ C11-UT02 [Negatif] validasiTransisiStatus: Selesai ke Baru, Diproses ke Baru, status tidak dikenal → false
+    √ C11-UT03 [Negatif] onClickUbahStatus: di halaman detail, laporan Selesai diubah ke Diproses → pesan galat, API tidak dipanggil (1 ms)
+    √ C11-UT04 [Normal] onClickUbahStatus: dari daftar laporan I-13, detail belum dibuka → PATCH terkirim, statistik dan daftar dimuat ulang
+    √ C11-UT05 [Negatif] konfirmasiTindakan: alasan kosong atau hanya spasi → pesan galat, tidak ada tindakan moderasi terkirim
+    √ C11-UT06 [Normal] escapeHtml: alasan laporan berisi tag <script> → karakter HTML diubah menjadi entitas (1 ms)
+  DasborAdmin (C11) sasaran tindakan dan akses ditolak
+    √ C11-UT07 [Normal] pasangEventListenersDetail: tombol Blokir dan Buka Blokir → diarahkan ke akun terlapor, bukan pelapor
+    √ C11-UT08 [Negatif] onClickBlokirAkun dan onClickBukaBlokir: terlapor tidak diketahui → pesan galat, dialog konfirmasi tidak dibuka
+    √ C11-UT09 [Normal] tampilkanAksesDitolak: pengguna bukan admin yang sudah masuk → beranda; belum masuk → halaman masuk
+
+PASS tests/unit/LaporanModel.test.js
+  Model & Penyimpanan Laporan Unit Test (UC19)
+    Laporan Model (C36)
+      √ C36-UT01 [Normal] dariBaris: baris snake_case dari basis data → objek Laporan camelCase (1 ms)
+      √ C36-UT02 [Negatif] filterByStatus: status di luar Baru, Diproses, Selesai → [] tanpa kueri
+      √ C36-UT03 [Negatif] updateStatusPenanganan: status tujuan "Batal" → false
+      √ C36-UT04 [Batas] validasiTransisiStatus: alur maju, status sama, alur mundur, status tidak dikenal, null → hanya alur maju dan status sama yang true (1 ms)
+    BuktiLaporan Model (C37)
+      √ C37-UT01 [Normal] validasiLampiranWajib: satu berkas tidak kosong → true
+      √ C37-UT02 [Batas] validasiLampiranWajib: berkas berukuran 0 byte → false
+      √ C37-UT03 [Normal] dariBaris: baris bukti_laporan → objek BuktiLaporan
+    LogAudit Model (C38 - Immutable KF48, KF49)
+      √ C38-UT01 [Normal] dariBaris: baris log_audit → objek LogAudit
+      √ C38-UT02 [Negatif] struktur kelas: cari operasi update, edit, hapus, delete → tidak ada satu pun (KF48, KF49) (4 ms)
+      √ C38-UT03 [Normal] empat operasi catat: id laporan, aktor, dan objek → tiap operasi menjalankan satu INSERT ke log_audit dengan teks tindakan yang benar (1 ms)
+    PenyimpananBerkas (C45)
+      √ C45-UT01 [Normal] simpan lalu hapus: satu berkas buffer → tersimpan di /uploads/<idObjek>/ lalu terhapus, hasil true (2 ms)
+  Model laporan lanjutan HIUPL (C36, C37, C38, C45)
+    Laporan (C36)
+      √ C36-UT05 [Normal] simpanLaporanBaru: data laporan → INSERT dengan status awal Baru, mengembalikan id laporan
+      √ C36-UT06 [Normal] getAllLaporan: dua baris di basis data → dua objek Laporan, terbaru lebih dulu
+      √ C36-UT07 [Normal] filterByStatus: status Diproses → kueri WHERE status_penanganan = Diproses
+      √ C36-UT08 [Normal] getDetailLaporan: id laporan yang ada → objek Laporan (1 ms)
+      √ C36-UT09 [Negatif] getDetailLaporan: id laporan tidak ada → null
+      √ C36-UT10 [Normal] updateStatusPenanganan: status Selesai, satu baris berubah → true dan waktu perubahan ikut disimpan
+      √ C36-UT11 [Negatif] updateStatusPenanganan: id laporan tidak ada (0 baris berubah) → false
+      √ C36-UT12 [Normal] getStatistikStatus: 5 Baru, 2 Diproses, 9 Selesai → jumlah per status dan Total 16
+      √ C36-UT13 [Batas] getStatistikStatus: belum ada laporan → semua status 0 dan Total 0
+    BuktiLaporan (C37)
+      √ C37-UT04 [Negatif] validasiLampiranWajib: null, bukan array, atau array kosong → false
+      √ C37-UT05 [Batas] validasiLampiranWajib: satu berkas berukuran 1 byte → true
+      √ C37-UT06 [Normal] simpan: metadata berkas bukti → INSERT ke bukti_laporan, true (1 ms)
+      √ C37-UT07 [Normal] cariByLaporan: id laporan → daftar bukti milik laporan tersebut
+    LogAudit (C38)
+      √ C38-UT04 [Normal] getRiwayatByLaporan: id laporan → riwayat urut dari yang paling lama
+      √ C38-UT05 [Normal] catatPenerimaanLaporan: dipanggil tanpa klien transaksi → memakai koneksi bawaan db (1 ms)
+    PenyimpananBerkas (C45)
+      √ C45-UT02 [Normal] simpan: berkas sementara multer di disk → disalin ke folder objek dan berkas sementara dihapus (3 ms)
+      √ C45-UT03 [Negatif] simpan: berkas kedua tanpa buffer maupun path → null, berkas pertama yang sempat tertulis dihapus (2 ms)
+      √ C45-UT04 [Batas] simpan: daftar berkas kosong atau bukan array → [] tanpa membuat folder (1 ms)
+      √ C45-UT05 [Normal] hapus: path /uploads/ yang ada dan yang sudah tidak ada → berkas yang ada terhapus, hasil true (2 ms)
+      √ C45-UT06 [Batas] hapus: daftar kosong atau null → true tanpa menyentuh disk
+
+PASS tests/unit/LaporanController.test.js
+  LaporanController Unit Test (UC19)
+    validasiDataLaporan
+      √ C20-UT01 [Normal] validasiDataLaporan: objek, kategori Penipuan, dan alasan terisi → true (1 ms)
+      √ C20-UT02 [Negatif] validasiDataLaporan: objek yang dilaporkan kosong → false
+      √ C20-UT03 [Negatif] validasiDataLaporan: kategori di luar tiga pilihan → false
+      √ C20-UT04 [Batas] validasiDataLaporan: alasan kosong atau hanya spasi → false
+    validasiBukti (KF44)
+      √ C20-UT05 [Negatif] validasiBukti: tanpa berkas bukti → false
+      √ C20-UT06 [Batas] validasiBukti: satu berkas melebihi 5 MB → false
+      √ C20-UT07 [Negatif] validasiBukti: berkas bukan JPG atau PNG → false
+      √ C20-UT08 [Normal] validasiBukti: JPG dan PNG berukuran di bawah 5 MB → true
+    susunMetadataPercakapan (KF37 Privasi Percakapan)
+      √ C20-UT09 [Normal] susunMetadataPercakapan: ID percakapan dan pelapor → metadata tanpa isi pesan (KF37)
+    buatLaporan (Algo-021)
+      √ C20-UT10 [Negatif] buatLaporan: token tidak sah → TIDAK_TEROTENTIKASI
+      √ C20-UT11 [Negatif] buatLaporan: objek yang dilaporkan kosong → DATA_TIDAK_LENGKAP
+      √ C20-UT12 [Negatif] buatLaporan: data lengkap tanpa bukti → BUKTI_TIDAK_VALID
+  LaporanController (C20) lanjutan HIUPL
+    √ C20-UT13 [Batas] validasiBukti: satu PNG berukuran tepat 5 MB (5.242.880 byte) → true
+    √ C20-UT14 [Batas] validasiDataLaporan: data null atau bukan objek → false (1 ms)
+    √ C20-UT15 [Normal] getIdPelaporDariSesi: token sesi aktif → idAkun pemilik sesi
+    √ C20-UT16 [Negatif] getIdPelaporDariSesi: token tidak sah atau kedaluwarsa → null
+    √ C20-UT17 [Normal] simpanBukti: dua berkas → BuktiLaporan.simpan dipanggil dua kali dengan path dari PenyimpananBerkas (1 ms)
+    √ C20-UT18 [Negatif] simpanBukti: PenyimpananBerkas gagal (null) → melempar galat dan tidak menyimpan metadata (2 ms)
+    √ C20-UT19 [Normal] simpanLaporan: data laporan → diteruskan ke Laporan.simpanLaporanBaru dan mengembalikan idLaporan
+    √ C20-UT20 [Normal] catatLogAudit: idLaporan dan idPelapor → LogAudit.catatPenerimaanLaporan dipanggil
+    √ C20-UT21 [Normal] buatLaporan: data dan bukti sah → satu transaksi (BEGIN, laporan, bukti, log audit, COMMIT), status Baru (1 ms)
+    √ C20-UT22 [Negatif] buatLaporan: penyimpanan bukti gagal di tengah transaksi → ROLLBACK, GALAT_SERVER, koneksi tetap dilepas
+    √ C20-UT23 [Normal] buatLaporan: laporan terhadap percakapan → metadata hanya berisi ID dan waktu, tanpa isi pesan (KF37) (1 ms)
+
+PASS tests/unit/LogAdmin.test.js
+  LogAdmin (C39)
+    √ C39-UT01 [Normal] catatTindakan: tindakan BLOKIR_AKUN beserta alasan → INSERT ke log_admin dengan seluruh nilai (1 ms)
+    √ C39-UT02 [Normal] catatTindakan: dipanggil dengan klien transaksi → klien itu yang dipakai, bukan koneksi bawaan (1 ms)
+    √ C39-UT03 [Negatif] catatTindakan: basis data menolak INSERT → galat diteruskan ke pemanggil agar transaksi dibatalkan (2 ms)
+    √ C39-UT04 [Normal] getAllLog: dua baris → dua objek LogAdmin, terbaru lebih dulu
+    √ C39-UT05 [Batas] dariBaris: baris kosong (undefined) → null
+    √ C39-UT06 [Negatif] struktur kelas: cari operasi update, ubah, hapus, delete → tidak ada satu pun (KF55) (1 ms)
+
+PASS tests/unit/BarangModel.test.js
+  Barang & FotoBarang Model Unit Test (C29, C30 - UC22, UC23, UC24)
+    Barang Model
+      √ C29-UT05 [Normal] konstruktor dan dariBaris: data dan baris basis data → objek Barang dengan harga numerik (1 ms)
+      √ C29-UT06 [Normal] simpan: data listing → INSERT dan mengembalikan idBarang
+      √ C29-UT07 [Normal] cariById: id barang yang ada → objek Barang (1 ms)
+      √ C29-UT08 [Normal] hapus: id barang yang ada → DELETE, true
+      √ C29-UT09 [Normal] nonaktifkanByPemilik: listing Tersedia milik akun → Dinonaktifkan (KF54)
+      √ C29-UT10 [Normal] pulihkanKatalog: listing Dinonaktifkan milik akun → Tersedia (UC24)
+    FotoBarang Model
+      √ C30-UT04 [Normal] validasiFormat: jpg, .JPEG, png, pdf, exe, kosong → hanya jpg, jpeg, dan png yang true
+      √ C30-UT05 [Batas] validasiUkuran: 1 KB, tepat 5 MB, 5 MB + 1 byte, 0, negatif → hanya 1 KB dan tepat 5 MB yang true
+      √ C30-UT06 [Normal] simpan: metadata foto → INSERT ke foto_barang, true
+      √ C30-UT07 [Normal] getGaleri: id barang → daftar foto urut menurut kolom urutan (1 ms)
+      √ C30-UT08 [Normal] hapus: id barang → DELETE seluruh metadata foto
+  Barang dan FotoBarang lanjutan HIUPL (C29, C30)
+    √ C29-UT11 [Normal] getStatus: objek Barang berstatus Terjual → "Terjual"
+    √ C29-UT12 [Batas] konstruktor: data tanpa status dan tanpa harga → status Tersedia dan harga 0
+    √ C29-UT13 [Negatif] cariById: id barang tidak ada → null
+    √ C29-UT14 [Negatif] hapus: id barang tidak ada (0 baris terhapus) → false
+    √ C29-UT15 [Normal] getListingPenjual: listing Tersedia dan Terjual milik penjual → objek Barang beserta fotoUtama (1 ms)
+    √ C29-UT16 [Batas] nonaktifkanByPemilik: penjual tanpa listing Tersedia (0 baris berubah) → tetap true
+    √ C30-UT09 [Negatif] validasiFormat: null atau "gif" → false (".PNG" tetap diterima)
+    √ C30-UT10 [Negatif] validasiUkuran: ukuran berupa teks "100" atau undefined → false
+
 Test Suites: 6 passed, 6 total
-Tests:       135 passed, 135 total
+Tests:       141 passed, 141 total
 Snapshots:   0 total
-Time:        1.02 s
+Time:        0.797 s, estimated 1 s
 Ran all test suites matching tests/unit/LaporanController.test.js|tests/unit/LaporanModel.test.js|tests/unit/LogAdmin.test.js|tests/unit/BarangModel.test.js|tests/unit/ModerasiController.test.js|tests/unit/ViewModulE.test.js.
