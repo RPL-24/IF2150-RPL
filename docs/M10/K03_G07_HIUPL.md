@@ -279,6 +279,183 @@ Tabel 4.2.1b. Ringkasan Cakupan Kelas [C02]
 
 *[Ulangi pola 4.2.1 untuk setiap kelas bertingkat Mendalam atau Sedang.]*
 
+### 4.2.7 Kelas ListTugas
+
+**ID Kelas:** *C07*  
+**Nama Kelas:** *ListTugas*  
+**Tingkat:** *Mendalam*
+
+Tabel 4.2.7. Hasil Pengujian Unit Kelas [C07]
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C07-UT01* | *`urutPrioritas()`* | *Normal* | *3 tugas dengan skor: 30, 92, 50* | *LK-002, LK-003, LK-001* | ** | *Pass/Fail* |
+| *C07-UT02* | *`urutPrioritas()`* | *Batas* | *2 tugas skor sama, waktu masuk berbeda* | *Yang masuk lebih awal di depan* | ** | *Pass/Fail* |
+| *C07-UT03* | *`urutPrioritas()`* | *Daftar asli yang terurut* | *Daftar asli tak beruhbah* | *xxx* | ** | *Pass/Fail* |
+| *C07-UT04* | *`urutPrioritas()`* | *Batas* | *Daftar kosong* | *[]* | ** | *Pass/Fail* |
+| *C07-UT05* | *`jumlahLaporanAktif`* | *Normal* | *2 tugas; 0 tugas* | *2; 0* | ** | *Pass/Fail* |
+| *C07-UT06* | *`filterKategori(kategori)`* | *Normal* | *3 tugas, filter lampu_jalan_mati* | *LK-003, LK-001 (terurut)* | ** | *Pass/Fail* |
+| *C07-UT07* | *`filterKategori(kategori)`* | *Batas* | *Filter trotoar_rusak (tidak ada laporan sesuai)* | *[]* | ** | *Pass/Fail* |
+| *C07-UT08* | *`getLaporanById(idTiket)`* | *Normal* | *LK-002* | *Laporan LK-002* | ** | *Pass/Fail* |
+| *C07-UT09* | *`getLaporanById(idTiket)`* | *Negatif* | *LK-9999* | *null* | ** | *Pass/Fail* |
+| *C07-UT10* | *`isKategori(nilai)`* | *Normal* | *5 nilai enum kategori* | *true untuk semuanya* | ** | *Pass/Fail* |
+| *C07-UT11* | *`isKategori(nilai)`* | *Negatif* | *"", "semua", label tampilan, nilai berspasi, teks injeksi SQL* | *false untuk semuanya* | ** | *Pass/Fail* |
+| *C07-UT12* | *`isTugasAktif(laporan)`* | *Normal* | *dikerjakan + menunggu_eksekusi* | *true* | ** | *Pass/Fail* |
+| *C07-UT13* | *`isTugasAktif(laporan)`* | *Negatif* | *false* | *xxx* | ** | *Pass/Fail* |
+| *C07-UT14* | *`urutPrioritas()`* | *Negatif* | *skor berupa string numerik "2.5" dan "10"* | *Terurut sesuai angka LK-002, LK-001* | ** | *Pass/Fail* |
+| *C07-UT15* | *`filterKategori(kategori)`* | *Negatif* | *Kategori di luar enum* | *[]* | ** | *Pass/Fail* |
+| *C07-UT16* | *`getLaporanById(idTiket)`* | *Batas* | *Daftar tugas kosong* | *null* | ** | *Pass/Fail* |
+| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+
+
+Tabel 4.2.7b. Ringkasan Cakupan Kelas C07
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `urutPrioritas(idTiket)`, `filterKategori(idTiket)`, `getLaporanById()` |
+| Operasi yang diuji | `urutPrioritas(idTiket)`, `filterKategori(idTiket)`, `getLaporanById()` |
+| ID Algoritma yang tercakup | `Algo-012`, `Algo-013` |
+| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
+
+### 4.2.8 Kelas HasilPerbaikan
+
+**ID Kelas:** *C08*  
+**Nama Kelas:** *HasilPerbaikan*  
+**Tingkat:** *Mendalam*
+
+Tabel 4.2.8. Hasil Pengujian Unit Kelas C08
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C08-UT01* | *`validasiBerkas(foto, video)`* | *Normal* | *Foto JPG/PNG & Video MP4/MOV/MKV 2 MB* | *true* | ** | *Pass/Fail* |
+| *C08-UT02* | *`validasiBerkas()`* | *Normal* | *Foto tanpa video* | *true* | ** | *Pass/Fail* |
+| *C08-UT03* | *`validasiBerkas()`* | *Batas* | *Foto & video kosong* | *true* | ** | *Pass/Fail* |
+| *C08-UT04* | *`validasiBerkas()`* | *Negatif* | *Foto a.heic* | *false* | ** | *Pass/Fail* |
+| *C08-UT05* | *`validasiBerkas()`* | *Negatif* | *Video a.avi* | *false* | ** | *Pass/Fail* |
+| *C08-UT06* | *`validasiBerkas()`* | *Batas* | *10 MB ; +1 byte* | *true ; false* | ** | *Pass/Fail* |
+| *C08-UT07* | *`validasiBerkas()`* | *Batas* | *Berkas 0 byte* | *false* | ** | *Pass/Fail* |
+| *C08-UT08* | *`pilihBuktiSelesai(daftar)`* | *Batas* | *Belum ada hasil* | *null* | ** | *Pass/Fail* |
+| *C08-UT09* | *`pilihBuktiSelesai()`* | *Negatif* | *Belum ada hasil yang dievaluasi* | *null* | ** | *Pass/Fail* |
+| *C08-UT10* | *`pilihBuktiSelesai()`* | *Negatif* | *Semua hasil dikembalikan* | *null* | ** | *Pass/Fail* |
+| *C08-UT11* | *`pilihBuktiSelesai()`* | *Normal* | *Hasil lama dikembalikan & hasil baru selesai* | *Hasil yang selesai* | ** | *Pass/Fail* |
+| *C08-UT12* | *`pilihBuktiSelesai()`* | *Normal* | *Beberapa hasil yang selesai* | *Hasil terbaru* | ** | *Pass/Fail* |
+| *C08-UT13* | *`pilihBuktiSelesai()`* | *Normal* | *Satu hasil selesai* | *Objek tanpa field evaluasi* | ** | *Pass/Fail* |
+| *C08-UT14* | *`pilihBuktiSelesai()`* | *Normal* | *Dua hasil yang selesai* | *Urutan daftar asli tidak berubah* | ** | *Pass/Fail* |
+| *C08-UT15* | *`sumpanBukti()`* | *Normal* | *Client palsu; idLaporan, catatan, 1 foto* | *RPC `kirim_hasil_perbaikan` dipanggil dengan argumen yang benar* | ** | *Pass/Fail* |
+| *C08-UT16* | *`sumpanBukti()`* | *Negatif* | *RPC mengembalikan error P0001* | *Error diteruskan* | ** | *Pass/Fail* |
+| *C08-UT17* | *`simpanBukti()`* | *Batas* | *3 foto + 1 video* | *Satu panggilan RPC membawa 4 media* | ** | *Pass/Fail* |
+| *C08-UT18* | *`getBuktiLengkap`* | *Normal* | *Hasil lama minta_ulang_bukti + hasil baru selesai* | *Membaca hasil_perbaikan per id_laporan; mengembalikan hasil selesai* | ** | *Pass/Fail* |
+| *C08-UT19* | *`getBuktiLengkap`* | *Batas* | *Database mengembalikan data: null* | *{ data: null, error: null}* | ** | *Pass/Fail* |
+| *C08-UT20* | *`getBuktiLengkap`* | *Negatif* | *Database mengembalikan error* | *{ data: null, error }* | ** | *Pass/Fail* |
+| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+
+Khusus kelas **Mendalam**:
+
+Tabel 4.2.8b. Ringkasan Cakupan Kelas C08
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `validasiBerkas()`, `simpanBukti()`, `getBuktiLengkap()` |
+| Operasi yang diuji | `validasiBerkas()`, `simpanBukti()`, `getBuktiLengkap()`, `pilihBuktiSelesai()` |
+| ID Algoritma yang tercakup | *`Algo-014`, `Algo-015`* |
+| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
+
+### 4.2.x Kelas ABCD
+
+**ID Kelas:** *CXX*  
+**Nama Kelas:** *ABCD*  
+**Tingkat:** *ABCD*
+
+Tabel 4.2.x. Hasil Pengujian Unit Kelas [CXX]
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *CXX-UTXX* | *`xxx`* | *Normal* | *xxx* | *xxx* | ** | *Pass/Fail* |
+| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+
+Khusus kelas **Mendalam**:
+
+Tabel 4.2.xb. Ringkasan Cakupan Kelas [CXX]
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
+| Operasi yang diuji | *[op1(), op2(), ...]* |
+| ID Algoritma yang tercakup | *[Algo-001, ...]* |
+| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
+
+### 4.2.x Kelas ABCD
+
+**ID Kelas:** *CXX*  
+**Nama Kelas:** *ABCD*  
+**Tingkat:** *ABCD*
+
+Tabel 4.2.x. Hasil Pengujian Unit Kelas [CXX]
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *CXX-UTXX* | *`xxx`* | *Normal* | *xxx* | *xxx* | ** | *Pass/Fail* |
+| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+
+Khusus kelas **Mendalam**:
+
+Tabel 4.2.xb. Ringkasan Cakupan Kelas [CXX]
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
+| Operasi yang diuji | *[op1(), op2(), ...]* |
+| ID Algoritma yang tercakup | *[Algo-001, ...]* |
+| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
+
+### 4.2.x Kelas ABCD
+
+**ID Kelas:** *CXX*  
+**Nama Kelas:** *ABCD*  
+**Tingkat:** *ABCD*
+
+Tabel 4.2.x. Hasil Pengujian Unit Kelas [CXX]
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *CXX-UTXX* | *`xxx`* | *Normal* | *xxx* | *xxx* | ** | *Pass/Fail* |
+| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+
+Khusus kelas **Mendalam**:
+
+Tabel 4.2.xb. Ringkasan Cakupan Kelas [CXX]
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
+| Operasi yang diuji | *[op1(), op2(), ...]* |
+| ID Algoritma yang tercakup | *[Algo-001, ...]* |
+| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
+
+### 4.2.x Kelas ABCD
+
+**ID Kelas:** *CXX*  
+**Nama Kelas:** *ABCD*  
+**Tingkat:** *ABCD*
+
+Tabel 4.2.x. Hasil Pengujian Unit Kelas [CXX]
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *CXX-UTXX* | *`xxx`* | *Normal* | *xxx* | *xxx* | ** | *Pass/Fail* |
+| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+
+Khusus kelas **Mendalam**:
+
+Tabel 4.2.xb. Ringkasan Cakupan Kelas [CXX]
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
+| Operasi yang diuji | *[op1(), op2(), ...]* |
+| ID Algoritma yang tercakup | *[Algo-001, ...]* |
+| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
+
 <br>
 
 ## 4.3 Pengujian Integrasi
