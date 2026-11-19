@@ -241,7 +241,7 @@ describe('Integrasi Modul E dengan PostgreSQL, disk, Mailpit, dan Vercel Blob (k
     expect((await fetch(url, { cache: 'no-store' })).status).toBe(404);
   });
 
-  test('INT-TC33 blokirAkun mengirim surel penangguhan beserta alasannya ke kotak masuk SMTP (Mailpit)', async () => {
+  test('INT-TC33 blokirAkun mengirim surel penangguhan beserta alasannya ke kotak masuk server SMTP', async () => {
     const penjual = await buatAkun();
     const admin = await buatAkun('Admin');
 
