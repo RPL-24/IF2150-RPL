@@ -423,53 +423,6 @@ Tabel 4.2.20. Hasil Pengujian Unit Kelas C20
 | *C20-UT24* | *`unggahHasil()`* | *Negatif* | *xxx* | *xxx* | ** | *Pass/Fail* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
-### 4.2.x Kelas ABCD
-
-**ID Kelas:** *CXX*  
-**Nama Kelas:** *ABCD*  
-**Tingkat:** *ABCD*
-
-Tabel 4.2.x. Hasil Pengujian Unit Kelas [CXX]
-
-| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *CXX-UTXX* | *`xxx`* | *Normal* | *xxx* | *xxx* | ** | *Pass/Fail* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
-
-Khusus kelas **Mendalam**:
-
-Tabel 4.2.xb. Ringkasan Cakupan Kelas [CXX]
-
-| Informasi | Keterangan |
-| :--- | :--- |
-| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
-| Operasi yang diuji | *[op1(), op2(), ...]* |
-| ID Algoritma yang tercakup | *[Algo-001, ...]* |
-| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
-
-### 4.2.x Kelas ABCD
-
-**ID Kelas:** *CXX*  
-**Nama Kelas:** *ABCD*  
-**Tingkat:** *ABCD*
-
-Tabel 4.2.x. Hasil Pengujian Unit Kelas [CXX]
-
-| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *CXX-UTXX* | *`xxx`* | *Normal* | *xxx* | *xxx* | ** | *Pass/Fail* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
-
-Khusus kelas **Mendalam**:
-
-Tabel 4.2.xb. Ringkasan Cakupan Kelas [CXX]
-
-| Informasi | Keterangan |
-| :--- | :--- |
-| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
-| Operasi yang diuji | *[op1(), op2(), ...]* |
-| ID Algoritma yang tercakup | *[Algo-001, ...]* |
-| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
 
 <br>
 
@@ -494,6 +447,14 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | *INT-TC01* | *I-01* | *Normal: tambah item ke keranjang* | *Panggil `tambahItem()` melalui KeranjangController dengan produk valid* | *Item tersimpan pada Keranjang dan tampil pada daftar item* | *[Hasil aktual]* | *Pass/Fail* |
 | *INT-TC03* | *I-02* | *Normal: simpan pesanan* | *Buat pesanan, lalu baca ulang langsung dari basis data* | *Baris pesanan ada dengan nilai total dan status yang sama* | *[...]* | *Pass/Fail* |
 | *INT-TC05* | *I-03* | *Gagal: gateway mengembalikan status gagal* | *Kirim otorisasi dengan saldo dummy tidak cukup* | *Status pesanan tidak berubah menjadi "Lunas", pesan gagal diteruskan ke pengguna* | *[...]* | *Pass/Fail* |
+| *INT-TC40* | *I-XX* | *Normal, data flow: daftar tugas* | *Laporan tes [TEST-INT] disetujui admin tes; eksekutor tes doSorting()* | *Laporan tes ada, daftar terurut prioritas* | *[...]* | *Pass/Fail* |
+| *INT-TC41* | *I-XX* | *Normal, interface coordination: filter* | *doFilter("rambu_marka_rusak")* | *Laporan tes ada, semua berkategori rambu_marka_rusak, daftar terurut* | *[...]* | *Pass/Fail* |
+| *INT-TC42* | *I-XX* | *Gagal, protocol: Role warga* | *Warga tes doSorting()* | *ok: false* | *[...]* | *Pass/Fail* |
+| *INT-TC43* | *I-XX* | *Normal + gagal: rincian* | *bukaLaporan(<tiket tes>), lalu "LK-TIDAK-ADA"* | *Path foto sama, evaluasi null, tiket fiktif ditolak* | *[...]* | *Pass/Fail* |
+| *INT-TC44* | *I-XX* | *Normal, data flow: Storage -> RPC -> tabel* | *Unggah JPG ke hasil/<id>/, unggahHasil()* | *1 baris hasil + 1 foto, tahap = menunggu_evaluasi* | *[...]* | *Pass/Fail* |
+| *INT-TC45* | *I-XX* | *Gagal, protocol: kirim ulang* | *unggahHasil() kedua kali* | *ok: false, baris hasil tetap 1* | *[...]* | *Pass/Fail* |
+| *INT-TC46* | *I-XX* | *Gagal, interface coordination: path orang lain* | *Path hasil/<id warga>/..* | *PESAN_BERKAS_TIDAK_VALID* | *[...]* | *Pass/Fail* |
+| *INT-TC47* | *I-XX* | *Normal, data flow: UC05 -> UC03* | *Admin tes evaluasi minta_ulang_bukti, eksekutor bukaLaporan()* | *Tahap kembali menunggu_eksekusi, catatan evaluasi tampil* | *[...]* | *Pass/Fail* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
 <br>
