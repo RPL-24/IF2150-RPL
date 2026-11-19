@@ -1,0 +1,49 @@
+PASS tests/unit/ViewModulE.test.js
+PASS tests/unit/LogAdmin.test.js
+PASS tests/unit/NotifikasiController.test.js
+PASS tests/unit/PushNotifikasiAdapter.test.js
+PASS tests/integration/SsoAPI.test.js
+PASS tests/integration/ModerasiAPI.test.js
+PASS tests/integration/ListingAPI.test.js
+PASS tests/integration/AkunAPI.test.js
+PASS tests/integration/PercakapanAPI.test.js
+PASS tests/unit/PercakapanController.test.js
+PASS tests/integration/AlurModulA.test.js
+PASS tests/unit/ViewKatalog.test.js
+PASS tests/unit/ModelAkun.test.js
+PASS tests/unit/ModerasiController.test.js
+PASS tests/integration/AlurModulE.test.js
+PASS tests/unit/AkunController.test.js
+PASS tests/integration/LaporanAPI.test.js
+PASS tests/unit/BarangKatalog.test.js
+PASS tests/unit/FilterController.test.js
+PASS tests/unit/BarangModel.test.js
+PASS tests/unit/DokumenLegalController.test.js
+PASS tests/unit/LaporanController.test.js
+PASS tests/unit/ListingService.test.js
+PASS tests/unit/Otorisasi.test.js
+PASS tests/unit/SurelAdapter.test.js
+PASS tests/unit/LaporanModel.test.js
+PASS tests/unit/HalamanOtentikasi.test.js
+PASS tests/unit/Kriptografi.test.js
+PASS tests/unit/PenyimpananBerkasBlob.test.js
+PASS tests/unit/KonfigurasiEnv.test.js
+PASS tests/unit/KatalogController.test.js
+PASS tests/unit/PencarianController.test.js
+-------------------------|---------|----------|---------|---------|-------------------
+File                     | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------------|---------|----------|---------|---------|-------------------
+All files                |     100 |    92.47 |     100 |     100 |                   
+ controllers             |     100 |      100 |     100 |     100 |                   
+  FilterController.js    |     100 |      100 |     100 |     100 |                   
+  KatalogController.js   |     100 |      100 |     100 |     100 |                   
+  PencarianController.js |     100 |      100 |     100 |     100 |                   
+ models                  |     100 |       86 |     100 |     100 |                   
+  Barang.js              |     100 |       86 |     100 |     100 | 46-57,116,174,219 
+-------------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 32 passed, 32 total
+Tests:       586 passed, 586 total
+Snapshots:   0 total
+Time:        2.432 s, estimated 6 s
+Ran all test suites.

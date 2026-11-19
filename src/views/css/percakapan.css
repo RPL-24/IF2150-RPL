@@ -1,0 +1,87 @@
+/* Percakapan (I-10, gaya messenger) dan panel notifikasi (I-11).
+   Warna dan jarak memakai variabel dari tokens.css. */
+
+/* ───────────── I-10 Daftar & ruang percakapan ───────────── */
+.chat { display: flex; height: calc(100vh - var(--topbar-h)); min-height: 560px; }
+
+.chat__list {
+  width: var(--rail-w); flex: none; background: var(--surface);
+  box-shadow: 1px 0 2px rgba(0, 0, 0, .2); z-index: 1;
+  padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-3); overflow-y: auto;
+}
+.chat__list-head { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-1) var(--sp-2) 0; }
+.chat__list-head h1 { font: 700 24px/32px var(--font-sans); }
+.chat__list-items { display: flex; flex-direction: column; gap: 2px; }
+.chat__list .badge { white-space: nowrap; }
+
+.chat__room { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; background: var(--surface); }
+.chat__room-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+.chat__header {
+  min-height: 64px; flex: none; background: var(--surface);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+  display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-2) var(--sp-4);
+}
+.chat__header .convitem__avatar { width: 40px; height: 40px; }
+.chat__lawan { font-weight: 700; font-size: 17px; line-height: 22px; }
+.chat__thumb {
+  width: 44px; height: 44px; border-radius: var(--radius-md); overflow: hidden; flex: none;
+  background: var(--chip-bg);
+}
+.chat__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.chat__barang-judul { font-size: 14px; font-weight: 600; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.chat__body { flex: 1; min-height: 0; padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-2); overflow-y: auto; }
+.chat__body .infobox { margin-bottom: auto; }
+.chat__messages { display: flex; flex-direction: column; gap: 2px; }
+.chat__messages .bubble__time { align-self: flex-start; }
+.chat__messages .bubble--saya + .bubble__time { align-self: flex-end; }
+
+.chat__composer { flex: none; background: var(--surface); padding: var(--sp-3) var(--sp-4); display: flex; gap: var(--sp-2); align-items: center; }
+.chat__composer .field__input { flex: 1; height: 40px; border: 0; border-radius: var(--radius-full); background: var(--bg); padding: 0 var(--sp-4); }
+.chat__composer .field__input:focus { box-shadow: 0 0 0 2px var(--primer-700); background: var(--surface); }
+.sendbtn {
+  width: 40px; height: 40px; flex: none; border: none; border-radius: var(--radius-full);
+  background: transparent; color: var(--primer-700); display: grid; place-items: center; cursor: pointer;
+}
+.sendbtn .ic { width: 24px; height: 24px; }
+.sendbtn:hover:not(:disabled) { background: var(--hover); }
+.sendbtn:disabled { color: #8a8d91; cursor: not-allowed; }
+
+.daystamp { text-align: center; font: 400 13px/16px var(--font-sans); color: var(--text-600); }
+.chat__empty-wrap { flex: 1; display: grid; place-items: center; padding: var(--sp-8); }
+
+/* ───────────── I-11 Panel notifikasi (dropdown) ───────────── */
+.notif {
+  position: fixed; top: calc(var(--topbar-h) - 4px); right: var(--sp-4); width: 360px;
+  max-width: calc(100vw - 32px); max-height: calc(100vh - var(--topbar-h) - 16px);
+  display: flex; flex-direction: column; z-index: 25;
+}
+.notif__head { display: flex; align-items: center; padding: var(--sp-4) var(--sp-4) var(--sp-2); gap: var(--sp-2); }
+.notif__judul { font: 700 24px/32px var(--font-sans); }
+.notif__list { overflow-y: auto; padding: 0 var(--sp-2) var(--sp-2); display: flex; flex-direction: column; gap: 2px; }
+.notif__item {
+  display: flex; gap: var(--sp-3); padding: var(--sp-2); align-items: center; border: 0;
+  cursor: pointer; text-align: left; width: 100%; background: transparent; border-radius: var(--radius-md);
+}
+.notif__item:hover { background: var(--hover); }
+.notif__ic {
+  width: 40px; height: 40px; flex: none; border-radius: var(--radius-full);
+  background: var(--chip-bg); display: grid; place-items: center; color: var(--text-900);
+}
+.notif__item.is-baru .notif__ic { background: var(--primer-50); color: var(--primer-700); }
+.notif__teks { font-size: 15px; line-height: 20px; overflow-wrap: anywhere; }
+.notif__item.is-baru .notif__teks { font-weight: 600; }
+.notif__item.is-baru .notif__waktu { color: var(--primer-700); font-weight: 600; }
+.notif__dot { width: 12px; height: 12px; border-radius: 50%; background: var(--primer-700); flex: none; }
+.notif__empty { padding: var(--sp-8) var(--sp-4); text-align: center; color: var(--text-600); font-size: 15px; }
+.notif__foot { padding: var(--sp-3) var(--sp-4); border-top: 1px solid var(--divider); }
+
+.dim { position: fixed; inset: 0; background: transparent; z-index: 24; }
+
+@media (max-width: 959px) {
+  .chat { flex-direction: column; height: auto; min-height: calc(100vh - var(--topbar-h)); }
+  .chat__list { width: 100%; max-height: 280px; box-shadow: 0 1px 2px rgba(0, 0, 0, .2); }
+  .chat__room { min-height: 480px; }
+  .chat__barang-judul { max-width: 140px; }
+}

@@ -1,0 +1,26 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC20 - Melihat dan Menyaring Daftar Laporan
+class "C11 DasborAdmin" as C11
+class "C21 ModerasiController" as C21
+class "C26 Admin" as C26
+class "C36 Laporan" as C36
+C11 --> C21
+C21 ..> C26
+C21 ..> C36
+@enduml

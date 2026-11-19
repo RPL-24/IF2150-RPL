@@ -1,0 +1,62 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC07 — Normal
+actor "Penjual" as User
+boundary ":FormulirBarang" as UI
+control ":BarangController" as BC
+control ":Otorisasi" as Oto
+entity ":SesiLogin" as Sesi
+entity ":Kategori" as Kat
+entity ":LokasiCOD" as Lok
+entity ":Barang" as Barang
+entity ":FotoBarang" as Foto
+participant ":PenyimpananBerkas" as Store
+User -> UI: bukaFormulir()
+UI -> BC: getDataFormulir()
+BC -> Kat: getDaftarKategori()
+Kat --> BC: daftarKategori
+BC -> Lok: getDaftarLokasi()
+Lok --> BC: daftarLokasi
+BC --> UI: {daftarKategori, daftarLokasi}
+UI -> UI: tampilkanFormulir(null, [], daftarKategori, daftarLokasi)
+User -> UI: suntingIsian(data)
+UI -> UI: validasiTipeData(data)
+User -> UI: pilihFoto(fotoBaru)
+UI -> UI: validasiFotoSisiKlien(fotoBaru, [])
+User -> UI: kirimFormulir(data, fotoBaru)
+UI -> UI: validasiIsianWajib(data, fotoBaru)
+UI -> BC: buatBarang(token, data, fotoBaru)
+BC -> BC: getIdPenjualDariSesi(token)
+BC -> Oto: verifikasiToken(token)
+Oto -> Sesi: cariSesiAktif(token)
+Sesi --> Oto: sesiLogin
+Oto --> BC: sesiLogin
+BC -> Sesi: getIdAkun()
+Sesi --> BC: idPenjual
+BC -> BC: validasiKelengkapanIsian(data, fotoBaru)
+BC -> Kat: validasiKategori(idKategori)
+Kat --> BC: true
+BC -> Lok: validasiLokasi(idLokasi)
+Lok --> BC: true
+BC -> BC: validasiFoto(fotoBaru, [])
+loop setiap foto (maksimum 5)
+  BC -> Foto: validasiFormat(format)
+  BC -> Foto: validasiUkuran(ukuran)
+end
+BC -> Barang: simpan(data, waktuUnggah)
+Barang --> BC: idBarang (status "Tersedia")
+BC -> BC: simpanFoto(idBarang, fotoBaru)
+BC -> Store: simpan(idBarang, fotoBaru)
+Store --> BC: daftarPathBerkas
+loop setiap foto
+  BC -> Foto: simpan(idBarang, namaBerkas, format, ukuran, urutan, pathBerkas)
+end
+BC -> BC: terbitkanKeKatalog(idBarang)
+BC --> UI: true
+UI -> UI: tampilkanNotifikasi("Listing berhasil dibuat")
+@enduml

@@ -1,0 +1,170 @@
+/* ITBELI — tata letak tingkat halaman: layar otentikasi, verifikasi, halaman admin,
+   dan penyesuaian responsif kerangka (topbar + sidebar + konten).
+   Komponen dasar ada di components.css; warna dan ukuran di tokens.css. */
+
+/* ───────────── Topbar tanpa tab tengah (legal, admin) ───────────── */
+.topbar--sederhana { grid-template-columns: minmax(0, 1fr) auto; }
+.topbar--sederhana .topbar__right { grid-column: 2; }
+
+/* ───────────── Layar otentikasi: dua kolom ───────────── */
+.auth {
+  min-height: calc(100vh - 80px); max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: minmax(0, 1fr) 396px; gap: var(--sp-12);
+  align-items: center; padding: var(--sp-12) var(--sp-6);
+}
+.auth__merek { display: flex; flex-direction: column; gap: var(--sp-4); max-width: 560px; }
+.auth__logo { display: flex; align-items: center; gap: var(--sp-3); text-decoration: none; }
+.auth__logo .brand__mark { width: 80px; height: 80px; }
+.auth__logo .brand__name { height: 40px; }
+.auth__tagline { font: 700 30px/38px var(--font-sans); color: var(--text-900); }
+.auth__teks { font-size: 17px; line-height: 24px; color: var(--text-600); }
+
+.auth__kartu {
+  background: var(--surface); border-radius: var(--radius-lg); padding: var(--sp-4);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+  display: flex; flex-direction: column; gap: var(--sp-3);
+}
+.auth__kartu form { display: flex; flex-direction: column; gap: var(--sp-3); }
+.auth__kartu h2 { font: 700 22px/28px var(--font-sans); text-align: center; padding-top: var(--sp-1); }
+.auth__sub { font-size: 15px; line-height: 20px; color: var(--text-600); text-align: center; }
+.auth__kartu .field { gap: 0; }
+.auth__kartu .field__label { margin-bottom: 6px; }
+.auth__kartu .field__input { height: 52px; border-radius: var(--radius-lg); padding: 0 var(--sp-4); font-size: 17px; }
+.auth__kartu .field__hint, .auth__kartu .field__error { margin-top: 4px; }
+.auth__kartu .btn--lg { height: 48px; font-size: 20px; border-radius: var(--radius-full); }
+.auth__kartu .row { justify-content: center; }
+.auth__pemisah { border: 0; border-top: 1px solid var(--divider); margin: var(--sp-1) 0; }
+.auth__baru { align-self: center; padding: 0 var(--sp-5); height: 48px; font-size: 17px; }
+.btn--garis { background: transparent; border-color: var(--primer-700); color: var(--primer-700); }
+.btn--garis:hover { background: var(--primer-50); }
+
+/* Masuk dengan akun institusi (SSO) */
+#sso-masuk { display: flex; flex-direction: column; gap: var(--sp-2); }
+.sso-pemisah {
+  display: flex; align-items: center; gap: var(--sp-3); margin: var(--sp-1) 0;
+  color: var(--text-600); font: 600 12px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase;
+}
+.sso-pemisah::before, .sso-pemisah::after { content: ""; flex: 1; border-top: 1px solid var(--divider); }
+/* Tinggi dan radius sama dengan tombol utama (.btn--lg); logo rata kiri agar kedua tombol sejajar. */
+.tombol-sso {
+  display: flex; align-items: center; gap: var(--sp-3);
+  min-height: 48px; padding: var(--sp-1) var(--sp-5); border-radius: var(--radius-full);
+  background: var(--surface); border: 1px solid var(--border); color: var(--text-900);
+  text-decoration: none; box-shadow: var(--shadow-sm);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease;
+}
+.tombol-sso:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); border-color: var(--chip-bg-hover); }
+.tombol-sso:active { transform: scale(.98); box-shadow: none; background: var(--hover); transition-duration: .08s; }
+.tombol-sso:focus-visible { outline: 2px solid var(--primer-700); outline-offset: 3px; box-shadow: 0 0 0 5px var(--fokus); }
+.tombol-sso__logo { width: 20px; height: 20px; flex: none; }
+.tombol-sso__teks { display: flex; flex-direction: column; min-width: 0; text-align: left; }
+.tombol-sso__label { font: 600 15px/20px var(--font-sans); }
+.tombol-sso__domain { font: 400 13px/16px var(--font-sans); color: var(--text-600); overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) {
+  .tombol-sso { transition: none; }
+  .tombol-sso:hover, .tombol-sso:active { transform: none; }
+}
+
+.footerlinks {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-3);
+  padding: var(--sp-6) var(--sp-4); font-size: 13px; color: var(--text-600);
+}
+.footerlinks a { color: var(--text-600); text-decoration: none; }
+.footerlinks a:hover { text-decoration: underline; }
+
+/* ───────────── Verifikasi surel (kartu pada layar otentikasi) ───────────── */
+.verif strong { overflow-wrap: anywhere; }
+.verif__icon {
+  width: 56px; height: 56px; border-radius: var(--radius-full); align-self: center;
+  background: var(--primer-50); color: var(--primer-700); display: grid; place-items: center;
+}
+.verif__icon .ic { width: 26px; height: 26px; }
+.verif .auth__sub strong { color: var(--text-900); }
+.otp { display: flex; gap: var(--sp-2); }
+.otp input {
+  width: 100%; min-width: 0; flex: 1; height: 56px; border: 1px solid var(--border);
+  border-radius: var(--radius-lg); background: var(--surface); text-align: center;
+  font: 700 24px/1 var(--font-sans); color: var(--text-900);
+}
+.otp input:focus { outline: none; border-color: var(--primer-700); box-shadow: 0 0 0 3px var(--fokus); }
+.otp input.is-filled { border-color: var(--primer-700); background: var(--primer-50); color: var(--primer-900); }
+
+/* ───────────── Halaman admin (daftar & detail laporan) ───────────── */
+.banner { padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-md); font-size: 15px; }
+.banner--sukses { background: var(--success-bg); color: var(--success); }
+.banner--galat { background: var(--danger-bg); color: var(--danger); }
+.stat { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); }
+.stat .panel { display: flex; flex-direction: column; gap: 4px; }
+.stat .angka { font: 700 30px/38px var(--font-sans); font-variant-numeric: tabular-nums; }
+.dua { display: grid; grid-template-columns: minmax(0, 1fr) var(--panel-w); gap: var(--sp-6); align-items: start; }
+.baris { display: flex; gap: var(--sp-3); padding: var(--sp-3) 0; border-bottom: 1px solid var(--divider); font-size: 15px; }
+.baris:last-child { border-bottom: none; }
+.baris > span:first-child { width: 160px; color: var(--text-600); flex: none; }
+.baris > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+.bukti { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); }
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(255, 255, 255, .8); z-index: 40;
+  display: flex; align-items: center; justify-content: center; padding: var(--sp-4);
+}
+.modal-card { background: var(--surface); padding: var(--sp-6); border-radius: var(--radius-lg);
+  max-width: 440px; width: 100%; box-shadow: var(--shadow-lg); }
+
+/* ───────────── Responsif ───────────── */
+@media (max-width: 1100px) {
+  .topbar__tab { width: 84px; }
+}
+
+@media (max-width: 959px) {
+  .topbar, .topbar--sederhana { grid-template-columns: minmax(0, 1fr) auto; padding: 0 var(--sp-3); }
+  .topbar__right, .topbar--sederhana .topbar__right { grid-column: 2; }
+  .topbar__tabs { display: none; }
+  .searchbar { max-width: none; }
+
+  .shell { flex-direction: column; align-items: stretch; }
+  .shell .rail {
+    position: static; width: 100%; height: auto; overflow: visible; padding: var(--sp-3) var(--sp-4);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+  }
+  .rail__judul { font-size: 22px; line-height: 28px; padding: 0; }
+  .rail .navlist { flex-direction: row; overflow-x: auto; gap: var(--sp-2); scrollbar-width: none; }
+  .rail .navlist a { flex: none; padding: var(--sp-1) var(--sp-3) var(--sp-1) var(--sp-1); background: var(--bg); }
+  .rail .navlist a.is-active { background: var(--primer-50); }
+  .rail .navlist__ic { width: 28px; height: 28px; }
+  .content { padding: var(--sp-4); }
+
+  .auth { grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); padding: var(--sp-8) var(--sp-4); min-height: 0; }
+  .auth__merek { align-items: center; text-align: center; max-width: none; }
+  .auth__logo .brand__mark { width: 60px; height: 60px; }
+  .auth__logo .brand__name { height: 30px; }
+  .auth__tagline { font-size: 24px; line-height: 32px; }
+  .auth__kartu { width: 100%; max-width: 440px; margin: 0 auto; }
+
+  .dua { grid-template-columns: minmax(0, 1fr); }
+  .stat { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .toast { left: var(--sp-4); right: var(--sp-4); bottom: var(--sp-4); max-width: none; }
+}
+
+@media (max-width: 559px) {
+  .topbar__jual { display: none; }
+  .brand__name { display: none; }
+  .table { display: block; overflow-x: auto; }
+  .baris { flex-direction: column; gap: 2px; }
+}
+
+/* ───────────── Layar pembuka di /masuk (sekali per tab) ───────────── */
+/* Simbol lalu nama muncul pelan, kemudian seluruh layar memudar memperlihatkan formulir masuk.
+   Kelas .tanpa-pembuka dipasang skrip di <head> bila pembuka sudah tampil di tab ini. */
+.pembuka {
+  position: fixed; inset: 0; z-index: 1000; background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-5);
+  animation: pembuka-tutup 700ms ease-in-out 2100ms forwards;
+}
+.pembuka__simbol { width: 128px; height: 128px; opacity: 0; animation: pembuka-muncul 1000ms cubic-bezier(.2, .8, .2, 1) 150ms forwards; }
+.pembuka__nama { width: auto; height: 48px; opacity: 0; animation: pembuka-muncul 1000ms cubic-bezier(.2, .8, .2, 1) 650ms forwards; }
+@keyframes pembuka-muncul { from { opacity: 0; transform: translateY(14px) scale(.92); } to { opacity: 1; transform: none; } }
+@keyframes pembuka-tutup { to { opacity: 0; visibility: hidden; } }
+.tanpa-pembuka .pembuka { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .pembuka__simbol, .pembuka__nama { animation-name: pembuka-pudar; }
+  @keyframes pembuka-pudar { to { opacity: 1; } }
+}

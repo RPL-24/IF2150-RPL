@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0F4C97">
+  <title>Detail Barang · ITBELI</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/listing.css">
+  <script src="/js/api.js" defer></script>
+  <script src="/js/Kerangka.js" defer></script>
+  <script src="/js/ListingUI.js" defer></script>
+  <script src="/js/DetailListingPenjual.js" defer></script>
+  <script src="/js/PanelNotifikasi.js" defer></script>
+</head>
+<body>
+<div class="page">
+  <header id="listing-topbar" class="topbar" data-topbar></header>
+  <div class="shell">
+    <aside id="listing-rail" class="rail" data-judul="Listing Saya"></aside>
+    <main class="content">
+      <div class="content__inner col gap-4">
+        <p class="t-caption muted">Listing Saya · Detail barang</p>
+        <div id="galat-umum" class="infobox infobox--galat" hidden role="alert"></div>
+        <div id="detail" class="detail" hidden>
+          <section class="col gap-3">
+            <div class="gal-main"><img id="foto-utama" alt="Foto barang"></div>
+            <div id="galeri" class="gal-thumbs"></div>
+          </section>
+          <aside class="col gap-4">
+            <h1 id="detail-judul" class="h-page"></h1>
+            <div id="detail-harga" class="t-price-lg"></div>
+            <div class="row gap-2"><span id="detail-kategori" class="chip"></span><span id="detail-lokasi" class="chip"></span><span id="detail-status" class="badge"></span></div>
+            <div class="divider"></div>
+            <h2 class="h-sec">Deskripsi kondisi</h2>
+            <p id="detail-deskripsi" class="muted"></p>
+            <a id="ubah" class="btn btn--primer">Ubah Listing</a>
+            <a href="/listing-saya" class="btn btn--sekunder">Kembali ke Listing Saya</a>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="pesan" class="toast" role="status" hidden></div>
+</div>
+</body>
+</html>

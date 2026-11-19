@@ -1,0 +1,16 @@
+Bukti unit test C22-UT. Perintah: cd src && npm test (Jest 30, Node.js v25.6.1)
+Waktu: 15/11/2026, 18.15.05 WIB
+
+PASS tests/unit/DokumenLegalController.test.js
+  ✓ C22-UT01 jenis "kebijakan-privasi" diteruskan ke getVersiTerbaru (4 ms)
+  ✓ C22-UT01 jenis "ketentuan-penggunaan" diteruskan ke getVersiTerbaru (2 ms)
+  ✓ C22-UT02 jenis tidak dikenal "kebijakan-rahasia" ditolak tanpa query ke basis data (1 ms)
+  ✓ C22-UT02 jenis tidak dikenal "../../etc" ditolak tanpa query ke basis data (2 ms)
+  ✓ C22-UT02 jenis tidak dikenal "" ditolak tanpa query ke basis data (1 ms)
+  ✓ C22-UT02 jenis tidak dikenal undefined ditolak tanpa query ke basis data (1 ms)
+  ✓ C22-UT02 jenis tidak dikenal "kebijakan-privasi' OR '1'='1" ditolak tanpa query ke basis data (1 ms)
+  ✓ C22-UT03 null bila belum ada versi yang berlaku (1 ms)
+  ✓ C22-UT04 mengambil klausul dari Kebijakan Privasi yang berlaku (2 ms)
+  ✓ C22-UT05 null bila Kebijakan Privasi belum tersedia (1 ms)
+
+Tests: 10 passed, 10 total

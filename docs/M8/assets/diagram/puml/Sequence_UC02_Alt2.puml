@@ -1,0 +1,37 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC02 — Alternatif 2: Meminta Pengiriman Ulang Kode
+actor "Pengguna" as User
+boundary ":HalamanOtentikasi" as UIo
+control ":AkunController" as AC
+control ":NotifikasiController" as NC
+entity ":Akun" as Akun
+entity ":TokenVerifikasi" as Tok
+entity ":Notifikasi" as Notif
+participant ":SurelAdapter" as Surel
+User -> UIo: mintaKirimUlang(email)
+UIo -> AC: kirimUlangKode(email)
+AC -> Akun: cariByEmail(email)
+Akun --> AC: akun
+AC -> AC: hanguskanKodeLama(idAkun)
+AC -> Tok: cariTokenAktif(idAkun)
+Tok --> AC: tokenLama
+AC -> Tok: tandaiHangus()
+AC -> AC: buatKodeVerifikasi(idAkun)
+AC -> Tok: simpan(idAkun, kodeBaru, waktuBuat, waktuKedaluwarsa, "Aktif")
+Tok --> AC: true
+AC -> NC: kirimEmailVerifikasi(email, kodeBaru)
+NC -> Notif: simpan(idAkun, "Surel Verifikasi Ulang", isi, waktuKirim, false)
+Notif --> NC: true
+NC -> Surel: kirimSurel(email, "Kode Verifikasi Baru ITBELI", isi)
+Surel --> NC: true
+NC --> AC: true
+AC --> UIo: true
+UIo -> UIo: resetHitungMundur()
+UIo -> UIo: tampilkanPesanSukses("Kode verifikasi baru telah dikirim.")
+@enduml

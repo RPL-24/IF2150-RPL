@@ -1,0 +1,38 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC16 - Menghubungi Penjual
+class "C07 HalamanDetailBarang" as C07
+class "C08 HalamanPercakapan" as C08
+class "C18 PercakapanController" as C18
+class "C24 Pembeli" as C24
+class "C25 Penjual" as C25
+class "C28 SesiLogin" as C28
+class "C29 Barang" as C29
+class "C33 Percakapan" as C33
+class "C34 Pesan" as C34
+C07 --> C18
+C08 --> C18
+C18 ..> C28
+C18 ..> C33
+C18 ..> C34
+C25 "1" *-- "0..*" C29
+C24 "1" -- "0..*" C33
+C25 "1" -- "0..*" C33
+C29 "1" -- "0..*" C33
+C33 "1" *-- "0..*" C34
+@enduml

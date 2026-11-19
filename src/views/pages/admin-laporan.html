@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0F4C97">
+<title>ITBELI — Dasbor Admin: Daftar Laporan</title>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/app.css">
+
+</head>
+<body>
+<div class="page">
+  <header class="topbar topbar--sederhana">
+    <div class="topbar__left">
+      <a class="brand" href="/admin-laporan" aria-label="ITBELI, dasbor admin">
+        <img class="brand__mark" src="/ikon/itbeli-simbol.svg" alt="" width="40" height="40">
+        <img class="brand__name" src="/ikon/itbeli-nama.svg" alt="ITBELI" width="60" height="20">
+      </a>
+      <span class="badge">Mode Admin</span>
+    </div>
+    <div class="topbar__right">
+      <div class="iconbtn" role="img" aria-label="Notifikasi"><span class="ic ic--bell"></span><span class="iconbtn__badge" id="notif-badge">0</span></div>
+      <div class="avatar" id="avatar-admin">AD</div>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="rail">
+      <h1 class="rail__judul">Moderasi</h1>
+      <nav class="navlist" aria-label="Menu moderasi">
+        <a href="/admin-laporan" class="is-active" aria-current="page"><span class="navlist__ic"><span class="ic ic--flag"></span></span>Daftar Laporan</a>
+        <a href="#"><span class="navlist__ic"><span class="ic ic--lock"></span></span>Akun Diblokir</a>
+        <a href="#"><span class="navlist__ic"><span class="ic ic--list"></span></span>Log Aktivitas</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="content__inner col gap-6">
+
+        <div id="pesan-sukses-banner" class="banner banner--sukses" hidden></div>
+        <div id="pesan-galat-banner" class="banner banner--galat" hidden></div>
+
+        <div>
+          <h2 class="h-page">Daftar Laporan</h2>
+          <p class="muted mt-2">Tinjau laporan pengguna terhadap listing dan akun</p>
+        </div>
+
+        <!-- Kartu Metrik Statistik I-13 -->
+        <div class="stat">
+          <div class="panel">
+            <span class="t-caption muted">Baru</span>
+            <span class="angka" id="stat-baru" style="color:var(--primer-700)">-</span>
+          </div>
+          <div class="panel">
+            <span class="t-caption muted">Sedang Ditinjau</span>
+            <span class="angka" id="stat-diproses" style="color:var(--warning)">-</span>
+          </div>
+          <div class="panel">
+            <span class="t-caption muted">Selesai</span>
+            <span class="angka" id="stat-selesai" style="color:var(--text-900)">-</span>
+          </div>
+          <div class="panel">
+            <span class="t-caption muted">Total Laporan</span>
+            <span class="angka" id="stat-total" style="color:var(--text-900)">-</span>
+          </div>
+        </div>
+
+        <!-- Tab Filter Status Penanganan I-13 -->
+        <div class="tabs">
+          <a href="#" class="is-active" data-status="Semua" id="tab-semua">Semua (-)</a>
+          <a href="#" data-status="Baru" id="tab-baru">Baru (-)</a>
+          <a href="#" data-status="Diproses" id="tab-diproses">Diproses (-)</a>
+          <a href="#" data-status="Selesai" id="tab-selesai">Selesai (-)</a>
+        </div>
+
+        <div id="indikator-memuat" style="color:var(--text-600); font-style:italic;" hidden>
+          Memuat daftar laporan...
+        </div>
+
+        <!-- Tabel Daftar Laporan I-13 -->
+        <table class="table" id="tabel-laporan">
+          <thead>
+            <tr>
+              <th style="width:112px">ID</th>
+              <th>Objek dilaporkan</th>
+              <th style="width:160px">Kategori</th>
+              <th style="width:140px">Pelapor</th>
+              <th style="width:110px">Tanggal</th>
+              <th style="width:130px">Status</th>
+              <th style="width:120px">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tabel-laporan-body">
+            <tr>
+              <td colspan="7" style="text-align:center; padding: 24px; color: var(--text-600)">
+                Memuat data laporan...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/DasborAdmin.js"></script>
+</body>
+</html>

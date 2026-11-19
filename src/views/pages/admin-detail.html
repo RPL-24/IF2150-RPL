@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0F4C97">
+<title>ITBELI — Dasbor Admin: Detail Laporan</title>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/app.css">
+
+</head>
+<body>
+<div class="page" id="halaman-detail-laporan">
+  <header class="topbar topbar--sederhana">
+    <div class="topbar__left">
+      <a class="brand" href="/admin-laporan" aria-label="ITBELI, dasbor admin">
+        <img class="brand__mark" src="/ikon/itbeli-simbol.svg" alt="" width="40" height="40">
+        <img class="brand__name" src="/ikon/itbeli-nama.svg" alt="ITBELI" width="60" height="20">
+      </a>
+      <span class="badge">Mode Admin</span>
+    </div>
+    <div class="topbar__right">
+      <div class="avatar" id="avatar-admin">AD</div>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="rail">
+      <h1 class="rail__judul">Moderasi</h1>
+      <nav class="navlist" aria-label="Menu moderasi">
+        <a href="/admin-laporan" class="is-active" aria-current="page"><span class="navlist__ic"><span class="ic ic--flag"></span></span>Daftar Laporan</a>
+        <a href="#"><span class="navlist__ic"><span class="ic ic--lock"></span></span>Akun Diblokir</a>
+        <a href="#"><span class="navlist__ic"><span class="ic ic--list"></span></span>Log Aktivitas</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="content__inner col gap-5">
+
+        <div id="pesan-sukses-banner" class="banner banner--sukses" hidden></div>
+        <div id="pesan-galat-banner" class="banner banner--galat" hidden></div>
+
+        <div>
+          <a href="/admin-laporan" class="t-caption muted" style="text-decoration:none;">&larr; Kembali ke Daftar Laporan</a>
+          <p class="t-caption muted mt-1" id="detail-breadcrumb">Daftar Laporan · LP-0000</p>
+          <div class="row gap-3 mt-2">
+            <h2 class="h-page" id="detail-judul">Laporan LP-0000</h2>
+            <span class="badge" id="detail-badge">Baru</span>
+          </div>
+        </div>
+
+        <div class="dua">
+          <!-- Kolom Utama: Rincian & Bukti -->
+          <section class="col gap-5">
+
+            <div class="panel col gap-2">
+              <div class="rail__title">Rincian Laporan</div>
+              <div class="baris"><span>Pelapor</span><span id="detail-pelapor">-</span></div>
+              <div class="baris"><span>Kategori</span><span id="detail-kategori">-</span></div>
+              <div class="baris"><span>Waktu Laporan</span><span id="detail-waktu">-</span></div>
+              <div class="baris" style="align-items:flex-start">
+                <span>Alasan</span>
+                <span id="detail-alasan" style="line-height:21px">-</span>
+              </div>
+            </div>
+
+            <div class="panel col gap-3">
+              <div class="rail__title">Objek yang Dilaporkan</div>
+              <div style="font-weight:600; font-size:16px" id="detail-objek-nama">-</div>
+            </div>
+
+            <div class="panel col gap-3">
+              <div class="rail__title">Bukti Tangkapan Layar (Tersimpan Aman)</div>
+              <div class="bukti" id="detail-daftar-bukti">
+                <p class="muted">Memuat bukti...</p>
+              </div>
+            </div>
+
+            <!-- Rekam Jejak Audit Laporan (Immutable) -->
+            <div class="panel col gap-3">
+              <div class="rail__title">Rekam Jejak Log Audit</div>
+              <div id="detail-riwayat-audit">
+                <p class="muted">Memuat riwayat...</p>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- Kolom Samping: Tindakan Moderasi -->
+          <aside class="col gap-4">
+            <div class="panel col gap-4">
+              <div class="rail__title">Tindakan Moderasi</div>
+
+              <div class="field">
+                <label for="select-status-penanganan" class="field__label">Ubah Status Penanganan</label>
+                <select id="select-status-penanganan" class="field__input" style="width:100%; height:40px; padding:0 8px; border-radius:var(--radius-sm); border:1px solid var(--border);">
+                  <option value="Baru">Baru</option>
+                  <option value="Diproses">Diproses</option>
+                  <option value="Selesai">Selesai</option>
+                </select>
+              </div>
+
+              <button type="button" id="btn-simpan-status" class="btn btn--primer btn--blok">
+                Simpan Status
+              </button>
+
+              <div class="divider"></div>
+
+              <button type="button" id="btn-hapus-listing" class="btn btn--merusak btn--blok">
+                Hapus Listing
+              </button>
+              <button type="button" id="btn-blokir-akun" class="btn btn--merusak btn--blok">
+                Blokir Akun
+              </button>
+              <button type="button" id="btn-buka-blokir" class="btn btn--sekunder btn--blok">
+                Buka Blokir Akun
+              </button>
+            </div>
+
+            <!-- Jaminan Privasi Percakapan Sesuai SKPL/DPPL (KF37) -->
+            <div class="infobox row gap-3">
+              <span class="ic ic--lock"></span>
+              <span style="font-size:13px; color:var(--text-600)">
+                Isi percakapan antarpengguna tidak tersedia bagi admin. Laporan ini hanya memuat metadata percakapan tanpa rekaman pesan pribadi.
+              </span>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Modal Konfirmasi Tindakan Moderasi (I-14b) -->
+<div id="modal-konfirmasi-moderasi" class="modal-overlay" hidden>
+  <div class="modal-card col gap-4">
+    <h3 style="font-size:18px; font-weight:700;">Konfirmasi Tindakan Moderasi</h3>
+    <p class="muted" style="font-size:14px;">
+      Tindakan ini akan dicatat ke dalam log audit dan log admin secara permanen. Masukkan alasan tindakan:
+    </p>
+    <textarea id="modal-alasan-tindakan" rows="3" class="field__input" style="width:100%; padding:8px; border:1px solid var(--border);" placeholder="Contoh: Terbukti melakukan penipuan"></textarea>
+    <div class="row gap-2 justify-end">
+      <button type="button" class="btn btn--sekunder btn--sm" onclick="document.getElementById('modal-konfirmasi-moderasi').hidden = true;">Batal</button>
+      <button type="button" class="btn btn--merusak btn--sm" onclick="dasborAdmin.konfirmasiTindakan(document.getElementById('modal-alasan-tindakan').value)">Konfirmasi</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/DasborAdmin.js"></script>
+</body>
+</html>

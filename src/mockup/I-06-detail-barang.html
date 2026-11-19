@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-06 Detail Barang</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  .detail { display: grid; grid-template-columns: 1fr 380px; gap: var(--sp-8); }
+  .gal__main { position: relative; height: 420px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+  .gal__nav { position: absolute; top: 50%; transform: translateY(-50%);
+    width: 40px; height: 40px; border-radius: var(--radius-full); background: var(--surface);
+    box-shadow: var(--shadow-md); display: grid; place-items: center; }
+  .gal__nav--kiri { left: var(--sp-4); } .gal__nav--kanan { right: var(--sp-4); }
+  .gal__thumbs { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sp-3); }
+  .gal__thumbs > div { height: 96px; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); overflow: hidden; background: var(--surface); }
+  .gal__thumbs > div.is-active { border: 2px solid var(--green-700); }
+  .seller { display: flex; gap: var(--sp-3); align-items: center; }
+  .seller__avatar { width: 44px; height: 44px; border-radius: var(--radius-full); overflow: hidden; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar></div>
+
+  <div class="shell">
+    <aside data-rail="katalog" data-aktif="Jas praktikum"></aside>
+
+    <main class="content">
+      <div class="content__inner col gap-5">
+
+        <p class="t-caption muted">Katalog · Jas praktikum · Jas Praktikum Kimia Ukuran M</p>
+
+        <div class="detail">
+
+          <div class="col gap-3">
+            <div class="gal__main">
+              <div class="ph ph--jas"></div>
+              <div class="gal__nav gal__nav--kiri"><span class="ic ic--chevL"></span></div>
+              <div class="gal__nav gal__nav--kanan"><span class="ic ic--chevR"></span></div>
+            </div>
+            <div class="gal__thumbs">
+              <div class="is-active"><div class="ph ph--jas"></div></div>
+              <div><div class="ph ph--jas"></div></div>
+              <div><div class="ph ph--jas"></div></div>
+              <div><div class="ph ph--lab"></div></div>
+              <div><div class="ph ph--lab"></div></div>
+            </div>
+          </div>
+
+          <aside class="col gap-4">
+
+            <div>
+              <h1 class="h-sec" style="font-size:24px;line-height:32px">Jas Praktikum Kimia Ukuran M</h1>
+              <div class="t-price-lg mt-2">Rp120.000</div>
+            </div>
+
+            <div class="row gap-2">
+              <span class="chip">Jas praktikum</span>
+              <span class="chip"><span class="ic ic--pin" style="width:16px;height:16px"></span>Labtek V</span>
+            </div>
+
+            <p class="t-caption muted">Diunggah 2 hari lalu · Lokasi titik temu bersifat perkiraan</p>
+
+            <div class="row gap-3">
+              <button class="btn btn--primer grow">Hubungi Penjual</button>
+              <button class="btn btn--sekunder btn--sm">
+                <span class="ic ic--flag" style="width:16px;height:16px"></span>Laporkan
+              </button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="col gap-3">
+              <div class="h-sec" style="font-size:16px">Detail</div>
+              <div class="row">
+                <span class="muted">Kondisi</span>
+                <span class="ml-auto">Bekas, layak pakai</span>
+              </div>
+              <div class="row">
+                <span class="muted">Ukuran</span>
+                <span class="ml-auto">M</span>
+              </div>
+              <p class="t-body muted" style="line-height:21px">
+                Dipakai satu semester untuk Praktikum Kimia Dasar. Tidak ada noda bahan kimia,
+                kancing lengkap, jahitan masih rapat. Nama pemilik lama sudah dilepas.
+              </p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="col gap-3">
+              <div class="h-sec" style="font-size:16px">Penjual</div>
+              <div class="seller">
+                <div class="seller__avatar"><div class="ph ph--avatar"></div></div>
+                <div>
+                  <div style="font-weight:600">Rani Permatasari</div>
+                  <div class="t-caption muted">Teknik Kimia 2023 · 12 listing</div>
+                </div>
+                <button class="btn btn--teks btn--sm ml-auto">Lihat profil</button>
+              </div>
+            </div>
+
+          </aside>
+        </div>
+
+        <section class="col gap-4">
+          <h2 class="h-sec" style="font-size:18px">Barang lain dari penjual ini</h2>
+          <div class="grid" style="--kartu:4">
+            <article class="card">
+              <div class="card__media" style="aspect-ratio:4/3"><div class="ph ph--lab"></div></div>
+              <div class="card__body">
+                <div class="card__price">Rp95.000</div>
+                <div class="card__title">Set Alat Gelas Praktikum Dasar</div>
+                <div class="card__meta">Labtek X · Alat laboratorium</div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card__media" style="aspect-ratio:4/3"><div class="ph ph--buku"></div></div>
+              <div class="card__body">
+                <div class="card__price">Rp70.000</div>
+                <div class="card__title">Kimia Dasar Chang Jilid 1</div>
+                <div class="card__meta">Labtek V · Buku kuliah</div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card__media" style="aspect-ratio:4/3"><div class="ph ph--jas"></div></div>
+              <div class="card__body">
+                <div class="card__price">Rp115.000</div>
+                <div class="card__title">Jas Praktikum Kimia Ukuran S</div>
+                <div class="card__meta">Labtek V · Jas praktikum</div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card__media" style="aspect-ratio:4/3"><div class="ph ph--rak"></div></div>
+              <div class="card__body">
+                <div class="card__price">Rp45.000</div>
+                <div class="card__title">Kotak Penyimpanan Alat Lab</div>
+                <div class="card__meta">Labtek X · Perlengkapan kos</div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

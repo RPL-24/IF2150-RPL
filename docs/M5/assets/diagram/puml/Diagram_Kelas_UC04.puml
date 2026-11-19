@@ -1,0 +1,27 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC04 - Keluar dari Sistem (Logout)
+class "C01 HalamanOtentikasi" as C01
+class "C13 AkunController" as C13
+class "C23 Akun" as C23
+class "C28 SesiLogin" as C28
+C01 --> C13
+C13 ..> C23
+C13 ..> C28
+C23 "1" -- "0..*" C28
+@enduml

@@ -1,0 +1,20 @@
+PASS tests/unit/ViewKatalog.test.js
+  C05 HalamanKatalog
+    ✓ C05-UT01 terapkan: kriteria sah ditulis ke URL lalu dikirim ke GET /api/katalog (12 ms)
+    ✓ C05-UT02 terapkan: harga minimum lebih besar dari maksimum ditolak tanpa mengubah URL dan tanpa memanggil API (5 ms)
+    ✓ C05-UT03 keQuery: kriteria kosong dan spasi dibuang, urutan kolom tetap (1 ms)
+    ✓ C05-UT04 render: 20 dari 24 listing menampilkan 20 kartu, jumlah hasil, dan navigasi halaman 1 dari 2 (2 ms)
+    ✓ C05-UT05 render: tanpa hasil menampilkan "Barang tidak ditemukan" dan menyembunyikan navigasi (KF29) (1 ms)
+    ✓ C05-UT06 render: halaman di luar batas menampilkan "Halaman tidak tersedia" (batas) (1 ms)
+  C07 HalamanDetailBarang
+    ✓ C07-UT01 renderAksi: pembeli pada listing Tersedia mendapat tombol "Kirim pesan", kotak pesan, dan tautan Laporkan (2 ms)
+    ✓ C07-UT02 renderAksi: pemilik listing hanya mendapat keterangan dan tombol "Ubah Listing" (UC15 Alternatif 1) (1 ms)
+    ✓ C07-UT03 renderAksi: listing Terjual tidak menyediakan tombol kirim pesan (UC15 Alternatif 3) (1 ms)
+    ✓ C07-UT04 mulai: ID listing bukan UUID ditolak tanpa memanggil API (2 ms)
+    ✓ C07-UT05 mulai: listing tidak tersedia (404) menampilkan pesan dari server (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       11 passed, 11 total
+Snapshots:   0 total
+Time:        0.371 s
+Ran all test suites matching tests/unit/ViewKatalog.test.js.

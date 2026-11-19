@@ -1,0 +1,22 @@
+===== KNF04-TC01 Scalability (2026-11-19T17:08:00.555Z) =====
+Mesin: 13th Gen Intel(R) Core(TM) i5-13420H, 12 thread, RAM 14.8 GB; Node v22.22.1; N=30 pengukuran per skenario
+
+Pengisian data selesai dalam 22.7 detik:
+  akun 40000 (diblokir 800), listing 120000 (Tersedia 96000), foto 360000, ukuran basis data 208 MB
+  PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+
+Target: median ≤ 200 ms dan maksimum ≤ 500 ms per skenario katalog; pencarian akun median ≤ 50 ms
+
+| Skenario | Total cocok | Dikembalikan | Median (ms) | Min (ms) | Maks (ms) | Memenuhi |
+| :--- | ---: | ---: | ---: | ---: | ---: | :---: |
+| A katalog beranda (tanpa filter, terbaru, halaman 1) | 94800 | 20 | 28.6 | 23.2 | 32.1 | Ya |
+| B cari "jas praktikum" | 16000 | 20 | 36.7 | 34.0 | 49.2 | Ya |
+| C kategori Kalkulator + harga 50.000-200.000 + termurah | 2337 | 20 | 40.8 | 37.0 | 48.3 | Ya |
+| D katalog halaman 500 (offset 9.980) | 94800 | 20 | 115.9 | 109.7 | 129.6 | Ya |
+| E cari kata yang tidak ada | 0 | 0 | 1.6 | 1.3 | 2.6 | Ya |
+| F cari "kalkulator" + lokasi Labtek V + termahal | 0 | 0 | 66.4 | 62.9 | 90.3 | Ya |
+| G cari akun berdasarkan surel (acak dari 40000) | 1 | 1 | 0.4 | - | 1.1 | Ya |
+
+Rencana kueri akun: Limit  (cost=0.41..8.43 rows=1 width=149) /   ->  Index Scan using akun_email_unik on akun  (cost=0.41..8.43 rows=1 width=149) /         Index Cond: (lower((email)::text) = 'uji123@itb.ac.id'::text)
+
+KESIMPULAN: PASS

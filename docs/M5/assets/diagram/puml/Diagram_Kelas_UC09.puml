@@ -1,0 +1,37 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide members
+hide stereotype
+left to right direction
+
+skinparam nodesep 35
+skinparam ranksep 70
+title UC09 - Mengubah Listing
+class "C04 FormulirBarang" as C04
+class "C14 BarangController" as C14
+class "C25 Penjual" as C25
+class "C28 SesiLogin" as C28
+class "C29 Barang" as C29
+class "C30 FotoBarang" as C30
+class "C31 Kategori" as C31
+class "C32 LokasiCOD" as C32
+C04 --> C14
+C14 ..> C28
+C14 ..> C29
+C14 ..> C30
+C14 ..> C31
+C14 ..> C32
+C25 "1" *-- "0..*" C29
+C29 "1" *-- "1..5" C30
+C31 "1" -- "0..*" C29
+C32 "1" -- "0..*" C29
+@enduml

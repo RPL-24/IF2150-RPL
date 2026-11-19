@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0F4C97">
+<title>Lengkapi Akun · ITBELI</title>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/app.css">
+<script src="/js/api.js" defer></script>
+<script src="/js/HalamanLengkapiSSO.js" defer></script>
+</head>
+<body>
+<div class="page">
+  <main class="auth">
+
+    <section class="auth__merek">
+      <a class="auth__logo" href="/" aria-label="ITBELI, beranda">
+        <img class="brand__mark" src="/ikon/itbeli-simbol.svg" alt="" width="40" height="40">
+        <img class="brand__name" src="/ikon/itbeli-nama.svg" alt="ITBELI" width="60" height="20">
+      </a>
+      <h1 class="auth__tagline">Satu langkah lagi.</h1>
+      <p class="auth__teks">
+        Akun ITB Anda sudah terverifikasi. Lengkapi NIM dan setujui kebijakan untuk mulai memakai ITBELI.
+      </p>
+    </section>
+
+    <section class="auth__kartu" aria-labelledby="judul-lengkapi">
+      <h2 id="judul-lengkapi">Lengkapi akun Anda</h2>
+      <p class="auth__sub">Nama dan surel diambil dari akun ITB Anda.</p>
+      <hr class="auth__pemisah">
+
+      <form id="formulir-lengkapi" novalidate>
+        <div id="pesan-galat" class="infobox infobox--galat" role="alert" hidden></div>
+
+        <label class="field">
+          <span class="field__label">Nama lengkap</span>
+          <input id="nama" class="field__input" type="text" readonly>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Email institusi</span>
+          <input id="email" class="field__input" type="email" readonly>
+        </label>
+
+        <label class="field">
+          <span class="field__label">NIM</span>
+          <input id="nim" class="field__input" type="text" inputmode="numeric" maxlength="20" required>
+          <span id="galat-nim" class="field__error" hidden></span>
+        </label>
+
+        <label class="checkbox">
+          <input id="setuju-kebijakan" type="checkbox">
+          <span>Saya menyetujui <a data-tautan-kebijakan href="/legal?jenis=kebijakan-privasi" target="_blank">Kebijakan Privasi</a>
+            dan <a href="/legal?jenis=ketentuan-penggunaan" target="_blank">Ketentuan Penggunaan</a> ITBELI.</span>
+        </label>
+
+        <button id="tombol-lengkapi" class="btn btn--primer btn--lg btn--pil btn--blok" type="submit" disabled>Selesaikan Pendaftaran</button>
+
+        <hr class="auth__pemisah">
+        <a class="btn btn--garis btn--lg btn--pil auth__baru" href="/masuk">Kembali ke Masuk</a>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="footerlinks">
+    <a href="/legal?jenis=kebijakan-privasi">Kebijakan Privasi</a><span>·</span>
+    <a href="/legal?jenis=ketentuan-penggunaan">Ketentuan Penggunaan</a>
+  </footer>
+</div>
+</body>
+</html>

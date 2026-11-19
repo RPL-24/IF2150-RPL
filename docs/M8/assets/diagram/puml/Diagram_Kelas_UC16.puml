@@ -1,0 +1,130 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanDetailBarang" as C07 {
+  - barang: Barang
+  - daftarFoto: List<FotoBarang>
+  - fotoUtama: String
+  + onClickContact(): void
+  + arahkanKeKatalog(): void
+  + tampilkanNotifikasi(kodePesan: String): void
+}
+class "HalamanPercakapan" as C08 {
+  - percakapanAktif: Percakapan
+  - daftarPercakapan: List<Map<String, Any>>
+  - isiTeksInput: String
+  + bukaPercakapan(idPercakapan: String): void
+  + showPercakapan(ruang: Map<String, Any>): void
+  + gulirKePesanTerakhir(): void
+  + tampilkanAksesDitolak(): void
+  + tampilkanTautanKebijakan(): void
+}
+class "PercakapanController" as C18 {
+  + mulaiPercakapan(token: String, idBarang: String): Map<String, Any>
+  + bukaPercakapan(token: String, idPercakapan: String): Map<String, Any>
+  + verifikasiPeserta(idAkun: String, percakapan: Percakapan): Boolean
+  + dekripsiPesan(daftarPesan: List<Pesan>): List<String>
+}
+class "Akun" as C23 {
+  - idAkun: String
+  - nama: String
+  - nim: String
+  - email: String
+  - kataSandiHash: String
+  - statusAkun: String
+  - statusBlokir: Boolean
+  - peran: String
+  - setujuKebijakan: Boolean
+  - waktuDaftar: DateTime
+  + getStatusBlokir(idAkun: String): Boolean
+}
+class "Pembeli" as C24 {
+}
+class "Penjual" as C25 {
+  + getIdentitas(idPenjual: String): Map<String, Any>
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+}
+class "Barang" as C29 {
+  - idBarang: String
+  - idPenjual: String
+  - judul: String
+  - harga: Double
+  - deskripsiKondisi: String
+  - idKategori: String
+  - idLokasi: String
+  - status: String
+  - waktuUnggah: DateTime
+  - waktuUbah: DateTime
+  + cariById(idBarang: String): Barang
+}
+class "Percakapan" as C33 {
+  - idPercakapan: String
+  - idPembeli: String
+  - idPenjual: String
+  - idBarang: String
+  - waktuDibuat: DateTime
+  - waktuPembaruanTerakhir: DateTime
+  + cariById(idPercakapan: String): Percakapan
+  + cariByKombinasi(idBarang: String, idPembeli: String, idPenjual: String): Percakapan
+  + simpan(idBarang: String, idPembeli: String, idPenjual: String): Percakapan
+  + cekPeserta(idAkun: String): Boolean
+}
+class "Pesan" as C34 {
+  - idPesan: String
+  - idPercakapan: String
+  - idPengirim: String
+  - isiPesanTerenkripsi: String
+  - waktuKirim: DateTime
+  - statusBaca: Boolean
+  + getDaftarPesan(idPercakapan: String): List<Pesan>
+}
+class "Otorisasi" as C41 {
+  + verifikasiToken(token: String): SesiLogin
+}
+class "Kriptografi" as C42 {
+  - saltRounds: Integer
+  - kunciEnkripsi: String
+  + dekripsi(isiPesanTerenkripsi: String): String
+}
+C07 --> C08
+C07 --> C18
+C08 --> C18
+C18 ..> C23
+C18 ..> C25
+C18 ..> C28
+C18 ..> C29
+C18 ..> C33
+C18 ..> C34
+C18 ..> C41
+C18 ..> C42
+C41 ..> C28
+C23 <|-- C24
+C23 <|-- C25
+C23 "1" -- "0..*" C28
+C25 "1" *-- "0..*" C29
+C24 "1" -- "0..*" C33
+C25 "1" -- "0..*" C33
+C29 "1" -- "0..*" C33
+C33 "1" *-- "0..*" C34
+C23 "1" -- "0..*" C34
+@enduml

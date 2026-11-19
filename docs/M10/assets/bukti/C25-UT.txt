@@ -1,0 +1,8 @@
+Bukti unit test C25-UT. Perintah: cd src && npm test (Jest 30, Node.js v25.6.1)
+Waktu: 15/11/2026, 18.15.05 WIB
+
+PASS tests/unit/ModelAkun.test.js
+  ✓ C25-UT01 getIdentitas mengembalikan identitas publik penjual (Algo-027) (2 ms)
+  ✓ C25-UT02 getIdentitas mengembalikan null bila penjual tidak ada (1 ms)
+
+Tests: 2 passed, 2 total

@@ -1,0 +1,11 @@
+# Berkas yang tidak ikut diunggah saat deploy ke Vercel
+.env
+.vercel
+node_modules
+uploads
+public
+coverage
+tests
+mockup
+*.log
+.env.local

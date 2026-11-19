@@ -1,0 +1,56 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC23 — Normal
+actor "Admin" as User
+boundary ":DasborAdmin" as Dash
+control ":ModerasiController" as MC
+control ":Otorisasi" as Oto
+entity ":SesiLogin" as Sesi
+entity ":Admin" as Adm
+entity ":Akun" as Akun
+entity ":Barang" as Barang
+control ":NotifikasiController" as NC
+entity ":Notifikasi" as Notif
+participant ":SurelAdapter" as Surel
+entity ":LogAdmin" as LogA
+entity ":LogAudit" as Audit
+User -> Dash: onClickBlokirAkun(idAkun)
+Dash -> Dash: tampilkanModalKonfirmasi("Blokir Akun")
+User -> Dash: konfirmasiTindakan(alasan)
+Dash -> MC: blokirAkun(token, idLaporan, idAkun, alasan)
+MC -> MC: otorisasiAdmin(token)
+MC -> Oto: verifikasiAdmin(token)
+Oto -> Sesi: cariSesiAktif(token)
+Sesi --> Oto: sesiLogin
+Oto -> Sesi: getIdAkun()
+Sesi --> Oto: idAkun
+Oto -> Adm: verifikasiPeran(idAkun)
+Adm --> Oto: true
+Oto --> MC: sesiLogin
+MC -> Sesi: getIdAkun()
+Sesi --> MC: idAdmin
+MC -> Akun: cariById(idAkun)
+Akun --> MC: akun (surel)
+MC -> Akun: blokir()
+Akun --> MC: true
+MC -> Sesi: nonaktifkanByAkun(idAkun)
+MC -> MC: nonaktifkanListingPengguna(idAkun)
+MC -> Barang: nonaktifkanByPemilik(idAkun)
+note right of Barang: Listing tidak tampil di katalog\ndan hasil pencarian (KF54)
+MC -> NC: kirimPesanPenangguhan(idAkun, email, alasan)
+NC -> Notif: simpan(idAkun, "Penangguhan Akun", isi, waktuKirim, false)
+NC -> Surel: kirimSurel(email, "Akun Anda ditangguhkan", isi)
+NC --> MC: true
+MC -> MC: catatLogAdmin(idAdmin, "Blokir Akun", idAkun, alasan)
+MC -> LogA: catatTindakan(idAdmin, "Blokir Akun", idAkun, alasan)
+MC -> MC: catatLogAudit(idLaporan, idAdmin, "Blokir Akun")
+MC -> Audit: catatPemblokiranAkun(idLaporan, idAdmin, idAkun)
+MC --> Dash: true
+Dash -> Dash: tampilkanStatusTerbaru("Diblokir")
+note over Dash, MC: Percobaan login berikutnya ditolak dengan pesan\npenangguhan (UC03 Alternatif 3, KF53)
+@enduml

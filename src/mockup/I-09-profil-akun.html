@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-09 Profil Akun</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  .profil { display: flex; gap: var(--sp-6); align-items: center; }
+  .profil__avatar { width: 96px; height: 96px; border-radius: var(--radius-full); overflow: hidden; flex: none; }
+  .profil__stat { display: flex; gap: var(--sp-8); }
+  .profil__stat div span { display: block; }
+  .menu { display: flex; flex-direction: column; gap: 2px; }
+  .menu a { display: flex; align-items: center; padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--radius-sm); color: var(--text-900); text-decoration: none; font-size: 14px; }
+  .menu a:hover { background: var(--green-50); }
+  .menu a.keluar { color: var(--danger); }
+  .dua { display: grid; grid-template-columns: 1fr 320px; gap: var(--sp-8); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar></div>
+
+  <div class="shell">
+    <aside data-rail="akun" data-aktif="Profil Akun"></aside>
+
+    <main class="content">
+      <div class="content__inner col gap-6">
+
+        <div class="panel">
+          <div class="profil">
+            <div class="profil__avatar"><div class="ph ph--avatar"></div></div>
+            <div class="col gap-1">
+              <h1 class="h-page" style="font-size:28px;line-height:36px">Sulthan Dhiyazka Suwandi</h1>
+              <div class="muted">13525124 · sulthan@itb.ac.id</div>
+              <div class="row gap-2 mt-2">
+                <span class="badge">Terverifikasi</span>
+                <span class="chip">Teknik Informatika 2025</span>
+              </div>
+            </div>
+            <div class="profil__stat ml-auto">
+              <div>
+                <span class="t-price-lg">8</span>
+                <span class="t-caption muted">Listing tersedia</span>
+              </div>
+              <div>
+                <span class="t-price-lg">7</span>
+                <span class="t-caption muted">Barang terjual</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dua">
+
+          <section class="col gap-4">
+            <div class="row">
+              <h2 class="h-sec">Listing saya</h2>
+              <button class="btn btn--teks btn--sm ml-auto">Lihat semua</button>
+            </div>
+
+            <div class="grid grid--3">
+              <article class="card">
+                <div class="card__media"><div class="ph ph--jas"></div></div>
+                <div class="card__body">
+                  <div class="card__price">Rp120.000</div>
+                  <div class="card__title">Jas Praktikum Kimia Ukuran M</div>
+                  <div class="card__meta">Labtek V · Jas praktikum</div>
+                </div>
+              </article>
+              <article class="card">
+                <div class="card__media"><div class="ph ph--kalkulator"></div></div>
+                <div class="card__body">
+                  <div class="card__price">Rp180.000</div>
+                  <div class="card__title">Kalkulator Casio FX-991EX</div>
+                  <div class="card__meta">Gedung Oktagon · Kalkulator</div>
+                </div>
+              </article>
+              <article class="card is-terjual">
+                <div class="card__media">
+                  <span class="badge badge--terjual card__badge">Terjual</span>
+                  <div class="ph ph--buku"></div>
+                </div>
+                <div class="card__body">
+                  <div class="card__price">Rp85.000</div>
+                  <div class="card__title">Kalkulus Jilid 1 — Purcell</div>
+                  <div class="card__meta">Perpustakaan Pusat · Buku kuliah</div>
+                </div>
+              </article>
+              <article class="card">
+                <div class="card__media"><div class="ph ph--jaket"></div></div>
+                <div class="card__body">
+                  <div class="card__price">Rp250.000</div>
+                  <div class="card__title">Jaket Himpunan HMIF 2023</div>
+                  <div class="card__meta">Labtek V · Jaket himpunan</div>
+                </div>
+              </article>
+              <article class="card">
+                <div class="card__media"><div class="ph ph--rak"></div></div>
+                <div class="card__body">
+                  <div class="card__price">Rp60.000</div>
+                  <div class="card__title">Rak Buku Lipat 3 Susun</div>
+                  <div class="card__meta">Gerbang Belakang · Perlengkapan kos</div>
+                </div>
+              </article>
+              <article class="card is-terjual">
+                <div class="card__media">
+                  <span class="badge badge--terjual card__badge">Terjual</span>
+                  <div class="ph ph--lab"></div>
+                </div>
+                <div class="card__body">
+                  <div class="card__price">Rp95.000</div>
+                  <div class="card__title">Set Alat Gelas Praktikum Dasar</div>
+                  <div class="card__meta">Labtek X · Alat laboratorium</div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <aside class="panel col gap-3">
+            <div class="rail__title">Pengaturan akun</div>
+            <nav class="menu">
+              <a href="#">Ubah kata sandi</a>
+              <a href="#">Preferensi notifikasi</a>
+              <a href="#">Kebijakan Privasi</a>
+              <a href="#">Ketentuan Penggunaan</a>
+              <div class="divider mt-2"></div>
+              <a href="#" class="keluar mt-2">Keluar</a>
+            </nav>
+          </aside>
+
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

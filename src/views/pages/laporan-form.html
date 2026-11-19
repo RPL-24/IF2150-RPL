@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0F4C97">
+<title>Formulir Laporan · ITBELI</title>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/app.css">
+<style>
+  .laporan-container { max-width: 640px; margin: 0 auto; padding: var(--sp-6);
+    background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+  .konteks { display: flex; gap: var(--sp-3); align-items: center; background: var(--bg);
+    border-radius: var(--radius-md); padding: var(--sp-3); }
+  .konteks__thumb { width: 48px; height: 48px; border-radius: var(--radius-full); background: var(--danger-bg);
+    color: var(--danger); display: grid; place-items: center; flex: none; }
+  .konteks__nama { font-weight: 600; }
+  .bukti-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: var(--sp-3); margin-top: var(--sp-2); }
+  .bukti__item { position: relative; height: 90px; border-radius: var(--radius-md); overflow: hidden; background: var(--bg); }
+  .bukti__item img { width: 100%; height: 100%; object-fit: cover; }
+  .bukti__hapus { position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; border-radius: 50%;
+    background: rgba(0, 0, 0, .65); color: #fff; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 15px; line-height: 1; }
+  .bukti__tambah { height: 90px; border: 2px dashed var(--border); border-radius: var(--radius-md);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; background: var(--bg); color: var(--text-600); }
+  .bukti__tambah:hover { border-color: var(--primer-700); color: var(--primer-700); }
+  .radio-group { display: flex; flex-direction: column; gap: var(--sp-2); margin-top: var(--sp-2); }
+  .radio-label { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3);
+    border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; font-size: 15px; }
+  .radio-label input { accent-color: var(--primer-700); width: 18px; height: 18px; flex: none; }
+  .radio-label:has(input:checked) { border-color: var(--primer-700); background: var(--primer-50); }
+</style>
+<script src="/js/api.js" defer></script>
+<script src="/js/Kerangka.js" defer></script>
+<script src="/js/FormulirLaporan.js" defer></script>
+<script src="/js/PanelNotifikasi.js" defer></script>
+</head>
+<body data-halaman="laporan-form">
+<div class="page">
+  <header class="topbar" data-topbar></header>
+
+  <div class="shell">
+    <aside class="rail" data-judul="Laporan"></aside>
+
+    <main class="content">
+    <div class="laporan-container">
+      <h2 class="h-page">Kirim Laporan Pelanggaran</h2>
+      <p class="muted mt-1">
+        Laporan Anda akan ditinjau langsung oleh tim admin moderasi ITBELI.
+      </p>
+
+      <div id="info-privasi-chat" class="infobox infobox--netral mt-3" hidden>
+        <strong>Perlindungan Privasi:</strong> Laporan percakapan hanya memuat identitas dan waktu. Seluruh isi percakapan pribadi terenkripsi dan <em>tidak disertakan</em> dalam laporan (KF37).
+      </div>
+
+      <div id="pesan-galat" class="infobox infobox--galat mt-3" role="alert" hidden></div>
+      <div id="pesan-sukses" class="infobox infobox--sukses mt-3" role="alert" hidden></div>
+
+      <form id="formulir-laporan" class="col gap-4 mt-4" novalidate>
+        <div class="konteks">
+          <div class="konteks__thumb"><span class="ic ic--flag"></span></div>
+          <div>
+            <div class="konteks__nama" id="konteks-objek">Memuat objek...</div>
+            <div class="t-caption muted">Objek yang dilaporkan ke admin</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field__label">Kategori Pelanggaran</span>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="kategori" value="Penipuan" checked>
+              <span><strong>Penipuan</strong> — Permintaan transfer di luar COD, barang fiktif, atau manipulasi</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="kategori" value="Konten tidak pantas">
+              <span><strong>Konten tidak pantas</strong> — Gambar/kata tidak senonoh, SARA, atau barang terlarang</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="kategori" value="Bug atau masalah teknis">
+              <span><strong>Bug atau masalah teknis</strong> — Galat antarmuka atau anomali sistem</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="teks-alasan" class="field__label">Alasan Pelaporan</label>
+          <textarea id="teks-alasan" class="field__area" rows="4"
+                    placeholder="Jelaskan detail kronologi atau pelanggaran yang terjadi secara jelas..." required></textarea>
+          <span class="field__hint">Jelaskan bukti dan fakta yang relevan.</span>
+        </div>
+
+        <div class="field">
+          <span class="field__label">Bukti Tangkapan Layar (Wajib)</span>
+          <div class="bukti-grid" id="kontainer-bukti">
+            <!-- Rendered by FormulirLaporan.js -->
+          </div>
+          <span class="field__hint">Minimal 1 tangkapan layar, maksimal 5 berkas. Format JPG atau PNG, maksimum 5 MB per berkas (KF44).</span>
+        </div>
+
+        <div class="dialog__actions mt-4">
+          <button id="tombol-batal" type="button" class="btn btn--sekunder">Batal</button>
+          <button id="tombol-kirim" type="submit" class="btn btn--primer">Kirim Laporan</button>
+        </div>
+      </form>
+    </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

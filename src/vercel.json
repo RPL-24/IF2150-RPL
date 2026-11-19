@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run salin-statis && npm run db:init && npm run db:seed-legal",
+  "regions": ["sin1"],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/", "destination": "/katalog", "permanent": false }
+  ]
+}

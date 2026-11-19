@@ -1,0 +1,45 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC21 — Normal
+actor "Admin" as User
+boundary ":DasborAdmin" as Dash
+control ":ModerasiController" as MC
+control ":Otorisasi" as Oto
+entity ":SesiLogin" as Sesi
+entity ":Admin" as Adm
+entity ":Laporan" as Lap
+entity ":LogAudit" as Audit
+User -> Dash: bukaDetailLaporan(idLaporan)
+Dash -> MC: getDetailLaporan(token, idLaporan)
+MC -> MC: otorisasiAdmin(token)
+MC -> Oto: verifikasiAdmin(token)
+Oto -> Sesi: cariSesiAktif(token)
+Sesi --> Oto: sesiLogin
+Oto -> Sesi: getIdAkun()
+Sesi --> Oto: idAkun
+Oto -> Adm: verifikasiPeran(idAkun)
+Adm --> Oto: true
+Oto --> MC: sesiLogin
+MC -> Sesi: getIdAkun()
+Sesi --> MC: idAdmin
+MC -> Lap: getDetailLaporan(idLaporan)
+Lap --> MC: laporan
+MC --> Dash: laporan
+Dash -> Dash: tampilkanDetailLaporan(laporan)
+User -> Dash: onClickUbahStatus(idLaporan, statusBaru)
+Dash -> MC: ubahStatusLaporan(token, idLaporan, statusBaru)
+MC -> MC: otorisasiAdmin(token)
+note right of MC: Pemeriksaan sesi dan peran sama\nseperti pada langkah sebelumnya
+MC -> Lap: updateStatusPenanganan(idLaporan, statusBaru, waktuPerubahan)
+Lap --> MC: true
+MC -> MC: catatLogAudit(idLaporan, idAdmin, "Ubah status")
+MC -> Audit: catatPerubahanStatusLaporan(idLaporan, idAdmin, statusBaru)
+note right of Audit: Catatan hanya dapat ditambah (KF49)
+MC --> Dash: true
+Dash -> Dash: tampilkanStatusTerbaru(statusBaru)
+@enduml

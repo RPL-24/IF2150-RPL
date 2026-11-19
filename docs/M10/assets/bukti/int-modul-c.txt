@@ -1,0 +1,96 @@
+
+> itbeli@0.1.0 test:db
+> jest --runInBand --config jest.db.config.js tests/db/ModulC.test.js --verbose
+
+  console.error
+    error: invalid input syntax for type bigint: "2e+21"
+        at /home/made-ardana/Documents/IF2150-RPL-K01-G02/src/node_modules/pg-pool/index.js:45:11
+        at processTicksAndRejections (node:internal/process/task_queues:103:5)
+        at Function.getKatalog (/home/made-ardana/Documents/IF2150-RPL-K01-G02/src/models/Barang.js:152:22)
+        at getProduk (/home/made-ardana/Documents/IF2150-RPL-K01-G02/src/controllers/KatalogController.js:22:29) {
+      length: 147,
+      severity: 'ERROR',
+      code: '22P02',
+      detail: undefined,
+      hint: undefined,
+      position: undefined,
+      internalPosition: undefined,
+      internalQuery: undefined,
+      where: "unnamed portal parameter $4 = '...'",
+      schema: undefined,
+      table: undefined,
+      column: undefined,
+      dataType: undefined,
+      constraint: undefined,
+      file: 'numutils.c',
+      line: '879',
+      routine: 'pg_strtoint64_safe'
+    }
+
+      49 |     return res.status(400).json({ sukses: false, pesan: 'Format data tidak valid.' });
+      50 |   }
+    > 51 |   console.error(err);
+         |           ^
+      52 |   res.status(500).json({ sukses: false, pesan: 'Terjadi galat pada server. Coba lagi nanti.' });
+      53 | });
+      54 |
+
+      at error (app.js:51:11)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at Immediate.next (node_modules/router/index.js:291:5)
+      at Immediate._onImmediate (node_modules/router/index.js:688:15)
+
+FAIL tests/db/ModulC.test.js
+  Integrasi Modul C dengan PostgreSQL (komponen nyata)
+    ✓ INT-TC35 katalog membagi 25 listing menjadi halaman 20 dan 5, terbaru lebih dulu (UC13, KF28) (134 ms)
+    ✓ INT-TC36 katalog hanya memuat listing Tersedia milik akun tidak diblokir, termasuk setelah pemblokiran (UC13 Alt 2, KF30) (35 ms)
+    ✓ INT-TC37 pencarian tidak peka huruf besar, mencari di judul dan deskripsi, dan setiap kata harus muncul (UC14, KF25) (15 ms)
+    ✓ INT-TC38 filter kategori, rentang harga (inklusif), dan lokasi berlaku sekaligus (UC14, KF26) (16 ms)
+    ✓ INT-TC39 pengurutan termurah dan termahal mengikuti harga (UC14, KF27) (21 ms)
+    ✓ INT-TC40 kriteria tanpa hasil membalas daftar kosong dan pesan "Barang tidak ditemukan." (UC14 Alt 1, KF29) (6 ms)
+    ✓ INT-TC41 rentang harga terbalik dan parameter tidak sah ditolak 400 (UC14 Alt 2) (9 ms)
+    ✓ INT-TC42 detail memuat seluruh atribut, foto berurutan, identitas penjual, dan penanda pemilik (UC15, UC15 Alt 1, KF17) (23 ms)
+    ✓ INT-TC43 detail listing Terjual tetap tampil, sedangkan yang dinonaktifkan, milik akun diblokir, atau tidak ada membalas 404 (UC15 Alt 2, Alt 3) (39 ms)
+    ✓ INT-TC44 katalog dan detail menolak permintaan tanpa sesi login yang sah (401) (5 ms)
+    ✕ INT-TC45 nomor halaman sangat besar tidak menimbulkan galat server (batas) (25 ms)
+
+  ● Integrasi Modul C dengan PostgreSQL (komponen nyata) › INT-TC45 nomor halaman sangat besar tidak menimbulkan galat server (batas)
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 500
+    Received:   500
+
+      261 |     expect(besar.body.data.daftar).toEqual([]);
+      262 |     // Harapan: ditolak 400 atau dibalas daftar kosong, bukan 500
+    > 263 |     expect(sangatBesar.status).toBeLessThan(500);
+          |                                ^
+      264 |   });
+      265 | });
+      266 |
+
+      at Object.toBeLessThan (tests/db/ModulC.test.js:263:32)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 10 passed, 11 total
+Snapshots:   0 total
+Time:        0.801 s, estimated 3 s
+Ran all test suites matching tests/db/ModulC.test.js.

@@ -1,0 +1,33 @@
+Bukti KNF03-TC01: hanya surel berdomain itb.ac.id (beserta subdomainnya) yang dapat mendaftar dan masuk
+Lingkungan: ITBELI lokal (kode v9.0) http://localhost:3100, PostgreSQL 16 (docker), Waktu: 15/11/2026 18.27 WIB
+
+1) Percobaan lewat HTTP
+
+| No | Surel | Diharapkan | POST /api/akun/daftar | POST /api/akun/login |
+| --- | --- | --- | --- | --- |
+| 1 | knf03.a@gmail.com | Ditolak | 400 DOMAIN_TIDAK_VALID | 401 KREDENSIAL_SALAH |
+| 2 | knf03.b@yahoo.co.id | Ditolak | 400 DOMAIN_TIDAK_VALID | 401 KREDENSIAL_SALAH |
+| 3 | knf03.c@itb.ac.id.palsu.com | Ditolak | 400 DOMAIN_TIDAK_VALID | 401 KREDENSIAL_SALAH |
+| 4 | knf03.d@bukanitb.ac.id | Ditolak | 400 DOMAIN_TIDAK_VALID | 401 KREDENSIAL_SALAH |
+| 5 | knf03.e@itbxac.id | Ditolak | 400 DOMAIN_TIDAK_VALID | 401 KREDENSIAL_SALAH |
+| 6 | knf03.f@itb.ac.id@gmail.com | Ditolak | 400 DOMAIN_TIDAK_VALID | 401 KREDENSIAL_SALAH |
+| 7 | knf03.g@mahasiswa..itb.ac.id | Ditolak | 400 DOMAIN_TIDAK_VALID | 401 KREDENSIAL_SALAH |
+| 8 | knf03.h@ui.ac.id | Ditolak | 400 DOMAIN_TIDAK_VALID | 401 KREDENSIAL_SALAH |
+| 9 | knf03.i@itb.ac.id | Diterima | 201 dibuat | 403 BELUM_TERVERIFIKASI |
+| 10 | knf03.j@mahasiswa.itb.ac.id | Diterima | 201 dibuat | 403 BELUM_TERVERIFIKASI |
+| 11 | knf03.k@std.stei.itb.ac.id | Diterima | 201 dibuat | 403 BELUM_TERVERIFIKASI |
+
+Sesuai harapan: 11 dari 11 percobaan.
+Catatan: surel berdomain ITB yang diterima pendaftarannya tetap ditolak saat login (403 BELUM_TERVERIFIKASI) sampai kode verifikasi dari surel tersebut dimasukkan.
+
+2) Inspeksi tabel akun: docker exec -i itbeli-db-1 psql -U itbeli -d itbeli -e < tc01.sql
+
+SELECT COUNT(*) AS total_akun,
+       COUNT(*) FILTER (WHERE email !~* '@([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)*itb\.ac\.id$') AS akun_bukan_domain_itb
+FROM akun;
+ total_akun | akun_bukan_domain_itb 
+------------+-----------------------
+         23 |                     0
+(1 row)
+
+3) Masuk dengan Google: klaim surel di luar domain ITB ditolak DOMAIN_TIDAK_VALID (lihat SSO-UT13 pada SSO-UT.txt).
