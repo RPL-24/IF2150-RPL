@@ -124,16 +124,73 @@ Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut bab demi ba
 
 # BAB 2: Deskripsi Umum Perangkat Lunak
 
-Bagian ini diisi dengan *System Overview*, dalam bentuk gambar dan narasi yang memberikan gambaran tentang aplikasi dan konteksnya. **Batasan dan keterkaitan** antara sistem yang dibangun dengan sistem lain di luarnya harus jelas. Deskripsi umum sistem perlu dilengkapi dengan pemodelan kasus yang dihadapi, seperti *use case diagram*. Berikan narasi yang jelas untuk setiap gambar yang ditampilkan.
+Bab ini diringkas dari BAB 2 dan Subbab 4.3 SKPL, lalu disesuaikan dengan keadaan implementasi pada tag `v9.0` sebagaimana dicatat pada Tabel B.1 laporan implementasi M9.
 
-Bagian ini dapat menyalin atau meringkas dari dokumen SKPL atau DPPL.
+**ITBELI** adalah aplikasi web *marketplace* barang *preloved* khusus sivitas ITB. Aplikasi ini mempertemukan mahasiswa yang ingin melepas barang bekas layak pakai dengan mahasiswa lain yang membutuhkannya dalam satu katalog terpusat, sebagai pengganti grup percakapan dan *marketplace* umum yang tersebar. Pendaftaran dan masuk hanya dapat dilakukan dengan surel berdomain ITB, sehingga setiap pihak yang bertransaksi dapat dipastikan merupakan anggota sivitas ITB. Satu akun dapat berperan bergantian sebagai penjual dan pembeli.
+
+Penjual membuat listing berisi foto, judul, harga, deskripsi kondisi, kategori, dan lokasi titik temu COD, mengelola listing miliknya, dan menandai barang yang sudah laku sebagai terjual. Pembeli menjelajahi katalog, mencari dan menyaring listing, membuka detailnya, lalu menghubungi penjual melalui percakapan di dalam aplikasi untuk menyepakati harga serta waktu dan tempat COD. Admin meninjau laporan pengguna terhadap listing atau akun yang bermasalah, lalu menghapus listing atau memblokir akun yang terbukti melanggar. Isi percakapan antarpengguna disimpan terenkripsi dan tidak dapat dibaca admin.
+
+Tabel 2.1. Pengguna ITBELI
+
+| Pengguna | Peran dalam Sistem | Use Case |
+| :--- | :--- | :--- |
+| Pembeli | Sivitas ITB terverifikasi yang mencari dan menghubungi penjual | UC01 s.d. UC06, UC13 s.d. UC19 |
+| Penjual | Sivitas ITB terverifikasi yang memasarkan barang; secara teknis memakai akun yang sama dengan Pembeli | UC01 s.d. UC12, UC15, UC17 s.d. UC19 |
+| Admin | Pengelola platform yang menangani laporan dan moderasi | UC03, UC04, UC20 s.d. UC24 |
+
+## Batasan dan Keterkaitan dengan Sistem Lain
+
+ITBELI hanya memfasilitasi tahap sebelum transaksi. Pembayaran dan serah terima barang dilakukan secara luring melalui COD di kampus, sehingga ITBELI tidak terhubung dengan *payment gateway* maupun layanan logistik. ITBELI juga tidak menjamin kondisi atau keaslian barang yang ditawarkan.
+
+Untuk menjalankan fungsinya, ITBELI bergantung pada beberapa sistem di luarnya. Gambar 2.1 menunjukkan batas tersebut. Setiap sistem eksternal memiliki padanan lokal yang dipakai saat pengembangan dan pengujian M10, dan padanan daring yang dipakai pada versi `https://itbeli.vercel.app` (M9 B.1 No. 39 dan 40).
+
+```mermaid
+flowchart LR
+    P([Pembeli / Penjual]) -->|HTTP lewat peramban| A
+    D([Admin]) -->|HTTP lewat peramban| A
+    subgraph ITBELI [Sistem ITBELI]
+        A[Aplikasi web Express<br/>View, Controller, Model]
+    end
+    A <-->|SQL| DB[(PostgreSQL<br/>Docker lokal / Neon)]
+    A -->|simpan dan hapus foto| FS[(Penyimpanan berkas<br/>disk lokal / Vercel Blob)]
+    A -->|kode verifikasi dan<br/>pemberitahuan moderasi| SMTP[Server SMTP<br/>Mailpit / Gmail SMTP]
+    A <-->|OAuth 2.0 + PKCE| G[Google OAuth<br/>masuk dengan akun ITB]
+    A -->|Web Push VAPID| WP[Push service peramban]
+    P -. "pembayaran dan serah terima COD<br/>(di luar sistem)" .- P
+```
 
 <p align="center">
-<img alt="System Overview / Use Case Diagram" src="./assets/contoh-uc-diagram.webp" width="90%">
+<i>Gambar 2.1. Batas Sistem ITBELI dan Keterkaitannya dengan Sistem Lain</i>
+</p>
+
+Tabel 2.2. Sistem Eksternal yang Terhubung dengan ITBELI
+
+| Sistem Eksternal | Kegunaan | Lokal (pengembangan dan pengujian) | Daring |
+| :--- | :--- | :--- | :--- |
+| PostgreSQL | Penyimpanan seluruh data akun, listing, percakapan, laporan, dan log | PostgreSQL 16 melalui Docker Compose | Neon |
+| Penyimpanan berkas | Foto listing dan bukti laporan | Folder `src/uploads/` | Vercel Blob |
+| Server SMTP | Kode verifikasi berbatas waktu 15 menit dan pemberitahuan tindakan moderasi | Mailpit | Gmail SMTP |
+| Google OAuth 2.0 | Masuk dengan akun Google ITB (tambahan pada M9 B.1 No. 41) | Kredensial uji bila diisi | Belum aktif (M9 B.3 No. 15) |
+| Push service peramban | Notifikasi pesan baru saat aplikasi tidak dibuka (KF34) | Chrome pada `localhost` | Chrome pada domain Vercel |
+
+## Use Case Diagram
+
+<p align="center">
+<img alt="Use Case Diagram ITBELI" src="./assets/use-case-itbeli.jpg" width="90%">
 </p>
 <p align="center">
-<i>Gambar 2.1. Use Case Diagram [Nama P/L]</i>
+<i>Gambar 2.2. Use Case Diagram ITBELI</i>
 </p>
+
+Gambar 2.2 adalah *use case diagram* dari SKPL Subbab 4.3. Seluruh use case kecuali Mendaftar Akun mensyaratkan pengguna sudah masuk (UC03), sebagaimana dinyatakan pada catatan di diagram. Pembeli dan Penjual berbagi use case akun, katalog, percakapan, dan pelaporan, sedangkan pengelolaan listing hanya dilakukan Penjual dan seluruh use case moderasi hanya dilakukan Admin. Use case dikelompokkan ke dalam lima modul yang menjadi dasar pembagian pengujian pada BAB 4:
+
+| Modul | Use Case |
+| :--- | :--- |
+| A. Akun dan Otentikasi | UC01 Mendaftar Akun, UC02 Memverifikasi Surel, UC03 Masuk ke Sistem, UC04 Keluar dari Sistem, UC05 Melihat Profil Akun, UC06 Melihat Kebijakan Privasi dan Ketentuan Penggunaan |
+| B. Listing Penjual | UC07 Membuat Listing, UC08 Melihat Daftar Listing Milik Sendiri, UC09 Mengubah Listing, UC10 Menghapus Listing, UC11 Menandai Listing Terjual, UC12 Membatalkan Penandaan Terjual |
+| C. Katalog dan Pencarian | UC13 Melihat Katalog Listing, UC14 Mencari dan Menyaring Listing, UC15 Melihat Detail Listing |
+| D. Percakapan dan Notifikasi | UC16 Menghubungi Penjual, UC17 Mengirim Pesan dalam Percakapan, UC18 Melihat Daftar Percakapan |
+| E. Laporan dan Moderasi | UC19 Mengirimkan Laporan, UC20 Melihat dan Menyaring Daftar Laporan, UC21 Mengubah Status Penanganan Laporan, UC22 Menghapus Listing yang Dilaporkan, UC23 Memblokir Akun Pengguna, UC24 Membuka Blokir Akun Pengguna |
 
 <br>
 
@@ -236,7 +293,7 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | SSO (tanpa ID DPPL) | SsoController | Mendalam | Kelas tambahan B.1 No. 41. Keamanan dan integrasi eksternal: OAuth 2.0 dengan PKCE, pemeriksaan *state*, klaim `id_token`, domain surel, dan *cookie* bertanda tangan HMAC | SSO-UT01 s.d. SSO-UT30, INT-TC11 |
 | C03 | HalamanListingPenjual | Sedang | Mengoordinasikan pemuatan daftar, pengelompokan tab, dialog konfirmasi, dan penerusan aksi hapus/status | C03-UT01 s.d. C03-UT03; UC08-TC01; UC10-TC01 s.d. UC12-TC03 |
 | C04 | FormulirBarang | Mendalam | Validasi isian/foto sisi klien, batas 1–5 foto dan 5 MB, pengurutan foto, serta pengiriman formulir | C04-UT01 s.d. C04-UT06; UC07-TC01 s.d. UC07-TC03; UC09-TC01 s.d. UC09-TC04 |
-| C06 | KartuProduk | Tidak perlu | Rendering foto utama, harga, judul, dan label status melalui `ListingUI.kartu`; aturan bisnis tetap di layanan | UC08-TC01, UC11-TC01, UC12-TC01 |
+| C06 | KartuProduk | Tidak perlu | Objek View dengan satu fungsi `KartuProduk.buat(barang)` yang hanya merakit kartu katalog (foto utama, harga, judul, lokasi COD, kategori, nama penjual) dan tautan ke detail, tanpa aturan bisnis (M9 B.5). Kartu pada Listing Saya dibuat `ListingUI.kartu`, bukan C06 (M9 B.1 No. 10) | UC13-TC01, UC14-TC01 |
 | C14 | BarangController | Mendalam | Validasi server, kepemilikan, penyimpanan/pengubahan/penghapusan, serta aturan transisi status | C14-UT01 s.d. C14-UT18; INT-TC13 s.d. INT-TC23 |
 | C29 | Barang | Mendalam | Query listing pemilik, transaksi, penguncian baris, dan pembaruan status atomik. Operasi katalog umum dan moderasi tetap menjadi bagian modul terkait | C29-UT01 s.d. C29-UT04; INT-TC13 s.d. INT-TC23 |
 | C30 | FotoBarang | Mendalam | Batas ukuran/format, metadata foto, urutan galeri, dan penghapusan metadata | C30-UT01 s.d. C30-UT03; INT-TC13, INT-TC15, INT-TC21, INT-TC23 |
@@ -1287,6 +1344,7 @@ Tabel 4.5. Hasil Pengujian KNF
 | KNF03-TC02 | KNF03 | Security | 100% nilai `kata_sandi_hash` berupa hash bcrypt (60 karakter, cost ≥ 10) dan 0 nilai sama dengan kata sandi teks asli | Inspeksi tabel `akun` dengan `psql`: pola `^\$2[aby]\$\d{2}\$.{53}$` dan perbandingan dengan kata sandi uji "ujicoba123" dan "Rahasia2026" | 23 dari 23 hash bcrypt `$2b$10$` sepanjang 60 karakter; 0 nilai sama dengan teks asli | Pass |
 | KNF03-TC03 | KNF03 | Security | Isi pesan di tabel `pesan` tidak memuat teks asli, termasuk setelah *base64* didekode; peserta dapat membaca pesannya, akun admin yang bukan peserta ditolak | Pembeli Uji mengirim pesan lewat `POST /api/percakapan/:id/pesan`, penjual dan admin membacanya lewat `GET /api/percakapan/:id`, lalu tabel `pesan` diinspeksi dengan `psql` (berkoordinasi dengan Modul D) | Kolom `isi_pesan_terenkripsi` berisi teks *base64* 140 karakter yang tidak memuat teks asli, baik sebelum maupun setelah didekode. Penjual menerima teks asli (200), sedangkan admin ditolak (403 "Anda bukan peserta percakapan ini.") | Pass |
 | KNF01-TC01 | KNF01 | Usability/Ergonomy | Pengguna pertama kali memahami pengelolaan listing dalam waktu <600 detik | Observasi pengguna pertama kali dan stopwatch | Belum diuji karena belum tersedia partisipan dan data observasi. Rencana: lakukan observasi dan catat waktu pemahaman aktual | - (belum diuji) |
+| KNF04-TC01 | KNF04 | Scalability | Basis data menampung 40.000 akun (pembulatan ke atas dari 28.650 mahasiswa ITB menurut THE World University Rankings 2025 ditambah ±1.760 dosen dari rasio 16,3 mahasiswa per staf, tenaga kependidikan, dan pertumbuhan) serta 120.000 listing (rata-rata 3 per akun) dengan 360.000 foto. Pada data tersebut, `Barang.getKatalog` untuk enam skenario katalog dan pencarian memiliki median ≤ 200 ms dan maksimum ≤ 500 ms, serta pencarian akun berdasarkan surel median ≤ 50 ms. Angka target diusulkan Modul C (keputusan K6) | Skrip `docs/M10/assets/bukti/knf04.cjs` membuat basis data terpisah `itbeli_knf04` pada PostgreSQL 16.15 (Docker), mengisinya dengan data sintetis (2% akun diblokir; listing 80% Tersedia, 15% Terjual, 5% Dinonaktifkan), lalu memanggil `Barang.getKatalog` dari kode `v9.0` sebanyak 30 kali per skenario setelah 3 kali pemanasan, dan mengukur waktunya dengan `process.hrtime`. Mesin: Intel Core i5-13420H, 12 thread, RAM 14,8 GB, Node.js 22.22.1 | Data terisi dalam 22,7 detik: 40.000 akun (800 diblokir), 120.000 listing (96.000 Tersedia), 360.000 foto, ukuran basis data 208 MB. Median/maksimum (ms): A katalog beranda 28,6/32,1; B cari "jas praktikum" 36,7/49,2; C kategori Kalkulator + harga + termurah 40,8/48,3; D halaman 500 (offset 9.980) 115,9/129,6; E kata yang tidak ada 1,6/2,6; F cari "kalkulator" + Labtek V + termahal 66,4/90,3; G cari akun berdasarkan surel 0,4/1,1 (memakai *index scan* `akun_email_unik`). Seluruh skenario memenuhi target. Skenario F menghasilkan 0 listing karena pola data sintetis tidak pernah memasangkan kategori Kalkulator dengan Labtek V, sehingga skenario itu mengukur kueri pencarian yang harus memeriksa seluruh kandidat. Pengujian ini mengukur waktu kueri basis data, belum beban banyak pengguna bersamaan melalui HTTP | Pass |
 | *[KNFXX-TCYY]* | *[KNFXX]* | *[Parameter]* | *[Target terukur]* | *[Metode dan alat]* | *[Hasil aktual]* | *Pass/Fail* |
 
 <br>
@@ -1360,6 +1418,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC12-TC01 | <img src="assets/bukti/UC12-TC01.png" width="600"> |
 | UC12-TC02 | <img src="assets/bukti/UC12-TC02.png" width="600"> |
 | UC12-TC03 | <img src="assets/bukti/UC12-TC03.png" width="600"> |
+| KNF04-TC01 | [KNF04-TC01.txt](assets/bukti/KNF04-TC01.txt) · skrip [knf04.cjs](assets/bukti/knf04.cjs) |
 | KNF01-TC01 | Belum tersedia; pengujian belum dilakukan |
 | C15-UT01 s.d. C15-UT11 | [unit-modul-c.txt](assets/bukti/unit-modul-c.txt) |
 | C16-UT01 s.d. C16-UT11 | [unit-modul-c.txt](assets/bukti/unit-modul-c.txt) |
@@ -1436,4 +1495,5 @@ Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 | :--- | :--- | :--- | :--- |
 | KNF03 | Security | KF01 s.d. KF14, KF36, KF38, KF39 / UC01 s.d. UC06, UC16, UC17 | KNF03-TC01, KNF03-TC02, KNF03-TC03 |
 | KNF01 | Usability/Ergonomy | KF15, KF16, KF40, KF41 / UC07, UC11, UC12 | KNF01-TC01 |
+| KNF04 | Scalability | KF01 s.d. KF05, KF25 s.d. KF28 / UC01, UC03, UC13, UC14 | KNF04-TC01 |
 | *[KNFXX]* | *[Parameter]* | *[KFXX / UCXX atau -]* | *[KNFXX-TCYY]* |
