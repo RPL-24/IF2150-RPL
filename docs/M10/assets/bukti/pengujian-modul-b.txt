@@ -1,0 +1,24 @@
+PASS tests/unit/ListingService.test.js
+PASS tests/integration/ListingAPI.test.js
+-----------------------|---------|----------|---------|---------|-------------------
+File                   | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-----------------------|---------|----------|---------|---------|-------------------
+All files              |   35.78 |    34.65 |   32.43 |   35.11 |                   
+ controllers           |   66.66 |      100 |    62.5 |      75 |                   
+  BarangController.js  |   66.66 |      100 |    62.5 |      75 | 6,8,10            
+ models                |   14.17 |     4.22 |    3.44 |   15.25 |                   
+  Barang.js            |     8.1 |        0 |       0 |    8.82 | 21,28-231         
+  FotoBarang.js        |   18.51 |    16.66 |    12.5 |   20.83 | 7-33,44-70        
+  ListingPenjual.js    |   17.39 |        0 |       0 |   17.39 | 7-39              
+  ReferensiListing.js  |     100 |      100 |     100 |     100 |                   
+ penyimpanan           |   14.08 |    13.33 |   14.28 |   14.92 |                   
+  PenyimpananBerkas.js |   14.08 |    13.33 |   14.28 |   14.92 | 22-96,106-136     
+ services              |      74 |    70.58 |   69.56 |   84.61 |                   
+  ListingService.js    |      74 |    70.58 |   69.56 |   84.61 | 37,64,67-78       
+-----------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 2 passed, 2 total
+Tests:       26 passed, 26 total
+Snapshots:   0 total
+Time:        2.695 s
+Ran all test suites within paths "tests/unit/ListingService.test.js", "tests/integration/ListingAPI.test.js".

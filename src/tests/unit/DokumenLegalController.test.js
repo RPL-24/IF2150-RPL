@@ -8,7 +8,7 @@ describe('DokumenLegalController Unit Test (UC06)', () => {
   });
 
   describe('getDokumen (KF13, KF38)', () => {
-    test.each(['kebijakan-privasi', 'ketentuan-penggunaan'])('jenis %p diteruskan ke getVersiTerbaru', async (jenis) => {
+    test.each(['kebijakan-privasi', 'ketentuan-penggunaan'])('C22-UT01 jenis %p diteruskan ke getVersiTerbaru', async (jenis) => {
       const dokumen = new DokumenLegal({ jenisDokumen: jenis, versi: '1.0' });
       const ambil = jest.spyOn(DokumenLegal, 'getVersiTerbaru').mockResolvedValue(dokumen);
       expect(await DokumenLegalController.getDokumen(jenis)).toBe(dokumen);
@@ -16,7 +16,7 @@ describe('DokumenLegalController Unit Test (UC06)', () => {
     });
 
     test.each(['kebijakan-rahasia', '../../etc', '', undefined, "kebijakan-privasi' OR '1'='1"])(
-      'jenis tidak dikenal %p ditolak tanpa query ke basis data',
+      'C22-UT02 jenis tidak dikenal %p ditolak tanpa query ke basis data',
       async (jenis) => {
         const ambil = jest.spyOn(DokumenLegal, 'getVersiTerbaru');
         expect(await DokumenLegalController.getDokumen(jenis)).toBeNull();
@@ -24,14 +24,14 @@ describe('DokumenLegalController Unit Test (UC06)', () => {
       },
     );
 
-    test('null bila belum ada versi yang berlaku', async () => {
+    test('C22-UT03 null bila belum ada versi yang berlaku', async () => {
       jest.spyOn(DokumenLegal, 'getVersiTerbaru').mockResolvedValue(null);
       expect(await DokumenLegalController.getDokumen('kebijakan-privasi')).toBeNull();
     });
   });
 
   describe('getKlausaPrivasi (KF38)', () => {
-    test('mengambil klausul dari Kebijakan Privasi yang berlaku', async () => {
+    test('C22-UT04 mengambil klausul dari Kebijakan Privasi yang berlaku', async () => {
       const ambil = jest.spyOn(DokumenLegal, 'getVersiTerbaru').mockResolvedValue(
         new DokumenLegal({ klausaPrivasiPesan: 'Isi percakapan tidak dapat diakses admin maupun pengembang.' }),
       );
@@ -39,7 +39,7 @@ describe('DokumenLegalController Unit Test (UC06)', () => {
       expect(ambil).toHaveBeenCalledWith('kebijakan-privasi');
     });
 
-    test('null bila Kebijakan Privasi belum tersedia', async () => {
+    test('C22-UT05 null bila Kebijakan Privasi belum tersedia', async () => {
       jest.spyOn(DokumenLegal, 'getVersiTerbaru').mockResolvedValue(null);
       expect(await DokumenLegalController.getKlausaPrivasi()).toBeNull();
     });

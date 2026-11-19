@@ -72,7 +72,7 @@ describe('SSO Google (/api/akun/sso)', () => {
   });
 
   describe('GET /sso/penyedia', () => {
-    test('google true hanya bila kredensialnya terisi', async () => {
+    test('SSO-UT01 google true hanya bila kredensialnya terisi', async () => {
       config.sso.google = { ...KOSONG.google };
       let res = await request(app).get('/api/akun/sso/penyedia');
       expect(res.body).toEqual({ sukses: true, data: { google: false } });
@@ -84,20 +84,20 @@ describe('SSO Google (/api/akun/sso)', () => {
   });
 
   describe('GET /sso/:penyedia/mulai', () => {
-    test.each(['facebook', 'microsoft', '__proto__', 'constructor'])('penyedia tak dikenal (%s) → 404 JSON', async (nama) => {
+    test.each(['facebook', 'microsoft', '__proto__', 'constructor'])('SSO-UT04 penyedia tak dikenal (%s) → 404 JSON', async (nama) => {
       const res = await request(app).get(`/api/akun/sso/${nama}/mulai`);
       expect(res.status).toBe(404);
       expect(res.body.sukses).toBe(false);
     });
 
-    test('penyedia belum dikonfigurasi → 404 JSON', async () => {
+    test('SSO-UT05 penyedia belum dikonfigurasi → 404 JSON', async () => {
       config.sso.google = { ...KOSONG.google };
       const res = await request(app).get('/api/akun/sso/google/mulai');
       expect(res.status).toBe(404);
       expect(res.body.sukses).toBe(false);
     });
 
-    test('Google → redirect dengan state, PKCE S256, hd, dan cookie state httpOnly SameSite=Lax', async () => {
+    test('SSO-UT02 Google → redirect dengan state, PKCE S256, hd, dan cookie state httpOnly SameSite=Lax', async () => {
       const res = await request(app).get('/api/akun/sso/google/mulai');
       expect(res.status).toBe(302);
       const url = new URL(res.headers.location);
@@ -117,7 +117,7 @@ describe('SSO Google (/api/akun/sso)', () => {
       expect(cookie).toMatch(/Max-Age=600/i);
     });
 
-    test('state berbeda tiap permintaan', async () => {
+    test('SSO-UT03 state berbeda tiap permintaan', async () => {
       const a = await request(app).get('/api/akun/sso/google/mulai');
       const b = await request(app).get('/api/akun/sso/google/mulai');
       expect(new URL(a.headers.location).searchParams.get('state'))
@@ -128,32 +128,32 @@ describe('SSO Google (/api/akun/sso)', () => {
   describe('GET /sso/:penyedia/kembali — validasi', () => {
     const galat = (res) => new URL(res.headers.location, 'http://x').searchParams.get('sso_galat');
 
-    test('penyedia belum dikonfigurasi → 404 JSON', async () => {
+    test('SSO-UT30 callback penyedia belum dikonfigurasi → 404 JSON', async () => {
       config.sso.google = { ...KOSONG.google };
       const res = await request(app).get('/api/akun/sso/google/kembali').query({ code: 'c', state: 's' });
       expect(res.status).toBe(404);
     });
 
-    test('state berbeda dengan cookie → ditolak, tanpa menghubungi penyedia', async () => {
+    test('SSO-UT08 state berbeda dengan cookie → ditolak, tanpa menghubungi penyedia', async () => {
       const { res } = await alurKembali('google', klaimGoogle(), { state: 'state-palsu' });
       expect(res.status).toBe(302);
       expect(res.headers.location).toBe('/masuk?sso_galat=STATE_TIDAK_VALID');
       expect(global.fetch).not.toHaveBeenCalled();
     });
 
-    test('state kosong pada query → ditolak', async () => {
+    test('SSO-UT09 state kosong pada query → ditolak', async () => {
       const { res } = await alurKembali('google', klaimGoogle(), { state: '' });
       expect(galat(res)).toBe('STATE_TIDAK_VALID');
       expect(global.fetch).not.toHaveBeenCalled();
     });
 
-    test('cookie state tidak ada → ditolak', async () => {
+    test('SSO-UT10 cookie state tidak ada → ditolak', async () => {
       const { res } = await alurKembali('google', klaimGoogle(), { tanpaCookie: true });
       expect(galat(res)).toBe('STATE_TIDAK_VALID');
       expect(global.fetch).not.toHaveBeenCalled();
     });
 
-    test('cookie state milik penyedia lain → ditolak', async () => {
+    test('SSO-UT11 cookie state milik penyedia lain → ditolak', async () => {
       const mulai = await request(app).get('/api/akun/sso/google/mulai');
       const state = new URL(mulai.headers.location).searchParams.get('state');
       const cookieLain = nilaiCookie(mulai, 'itbeli_sso_state').replace(/^google\./, 'facebook.');
@@ -162,7 +162,7 @@ describe('SSO Google (/api/akun/sso)', () => {
       expect(galat(res)).toBe('STATE_TIDAK_VALID');
     });
 
-    test('penyedia menolak (error=access_denied) → galat ramah', async () => {
+    test('SSO-UT12 penyedia menolak (error=access_denied) → galat ramah', async () => {
       const mulai = await request(app).get('/api/akun/sso/google/mulai');
       const state = new URL(mulai.headers.location).searchParams.get('state');
       const res = await request(app).get('/api/akun/sso/google/kembali').query({ error: 'access_denied', state })
@@ -170,7 +170,7 @@ describe('SSO Google (/api/akun/sso)', () => {
       expect(galat(res)).toBe('DITOLAK_PENYEDIA');
     });
 
-    test('kode ditukar dari server dengan client_secret dan code_verifier yang cocok dengan code_challenge', async () => {
+    test('SSO-UT06 kode ditukar dari server dengan client_secret dan code_verifier yang cocok dengan code_challenge', async () => {
       const { url } = await alurKembali('google', klaimGoogle());
       const [alamat, opsi] = global.fetch.mock.calls[0];
       expect(alamat).toBe('https://oauth2.googleapis.com/token');
@@ -192,23 +192,23 @@ describe('SSO Google (/api/akun/sso)', () => {
       ['aud bukan client id', { aud: 'aplikasi-lain' }, 'TOKEN_TIDAK_VALID'],
       ['iss bukan Google', { iss: 'https://penyerang.example' }, 'TOKEN_TIDAK_VALID'],
       ['token kedaluwarsa', { exp: detik(-10) }, 'TOKEN_TIDAK_VALID'],
-    ])('Google: %s → ditolak', async (_, ubah, kode) => {
+    ])('SSO-UT13 Google: %s → ditolak', async (_, ubah, kode) => {
       const { res } = await alurKembali('google', klaimGoogle(ubah));
       expect(galat(res)).toBe(kode);
       expect(simpanSesi).not.toHaveBeenCalled();
     });
 
-    test('Google: subdomain ITB (std.stei.itb.ac.id) diterima, huruf besar/kecil diabaikan', async () => {
+    test('SSO-UT07 Google: subdomain ITB (std.stei.itb.ac.id) diterima, huruf besar/kecil diabaikan', async () => {
       const { res } = await alurKembali('google', klaimGoogle({ email: 'Ani@STD.STEI.ITB.AC.ID' }));
       expect(res.headers.location).toBe('/lengkapi-sso');
     });
 
-    test('token endpoint gagal (HTTP 400) → PERTUKARAN_GAGAL', async () => {
+    test('SSO-UT14 token endpoint gagal (HTTP 400) → PERTUKARAN_GAGAL', async () => {
       const { res } = await alurKembali('google', klaimGoogle(), { balasan: { ok: false, status: 400, json: async () => ({}) } });
       expect(galat(res)).toBe('PERTUKARAN_GAGAL');
     });
 
-    test('jaringan putus → PERTUKARAN_GAGAL', async () => {
+    test('SSO-UT15 jaringan putus → PERTUKARAN_GAGAL', async () => {
       const mulai = await request(app).get('/api/akun/sso/google/mulai');
       const state = new URL(mulai.headers.location).searchParams.get('state');
       global.fetch.mockRejectedValue(new Error('jaringan putus'));
@@ -219,21 +219,21 @@ describe('SSO Google (/api/akun/sso)', () => {
   });
 
   describe('GET /sso/:penyedia/kembali — pemetaan akun', () => {
-    test('akun diblokir → ditolak', async () => {
+    test('SSO-UT19 akun diblokir → ditolak', async () => {
       Akun.cariByEmail.mockResolvedValue(akunUji({ statusBlokir: true }));
       const { res } = await alurKembali('google', klaimGoogle());
       expect(res.headers.location).toBe('/masuk?sso_galat=AKUN_DIBLOKIR');
       expect(simpanSesi).not.toHaveBeenCalled();
     });
 
-    test('akun Admin → ditolak (SSO tidak memberi akses Admin)', async () => {
+    test('SSO-UT20 akun Admin → ditolak (SSO tidak memberi akses Admin)', async () => {
       Akun.cariByEmail.mockResolvedValue(akunUji({ peran: Akun.PERAN.ADMIN }));
       const { res } = await alurKembali('google', klaimGoogle());
       expect(res.headers.location).toBe('/masuk?sso_galat=SSO_ADMIN_DILARANG');
       expect(simpanSesi).not.toHaveBeenCalled();
     });
 
-    test('akun lama terverifikasi → sesi dibuat, redirect /katalog, token dititipkan di cookie singkat', async () => {
+    test('SSO-UT16 akun lama terverifikasi → sesi dibuat, redirect /katalog, token dititipkan di cookie singkat', async () => {
       Akun.cariByEmail.mockResolvedValue(akunUji());
       const { res } = await alurKembali('google', klaimGoogle());
       expect(res.status).toBe(302);
@@ -247,7 +247,7 @@ describe('SSO Google (/api/akun/sso)', () => {
       expect(Akun.prototype.perbaruiStatusAkun).not.toHaveBeenCalled();
     });
 
-    test('akun "Belum Terverifikasi" → menjadi Terverifikasi dan kata sandi lama dibuang', async () => {
+    test('SSO-UT17 akun "Belum Terverifikasi" → menjadi Terverifikasi dan kata sandi lama dibuang', async () => {
       Akun.cariByEmail.mockResolvedValue(akunUji({ statusAkun: Akun.STATUS.BELUM_TERVERIFIKASI }));
       const { res } = await alurKembali('google', klaimGoogle());
       expect(res.headers.location).toBe('/katalog');
@@ -255,7 +255,7 @@ describe('SSO Google (/api/akun/sso)', () => {
       expect(Akun.prototype.perbaruiKataSandiHash).toHaveBeenCalledWith('$2b$10$hashacak');
     });
 
-    test('akun baru → cookie profil httpOnly bertanda tangan, redirect /lengkapi-sso, belum ada sesi/akun', async () => {
+    test('SSO-UT18 akun baru → cookie profil httpOnly bertanda tangan, redirect /lengkapi-sso, belum ada sesi/akun', async () => {
       const { res } = await alurKembali('google', klaimGoogle());
       expect(res.headers.location).toBe('/lengkapi-sso');
       const cookie = cookieDari(res, 'itbeli_sso_profil');
@@ -282,7 +282,7 @@ describe('SSO Google (/api/akun/sso)', () => {
       return req.send(body);
     };
 
-    test('NIM + persetujuan → akun Terverifikasi dengan kata sandi acak, sesi dibuat', async () => {
+    test('SSO-UT21 NIM + persetujuan → akun Terverifikasi dengan kata sandi acak, sesi dibuat', async () => {
       const cookie = await ambilCookieProfil();
       const res = await kirim(cookie, { nim: '13599999', setujuKebijakan: true });
       expect(res.status).toBe(201);
@@ -297,7 +297,7 @@ describe('SSO Google (/api/akun/sso)', () => {
       ['NIM bukan angka', { nim: 'abc', setujuKebijakan: true }, 400, 'NIM_TIDAK_VALID'],
       ['NIM kosong', { nim: '', setujuKebijakan: true }, 400, 'FORMULIR_TIDAK_LENGKAP'],
       ['kebijakan belum disetujui', { nim: '13599999', setujuKebijakan: false }, 400, 'KEBIJAKAN_BELUM_DISETUJUI'],
-    ])('%s → %i', async (_, body, status, kode) => {
+    ])('SSO-UT22 %s → %i', async (_, body, status, kode) => {
       const cookie = await ambilCookieProfil();
       const res = await kirim(cookie, body);
       expect(res.status).toBe(status);
@@ -305,14 +305,14 @@ describe('SSO Google (/api/akun/sso)', () => {
       expect(simpanAkun).not.toHaveBeenCalled();
     });
 
-    test('tanpa cookie profil → 401', async () => {
+    test('SSO-UT23 tanpa cookie profil → 401', async () => {
       const res = await kirim(null, { nim: '13599999', setujuKebijakan: true });
       expect(res.status).toBe(401);
       expect(res.body.kode).toBe('PROFIL_SSO_TIDAK_VALID');
       expect(simpanAkun).not.toHaveBeenCalled();
     });
 
-    test('isi cookie profil dimanipulasi (surel diganti) → ditolak', async () => {
+    test('SSO-UT24 isi cookie profil dimanipulasi (surel diganti) → ditolak', async () => {
       const [isi, tanda] = (await ambilCookieProfil()).split('.');
       const profil = JSON.parse(Buffer.from(isi, 'base64url').toString());
       const palsu = Buffer.from(JSON.stringify({ ...profil, email: 'korban@itb.ac.id' })).toString('base64url');
@@ -321,26 +321,26 @@ describe('SSO Google (/api/akun/sso)', () => {
       expect(simpanAkun).not.toHaveBeenCalled();
     });
 
-    test('cookie profil ditandatangani dengan kunci lain → ditolak', async () => {
+    test('SSO-UT25 cookie profil ditandatangani dengan kunci lain → ditolak', async () => {
       const isi = Buffer.from(JSON.stringify({ email: 'korban@itb.ac.id', nama: 'X', penyedia: 'google', exp: Date.now() + 60_000 })).toString('base64url');
       const tanda = crypto.createHmac('sha256', Buffer.from('cd'.repeat(32), 'hex')).update(isi).digest('base64url');
       const res = await kirim(`${isi}.${tanda}`, { nim: '13599999', setujuKebijakan: true });
       expect(res.status).toBe(401);
     });
 
-    test('tanda tangan benar tetapi sudah lewat 15 menit → ditolak', async () => {
+    test('SSO-UT26 tanda tangan benar tetapi sudah lewat 15 menit → ditolak', async () => {
       const isi = Buffer.from(JSON.stringify({ email: 'a@itb.ac.id', nama: 'A', penyedia: 'google', exp: Date.now() - 1 })).toString('base64url');
       const tanda = crypto.createHmac('sha256', Buffer.from(KUNCI, 'hex')).update(isi).digest('base64url');
       const res = await kirim(`${isi}.${tanda}`, { nim: '13599999', setujuKebijakan: true });
       expect(res.status).toBe(401);
     });
 
-    test('cookie berformat sampah → ditolak tanpa galat server', async () => {
+    test('SSO-UT27 cookie berformat sampah → ditolak tanpa galat server', async () => {
       const res = await kirim('bukan-cookie-sah', { nim: '13599999', setujuKebijakan: true });
       expect(res.status).toBe(401);
     });
 
-    test('surel sudah terdaftar saat melengkapi → 409', async () => {
+    test('SSO-UT28 surel sudah terdaftar saat melengkapi → 409', async () => {
       const cookie = await ambilCookieProfil();
       Akun.cariByEmail.mockResolvedValue(akunUji({ email: 'baru@itb.ac.id' }));
       const res = await kirim(cookie, { nim: '13599999', setujuKebijakan: true });
@@ -349,7 +349,7 @@ describe('SSO Google (/api/akun/sso)', () => {
     });
   });
 
-  test('KUNCI_SSO tidak diatur → akun baru mendapat galat KONFIGURASI_SALAH, bukan 500', async () => {
+  test('SSO-UT29 KUNCI_SSO tidak diatur → akun baru mendapat galat KONFIGURASI_SALAH, bukan 500', async () => {
     config.sso.kunci = undefined;
     const { res } = await alurKembali('google', klaimGoogle());
     expect(res.headers.location).toBe('/masuk?sso_galat=KONFIGURASI_SALAH');

@@ -1,0 +1,26 @@
+Bukti KNF03-TC03: isi pesan percakapan tersimpan terenkripsi (AES-256-GCM) dan tidak dapat dibaca admin
+Lingkungan: ITBELI lokal (kode v9.0), Waktu: 15/11/2026 18.27 WIB
+
+1) Pembeli Uji mengirim pesan ke Penjual Uji lewat POST /api/percakapan/:id/pesan, lalu dibaca lewat GET /api/percakapan/:id
+
+{
+  "isi": "Halo kak, jas lab ukuran M masih ada? Bisa COD di Labtek V besok jam 10.00?",
+  "idPercakapan": "042e3f42-7ab0-41ff-8a4e-3c96b71b95cf",
+  "statusKirim": 201,
+  "statusPenjual": 200,
+  "penjualMelihatTeksAsli": true,
+  "statusAdmin": 403,
+  "pesanAdmin": "Anda bukan peserta percakapan ini.",
+  "adminMelihatTeks": false
+}
+2) Inspeksi tabel pesan: docker exec -i itbeli-db-1 psql -U itbeli -d itbeli -e < tc03.sql
+
+SELECT id_pesan, LEFT(isi_pesan_terenkripsi, 48) || '...' AS isi_tersimpan, LENGTH(isi_pesan_terenkripsi) AS panjang,
+       isi_pesan_terenkripsi LIKE '%Halo kak%' AS memuat_teks_asli,
+       encode(decode(isi_pesan_terenkripsi, 'base64'), 'escape') LIKE '%Halo kak%' AS teks_asli_setelah_base64_didekode
+FROM pesan WHERE id_percakapan = '042e3f42-7ab0-41ff-8a4e-3c96b71b95cf';
+               id_pesan               |                    isi_tersimpan                    | panjang | memuat_teks_asli | teks_asli_setelah_base64_didekode 
+--------------------------------------+-----------------------------------------------------+---------+------------------+-----------------------------------
+ 09ed4700-8101-43e9-b20f-308ea9cce4ea | mtTupAZ2wfwt9kXkKzULjwITjU74FCbnfu7pxg+N/LiGB0XF... |     140 | f                | f
+(1 row)
+

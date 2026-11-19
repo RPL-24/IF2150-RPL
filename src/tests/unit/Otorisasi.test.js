@@ -29,25 +29,25 @@ describe('Otorisasi Unit Test (C41)', () => {
       ['Bearer', null],
       ['', null],
       [undefined, null],
-    ])('header %p → %p', (header, hasil) => {
+    ])('C41-UT01 header %p → %p', (header, hasil) => {
       expect(Otorisasi.ambilToken(reqDenganHeader(header))).toBe(hasil);
     });
   });
 
   describe('verifikasiToken (Algo-064)', () => {
-    test.each([null, undefined, '', '   '])('token %p ditolak tanpa query ke basis data', async (token) => {
+    test.each([null, undefined, '', '   '])('C41-UT03 token %p ditolak tanpa query ke basis data', async (token) => {
       const cari = jest.spyOn(SesiLogin, 'cariSesiAktif');
       expect(await Otorisasi.verifikasiToken(token)).toBeNull();
       expect(cari).not.toHaveBeenCalled();
     });
 
-    test('token tidak dikenal, nonaktif, atau kedaluwarsa → null (KF11)', async () => {
+    test('C41-UT04 token tidak dikenal, nonaktif, atau kedaluwarsa → null (KF11)', async () => {
       // cariSesiAktif hanya mengembalikan sesi aktif yang belum kedaluwarsa (Algo-030)
       jest.spyOn(SesiLogin, 'cariSesiAktif').mockResolvedValue(null);
       expect(await Otorisasi.verifikasiToken('token-basi')).toBeNull();
     });
 
-    test('token valid → objek SesiLogin', async () => {
+    test('C41-UT02 token valid → objek SesiLogin', async () => {
       const sesi = sesiAktif();
       const cari = jest.spyOn(SesiLogin, 'cariSesiAktif').mockResolvedValue(sesi);
       expect(await Otorisasi.verifikasiToken('tkn')).toBe(sesi);
@@ -56,21 +56,21 @@ describe('Otorisasi Unit Test (C41)', () => {
   });
 
   describe('verifikasiAdmin (Algo-065, KF56)', () => {
-    test('sesi tidak valid → null tanpa memeriksa peran', async () => {
+    test('C41-UT06 sesi tidak valid → null tanpa memeriksa peran', async () => {
       jest.spyOn(SesiLogin, 'cariSesiAktif').mockResolvedValue(null);
       const peran = jest.spyOn(Admin, 'verifikasiPeran');
       expect(await Otorisasi.verifikasiAdmin('tkn')).toBeNull();
       expect(peran).not.toHaveBeenCalled();
     });
 
-    test('akun bukan admin → null', async () => {
+    test('C41-UT07 akun bukan admin → null', async () => {
       jest.spyOn(SesiLogin, 'cariSesiAktif').mockResolvedValue(sesiAktif('akun-pengguna'));
       const peran = jest.spyOn(Admin, 'verifikasiPeran').mockResolvedValue(false);
       expect(await Otorisasi.verifikasiAdmin('tkn')).toBeNull();
       expect(peran).toHaveBeenCalledWith('akun-pengguna');
     });
 
-    test('akun admin → sesi', async () => {
+    test('C41-UT05 akun admin → sesi', async () => {
       const sesi = sesiAktif('akun-admin');
       jest.spyOn(SesiLogin, 'cariSesiAktif').mockResolvedValue(sesi);
       jest.spyOn(Admin, 'verifikasiPeran').mockResolvedValue(true);
@@ -79,7 +79,7 @@ describe('Otorisasi Unit Test (C41)', () => {
   });
 
   describe('middleware wajibLogin', () => {
-    test('tanpa token → 401 dan handler tidak dijalankan', async () => {
+    test('C41-UT09 tanpa token → 401 dan handler tidak dijalankan', async () => {
       const res = resPalsu();
       const next = jest.fn();
       await Otorisasi.wajibLogin(reqDenganHeader(undefined), res, next);
@@ -88,7 +88,7 @@ describe('Otorisasi Unit Test (C41)', () => {
       expect(next).not.toHaveBeenCalled();
     });
 
-    test('token valid → req.akun dan req.token terisi, lalu next()', async () => {
+    test('C41-UT08 token valid → req.akun dan req.token terisi, lalu next()', async () => {
       jest.spyOn(SesiLogin, 'cariSesiAktif').mockResolvedValue(sesiAktif('akun-7'));
       const req = reqDenganHeader('Bearer tkn');
       const res = resPalsu();
@@ -102,7 +102,7 @@ describe('Otorisasi Unit Test (C41)', () => {
   });
 
   describe('middleware wajibAdmin', () => {
-    test('belum masuk → 401', async () => {
+    test('C41-UT11 belum masuk → 401', async () => {
       jest.spyOn(SesiLogin, 'cariSesiAktif').mockResolvedValue(null);
       const res = resPalsu();
       const next = jest.fn();
@@ -111,7 +111,7 @@ describe('Otorisasi Unit Test (C41)', () => {
       expect(next).not.toHaveBeenCalled();
     });
 
-    test('masuk tetapi bukan admin → 403', async () => {
+    test('C41-UT12 masuk tetapi bukan admin → 403', async () => {
       jest.spyOn(SesiLogin, 'cariSesiAktif').mockResolvedValue(sesiAktif());
       jest.spyOn(Admin, 'verifikasiPeran').mockResolvedValue(false);
       const res = resPalsu();
@@ -122,7 +122,7 @@ describe('Otorisasi Unit Test (C41)', () => {
       expect(next).not.toHaveBeenCalled();
     });
 
-    test('admin → next() dengan req.akun terisi', async () => {
+    test('C41-UT10 admin → next() dengan req.akun terisi', async () => {
       jest.spyOn(SesiLogin, 'cariSesiAktif').mockResolvedValue(sesiAktif('akun-admin'));
       jest.spyOn(Admin, 'verifikasiPeran').mockResolvedValue(true);
       const req = reqDenganHeader('Bearer tkn');
@@ -132,7 +132,7 @@ describe('Otorisasi Unit Test (C41)', () => {
       expect(req.akun).toEqual({ idAkun: 'akun-admin' });
     });
 
-    test('admin → sesi hanya dicari satu kali ke basis data', async () => {
+    test('C41-UT13 admin → sesi hanya dicari satu kali ke basis data', async () => {
       const cariSesi = jest.spyOn(SesiLogin, 'cariSesiAktif').mockResolvedValue(sesiAktif('akun-admin'));
       jest.spyOn(Admin, 'verifikasiPeran').mockResolvedValue(true);
       const next = jest.fn();
