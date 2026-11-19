@@ -24,6 +24,7 @@ import {
 } from '../controllers/TrenBahanBakuController';
 import { COLORS, RADIUS, SHADOW, SPACING } from '../constants/theme';
 import { formatRupiah } from '../utils/format';
+import SimulasiHargaBahan from './SimulasiHargaBahan';
 
 /* -------------------------------------------------------------------------- */
 /*  Hook: daftar bahan baku                                                    */
@@ -243,7 +244,6 @@ function TrenModal({ bahan, onClose }: { bahan: BahanBaku | null; onClose: () =>
   const [rentang, setRentang] = useState<RentangWaktu>(30);
   const { tren, loading, error, retry } = useTren(bahan, rentang);
 
-  // Setiap membuka bahan baru, mulai lagi dari 30 hari.
   useEffect(() => {
     if (bahan) setRentang(30);
   }, [bahan]);
@@ -384,6 +384,7 @@ function TrenModal({ bahan, onClose }: { bahan: BahanBaku | null; onClose: () =>
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.sheetBody}>
             <DropdownRentang value={rentang} onChange={setRentang} />
             {content}
+            {bahan && <SimulasiHargaBahan idBahan={bahan.id} satuan={bahan.satuan} onBerhasil={retry} />}
           </ScrollView>
         </View>
       </View>
