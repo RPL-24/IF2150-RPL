@@ -7,24 +7,27 @@ HASIL IMPLEMENTASI DAN UJI PERANGKAT LUNAK (HIUPL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
-### *[Logo Perangkat Lunak]*
+## *LaporKota*
+<p align="center">
+<img alt="Logo LaporKota" src="./assets/Logo.png" width="70%">
+</p>
 
-### Untuk: *[Nama Asisten]*
+### Untuk: *Jordhy*
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | *K - 03* |
+| Kelompok | *G07* |
 
 | NIM | Nama |
-|---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| --- | --- |
+| *13525051* | *Rafi Pradipta Andira Sulistyo* |
+| *13525105* | *Pasaribu Fritz T.A.M.* |
+| *13525075* | *Bagas Anugrah Putra* |
+| *13525099* | *Gede Pranajayanta Suputra* |
+| *13525015* | *Muhammad Atallah Ramadhan* |
+
 
 ---
 
@@ -145,19 +148,19 @@ Bagian ini diisi dengan informasi tentang elemen P/L yang dikembangkan (*executa
 
 ## 3.1 Lingkungan Implementasi
 
-Tuliskan *hardware* dan *software* yang digunakan untuk implementasi, mencakup *operating system*, bahasa pemrograman beserta versinya, *framework*/*library*, DBMS, *development tools*, dan *version control*. Lingkungan ini harus konsisten dengan **Subbab 2.1 DPPL**; jelaskan jika ada perubahan. Cantumkan juga *framework* dan alat pengujian yang dipakai.
+Lingkungan implementasi mengikuti rancangan pada Subbab 2.1 DPPL. Perubahan terhadap DPPL hanya berupa penambahan Cloudflare Turnstile sebagai layanan verifikasi anti-bot (KNF04) dan alat pengujian yang digunakan pada Tugas 10.
 
 Tabel 3.1. Lingkungan Implementasi
 
 | Aspek | Keterangan |
 | :--- | :--- |
-| *Hardware* | *[Spesifikasi perangkat keras]* |
-| *Operating System* | *[Nama dan versi OS]* |
-| *Bahasa Pemrograman* | *[Bahasa dan versi]* |
-| *Framework/Library* | *[Daftar framework/library beserta versi]* |
-| *DBMS* | *[Nama dan versi DBMS]* |
-| *Development Tools* | *[IDE, version control, tools lain]* |
-| *Testing Tools* | *[Framework unit test, alat ukur performa, alat coverage]* |
+| *Hardware* | Laptop masing-masing anggota (macOS, Linux, dan Windows) untuk pengembangan; server Vercel (*serverless*) dan Supabase (*cloud*) untuk *production* |
+| *Operating System* | Pengembangan: macOS dan Windows. Pengguna: *cross platform* melalui *browser* (Android, iOS, Windows, macOS, Linux) |
+| *Bahasa Pemrograman* | TypeScript [versi] di atas Node.js 24 (LTS); SQL (PostgreSQL) untuk *migration*, RPC, *trigger*, dan RLS |
+| *Framework/Library* | Next.js 16.3, React 19.3, @supabase/supabase-js [versi], @supabase/ssr [versi], Leaflet [versi] dengan *tile* OpenStreetMap, Tailwind CSS [versi], Cloudflare Turnstile (anti-bot) |
+| *DBMS* | PostgreSQL 17 yang dikelola Supabase, beserta Supabase Auth, Supabase Storage (bucket `media`), dan Supabase Realtime |
+| *Development Tools* | Visual Studio Code, Supabase CLI v3 (*migration* dan *generate types*), Vercel CLI (*deploy*), ESLint, Git dan GitHub (*version control*, *pull request*, GitHub Actions sebagai CI untuk lint, typecheck, dan test) |
+| *Testing Tools* | Vitest 5.1.0 (unit dan integrasi), @vitest/coverage-v8 5.1.0 (laporan *coverage*), Chrome DevTools dan Lighthouse (pengukuran KNF), pengujian manual melalui *browser* (use case) |
 
 ## 3.2 Implementasi Modul
 
@@ -185,14 +188,32 @@ Tabel 3.3. Implementasi Antarmuka
 
 ## 3.4 File Lain
 
-Daftar file lain yang dibuat selain file kelas dan antarmuka, misalnya file *utility*, *configuration*, *database schema/seed*, *file test*, atau *data*.
+## 3.4 File Lain
 
 Tabel 3.4. File Lain
 
 | No | Nama File | Keterangan |
 | :--- | :--- | :--- |
-| 1 | *[Nama file]* | *[Fungsi file]* |
-| ... | *...* | *...* |
+| 1 | `supabase/migrations/*.sql` | Skema basis data: tabel, relasi, RLS, RPC (mis. `kirim_laporan`, `cari_laporan_duplikat`), *trigger* riwayat status dan notifikasi, *sequence* ID tiket, dan *policy* Storage |
+| 2 | `scripts/seed.ts` | Skrip `npm run seed` untuk mengisi akun uji (warga, admin, eksekutor) dan data laporan contoh fiktif |
+| 3 | `src/types/database.ts` | Tipe TypeScript hasil *generate* dari skema Supabase |
+| 4 | `src/lib/supabase/client.ts`, `server.ts`, `proxy.ts` | Pembuatan client Supabase untuk *browser*, *server*, dan penyegaran sesi |
+| 5 | `src/proxy.ts` | Proteksi rute berdasarkan sesi dan peran pengguna |
+| 6 | `src/lib/auth.ts`, `src/lib/validasi-auth.ts` | Utilitas autentikasi dan validasi masukan form masuk/daftar |
+| 7 | `src/server/controllers/AuthController.ts` | Controller masuk, daftar, dan keluar (tidak tercantum sebagai kelas pada DPPL karena autentikasi ditangani Supabase Auth) |
+| 8 | `src/lib/constants.ts`, `src/lib/batas-wilayah.ts` | Konstanta aplikasi, termasuk pusat peta dan *polygon* batas wilayah kota |
+| 9 | `src/lib/media.ts` | Utilitas unggah berkas foto/video ke Supabase Storage |
+| 10 | `src/lib/format.ts`, `error-db.ts`, `action-result.ts`, `navigasi.ts`, `validasi-perbaikan.ts` | Utilitas format tampilan, penerjemahan galat basis data, bentuk hasil *server action*, navigasi per peran, dan validasi hasil perbaikan |
+| 11 | `.env.example` | Contoh variabel lingkungan (URL dan key Supabase, key Turnstile, akun uji integrasi) tanpa nilai rahasia |
+| 12 | `package.json`, `package-lock.json` | Daftar dependensi dan skrip (`dev`, `build`, `lint`, `typecheck`, `test`, `test:coverage`, `test:integration`, `seed`) |
+| 13 | `eslint.config.mjs`, `tsconfig.json`, `next.config.ts` | Konfigurasi lint, TypeScript, dan Next.js |
+| 14 | `vitest.config.mts` | Konfigurasi unit test dan *coverage*; mengecualikan uji integrasi |
+| 15 | `vitest.integration.config.mts` | Konfigurasi uji integrasi terhadap basis data Supabase |
+| 16 | `src/**/*.test.ts` | File unit test yang diletakkan di sebelah file yang diuji |
+| 17 | `tests/integration/*.int.test.ts` | File uji integrasi |
+| 18 | `tests/integration/helpers/` | Helper uji integrasi: client per peran, penanda data uji `[TEST-INT]`, koordinat uji, pelacak dan pembersih data, pengecekan sisa data |
+| 19 | `.github/workflows/[nama-file].yml` | Konfigurasi CI GitHub Actions (lint, typecheck, test) pada setiap *pull request* |
+| 20 | `src/README.md` | Dokumentasi aplikasi: instalasi, konfigurasi, cara menjalankan, akun uji, dan cara pengujian |
 
 <br>
 
@@ -210,19 +231,45 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 
 | ID Kelas | Nama Kelas | Tingkat | Alasan | Test Case Terkait |
 | :--- | :--- | :--- | :--- | :--- |
-| *C02* | *Pesanan* | *Mendalam* | *Memuat `hitungTotal()` dan transisi status pembayaran* | *C02-UT01 s.d. C02-UT08* |
-| *C03* | *Keranjang* | *Sedang* | *Delegasi sederhana ke Produk dan Pesanan* | *C03-UT01 s.d. C03-UT03, INT-TC02* |
-| *C01* | *Pelanggan* | *Tidak perlu* | *Hanya menyimpan data akun, tanpa logika* | *-* |
-| *[CXX]* | *[Nama kelas]* | *[Mendalam/Sedang/Tidak perlu]* | *[Alasan penentuan tingkat pengujian]* | *[ID test case atau -]* |
+| C02 | Laporan | Mendalam | Memuat perhitungan skor prioritas, transisi status, penambahan upvote, serta filter dan pengurutan laporan (`src/server/entities/Laporan.ts`) | C02-UT01 s.d. C02-UTxx |
+| C03 | Lokasi | Mendalam | Memuat validasi titik di dalam batas wilayah (`dalamWilayah`) dan perhitungan jarak haversine (`hitungJarak`) | C03-UT01 s.d. C03-UTxx |
+| C04 | Foto | Mendalam | Memuat validasi format dan ukuran berkas foto, termasuk nilai batas ukuran maksimum | C04-UT01 s.d. C04-UTxx |
+| C05 | Video | Mendalam | Memuat validasi format dan ukuran berkas video, termasuk nilai batas ukuran maksimum | C05-UT01 s.d. C05-UTxx |
+| C06 | Upvote | Mendalam | Memuat aturan satu upvote per pengguna untuk setiap laporan | C06-UT01 s.d. C06-UTxx |
+| C07 | ListTugas | Mendalam | Memuat algoritma pengurutan tugas berdasarkan skor prioritas dan filter kategori | C07-UT01 s.d. C07-UTxx |
+| C08 | HasilPerbaikan | Mendalam | Memuat validasi berkas bukti perbaikan dan catatan hasil kerja | C08-UT01 s.d. C08-UTxx |
+| C09 | Evaluasi | Mendalam | Memuat aturan keputusan evaluasi (setuju/tolak) yang mengubah status laporan dan tahap pengerjaan | C09-UT01 s.d. C09-UTxx |
+| C17 | LaporanController | Mendalam | Memuat verifikasi anti-bot Cloudflare Turnstile (keamanan, integrasi eksternal) dan validasi masukan laporan sebelum disimpan | C17-UT01 s.d. C17-UTxx |
+| C10 | Notifikasi | Sedang | Hanya membentuk dan meneruskan data notifikasi; notifikasi dibuat oleh *trigger* basis data saat status berubah | C10-UT01 s.d. C10-UTxx |
+| C18 | ValidasiController | Sedang | Meneruskan aksi validasi/penolakan ke Laporan setelah pemeriksaan peran | C18-UT01 s.d. C18-UTxx |
+| C19 | PenugasanController | Sedang | Meneruskan permintaan daftar tugas ke ListTugas setelah pemeriksaan peran | C19-UT01 s.d. C19-UTxx |
+| C20 | PerbaikanController | Sedang | Meneruskan unggahan hasil perbaikan ke HasilPerbaikan | C20-UT01 s.d. C20-UTxx |
+| C21 | EvaluasiController | Sedang | Meneruskan keputusan evaluasi ke Evaluasi | C21-UT01 s.d. C21-UTxx |
+| C22 | StatusController | Sedang | Meneruskan permintaan data status, peta publik, dan upvote ke Laporan dan Upvote | C22-UT01 s.d. C22-UTxx |
+| C23 | NotifikasiController | Sedang | Meneruskan pengambilan dan penandaan notifikasi ke Notifikasi | C23-UT01 s.d. C23-UTxx |
+| C01 | User | Tidak perlu | Entity yang hanya menyimpan data akun dan peran tanpa logika (`src/server/entities/User.ts`); autentikasi ditangani Supabase Auth | - |
+| C11 | LaporPage | Tidak perlu | Kelas *view* yang hanya menampilkan formulir dan meneruskan masukan ke controller | - (teruji melalui UC01-TC) |
+| C12 | ValidasiPage | Tidak perlu | Kelas *view* yang hanya menampilkan antrean dan rincian laporan | - (teruji melalui UC02-TC) |
+| C13 | PenugasanPage | Tidak perlu | Kelas *view* yang hanya menampilkan daftar tugas | - (teruji melalui UC03-TC) |
+| C14 | HasilPerbaikanForm | Tidak perlu | Kelas *view* yang hanya menampilkan formulir hasil perbaikan | - (teruji melalui UC04-TC) |
+| C15 | EvaluasiPage | Tidak perlu | Kelas *view* yang hanya menampilkan perbandingan bukti dan tombol keputusan | - (teruji melalui UC05-TC) |
+| C16 | StatusLaporanPage | Tidak perlu | Kelas *view* yang hanya menampilkan linimasa status dan peta publik | - (teruji melalui UC06-TC) |
+
 | *...* | *...* | *...* | *...* | *...* |
 
 ## 4.2 Pengujian Unit Kelas
 
 Pengujian unit dilakukan pada kelas bertingkat Mendalam dan Sedang. Kelas Mendalam diuji pada seluruh operasi public dengan kasus normal, batas, dan negatif, serta mencapai *coverage* minimal 70%. Kelas Sedang diuji minimal dengan satu kasus normal dan satu kasus gagal pada operasi public utama.
 
-Cara menjalankan unit test: *[tuliskan perintah, mis. `pytest src/tests/`]*.
+engujian unit dilakukan secara otomatis menggunakan Vitest 5.1.0. Setiap file test diletakkan di sebelah file kelas yang diuji dan diberi nama sesuai ID test case, misalnya `C03-UT01 dalamWilayah: titik di tengah kota → true`, sehingga keluaran *test runner* dapat langsung dirujuk sebagai bukti pada Subbab 4.6. Kelas *entity* yang tidak bergantung pada basis data diuji sebagai fungsi murni. Kelas *controller* diuji dengan *mock* untuk autentikasi dan client Supabase, sehingga logika controller dapat diuji terpisah dari basis data; interaksi nyata dengan basis data diuji pada Subbab 4.3. *Coverage* diukur dengan @vitest/coverage-v8 dan dilaporkan per kelas Mendalam dalam bentuk persentase *line* dan *branch*.
 
-Lokasi file test: *[path, mis. `src/tests/`]*.
+Cara menjalankan unit test:
+- Seluruh unit test: `npm test`
+- Unit test beserta laporan *coverage*: `npm run test:coverage` (ringkasan tampil di terminal, laporan HTML di folder `coverage/`)
+- Satu file tertentu: `npx vitest run <path file test>`
+
+Lokasi file test: `src/**/*.test.ts`, di sebelah file yang diuji (contoh: `src/server/entities/Lokasi.test.ts` untuk `src/server/entities/Lokasi.ts`).
+
 
 ### 4.2.1 Kelas [Nama Kelas 1]
 
@@ -260,15 +307,43 @@ Tabel 4.2.1b. Ringkasan Cakupan Kelas [C02]
 
 Pengujian integrasi memeriksa interaksi antarkomponen yang melewati batas, yaitu *Controller* ke *Model*, aplikasi ke basis data, dan aplikasi ke sistem eksternal. Daftar antarmuka mengacu pada dokumen DPPL, dengan minimal satu test case untuk setiap antarmuka. Pengujian memakai komponen nyata, bukan *mock*. Apabila ada antarmuka tambahan yang belum didaftarkan pada dokumen DPPL, cantumkan juga.
 
+Pengujian integrasi dilakukan secara otomatis menggunakan Vitest dengan konfigurasi terpisah (`vitest.integration.config.mts`) dan memakai komponen nyata tanpa *mock*: kode aplikasi, PostgreSQL beserta RLS, RPC, dan *trigger*, Supabase Auth, Supabase Storage, serta layanan eksternal. Setiap pengujian masuk sebagai akun uji sesuai peran (warga, admin, eksekutor) sehingga aturan hak akses ikut teruji.
+
+Karena kelompok tidak memiliki databse uji terpisah, pengujian integrasi dijalankan pada basis data Supabase *production* dengan pengaman berikut:
+1. Setiap data uji diberi penanda `[TEST-INT]` pada deskripsi atau catatannya.
+2. Laporan uji memakai koordinat khusus (`KOORDINAT_TES`) yang berada di dalam batas wilayah tetapi berjarak lebih dari 4 km dari laporan lain, sehingga tidak terdeteksi sebagai duplikat laporan asli.
+3. Setiap ID data yang dibuat dicatat, lalu dihapus berdasarkan ID tersebut setelah pengujian selesai, termasuk berkas pada Storage. Penghapusan menolak laporan yang tidak berpenanda.
+4. Setelah pengujian, jumlah sisa data berpenanda diperiksa dan harus bernilai 0.
+5. Pengujian integrasi tidak dijalankan oleh CI dan tidak ikut perintah `npm test`.
+
+Efek samping yang tidak dapat dihindari adalah terpakainya nomor urut ID tiket oleh laporan uji, sehingga nomor tiket laporan asli berikutnya melompat.
+
+Cara menjalankan uji integrasi: `npm run test:integration` (memerlukan variabel `TEST_INT_*` dan `SUPABASE_SECRET_KEY` pada `.env.local`, lihat `.env.example`).
+
+Lokasi file test: `tests/integration/*.int.test.ts`, dengan helper bersama di `tests/integration/helpers/`.
+
 Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 
 | ID Antarmuka | Komponen Asal | Komponen Tujuan | Jenis Batas | Test Case |
 | :--- | :--- | :--- | :--- | :--- |
-| *I-01* | *KeranjangController* | *Keranjang (Model)* | *Controller - Model* | *INT-TC01, INT-TC02* |
-| *I-02* | *Pesanan (Model)* | *Database* | *Aplikasi - Basis data* | *INT-TC03* |
-| *I-03* | *PaymentGatewayAdapter* | *Payment Gateway (dummy)* | *Aplikasi - Sistem eksternal* | *INT-TC04, INT-TC05* |
-| *[I-XX]* | *[Komponen asal]* | *[Komponen tujuan]* | *[Jenis batas]* | *[ID test case]* |
-| *...* | *...* | *...* | *...* | *...* |
+| IK-01 | LaporanController | Laporan, Lokasi, Foto, Video (Model) | Controller - Model | INT-TC01 dst. |
+| IK-02 | Laporan (Model) | PostgreSQL (RPC `kirim_laporan`, `cari_laporan_duplikat`, *sequence* ID tiket) | Aplikasi - Basis data | INT-TC01 dst. |
+| IK-03 | LaporPage (unggah media) | Supabase Storage (bucket `media`) | Aplikasi - Basis data | INT-TC01 dst. |
+| IK-04 | LaporanController | Cloudflare Turnstile (verifikasi token) | Aplikasi - Sistem eksternal | INT-TC01 dst. |
+| IK-05 | ValidasiController | Laporan (Model) | Controller - Model | INT-TC20 dst. |
+| IK-06 | Laporan (Model) | PostgreSQL (pembaruan status, RLS peran admin, *trigger* riwayat status) | Aplikasi - Basis data | INT-TC20 dst. |
+| IK-07 | EvaluasiController | Evaluasi, HasilPerbaikan (Model) | Controller - Model | INT-TC20 dst. |
+| IK-08 | Evaluasi (Model) | PostgreSQL (tabel evaluasi, perubahan status laporan) | Aplikasi - Basis data | INT-TC20 dst. |
+| IK-09 | PostgreSQL (*trigger* perubahan status) | Notifikasi, NotifikasiController, Supabase Realtime | Basis data - Aplikasi | INT-TC20 dst. |
+| IK-10 | PenugasanController | ListTugas (Model) | Controller - Model | INT-TC40 dst. |
+| IK-11 | ListTugas (Model) | PostgreSQL (daftar tugas terurut prioritas, RLS peran eksekutor) | Aplikasi - Basis data | INT-TC40 dst. |
+| IK-12 | PerbaikanController | HasilPerbaikan (Model) | Controller - Model | INT-TC40 dst. |
+| IK-13 | HasilPerbaikan (Model) | PostgreSQL dan Supabase Storage (hasil perbaikan dan berkas bukti) | Aplikasi - Basis data | INT-TC40 dst. |
+| IK-14 | StatusController | Laporan, Upvote (Model) | Controller - Model | INT-TC60 dst. |
+| IK-15 | Upvote (Model) | PostgreSQL (tabel upvote, batas satu upvote per pengguna) | Aplikasi - Basis data | INT-TC60 dst. |
+| IK-16 | StatusController | PostgreSQL (view `laporan_publik` tanpa identitas pelapor) | Aplikasi - Basis data | INT-TC60 dst. |
+| IK-17 | AuthController dan proteksi rute | Supabase Auth (sesi dan peran pengguna) | Aplikasi - Sistem eksternal | INT-TC60 dst. |
+| IK-18 | StatusLaporanPage, LaporPage (peta) | OpenStreetMap (*tile* peta melalui Leaflet) | Aplikasi - Sistem eksternal | INT-TC60 dst. |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
 
