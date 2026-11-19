@@ -360,53 +360,68 @@ Tabel 4.2.8b. Ringkasan Cakupan Kelas C08
 | ID Algoritma yang tercakup | *`Algo-014`, `Algo-015`* |
 | Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
 
-### 4.2.x Kelas ABCD
+### 4.2.19 Kelas PenugasanController
 
-**ID Kelas:** *CXX*  
-**Nama Kelas:** *ABCD*  
-**Tingkat:** *ABCD*
+**ID Kelas:** *C19*  
+**Nama Kelas:** *PenugasanController*  
+**Tingkat:** *Sedang*
 
-Tabel 4.2.x. Hasil Pengujian Unit Kelas [CXX]
-
-| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *CXX-UTXX* | *`xxx`* | *Normal* | *xxx* | *xxx* | ** | *Pass/Fail* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
-
-Khusus kelas **Mendalam**:
-
-Tabel 4.2.xb. Ringkasan Cakupan Kelas [CXX]
-
-| Informasi | Keterangan |
-| :--- | :--- |
-| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
-| Operasi yang diuji | *[op1(), op2(), ...]* |
-| ID Algoritma yang tercakup | *[Algo-001, ...]* |
-| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
-
-### 4.2.x Kelas ABCD
-
-**ID Kelas:** *CXX*  
-**Nama Kelas:** *ABCD*  
-**Tingkat:** *ABCD*
-
-Tabel 4.2.x. Hasil Pengujian Unit Kelas [CXX]
+Tabel 4.2.19. Hasil Pengujian Unit Kelas C19
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *CXX-UTXX* | *`xxx`* | *Normal* | *xxx* | *xxx* | ** | *Pass/Fail* |
+| *C19-UT01* | *`verifikasiAkses()`* | *Normal* | *Sesi eksekutor* | *true* | ** | *Pass/Fail* |
+| *C19-UT02* | *`verifikasiAkses()`* | *Negatif* | *Sesi ditolak* | *false* | ** | *Pass/Fail* |
+| *C19-UT03* | *`doSorting()`* | *Normal* | *3 tugas (skor 5, 9, 9)* | *LK-003, LK-002, LK-001* | ** | *Pass/Fail* |
+| *C19-UT04* | *`doSorting()`* | *Batas* | *Tugas kosong* | *ok([])* | ** | *Pass/Fail* |
+| *C19-UT05* | *`doSorting()`* | *Negatif* | *Akses ditolak* | *Pesan tanpa akses, database tak dibaca* | ** | *Pass/Fail* |
+| *C19-UT06* | *`doSorting()`* | *Negatif* | *Error database* | *Gagal memuat daftar tugas* | ** | *Pass/Fail* |
+| *C19-UT07* | *`doFilter(kategori)`* | *Normal* | *lampu_jalan_mati* | *2 tugas lampu terurut* | ** | *Pass/Fail* |
+| *C19-UT08* | *`doFilter(kategori)`* | *Negatif* | *"semua", "". label, teks injeksi* | *Kategori tak dikenal... (tanpa query)* | ** | *Pass/Fail* |
+| *C19-UT09* | *`doFilter(kategori)`* | *Negatif* | *Database error* | *Pesan gagal memuat* | ** | *Pass/Fail* |
+| *C19-UT10* | *`bukaLaporan(idTiket)`* | *Normal* | *Tugas aktif tanpa evaluasi* | *Rincian lengkap, evaluasiTerakhir: null* | ** | *Pass/Fail* |
+| *C19-UT11* | *`bukaLaporan(idTiket)`* | *Normal* | *Tugas dengan evaluasi* | *Rincian lengkap, evaluasiTerakhir berisi catatan* | ** | *Pass/Fail* |
+| *C19-UT12* | *`bukaLaporan(idTiket)`* | *Negatif* | *Tiket tidak ada/sudah berhasil* | *Tugas tidak ditemukan atau sudah tidak aktif* | ** | *Pass/Fail* |
+| *C19-UT13* | *`bukaLaporan(idTiket)`* | *Negatif* | *Error membaca rincian* | *Gagal memuat rincian tugas* | ** | *Pass/Fail* |
+| *C19-UT14* | *`bukaLaporan(idTiket)`* | *Negatif* | *Error membaca evaluasi* | *Gagal memuat rincian tugas* | ** | *Pass/Fail* |
+| *C19-UT15* | *`bukaLaporan(idTiket)`* | *Negatif* | *Belum login* | *Pesan tanpa akses, client tak dibuat* | ** | *Pass/Fail* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
-Khusus kelas **Mendalam**:
+### 4.2.20 Kelas PerbaikanController
 
-Tabel 4.2.xb. Ringkasan Cakupan Kelas [CXX]
+**ID Kelas:** *C20*  
+**Nama Kelas:** *PerbaikanController*  
+**Tingkat:** *Sedang*
 
-| Informasi | Keterangan |
-| :--- | :--- |
-| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
-| Operasi yang diuji | *[op1(), op2(), ...]* |
-| ID Algoritma yang tercakup | *[Algo-001, ...]* |
-| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
+Tabel 4.2.20. Hasil Pengujian Unit Kelas C20
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C20-UT01* | *`validasiForm(catatan, foto, video)`* | *Normal* | *Catatan + 1 foto* | *true* | ** | *Pass/Fail* |
+| *C20-UT02* | *`validasiForm()`* | *Normal* | *Catatan + foto + video* | *true* | ** | *Pass/Fail* |
+| *C20-UT03* | *`validasiForm()`* | *Negatif* | *catatan "" / "  " / "\n\t* | *false* | ** | *Pass/Fail* |
+| *C20-UT04* | *`validasiForm()`* | *Negatif* | *Tanpa foto, ada video* | *false* | ** | *Pass/Fail* |
+| *C20-UT05* | *`validasiForm()`* | *Batas* | *Catatan 1 karakter + 1 foto* | *true* | ** | *Pass/Fail* |
+| *C20-UT06* | *`cekKelengkapan()`* | *Normal* | *catatan/foto kosong* | *Mennadai bagian yang kosong* | ** | *Pass/Fail* |
+| *C20-UT07* | *`cekMediaTerunggah()`* | *Normal* | *Foto/video di hasil/<idUser>/* | *true* | ** | *Pass/Fail* |
+| *C20-UT08* | *`cekMediaTerunggah()`* | *Negatif* | *Folder eksekutor lain* | *false* | ** | *Pass/Fail* |
+| *C20-UT09* | *`cekMediaTerunggah()`* | *Negatif* | *Folder laporan/warga* | *false* | ** | *Pass/Fail* |
+| *C20-UT10* | *`cekMediaTerunggah()`* | *Negatif* | *Video di daftar foto* | *false* | ** | *Pass/Fail* |
+| *C20-UT11* | *`cekMediaTerunggah()`* | *Negatif* | *format tidak sesuai batasan ekstensi* | *false* | ** | *Pass/Fail* |
+| *C20-UT12* | *`verifikasiAkses()`* | *Normal* | *Sesi eksekutor* | *true* | ** | *Pass/Fail* |
+| *C20-UT13* | *`verifikasiAkses()`* | *Negatif* | *Sesi ditolak* | *false* | ** | *Pass/Fail* |
+| *C20-UT14* | *`unggahHasil(idTiket, catatan, foto, video)`* | *Normal* | *Catatan berspasi + 1 foto + 1 video* | *ok({idTiket}), catatan di-trim* | ** | *Pass/Fail* |
+| *C20-UT15* | *`unggahHasil()`* | *Batas* | *Foto tepat 10 MB* | *ok* | ** | *Pass/Fail* |
+| *C20-UT16* | *`unggahHasil()`* | *Negatif* | *Akses ditolak* | *Pesan akses, database tak tersentuh* | ** | *Pass/Fail* |
+| *C20-UT17* | *`unggahHasil()`* | *Negatif* | *Catatan kosong* | *PESAN_TAK_LENGKAP* | ** | *Pass/Fail* |
+| *C20-UT18* | *`unggahHasil()`* | *Negatif* | *Tipe masukan salah dari client* | *PESAN_TAK_LENGKAP* | ** | *Pass/Fail* |
+| *C20-UT19* | *`unggahHasil()`* | *Negatif* | *GIF, > 10MB, folder lain* | *PESAN_BERKAS_TIDAK_VALID, berkas tak disimpan* | ** | *Pass/Fail* |
+| *C20-UT20* | *`unggahHasil()`* | *Negatif* | *Tiket tidak ada/menunggu_evaluasi* | *Pesan tugas tak aktif, tidak disimpan* | ** | *Pass/Fail* |
+| *C20-UT21* | *`unggahHasil()`* | *Negatif* | *Error membaca laporan* | *pesanErrorDB(error)* | ** | *Pass/Fail* |
+| *C20-UT22* | *`unggahHasil()`* | *RPC menolak (P0001)* | *Pesan database diteruskan* | *xxx* | ** | *Pass/Fail* |
+| *C20-UT23* | *`unggahHasil()`* | *Negatif* | *Koneksi gagal* | *Gagal mengirim hasil perbaikan* | ** | *Pass/Fail* |
+| *C20-UT24* | *`unggahHasil()`* | *Negatif* | *xxx* | *xxx* | ** | *Pass/Fail* |
+| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
 ### 4.2.x Kelas ABCD
 
