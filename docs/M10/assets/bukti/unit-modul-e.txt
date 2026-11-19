@@ -1,0 +1,5 @@
+Test Suites: 6 passed, 6 total
+Tests:       135 passed, 135 total
+Snapshots:   0 total
+Time:        0.846 s, estimated 1 s
+Ran all test suites matching tests/unit/LaporanController.test.js|tests/unit/LaporanModel.test.js|tests/unit/LogAdmin.test.js|tests/unit/BarangModel.test.js|tests/unit/ModerasiController.test.js|tests/unit/ViewModulE.test.js.
