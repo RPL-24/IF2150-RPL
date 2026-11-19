@@ -315,7 +315,7 @@ Tabel 4.2.7b. Ringkasan Cakupan Kelas C07
 | Daftar operasi public pada DPPL | `urutPrioritas(idTiket)`, `filterKategori(idTiket)`, `getLaporanById()` |
 | Operasi yang diuji | `urutPrioritas(idTiket)`, `filterKategori(idTiket)`, `getLaporanById()` |
 | ID Algoritma yang tercakup | `Algo-012`, `Algo-013` |
-| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
+| Coverage (wajib ≥ 70%) | *100% line / 100% branch (100% statement, 100% function), tool: Vitest 5.1.0 + @vitest/coverage-v8. Bukti pada Subbab 4.6 (C07-coverage.png)* |
 
 ### 4.2.8 Kelas HasilPerbaikan
 
