@@ -505,7 +505,10 @@ Tabel 4.4.1. Hasil Pengujian Use Case [UC01]
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *UCXX-TCXX* | *KFXX* | *xxx* | *xxx* | *Pass/Fail* |
+| *UC04-TC01* | *KFXX* | *Normal* | *1. Rincian LK-X -> Laporkan Hasil.<br>2. Isi catatan, unggah foto + video.<br>3. Kirim.* | *Catatan, foto, video* | *Layar terkirim, LK-X hilang dari Daftar Tugas, muncul di /evaluasi* | *xxx* | *Pass/Fail* |
+| *UC04-TC02* | *KFXX* | *Alternatif 1: data belum lengkap.* | *1. Formulir LK-Y, foto saja.* | *foto* | *Gagal terkirim: foto dan deskripsi wajib diisi, bagian catatan bergaris merah.* | *xxx* | *Pass/Fail* |
+| *UC04-TC03* | *KFXX* | *Alternatif 1: data belum lengkap* | *1. Catatan saja.<br>2. Kirim.* | *Catatan* | *Gagal terkirim: foto dan deskripsi wajib diisi, bagian foto bergaris merah.* | *xxx* | *Pass/Fail* |
+| *UC04-TC04* | *KFXX* | *Alternatif 2: berkas tidak valid* | *1. Unggah animasi.gif dan foto besar.jpg* | *Berkas gif & foto besar* | *Berkas ditolak dengan pesan format/ukuran* | *xxx* | *Pass/Fail* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
 <br>
