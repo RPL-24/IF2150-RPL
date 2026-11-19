@@ -316,7 +316,19 @@ Pembagian pengujian mengikuti pembagian modul pada Tabel B.4 dokumen Implementas
 
 Pengujian UC07–UC12 dilaksanakan pada 19 November 2026 terhadap kode produksi tag `v9.0` (`485af76`), menggunakan basis data uji `itbeli_modulb_20261119_uji`.
 
-Pengujian unit Modul E dijalankan pada 15 November 2026 dan diulang pada 19 November 2026 setelah digabung dengan pekerjaan Modul A dan B, terhadap kode tag `v9.0`. Satu cacat ditemukan dan langsung diperbaiki setelah buktinya disimpan: C11-UT04 gagal pada `v9.0` dan lulus setelah commit `f8e7224`. Selain perbaikan itu, kode yang diuji Modul E sama dengan `v9.0`.
+Pengujian unit Modul E dijalankan pada 15 November 2026 dan diulang pada 19 November 2026 setelah digabung dengan pekerjaan Modul A dan B. Test integrasi dan test use case Modul E dijalankan pada 19 November 2026, pertama terhadap kode tag `v9.0`, lalu diulang setelah perbaikan. Pengujian Modul E menemukan lima cacat. Bukti kegagalan pada `v9.0` disimpan lebih dulu, baru kemudian kodenya diperbaiki.
+
+Tabel 4.0. Cacat Modul E yang Ditemukan Selama Pengujian
+
+| No | Test case yang gagal pada `v9.0` | Cacat | Perbaikan | Commit |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | C11-UT04, UC21-TC02 | `onClickUbahStatus` dan tiga cabang `konfirmasiTindakan` memanggil `this.memuatStatistik()`, padahal metodenya bernama `muatStatistik`. Status tersimpan di server, tetapi kartu statistik dan daftar di I-13 tidak diperbarui dan muncul TypeError | Keempat pemanggilan diganti dengan nama yang benar | `f8e7224` |
+| 2 | UC23-TC01, C21-UT43, C11-UT07, C11-UT08 | Detail laporan tidak membawa akun yang dilaporkan, sehingga tombol "Blokir Akun" di I-14 mengirim ID pelapor. Pada pengujian, `pembeli.uji` (pelapor) yang terblokir, sedangkan `penjual.uji` tetap aktif | `getDetailLaporan` kini menyertakan `terlapor`, yaitu pemilik listing atau lawan bicara pelapor pada laporan percakapan, lewat operasi baru `cariAkunTerlapor`. Tombol memakai ID tersebut dan menampilkan galat bila terlapor tidak diketahui | `1711d55` |
+| 3 | UC24-TC01 | Tombol "Buka Blokir" memakai sasaran yang sama dengan cacat 2, sehingga log admin mencatat BUKA_BLOKIR untuk pelapor | Ikut diperbaiki bersama cacat 2 | `1711d55` |
+| 4 | UC20-TC03, C11-UT09 | Akun bukan admin yang membuka `/admin-laporan` dialihkan ke `/masuk`, padahal SKPL UC20 alternatif 1 meminta pengalihan ke beranda | `tampilkanAksesDitolak` mengalihkan ke `/` bila pengguna sudah masuk dan ke `/masuk` bila belum | `1711d55` |
+| 5 | UC19-TC02 | Ruang percakapan (I-10) tidak punya tombol "Laporkan", sehingga laporan atas percakapan hanya dapat dibuat dengan mengetik alamat formulir | Tombol "Laporkan" ditambahkan di kepala ruang percakapan dan membuka `/laporan-form?objek=<idPercakapan>&jenis=Percakapan` | `05bb773` |
+
+Perbaikan nomor 2 sampai 5 mengubah `src/controllers/ModerasiController.js`, `src/views/js/DasborAdmin.js`, `src/views/js/HalamanPercakapan.js`, dan `src/views/pages/percakapan.html`. Dua berkas terakhir milik Modul D, dan perubahannya hanya menambah satu tombol beserta satu metode yang mengisi alamatnya. Unit test C11-UT07 sampai C11-UT09 dan C21-UT43 ditulis setelah cacat ini ditemukan; keempatnya gagal pada kode `v9.0` dan lulus setelah perbaikan. Di luar berkas tersebut, kode yang diuji Modul E sama dengan `v9.0`.
 
 ## 4.1 Strategi dan Kedalaman Pengujian Kelas
 
@@ -352,9 +364,9 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C32 | LokasiCOD | Sedang | Pada implementasi menjadi daftar tetap `ReferensiListing.lokasi`; validasi keanggotaan didelegasikan ke `validasiData` (M9 B.1 No. 19) | C32-UT01, C14-UT03, UC07-TC01 |
 | C45 | PenyimpananBerkas | Mendalam | Menulis dan menghapus berkas foto; merupakan komponen bersama. Bukti Modul B saat ini mencakup integrasi disk lokal, belum unit/coverage kelas lengkap atau integrasi Blob nyata. Unit test dan coverage kelas, termasuk mode Vercel Blob, dilengkapi Modul E pada Subbab 4.2.29 | C14-UT12; INT-TC13, INT-TC21, INT-TC23; C45-UT01 s.d. C45-UT06, 8 test mode Vercel Blob (`PenyimpananBerkasBlob.test.js`); INT-TC24, INT-TC30, INT-TC31, INT-TC32 |
 | C10 | FormulirLaporan | Sedang | Mengoordinasikan formulir I-12 dan memanggil `POST /api/laporan`. Validasi isian dan bukti di sisi klien hanya mempercepat umpan balik; aturan yang mengikat diulang di C20 | C10-UT01 sampai C10-UT08, UC19-TC01 sampai UC19-TC04 |
-| C11 | DasborAdmin | Sedang | Mengoordinasikan tampilan I-13 dan I-14 serta memanggil `/api/admin/*`. Satu-satunya aturan, urutan status, sama dengan aturan di C36 yang diuji mendalam | C11-UT01 sampai C11-UT06, UC20-TC01 sampai UC24-TC01 |
+| C11 | DasborAdmin | Sedang | Mengoordinasikan tampilan I-13 dan I-14 serta memanggil `/api/admin/*`. Satu-satunya aturan, urutan status, sama dengan aturan di C36 yang diuji mendalam | C11-UT01 sampai C11-UT09, UC20-TC01 sampai UC24-TC01 |
 | C20 | LaporanController | Mendalam | Validasi data dan bukti laporan (KF43, KF44), privasi laporan percakapan (KF37), dan transaksi Algo-021 | C20-UT01 sampai C20-UT23, INT-TC24, INT-TC25 |
-| C21 | ModerasiController | Mendalam | Otorisasi admin (KF56), aturan urutan status, serta transaksi Algo-022, Algo-023, dan Algo-024 | C21-UT01 sampai C21-UT42, INT-TC26 sampai INT-TC31, INT-TC33 |
+| C21 | ModerasiController | Mendalam | Otorisasi admin (KF56), aturan urutan status, serta transaksi Algo-022, Algo-023, dan Algo-024 | C21-UT01 sampai C21-UT45, INT-TC26 sampai INT-TC31, INT-TC33, INT-TC34 |
 | C36 | Laporan | Mendalam | Aturan transisi status penanganan (KF47) dan statistik per status | C36-UT01 sampai C36-UT13, INT-TC26 |
 | C37 | BuktiLaporan | Mendalam | Validasi lampiran wajib Algo-056 (KF44) | C37-UT01 sampai C37-UT07, INT-TC24 |
 | C38 | LogAudit | Sedang | Hanya menyusun kueri INSERT tanpa aturan. Sifat hanya-tambah (KF49) dibuktikan lewat ketiadaan operasi ubah dan hapus | C38-UT01 sampai C38-UT05, KNF02-TC02, KNF02-TC03 |
@@ -985,7 +997,7 @@ Tabel 4.2.21. Hasil Pengujian Unit Kelas C10 (8 test)
 **Nama Kelas:** DasborAdmin
 **Tingkat:** Sedang
 
-Tabel 4.2.22. Hasil Pengujian Unit Kelas C11 (6 test)
+Tabel 4.2.22. Hasil Pengujian Unit Kelas C11 (9 test)
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -995,10 +1007,15 @@ Tabel 4.2.22. Hasil Pengujian Unit Kelas C11 (6 test)
 | C11-UT04 | `onClickUbahStatus` | Normal | dari daftar laporan I-13, detail belum dibuka | PATCH terkirim, statistik dan daftar dimuat ulang | Pada kode tag `v9.0`: TypeError `this.memuatStatistik is not a function`, statistik dan daftar tidak dimuat ulang. Setelah perbaikan pada commit `f8e7224`: sesuai dengan hasil yang diharapkan | Fail pada `v9.0`, Pass setelah perbaikan |
 | C11-UT05 | `konfirmasiTindakan` | Negatif | alasan kosong atau hanya spasi | pesan galat, tidak ada tindakan moderasi terkirim | Sesuai dengan hasil yang diharapkan | Pass |
 | C11-UT06 | `escapeHtml` | Normal | alasan laporan berisi tag &lt;script&gt; | karakter HTML diubah menjadi entitas | Sesuai dengan hasil yang diharapkan | Pass |
+| C11-UT07 | `pasangEventListenersDetail` | Normal | detail laporan dengan pelapor `pelapor-1` dan terlapor `penjual-1`, lalu tombol Blokir dan Buka Blokir diklik | `onClickBlokirAkun` dan `onClickBukaBlokir` menerima `penjual-1` | Pada `v9.0` keduanya menerima `pelapor-1`. Setelah commit `1711d55`: sesuai dengan hasil yang diharapkan | Fail pada `v9.0`, Pass setelah perbaikan |
+| C11-UT08 | `onClickBlokirAkun`, `onClickBukaBlokir` | Negatif | terlapor tidak diketahui (`null`) | pesan galat, dialog konfirmasi tidak dibuka, `targetIdAkun` tetap null | Pada `v9.0` dialog konfirmasi tetap dibuka dengan sasaran pelapor. Setelah commit `1711d55`: sesuai dengan hasil yang diharapkan | Fail pada `v9.0`, Pass setelah perbaikan |
+| C11-UT09 | `tampilkanAksesDitolak` | Normal | pengguna bukan admin yang sudah masuk, lalu pengguna yang belum masuk | peringatan "Akses Ditolak", lalu dialihkan ke `/` untuk yang sudah masuk dan ke `/masuk` untuk yang belum | Pada `v9.0` keduanya dialihkan ke `/masuk`. Setelah commit `1711d55`: sesuai dengan hasil yang diharapkan | Fail pada `v9.0`, Pass setelah perbaikan |
 
-*Coverage* `DasborAdmin.js`: 11,61% baris. C11 bertingkat Sedang, sehingga tidak terikat batas 70%.
+*Coverage* `DasborAdmin.js`: 18,75% baris. C11 bertingkat Sedang, sehingga tidak terikat batas 70%.
 
 **Cacat yang ditemukan (C11-UT04).** Setelah status laporan diubah dari daftar laporan I-13, `onClickUbahStatus` memanggil `this.memuatStatistik()`, padahal nama metodenya `muatStatistik`. Akibatnya muncul TypeError setelah server berhasil menyimpan status baru, sehingga kartu statistik dan daftar laporan tidak diperbarui sampai halaman dimuat ulang. Pemanggilan yang sama ada di tiga cabang `konfirmasiTindakan`. Perbaikan pada commit `f8e7224` mengganti keempat pemanggilan dengan nama yang benar. Keluaran sebelum perbaikan tersimpan di `C11-UT04-gagal-sebelum-perbaikan.txt`.
+
+**Cacat yang ditemukan (C11-UT07 sampai C11-UT09).** Ketiga test ini ditulis setelah UC20-TC03, UC23-TC01, dan UC24-TC01 gagal pada `v9.0` (Subbab 4.4). Tombol Blokir dan Buka Blokir mengambil ID dari `detailLaporan.pelapor`, dan `onClickBlokirAkun` mengisi sasaran kosong dengan ID pelapor. Perbaikan pada commit `1711d55` memakai `detailLaporan.terlapor` dan menghentikan tindakan bila akun itu tidak diketahui. Pada commit yang sama, `tampilkanAksesDitolak` membedakan pengguna yang sudah masuk dari yang belum.
 
 ### 4.2.23 Kelas LaporanController
 
@@ -1049,7 +1066,7 @@ Tabel 4.2.23b. Ringkasan Cakupan Kelas C20
 **Nama Kelas:** ModerasiController
 **Tingkat:** Mendalam
 
-Tabel 4.2.24. Hasil Pengujian Unit Kelas C21 (42 test)
+Tabel 4.2.24. Hasil Pengujian Unit Kelas C21 (45 test)
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -1095,15 +1112,18 @@ Tabel 4.2.24. Hasil Pengujian Unit Kelas C21 (42 test)
 | C21-UT40 | `getStatistik` | Negatif | pemohon bukan admin | null tanpa membaca tabel laporan (KF56) | Sesuai dengan hasil yang diharapkan | Pass |
 | C21-UT41 | `catatLogAdmin` | Normal | tindakan admin | diteruskan ke LogAdmin.catatTindakan dengan klien yang sama | Sesuai dengan hasil yang diharapkan | Pass |
 | C21-UT42 | `nonaktifkanListingPengguna` | Normal | id akun | Barang.nonaktifkanByPemilik dipanggil dengan klien transaksi | Sesuai dengan hasil yang diharapkan | Pass |
+| C21-UT43 | `getDetailLaporan` | Normal | laporan `pelapor-1` atas listing milik `penjual-1` | `pelapor` berisi `pelapor-1`, `terlapor` berisi akun `penjual-1` beserta status blokirnya | Pada `v9.0` hasilnya tidak memuat `terlapor`. Setelah commit `1711d55`: sesuai dengan hasil yang diharapkan | Fail pada `v9.0`, Pass setelah perbaikan |
+| C21-UT44 | `cariAkunTerlapor` | Normal | laporan atas percakapan yang dibuat pembeli | akun penjual, yaitu lawan bicara pelapor | Sesuai dengan hasil yang diharapkan (operasi baru pada commit `1711d55`) | Pass |
+| C21-UT45 | `cariAkunTerlapor` | Negatif | objek bukan UUID; objek UUID yang listing maupun percakapannya sudah tidak ada | null; untuk objek bukan UUID tabel barang tidak dibaca | Sesuai dengan hasil yang diharapkan (operasi baru pada commit `1711d55`) | Pass |
 
 Tabel 4.2.24b. Ringkasan Cakupan Kelas C21
 
 | Informasi | Keterangan |
 | :--- | :--- |
 | Daftar operasi public pada DPPL | `otorisasiAdmin`, `getAllLaporan`, `filterByStatus`, `getDetailLaporan`, `ubahStatusLaporan`, `hapusListingDilaporkan`, `blokirAkun`, `nonaktifkanListingPengguna`, `bukaBlokirAkun`, `pulihkanListingPengguna`, `catatLogAdmin`, `catatLogAudit` |
-| Operasi yang diuji | Kedua belas operasi, ditambah `getStatistik` (Implementasi B.1 No. 31) |
+| Operasi yang diuji | Kedua belas operasi, ditambah `getStatistik` (Implementasi B.1 No. 31) dan `cariAkunTerlapor` (ditambahkan pada perbaikan `1711d55`) |
 | ID Algoritma yang tercakup | Algo-022, Algo-023, Algo-024 |
-| Coverage (wajib ≥ 70%) | 100% baris, 88,04% cabang. Alat: Jest `--coverage`. Bukti: `coverage-modul-e.txt` |
+| Coverage (wajib ≥ 70%) | 100% baris, 87,5% cabang. Alat: Jest `--coverage`. Bukti: `coverage-modul-e.txt` |
 
 ### 4.2.25 Kelas Laporan
 
@@ -1253,7 +1273,7 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | AK-13 | ModerasiController (C21) | Akun, SesiLogin, Barang, FotoBarang, Laporan, LogAudit, LogAdmin (C23, C28, C29, C30, C36, C38, C39) | Controller - Model | INT-TC26 s.d. INT-TC30 |
 | AK-14 | LaporanController dan ModerasiController (C20, C21) melalui PenyimpananBerkas (C45) | Folder `src/uploads/` di disk | Aplikasi - Penyimpanan berkas | INT-TC24, INT-TC30, INT-TC31 |
 | AK-15 | PenyimpananBerkas (C45) | Vercel Blob | Aplikasi - Sistem eksternal | INT-TC32 |
-| AK-16 | ModerasiController (C21) melalui NotifikasiController dan SurelAdapter (C19, C43) | Server SMTP (Mailpit) | Aplikasi - Sistem eksternal | INT-TC33 |
+| AK-16 | ModerasiController (C21) melalui NotifikasiController dan SurelAdapter (C19, C43) | Server SMTP (penangkap SMTP lokal pada pengujian Modul E; Gmail SMTP pada versi daring) | Aplikasi - Sistem eksternal | INT-TC33 |
 | AK-17 | FormulirLaporan dan DasborAdmin (C10, C11) melalui HTTP `/api/laporan` dan `/api/admin/*` | `laporanRoutes`, `moderasiRoutes`, LaporanController, ModerasiController (C20, C21) | View - Controller | INT-TC31, INT-TC34 |
 | *[AK-XX]* | *[Komponen asal]* | *[Komponen tujuan]* | *[Jenis batas]* | *[ID test case]* |
 
@@ -1284,24 +1304,24 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC21 | AK-08, AK-09, AK-10 | Batas: lima foto (UC07) | POST listing dengan lima PNG dan urutan baru:0 s.d. baru:4 | Diterima, lima metadata foto | 201; jumlah metadata foto = 5 | Pass |
 | INT-TC22 | AK-08, AK-09 | Negatif: data/foto tidak sah (UC07) | POST judul kosong, tanpa foto, lalu enam foto | Seluruhnya 400 | [400, 400, 400] | Pass |
 | INT-TC23 | AK-08, AK-09, AK-10 | Normal: hapus permanen (UC10) | DELETE listing; periksa barang, metadata foto, dan path berkas | Listing/metadata/berkas hilang | 200; barang null; metadata = 0; berkas tidak ada | Pass |
-| INT-TC24 | AK-11, AK-12, AK-14 | Normal: laporan baru tersimpan | `LaporanController.buatLaporan` dengan token sesi akun uji, data lengkap, dan satu PNG; baca tabel dan disk langsung | Satu baris `laporan` berstatus Baru milik pelapor, satu `bukti_laporan` yang menunjuk berkas berisi PNG yang sama di disk, dan satu `log_audit` "Penerimaan laporan" | *Belum dijalankan* | - |
-| INT-TC25 | AK-11, AK-12 | Gagal: penyimpanan bukti gagal di tengah transaksi | Bukti PNG lolos validasi tetapi tidak membawa isi, sehingga PenyimpananBerkas gagal menulis | `GALAT_SERVER`; tidak ada baris `laporan` maupun `log_audit` baru untuk pelapor (transaksi dibatalkan) | *Belum dijalankan* | - |
-| INT-TC26 | AK-12, AK-13 | Normal: ubah status laporan | `ubahStatusLaporan` Baru ke Diproses dengan token admin, lalu coba mundur ke Baru | Status Diproses dan `waktu_perubahan` bertambah; percobaan mundur ditolak; `log_audit` berisi tepat "Penerimaan laporan" dan "Perubahan status laporan menjadi Diproses" | *Belum dijalankan* | - |
-| INT-TC27 | AK-12, AK-13 | Normal: blokir akun | Penjual dengan dua listing Tersedia dan satu sesi aktif diblokir dari sebuah laporan | Akun Diblokir, kedua listing Dinonaktifkan, sesi tidak aktif, laporan Selesai, `log_admin` BLOKIR_AKUN beserta alasan, `log_audit` "Pemblokiran akun", login ulang ditolak | *Belum dijalankan* | - |
-| INT-TC28 | AK-12, AK-13 | Gagal: galat di tengah blokir akun | Blokir dengan ID laporan yang tidak ada, sehingga INSERT `log_audit` melanggar *foreign key* setelah akun dan listing sempat diubah | Galat dilempar; akun tidak diblokir, listing tetap Tersedia, sesi tetap aktif, tidak ada `log_admin` | *Belum dijalankan* | - |
-| INT-TC29 | AK-12, AK-13 | Normal: buka blokir akun | Blokir penjual (listing hilang dari katalog), lalu `bukaBlokirAkun` dengan alasan | Akun Terverifikasi, listing kembali muncul pada `Barang.getKatalog`, `log_admin` berisi BLOKIR_AKUN lalu BUKA_BLOKIR beserta alasannya | *Belum dijalankan* | - |
-| INT-TC30 | AK-12, AK-13, AK-14 | Normal: hapus listing yang dilaporkan | Listing berfoto dua (berkas nyata di disk) dihapus lewat `hapusListingDilaporkan` | Baris `barang` dan `foto_barang` hilang, kedua berkas foto hilang dari disk, `log_admin` HAPUS_LISTING beserta alasan | *Belum dijalankan* | - |
-| INT-TC31 | AK-11, AK-14, AK-17 | Normal: unggah bukti lewat HTTP | `POST /api/laporan` multipart berisi satu PNG ke aplikasi Express | 201; `path_berkas` berpola `/uploads/<idLaporan>/<UUID>.png` dan berkas dapat diunduh lewat `/uploads` dengan isi sama | *Belum dijalankan* | - |
-| INT-TC32 | AK-15 | Normal: simpan dan hapus di Vercel Blob | `simpan` lalu `hapus` dengan token *store* uji (`BLOB_TOKEN_UJI`) | URL publik menjawab 200 setelah `simpan` dan 404 setelah `hapus` | *Tidak dijalankan: belum ada token store Vercel Blob khusus uji; test otomatis dilewati bila `BLOB_TOKEN_UJI` kosong* | - |
-| INT-TC33 | AK-16 | Normal: surel penangguhan | Blokir akun dengan alasan "Menjual barang terlarang", lalu baca Mailpit (`/api/v1/search`) | Satu surel berjudul "Pemberitahuan Penangguhan Akun ITBELI" ke alamat akun, memuat alasannya | *Belum dijalankan* | - |
-| INT-TC34 | AK-17 | Normal dan gagal: akses route admin | `GET /api/admin/laporan` dengan token admin, lalu dengan token pengguna biasa | 200 berisi daftar laporan untuk admin; 403 untuk pengguna biasa (KF56) | *Belum dijalankan* | - |
+| INT-TC24 | AK-11, AK-12, AK-14 | Normal: laporan baru tersimpan | `LaporanController.buatLaporan` dengan token sesi akun uji, data lengkap, dan satu PNG; baca tabel dan disk langsung | Satu baris `laporan` berstatus Baru milik pelapor, satu `bukti_laporan` yang menunjuk berkas berisi PNG yang sama di disk, dan satu `log_audit` "Penerimaan laporan" | Satu baris `laporan` berstatus Baru milik pelapor dengan jenis Penipuan; satu `bukti_laporan` yang berkasnya di disk identik byte per byte dengan PNG masukan; `log_audit` berisi tepat satu catatan "Penerimaan laporan" oleh pelapor | Pass |
+| INT-TC25 | AK-11, AK-12 | Gagal: penyimpanan bukti gagal di tengah transaksi | Bukti PNG lolos validasi tetapi tidak membawa isi, sehingga PenyimpananBerkas gagal menulis | `GALAT_SERVER`; tidak ada baris `laporan` maupun `log_audit` baru untuk pelapor (transaksi dibatalkan) | `GALAT_SERVER`; 0 baris `laporan` dan 0 baris `log_audit` untuk pelapor | Pass |
+| INT-TC26 | AK-12, AK-13 | Normal: ubah status laporan | `ubahStatusLaporan` Baru ke Diproses dengan token admin, lalu coba mundur ke Baru | Status Diproses dan `waktu_perubahan` bertambah; percobaan mundur ditolak; `log_audit` berisi tepat "Penerimaan laporan" dan "Perubahan status laporan menjadi Diproses" | Status Diproses dan `waktu_perubahan` lebih baru dari sebelumnya; percobaan mundur ke Baru mengembalikan `false`; `log_audit` berisi tepat dua catatan dengan urutan yang diharapkan, catatan kedua oleh admin | Pass |
+| INT-TC27 | AK-12, AK-13 | Normal: blokir akun | Penjual dengan dua listing Tersedia dan satu sesi aktif diblokir dari sebuah laporan | Akun Diblokir, kedua listing Dinonaktifkan, sesi tidak aktif, laporan Selesai, `log_admin` BLOKIR_AKUN beserta alasan, `log_audit` "Pemblokiran akun", login ulang ditolak | `status_akun` Diblokir dan `status_blokir` true; kedua listing Dinonaktifkan; 0 sesi aktif; laporan Selesai; `log_admin` BLOKIR_AKUN "Penipuan berulang" oleh admin; `log_audit` memuat "Pemblokiran akun: &lt;idAkun&gt;"; login ulang `AKUN_DIBLOKIR` | Pass |
+| INT-TC28 | AK-12, AK-13 | Gagal: galat di tengah blokir akun | Blokir dengan ID laporan yang tidak ada, sehingga INSERT `log_audit` melanggar *foreign key* setelah akun dan listing sempat diubah | Galat dilempar; akun tidak diblokir, listing tetap Tersedia, sesi tetap aktif, tidak ada `log_admin` | Galat dilempar; `status_blokir` tetap false, listing tetap Tersedia, satu sesi masih aktif, dan 0 baris `log_admin` untuk akun tersebut | Pass |
+| INT-TC29 | AK-12, AK-13 | Normal: buka blokir akun | Blokir penjual (listing hilang dari katalog), lalu `bukaBlokirAkun` dengan alasan | Akun Terverifikasi, listing kembali muncul pada `Barang.getKatalog`, `log_admin` berisi BLOKIR_AKUN lalu BUKA_BLOKIR beserta alasannya | Selama akun diblokir listing tidak ada di `Barang.getKatalog`; setelah buka blokir akun Terverifikasi, listing kembali di katalog, dan `log_admin` berisi BLOKIR_AKUN lalu BUKA_BLOKIR "Banding diterima" | Pass |
+| INT-TC30 | AK-12, AK-13, AK-14 | Normal: hapus listing yang dilaporkan | Listing berfoto dua (berkas nyata di disk) dihapus lewat `hapusListingDilaporkan` | Baris `barang` dan `foto_barang` hilang, kedua berkas foto hilang dari disk, `log_admin` HAPUS_LISTING beserta alasan | 0 baris `barang` dan `foto_barang` untuk listing tersebut; kedua berkas foto tidak ada lagi di disk; `log_admin` HAPUS_LISTING "Barang palsu" | Pass |
+| INT-TC31 | AK-11, AK-14, AK-17 | Normal: unggah bukti lewat HTTP | `POST /api/laporan` multipart berisi satu PNG ke aplikasi Express | 201; `path_berkas` berpola `/uploads/<idLaporan>/<UUID>.png` dan berkas dapat diunduh lewat `/uploads` dengan isi sama | 201; `path_berkas` cocok dengan pola; unduhan lewat `/uploads` membalas 200 dengan isi identik dengan PNG yang dikirim | Pass |
+| INT-TC32 | AK-15 | Normal: simpan dan hapus di Vercel Blob | `simpan` lalu `hapus` dengan token *store* uji (`BLOB_TOKEN_UJI`) | URL publik menjawab 200 setelah `simpan` dan 404 setelah `hapus` | *Tidak dijalankan: belum ada token store Vercel Blob khusus uji; test otomatis dilewati bila `BLOB_TOKEN_UJI` kosong* | - (tidak dijalankan) |
+| INT-TC33 | AK-16 | Normal: surel penangguhan | Blokir akun dengan alasan "Menjual barang terlarang", lalu baca kotak masuk server SMTP uji (`/api/v1/search`) | Satu surel berjudul "Pemberitahuan Penangguhan Akun ITBELI" ke alamat akun, memuat alasannya | Surel berjudul "Pemberitahuan Penangguhan Akun ITBELI" diterima di alamat akun, dan teksnya memuat "Menjual barang terlarang" | Pass |
+| INT-TC34 | AK-17 | Normal dan gagal: akses route admin | `GET /api/admin/laporan` dengan token admin, lalu dengan token pengguna biasa | 200 berisi daftar laporan untuk admin; 403 untuk pengguna biasa (KF56) | Admin 200 dengan daftar laporan yang tidak kosong; pengguna biasa 403 | Pass |
 | *[INT-TCYY]* | *[AK-XX]* | *[...]* | *[...]* | *[...]* | *[Hasil aktual]* | *Pass/Fail* |
 
 Skenario berhasil masuk lewat Google belum dapat diuji dengan Google sungguhan karena `GOOGLE_CLIENT_ID` belum diatur, baik di lingkungan lokal maupun di versi daring (`/api/akun/sso/penyedia` membalas `google: false`). Alur tersebut diuji dengan *token endpoint* tiruan pada SSO-UT06 dan SSO-UT16 s.d. SSO-UT21.
 
 INT-TC13 s.d. INT-TC23 menggunakan PostgreSQL dan penyimpanan disk lokal tanpa mock. Hasil aktual dilampirkan pada Subbab 4.6.
 
-INT-TC24 s.d. INT-TC34 (Modul E) berada di `src/tests/db/ModulE.test.js` dan memakai PostgreSQL, disk, serta Mailpit nyata. Kolom hasilnya diisi dari keluaran `npm run test:db`.
+INT-TC24 s.d. INT-TC34 (Modul E) berada di `src/tests/db/ModulE.test.js` dan dijalankan dengan `npm run test:db` pada 19 November 2026. Lingkungannya berbeda dari Modul A karena laptop penguji Modul E tidak memakai Docker. PostgreSQL 16.15 dari paket Ubuntu dijalankan di WSL. Mailpit tidak dapat dipakai karena `mailpit.exe` diblokir kebijakan Application Control Windows di laptop tersebut, sehingga server SMTP diganti penangkap SMTP lokal berbasis Node.js (`docs/M10/assets/skrip/penangkap-smtp.cjs`). Penangkap itu menerima surel lewat protokol SMTP di port 1025 dan menyediakan dua endpoint pencarian yang sama dengan Mailpit (`/api/v1/search` dan `/api/v1/message/:id`), sehingga aplikasi tetap mengirim surel sungguhan melalui SurelAdapter dan test tidak perlu diubah. Hasilnya 10 test lulus dan 1 dilewati (INT-TC32). Keluaran lengkap ada di `integrasi-modul-e.txt`.
 
 <br>
 
@@ -1511,16 +1531,18 @@ Tabel 4.4.12. Hasil Pengujian Use Case UC12
 **ID Use Case:** UC19  
 **Nama Use Case:** Mengirimkan Laporan
 
+Pengujian UC19 sampai UC24 dijalankan pada 19 November 2026 dengan skrip `docs/M10/assets/skrip/uji-use-case-modul-e.cjs`, memakai Playwright Core 1.65.1 dan Google Chrome 157. Aplikasi berjalan di `http://localhost:3000` dengan basis data yang dibuat ulang lalu diisi `npm run db:init` dan `npm run db:seed`, PostgreSQL 16.15 di WSL, dan penangkap SMTP lokal yang sama dengan Subbab 4.3. Skrip menyiapkan tiga listing milik `penjual.uji` lewat API, menjalankan langkah pengujian di peramban, mengambil tangkapan layar, lalu memeriksa basis data dan kotak masuk. Untuk UC20, dua laporan tambahan dibuat lewat API dan status laporan diatur supaya daftar memuat ketiga status.
+
+Pengujian dijalankan dua kali: terhadap kode `v9.0` (tangkapan layar berakhiran `-v9.0`) dan setelah perbaikan pada Tabel 4.0. Bila hasil kedua putaran berbeda, kolom Hasil Pengujian mencatat keduanya. Hasil setiap pemeriksaan tersimpan di `use-case-modul-e-v9.0.json` dan `use-case-modul-e-perbaikan.json`.
+
 Tabel 4.4.19. Hasil Pengujian Use Case UC19
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC19-TC01 | KF43, KF44, KF48 | Normal | 1. Masuk sebagai `pembeli.uji`.<br>2. Buka detail listing milik `penjual.uji`, tekan "Laporkan".<br>3. Pilih "Penipuan", isi alasan, lampirkan satu PNG, tekan "Kirim Laporan".<br>4. Masuk sebagai `admin.uji`, buka laporan tersebut di I-14. | Alasan: "Penjual meminta transfer di muka"<br>Bukti: `bukti.png` (200 KB) | Notifikasi "Laporan berhasil dikirim". Laporan muncul berstatus Baru dengan bukti yang dapat dibuka, dan riwayat penanganan berisi "Penerimaan laporan" | *Belum dijalankan* | - |
-| UC19-TC02 | KF37, KF43 | Normal (laporan dari percakapan) | 1. Masuk sebagai `pembeli.uji`, buka percakapan dengan `penjual.uji`, tekan "Laporkan".<br>2. Isi kategori, alasan, dan bukti, lalu kirim.<br>3. Buka laporan tersebut sebagai `admin.uji`. | Kategori: "Konten tidak pantas"<br>Bukti: satu PNG | Objek laporan berupa ID percakapan. Detail laporan tidak memuat isi pesan apa pun | *Belum dijalankan* | - |
-| UC19-TC03 | KF43 | Alternatif 1: alasan dikosongkan | Isi formulir laporan tanpa alasan, lampirkan bukti, tekan "Kirim Laporan" | Alasan: kosong<br>Bukti: satu PNG | Pengiriman dihentikan, kolom alasan diberi penanda merah, dan muncul galat bahwa alasan dan bukti wajib diisi | *Belum dijalankan* | - |
-| UC19-TC04 | KF44 | Alternatif 1: bukti tidak dilampirkan | Isi kategori dan alasan tanpa melampirkan bukti, tekan "Kirim Laporan" | Bukti: tidak ada | Pengiriman dihentikan dan muncul galat bahwa bukti tangkapan layar wajib dilampirkan | *Belum dijalankan* | - |
-
-Catatan untuk penguji: dari pembacaan kode, layar Percakapan (I-10) belum punya tombol "Laporkan". Formulir laporan menerima `?objek=<idPercakapan>&jenis=Percakapan`, tetapi belum ada tautan ke sana. Bila terbukti saat pengujian, UC19-TC02 dicatat `Fail` dengan usulan menambah tombol Laporkan di kepala ruang percakapan; KF37 tetap dapat diperiksa dengan membuka alamat formulir tersebut secara langsung.
+| UC19-TC01 | KF43, KF44, KF48 | Normal | 1. Masuk sebagai `pembeli.uji`.<br>2. Buka detail listing milik `penjual.uji`, tekan "Laporkan".<br>3. Pilih "Penipuan", isi alasan, lampirkan satu PNG, tekan "Kirim Laporan".<br>4. Masuk sebagai `admin.uji`, buka laporan tersebut di I-14. | Kategori: "Penipuan"<br>Alasan: "Penjual meminta transfer di muka sebelum bertemu"<br>Bukti: satu PNG (278 KB) | Notifikasi "Laporan berhasil dikirim". Laporan muncul berstatus Baru dengan bukti yang dapat dibuka, dan riwayat penanganan berisi "Penerimaan laporan" | Notifikasi "Laporan berhasil dikirim dan akan segera ditinjau admin." tampil. Di I-14 laporan berstatus Baru dengan satu gambar bukti, dan riwayat penanganan berisi "Penerimaan laporan". Hasil sama pada `v9.0` dan setelah perbaikan | Pass |
+| UC19-TC02 | KF37, KF43 | Normal (laporan dari percakapan) | 1. Masuk sebagai `pembeli.uji`, buka percakapan dengan `penjual.uji`, tekan "Laporkan".<br>2. Isi kategori, alasan, dan bukti, lalu kirim.<br>3. Buka laporan tersebut sebagai `admin.uji`. | Kategori: "Konten tidak pantas"<br>Alasan: "Meminta transfer ke rekening pribadi"<br>Bukti: satu PNG | Objek laporan berupa ID percakapan. Detail laporan tidak memuat isi pesan apa pun | Pada `v9.0` I-10 tidak memiliki tombol "Laporkan" (0 elemen), sehingga formulir dibuka lewat alamat `/laporan-form?objek=<idPercakapan>&jenis=Percakapan`. Formulir menampilkan pemberitahuan privasi, objek laporan berupa ID percakapan, dan isi pesan tidak muncul di I-14 maupun di baris `laporan`. Setelah commit `05bb773` tombol "Laporkan" tampil di kepala ruang percakapan dan membuka formulir yang sama; pemeriksaan lain tetap sesuai | Fail pada `v9.0`, Pass setelah perbaikan |
+| UC19-TC03 | KF43 | Alternatif 1: alasan dikosongkan | Isi formulir laporan tanpa alasan, lampirkan bukti, tekan "Kirim Laporan" | Alasan: kosong<br>Bukti: satu PNG | Pengiriman dihentikan, kolom alasan diberi penanda merah, dan muncul galat bahwa alasan dan bukti wajib diisi | Pengiriman dihentikan dengan galat "Alasan dan sedikitnya satu bukti tangkapan layar (JPG/PNG) wajib diisi.", kolom alasan bergaris merah, dan jumlah laporan atas objek tetap 0 | Pass |
+| UC19-TC04 | KF44 | Alternatif 1: bukti tidak dilampirkan | Isi kategori dan alasan tanpa melampirkan bukti, tekan "Kirim Laporan" | Alasan: "Penjual tidak datang ke lokasi COD"<br>Bukti: tidak ada | Pengiriman dihentikan dan muncul galat bahwa bukti tangkapan layar wajib dilampirkan | Pengiriman dihentikan dengan galat yang sama, dan jumlah laporan atas objek tetap 0 | Pass |
 
 ### 4.4.20 Use Case Melihat dan Menyaring Daftar Laporan
 
@@ -1531,11 +1553,9 @@ Tabel 4.4.20. Hasil Pengujian Use Case UC20
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC20-TC01 | KF45 | Normal | 1. Masuk sebagai `admin.uji`.<br>2. Buka `/admin-laporan`. | Minimal tiga laporan dengan status berbeda | Tabel menampilkan semua laporan beserta pelapor, objek, kategori, waktu, dan status, serta kartu jumlah per status | *Belum dijalankan* | - |
-| UC20-TC02 | KF46 | Normal (penyaringan) | Pada `/admin-laporan`, pilih status "Baru" pada penyaring | Status: Baru | Hanya laporan berstatus Baru yang tampil | *Belum dijalankan* | - |
-| UC20-TC03 | KF56 | Alternatif 1: akses oleh akun bukan admin | 1. Masuk sebagai `pembeli.uji`.<br>2. Buka `/admin-laporan` langsung dari bilah alamat. | URL: `/admin-laporan` | Akses ditolak dengan peringatan "Akses Ditolak" dan pengguna dialihkan ke beranda | *Belum dijalankan* | - |
-
-Catatan untuk penguji: dari pembacaan kode, `DasborAdmin.tampilkanAksesDitolak` mengalihkan ke `/masuk`, bukan ke beranda seperti SKPL. Bila hal ini terlihat saat pengujian, UC20-TC03 dicatat `Fail` dengan usulan mengganti tujuan pengalihan.
+| UC20-TC01 | KF45 | Normal | 1. Masuk sebagai `admin.uji`.<br>2. Buka `/admin-laporan`. | Empat laporan: dua Baru, satu Diproses, satu Selesai | Tabel menampilkan semua laporan beserta pelapor, objek, kategori, waktu, dan status, serta kartu jumlah per status | Tabel memuat 4 laporan dengan kolom objek, kategori, pelapor, tanggal, dan status. Kartu jumlah: Baru 2, Diproses 1, Selesai 1, total 4 | Pass |
+| UC20-TC02 | KF46 | Normal (penyaringan) | Pada `/admin-laporan`, pilih status "Baru" pada penyaring | Status: Baru | Hanya laporan berstatus Baru yang tampil | Tampil 2 baris, keduanya berstatus Baru | Pass |
+| UC20-TC03 | KF56 | Alternatif 1: akses oleh akun bukan admin | 1. Masuk sebagai `pembeli.uji`.<br>2. Buka `/admin-laporan` langsung dari bilah alamat. | URL: `/admin-laporan` | Akses ditolak dengan peringatan "Akses Ditolak" dan pengguna dialihkan ke beranda | Peringatan "Akses Ditolak: Anda harus masuk menggunakan akun Admin untuk mengakses Dasbor Moderasi." muncul. Pada `v9.0` pengguna lalu dialihkan ke `/masuk` walaupun sudah masuk. Setelah commit `1711d55` pengguna dialihkan ke beranda (`/`, yang meneruskan ke `/katalog`) | Fail pada `v9.0`, Pass setelah perbaikan |
 
 ### 4.4.21 Use Case Mengubah Status Penanganan Laporan
 
@@ -1546,8 +1566,8 @@ Tabel 4.4.21. Hasil Pengujian Use Case UC21
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC21-TC01 | KF47, KF48, KF49 | Normal | 1. Masuk sebagai `admin.uji`, buka detail laporan berstatus Baru.<br>2. Ubah status menjadi "Diproses", simpan. | Status: Baru ke Diproses | Status dan waktu perubahan diperbarui, riwayat penanganan bertambah "Perubahan status laporan menjadi Diproses", dan pilihan status mundur tidak dapat dipilih | *Belum dijalankan* | - |
-| UC21-TC02 | KF47, KF48 | Normal (lewat daftar I-13) | Pada `/admin-laporan`, ubah status sebuah laporan lewat menu status di barisnya | Status: Diproses ke Selesai | Status tersimpan, baris dan kartu jumlah per status langsung diperbarui tanpa memuat ulang halaman | *Belum dijalankan* | - |
+| UC21-TC01 | KF47, KF48, KF49 | Normal | 1. Masuk sebagai `admin.uji`, buka detail laporan berstatus Baru.<br>2. Ubah status menjadi "Diproses", simpan. | Status: Baru ke Diproses | Status dan waktu perubahan diperbarui, riwayat penanganan bertambah "Perubahan status laporan menjadi Diproses", dan pilihan status mundur tidak dapat dipilih | Status menjadi Diproses dan waktu perubahan berubah, riwayat bertambah "Perubahan status laporan menjadi Diproses", dan pilihan Baru dinonaktifkan pada menu status | Pass |
+| UC21-TC02 | KF47, KF48 | Normal (lewat daftar I-13) | Pada `/admin-laporan`, ubah status sebuah laporan lewat menu status di barisnya | Status: Diproses ke Selesai | Status tersimpan, baris dan kartu jumlah per status langsung diperbarui tanpa memuat ulang halaman | Pada `v9.0` status Selesai tersimpan di server, tetapi muncul TypeError `this.memuatStatistik is not a function` dan kartu Selesai tetap 1. Setelah commit `f8e7224` kartu Selesai berubah dari 1 menjadi 2 tanpa memuat ulang halaman dan tanpa galat JavaScript | Fail pada `v9.0`, Pass setelah perbaikan |
 
 ### 4.4.22 Use Case Menghapus Listing yang Dilaporkan
 
@@ -1558,7 +1578,7 @@ Tabel 4.4.22. Hasil Pengujian Use Case UC22
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC22-TC01 | KF48, KF50, KF52, KF55, KF56 | Normal | 1. Masuk sebagai `admin.uji`, buka detail laporan atas listing `penjual.uji`.<br>2. Tekan "Hapus Listing", isi alasan, konfirmasi.<br>3. Buka katalog dan kotak masuk Mailpit. | Alasan: "Barang palsu" | Listing hilang dari katalog dan detailnya tidak dapat dibuka, surel peringatan berisi alasan masuk ke `penjual.uji`, laporan menjadi Selesai, dan tindakan tercatat di log admin serta log audit | *Belum dijalankan* | - |
+| UC22-TC01 | KF48, KF50, KF52, KF55, KF56 | Normal | 1. Masuk sebagai `admin.uji`, buka detail laporan atas listing `penjual.uji`.<br>2. Tekan "Hapus Listing", isi alasan, konfirmasi.<br>3. Buka katalog dan kotak masuk server SMTP uji. | Alasan: "Barang palsu" | Listing hilang dari katalog dan detailnya tidak dapat dibuka, surel peringatan berisi alasan masuk ke `penjual.uji`, laporan menjadi Selesai, dan tindakan tercatat di log admin serta log audit | `GET /api/katalog/:id` untuk listing tersebut membalas 404, surel "Peringatan Penghapusan Listing ITBELI" berisi alasan masuk ke `penjual.uji`, laporan menjadi Selesai, `log_admin` mencatat HAPUS_LISTING "Barang palsu", dan `log_audit` bertambah "Penghapusan listing: &lt;idBarang&gt;". Hasil sama pada `v9.0` dan setelah perbaikan | Pass |
 
 ### 4.4.23 Use Case Memblokir Akun Pengguna
 
@@ -1569,7 +1589,7 @@ Tabel 4.4.23. Hasil Pengujian Use Case UC23
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC23-TC01 | KF48, KF51, KF52, KF53, KF54, KF55, KF56 | Normal | 1. Masuk sebagai `penjual.uji` di peramban kedua.<br>2. Di peramban pertama, masuk sebagai `admin.uji`, buka detail laporan atas `penjual.uji`, tekan "Blokir Akun", isi alasan, konfirmasi.<br>3. Muat ulang peramban kedua, lalu coba masuk lagi sebagai `penjual.uji`.<br>4. Buka katalog dan kotak masuk Mailpit. | Alasan: "Penipuan berulang" | Status akun menjadi Diblokir, sesi di peramban kedua berakhir, login ulang ditolak dengan pesan penangguhan, seluruh listing `penjual.uji` hilang dari katalog dan pencarian, surel penangguhan berisi alasan terkirim, dan tindakan tercatat di log admin serta log audit | *Belum dijalankan* | - |
+| UC23-TC01 | KF48, KF51, KF52, KF53, KF54, KF55, KF56 | Normal | 1. Masuk sebagai `penjual.uji` di peramban kedua.<br>2. Di peramban pertama, masuk sebagai `admin.uji`, buka detail laporan atas `penjual.uji`, tekan "Blokir Akun", isi alasan, konfirmasi.<br>3. Muat ulang peramban kedua, lalu coba masuk lagi sebagai `penjual.uji`.<br>4. Buka katalog dan kotak masuk server SMTP uji. | Alasan: "Penipuan berulang" | Status akun menjadi Diblokir, sesi di peramban kedua berakhir, login ulang ditolak dengan pesan penangguhan, seluruh listing `penjual.uji` hilang dari katalog dan pencarian, surel penangguhan berisi alasan terkirim, dan tindakan tercatat di log admin serta log audit | Pada `v9.0` yang terblokir justru `pembeli.uji` (pelapor). `penjual.uji` tetap aktif: sesi lamanya masih diterima (200), login ulang berhasil, listing Samsung masih tampil di katalog, tidak ada surel ke penjual, dan `log_admin` mencatat BLOKIR_AKUN untuk `pembeli.uji`. Setelah commit `1711d55` `penjual.uji` berstatus Diblokir, sesi lamanya ditolak (401) dan halamannya berpindah ke `/masuk` setelah dimuat ulang, login ulang ditolak (403 `AKUN_DIBLOKIR`) dengan pesan "Akun Anda ditangguhkan oleh admin karena melanggar ketentuan penggunaan.", listingnya hilang dari katalog dan pencarian, surel "Pemberitahuan Penangguhan Akun ITBELI" berisi alasan diterima, dan `log_admin` mencatat BLOKIR_AKUN "Penipuan berulang" untuk `penjual.uji`. Catatan log audit pemblokiran diperiksa pada INT-TC27 | Fail pada `v9.0`, Pass setelah perbaikan |
 
 ### 4.4.24 Use Case Membuka Blokir Akun Pengguna
 
@@ -1580,7 +1600,7 @@ Tabel 4.4.24. Hasil Pengujian Use Case UC24
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC24-TC01 | KF51, KF54, KF55, KF56 | Normal | 1. Lanjutan UC23-TC01: sebagai `admin.uji`, tekan "Buka Blokir" untuk `penjual.uji`, isi alasan, konfirmasi.<br>2. Masuk sebagai `penjual.uji`, lalu buka katalog. | Alasan: "Banding diterima" | Login `penjual.uji` berhasil, listing yang tadi dinonaktifkan kembali tampil di katalog, dan log admin mencatat BUKA_BLOKIR beserta alasannya | *Belum dijalankan* | - |
+| UC24-TC01 | KF51, KF54, KF55, KF56 | Normal | 1. Lanjutan UC23-TC01: sebagai `admin.uji`, tekan "Buka Blokir" untuk `penjual.uji`, isi alasan, konfirmasi.<br>2. Masuk sebagai `penjual.uji`, lalu buka katalog. | Alasan: "Banding diterima" | Login `penjual.uji` berhasil, listing yang tadi dinonaktifkan kembali tampil di katalog, dan log admin mencatat BUKA_BLOKIR beserta alasannya | Pada `v9.0` login `penjual.uji` berhasil dan listingnya tampil, tetapi hanya karena akun itu tidak pernah terblokir (lihat UC23-TC01), dan `log_admin` mencatat BUKA_BLOKIR untuk `pembeli.uji`. Setelah commit `1711d55` login `penjual.uji` berhasil (200), listing Samsung kembali tampil di katalog, dan `log_admin` mencatat BUKA_BLOKIR "Banding diterima" untuk `penjual.uji` | Fail pada `v9.0`, Pass setelah perbaikan |
 
 <br>
 
@@ -1596,10 +1616,10 @@ Tabel 4.5. Hasil Pengujian KNF
 | KNF03-TC02 | KNF03 | Security | 100% nilai `kata_sandi_hash` berupa hash bcrypt (60 karakter, cost ≥ 10) dan 0 nilai sama dengan kata sandi teks asli | Inspeksi tabel `akun` dengan `psql`: pola `^\$2[aby]\$\d{2}\$.{53}$` dan perbandingan dengan kata sandi uji "ujicoba123" dan "Rahasia2026" | 23 dari 23 hash bcrypt `$2b$10$` sepanjang 60 karakter; 0 nilai sama dengan teks asli | Pass |
 | KNF03-TC03 | KNF03 | Security | Isi pesan di tabel `pesan` tidak memuat teks asli, termasuk setelah *base64* didekode; peserta dapat membaca pesannya, akun admin yang bukan peserta ditolak | Pembeli Uji mengirim pesan lewat `POST /api/percakapan/:id/pesan`, penjual dan admin membacanya lewat `GET /api/percakapan/:id`, lalu tabel `pesan` diinspeksi dengan `psql` (berkoordinasi dengan Modul D) | Kolom `isi_pesan_terenkripsi` berisi teks *base64* 140 karakter yang tidak memuat teks asli, baik sebelum maupun setelah didekode. Penjual menerima teks asli (200), sedangkan admin ditolak (403 "Anda bukan peserta percakapan ini.") | Pass |
 | KNF01-TC01 | KNF01 | Usability/Ergonomy | Pengguna pertama kali memahami pengelolaan listing dalam waktu <600 detik | Observasi pengguna pertama kali dan stopwatch | Belum diuji karena belum tersedia partisipan dan data observasi. Rencana: lakukan observasi dan catat waktu pemahaman aktual | - (belum diuji) |
-| KNF02-TC01 | KNF02 | Maintainability | Setiap tindakan moderasi (hapus listing, blokir, buka blokir) menghasilkan satu baris `log_admin` yang lengkap: pelaku, jenis, objek, waktu, dan alasan | Setelah UC22-TC01, UC23-TC01, dan UC24-TC01, jalankan `SELECT id_admin, jenis_tindakan, objek_ditindak, waktu, alasan FROM log_admin ORDER BY waktu` | *Belum dijalankan* | - |
-| KNF02-TC02 | KNF02 | Maintainability | Penerimaan laporan dan setiap tindak lanjutnya tercatat di `log_audit` dan dapat dibaca admin pada riwayat penanganan I-14 | Setelah UC19-TC01 dan UC21-TC01, bandingkan isi `log_audit` untuk laporan tersebut dengan riwayat yang tampil di I-14 | *Belum dijalankan* | - |
+| KNF02-TC01 | KNF02 | Maintainability | Setiap tindakan moderasi (hapus listing, blokir, buka blokir) menghasilkan satu baris `log_admin` yang lengkap: pelaku, jenis, objek, waktu, dan alasan | Setelah UC22-TC01, UC23-TC01, dan UC24-TC01, jalankan `SELECT id_admin, jenis_tindakan, objek_ditindak, waktu, alasan FROM log_admin ORDER BY waktu` | 3 baris `log_admin`: HAPUS_LISTING "Barang palsu", BLOKIR_AKUN "Penipuan berulang", dan BUKA_BLOKIR "Banding diterima". Kelima kolom terisi di setiap baris, baik pada `v9.0` maupun setelah perbaikan | Pass |
+| KNF02-TC02 | KNF02 | Maintainability | Penerimaan laporan dan setiap tindak lanjutnya tercatat di `log_audit` dan dapat dibaca admin pada riwayat penanganan I-14 | Setelah UC19-TC01 dan UC21-TC01, bandingkan isi `log_audit` untuk laporan tersebut dengan riwayat yang tampil di I-14 | Riwayat penanganan I-14 memuat ketiga catatan `log_audit` laporan tersebut dengan urutan yang sama: "Penerimaan laporan", "Perubahan status laporan menjadi Diproses", dan "Penghapusan listing: &lt;idBarang&gt;" | Pass |
 | KNF02-TC03 | KNF02 | Maintainability | Catatan log audit dan log admin tidak dapat diubah atau dihapus melalui aplikasi (KF49) | Periksa operasi kelas C38 dan C39 (C38-UT02, C39-UT06) serta seluruh 41 endpoint pada `src/routes/*.js` | Tidak ada operasi maupun endpoint untuk mengubah atau menghapus `log_audit` dan `log_admin`; C38-UT02 dan C39-UT06 lulus. Perlindungan ini hanya di tingkat aplikasi: pengguna basis data `itbeli` masih dapat menjalankan UPDATE atau DELETE langsung | Pass |
-| KNF02-TC04 | KNF02 | Maintainability | Hanya admin yang dapat membaca laporan dan riwayatnya | Panggil `GET /api/admin/laporan/:id` dengan token admin dan token pengguna biasa | *Belum dijalankan* (rancangan sama dengan INT-TC34) | - |
+| KNF02-TC04 | KNF02 | Maintainability | Hanya admin yang dapat membaca laporan dan riwayatnya | Panggil `GET /api/admin/laporan/:id` dengan token admin dan token pengguna biasa | Token admin 200 dengan laporan dan riwayatnya; token pengguna biasa 403. Rancangan yang sama juga lulus pada INT-TC34 | Pass |
 | *[KNFXX-TCYY]* | *[KNFXX]* | *[Parameter]* | *[Target terukur]* | *[Metode dan alat]* | *[Hasil aktual]* | *Pass/Fail* |
 
 <br>
@@ -1674,13 +1694,27 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC12-TC02 | <img src="assets/bukti/UC12-TC02.png" width="600"> |
 | UC12-TC03 | <img src="assets/bukti/UC12-TC03.png" width="600"> |
 | KNF01-TC01 | Belum tersedia; pengujian belum dilakukan |
-| C10-UT01 s.d. C45-UT06 (135 test Modul E, termasuk C29-UT05 s.d. C29-UT16 dan C30-UT04 s.d. C30-UT10) | [unit-modul-e.txt](assets/bukti/unit-modul-e.txt) |
+| C10-UT01 s.d. C45-UT06 (141 test Modul E, termasuk C29-UT05 s.d. C29-UT16 dan C30-UT04 s.d. C30-UT10) | [unit-modul-e.txt](assets/bukti/unit-modul-e.txt) |
 | C20, C21, C29, C30, C36, C37, C45 (coverage Modul E) | [coverage-modul-e.txt](assets/bukti/coverage-modul-e.txt) |
 | C11-UT04 (sebelum perbaikan) | [C11-UT04-gagal-sebelum-perbaikan.txt](assets/bukti/C11-UT04-gagal-sebelum-perbaikan.txt) |
-| INT-TC24 s.d. INT-TC34 | Belum tersedia; menunggu `npm run test:db` |
-| UC19-TC01 s.d. UC24-TC01 | Belum tersedia; menunggu pengujian di aplikasi yang berjalan |
+| INT-TC24 s.d. INT-TC34 | [integrasi-modul-e.txt](assets/bukti/integrasi-modul-e.txt) |
+| UC19-TC01 | <img src="assets/bukti/UC19-TC01-kirim.png" width="600"><br><img src="assets/bukti/UC19-TC01-admin.png" width="600"> |
+| UC19-TC02 | Pada `v9.0`:<br><img src="assets/bukti/UC19-TC02-percakapan-v9.0.png" width="600"><br>Setelah perbaikan:<br><img src="assets/bukti/UC19-TC02-percakapan.png" width="600"><br><img src="assets/bukti/UC19-TC02-admin.png" width="600"> |
+| UC19-TC03 | <img src="assets/bukti/UC19-TC03.png" width="600"> |
+| UC19-TC04 | <img src="assets/bukti/UC19-TC04.png" width="600"> |
+| UC20-TC01 | <img src="assets/bukti/UC20-TC01.png" width="600"> |
+| UC20-TC02 | <img src="assets/bukti/UC20-TC02.png" width="600"> |
+| UC20-TC03 | Pada `v9.0`:<br><img src="assets/bukti/UC20-TC03-v9.0.png" width="600"><br>Setelah perbaikan:<br><img src="assets/bukti/UC20-TC03.png" width="600"> |
+| UC21-TC01 | <img src="assets/bukti/UC21-TC01.png" width="600"> |
+| UC21-TC02 | Pada `v9.0`:<br><img src="assets/bukti/UC21-TC02-v9.0.png" width="600"><br>Setelah perbaikan:<br><img src="assets/bukti/UC21-TC02.png" width="600"> |
+| UC22-TC01 | <img src="assets/bukti/UC22-TC01-admin.png" width="600"><br><img src="assets/bukti/UC22-TC01-katalog.png" width="600"> |
+| UC23-TC01 | Pada `v9.0`:<br><img src="assets/bukti/UC23-TC01-admin-v9.0.png" width="600"><br><img src="assets/bukti/UC23-TC01-penjual-v9.0.png" width="600"><br>Setelah perbaikan:<br><img src="assets/bukti/UC23-TC01-admin.png" width="600"><br><img src="assets/bukti/UC23-TC01-penjual.png" width="600"><br><img src="assets/bukti/UC23-TC01-login.png" width="600"> |
+| UC24-TC01 | Pada `v9.0`:<br><img src="assets/bukti/UC24-TC01-admin-v9.0.png" width="600"><br><img src="assets/bukti/UC24-TC01-katalog-v9.0.png" width="600"><br>Setelah perbaikan:<br><img src="assets/bukti/UC24-TC01-admin.png" width="600"><br><img src="assets/bukti/UC24-TC01-katalog.png" width="600"> |
+| UC19-TC01 s.d. UC24-TC01, KNF02-TC01, KNF02-TC02, KNF02-TC04 (hasil setiap pemeriksaan) | [use-case-modul-e-v9.0.json](assets/bukti/use-case-modul-e-v9.0.json), [use-case-modul-e-perbaikan.json](assets/bukti/use-case-modul-e-perbaikan.json) |
+| Skrip uji use case dan penangkap SMTP Modul E | [uji-use-case-modul-e.cjs](assets/skrip/uji-use-case-modul-e.cjs), [penangkap-smtp.cjs](assets/skrip/penangkap-smtp.cjs) |
 | KNF02-TC03 | Keluaran C38-UT02 dan C39-UT06 pada [unit-modul-e.txt](assets/bukti/unit-modul-e.txt) |
-| KNF02-TC01, KNF02-TC02, KNF02-TC04 | Belum tersedia |
+| KNF02-TC02 | <img src="assets/bukti/KNF02-TC02.png" width="600"> |
+| KNF02-TC01, KNF02-TC04 | Pemeriksaan `KNF02-TC01` dan `KNF02-TC04` pada [use-case-modul-e-perbaikan.json](assets/bukti/use-case-modul-e-perbaikan.json) |
 | *[ID pengujian]* | *[Bukti hasil pengujian]* |
 
 <br>
@@ -1723,7 +1757,7 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | KF40 | KNF01 | UC11 | C03 - HalamanListingPenjual<br>C14 - BarangController<br>C25 - Penjual<br>C28 - SesiLogin<br>C29 - Barang<br>C41 - Otorisasi | `src/views/js/HalamanListingPenjual.js`<br>`src/services/ListingService.js`<br>`src/models/ListingPenjual.js` | UC11-TC01, UC11-TC02, UC11-TC03 | C03-UT03, C14-UT15, C14-UT16, C29-UT04; INT-TC17, INT-TC18; KNF01-TC01 |
 | KF41 | KNF01 | UC12 | C03 - HalamanListingPenjual<br>C14 - BarangController<br>C25 - Penjual<br>C28 - SesiLogin<br>C29 - Barang<br>C41 - Otorisasi | `src/views/js/HalamanListingPenjual.js`<br>`src/services/ListingService.js`<br>`src/models/ListingPenjual.js` | UC12-TC01, UC12-TC02, UC12-TC03 | C03-UT03, C14-UT15, C14-UT16, C29-UT04; INT-TC19, INT-TC20; KNF01-TC01 |
 | KF42 | - | UC08, UC11, UC12 | C03 - HalamanListingPenjual<br>C06 - KartuProduk<br>C14 - BarangController<br>C29 - Barang | `src/views/js/HalamanListingPenjual.js`<br>`src/views/js/ListingUI.js`<br>`src/models/Barang.js`<br>`src/models/ListingPenjual.js` | UC08-TC01; UC11-TC01, UC11-TC03; UC12-TC01, UC12-TC02, UC12-TC03 | C29-UT01, C29-UT04; INT-TC17 s.d. INT-TC20 |
-| KF37 | - | UC19 | C20 - LaporanController<br>C10 - FormulirLaporan | `src/controllers/LaporanController.js`<br>`src/views/js/FormulirLaporan.js` | UC19-TC02 | C20-UT09, C20-UT23 |
+| KF37 | - | UC19 | C20 - LaporanController<br>C10 - FormulirLaporan<br>C08 - HalamanPercakapan | `src/controllers/LaporanController.js`<br>`src/views/js/FormulirLaporan.js`<br>`src/views/js/HalamanPercakapan.js`<br>`src/views/pages/percakapan.html` | UC19-TC02 | C20-UT09, C20-UT23 |
 | KF43 | - | UC19 | C10 - FormulirLaporan<br>C20 - LaporanController | `src/views/js/FormulirLaporan.js`<br>`src/controllers/LaporanController.js` | UC19-TC01, UC19-TC02, UC19-TC03 | C10-UT01, C10-UT02, C20-UT01 sampai C20-UT04, C20-UT11, C20-UT14 |
 | KF44 | - | UC19 | C10 - FormulirLaporan<br>C20 - LaporanController<br>C37 - BuktiLaporan<br>C45 - PenyimpananBerkas | `src/controllers/LaporanController.js`<br>`src/models/BuktiLaporan.js`<br>`src/penyimpanan/PenyimpananBerkas.js` | UC19-TC01, UC19-TC04 | C10-UT03 sampai C10-UT06, C20-UT05 sampai C20-UT08, C20-UT12, C20-UT13, C20-UT17, C20-UT18, C37-UT01 sampai C37-UT07, C45-UT01 sampai C45-UT06, INT-TC24, INT-TC31, INT-TC32 |
 | KF45 | KNF02 | UC20 | C11 - DasborAdmin<br>C21 - ModerasiController<br>C36 - Laporan | `src/views/js/DasborAdmin.js`<br>`src/controllers/ModerasiController.js`<br>`src/models/Laporan.js` | UC20-TC01 | C21-UT03, C21-UT08, C21-UT11, C36-UT06, C36-UT08, C36-UT12, C36-UT13 |
@@ -1732,12 +1766,12 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | KF48 | KNF02 | UC19<br>UC21<br>UC22<br>UC23 | C20 - LaporanController<br>C21 - ModerasiController<br>C38 - LogAudit | `src/controllers/LaporanController.js`<br>`src/controllers/ModerasiController.js`<br>`src/models/LogAudit.js` | UC19-TC01, UC21-TC01, UC22-TC01, UC23-TC01 | C20-UT20, C20-UT21, C21-UT12, C21-UT18, C21-UT20, C21-UT21, C38-UT01, C38-UT03 sampai C38-UT05, INT-TC24, INT-TC26, INT-TC27, KNF02-TC02 |
 | KF49 | KNF02 | UC21<br>UC22<br>UC23 | C38 - LogAudit | `src/models/LogAudit.js` | UC21-TC01 | C38-UT02, C21-UT19, KNF02-TC03 |
 | KF50 | - | UC22 | C21 - ModerasiController<br>C29 - Barang<br>C30 - FotoBarang<br>C45 - PenyimpananBerkas | `src/controllers/ModerasiController.js`<br>`src/models/Barang.js`<br>`src/models/FotoBarang.js`<br>`src/penyimpanan/PenyimpananBerkas.js` | UC22-TC01 | C21-UT22 sampai C21-UT27, C29-UT08, C29-UT14, C30-UT08, C45-UT05, INT-TC30 |
-| KF51 | - | UC23<br>UC24 | C21 - ModerasiController<br>C23 - Akun | `src/controllers/ModerasiController.js`<br>`src/models/Akun.js` | UC23-TC01, UC24-TC01 | C21-UT28 sampai C21-UT38, INT-TC27, INT-TC28, INT-TC29 |
+| KF51 | - | UC23<br>UC24 | C21 - ModerasiController<br>C23 - Akun<br>C11 - DasborAdmin | `src/controllers/ModerasiController.js`<br>`src/models/Akun.js`<br>`src/views/js/DasborAdmin.js` | UC23-TC01, UC24-TC01 | C11-UT07, C11-UT08, C21-UT28 sampai C21-UT38, C21-UT43 sampai C21-UT45, INT-TC27, INT-TC28, INT-TC29 |
 | KF52 | - | UC22<br>UC23 | C21 - ModerasiController<br>C19 - NotifikasiController<br>C43 - SurelAdapter | `src/controllers/ModerasiController.js`<br>`src/controllers/NotifikasiController.js`<br>`src/integrasi/SurelAdapter.js` | UC22-TC01, UC23-TC01 | C21-UT22, C21-UT28, INT-TC33 |
 | KF53 | KNF03 | UC03<br>UC23 | C21 - ModerasiController<br>C28 - SesiLogin<br>C13 - AkunController | `src/controllers/ModerasiController.js`<br>`src/models/SesiLogin.js`<br>`src/controllers/AkunController.js` | UC23-TC01 (dan UC03 milik Modul A) | C21-UT28, INT-TC27 |
 | KF54 | - | UC13<br>UC23<br>UC24 | C21 - ModerasiController<br>C29 - Barang | `src/controllers/ModerasiController.js`<br>`src/models/Barang.js` | UC23-TC01, UC24-TC01 (dan UC13 milik Modul C) | C21-UT28, C21-UT34, C21-UT39, C21-UT42, C29-UT09, C29-UT10, C29-UT16, INT-TC27, INT-TC29 |
 | KF55 | KNF02 | UC22<br>UC23<br>UC24 | C21 - ModerasiController<br>C39 - LogAdmin | `src/controllers/ModerasiController.js`<br>`src/models/LogAdmin.js` | UC22-TC01, UC23-TC01, UC24-TC01 | C21-UT24, C21-UT30, C21-UT37, C21-UT41, C39-UT01 sampai C39-UT06, KNF02-TC01, INT-TC29 |
-| KF56 | KNF02 | UC20<br>UC21<br>UC22<br>UC23<br>UC24 | C21 - ModerasiController<br>C41 - Otorisasi<br>C11 - DasborAdmin | `src/controllers/ModerasiController.js`<br>`src/routes/moderasiRoutes.js`<br>`src/pendukung/Otorisasi.js` | UC20-TC03 | C21-UT02, C21-UT04, C21-UT07, C21-UT10, C21-UT17, C21-UT23, C21-UT29, C21-UT35, C21-UT40, INT-TC34, KNF02-TC04 |
+| KF56 | KNF02 | UC20<br>UC21<br>UC22<br>UC23<br>UC24 | C21 - ModerasiController<br>C41 - Otorisasi<br>C11 - DasborAdmin | `src/controllers/ModerasiController.js`<br>`src/routes/moderasiRoutes.js`<br>`src/pendukung/Otorisasi.js`<br>`src/views/js/DasborAdmin.js` | UC20-TC03 | C11-UT09, C21-UT02, C21-UT04, C21-UT07, C21-UT10, C21-UT17, C21-UT23, C21-UT29, C21-UT35, C21-UT40, INT-TC34, KNF02-TC04 |
 | *[KFXX]* | *[KNFXX atau -]* | *[UCXX]* | *[CXX - Nama kelas]* | *[path/ke/file]* | *[UCXX-TCYY]* | *[CXX-UTYY, INT-TCYY, KNFXX-TCYY atau -]* |
 
 Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
