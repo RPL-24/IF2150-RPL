@@ -279,9 +279,9 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | *C14* | *RiwayatHargaBahanBaku* | *Tidak perlu* | *Diwujudkan sebagai tabel `tbl_riwayat_harga_bahan` dan tipe data `RiwayatHarga`, tanpa logika.* | *-* |
 | *C15* | *TrenBahanBakuPage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis, teruji lewat test case use case.* | *-* |
 | *C16* | *TrenBahanBakuController* | *Mendalam* | *Memuat penyaringan berdasarkan rentang waktu (`filterByRentang`) dan pembentukan data grafik (`formatUntukChart`).* | *[isi]* |
-| *C17* | *Notifikasi* | *Sedang* | *Entitas dengan perubahan status baca (`markAsRead()`).* | *[isi]* |
-| *C18* | *PushNotificationUI* | *Sedang* | *Mendelegasikan penampilan notifikasi ke pustaka notifikasi perangkat.* | *[isi]* |
-| *C19* | *NotificationController* | *Mendalam* | *Memuat aturan penentuan margin negatif, pembuatan, dan pengiriman notifikasi.* | *[isi]* |
+| *C17* | *Notifikasi* | *Sedang* | *Entitas dengan perubahan status baca (`markAsRead()`).* | *C17-UT01 – C17-UT03, INT-TC-NOTIF-02* |
+| *C18* | *PushNotificationUI* | *Sedang* | *Mendelegasikan penampilan notifikasi ke pustaka notifikasi perangkat.* | *C18-UT01 – C18-UT08, INT-TC-NOTIF-03, INT-TC-NOTIF-04* |
+| *C19* | *NotificationController* | *Mendalam* | *Memuat aturan penentuan margin negatif, pembuatan, dan pengiriman notifikasi.* | *C19-UT01 – C19-UT26, INT-TC-NOTIF-01 – INT-TC-NOTIF-03* |
 | *C20* | *RiwayatHargaJual* | *Mendalam* | *Setter memuat validasi harga dan waktu perubahan.* | *[isi]* |
 | *C21* | *SearchProductPage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis, teruji lewat test case use case.* | *-* |
 | *C22* | *ProductSearchController* | *Mendalam* | *Memuat algoritma pencarian dan penyaringan produk melalui `search()`.* | *[isi]* |
@@ -347,6 +347,109 @@ Tabel 4.2.2b. Ringkasan Cakupan Kelas C06
 | ID Algoritma yang tercakup | *`Algo-C06-01`* |
 | Coverage (wajib ≥ 70%) | *Vitest 5.0.5 dengan provider V8 melaporkan 88,63% baris, 86,11% cabang, 88,63% pernyataan, dan 100% fungsi untuk `AuthController.ts`. Bukti dicantumkan pada Subbab 4.6.* |
 
+### 4.2.3 Kelas Notifikasi
+
+**ID Kelas:** *C17*<br>
+**Nama Kelas:** *Notifikasi*<br>
+**Tingkat:** *Sedang*
+
+Pengujian operasi `getPesanAlert()` (`Algo-C17-01`) dan `markAsRead()` (`Algo-C17-02`) dijalankan dengan Vitest melalui `src/tests/notification.test.ts`. Kelas ini tidak bergantung pada komponen eksternal sehingga tidak memerlukan *mock*.
+
+Tabel 4.2.3. Hasil Pengujian Unit Kelas C17
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C17-UT01* | *`markAsRead()`, `getPesanAlert()`* | *Normal* | *Buat objek `Notifikasi` bertipe `kerugian` dengan pesan “Halo”, lalu panggil `markAsRead()`.* | *Status awal belum dibaca, berubah menjadi sudah dibaca setelah `markAsRead()`. `getPesanAlert()` mengembalikan “Halo”.* | *`getIsRead()` bernilai `false` lalu `true`, dan `getPesanAlert()` mengembalikan “Halo”.* | *Pass* |
+| *C17-UT02* | *Konstruktor* | *Negatif* | *Buat objek `Notifikasi` dengan pesan yang hanya berisi spasi.* | *Pembuatan objek ditolak dengan error.* | *Konstruktor melempar error.* | *Pass* |
+| *C17-UT03* | *`getPesanAlert()` dan getter lainnya* | *Batas* | *Buat objek dengan judul dan pesan yang mengandung spasi tepi, tanpa `idProduk` dan status baca.* | *Judul dan pesan dirapikan, `idProduk` bernilai `null`, dan status awal belum dibaca.* | *Judul “Harga naik”, pesan “Telur naik”, `getIdProduk()` bernilai `null`, dan `getIsRead()` bernilai `false`.* | *Pass* |
+
+Tabel 4.2.3b. Ringkasan Cakupan Kelas C17
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *`getPesanAlert()`, `markAsRead()`* |
+| Operasi yang diuji | *Konstruktor, `getPesanAlert()`, `markAsRead()`, serta getter pendukung (`getIdNotifikasi()`, `getJudul()`, `getWaktuKirim()`, `getTipe()`, `getIdProduk()`, `getIsRead()`).* |
+| ID Algoritma yang tercakup | *`Algo-C17-01`, `Algo-C17-02`* |
+| Coverage | *Vitest 5.0.5 dengan provider V8 melaporkan 100% baris, 75% cabang, 100% pernyataan, dan 100% fungsi untuk `Notifikasi.ts`. Kelas bertingkat Sedang tidak wajib memenuhi batas 70%. Bukti dicantumkan pada Subbab 4.6.* |
+
+### 4.2.4 Kelas PushNotificationUI
+
+**ID Kelas:** *C18*<br>
+**Nama Kelas:** *PushNotificationUI*<br>
+**Tingkat:** *Sedang*
+
+Pengujian operasi `tampilkanNotifikasi()` (`Algo-C18-01`) dan `onClickNotification()` (`Algo-C18-02`) beserta operasi pendukungnya dijalankan dengan Vitest melalui `src/tests/pushNotificationUI.test.ts`. Pustaka `expo-notifications` dan modul `react-native` disimulasikan dengan *mock* karena hanya tersedia di perangkat.
+
+Tabel 4.2.4. Hasil Pengujian Unit Kelas C18
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C18-UT01* | *`inisialisasi()`* | *Normal* | *Mock izin notifikasi mengembalikan `granted` pada platform Android.* | *Notifikasi aktif, kanal Android dengan prioritas maksimum dan kategori `kerugian` terdaftar, serta izin tidak diminta ulang.* | *Operasi mengembalikan `true`, kanal dan kategori terdaftar, dan `requestPermissionsAsync()` tidak dipanggil.* | *Pass* |
+| *C18-UT02* | *`inisialisasi()`* | *Negatif* | *Mock izin awal `undetermined` dan pengguna menolak permintaan izin pada platform iOS.* | *Notifikasi tidak aktif.* | *Operasi mengembalikan `false` dan `isNotifikasiAktif()` bernilai `false`.* | *Pass* |
+| *C18-UT03* | *`tampilkanNotifikasi()`* | *Normal* | *Izin aktif, lalu tampilkan notifikasi “Margin Negatif!” untuk produk `p1`.* | *Notifikasi dijadwalkan segera dengan judul, pesan, data produk, dan kategori `kerugian`.* | *`scheduleNotificationAsync()` dipanggil dengan konten yang sesuai dan `trigger: null`.* | *Pass* |
+| *C18-UT04* | *`tampilkanNotifikasi()`* | *Negatif* | *Tampilkan notifikasi ketika izin belum aktif.* | *Notifikasi tidak dijadwalkan.* | *`scheduleNotificationAsync()` tidak dipanggil.* | *Pass* |
+| *C18-UT05* | *`onClickNotification()`* | *Normal* | *Daftarkan handler, lalu simulasikan ketukan notifikasi kerugian yang valid dan notifikasi bertipe tidak dikenal. Hentikan langganan setelahnya.* | *Handler hanya menerima data notifikasi yang valid, dan langganan dapat dihentikan.* | *Handler dipanggil satu kali dengan `{ tipe: 'kerugian', idProduk: 'p1' }` dan `remove()` dipanggil.* | *Pass* |
+| *C18-UT06* | *`periksaIzin()`, `bukaPengaturan()`* | *Normal* | *Mock izin mengembalikan `denied`, lalu buka pengaturan perangkat.* | *Status izin “ditolak” dan halaman pengaturan perangkat dibuka.* | *Operasi mengembalikan `ditolak` dan `Linking.openSettings()` dipanggil.* | *Pass* |
+| *C18-UT07* | *`ambilKetukanTerakhir()`* | *Normal dan batas* | *Mock ketukan terakhir berupa notifikasi `harga_bahan`, lalu tidak ada ketukan.* | *Data ketukan dikembalikan pada pemanggilan pertama dan `null` pada pemanggilan kedua.* | *Hasil sesuai harapan.* | *Pass* |
+| *C18-UT08* | *`parseDataNotifikasi()`* | *Negatif* | *Masukkan `null`, string, tipe tidak dikenal, dan `idProduk` bertipe angka.* | *Data tidak valid ditolak, sedangkan `idProduk` yang bukan string diabaikan.* | *Tiga masukan pertama menghasilkan `null` dan masukan terakhir menghasilkan `idProduk: undefined`.* | *Pass* |
+
+Tabel 4.2.4b. Ringkasan Cakupan Kelas C18
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *`tampilkanNotifikasi(notifikasi)`, `onClickNotification()`* |
+| Operasi yang diuji | *`tampilkanNotifikasi()`, `onClickNotification()`, serta operasi pendukung `inisialisasi()`, `isNotifikasiAktif()`, `periksaIzin()`, `bukaPengaturan()`, `ambilKetukanTerakhir()`, dan `parseDataNotifikasi()`.* |
+| ID Algoritma yang tercakup | *`Algo-C18-01`, `Algo-C18-02`* |
+| Coverage | *Vitest 5.0.5 dengan provider V8 melaporkan 100% baris, 95,83% cabang, 100% pernyataan, dan 100% fungsi untuk `PushNotificationUI.ts`. Bukti dicantumkan pada Subbab 4.6.* |
+
+### 4.2.5 Kelas NotificationController
+
+**ID Kelas:** *C19*<br>
+**Nama Kelas:** *NotificationController*<br>
+**Tingkat:** *Mendalam*
+
+Pengujian operasi `cekMarginNegatif()` (`Algo-C19-01`), `buatNotifikasiKerugian()` (`Algo-C19-02`), dan `kirimNotifikasi()` (`Algo-C19-03`) beserta operasi public lainnya dijalankan dengan Vitest melalui `src/tests/notificationController.test.ts` dan `src/tests/notification.test.ts`. Supabase dan `PushNotificationUI` disimulasikan dengan *mock* sehingga pengujian tidak mengakses jaringan. Data contoh yang digunakan adalah produk Nasi Goreng dengan harga jual Rp15.000 yang memakai telur (`b1`, takaran 2) dan beras (`b2`, takaran 1, harga Rp5.000).
+
+Tabel 4.2.5. Hasil Pengujian Unit Kelas C19
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C19-UT01* | *`perbaruiHargaBeli()`* | *Normal* | *Naikkan harga telur dari Rp2.000 menjadi Rp3.000 sehingga HPP menjadi Rp11.000.* | *Harga dan riwayat harga tersimpan, margin diperbarui menjadi Rp4.000 tanpa peringatan, dan hanya notifikasi perubahan harga yang dikirim.* | *Urutan query ke tabel sesuai, margin tersimpan `4000` dengan `status_peringatan: false`, dan push dikirim satu kali dengan tipe `harga_bahan`.* | *Pass* |
+| *C19-UT02* | *`perbaruiHargaBeli()`* | *Normal* | *Naikkan harga telur dari Rp2.000 menjadi Rp6.000 sehingga HPP menjadi Rp17.000.* | *Margin menjadi −Rp2.000 dengan status peringatan aktif. Notifikasi kerugian dan notifikasi perubahan harga tersimpan dan dikirim.* | *Margin tersimpan `-2000` dengan `status_peringatan: true`. Push pertama berjudul “Margin Negatif!” untuk produk `p1`, push kedua bertipe `harga_bahan`.* | *Pass* |
+| *C19-UT03* | *`perbaruiHargaBeli()`* | *Batas* | *Naikkan harga telur menjadi Rp5.000 sehingga HPP sama dengan harga jual.* | *Margin 0 tidak dianggap kerugian dan hanya notifikasi perubahan harga yang dikirim.* | *Margin tersimpan `0` dengan `status_peringatan: false` dan push dikirim satu kali.* | *Pass* |
+| *C19-UT04* | *`perbaruiHargaBeli()`* | *Batas* | *Kirim harga baru yang sama dengan harga lama (Rp2.000).* | *Tidak ada perubahan data dan tidak ada notifikasi.* | *Hanya satu query baca yang dijalankan dan push tidak dikirim.* | *Pass* |
+| *C19-UT05* | *`perbaruiHargaBeli()`* | *Batas* | *Turunkan harga bahan yang tidak dipakai produk mana pun menjadi Rp1.500.* | *Harga dan riwayat tersimpan, tidak ada margin yang diperbarui, dan hanya notifikasi perubahan harga yang dikirim.* | *Query berhenti di `tbl_resep_bahan` lalu menyimpan satu notifikasi. Push dikirim satu kali.* | *Pass* |
+| *C19-UT06* | *`perbaruiHargaBeli()`* | *Negatif* | *Kirim harga 0, −1.000, dan `NaN` (tiga kasus parametrik).* | *Ketiga masukan ditolak dengan pesan “Input Takaran / Harga Jual Tidak Valid” sebelum basis data diakses.* | *Ketiga kasus menghasilkan pesan yang diharapkan dan `supabase.from()` tidak dipanggil.* | *Pass* |
+| *C19-UT07* | *`perbaruiHargaBeli()`* | *Negatif* | *Mock basis data mengembalikan error saat mengambil bahan `b9`.* | *Proses dibatalkan dengan pesan error dari basis data.* | *Error “Bahan tidak ditemukan” diteruskan dan push tidak dikirim.* | *Pass* |
+| *C19-UT08* | *`perbaruiHargaBeli()`* | *Negatif* | *Mock basis data gagal saat menyimpan harga baru.* | *Proses dibatalkan sebelum riwayat harga disimpan.* | *Error “Update ditolak” diteruskan dan hanya dua query dijalankan.* | *Pass* |
+| *C19-UT09* | *`perbaruiHargaBeli()`* | *Negatif* | *Mock basis data gagal saat menyimpan riwayat harga.* | *Proses dibatalkan dengan pesan error dari basis data.* | *Error “Riwayat gagal” diteruskan.* | *Pass* |
+| *C19-UT10* | *`perbaruiHargaBeli()`* | *Negatif* | *Mock basis data gagal saat memuat produk yang memakai bahan.* | *Proses dibatalkan dengan pesan error dari basis data.* | *Error “Resep gagal dimuat” diteruskan.* | *Pass* |
+| *C19-UT11* | *`perbaruiHargaBeli()`* | *Negatif* | *Mock basis data gagal saat memuat detail produk dan resep.* | *Proses dibatalkan dengan pesan error dari basis data.* | *Error “Produk gagal dimuat” diteruskan.* | *Pass* |
+| *C19-UT12* | *`perbaruiHargaBeli()`* | *Negatif* | *Mock basis data gagal saat menyimpan margin produk.* | *Proses dibatalkan dan notifikasi tidak dikirim.* | *Error “Margin gagal disimpan” diteruskan dan push tidak dikirim.* | *Pass* |
+| *C19-UT13* | *`perbaruiHargaBeli()`* | *Negatif* | *Mock basis data gagal saat menyimpan notifikasi.* | *Proses dibatalkan dan push tidak dikirim.* | *Error “Notifikasi gagal disimpan” diteruskan dan push tidak dikirim.* | *Pass* |
+| *C19-UT14* | *`evaluasiPerubahanHarga()`* | *Normal* | *Evaluasi kenaikan harga gula dari Rp1.000 menjadi Rp2.000 untuk produk dengan data bahan kosong dan produk tanpa resep.* | *Produk dengan data tidak lengkap tetap dihitung tanpa error, dan produk yang tidak memakai bahan dilewati.* | *Margin Teh Manis tersimpan `3000` tanpa peringatan dan notifikasi perubahan harga tersimpan.* | *Pass* |
+| *C19-UT15* | *`evaluasiPerubahanHarga()`* | *Batas* | *Evaluasi dengan harga lama sama dengan harga baru dan tanpa produk terdampak.* | *Tidak ada notifikasi perubahan harga yang dibuat.* | *Hanya satu query dijalankan dan push tidak dikirim.* | *Pass* |
+| *C19-UT16* | *`buatNotifikasiKerugian()`* | *Normal* | *Buat notifikasi kerugian untuk Nasi Goreng dengan margin −Rp2.000 akibat kenaikan harga telur.* | *Notifikasi tersimpan dan dikembalikan sebagai objek `Notifikasi` bertipe `kerugian` yang belum dibaca.* | *Objek `Notifikasi` dengan ID `n7`, tipe `kerugian`, produk `p1`, pesan berisi “Nasi Goreng”, dan status belum dibaca.* | *Pass* |
+| *C19-UT17* | *`kirimNotifikasi()`* | *Negatif* | *Mock push notification menolak dengan error “Izin ditolak” saat membuat notifikasi perubahan harga.* | *Kegagalan push hanya dicatat sebagai peringatan dan notifikasi tetap tersimpan.* | *Objek notifikasi `n8` dikembalikan dan `console.warn()` dipanggil.* | *Pass* |
+| *C19-UT18* | *`getPush()`* | *Normal* | *Buat controller dengan layanan push tiruan.* | *Controller mengembalikan layanan push yang sama.* | *Layanan push yang dikembalikan sama dengan yang diberikan.* | *Pass* |
+| *C19-UT19* | *`muatNotifikasi()`* | *Normal* | *Mock basis data mengembalikan dua baris notifikasi (kerugian dan perubahan harga).* | *Notifikasi diurutkan dari yang terbaru dan dipetakan menjadi objek `Notifikasi`.* | *Query diurutkan berdasarkan `waktu_kirim` menurun dan dua objek terbentuk dengan data yang sesuai.* | *Pass* |
+| *C19-UT20* | *`muatNotifikasi()`* | *Batas* | *Mock basis data mengembalikan `null`.* | *Operasi mengembalikan daftar kosong.* | *Hasil berupa daftar kosong.* | *Pass* |
+| *C19-UT21* | *`muatNotifikasi()`* | *Negatif* | *Mock basis data mengembalikan error “Koneksi terputus”.* | *Error diteruskan ke pemanggil.* | *Error “Koneksi terputus” diteruskan.* | *Pass* |
+| *C19-UT22* | *`tandaiSudahDibaca()`* | *Normal* | *Tandai notifikasi `n1` yang belum dibaca.* | *Status baca diperbarui di basis data dan pada objek.* | *Query memperbarui `is_read: true` untuk `n1` dan `getIsRead()` bernilai `true`.* | *Pass* |
+| *C19-UT23* | *`tandaiSudahDibaca()`* | *Negatif* | *Mock basis data gagal saat memperbarui status baca.* | *Error diteruskan dan status objek tidak berubah.* | *Error “Update gagal” diteruskan dan `getIsRead()` tetap `false`.* | *Pass* |
+| *C19-UT24* | *`tandaiSemuaDibaca()`* | *Normal* | *Tandai semua notifikasi yang belum dibaca.* | *Seluruh notifikasi dengan `is_read = false` diperbarui menjadi sudah dibaca.* | *Query memperbarui `is_read: true` dengan filter `is_read = false`.* | *Pass* |
+| *C19-UT25* | *`tandaiSemuaDibaca()`* | *Negatif* | *Mock basis data gagal saat memperbarui status massal.* | *Error diteruskan ke pemanggil.* | *Error “Update massal gagal” diteruskan.* | *Pass* |
+| *C19-UT26* | *`cekMarginNegatif()`* | *Normal dan batas* | *Saring tiga hasil kalkulasi dengan margin −1, 0, dan 10.* | *Hanya produk dengan margin negatif yang dikembalikan. Margin 0 tidak termasuk.* | *Hanya produk dengan margin −1 yang dikembalikan.* | *Pass* |
+
+Tabel 4.2.5b. Ringkasan Cakupan Kelas C19
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *`cekMarginNegatif()`, `buatNotifikasiKerugian()`, `kirimNotifikasi(notifikasi)`* |
+| Operasi yang diuji | *Seluruh operasi public pada DPPL, ditambah operasi public hasil implementasi: `perbaruiHargaBeli()`, `evaluasiPerubahanHarga()`, `buatNotifikasiPerubahanHarga()`, `getPush()`, `muatNotifikasi()`, `tandaiSudahDibaca()`, dan `tandaiSemuaDibaca()`.* |
+| ID Algoritma yang tercakup | *`Algo-C19-01`, `Algo-C19-02`, `Algo-C19-03`* |
+| Coverage (wajib ≥ 70%) | *Vitest 5.0.5 dengan provider V8 melaporkan 100% baris, 97,67% cabang, 100% pernyataan, dan 100% fungsi untuk `NotificationController.ts`, serta 100% pada seluruh metrik untuk `notification.ts`. Bukti dicantumkan pada Subbab 4.6.* |
+
 <br>
 
 ## 4.3 Pengujian Integrasi
@@ -362,6 +465,10 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | *INT-AUTH-03* | *Supabase Auth (`auth.users`)* | *`public.tbl_pemilik_usaha` melalui trigger `on_auth_user_created` dan fungsi `handle_new_user()`* | *Autentikasi–Basis data profil* | *INT-TC-AUTH-03* |
 | *INT-AUTH-04* | *C06 `AuthController`* | *Supabase Auth (`signInWithPassword()`)* | *Aplikasi–Sistem eksternal* | *INT-TC-AUTH-04* |
 | *INT-AUTH-05* | *C06 `AuthController`* | *Supabase Edge Function `login-with-username`* | *Aplikasi–Sistem eksternal* | *INT-TC-AUTH-05* |
+| *INT-NOTIF-01* | *C19 `NotificationController`* | *Supabase (`tbl_bahan_baku`, `tbl_riwayat_harga_bahan`, `tbl_produk`)* | *Aplikasi–Basis data* | *INT-TC-NOTIF-01* |
+| *INT-NOTIF-02* | *C19 `NotificationController`* | *C17 `Notifikasi` dan Supabase (`tbl_notifikasi`)* | *Controller–Model–Basis data* | *INT-TC-NOTIF-02* |
+| *INT-NOTIF-03* | *C19 `NotificationController`* | *C18 `PushNotificationUI` dan `expo-notifications` (sistem notifikasi OS)* | *Controller–Boundary–Sistem eksternal* | *INT-TC-NOTIF-03* |
+| *INT-NOTIF-04* | *C18 `PushNotificationUI`* | *Navigasi aplikasi pada `App.tsx` (detail produk atau halaman utama)* | *Boundary–Antarmuka aplikasi* | *INT-TC-NOTIF-04* |
 | *...* | *...* | *...* | *...* | *...* |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
@@ -373,6 +480,10 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | *INT-TC-AUTH-03* | *INT-AUTH-03* | *Pembuatan profil melalui trigger basis data* | *Setelah registrasi berhasil, buka `public.tbl_pemilik_usaha` dan filter berdasarkan username akun uji.* | *Profil untuk username yang baru didaftarkan tersedia di tabel.* | *Filter menampilkan profil akun uji yang baru dibuat pada UC01-TC01.* | *Pass* |
 | *INT-TC-AUTH-04* | *INT-AUTH-04* | *Autentikasi melalui email* | *Dari kondisi logout, masuk dengan email dan password akun uji seperti pada UC02-TC01.* | *Supabase Auth memverifikasi kredensial dan aplikasi membuka Beranda.* | *Login melalui email berhasil dan Beranda tampil.* | *Pass* |
 | *INT-TC-AUTH-05* | *INT-AUTH-05* | *Autentikasi melalui Edge Function* | *Dari kondisi logout, masuk dengan username dan password akun uji seperti pada UC02-TC02.* | *Edge Function memverifikasi kredensial dan aplikasi menggunakan sesi yang diterima untuk membuka Beranda.* | *Login melalui username berhasil dan Beranda tampil.* | *Pass* |
+| *INT-TC-NOTIF-01* | *INT-NOTIF-01* | *Penyimpanan harga baru, riwayat harga, dan margin produk* | *Login dengan akun uji, ubah harga beli bahan yang dipakai produk uji, lalu periksa `tbl_riwayat_harga_bahan` dan `tbl_produk` di Supabase.* | *Satu baris riwayat berisi harga lama dan harga baru tersimpan untuk setiap perubahan, dan margin produk terdampak diperbarui.* | *Setiap perubahan harga Nasi tercatat di `tbl_riwayat_harga_bahan`, misalnya Rp2.600 → Rp1.000 pada 19 Nov 2026 pukul 17.00 WIB. Margin Nasi Goreng Suwir (harga jual Rp18.000) diperbarui menjadi Rp7.000 dengan `status_peringatan` FALSE.* | *Pass* |
+| *INT-TC-NOTIF-02* | *INT-NOTIF-02* | *Pembuatan dan penyimpanan notifikasi* | *Naikkan harga bahan hingga margin produk uji negatif, lalu periksa `tbl_notifikasi` dan `tbl_produk` di Supabase.* | *Tersimpan satu notifikasi bertipe `kerugian` untuk produk terdampak dan satu notifikasi bertipe `harga_bahan` dengan `is_read = false`. Kolom `status_peringatan` produk bernilai `true`.* | *Kenaikan harga Nasi Rp2.000 → Rp3.000 (16.27 WIB) menyimpan notifikasi `kerugian` “Margin Negatif!” (Nasi Goreng Suwir rugi ~Rp3.000/porsi) dan `harga_bahan` “Harga Nasi naik +50%”, keduanya dengan `is_read` FALSE. Pada kondisi yang sama, `tbl_produk` menyimpan margin Nasi Goreng Suwir −3000 dengan `status_peringatan` TRUE.* | *Pass* |
+| *INT-TC-NOTIF-03* | *INT-NOTIF-03* | *Penampilan push notification di perangkat* | *Izinkan notifikasi, lalu ubah harga bahan melalui aplikasi.* | *Push notification kerugian berisi nama produk terdampak dan push notification perubahan harga bahan tampil di perangkat.* | *Pada iPhone melalui Expo Go, push “Margin Negatif!” berisi “Nasi Goreng Suwir rugi ~Rp 3.000/porsi (-16,7%)” dan push “Harga Nasi naik +50%” tampil sebagai banner.* | *Pass* |
+| *INT-TC-NOTIF-04* | *INT-NOTIF-04* | *Navigasi dari ketukan push notification* | *Ketuk push notification kerugian, lalu ulangi untuk push notification perubahan harga.* | *Ketukan notifikasi kerugian membuka detail produk terdampak, sedangkan ketukan notifikasi perubahan harga membuka halaman utama.* | *Ketukan notifikasi perubahan harga membuka halaman utama (17.00 WIB). Ketukan notifikasi kerugian membuka Detail Produk Nasi Goreng Suwir dengan margin −Rp3.000, sesuai isi notifikasi.* | *Pass* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
 <br>
@@ -409,6 +520,32 @@ Tabel 4.4.2. Hasil Pengujian Use Case UC02
 | *UC02-TC03* | *KF04* | *Alternatif 1 — password salah* | *Masukkan email akun uji dan password yang salah, lalu tekan Masuk.* | *Email terdaftar dan password salah.* | *Login ditolak dan aplikasi menampilkan pesan “Username atau Password Salah”.* | *Pesan “Username atau Password Salah” tampil dan aplikasi tetap di halaman Login.* | *Pass* |
 | *UC02-TC04* | *KF04* | *Alternatif 2 — akun belum terdaftar* | *Masukkan email yang belum terdaftar dan password uji, lalu tekan Masuk.* | *Email berformat valid yang belum terdaftar dan password uji.* | *Login ditolak dan aplikasi menampilkan pesan “Tidak dapat menemukan akun”.* | *Pesan “Tidak dapat menemukan akun” tampil dan aplikasi tetap di halaman Login.* | *Pass* |
 
+### 4.4.9 Use Case UC09 — Menerima Notifikasi Kerugian Produk
+
+**ID Use Case:** *UC09*<br>
+**Nama Use Case:** *Menerima Notifikasi Kerugian Produk*
+
+*Catatan: pada tag ini belum tersedia sumber perubahan harga bahan baku pada antarmuka. Pengujian dilakukan pada iPhone dengan versi 26.6.2 melalui Expo Go dengan Supabase proyek Pross.*
+
+Tabel 4.4.9. Hasil Pengujian Use Case UC09
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *UC09-TC01* | *KF20* | *Normal — menerima dan membuka notifikasi kerugian* | *Ubah harga beli bahan yang dipakai produk uji hingga HPP melebihi harga jual, lalu ketuk push notification kerugian yang muncul.* | *Bahan Nasi Rp2.000 → Rp3.000. Produk Nasi Goreng Suwir dengan harga jual Rp18.000.* | *Push notification berisi nama produk terdampak muncul. Saat diketuk, aplikasi langsung menampilkan detail produk yang merugi.* | *Push “Margin Negatif!” tampil dengan pesan “Nasi Goreng Suwir rugi ~Rp3.000/porsi (−16,7%) karena harga Nasi naik menjadi Rp3.000”. Setelah diketuk, aplikasi membuka Detail Produk Nasi Goreng Suwir dengan label “Produk ini sedang merugi” dan margin −Rp3.000.* | *Pass* |
+| *UC09-TC02* | *KF20* | *Alternatif 1 — mengabaikan push notification* | *Naikkan harga bahan hingga margin negatif, abaikan push notification, lalu buka daftar produk secara manual.* | *Bahan Nasi Rp2.000 → Rp3.000. Produk Nasi Goreng Suwir dengan harga jual Rp18.000.* | *Produk terdampak tetap menampilkan ikon peringatan kerugian pada daftar produk.* | *Daftar “Produk Saya” di halaman utama menampilkan Nasi Goreng Suwir dengan ikon ⚠️, bingkai merah, dan margin −Rp3.000.* | *Pass* |
+
+### 4.4.10 Use Case UC10 — Menerima Notifikasi Perubahan Harga Bahan Baku
+
+**ID Use Case:** *UC10*<br>
+**Nama Use Case:** *Menerima Notifikasi Perubahan Harga Bahan Baku*
+
+Tabel 4.4.10. Hasil Pengujian Use Case UC10
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *UC10-TC01* | *KF22* | *Normal — menerima dan membuka notifikasi perubahan harga* | *Ubah harga beli bahan baku tanpa membuat produk merugi, lalu ketuk push notification perubahan harga yang muncul.* | *Bahan Nasi Rp2.600 → Rp1.000.* | *Push notification perubahan harga bahan muncul. Saat diketuk, aplikasi terbuka di halaman utama.* | *Push notification perubahan harga tampil. Setelah diketuk, aplikasi membuka halaman utama dan Nasi Goreng Suwir tampil dengan margin Rp7.000 tanpa ikon peringatan.* | *Pass* |
+| *UC10-TC02* | *KF22* | *Alternatif 1 — mengabaikan push notification* | *Ubah harga beli bahan baku, abaikan push notification, lalu buka menu notifikasi dari halaman utama.* | *Bahan Nasi Rp2.000 → Rp3.000.* | *Notifikasi perubahan harga tetap tersimpan dan tampil pada daftar menu notifikasi.* | *Menu Notifikasi menampilkan “Harga Nasi naik +50%” berstatus belum dibaca, bersama notifikasi sebelumnya yang dikelompokkan per hari.* | *Pass* |
+
 <br>
 
 ## 4.5 Pengujian Kebutuhan Non-Fungsional (KNF)
@@ -444,6 +581,11 @@ Tabel 4.6. Bukti Hasil Pengujian
 | *INT-TC-AUTH-03* | *[Profil akun uji pada hasil filter Supabase](./assets/bukti-pengujian/UC01-01-profil-terbuat-supabase.png). Bukti juga digunakan pada UC01-TC01.* |
 | *INT-TC-AUTH-04* | *Gunakan bukti proses verifikasi akun via email pada UC02-TC01.* |
 | *INT-TC-AUTH-05* | *Gunakan bukti proses verifikasi akun via username pada UC02-TC02.* |
+| *C17-UT01 – C17-UT03, C18-UT01 – C18-UT08, C19-UT01 – C19-UT26, C17–C19 (coverage)* | *[Keluaran Vitest dan coverage `Notifikasi.ts`, `PushNotificationUI.ts`, `NotificationController.ts`, dan `notification.ts`](./assets/bukti-pengujian/C17-C19-unit-test-coverage.png).* |
+| *INT-TC-NOTIF-01* | *[Riwayat harga bahan pada Supabase](./assets/bukti-pengujian/Supabase-Harga-Riwayat-Bahan.png) dan [margin produk pada Supabase](./assets/bukti-pengujian/Supabase-Produk-Awal.png).* |
+| *INT-TC-NOTIF-02* | *[Notifikasi tersimpan pada `tbl_notifikasi`](./assets/bukti-pengujian/Supabase-Notifikasi.png) dan [status peringatan produk saat rugi](./assets/bukti-pengujian/Supabase-Produk-Rugi.png).* |
+| *INT-TC-NOTIF-03* | *Gunakan bukti push notification pada UC09-TC01 dan UC10-TC01.* |
+| *INT-TC-NOTIF-04* | *Gunakan bukti halaman tujuan setelah notifikasi diketuk pada UC09-TC01 dan UC10-TC01.* |
 | *UC01-TC01* | *[Beranda setelah registrasi](./assets/bukti-pengujian/UC01-01-registrasi-berhasil-beranda.jpeg) dan [profil akun uji di Supabase](./assets/bukti-pengujian/UC01-01-profil-terbuat-supabase.png).* |
 | *UC01-TC02* | *[Kolom email kosong dan tombol Daftar nonaktif](./assets/bukti-pengujian/UC01-02-data-belum-lengkap.jpeg).* |
 | *UC01-TC03* | *[Pesan “Akun sudah dibuat”](./assets/bukti-pengujian/UC01-03-akun-sudah-terdaftar.jpeg).* |
@@ -452,6 +594,10 @@ Tabel 4.6. Bukti Hasil Pengujian
 | *UC02-TC02* | *[Tampilan “Memeriksa akun…” saat login via username](./assets/bukti-pengujian/UC02-02-login-username-berhasil.jpeg).* |
 | *UC02-TC03* | *[Pesan “Username atau Password Salah”](./assets/bukti-pengujian/UC02-03-login-password-salah.jpeg).* |
 | *UC02-TC04* | *[Pesan “Tidak dapat menemukan akun”](./assets/bukti-pengujian/UC02-04-login-akun-belum-terdaftar.jpeg).* |
+| *UC09-TC01* | *[Rekaman push notification kerugian hingga detail produk terbuka setelah notifikasi diketuk](./assets/bukti-pengujian/UC09-01-margin-negatif.mp4).* |
+| *UC09-TC02* | *[Ikon peringatan kerugian pada daftar produk](./assets/bukti-pengujian/UC09-02-ikon-peringatan.jpeg).* |
+| *UC10-TC01* | *[Push notification perubahan harga](./assets/bukti-pengujian/UC10-01-push-perubahan-harga.jpeg) dan [halaman utama setelah notifikasi diketuk](./assets/bukti-pengujian/UC10-01-page-setelah-notif-diklik.jpeg).* |
+| *UC10-TC02* | *[Daftar notifikasi pada menu notifikasi](./assets/bukti-pengujian/UC09-02-menu-notifikasi.jpeg).* |
 | *KNF01-TC01* | *Rekaman registrasi [percobaan 1](./assets/bukti-pengujian/KNF01-registrasi-01.mp4), [percobaan 2](./assets/bukti-pengujian/KNF01-registrasi-02.mp4), dan [percobaan 3](./assets/bukti-pengujian/KNF01-registrasi-03.mp4).* |
 | *KNF02-TC01* | *[Tangkapan layar empat kolom formulir registrasi I-02](./assets/bukti-pengujian/KNF02-form-registrasi.jpeg).* |
 | *KNF05-TC01* | *Rekaman login via email [1](./assets/bukti-pengujian/KNF05-login-email-01.mp4), [2](./assets/bukti-pengujian/KNF05-login-email-02.mp4), dan [3](./assets/bukti-pengujian/KNF05-login-email-03.mp4). Rekaman login via username [1](./assets/bukti-pengujian/KNF05-login-username-01.mp4), [2](./assets/bukti-pengujian/KNF05-login-username-02.mp4), dan [3](./assets/bukti-pengujian/KNF05-login-username-03.mp4).* |
@@ -472,6 +618,8 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | *KF02* | *KNF01, KNF03* | *UC01* | *C01 — PemilikUsaha<br>C05 — RegistrationPage<br>C06 — AuthController* | *`src/models/PemilikUsaha.ts`<br>`src/views/RegistrationPage.tsx`<br>`src/controllers/AuthController.ts`<br>`src/supabase/schema.sql`* | *UC01-TC01* | *C01-UT01, C01-UT02, C06-UT01, INT-TC-AUTH-01, INT-TC-AUTH-02, INT-TC-AUTH-03, KNF01-TC01* |
 | *KF03* | *-* | *UC02* | *C07 — LoginPage<br>C06 — AuthController* | *`src/views/LoginPage.tsx`<br>`src/controllers/AuthController.ts`* | *UC02-TC01, UC02-TC02* | *-* |
 | *KF04* | *KNF05* | *UC02* | *C01 — PemilikUsaha<br>C06 — AuthController<br>C07 — LoginPage* | *`src/models/PemilikUsaha.ts`<br>`src/controllers/AuthController.ts`<br>`src/views/LoginPage.tsx`<br>`src/supabase/functions/login-with-username/index.ts`* | *UC02-TC01, UC02-TC02, UC02-TC03, UC02-TC04* | *C06-UT06 – C06-UT11, INT-TC-AUTH-04, INT-TC-AUTH-05, KNF05-TC01* |
+| *KF20* | *-* | *UC09* | *C17 — Notifikasi<br>C18 — PushNotificationUI<br>C19 — NotificationController* | *`src/models/Notifikasi.ts`<br>`src/services/PushNotificationUI.ts`<br>`src/controllers/NotificationController.ts`<br>`src/controllers/notification.ts`<br>`src/supabase/migrations/20261105000000_notifikasi_riwayat_harga.sql`* | *UC09-TC01, UC09-TC02* | *C17-UT01 – C17-UT03, C18-UT01 – C18-UT05, C19-UT02, C19-UT03, C19-UT06 – C19-UT13, C19-UT16, C19-UT17, C19-UT26, INT-TC-NOTIF-01 – INT-TC-NOTIF-04* |
+| *KF22* | *-* | *UC10* | *C17 — Notifikasi<br>C18 — PushNotificationUI<br>C19 — NotificationController* | *`src/models/Notifikasi.ts`<br>`src/services/PushNotificationUI.ts`<br>`src/controllers/NotificationController.ts`<br>`src/controllers/notification.ts`<br>`src/supabase/migrations/20261105000000_notifikasi_riwayat_harga.sql`* | *UC10-TC01, UC10-TC02* | *C17-UT01 – C17-UT03, C18-UT01 – C18-UT08, C19-UT01, C19-UT04, C19-UT05, C19-UT14, C19-UT15, C19-UT17 – C19-UT25, INT-TC-NOTIF-01 – INT-TC-NOTIF-04* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
 Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
