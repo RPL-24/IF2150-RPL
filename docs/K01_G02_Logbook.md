@@ -88,11 +88,18 @@
 ---
 
 ### Milestone 10
-**Periode:** 14-11-2026 - *[deadline M10]*
+**Periode:** 13-11-2026 - (berjalan, deadline belum diumumkan)
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| *14-11-2026* | *Ghaniyul Amri Caulava* | *Membaca templat HIUPL, memetakan kondisi repo terhadap ketentuannya (55 skenario use case, 4 KNF, coverage per kelas), dan menyusun rencana pembagian tugas M10* | *-* | *Done* | *Deadline M10 belum tercantum di templat* |
 | *15-11-2026* | *Dhanesworo Muhammad Datiputro* | *Pengujian Modul A untuk HIUPL pada branch `test/hiupl-modul-a`: ID pengujian pada nama test Modul A; 63 test baru pada `npm test` (408 menjadi 471) sehingga coverage kelas Mendalam Modul A menjadi 98 sampai 100%; 12 test integrasi dengan PostgreSQL, Mailpit, dan token endpoint Google (`npm run test:db`); 13 skenario UC01 sampai UC06 di aplikasi lokal beserta tangkapan layar; uji KNF03; serta HIUPL 3.1, 4.1 sampai 4.6, dan BAB 5 bagian Modul A langsung di `docs/M10/K01_G02_HIUPL.md` (templat diganti nama)* | *2 hari* | *Done* | *Infrastruktur test integrasi K1 belum ada, sehingga `npm run test:db` dibuat di branch ini. Skenario berhasil masuk lewat Google belum dapat diuji dengan Google sungguhan karena `GOOGLE_CLIENT_ID` belum diatur di lokal maupun Vercel* |
+| *15-11-2026* | *Ghaniyul Amri Caulava* | *Menambah dan memberi ID 135 unit test Modul E (C10, C11, C20, C21, C29, C30, C36 sampai C39, C45), memperbaiki cacat dasbor admin yang ditemukan C11-UT04, membuat skrip penyusun Tabel 4.2 dari keluaran Jest, serta menyusun kerangka `K01_G02_HIUPL.md` beserta BAB 1, Subbab 3.2 sampai 3.4, dan bagian Modul E. Branch `test/hiupl-modul-e` dan `docs/hiupl-kerangka`* | *-* | *On Progress* | *Test integrasi dan uji use case Modul E belum dapat dijalankan karena PostgreSQL dan Docker tidak tersedia di laptop; menunggu suite PostgreSQL nyata* |
+| *19-11-2026* | *Ghaniyul Amri Caulava* | *Menjalankan 11 test integrasi Modul E (INT-TC24 sampai INT-TC34) dengan PostgreSQL, disk, dan server SMTP sungguhan, serta 12 test case use case UC19 sampai UC24 dan KNF02 di peramban lewat skrip Playwright, masing-masing pada kode `v9.0` dan setelah perbaikan. Empat cacat baru ditemukan dan diperbaiki: blokir dan buka blokir menyasar pelapor, pengalihan non-admin ke `/masuk`, dan tombol Laporkan yang belum ada di ruang percakapan. Menambah 6 unit test untuk perbaikan itu (141 test Modul E) dan mengisi hasil pengujian Modul E di HIUPL* | *-* | *Done* | *`mailpit.exe` diblokir Application Control Windows, sehingga diganti penangkap SMTP lokal berbasis Node.js; PostgreSQL dijalankan di WSL karena laptop tidak memakai Docker* |
+
+**Catatan/Evaluasi Milestone 10:**
+* *Baris anggota lain diisi masing-masing sesuai bagian mereka di HIUPL.*
+* *Kolom durasi diisi oleh anggota yang bersangkutan.*
 
 ---
 

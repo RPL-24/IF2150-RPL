@@ -1,0 +1,21 @@
+FAIL tests/unit/ViewModulE.test.js
+  ● DasborAdmin (C11) › C11-UT04 [Normal] onClickUbahStatus dari daftar laporan I-13 (detail belum dibuka) → PATCH terkirim, statistik dan daftar dimuat ulang
+
+    TypeError: this.memuatStatistik is not a function
+
+    [0m [90m 314 |[39m       [36mthis[39m[33m.[39mbukaDetailLaporan(idLaporan)[33m;[39m
+     [90m 315 |[39m     } [36melse[39m {
+    [31m[1m>[22m[39m[90m 316 |[39m       [36mthis[39m[33m.[39mmemuatStatistik()[33m;[39m
+     [90m     |[39m            [31m[1m^[22m[39m
+     [90m 317 |[39m       [36mthis[39m[33m.[39mfilterLaporan([36mthis[39m[33m.[39mfilterStatus)[33m;[39m
+     [90m 318 |[39m     }
+     [90m 319 |[39m   }[0m
+
+      at DasborAdmin.memuatStatistik [as onClickUbahStatus] (views/js/DasborAdmin.js:316:12)
+      at Object.<anonymous> (tests/unit/ViewModulE.test.js:165:5)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 13 passed, 14 total
+Snapshots:   0 total
+Time:        0.425 s, estimated 1 s
+Ran all test suites matching tests/unit/ViewModulE.test.js.
