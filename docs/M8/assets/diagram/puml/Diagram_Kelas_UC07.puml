@@ -1,0 +1,114 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "FormulirBarang" as C04 {
+  - judul: String
+  - harga: Double
+  - deskripsiKondisi: String
+  - idKategori: String
+  - idLokasi: String
+  - daftarFoto: List<FotoBarang>
+  - fotoBaru: List<File>
+  + bukaFormulir(): void
+  + tampilkanFormulir(barang: Barang, daftarFoto: List<FotoBarang>, daftarKategori: List<Kategori>, daftarLokasi: List<LokasiCOD>): void
+  + suntingIsian(data: Map<String, Any>): void
+  + pilihFoto(fotoBaru: List<File>): void
+  + validasiTipeData(data: Map<String, Any>): Boolean
+  + validasiFotoSisiKlien(fotoBaru: List<File>, fotoDipertahankan: List<FotoBarang>): Boolean
+  + validasiIsianWajib(data: Map<String, Any>, galeri: List<Any>): Boolean
+  + tandaiIsianKosong(): void
+  + tolakPratinjau(): void
+  + kirimFormulir(data: Map<String, Any>, fotoBaru: List<File>): void
+  + tampilkanNotifikasi(kodePesan: String): void
+}
+class "BarangController" as C14 {
+  + getDataFormulir(): Map<String, Any>
+  + buatBarang(token: String, data: Map<String, Any>, fotoBaru: List<File>): Boolean
+  + getIdPenjualDariSesi(token: String): String
+  + validasiKelengkapanIsian(data: Map<String, Any>, galeri: List<Any>): Boolean
+  + validasiFoto(fotoBaru: List<File>, fotoDipertahankan: List<FotoBarang>): Boolean
+  + simpanFoto(idBarang: String, fotoBaru: List<File>): List<String>
+  + terbitkanKeKatalog(idBarang: String): void
+}
+class "Penjual" as C25 {
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+}
+class "Barang" as C29 {
+  - idBarang: String
+  - idPenjual: String
+  - judul: String
+  - harga: Double
+  - deskripsiKondisi: String
+  - idKategori: String
+  - idLokasi: String
+  - status: String
+  - waktuUnggah: DateTime
+  - waktuUbah: DateTime
+  + simpan(data: Map<String, Any>, waktu: DateTime): String
+}
+class "FotoBarang" as C30 {
+  - idFoto: String
+  - idBarang: String
+  - namaBerkas: String
+  - format: String
+  - ukuran: Long
+  - urutan: Integer
+  - pathBerkas: String
+  + validasiFormat(format: String): Boolean
+  + validasiUkuran(ukuran: Long): Boolean
+  + simpan(idBarang: String, namaBerkas: String, format: String, ukuran: Long, urutan: Integer, pathBerkas: String): Boolean
+}
+class "Kategori" as C31 {
+  - idKategori: String
+  - namaKategori: String
+  + getDaftarKategori(): List<Kategori>
+  + validasiKategori(idKategori: String): Boolean
+}
+class "LokasiCOD" as C32 {
+  - idLokasi: String
+  - namaLokasi: String
+  - kampus: String
+  + getDaftarLokasi(): List<LokasiCOD>
+  + validasiLokasi(idLokasi: String): Boolean
+}
+class "Otorisasi" as C41 {
+  + verifikasiToken(token: String): SesiLogin
+}
+class "PenyimpananBerkas" as C45 {
+  - namaBucket: String
+  + simpan(idObjek: String, berkas: List<File>): List<String>
+}
+C04 --> C14
+C14 ..> C28
+C14 ..> C29
+C14 ..> C30
+C14 ..> C31
+C14 ..> C32
+C14 ..> C41
+C14 ..> C45
+C41 ..> C28
+C25 "1" *-- "0..*" C29
+C29 "1" *-- "1..5" C30
+C31 "1" -- "0..*" C29
+C32 "1" -- "0..*" C29
+@enduml

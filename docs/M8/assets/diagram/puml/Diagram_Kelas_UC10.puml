@@ -1,0 +1,89 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanListingPenjual" as C03 {
+  - daftarTersedia: List<Barang>
+  - daftarTerjual: List<Barang>
+  - tabAktif: String
+  - idBarangTerpilih: String
+  + tampilkanDaftarListing(daftarListing: List<Barang>): void
+  + onClickHapus(idBarang: String): void
+  + tampilkanKonfirmasi(barang: Barang, aksi: String): void
+  + konfirmasiAksi(): void
+  + batalkanKonfirmasi(): void
+  + tutupDialog(): void
+  + tampilkanNotifikasi(kodePesan: String): void
+}
+class "BarangController" as C14 {
+  + getIdPenjualDariSesi(token: String): String
+  + getListingSaya(token: String): List<Barang>
+  + verifikasiKepemilikan(idAkun: String, idPenjual: String): Boolean
+  + siapkanPenghapusan(token: String, idBarang: String): Barang
+  + deleteBarang(token: String, idBarang: String): Boolean
+}
+class "Penjual" as C25 {
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+}
+class "Barang" as C29 {
+  - idBarang: String
+  - idPenjual: String
+  - judul: String
+  - harga: Double
+  - deskripsiKondisi: String
+  - idKategori: String
+  - idLokasi: String
+  - status: String
+  - waktuUnggah: DateTime
+  - waktuUbah: DateTime
+  + cariById(idBarang: String): Barang
+  + getListingPenjual(idPenjual: String): List<Barang>
+  + hapus(idBarang: String): Boolean
+}
+class "FotoBarang" as C30 {
+  - idFoto: String
+  - idBarang: String
+  - namaBerkas: String
+  - format: String
+  - ukuran: Long
+  - urutan: Integer
+  - pathBerkas: String
+  + getGaleri(idBarang: String): List<FotoBarang>
+  + hapus(idBarang: String): Boolean
+}
+class "Otorisasi" as C41 {
+  + verifikasiToken(token: String): SesiLogin
+}
+class "PenyimpananBerkas" as C45 {
+  - namaBucket: String
+  + hapus(pathBerkas: List<String>): Boolean
+}
+C03 --> C14
+C14 ..> C28
+C14 ..> C29
+C14 ..> C30
+C14 ..> C41
+C14 ..> C45
+C41 ..> C28
+C25 "1" *-- "0..*" C29
+C29 "1" *-- "1..5" C30
+@enduml

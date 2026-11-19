@@ -1,0 +1,120 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanPercakapan" as C08 {
+  - percakapanAktif: Percakapan
+  - daftarPercakapan: List<Map<String, Any>>
+  - isiTeksInput: String
+  + gulirKePesanTerakhir(): void
+  + kirimPesan(isi: String): void
+  + validasiInputKosong(isi: String): Boolean
+  + tampilkanUrutanPesan(daftarPesan: List<Map<String, Any>>): void
+}
+class "PanelNotifikasi" as C09 {
+  - daftarNotifikasi: List<Notifikasi>
+  - jumlahBelumDibaca: Integer
+  + tampilkanDaftarNotifikasi(daftar: List<Notifikasi>): void
+  + tampilkanPenandaBelumDibaca(jumlah: Integer): void
+}
+class "PercakapanController" as C18 {
+  + verifikasiPeserta(idAkun: String, percakapan: Percakapan): Boolean
+  + kirimPesan(token: String, idPercakapan: String, isi: String): Map<String, Any>
+  + enkripsiPesan(isi: String): String
+}
+class "NotifikasiController" as C19 {
+  + kirimNotifikasi(idPenerima: String, jenis: String, isi: String): Boolean
+  + kirimPushNotifikasi(idPenerima: String, isi: String): Boolean
+}
+class "Akun" as C23 {
+  - idAkun: String
+  - nama: String
+  - nim: String
+  - email: String
+  - kataSandiHash: String
+  - statusAkun: String
+  - statusBlokir: Boolean
+  - peran: String
+  - setujuKebijakan: Boolean
+  - waktuDaftar: DateTime
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+}
+class "Percakapan" as C33 {
+  - idPercakapan: String
+  - idPembeli: String
+  - idPenjual: String
+  - idBarang: String
+  - waktuDibuat: DateTime
+  - waktuPembaruanTerakhir: DateTime
+  + cariById(idPercakapan: String): Percakapan
+  + cekPeserta(idAkun: String): Boolean
+  + addPesan(idPengirim: String, isiPesanTerenkripsi: String): Pesan
+  + perbaruiWaktuTerakhir(waktu: DateTime): void
+}
+class "Pesan" as C34 {
+  - idPesan: String
+  - idPercakapan: String
+  - idPengirim: String
+  - isiPesanTerenkripsi: String
+  - waktuKirim: DateTime
+  - statusBaca: Boolean
+  + simpanPesan(idPercakapan: String, idPengirim: String, isiPesanTerenkripsi: String): Pesan
+}
+class "Notifikasi" as C35 {
+  - idNotifikasi: String
+  - idAkun: String
+  - jenis: String
+  - isi: String
+  - waktuKirim: DateTime
+  - statusBaca: Boolean
+  + simpan(idAkun: String, jenis: String, isi: String, waktuKirim: DateTime, statusBaca: Boolean): Boolean
+  + hitungBelumDibaca(idAkun: String): Integer
+}
+class "Otorisasi" as C41 {
+  + verifikasiToken(token: String): SesiLogin
+}
+class "Kriptografi" as C42 {
+  - saltRounds: Integer
+  - kunciEnkripsi: String
+  + enkripsi(teks: String): String
+}
+class "PushNotifikasiAdapter" as C44 {
+  - kunciPublikVapid: String
+  - kunciPrivatVapid: String
+  + kirimPush(idPenerima: String, judul: String, isi: String): Boolean
+}
+C08 --> C18
+C09 --> C19
+C18 ..> C28
+C18 ..> C33
+C18 ..> C34
+C18 ..> C41
+C18 ..> C42
+C18 ..> C19
+C19 ..> C35
+C19 ..> C44
+C41 ..> C28
+C23 "1" -- "0..*" C28
+C23 "1" -- "0..*" C35
+C33 "1" *-- "0..*" C34
+C23 "1" -- "0..*" C34
+@enduml

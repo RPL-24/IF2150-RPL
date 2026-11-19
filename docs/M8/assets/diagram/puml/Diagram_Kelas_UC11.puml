@@ -1,0 +1,83 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanListingPenjual" as C03 {
+  - daftarTersedia: List<Barang>
+  - daftarTerjual: List<Barang>
+  - tabAktif: String
+  - idBarangTerpilih: String
+  + tampilkanDaftarListing(daftarListing: List<Barang>): void
+  + onClickTandaiTerjual(idBarang: String): void
+  + tampilkanKonfirmasi(barang: Barang, aksi: String): void
+  + konfirmasiAksi(): void
+  + batalkanKonfirmasi(): void
+  + tutupDialog(): void
+  + tampilkanNotifikasi(kodePesan: String): void
+}
+class "KartuProduk" as C06 {
+  - idBarang: String
+  - judul: String
+  - harga: Double
+  - fotoUtama: String
+  - status: String
+  - namaKategori: String
+  - namaLokasi: String
+  + render(barang: Barang): void
+}
+class "BarangController" as C14 {
+  + getIdPenjualDariSesi(token: String): String
+  + getListingSaya(token: String): List<Barang>
+  + verifikasiKepemilikan(idAkun: String, idPenjual: String): Boolean
+  + siapkanPerubahanStatus(token: String, idBarang: String, statusAsal: String): Barang
+  + ubahStatusBarang(token: String, idBarang: String, statusAsal: String, statusTujuan: String): Boolean
+}
+class "Penjual" as C25 {
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+}
+class "Barang" as C29 {
+  - idBarang: String
+  - idPenjual: String
+  - judul: String
+  - harga: Double
+  - deskripsiKondisi: String
+  - idKategori: String
+  - idLokasi: String
+  - status: String
+  - waktuUnggah: DateTime
+  - waktuUbah: DateTime
+  + cariById(idBarang: String): Barang
+  + getListingPenjual(idPenjual: String): List<Barang>
+  + getStatus(): String
+  + setStatus(idBarang: String, idPenjual: String, statusAsal: String, statusTujuan: String, waktuUbah: DateTime): Boolean
+}
+class "Otorisasi" as C41 {
+  + verifikasiToken(token: String): SesiLogin
+}
+C03 --> C14
+C03 "1" *-- "0..*" C06
+C14 ..> C28
+C14 ..> C29
+C14 ..> C41
+C41 ..> C28
+C25 "1" *-- "0..*" C29
+@enduml

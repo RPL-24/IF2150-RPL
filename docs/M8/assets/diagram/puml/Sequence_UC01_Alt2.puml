@@ -1,0 +1,23 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC01 — Alternatif 2: Email Sudah Terdaftar
+actor "Calon Pengguna" as User
+boundary ":HalamanOtentikasi" as UIo
+control ":AkunController" as AC
+entity ":Akun" as Akun
+User -> UIo: kirimFormulirPendaftaran(nama, nim, email, kataSandi, setujuKebijakan)
+UIo -> AC: daftarAkun(nama, nim, email, kataSandi, setujuKebijakan)
+AC -> AC: validasiKelengkapanFormulir(nama, nim, email, kataSandi, setujuKebijakan)
+AC -> AC: validasiDomainEmail(email)
+AC -> AC: cekKeunikanEmail(email)
+AC -> Akun: cariByEmail(email)
+Akun --> AC: akun (surel sudah terdaftar)
+note right of AC: Pendaftaran dibatalkan (KF05)
+AC --> UIo: false (surel sudah terdaftar)
+UIo -> UIo: tampilkanPesanGalat("Email sudah terdaftar. Gunakan email lain atau masuk.")
+@enduml

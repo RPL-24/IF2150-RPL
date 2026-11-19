@@ -1,0 +1,345 @@
+/* ITBELI — pustaka komponen
+   Sumber: docs/design/ITBELI-UI-Design-Spec.md bagian 6.
+   Berkas layar hanya menyusun kelas di sini; tidak menambah CSS baru. */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  width: 1440px; height: 1043px; overflow: hidden;
+  background: var(--bg); color: var(--text-900);
+  font: 400 14px/20px var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ───────────── Top bar ───────────── */
+.topbar {
+  height: var(--topbar-h); background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: var(--sp-6);
+  padding: 0 var(--sp-6);
+}
+.brand { display: flex; align-items: center; gap: var(--sp-3); }
+.brand__mark {
+  width: 36px; height: 36px; border-radius: var(--radius-sm);
+  background: var(--green-700); color: #fff;
+  display: grid; place-items: center; font: 700 15px/1 var(--font-sans);
+}
+.brand__name { font: 700 17px/1.1 var(--font-sans); letter-spacing: -.01em; }
+.brand__tag { font: 400 11px/1.3 var(--font-sans); color: var(--text-600); }
+
+.searchbar {
+  flex: 1; max-width: 420px; height: 40px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: 0 var(--sp-4); color: var(--text-400);
+}
+.topbar__right { margin-left: auto; display: flex; align-items: center; gap: var(--sp-4); }
+
+.iconbtn {
+  position: relative; width: 40px; height: 40px; border-radius: var(--radius-full);
+  background: var(--bg); display: grid; place-items: center; color: var(--text-600);
+}
+.iconbtn__badge {
+  position: absolute; top: -2px; right: -2px; min-width: 18px; height: 18px;
+  padding: 0 5px; border-radius: var(--radius-full); background: var(--danger);
+  color: #fff; font: 600 11px/18px var(--font-sans); text-align: center;
+  border: 2px solid var(--surface);
+}
+.avatar {
+  width: 36px; height: 36px; border-radius: var(--radius-full);
+  background: var(--green-200); color: var(--green-900);
+  display: grid; place-items: center; font: 600 13px/1 var(--font-sans);
+}
+
+/* ───────────── Kerangka halaman ───────────── */
+.shell { display: flex; height: calc(1043px - var(--topbar-h)); }
+.rail {
+  width: var(--rail-w); flex: none; background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-6);
+  overflow: hidden;
+}
+.content { flex: 1; padding: var(--sp-8); overflow: hidden; }
+.content__inner { max-width: var(--content-max); }
+
+.rail__title { font: 600 13px/16px var(--font-sans); color: var(--text-600);
+  text-transform: uppercase; letter-spacing: .06em; }
+.rail__group { display: flex; flex-direction: column; gap: var(--sp-3); }
+.divider { height: 1px; background: var(--border); }
+
+.navlist { display: flex; flex-direction: column; gap: 2px; }
+.navlist a {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3); border-radius: var(--radius-sm);
+  color: var(--text-900); text-decoration: none; font-size: 14px;
+}
+.navlist a.is-active { background: var(--green-50); color: var(--green-900); font-weight: 600; }
+.navlist .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green-200); flex: none; }
+
+/* ───────────── Tombol ───────────── */
+.btn {
+  height: 44px; padding: 0 var(--sp-5); border-radius: var(--radius-md);
+  border: 1px solid transparent; background: var(--surface); color: var(--text-900);
+  font: 600 14px/1 var(--font-sans); display: inline-flex; align-items: center;
+  justify-content: center; gap: var(--sp-2); cursor: pointer; white-space: nowrap;
+}
+.btn--primer { background: var(--green-700); color: #fff; }
+.btn--sekunder { background: var(--surface); border-color: var(--border); }
+.btn--teks { background: transparent; color: var(--green-700); padding: 0 var(--sp-2); }
+.btn--merusak { background: var(--danger); color: #fff; }
+.btn--blok { width: 100%; }
+.btn--sm { height: 36px; padding: 0 var(--sp-4); font-size: 13px; }
+.btn[disabled], .btn.is-disabled { background: var(--bg); color: var(--text-400); border-color: var(--border); }
+.btn.is-focus { outline: 2px solid var(--green-500); outline-offset: 2px; }
+
+/* ───────────── Isian formulir ───────────── */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field__label { font: 500 13px/18px var(--font-sans); color: var(--text-900); }
+.field__input {
+  height: 44px; border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface); padding: 0 var(--sp-4);
+  display: flex; align-items: center; font-size: 14px; color: var(--text-900);
+}
+.field__input.is-placeholder { color: var(--text-400); }
+.field__input.is-focus { border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(46, 125, 85, .15); }
+.field__input.is-error { border-color: var(--danger); background: var(--danger-bg); }
+.field__hint { font: 400 12px/16px var(--font-sans); color: var(--text-600); }
+.field__error { font: 400 12px/16px var(--font-sans); color: var(--danger); }
+.field__area {
+  min-height: 96px; border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface); padding: var(--sp-3) var(--sp-4);
+  font-size: 14px; line-height: 20px; color: var(--text-900);
+}
+.field__area.is-placeholder { color: var(--text-400); }
+.select::after { content: "▾"; margin-left: auto; color: var(--text-600); }
+.checkbox { display: flex; align-items: flex-start; gap: var(--sp-3); font-size: 13px; line-height: 19px; }
+.checkbox__box {
+  width: 18px; height: 18px; flex: none; margin-top: 1px;
+  border: 1.5px solid var(--border); border-radius: 5px; background: var(--surface);
+}
+.checkbox__box.is-checked {
+  background: var(--green-700); border-color: var(--green-700); color: #fff;
+  display: grid; place-items: center; font: 700 11px/1 var(--font-sans);
+}
+.radio { display: flex; align-items: center; gap: var(--sp-3); font-size: 14px;
+  padding: var(--sp-3) var(--sp-4); border: 1px solid var(--border);
+  border-radius: var(--radius-md); background: var(--surface); }
+.radio__dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border); flex: none; }
+.radio.is-selected { border-color: var(--green-700); background: var(--green-50); }
+.radio.is-selected .radio__dot { border: 5px solid var(--green-700); }
+
+/* ───────────── Badge, chip, info ───────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 var(--sp-2);
+  border-radius: var(--radius-sm); font: 600 11px/1 var(--font-sans);
+  background: var(--green-50); color: var(--green-900);
+}
+.badge--terjual { background: var(--sold); color: #fff; }
+.badge--baru { background: var(--green-700); color: #fff; }
+.badge--tinjau { background: var(--warning-bg); color: var(--warning); }
+.badge--selesai { background: var(--bg); color: var(--text-600); border: 1px solid var(--border); }
+.badge--bahaya { background: var(--danger-bg); color: var(--danger); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: var(--sp-2); height: 32px;
+  padding: 0 var(--sp-3); border-radius: var(--radius-full);
+  background: var(--surface); border: 1px solid var(--border); font-size: 13px;
+}
+.chip--aktif { background: var(--green-50); border-color: var(--green-200); color: var(--green-900); }
+.chip__x { color: var(--text-600); font-size: 13px; }
+
+.infobox {
+  background: var(--green-50); border-radius: var(--radius-md);
+  padding: var(--sp-4); font-size: 13px; line-height: 19px; color: var(--green-900);
+}
+.infobox strong { display: block; margin-bottom: 2px; font-weight: 600; }
+.infobox--netral { background: var(--bg); border: 1px solid var(--border); color: var(--text-600); }
+
+.toast {
+  position: absolute; right: var(--sp-8); bottom: var(--sp-8);
+  background: var(--text-900); color: #fff; border-radius: var(--radius-md);
+  padding: var(--sp-3) var(--sp-4); font-size: 13px; box-shadow: var(--shadow-lg);
+  display: flex; align-items: center; gap: var(--sp-2);
+}
+
+/* ───────────── Kartu produk ───────────── */
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-5); }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column;
+}
+.card__media { position: relative; aspect-ratio: 1 / 1; background: var(--bg); }
+.card__badge { position: absolute; top: var(--sp-2); left: var(--sp-2); }
+.card__body { padding: var(--sp-3); display: flex; flex-direction: column; gap: 2px; }
+.card__price { font: 700 18px/24px var(--font-sans); font-variant-numeric: tabular-nums; }
+.card__title {
+  font-size: 14px; line-height: 20px; color: var(--text-900);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.card__meta { font-size: 12px; line-height: 16px; color: var(--text-600); margin-top: 2px; }
+.card__actions { display: flex; gap: var(--sp-2); padding: 0 var(--sp-3) var(--sp-3); }
+.card__actions .btn { flex: 1; }
+
+.card.is-terjual .card__media::after {
+  content: ""; position: absolute; inset: 0; background: rgba(90, 100, 96, .55);
+}
+.card.is-terjual .card__badge { z-index: 2; }
+.card.is-terjual .card__price, .card.is-terjual .card__title { color: var(--text-400); }
+.card.is-hover { box-shadow: var(--shadow-md); }
+
+/* Kerangka saat memuat */
+.skel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.skel__media { aspect-ratio: 1/1; background: var(--border); }
+.skel__line { height: 12px; margin: var(--sp-3) var(--sp-3) 0; border-radius: 4px; background: var(--border); }
+.skel__line--short { width: 40%; }
+.skel__line--last { margin-bottom: var(--sp-4); width: 70%; }
+
+/* ───────────── Ilustrasi barang (pengganti foto) ───────────── */
+.ph { width: 100%; height: 100%; background-repeat: no-repeat;
+  background-position: center; background-size: 62% 62%; }
+.ph--jas   { background-color: rgb(238,241,239); background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M100 28a10 10 0 0 1 10 10c0 6-5 8-10 10" fill="none" stroke="rgb(140,152,146)" stroke-width="5"/><path d="M100 48 48 72c-6 3-9 9-9 15v75h122V87c0-6-3-12-9-15L100 48Z" fill="rgb(252,252,251)" stroke="rgb(140,152,146)" stroke-width="5" stroke-linejoin="round"/><path d="M100 48v114M78 64l22 18 22-18" fill="none" stroke="rgb(170,180,175)" stroke-width="4"/></svg>'); }
+.ph--kalkulator { background-color: rgb(236,240,238); background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect x="52" y="26" width="96" height="148" rx="12" fill="rgb(252,252,251)" stroke="rgb(140,152,146)" stroke-width="5"/><rect x="66" y="42" width="68" height="30" rx="5" fill="rgb(222,232,226)" stroke="rgb(170,180,175)" stroke-width="3"/><g fill="rgb(170,180,175)"><rect x="66" y="86" width="20" height="16" rx="4"/><rect x="90" y="86" width="20" height="16" rx="4"/><rect x="114" y="86" width="20" height="16" rx="4"/><rect x="66" y="110" width="20" height="16" rx="4"/><rect x="90" y="110" width="20" height="16" rx="4"/><rect x="114" y="110" width="20" height="16" rx="4"/><rect x="66" y="134" width="20" height="16" rx="4"/><rect x="90" y="134" width="44" height="16" rx="4" fill="rgb(27,92,58)"/></g></svg>'); }
+.ph--buku  { background-color: rgb(240,238,232); background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect x="36" y="124" width="128" height="28" rx="5" fill="rgb(222,232,226)" stroke="rgb(140,152,146)" stroke-width="5"/><rect x="44" y="92" width="112" height="28" rx="5" fill="rgb(252,252,251)" stroke="rgb(140,152,146)" stroke-width="5"/><rect x="52" y="60" width="96" height="28" rx="5" fill="rgb(27,92,58)" stroke="rgb(15,58,37)" stroke-width="5"/><path d="M62 74h40M54 106h40M46 138h40" stroke="rgb(170,180,175)" stroke-width="4" stroke-linecap="round" fill="none"/></svg>'); }
+.ph--jaket { background-color: rgb(234,238,236); background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M74 38 40 58c-5 3-7 8-6 13l10 44 20-6v55h72v-55l20 6 10-44c1-5-1-10-6-13l-34-20Z" fill="rgb(27,92,58)" stroke="rgb(15,58,37)" stroke-width="5" stroke-linejoin="round"/><path d="M74 38c0 14 12 22 26 22s26-8 26-22" fill="none" stroke="rgb(169,200,182)" stroke-width="5"/><path d="M100 60v104" stroke="rgb(169,200,182)" stroke-width="4"/></svg>'); }
+.ph--rak   { background-color: rgb(241,238,231); background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect x="38" y="40" width="124" height="124" rx="8" fill="rgb(252,252,251)" stroke="rgb(140,152,146)" stroke-width="5"/><path d="M38 82h124M38 122h124" stroke="rgb(140,152,146)" stroke-width="5"/><g fill="rgb(169,200,182)"><rect x="52" y="52" width="14" height="26" rx="3"/><rect x="70" y="58" width="14" height="20" rx="3"/><rect x="52" y="92" width="34" height="26" rx="3" fill="rgb(222,232,226)"/><rect x="120" y="130" width="28" height="30" rx="3"/></g></svg>'); }
+.ph--lab   { background-color: rgb(235,240,238); background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M84 32h32v44l34 62c5 9-1 20-11 20H61c-10 0-16-11-11-20l34-62V32Z" fill="rgb(252,252,251)" stroke="rgb(140,152,146)" stroke-width="5" stroke-linejoin="round"/><path d="M76 118h48l20 36c3 5 0 10-6 10H62c-6 0-9-5-6-10l20-36Z" fill="rgb(169,200,182)"/><path d="M78 32h44" stroke="rgb(140,152,146)" stroke-width="6" stroke-linecap="round"/></svg>'); }
+.ph--bukti { background-color: rgb(238,238,236); background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect x="34" y="46" width="132" height="108" rx="10" fill="rgb(252,252,251)" stroke="rgb(140,152,146)" stroke-width="5"/><circle cx="72" cy="82" r="14" fill="rgb(222,232,226)"/><path d="M38 136l40-38 28 26 22-18 34 30" fill="none" stroke="rgb(140,152,146)" stroke-width="5" stroke-linejoin="round"/></svg>'); }
+.ph--avatar { background-color: rgb(169,200,182); background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="78" r="30" fill="rgb(255,255,255)"/><path d="M40 170c0-33 27-52 60-52s60 19 60 52Z" fill="rgb(255,255,255)"/></svg>'); }
+
+/* ───────────── Ikon garis ───────────── */
+.ic { width: 20px; height: 20px; flex: none; display: inline-block;
+  background-repeat: no-repeat; background-position: center; background-size: contain; }
+.ic--search { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgb(142,153,149)" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>'); }
+.ic--bell { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgb(90,100,96)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>'); }
+.ic--chat { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgb(90,100,96)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6a8 8 0 0 1 8-8h2a8 8 0 0 1 8 3Z"/></svg>'); }
+.ic--send { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgb(255,255,255)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 18 9-18 9 4-9Z"/><path d="M7 12h14"/></svg>'); }
+.ic--plus { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgb(142,153,149)" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>'); }
+.ic--lock { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgb(27,92,58)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>'); }
+.ic--flag { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgb(90,100,96)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4h13l-2.5 4L18 12H5"/></svg>'); }
+.ic--pin { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgb(90,100,96)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>'); }
+.ic--chevL { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgb(20,24,26)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg>'); }
+.ic--chevR { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgb(20,24,26)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg>'); }
+
+/* ───────────── Tab ───────────── */
+.tabs { display: flex; gap: var(--sp-6); border-bottom: 1px solid var(--border); }
+.tabs a {
+  padding: var(--sp-3) 0; font-size: 14px; color: var(--text-600);
+  text-decoration: none; border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.tabs a.is-active { color: var(--green-700); font-weight: 600; border-bottom-color: var(--green-700); }
+
+/* ───────────── Tabel ───────────── */
+.table { width: 100%; border-collapse: collapse; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.table th {
+  text-align: left; font: 600 12px/16px var(--font-sans); color: var(--text-600);
+  text-transform: uppercase; letter-spacing: .05em;
+  padding: var(--sp-3) var(--sp-4); background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.table td { padding: var(--sp-4); border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: middle; }
+.table tr:last-child td { border-bottom: none; }
+.table tr.is-active td { background: var(--green-50); }
+.table .mono { font-variant-numeric: tabular-nums; color: var(--text-600); white-space: nowrap; }
+.table tr.is-active .badge { background: var(--surface); }
+
+/* ───────────── Pagination ───────────── */
+.pagination { display: flex; gap: var(--sp-2); justify-content: center; align-items: center; }
+.pagination span, .pagination a {
+  min-width: 36px; height: 36px; padding: 0 var(--sp-2); border-radius: var(--radius-sm);
+  display: grid; place-items: center; font-size: 14px; color: var(--text-900);
+  background: var(--surface); border: 1px solid var(--border); text-decoration: none;
+}
+.pagination .is-active { background: var(--green-700); border-color: var(--green-700); color: #fff; font-weight: 600; }
+.pagination .is-gap { border: none; background: transparent; color: var(--text-400); }
+
+/* ───────────── Empty state ───────────── */
+.empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--sp-3); padding: var(--sp-16) var(--sp-8); text-align: center;
+  background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius-lg);
+}
+.empty__icon {
+  width: 72px; height: 72px; border-radius: var(--radius-full);
+  background: var(--green-50); display: grid; place-items: center;
+  color: var(--green-700); font-size: 28px;
+}
+.empty__title { font: 600 18px/26px var(--font-sans); }
+.empty__text { font-size: 14px; color: var(--text-600); max-width: 380px; }
+
+/* ───────────── Dialog & lapisan ───────────── */
+.scrim { position: absolute; inset: 0; background: rgba(20, 24, 26, .55); z-index: 10; }
+.dialog {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 11;
+  width: 520px; background: var(--surface); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg); padding: var(--sp-6);
+  display: flex; flex-direction: column; gap: var(--sp-4);
+}
+.dialog__title { font: 600 20px/28px var(--font-sans); }
+.dialog__text { font-size: 14px; line-height: 21px; color: var(--text-600); }
+.dialog__actions { display: flex; gap: var(--sp-3); justify-content: flex-end; }
+
+.popover {
+  position: absolute; width: 380px; z-index: 11; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg); overflow: hidden;
+}
+
+/* ───────────── Percakapan ───────────── */
+.bubble { max-width: 68%; padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-lg);
+  font-size: 14px; line-height: 20px; }
+.bubble--saya { background: var(--green-700); color: #fff; margin-left: auto; border-bottom-right-radius: 6px; }
+.bubble--lawan { background: var(--surface); border: 1px solid var(--border); border-bottom-left-radius: 6px; }
+.bubble__time { font: 400 11px/14px var(--font-sans); color: var(--text-400); margin-top: 4px; }
+.bubble--saya + .bubble__time { text-align: right; }
+
+.convitem { display: flex; gap: var(--sp-3); padding: var(--sp-3); border-radius: var(--radius-md); }
+.convitem.is-active { background: var(--green-50); }
+.convitem__avatar { width: 44px; height: 44px; border-radius: var(--radius-full); overflow: hidden; flex: none; }
+.convitem__name { font: 600 14px/20px var(--font-sans); }
+.convitem__snippet { font-size: 13px; color: var(--text-600);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ───────────── Utilitas tata letak ───────────── */
+.row { display: flex; align-items: center; gap: var(--sp-3); }
+.col { display: flex; flex-direction: column; }
+.gap-1 { gap: var(--sp-1); } .gap-2 { gap: var(--sp-2); } .gap-3 { gap: var(--sp-3); }
+.gap-4 { gap: var(--sp-4); } .gap-5 { gap: var(--sp-5); } .gap-6 { gap: var(--sp-6); }
+.gap-8 { gap: var(--sp-8); }
+.mt-2 { margin-top: var(--sp-2); } .mt-4 { margin-top: var(--sp-4); }
+.mt-6 { margin-top: var(--sp-6); } .mt-8 { margin-top: var(--sp-8); }
+.ml-auto { margin-left: auto; }
+.grow { flex: 1; }
+.muted { color: var(--text-600); }
+.faint { color: var(--text-400); }
+.strike { text-decoration: line-through; color: var(--text-400); font-weight: 400; font-size: 14px; }
+.page { position: relative; width: 1440px; height: 1043px; }
+.panel { background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: var(--sp-5); }
+.h-page { font: 700 32px/40px var(--font-serif); }
+.h-sec { font: 600 20px/28px var(--font-sans); }
+
+/* ───────────── Layar otentikasi (tanpa rail) ───────────── */
+.auth { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-12);
+  padding: var(--sp-12) var(--sp-16); align-items: start; }
+.hero { background: var(--green-700); color: #fff; border-radius: var(--radius-lg);
+  padding: var(--sp-8); display: flex; flex-direction: column; gap: var(--sp-5);
+  height: 760px; }
+.hero__eyebrow { font: 600 12px/16px var(--font-sans); letter-spacing: .1em;
+  text-transform: uppercase; color: var(--green-200); }
+.hero__title { font: 700 44px/52px var(--font-serif); }
+.hero__text { font-size: 15px; line-height: 23px; color: var(--green-200); }
+.hero__media { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); flex: 1; }
+.hero__media > div { border-radius: var(--radius-md); overflow: hidden; }
+.hero__media > div:first-child { grid-column: 1 / -1; }
+.authform { display: flex; flex-direction: column; gap: var(--sp-5); padding-top: var(--sp-6); }
+.authform__title { font: 700 40px/48px var(--font-serif); }
+.authform__sub { font-size: 15px; line-height: 23px; color: var(--text-600); }
+
+.footerlinks { display: flex; gap: var(--sp-5); padding: var(--sp-6) var(--sp-16);
+  font-size: 13px; color: var(--text-600); }
+.footerlinks a { color: var(--green-700); text-decoration: none; }

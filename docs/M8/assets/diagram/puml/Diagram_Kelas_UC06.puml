@@ -1,0 +1,41 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanDokumenLegal" as C12 {
+  - judul: String
+  - isiDokumen: String
+  + bukaDokumen(jenis: String): void
+  + tampilkanDokumen(judul: String, isi: String): void
+  + sorotKlausaPrivasi(klausa: String): void
+}
+class "DokumenLegalController" as C22 {
+  + getDokumen(jenis: String): DokumenLegal
+  + getKlausaPrivasi(): String
+}
+class "DokumenLegal" as C40 {
+  - idDokumen: String
+  - jenisDokumen: String
+  - judul: String
+  - isi: String
+  - klausaPrivasiPesan: String
+  - versi: String
+  - tanggalBerlaku: Date
+  - statusPublikasi: Boolean
+  - tautan: String
+  + getVersiTerbaru(jenis: String): DokumenLegal
+  + getIsi(): String
+}
+C12 --> C22
+C22 ..> C40
+@enduml

@@ -1,0 +1,139 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "HalamanDetailBarang" as C07 {
+  - barang: Barang
+  - daftarFoto: List<FotoBarang>
+  - fotoUtama: String
+  + onClickLapor(): void
+}
+class "FormulirLaporan" as C10 {
+  - jenisPelanggaran: String
+  - teksAlasan: String
+  - objekDilaporkan: String
+  - berkasBukti: List<File>
+  + tampilkanFormulirLaporan(objekDilaporkan: String): void
+  + unggahBukti(berkas: List<File>): void
+  + validasiIsianWajib(): Boolean
+  + tandaiIsianKosong(): void
+  + kirimLaporan(): void
+  + tampilkanNotifikasi(pesan: String): void
+}
+class "LaporanController" as C20 {
+  + buatLaporan(token: String, data: Map<String, Any>, berkasBukti: List<File>): Boolean
+  + getIdPelaporDariSesi(token: String): String
+  + validasiDataLaporan(data: Map<String, Any>): Boolean
+  + susunMetadataPercakapan(idPercakapan: String, idPelapor: String): Map<String, Any>
+  + validasiBukti(berkasBukti: List<File>): Boolean
+  + simpanBukti(idLaporan: String, berkasBukti: List<File>): List<String>
+  + simpanLaporan(data: Map<String, Any>): String
+  + catatLogAudit(idLaporan: String, idPelapor: String): void
+}
+class "Akun" as C23 {
+  - idAkun: String
+  - nama: String
+  - nim: String
+  - email: String
+  - kataSandiHash: String
+  - statusAkun: String
+  - statusBlokir: Boolean
+  - peran: String
+  - setujuKebijakan: Boolean
+  - waktuDaftar: DateTime
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+}
+class "Barang" as C29 {
+  - idBarang: String
+  - idPenjual: String
+  - judul: String
+  - harga: Double
+  - deskripsiKondisi: String
+  - idKategori: String
+  - idLokasi: String
+  - status: String
+  - waktuUnggah: DateTime
+  - waktuUbah: DateTime
+  + cariById(idBarang: String): Barang
+}
+class "Percakapan" as C33 {
+  - idPercakapan: String
+  - idPembeli: String
+  - idPenjual: String
+  - idBarang: String
+  - waktuDibuat: DateTime
+  - waktuPembaruanTerakhir: DateTime
+  + cariById(idPercakapan: String): Percakapan
+}
+class "Laporan" as C36 {
+  - idLaporan: String
+  - idPelapor: String
+  - objekDilaporkan: String
+  - jenisPelanggaran: String
+  - teksAlasan: String
+  - waktuLapor: DateTime
+  - statusPenanganan: String
+  - waktuPerubahan: DateTime
+  + simpanLaporanBaru(data: Map<String, Any>): String
+}
+class "BuktiLaporan" as C37 {
+  - idBukti: String
+  - idLaporan: String
+  - namaBerkas: String
+  - pathBerkas: String
+  + validasiLampiranWajib(berkas: List<File>): Boolean
+  + simpan(idLaporan: String, namaBerkas: String, pathBerkas: String): Boolean
+}
+class "LogAudit" as C38 {
+  - idLog: String
+  - idLaporan: String
+  - waktu: DateTime
+  - identitasAktor: String
+  - tindakan: String
+  + catatPenerimaanLaporan(idLaporan: String, idPelapor: String): void
+}
+class "Otorisasi" as C41 {
+  + verifikasiToken(token: String): SesiLogin
+}
+class "PenyimpananBerkas" as C45 {
+  - namaBucket: String
+  + simpan(idObjek: String, berkas: List<File>): List<String>
+}
+C07 --> C10
+C10 --> C20
+C20 ..> C28
+C20 ..> C29
+C20 ..> C33
+C20 ..> C36
+C20 ..> C37
+C20 ..> C38
+C20 ..> C41
+C20 ..> C45
+C41 ..> C28
+C23 "1" -- "0..*" C28
+C29 "1" -- "0..*" C33
+C23 "1" -- "0..*" C36
+C36 "1" *-- "1..*" C37
+C36 "0..*" -- "0..1" C29
+C36 "0..*" -- "0..1" C33
+C36 "1" -- "0..*" C38
+@enduml

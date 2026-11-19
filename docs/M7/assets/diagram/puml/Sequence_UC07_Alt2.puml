@@ -1,0 +1,17 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC07 — Alternatif 2: Pelanggaran Syarat Unggahan Foto
+actor "Penjual" as User
+boundary ":FormulirBarang" as UI
+
+User -> UI: pilihFoto(fotoBaru)
+UI -> UI: validasiFotoSisiKlien(fotoBaru, [])
+note right of UI: Format bukan JPG/PNG, ukuran > 5 MB,\natau jumlah foto > 5 (KF24)
+UI -> UI: tolakPratinjau()
+UI -> UI: tampilkanNotifikasi("Format harus JPG/PNG, maksimum 5 MB, dan paling banyak 5 foto.")
+@enduml

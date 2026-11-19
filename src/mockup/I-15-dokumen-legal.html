@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>ITBELI — I-15 Dokumen Legal</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<script src="shell.js"></script>
+<style>
+  .legal { display: grid; grid-template-columns: 240px 1fr; gap: var(--sp-10);
+    padding: var(--sp-8) var(--sp-16); }
+  .toc { position: sticky; top: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+  .toc a { font-size: 13px; color: var(--text-600); text-decoration: none;
+    padding: 6px var(--sp-3); border-left: 2px solid var(--border); }
+  .toc a.is-active { color: var(--green-700); font-weight: 600; border-left-color: var(--green-700); }
+  .doc { max-width: 720px; display: flex; flex-direction: column; gap: var(--sp-5); }
+  .doc h3 { font: 600 17px/24px var(--font-sans); }
+  .doc p { font-size: 15px; line-height: 24px; color: var(--text-600); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div data-topbar></div>
+
+  <div class="legal">
+
+    <nav class="toc">
+      <div class="rail__title" style="margin-bottom:var(--sp-2)">Daftar isi</div>
+      <a href="#" class="is-active">1. Data yang kami kumpulkan</a>
+      <a href="#">2. Penggunaan data</a>
+      <a href="#">3. Privasi percakapan</a>
+      <a href="#">4. Moderasi dan pelaporan</a>
+      <a href="#">5. Penyimpanan dan keamanan</a>
+      <a href="#">6. Hak pengguna</a>
+      <a href="#">7. Perubahan kebijakan</a>
+    </nav>
+
+    <article class="doc">
+
+      <div class="tabs">
+        <a href="#" class="is-active">Kebijakan Privasi</a>
+        <a href="#">Ketentuan Penggunaan</a>
+      </div>
+
+      <div>
+        <h1 class="h-page">Kebijakan Privasi</h1>
+        <p class="muted mt-2" style="font-size:13px">Versi 1.0 · Berlaku sejak 1 November 2026</p>
+      </div>
+
+      <div class="infobox">
+        <strong>Isi percakapan tidak dapat diakses admin maupun pengembang.</strong>
+        Pesan antarpengguna disimpan dalam bentuk terenkripsi. Moderasi dijalankan berdasarkan
+        laporan pengguna terhadap listing atau akun, bukan melalui pembacaan isi percakapan.
+      </div>
+
+      <div>
+        <h3>1. Data yang kami kumpulkan</h3>
+        <p class="mt-2">
+          ITBELI menyimpan nama, NIM, dan surel institusi yang Anda masukkan saat mendaftar, beserta
+          data listing yang Anda publikasikan. Kata sandi tidak pernah disimpan dalam bentuk teks biasa,
+          melainkan hanya nilai hash-nya.
+        </p>
+      </div>
+
+      <div>
+        <h3>2. Penggunaan data</h3>
+        <p class="mt-2">
+          Data identitas dipakai untuk memastikan bahwa setiap pihak dalam transaksi benar-benar
+          merupakan sivitas ITB. Nama dan NIM Anda ditampilkan kepada lawan transaksi agar kedua pihak
+          dapat saling mempertanggungjawabkan kesepakatan COD.
+        </p>
+      </div>
+
+      <div>
+        <h3>3. Privasi percakapan</h3>
+        <p class="mt-2">
+          Isi percakapan hanya dapat dibaca oleh kedua peserta percakapan. Admin tidak memiliki jalur
+          akses menuju isi pesan, baik melalui dasbor moderasi maupun melalui laporan pengguna.
+          Laporan yang menyangkut percakapan hanya memuat metadata, tanpa kutipan pesan.
+        </p>
+      </div>
+
+      <div>
+        <h3>4. Moderasi dan pelaporan</h3>
+        <p class="mt-2">
+          Admin dapat menghapus listing dan memblokir akun yang terbukti melanggar setelah menerima
+          laporan pengguna. Setiap tindakan moderasi dicatat beserta pelaku, objek, waktu, dan alasannya,
+          lalu diberitahukan kepada pengguna yang bersangkutan melalui surel.
+        </p>
+      </div>
+
+      <div>
+        <h3>5. Penyimpanan dan keamanan</h3>
+        <p class="mt-2">
+          Seluruh data disimpan pada basis data terkelola dengan koneksi terenkripsi. Foto listing
+          dan berkas bukti laporan disimpan terpisah dari data identitas. Sesi login berlaku paling
+          lama 24 jam dan dapat Anda akhiri kapan saja melalui tombol Keluar.
+        </p>
+      </div>
+
+      <div>
+        <h3>6. Hak pengguna</h3>
+        <p class="mt-2">
+          Anda dapat mengubah atau menghapus listing milik Anda kapan saja, serta meminta penghapusan
+          akun beserta datanya melalui formulir pelaporan dengan kategori permintaan data.
+        </p>
+      </div>
+
+    </article>
+  </div>
+</div>
+</body>
+</html>

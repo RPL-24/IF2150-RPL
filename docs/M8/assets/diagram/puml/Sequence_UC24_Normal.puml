@@ -1,0 +1,43 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC24 — Normal
+actor "Admin" as User
+boundary ":DasborAdmin" as Dash
+control ":ModerasiController" as MC
+control ":Otorisasi" as Oto
+entity ":SesiLogin" as Sesi
+entity ":Admin" as Adm
+entity ":Akun" as Akun
+entity ":Barang" as Barang
+entity ":LogAdmin" as LogA
+User -> Dash: onClickBukaBlokir(idAkun)
+Dash -> Dash: tampilkanModalKonfirmasi("Buka Blokir")
+User -> Dash: konfirmasiTindakan(alasan)
+Dash -> MC: bukaBlokirAkun(token, idAkun)
+MC -> MC: otorisasiAdmin(token)
+MC -> Oto: verifikasiAdmin(token)
+Oto -> Sesi: cariSesiAktif(token)
+Sesi --> Oto: sesiLogin
+Oto -> Sesi: getIdAkun()
+Sesi --> Oto: idAkun
+Oto -> Adm: verifikasiPeran(idAkun)
+Adm --> Oto: true
+Oto --> MC: sesiLogin
+MC -> Sesi: getIdAkun()
+Sesi --> MC: idAdmin
+MC -> Akun: cariById(idAkun)
+Akun --> MC: akun
+MC -> Akun: bukaBlokir()
+Akun --> MC: true
+MC -> MC: pulihkanListingPengguna(idAkun)
+MC -> Barang: pulihkanKatalog(idAkun)
+MC -> MC: catatLogAdmin(idAdmin, "Buka Blokir", idAkun, alasan)
+MC -> LogA: catatTindakan(idAdmin, "Buka Blokir", idAkun, alasan)
+MC --> Dash: true
+Dash -> Dash: tampilkanStatusTerbaru("Aktif")
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC19 — Alternatif 1: Kolom Bukti atau Alasan Dikosongkan
+actor "Pengguna" as User
+boundary ":FormulirLaporan" as UI
+
+User -> UI: kirimLaporan()
+UI -> UI: validasiIsianWajib()
+note right of UI: Alasan atau tangkapan layar kosong;\nlaporan tidak dikirim ke server
+UI -> UI: tandaiIsianKosong()
+UI -> UI: tampilkanNotifikasi("Alasan dan bukti tangkapan layar wajib diisi")
+@enduml

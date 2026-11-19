@@ -1,0 +1,57 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam backgroundColor #FFFFFF
+skinparam responseMessageBelowArrow true
+title UC17 — Normal
+actor "Pengguna" as User
+boundary ":HalamanPercakapan" as UI
+control ":PercakapanController" as PC
+control ":Otorisasi" as Oto
+entity ":SesiLogin" as Sesi
+entity ":Percakapan" as Perc
+control ":Kriptografi" as Kr
+entity ":Pesan" as Pesan
+control ":NotifikasiController" as NC
+entity ":Notifikasi" as Notif
+participant ":PushNotifikasiAdapter" as Push
+boundary ":PanelNotifikasi\n(penerima)" as Panel
+User -> UI: kirimPesan(isi)
+UI -> UI: validasiInputKosong(isi)
+UI -> PC: kirimPesan(token, idPercakapan, isi)
+PC -> Oto: verifikasiToken(token)
+Oto -> Sesi: cariSesiAktif(token)
+Sesi --> Oto: sesiLogin
+Oto --> PC: sesiLogin
+PC -> Sesi: getIdAkun()
+Sesi --> PC: idPengirim
+PC -> Perc: cariById(idPercakapan)
+Perc --> PC: percakapan
+PC -> PC: verifikasiPeserta(idPengirim, percakapan)
+PC -> Perc: cekPeserta(idPengirim)
+Perc --> PC: true
+note right of PC: Pihak selain kedua peserta ditolak (KF35)
+PC -> PC: enkripsiPesan(isi)
+PC -> Kr: enkripsi(isi)
+Kr --> PC: isiPesanTerenkripsi
+PC -> Perc: addPesan(idPengirim, isiPesanTerenkripsi)
+Perc -> Pesan: simpanPesan(idPercakapan, idPengirim, isiPesanTerenkripsi)
+Pesan --> Perc: pesan
+Perc --> PC: pesan
+PC -> Perc: perbaruiWaktuTerakhir(waktuKirim)
+PC --> UI: {isi, waktuKirim}
+UI -> UI: tampilkanUrutanPesan(daftarPesan)
+UI -> UI: gulirKePesanTerakhir()
+PC -> NC: kirimNotifikasi(idPenerima, "Pesan Baru", isi)
+NC -> Notif: simpan(idPenerima, "Pesan Baru", isi, waktuKirim, false)
+Notif --> NC: true
+NC -> Notif: hitungBelumDibaca(idPenerima)
+Notif --> NC: jumlahBelumDibaca
+NC -> NC: kirimPushNotifikasi(idPenerima, isi)
+NC -> Push: kirimPush(idPenerima, "Pesan baru", isi)
+Push --> NC: true
+note over Push, Panel: Service Worker pada peramban penerima menampilkan notifikasi,\ntermasuk saat ITBELI sedang tidak dibuka (KF34)
+Panel -> Panel: tampilkanPenandaBelumDibaca(jumlahBelumDibaca)
+@enduml

@@ -1,0 +1,65 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #222222
+skinparam arrowColor #222222
+skinparam packageBorderColor #888888
+skinparam defaultFontName Arial
+skinparam classFontStyle bold
+skinparam stereotypeFontSize 10
+hide circle
+hide stereotype
+
+
+class "DasborAdmin" as C11 {
+  - daftarLaporan: List<Laporan>
+  - filterStatus: String
+  - detailLaporan: Laporan
+  - statusBaru: String
+  - alasanTindakan: String
+  + bukaDaftarLaporan(): void
+  + tampilkanDaftarLaporan(daftar: List<Laporan>): void
+  + filterLaporan(status: String): void
+  + tampilkanAksesDitolak(): void
+}
+class "ModerasiController" as C21 {
+  + otorisasiAdmin(token: String): String
+  + getAllLaporan(token: String): List<Laporan>
+  + filterByStatus(token: String, status: String): List<Laporan>
+}
+class "Admin" as C26 {
+  + verifikasiPeran(idAkun: String): Boolean
+}
+class "SesiLogin" as C28 {
+  - idSesi: String
+  - idAkun: String
+  - token: String
+  - waktuMulai: DateTime
+  - waktuKedaluwarsa: DateTime
+  - statusAktif: Boolean
+  + cariSesiAktif(token: String): SesiLogin
+  + getIdAkun(): String
+}
+class "Laporan" as C36 {
+  - idLaporan: String
+  - idPelapor: String
+  - objekDilaporkan: String
+  - jenisPelanggaran: String
+  - teksAlasan: String
+  - waktuLapor: DateTime
+  - statusPenanganan: String
+  - waktuPerubahan: DateTime
+  + getAllLaporan(): List<Laporan>
+  + filterByStatus(status: String): List<Laporan>
+}
+class "Otorisasi" as C41 {
+  + verifikasiAdmin(token: String): SesiLogin
+}
+C11 --> C21
+C21 ..> C41
+C21 ..> C28
+C21 ..> C36
+C41 ..> C28
+C41 ..> C26
+@enduml
