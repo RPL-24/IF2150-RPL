@@ -184,3 +184,64 @@ describe('DasborAdmin (C11)', () => {
     expect(dasbor.escapeHtml(null)).toBe('');
   });
 });
+
+// Tambahan HIUPL (M10) setelah uji use case UC20, UC23, dan UC24.
+describe('DasborAdmin (C11) sasaran tindakan dan akses ditolak', () => {
+  const DasborAdmin = require('../../views/js/DasborAdmin');
+
+  function tombolPalsu() {
+    return { klik: null, addEventListener(jenis, fn) { if (jenis === 'click') this.klik = fn; } };
+  }
+
+  afterEach(() => {
+    delete global.Api;
+    delete global.document;
+    delete global.window;
+    delete global.alert;
+  });
+
+  test('C11-UT07 [Normal] pasangEventListenersDetail: tombol Blokir dan Buka Blokir → diarahkan ke akun terlapor, bukan pelapor', () => {
+    const tombol = { 'btn-blokir-akun': tombolPalsu(), 'btn-buka-blokir': tombolPalsu() };
+    global.document = { getElementById: (id) => tombol[id] || null };
+    const dasbor = new DasborAdmin();
+    dasbor.onClickBlokirAkun = jest.fn();
+    dasbor.onClickBukaBlokir = jest.fn();
+    dasbor.detailLaporan = { laporan: { idLaporan: 'lap-1', idPelapor: 'pelapor-1' }, pelapor: { idAkun: 'pelapor-1' }, terlapor: { idAkun: 'penjual-1' } };
+
+    dasbor.pasangEventListenersDetail();
+    tombol['btn-blokir-akun'].klik();
+    tombol['btn-buka-blokir'].klik();
+
+    expect(dasbor.onClickBlokirAkun).toHaveBeenCalledWith('penjual-1');
+    expect(dasbor.onClickBukaBlokir).toHaveBeenCalledWith('penjual-1');
+  });
+
+  test('C11-UT08 [Negatif] onClickBlokirAkun dan onClickBukaBlokir: terlapor tidak diketahui → pesan galat, dialog konfirmasi tidak dibuka', () => {
+    const dasbor = new DasborAdmin();
+    dasbor.tampilkanPesanGalat = jest.fn();
+    dasbor.tampilkanModalKonfirmasi = jest.fn();
+    dasbor.detailLaporan = { pelapor: { idAkun: 'pelapor-1' }, terlapor: null };
+
+    dasbor.onClickBlokirAkun(undefined);
+    dasbor.onClickBukaBlokir(undefined);
+
+    expect(dasbor.tampilkanPesanGalat).toHaveBeenCalledTimes(2);
+    expect(dasbor.tampilkanModalKonfirmasi).not.toHaveBeenCalled();
+    expect(dasbor.targetIdAkun).toBeNull();
+  });
+
+  test('C11-UT09 [Normal] tampilkanAksesDitolak: pengguna bukan admin yang sudah masuk → beranda; belum masuk → halaman masuk', () => {
+    global.alert = jest.fn();
+    global.window = { location: { href: '/admin-laporan' } };
+    const dasbor = new DasborAdmin();
+
+    global.Api = { getToken: () => 'token-pengguna' };
+    dasbor.tampilkanAksesDitolak();
+    expect(global.window.location.href).toBe('/');
+
+    global.Api = { getToken: () => null };
+    dasbor.tampilkanAksesDitolak();
+    expect(global.window.location.href).toBe('/masuk');
+    expect(global.alert).toHaveBeenCalledWith(expect.stringMatching(/^Akses Ditolak/));
+  });
+});

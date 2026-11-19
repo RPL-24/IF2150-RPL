@@ -829,3 +829,49 @@ describe('ModerasiController (C21) lanjutan HIUPL', () => {
     expect(nonaktifkan).toHaveBeenCalledWith('akun-7', klien);
   });
 });
+
+// Tambahan HIUPL (M10) setelah uji use case: detail laporan menyertakan akun terlapor,
+// sasaran tombol Blokir dan Buka Blokir pada I-14 (UC23, UC24).
+describe('ModerasiController (C21) akun terlapor', () => {
+  const Percakapan = require('../../models/Percakapan');
+  const ID_BARANG = '11111111-1111-4111-8111-111111111111';
+  const ID_PRC = '22222222-2222-4222-8222-222222222222';
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('C21-UT43 [Normal] getDetailLaporan: laporan atas listing → terlapor berisi akun penjual listing, bukan pelapor', async () => {
+    jest.spyOn(ModerasiController, 'otorisasiAdmin').mockResolvedValue('admin-1');
+    jest.spyOn(Laporan, 'getDetailLaporan').mockResolvedValue(new Laporan({ idLaporan: 'lap-1', idPelapor: 'pelapor-1', objekDilaporkan: ID_BARANG }));
+    jest.spyOn(BuktiLaporan, 'cariByLaporan').mockResolvedValue([]);
+    jest.spyOn(LogAudit, 'getRiwayatByLaporan').mockResolvedValue([]);
+    jest.spyOn(Barang, 'cariById').mockResolvedValue(new Barang({ idBarang: ID_BARANG, idPenjual: 'penjual-1' }));
+    jest.spyOn(Akun, 'cariById').mockImplementation(async (id) => new Akun({ idAkun: id, nama: id, email: `${id}@itb.ac.id`, statusBlokir: false }));
+
+    const detail = await ModerasiController.getDetailLaporan('token-admin', 'lap-1');
+
+    expect(detail.pelapor.idAkun).toBe('pelapor-1');
+    expect(detail.terlapor).toEqual({ idAkun: 'penjual-1', nama: 'penjual-1', email: 'penjual-1@itb.ac.id', statusBlokir: false });
+  });
+
+  test('C21-UT44 [Normal] cariAkunTerlapor: laporan atas percakapan oleh pembeli → akun lawan bicara (penjual)', async () => {
+    jest.spyOn(Barang, 'cariById').mockResolvedValue(null);
+    jest.spyOn(Percakapan, 'cariById').mockResolvedValue({ idPercakapan: ID_PRC, idPembeli: 'pembeli-1', idPenjual: 'penjual-2' });
+    const cari = jest.spyOn(Akun, 'cariById').mockResolvedValue(new Akun({ idAkun: 'penjual-2' }));
+
+    const akun = await ModerasiController.cariAkunTerlapor({ idPelapor: 'pembeli-1', objekDilaporkan: ID_PRC });
+
+    expect(akun.idAkun).toBe('penjual-2');
+    expect(cari).toHaveBeenCalledWith('penjual-2');
+  });
+
+  test('C21-UT45 [Negatif] cariAkunTerlapor: objek bukan UUID, atau listing dan percakapan sudah tidak ada → null', async () => {
+    const cariBarang = jest.spyOn(Barang, 'cariById').mockResolvedValue(null);
+    jest.spyOn(Percakapan, 'cariById').mockResolvedValue(null);
+
+    await expect(ModerasiController.cariAkunTerlapor({ idPelapor: 'a', objekDilaporkan: 'Listing Preloved ITB' })).resolves.toBeNull();
+    expect(cariBarang).not.toHaveBeenCalled();
+    await expect(ModerasiController.cariAkunTerlapor({ idPelapor: 'a', objekDilaporkan: ID_BARANG })).resolves.toBeNull();
+  });
+});
