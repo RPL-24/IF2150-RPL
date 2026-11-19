@@ -85,7 +85,7 @@ describe('hitungUlangProduk', () => {
 });
 
 describe('cekMarginNegatif', () => {
-  it('menyaring hanya produk rugi', () => {
+  it('C19-UT26 normal dan batas: cekMarginNegatif menyaring hanya produk rugi, margin 0 tidak termasuk', () => {
     const hasil = [
       { idProduk: 'a', namaProduk: 'A', hargaJual: 10, margin: -1, rugi: true },
       { idProduk: 'b', namaProduk: 'B', hargaJual: 10, margin: 0, rugi: false },
@@ -174,8 +174,8 @@ describe('pengelompokan per hari', () => {
   });
 });
 
-describe('model Notifikasi', () => {
-  it('awalnya belum dibaca dan markAsRead mengubahnya', () => {
+describe('C17 model Notifikasi', () => {
+  it('C17-UT01 normal: awalnya belum dibaca dan markAsRead mengubahnya', () => {
     const n = new Notifikasi('1', 'Judul', 'Halo', new Date(0), 'kerugian', 'p1');
     expect(n.getIsRead()).toBe(false);
     n.markAsRead();
@@ -184,8 +184,20 @@ describe('model Notifikasi', () => {
     expect(n.getJudul()).toBe('Judul');
   });
 
-  it('menolak pesan kosong', () => {
+  it('C17-UT02 negatif: menolak pesan kosong', () => {
     expect(() => new Notifikasi('1', 'Judul', '   ', new Date(0), 'harga_bahan')).toThrow();
+  });
+
+  it('C17-UT03 batas: getter mengembalikan data yang dirapikan dan nilai bawaan', () => {
+    const waktu = new Date(0);
+    const n = new Notifikasi('9', '  Harga naik  ', ' Telur naik ', waktu, 'harga_bahan');
+    expect(n.getIdNotifikasi()).toBe('9');
+    expect(n.getJudul()).toBe('Harga naik');
+    expect(n.getPesanAlert()).toBe('Telur naik');
+    expect(n.getWaktuKirim()).toBe(waktu);
+    expect(n.getTipe()).toBe('harga_bahan');
+    expect(n.getIdProduk()).toBeNull();
+    expect(n.getIsRead()).toBe(false);
   });
 });
 
