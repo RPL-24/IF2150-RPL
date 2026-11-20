@@ -407,7 +407,8 @@ Tabel 4.2.9b. Ringkasan Cakupan Kelas C09
 | Daftar operasi public pada DPPL | Konstruktor `Evaluasi(...)`, `simpanEvaluasi()`, `getKeputusan()` |
 | Operasi yang diuji | `ambilDaftarSiapEvaluasi()`, `ambilDetailEvaluasi()`, `cariIdLaporan()`, `simpanEvaluasi()`, `getEvaluasiTerakhir()` |
 | ID Algoritma yang tercakup | `Algo-016` melalui `simpanEvaluasi()` (C09-UT12–C09-UT14) |
-| Coverage (wajib ≥ 70%) | 100% line / 100% branch (100% statement, 100% function). Diukur dengan `npx vitest run --coverage` (Vitest 5.1.0 dan V8). Bukti dirujuk pada Subbab 4.6 (`C09-coverage.png`). |
+| Hasil pengujian unit | 17 test lulus. [Bukti unit test](./assets/bukti-test/unit-test/ut-uc02-uc05/C09-UT.png) |
+| Coverage (wajib ≥ 70%) | 100% line / 100% branch (100% statement, 100% function). Diukur dengan `npx vitest run --coverage` (Vitest 5.1.0 dan V8). [Bukti coverage](./assets/bukti-test/unit-test/ut-uc02-uc05/C09-coverage.png) pada Subbab 4.6. |
 
 Pada implementasi M9, data konstruktor diteruskan sebagai `DataEvaluasiBaru` dan keputusan terakhir dibaca melalui `getEvaluasiTerakhir()`.
 
@@ -440,7 +441,8 @@ Tabel 4.2.18b. Ringkasan Cakupan Kelas C18
 | Daftar operasi public pada DPPL | `verifikasiAkses()`, `susunAntrean()`, `saringAntrean()`, `ambilRincianLaporan()`, `setujuiLaporan()`, `tolakLaporan()` |
 | Operasi yang diuji | Kelima Server Action publik, termasuk guard internal melalui C18-UT01 |
 | ID Algoritma yang tercakup | `Algo-041` (C18-UT01–C18-UT03), `Algo-042` (C18-UT01, C18-UT08), `Algo-043` (C18-UT01, C18-UT09–C18-UT10) |
-| Coverage (wajib ≥ 70%) | 100% line / 78,94% branch (85,18% statement, 100% function). Diukur dengan `npx vitest run --coverage` (Vitest 5.1.0 dan V8). Bukti dirujuk pada Subbab 4.6 (`C18-coverage.png`). |
+| Hasil pengujian unit | 12 test lulus. [Bukti unit test](./assets/bukti-test/unit-test/ut-uc02-uc05/C18-UT.png) |
+| Coverage (wajib ≥ 70%) | 100% line / 78,94% branch (85,18% statement, 100% function). Diukur dengan `npx vitest run --coverage` (Vitest 5.1.0 dan V8). [Bukti coverage](./assets/bukti-test/unit-test/ut-uc02-uc05/C18-coverage.png) pada Subbab 4.6. |
 
 Suite C18 mencapai target coverage. Kasus batas `susunAntrean()`, `ambilRincianLaporan()`, `setujuiLaporan()`, dan `tolakLaporan()` belum tercakup sebagai uji tersendiri, sehingga syarat tiga jenis kasus per operasi publik masih belum terpenuhi sepenuhnya.
 
@@ -550,7 +552,8 @@ Tabel 4.2.21b. Ringkasan Cakupan Kelas C21
 | Daftar operasi public pada DPPL | `verifikasiAkses()`, `ambilDaftarUntukEvaluasi()`, `pilihSiapEvaluasi()`, `urutkanBerdasarkanWaktu()`, `ambilDetailEvaluasi()`, `simpanKeputusan()`, `ambilIdEksekutor()`, `ambilIdWarga()` |
 | Operasi yang diuji | `ambilDaftarUntukEvaluasi()`, `ambilDetailEvaluasi()`, `simpanKeputusan()` dan guard internal |
 | ID Algoritma yang tercakup | `Algo-048` (C21-UT01), `Algo-049` (C21-UT02–C21-UT04 dan C09-UT01–C09-UT03), `Algo-050` (C21-UT13–C21-UT21) |
-| Coverage (wajib ≥ 70%) | 100% line / 100% branch (100% statement, 100% function). Diukur dengan `npx vitest run --coverage` (Vitest 5.1.0 dan V8). Bukti dirujuk pada Subbab 4.6 (`C21-coverage.png`). |
+| Hasil pengujian unit | 26 test lulus. [Bukti unit test](./assets/bukti-test/unit-test/ut-uc02-uc05/C21-UT.png) |
+| Coverage (wajib ≥ 70%) | 100% line / 100% branch (100% statement, 100% function). Diukur dengan `npx vitest run --coverage` (Vitest 5.1.0 dan V8). [Bukti coverage](./assets/bukti-test/unit-test/ut-uc02-uc05/C21-coverage.png) pada Subbab 4.6. |
 
 Pemilahan dan pengurutan daftar berada di query C09. Pemutakhiran status serta notifikasi pelapor dan eksekutor ditangani trigger basis data. Uji unit memeriksa data yang diteruskan controller dan responsnya.
 
@@ -616,9 +619,9 @@ Tabel 4.4.2. Hasil Pengujian Use Case UC02
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC02-TC01 | KF07, KF09, KF10, KF12, KF13 | Normal — laporan dinyatakan valid | 1. Beri dukungan tambahan pada tiket uji dengan akun warga lain.<br>2. Buka `/validasi` sebagai admin dan pilih tiket.<br>3. Klik “Validasi” dan konfirmasi.<br>4. Buka daftar tugas sebagai eksekutor dan lonceng notifikasi sebagai pelapor. | Tiket Diterima dengan foto/video, koordinat dan dukungan. Siapkan tugas pembanding dengan skor lebih rendah. | Antrean Diterima tampil terbaru dahulu dengan filter kategori. Rincian menampilkan bukti, deskripsi, kategori, waktu, peta dan jumlah dukungan yang sudah bertambah. Tiket menjadi Dikerjakan / menunggu eksekusi dan hilang dari antrean validasi setelah konfirmasi. Daftar tugas menempatkan tiket sesuai skor yang diperbarui dan pelapor menerima notifikasi di aplikasi. | Belum diuji | – |
-| UC02-TC02 | KF09, KF10 | Alternatif 1 — menyaring antrean sebelum meninjau | 1. Buka `/validasi`.<br>2. Pilih kategori dan ubah urutan waktu masuk ke terlama dahulu.<br>3. Pilih satu tiket hasil saringan, lalu kembalikan filter ke “Semua kategori”. | Dua tiket Diterima dari kategori yang sama dengan waktu masuk berbeda dan satu tiket kategori lain. | Antrean hanya menampilkan kategori terpilih dengan urutan terlama dahulu. Rincian tiket yang dipilih tampil. “Semua kategori” menampilkan kembali seluruh antrean. | Belum diuji | – |
-| UC02-TC03 | KF07, KF10, KF11 | Alternatif 2 — laporan dinyatakan tidak valid | 1. Pilih tiket Diterima dan periksa rinciannya.<br>2. Klik “Tolak”, lalu coba konfirmasi dengan alasan kosong.<br>3. Isi alasan dan konfirmasi.<br>4. Periksa notifikasi dan status tiket sebagai pelapor. | Tiket uji berbeda dari UC02-TC01, alasan kosong lalu “Lokasi pada bukti tidak sesuai laporan”. | Alasan wajib diisi dan tiket tetap Diterima saat pengiriman tanpa alasan. Setelah konfirmasi dengan alasan valid, status menjadi Ditolak, alasan tersimpan, aplikasi menampilkan konfirmasi dan kembali ke antrean. Pelapor menerima notifikasi di aplikasi yang memuat alasan. | Belum diuji | – |
+| UC02-TC01 | KF07, KF09, KF10, KF12, KF13 | Normal — laporan dinyatakan valid | 1. Beri dukungan tambahan pada tiket uji dengan akun warga lain.<br>2. Buka `/validasi` sebagai admin dan pilih tiket.<br>3. Klik “Valid” dan konfirmasi.<br>4. Buka daftar tugas sebagai eksekutor dan lonceng notifikasi sebagai pelapor. | Tiket Diterima dengan foto/video, koordinat dan dukungan. Siapkan tugas pembanding dengan skor lebih rendah. | Antrean Diterima tampil terbaru dahulu dengan filter kategori. Rincian menampilkan bukti, deskripsi, kategori, waktu, peta dan jumlah dukungan yang sudah bertambah. Tiket menjadi Dikerjakan / menunggu eksekusi dan hilang dari antrean validasi setelah konfirmasi. Daftar tugas menempatkan tiket sesuai skor yang diperbarui dan pelapor menerima notifikasi di aplikasi. | Dasbor menampilkan konfirmasi bahwa laporan berhasil divalidasi dan diteruskan ke daftar tugas penugasan. Antrean validasi dimuat kembali dengan 10 laporan. | Pass |
+| UC02-TC02 | KF09, KF10 | Alternatif 1 — menyaring antrean sebelum meninjau | 1. Buka `/validasi`.<br>2. Pilih kategori dan ubah urutan waktu masuk ke terlama dahulu.<br>3. Pilih satu tiket hasil saringan, lalu kembalikan filter ke “Semua kategori”. | Dua tiket Diterima dari kategori yang sama dengan waktu masuk berbeda dan satu tiket kategori lain. | Antrean hanya menampilkan kategori terpilih dengan urutan terlama dahulu. Rincian tiket yang dipilih tampil. “Semua kategori” menampilkan kembali seluruh antrean. | Filter “Jalan berlubang” menampilkan tiga laporan dengan urutan “Terlama”. Rincian LK-0019 tampil beserta deskripsi dan peta lokasi. | Pass |
+| UC02-TC03 | KF07, KF10, KF11 | Alternatif 2 — laporan dinyatakan tidak valid | 1. Pilih tiket Diterima dan periksa rinciannya.<br>2. Klik “Tolak”, lalu coba konfirmasi dengan alasan kosong.<br>3. Isi alasan dan konfirmasi.<br>4. Periksa notifikasi dan status tiket sebagai pelapor. | Tiket uji berbeda dari UC02-TC01, alasan kosong lalu “Lokasi pada bukti tidak sesuai laporan”. | Alasan wajib diisi dan tiket tetap Diterima saat pengiriman tanpa alasan. Setelah konfirmasi dengan alasan valid, status menjadi Ditolak, alasan tersimpan, aplikasi menampilkan konfirmasi dan kembali ke antrean. Pelapor menerima notifikasi di aplikasi yang memuat alasan. | Dasbor menampilkan konfirmasi bahwa laporan berhasil ditolak dan status diperbarui. Antrean validasi dimuat kembali dengan 9 laporan. | Pass |
 
 
 ### 4.4.3 Use Case Melihat Penugasan Lapangan
@@ -664,9 +667,9 @@ Tabel 4.4.5. Hasil Pengujian Use Case UC05
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC05-TC01 | KF07, KF16, KF18 | Normal — pekerjaan selesai | 1. Buka `/evaluasi`, periksa urutan daftar, dan pilih tiket.<br>2. Tinjau komparasi bukti awal dan hasil, catatan teknis, dan waktu unggah.<br>3. Pilih “Konfirmasi Selesai”, lalu konfirmasi.<br>4. Periksa status, waktu penyelesaian, dan notifikasi pelapor serta eksekutor. | Tiket dengan bukti perbaikan yang jelas dan catatan teknis. Catatan evaluasi boleh kosong. | Daftar tampil terbaru dahulu sesuai waktu masuk laporan. Detail menunjukkan foto awal dan hasil, video jika tersedia, waktu unggah, dan catatan teknis. Status menjadi Berhasil, `waktu_selesai` terisi, tiket keluar dari antrean, dan pelapor serta eksekutor menerima notifikasi di aplikasi. | Belum diuji | – |
-| UC05-TC02 | KF07, KF16, KF17 | Alternatif 1 — pekerjaan belum selesai | 1. Pilih tiket di `/evaluasi` dan periksa bukti.<br>2. Pilih “Belum Selesai” dan coba kirim tanpa catatan.<br>3. Isi catatan dan konfirmasi.<br>4. Periksa tugas eksekutor, notifikasi pelapor dan riwayat status. | Tiket dengan perbaikan belum tuntas. Catatan kosong lalu “Tambalan masih belum rata”. | Pengiriman tanpa catatan ditolak. Keputusan dan catatan tersimpan setelah konfirmasi. Tiket kembali ke Dikerjakan / menunggu eksekusi, riwayat transisi tercatat, eksekutor menerima catatan, dan pelapor menerima notifikasi bahwa pekerjaan akan diulang. | Belum diuji | – |
-| UC05-TC03 | KF07, KF16, KF17 | Alternatif 2 — foto/video tidak ada atau tidak jelas | 1. Pilih tiket di `/evaluasi` dan periksa bukti yang kabur.<br>2. Pilih “Minta Ulang Bukti” dan coba kirim tanpa catatan.<br>3. Jelaskan kekurangan bukti dan konfirmasi.<br>4. Periksa tugas eksekutor, notifikasi pelapor dan riwayat status. | Tiket dengan foto yang tidak jelas. Catatan kosong lalu “Unggah ulang foto yang memperlihatkan seluruh area perbaikan”. | Pengiriman tanpa catatan ditolak. Keputusan dan catatan tersimpan setelah konfirmasi. Tiket kembali ke Dikerjakan / menunggu eksekusi untuk pengunggahan ulang, riwayat transisi tercatat, eksekutor menerima instruksi, dan pelapor menerima notifikasi di aplikasi. | Belum diuji | – |
+| UC05-TC01 | KF07, KF16, KF18 | Normal — pekerjaan selesai | 1. Buka `/evaluasi`, periksa urutan daftar, dan pilih tiket.<br>2. Tinjau komparasi bukti awal dan hasil, catatan teknis, dan waktu unggah.<br>3. Pilih “Selesai”, lalu konfirmasi.<br>4. Periksa status, waktu penyelesaian, dan notifikasi pelapor serta eksekutor. | Tiket dengan bukti perbaikan yang jelas dan catatan teknis. Catatan evaluasi boleh kosong. | Daftar tampil terbaru dahulu sesuai waktu masuk laporan. Detail menunjukkan foto awal dan hasil, video jika tersedia, waktu unggah, dan catatan teknis. Status menjadi Berhasil, `waktu_selesai` terisi, tiket keluar dari antrean, dan pelapor serta eksekutor menerima notifikasi di aplikasi. | Dasbor mengonfirmasi bahwa status laporan telah diperbarui menjadi Berhasil. Daftar siap evaluasi menampilkan tiga laporan tersisa. | Pass |
+| UC05-TC02 | KF07, KF16, KF17 | Alternatif 1 — pekerjaan belum selesai | 1. Pilih tiket di `/evaluasi` dan periksa bukti.<br>2. Pilih “Belum Selesai” dan coba kirim tanpa catatan.<br>3. Isi catatan dan konfirmasi.<br>4. Periksa tugas eksekutor, notifikasi pelapor dan riwayat status. | Tiket dengan perbaikan belum tuntas. Catatan kosong lalu “Tambalan masih belum rata”. | Pengiriman tanpa catatan ditolak. Keputusan dan catatan tersimpan setelah konfirmasi. Tiket kembali ke Dikerjakan / menunggu eksekusi, riwayat transisi tercatat, eksekutor menerima catatan, dan pelapor menerima notifikasi bahwa pekerjaan akan diulang. | Dasbor mengonfirmasi bahwa keputusan disimpan dan pekerjaan dikembalikan ke eksekutor lapangan. Daftar siap evaluasi menampilkan dua laporan tersisa. | Pass |
+| UC05-TC03 | KF07, KF16, KF17 | Alternatif 2 — foto/video tidak ada atau tidak jelas | 1. Pilih tiket di `/evaluasi` dan periksa bukti yang kabur.<br>2. Pilih “Minta Ulang Bukti” dan coba kirim tanpa catatan.<br>3. Jelaskan kekurangan bukti dan konfirmasi.<br>4. Periksa tugas eksekutor, notifikasi pelapor dan riwayat status. | Tiket dengan foto yang tidak jelas. Catatan kosong lalu “Unggah ulang foto yang memperlihatkan seluruh area perbaikan”. | Pengiriman tanpa catatan ditolak. Keputusan dan catatan tersimpan setelah konfirmasi. Tiket kembali ke Dikerjakan / menunggu eksekusi untuk pengunggahan ulang, riwayat transisi tercatat, eksekutor menerima instruksi, dan pelapor menerima notifikasi di aplikasi. | Dasbor mengonfirmasi bahwa instruksi unggah ulang bukti telah dikirim ke eksekutor lapangan. Daftar siap evaluasi menampilkan satu laporan tersisa. | Pass |
 
 Langkah terakhir SKPL 4.4.5 alternatif 2 menyebut status “selesai”. Hasil yang diharapkan pada UC05-TC03 mengikuti KF17, keputusan “Minta Ulang Bukti” di DPPL (I04-11), dan transisi di M9 B.1 butir 31.
 
@@ -701,18 +704,18 @@ Tabel 4.6. Bukti Hasil Pengujian
 | *UC01-TC01* | *[Sisipkan tangkapan layar UC01-TC01 sesuai prosedur pengujian]* |
 | *UC01-TC02* | *[Sisipkan tangkapan layar UC01-TC02 sesuai prosedur pengujian]* |
 | *KNF01-TC01* | *[Sisipkan bukti pengukuran parameter KNF01-TC01]* |
-| C09-UT01–C09-UT17 | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C09-UT.png` |
-| C09 (coverage) | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C09-coverage.png` |
-| C18-UT01–C18-UT10 | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C18-UT.png` |
-| C18 (coverage) | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C18-coverage.png` |
-| C21-UT01–C21-UT21 | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C21-UT.png` |
-| C21 (coverage) | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C21-coverage.png` |
-| UC02-TC01 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC02-TC01.png` |
-| UC02-TC02 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC02-TC02.png` |
-| UC02-TC03 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC02-TC03.png` |
-| UC05-TC01 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC05-TC01.png` |
-| UC05-TC02 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC05-TC02.png` |
-| UC05-TC03 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC05-TC03.png` |
+| C09-UT01–C09-UT17 | <img alt="C09-UT" src="./assets/bukti-test/unit-test/ut-uc02-uc05/C09-UT.png" width="600"> |
+| C09 (coverage) | <img alt="C09-coverage" src="./assets/bukti-test/unit-test/ut-uc02-uc05/C09-coverage.png" width="600"> |
+| C18-UT01–C18-UT10 | <img alt="C18-UT" src="./assets/bukti-test/unit-test/ut-uc02-uc05/C18-UT.png" width="600"> |
+| C18 (coverage) | <img alt="C18-coverage" src="./assets/bukti-test/unit-test/ut-uc02-uc05/C18-coverage.png" width="600"> |
+| C21-UT01–C21-UT21 | <img alt="C21-UT" src="./assets/bukti-test/unit-test/ut-uc02-uc05/C21-UT.png" width="600"> |
+| C21 (coverage) | <img alt="C21-coverage" src="./assets/bukti-test/unit-test/ut-uc02-uc05/C21-coverage.png" width="600"> |
+| UC02-TC01 | <img alt="UC02-TC01" src="./assets/bukti-test/uc-test/uc-uc02-uc05/UC02-TC01.png" width="300"> |
+| UC02-TC02 | <img alt="UC02-TC02" src="./assets/bukti-test/uc-test/uc-uc02-uc05/UC02-TC02.png" width="300"> |
+| UC02-TC03 | <img alt="UC02-TC03" src="./assets/bukti-test/uc-test/uc-uc02-uc05/UC02-TC03.png" width="300"> |
+| UC05-TC01 | <img alt="UC05-TC01" src="./assets/bukti-test/uc-test/uc-uc02-uc05/UC05-TC01.png" width="300"> |
+| UC05-TC02 | <img alt="UC05-TC02" src="./assets/bukti-test/uc-test/uc-uc02-uc05/UC05-TC02.png" width="300"> |
+| UC05-TC03 | <img alt="UC05-TC03" src="./assets/bukti-test/uc-test/uc-uc02-uc05/UC05-TC03.png" width="300"> |
 | *C07-UT01 - C07-UT16* | <img alt="C07-UT" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C07-UT.png" width="600"> |
 | *C07 (coverage)* | <img alt="C07-Coverage" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C07-coverage.png" width="600"> |
 | *C08-UT01 - C08-UT20* | <img alt="C08-UT" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C08-UT.png" width="600"> |
@@ -765,8 +768,6 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | KF19 | - | UC06 | C08 - HasilPerbaikan<br>C22 - StatusController | `src/server/entities/HasilPerbaikan.ts` (`getBuktiLengkap`) | UC06-TC… (D) | C08-UT08 – C08-UT14, C08-UT18 – C08-UT20 |
 | *KFXX* | *-* | *[UCXX atau -]* | *[CXX - Nama kelas atau -]* | *Tidak diimplementasikan: [alasan]* | *-* | *-* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
-
-Untuk KF07 pada UC02 dan UC05, skenario manual memeriksa notifikasi di dalam aplikasi. Keterkaitan dengan KNF13 dicatat sesuai SKPL, dengan batas implementasi notifikasi dalam aplikasi pada M9 B.1 butir 49.
 
 Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 
