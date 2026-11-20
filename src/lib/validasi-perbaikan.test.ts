@@ -23,7 +23,7 @@ describe("validasiForm", () => {
 });
 
 describe("cekKelengkapan", () => {
-  it("C20-UT05 cekKelengkapan (normal): menandai bagian kosong (I06-04, I06-05)", () => {
+  it("C20-UT06 cekKelengkapan (normal): menandai bagian kosong (I06-04, I06-05)", () => {
     expect(cekKelengkapan("", [])).toEqual({ catatanKosong: true, fotoKosong: true });
     expect(cekKelengkapan("ok", [])).toEqual({ catatanKosong: false, fotoKosong: true });
     expect(cekKelengkapan(" ", [foto])).toEqual({ catatanKosong: true, fotoKosong: false });
@@ -32,7 +32,7 @@ describe("cekKelengkapan", () => {
 });
 
 describe("PESAN_TAK_LENGKAP", () => {
-  it("C20-UT06 PESAN_TAK_LENGKAP: sama persis dengan DPPL I06-08", () => {
+  it("C20-UT24 PESAN_TAK_LENGKAP: sama persis dengan DPPL I06-08", () => {
     expect(PESAN_TAK_LENGKAP).toBe("Gagal terkirim: foto dan deskripsi wajib diisi.");
   });
 });
@@ -68,7 +68,7 @@ describe("cekMediaTerunggah", () => {
 });
 
 describe("Tambahan HIUPL", () => {
-  it("C20-UT12 validasiForm (batas): catatan tepat 1 karakter + tepat 1 foto dianggap lengkap", () => {
+  it("C20-UT05 validasiForm (batas): catatan tepat 1 karakter + tepat 1 foto dianggap lengkap", () => {
     expect(validasiForm("a", [foto], [])).toBe(true);
   });
 });

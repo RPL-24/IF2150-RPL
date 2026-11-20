@@ -55,9 +55,12 @@ beforeEach(() => {
 });
 
 describe("PerbaikanController.verifikasiAkses", () => {
-  it("C20-UT13 verifikasiAkses (normal + negatif): eksekutor true, ditolak false", async () => {
+  it("C20-UT12 verifikasiAkses (normal): sesi eksekutor -> true", async () => {
     expect(await verifikasiAkses()).toBe(true);
     expect(requireRole).toHaveBeenCalledWith("eksekutor");
+  });
+
+  it("C20-UT13 verifikasiAkses (negatif): sesi ditolak -> false", async () => {
     vi.mocked(requireRole).mockResolvedValue(gagal("Anda tidak memiliki akses ke fitur ini."));
     expect(await verifikasiAkses()).toBe(false);
   });
@@ -71,7 +74,7 @@ describe("PerbaikanController.unggahHasil", () => {
     });
   });
 
-  it("C20-UT15 unggahHasil (negatif): akses ditolak", async () => {
+  it("C20-UT16 unggahHasil (negatif): akses ditolak", async () => {
     vi.mocked(requireRole).mockResolvedValue(gagal("Anda tidak memiliki akses ke fitur ini."));
     expect(await unggahHasil("LK-0007", "Catatan", foto, [])).toEqual(gagal("Anda tidak memiliki akses ke fitur ini."));
     expect(createClient).not.toHaveBeenCalled();
@@ -81,12 +84,12 @@ describe("PerbaikanController.unggahHasil", () => {
     ["catatan kosong", "", foto],
     ["catatan hanya spasi", "   ", foto],
     ["tanpa foto (UC04 Alt 1)", "Catatan", []],
-  ])("C20-UT16 unggahHasil (negatif): %s ditolak dengan pesan I06-08", async (_nama, catatan, daftarFoto) => {
+  ])("C20-UT17 unggahHasil (negatif): %s ditolak dengan pesan I06-08", async (_nama, catatan, daftarFoto) => {
     expect(await unggahHasil("LK-0007", catatan, daftarFoto, video)).toEqual(gagal(PESAN_TAK_LENGKAP));
     expect(createClient).not.toHaveBeenCalled();
   });
 
-  it("C20-UT17 unggahHasil (negatif): tipe masukan salah dari client", async () => {
+  it("C20-UT18 unggahHasil (negatif): tipe masukan salah dari client", async () => {
     expect(await unggahHasil("LK-0007", null as never, "x" as never, [])).toEqual(gagal(PESAN_TAK_LENGKAP));
   });
 
@@ -96,12 +99,12 @@ describe("PerbaikanController.unggahHasil", () => {
     ["foto 10 MB + 1 byte", [media("a.jpg", "foto", 10 * MB + 1)], []],
     ["foto di folder eksekutor lain", [media("a.jpg", "foto", MB, "hasil/eksekutor-lain")], []],
     ["foto dari folder laporan warga", [media("a.jpg", "foto", MB, `laporan/${ID}`)], []],
-  ])("C20-UT18 unggahHasil (negatif): %s ditolak sebagai berkas tidak valid", async (_nama, daftarFoto, daftarVideo) => {
+  ])("C20-UT19 unggahHasil (negatif): %s ditolak sebagai berkas tidak valid", async (_nama, daftarFoto, daftarVideo) => {
     expect(await unggahHasil("LK-0007", "Catatan", daftarFoto, daftarVideo)).toEqual(gagal(PESAN_BERKAS_TIDAK_VALID));
     expect(simpanBukti).not.toHaveBeenCalled();
   });
 
-  it("C20-UT19 unggahHasil (batas): foto tepat 10 MB diterima", async () => {
+  it("C20-UT15 unggahHasil (batas): foto tepat 10 MB diterima", async () => {
     expect(await unggahHasil("LK-0007", "Catatan", [media("a.png", "foto", 10 * MB)], [])).toEqual(ok({ idTiket: "LK-0007" }));
   });
 

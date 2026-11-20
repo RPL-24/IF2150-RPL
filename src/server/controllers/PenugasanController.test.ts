@@ -60,49 +60,52 @@ beforeEach(() => {
 });
 
 describe("PenugasanController.verifikasiAkses", () => {
-  it("C19-UT01 verifikasiAkses (normal + negatif): eksekutor true, ditolak false", async () => {
+  it("C19-UT01 verifikasiAkses (normal): sesi eksekutor -> true", async () => {
     expect(await verifikasiAkses()).toBe(true);
     expect(requireRole).toHaveBeenCalledWith("eksekutor");
+  });
+
+  it("C19-UT02 verifikasiAkses (negatif): sesi ditolak -> false", async () => {
     vi.mocked(requireRole).mockResolvedValue(gagal("Anda tidak memiliki akses ke fitur ini."));
     expect(await verifikasiAkses()).toBe(false);
   });
 });
 
 describe("PenugasanController.doSorting", () => {
-  it("C19-UT02 doSorting (normal): memuat tugas aktif lalu urut prioritas", async () => {
+  it("C19-UT03 doSorting (normal): memuat tugas aktif lalu urut prioritas", async () => {
     const hasil = await doSorting();
     expect(getByStatus).toHaveBeenCalledWith(supabase, "dikerjakan", "menunggu_eksekusi");
     expect(idTiket(hasil)).toEqual(["LK-0003", "LK-0002", "LK-0001"]);
   });
 
-  it("C19-UT03 doSorting (batas): tanpa tugas -> [] (UC03 Alt 2)", async () => {
+  it("C19-UT04 doSorting (batas): tanpa tugas -> [] (UC03 Alt 2)", async () => {
     vi.mocked(getByStatus).mockResolvedValue(respons([]));
     expect(await doSorting()).toEqual(ok([]));
   });
 
-  it("C19-UT04 doSorting (negatif): akses ditolak, basis data tidak dibaca", async () => {
+  it("C19-UT05 doSorting (negatif): akses ditolak, basis data tidak dibaca", async () => {
     vi.mocked(requireRole).mockResolvedValue(gagal("Anda tidak memiliki akses ke fitur ini."));
     expect(await doSorting()).toEqual(gagal(PESAN_TANPA_AKSES));
     expect(getByStatus).not.toHaveBeenCalled();
   });
 
-  it("C19-UT05 doSorting (negatif): error basis data -> pesan gagal memuat", async () => {
+  it("C19-UT06 doSorting (negatif): error basis data -> pesan gagal memuat", async () => {
     vi.mocked(getByStatus).mockResolvedValue(respons(null, errorDb));
     expect(await doSorting()).toEqual(gagal(PESAN_GAGAL_LOAD));
   });
 });
 
 describe("PenugasanController.doFilter", () => {
-  it("C19-UT06 doFilter (normal): hanya kategori terpilih, terurut (UC03 Alt 1)", async () => {
+  it("C19-UT07 doFilter (normal): hanya kategori terpilih, terurut (UC03 Alt 1)", async () => {
     expect(idTiket(await doFilter("lampu_jalan_mati"))).toEqual(["LK-0003", "LK-0002"]);
   });
 
-  it.each(["semua", "", "Lampu jalan mati", "x' or '1'='1"])("C19-UT07 doFilter (negatif): menolak kategori %j tanpa query", async (kategori) => {
+  it.each(["semua", "", "Lampu jalan mati", "x' or '1'='1"])("C19-UT08 doFilter (negatif): menolak kategori %j tanpa query", async (kategori) => {
     expect(await doFilter(kategori)).toEqual(gagal(PESAN_KATEGORI_TAK_DIKENAL));
     expect(getByStatus).not.toHaveBeenCalled();
   });
 
-  it("C19-UT08 doFilter (negatif): error basis data -> pesan gagal memuat", async () => {
+  it("C19-UT09 doFilter (negatif): error basis data -> pesan gagal memuat", async () => {
     vi.mocked(getByStatus).mockResolvedValue(respons(null, errorDb));
     expect(await doFilter("jalan_berlubang")).toEqual(gagal(PESAN_GAGAL_LOAD));
   });
@@ -117,13 +120,13 @@ describe("PenugasanController.bukaLaporan", () => {
       tahap: rincian.tahap, foto: rincian.foto, video: rincian.video, evaluasiTerakhir,
     });
 
-  it("C19-UT09 bukaLaporan (normal): tugas aktif tanpa evaluasi", async () => {
+  it("C19-UT10 bukaLaporan (normal): tugas aktif tanpa evaluasi", async () => {
     expect(await bukaLaporan("LK-0007")).toEqual(harapan(null));
     expect(getRincian).toHaveBeenCalledWith(supabase, "LK-0007");
     expect(getEvaluasiTerakhir).toHaveBeenCalledWith(supabase, rincian.id);
   });
 
-  it("C19-UT10 bukaLaporan (normal): tugas revisi membawa catatan evaluasi terakhir", async () => {
+  it("C19-UT11 bukaLaporan (normal): tugas revisi membawa catatan evaluasi terakhir", async () => {
     const evaluasi = { keputusan: "minta_ulang_bukti", catatan: "Foto buram.", waktu_evaluasi: "2026-11-06T08:00:00Z" };
     vi.mocked(getEvaluasiTerakhir).mockResolvedValue(respons(evaluasi));
     expect(await bukaLaporan("LK-0007")).toEqual(harapan(evaluasi));
@@ -133,23 +136,23 @@ describe("PenugasanController.bukaLaporan", () => {
     ["tiket tidak ada", null],
     ["sudah dikirim (menunggu_evaluasi)", { ...rincian, tahap: "menunggu_evaluasi" }],
     ["sudah berhasil", { ...rincian, status: "berhasil", tahap: null }],
-  ])("C19-UT11 bukaLaporan (negatif): %s ditolak tanpa membaca evaluasi", async (_nama, data) => {
+  ])("C19-UT12 bukaLaporan (negatif): %s ditolak tanpa membaca evaluasi", async (_nama, data) => {
     vi.mocked(getRincian).mockResolvedValue(respons(data));
     expect(await bukaLaporan("LK-0007")).toEqual(gagal(PESAN_TUGAS_TAK_ADA));
     expect(getEvaluasiTerakhir).not.toHaveBeenCalled();
   });
 
-  it("C19-UT12 bukaLaporan (negatif): error membaca rincian", async () => {
+  it("C19-UT13 bukaLaporan (negatif): error membaca rincian", async () => {
     vi.mocked(getRincian).mockResolvedValue(respons(null, errorDb));
     expect(await bukaLaporan("LK-0007")).toEqual(gagal(PESAN_GAGAL_RINCIAN));
   });
 
-  it("C19-UT13 bukaLaporan (negatif): error membaca evaluasi terakhir", async () => {
+  it("C19-UT14 bukaLaporan (negatif): error membaca evaluasi terakhir", async () => {
     vi.mocked(getEvaluasiTerakhir).mockResolvedValue(respons(null, errorDb));
     expect(await bukaLaporan("LK-0007")).toEqual(gagal(PESAN_GAGAL_RINCIAN));
   });
 
-  it("C19-UT14 bukaLaporan (negatif): akses ditolak", async () => {
+  it("C19-UT15 bukaLaporan (negatif): akses ditolak", async () => {
     vi.mocked(requireRole).mockResolvedValue(gagal("Silakan masuk terlebih dahulu."));
     expect(await bukaLaporan("LK-0007")).toEqual(gagal(PESAN_TANPA_AKSES));
     expect(createClient).not.toHaveBeenCalled();
