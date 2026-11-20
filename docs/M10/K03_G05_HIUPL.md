@@ -887,8 +887,42 @@ Tabel 4.6. Bukti Hasil Pengujian
 | INT-TC55 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC55 Gagal: username mitra yang tidak terdaftar ditolak dengan pesan (3 ms)`. Hasil: **Pass**. |
 | INT-TC56 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC56 Normal: dashboard mitra menampilkan ringkasan yang sesuai dengan basis data (9 ms)`. Hasil: **Pass**. |
 | INT-TC57 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC57 Gagal: akun masyarakat tidak dapat membuka dashboard mitra (89 ms)`. Hasil: **Pass**. |
-| *UC01-TC01* | *[Sisipkan tangkapan layar UC01-TC01 sesuai prosedur pengujian]* |
-| *UC01-TC02* | *[Sisipkan tangkapan layar UC01-TC02 sesuai prosedur pengujian]* |
+| **UC01-TC01** | ![UC01-TC01](assets/UC01-TC01.png) |
+| **UC01-TC02** | ![UC01-TC02](assets/UC01-TC02.png) |
+| **UC02-TC01** | ![UC02-TC01](assets/UC02-TC01.png) |
+| **UC02-TC02** | ![UC02-TC02](assets/UC02-TC02.png) |
+| **UC02-TC03** | ![UC02-TC03](assets/UC02-TC03.png) |
+| **UC03-TC01** | ![UC03-TC01](assets/UC03-TC01.png) |
+| **UC03-TC02** | ![UC03-TC02](assets/UC03-TC02.png) |
+| **UC04-TC01** | ![UC04-TC01](assets/UC04-TC01.png) |
+| **UC04-TC02** | ![UC04-TC02](assets/UC04-TC02.png) |
+| **UC04-TC03** | ![UC04-TC03](assets/UC04-TC03.png) |
+| **UC05-TC01** | ![UC05-TC01](assets/UC05-TC01.png) |
+| **UC05-TC02** | ![UC05-TC02](assets/UC05-TC02.png) |
+| **UC06-TC01** | ![UC06-TC01](assets/UC06-TC01.png) |
+| **UC06-TC02** | ![UC06-TC02](assets/UC06-TC02.png) |
+| **UC06-TC03** | ![UC06-TC03](assets/UC06-TC03.png) |
+| **UC07-TC01** | ![UC07-TC01](assets/UC07-TC01.png) |
+| **UC08-TC01** | ![UC08-TC01](assets/UC08-TC01.png) |
+| **UC08-TC02** | ![UC08-TC02](assets/UC08-TC02.png) |
+| **UC09-TC01** | ![UC09-TC01](assets/UC09-TC01.png) |
+| **UC09-TC02** | ![UC09-TC02](assets/UC09-TC02.png) |
+| **UC10-TC01** | ![UC10-TC01](assets/UC10-TC01.png) |
+| **UC10-TC02** | ![UC10-TC02](assets/UC10-TC02.png) |
+| **UC11-TC01** | ![UC11-TC01](assets/UC11-TC01.png) |
+| **UC11-TC02** | ![UC11-TC02](assets/UC11-TC02.png) |
+| **UC12-TC01** | ![UC12-TC01](assets/UC12-TC01.png) |
+| **UC13-TC01** | ![UC13-TC01](assets/UC13-TC01.png) |
+| **UC13-TC02** | ![UC13-TC02](assets/UC13-TC02.png) |
+| **UC14-TC02** | ![UC14-TC02](assets/UC14-TC02.png) |
+| **UC15-TC01** | ![UC15-TC01](assets/UC15-TC01.png) |
+| **UC15-TC02** | ![UC15-TC02](assets/UC15-TC02.png) |
+| **UC17-TC01** | ![UC17-TC01](assets/UC17-TC01.png) |
+| **UC17-TC02** | ![UC17-TC02](assets/UC17-TC02.png) |
+| **UC19-TC01** | ![UC19-TC01](assets/UC19-TC01.png) |
+| **UC20-TC01** | ![UC20-TC01](assets/UC20-TC01.png) |
+| **UC22-TC01** | ![UC22-TC01](assets/UC22-TC01.png) |
+| **UC22-TC02** | ![UC22-TC02](assets/UC22-TC02.png) |
 | *KNF01-TC01* | *[Sisipkan bukti pengukuran parameter KNF01-TC01]* |
 | *...* | *...* |
 
