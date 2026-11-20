@@ -1,0 +1,23 @@
+﻿node.exe : PASS tests/unit/Kriptografi.test.js
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (PASS tests/unit/Kriptografi.test.js:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  Kriptografi enkripsi/dekripsi (C42, KF36)
+    √ C42-UT05 [Normal] dekripsi(enkripsi(teks)) menghasilkan teks semula, termasuk emoji, tanpa memuat teks asli (5 ms)
+    √ C42-UT06 [Batas] IV acak: teks sama menghasilkan ciphertext berbeda setiap kali dienkripsi (1 ms)
+    √ C42-UT07 [Batas] teks kosong, teks panjang 2000 karakter, dan karakter Unicode kembali utuh setelah dekripsi (2 ms)
+    √ C42-UT08 [Negatif] ciphertext yang diubah satu byte-nya ditolak (null)
+    √ C42-UT09 [Negatif] auth tag yang dirusak ditolak (null)
+    √ C42-UT10 [Negatif] kunci enkripsi lain tidak bisa membaca pesan (null)
+    √ C42-UT11 [Negatif] format ciphertext tidak sah, terlalu pendek, kosong, atau null mengembalikan null (1 ms)
+    √ C42-UT12 [Negatif] kunci kosong, terlalu pendek, atau bukan 32 byte hex melempar galat KUNCI_ENKRIPSI_PESAN (15 ms)
+    √ C42-UT13 [Batas] masukan bukan string (angka) dikonversi menjadi string dan dapat didekripsi
+
+Test Suites: 1 passed, 1 total
+Tests:       9 passed, 9 total
+Snapshots:   0 total
+Time:        0.992 s, estimated 1 s
+Ran all test suites matching tests/unit/Kriptografi.test.js.

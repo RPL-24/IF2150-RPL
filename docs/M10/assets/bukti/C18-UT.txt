@@ -1,0 +1,44 @@
+﻿node.exe : PASS tests/unit/PercakapanController.test.js
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (PASS tests/unit...troller.test.js:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  PercakapanController.mulaiPercakapan (C18, UC16, KF31)
+    √ C18-UT01 [Negatif] mulaiPercakapan: penjual diblokir ditolak 403 tanpa membuat percakapan (6 ms)
+    √ C18-UT02 [Negatif] mulaiPercakapan: menghubungi listing sendiri ditolak 400 (1 ms)
+    √ C18-UT03 [Negatif] mulaiPercakapan: barang tidak ada atau id tidak valid ditolak 404 (1 ms)
+    √ C18-UT04 [Normal] mulaiPercakapan: kombinasi lama dipakai ulang (200) tanpa membuat percakapan baru (2 ms)
+    √ C18-UT05 [Normal] mulaiPercakapan: kombinasi baru membuat percakapan (201) (1 ms)
+  PercakapanController.bukaPercakapan (C18, UC16, KF35, KF36)
+    √ C18-UT06 [Negatif] bukaPercakapan: non-peserta (termasuk admin) ditolak 403 tanpa membaca pesan (1 ms)
+    √ C18-UT07 [Negatif] bukaPercakapan: percakapan tidak ada atau id bukan UUID ditolak 404 (1 ms)
+    √ C18-UT08 [Normal] bukaPercakapan: peserta menerima pesan terdekripsi, pesan rusak diganti, dan pesan lawan ditandai dibaca (3 ms)
+    √ C18-UT09 [Batas] bukaPercakapan dan ambilRingkasanBarang: barang dihapus atau idBarang null menghasilkan barang null, tanpa foto menghasilkan 
+fotoUtama null (1 ms)
+  PercakapanController.kirimPesan (C18, UC17, KF32, KF34, KF36)
+    √ C18-UT10 [Negatif] kirimPesan: isi kosong atau bukan teks ("") ditolak 400 (1 ms)
+    √ C18-UT10 [Negatif] kirimPesan: isi kosong atau bukan teks ("   
+ ") ditolak 400 (1 ms)
+    √ C18-UT10 [Negatif] kirimPesan: isi kosong atau bukan teks (undefined) ditolak 400 (1 ms)
+    √ C18-UT10 [Negatif] kirimPesan: isi kosong atau bukan teks (123) ditolak 400
+    √ C18-UT11 [Batas] kirimPesan: isi lebih dari 2000 karakter ditolak 400, tepat 2000 diterima (1 ms)
+    √ C18-UT12 [Negatif] kirimPesan: percakapan tidak ditemukan atau id bukan UUID ditolak 404 (1 ms)
+    √ C18-UT13 [Negatif] kirimPesan: non-peserta ditolak 403 dan tidak ada pesan tersimpan (1 ms)
+    √ C18-UT14 [Normal] kirimPesan: isi tersimpan terenkripsi, waktu diperbarui, dan respons berisi teks murni (1 ms)
+    √ C18-UT15 [Normal] kirimPesan: penerima (lawan bicara) diberi notifikasi berisi nama pengirim tanpa isi pesan (KF36) (1 ms)
+    √ C18-UT16 [Batas] kirimPesan dan beritahuPenerima: kegagalan notifikasi tidak menggagalkan kirim pesan, dan nama cadangan dipakai bila pengirim null 
+(2 ms)
+  PercakapanController.getDaftarPercakapan dan cuplikan (C18, UC18, KF33, KF34)
+    √ C18-UT17 [Normal] getDaftarPercakapan: daftar memuat lawan bicara, judul barang, cuplikan terdekripsi, dan hitung belum dibaca (2 ms)
+    √ C18-UT18 [Negatif] ambilCuplikanPesanTerakhir: cuplikan yang gagal didekripsi tampil sebagai teks pengganti
+    √ C18-UT19 [Batas] getDaftarPercakapan: pengguna tanpa percakapan mendapat daftar kosong
+    √ C18-UT20 [Batas] potongCuplikan: tepat 80 karakter utuh, 81 karakter dipotong menjadi 79 karakter dan elipsis
+    √ C18-UT21 [Batas] getDaftarPercakapan: listing yang dihapus menghasilkan judulBarang null
+
+Test Suites: 1 passed, 1 total
+Tests:       24 passed, 24 total
+Snapshots:   0 total
+Time:        1.457 s
+Ran all test suites matching tests/unit/PercakapanController.test.js.

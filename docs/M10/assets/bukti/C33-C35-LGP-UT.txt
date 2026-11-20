@@ -1,0 +1,59 @@
+﻿node.exe : PASS tests/unit/ModelModulD.test.js
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (PASS tests/unit/ModelModulD.test.js:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  Model Modul D Unit Test
+    Percakapan (C33)
+      √ C33-UT01 [Normal] dariBaris: memetakan baris snake_case menjadi objek Percakapan (4 ms)
+      √ C33-UT02 [Batas] dariBaris: baris null atau undefined mengembalikan null (1 ms)
+      √ C33-UT03 [Normal] cariById: mengembalikan objek Percakapan bila ditemukan (3 ms)
+      √ C33-UT04 [Negatif] cariById: mengembalikan null bila tidak ditemukan
+      √ C33-UT05 [Normal] cariByKombinasi: kueri mencari kombinasi id_barang, id_pembeli, id_penjual (Algo-040) (1 ms)
+      √ C33-UT06 [Negatif] cariByKombinasi: mengembalikan null bila kombinasi belum ada
+      √ C33-UT07 [Normal] simpan: INSERT percakapan baru dengan UUID dan mengembalikan objek Percakapan (Algo-041) (5 ms)
+      √ C33-UT08 [Batas] simpan: saat ON CONFLICT DO NOTHING (0 baris kembali), mengembalikan hasil cariByKombinasi (1 ms)
+      √ C33-UT09 [Normal] cekPeserta: mengembalikan true untuk pembeli dan penjual
+      √ C33-UT10 [Negatif] cekPeserta: mengembalikan false untuk pihak ketiga, admin, null, dan undefined (KF35)
+      √ C33-UT11 [Normal] addPesan: meneruskan idPercakapan, idPengirim, dan isi terenkripsi ke Pesan.simpanPesan (1 ms)
+      √ C33-UT12 [Normal] perbaruiWaktuTerakhir: menjalankan UPDATE dan memperbarui atribut objek (Algo-042) (1 ms)
+      √ C33-UT13 [Normal] getDaftarPercakapanByPengguna: kueri OR id_pembeli/id_penjual urut terbaru dulu (Algo-043) (1 ms)
+      √ C33-UT14 [Normal] getLawanBicara: mengembalikan penjual bagi pembeli, pembeli bagi penjual, dan null bila akun tidak ada (Algo-044) (1 ms)
+    Pesan (C34)
+      √ C34-UT01 [Normal] dariBaris: memetakan baris pesan ke objek Pesan (1 ms)
+      √ C34-UT02 [Batas] dariBaris: baris null mengembalikan null
+      √ C34-UT03 [Normal] getDaftarPesan: mengambil pesan urut waktu_kirim ASC (Algo-045) (1 ms)
+      √ C34-UT04 [Batas] getDaftarPesan: percakapan tanpa pesan mengembalikan daftar kosong
+      √ C34-UT05 [Normal] simpanPesan: INSERT isi terenkripsi dengan status_baca false (Algo-046) (1 ms)
+      √ C34-UT06 [Normal] getCuplikanPesanTerakhir: mengambil satu pesan terbaru DESC LIMIT 1 (Algo-047)
+      √ C34-UT07 [Negatif] getCuplikanPesanTerakhir: mengembalikan null bila belum ada pesan
+      √ C34-UT08 [Normal] tandaiDibaca: memperbarui pesan lawan bicara (id_pengirim <> $2) yang belum dibaca
+      √ C34-UT09 [Normal] hitungPesanBelumDibaca: menghitung pesan lawan bicara yang belum dibaca (Algo-048)
+      √ C34-UT10 [Batas] hitungPesanBelumDibaca: mengembalikan 0 bila semua pesan sudah dibaca (1 ms)
+    Notifikasi (C35)
+      √ C35-UT01 [Normal] dariBaris: memetakan baris notifikasi menjadi objek Notifikasi
+      √ C35-UT02 [Batas] dariBaris: baris null mengembalikan null (1 ms)
+      √ C35-UT03 [Normal] simpan: INSERT notifikasi lengkap dan nilai bawaan waktuKirim/statusBaca mengembalikan true (Algo-049) (1 ms)
+      √ C35-UT04 [Negatif] simpan: mengembalikan false bila tidak ada baris yang tersimpan
+      √ C35-UT05 [Normal] hitungBelumDibaca: menghitung notifikasi belum dibaca milik akun (Algo-050) (1 ms)
+      √ C35-UT06 [Normal] getDaftarByAkun: mengambil daftar terbaru dengan batas bawaan 50 dan batas khusus
+      √ C35-UT07 [Batas] getDaftarByAkun: mengembalikan daftar kosong bila belum ada notifikasi
+      √ C35-UT08 [Normal] tandaiDibaca: menandai notifikasi milik akun mengembalikan true
+      √ C35-UT09 [Negatif] tandaiDibaca: notifikasi tidak ditemukan atau bukan milik akun mengembalikan false
+      √ C35-UT10 [Normal] tandaiSemuaDibaca: memperbarui semua notifikasi belum dibaca milik akun dan mengembalikan jumlah baris
+    LanggananPush (LGP)
+      √ LGP-UT01 [Normal] dariBaris: memetakan baris langganan_push ke objek LanggananPush
+      √ LGP-UT02 [Batas] dariBaris: baris null mengembalikan null (1 ms)
+      √ LGP-UT03 [Normal] simpan: INSERT ON CONFLICT (endpoint) DO UPDATE mengembalikan true
+      √ LGP-UT04 [Negatif] simpan: mengembalikan false bila rowCount 0 (1 ms)
+      √ LGP-UT05 [Normal] getByAkun: mengembalikan daftar LanggananPush milik akun dan array kosong bila belum ada (1 ms)
+      √ LGP-UT06 [Normal] hapusByEndpoint: menghapus langganan berdasarkan endpoint mengembalikan true
+      √ LGP-UT07 [Negatif] hapusByEndpoint: endpoint tidak ada mengembalikan false (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       41 passed, 41 total
+Snapshots:   0 total
+Time:        1.076 s
+Ran all test suites matching tests/unit/ModelModulD.test.js.

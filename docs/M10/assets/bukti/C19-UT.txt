@@ -1,0 +1,46 @@
+﻿node.exe : PASS tests/unit/NotifikasiController.test.js
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (PASS tests/unit...troller.test.js:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  NotifikasiController (C19)
+    kirimNotifikasi dan kirimPushNotifikasi (Algo-020)
+      √ C19-UT01 [Normal] kirimNotifikasi: menyimpan notifikasi, menghitung belum dibaca, dan memicu push dengan tautan /percakapan (6 ms)
+      √ C19-UT02 [Negatif] kirimNotifikasi: push gagal (melempar galat) tetap mengembalikan true (1 ms)
+      √ C19-UT03 [Batas] kirimNotifikasi: push tidak terkirim (false) tetap mengembalikan true (1 ms)
+      √ C19-UT04 [Batas] kirimNotifikasi: tidak menunggu push selesai agar push service lambat tidak menahan pengirim pesan (1 ms)
+      √ C19-UT05 [Negatif] kirimNotifikasi: gagal menyimpan mengembalikan false tanpa memicu push (1 ms)
+      √ C19-UT06 [Batas] kirimPushNotifikasi: jenis bawaan memakai /percakapan dan jenis lain memakai /
+    simpanLanggananPush dan validasiLanggananPush
+      √ C19-UT07 [Normal] simpanLanggananPush: langganan valid disimpan (1 ms)
+      √ C19-UT08 [Negatif] simpanLanggananPush: langganan tidak valid ditolak (tanpa body)
+      √ C19-UT08 [Negatif] simpanLanggananPush: langganan tidak valid ditolak (endpoint bukan https)
+      √ C19-UT08 [Negatif] simpanLanggananPush: langganan tidak valid ditolak (endpoint bukan URL) (1 ms)
+      √ C19-UT08 [Negatif] simpanLanggananPush: langganan tidak valid ditolak (endpoint > 500 karakter)
+      √ C19-UT08 [Negatif] simpanLanggananPush: langganan tidak valid ditolak (tanpa keys) (1 ms)
+      √ C19-UT08 [Negatif] simpanLanggananPush: langganan tidak valid ditolak (p256dh kosong)
+      √ C19-UT08 [Negatif] simpanLanggananPush: langganan tidak valid ditolak (p256dh > 200 karakter) (1 ms)
+      √ C19-UT08 [Negatif] simpanLanggananPush: langganan tidak valid ditolak (auth tidak ada)
+      √ C19-UT08 [Negatif] simpanLanggananPush: langganan tidak valid ditolak (auth hanya spasi) (1 ms)
+      √ C19-UT08 [Negatif] simpanLanggananPush: langganan tidak valid ditolak (auth > 100 karakter)
+      √ C19-UT09 [Batas] validasiLanggananPush: panjang tepat pada batas (endpoint 500, p256dh 200, auth 100) diterima (1 ms)
+    tandaiDibaca, getDaftarNotifikasi, dan getKunciPublik
+      √ C19-UT10 [Negatif] tandaiDibaca: notifikasi bukan milik akun gagal TIDAK_DITEMUKAN (1 ms)
+      √ C19-UT11 [Negatif] tandaiDibaca: id bukan UUID atau kosong gagal tanpa menyentuh basis data
+      √ C19-UT12 [Normal] tandaiDibaca: notifikasi milik akun mengembalikan jumlah belum dibaca terbaru (1 ms)
+      √ C19-UT13 [Normal] getDaftarNotifikasi: memetakan daftar (maks 50) dan jumlah belum dibaca
+      √ C19-UT14 [Normal] getKunciPublik: mengembalikan kunci publik dari PushNotifikasiAdapter (1 ms)
+    API /api/notifikasi
+      √ C19-UT15 [Negatif] API /api/notifikasi: tanpa token ditolak 401 (28 ms)
+      √ C19-UT16 [Negatif] API /api/notifikasi: PATCH /:id/baca bukan milik akun membalas 404 (8 ms)
+      √ C19-UT17 [Normal] API /api/notifikasi: PATCH /baca-semua membalas 200 belumDibaca 0 (5 ms)
+      √ C19-UT18 [Normal] API /api/notifikasi: GET /kunci-publik membalas 200 (null bila VAPID belum diatur) (5 ms)
+      √ C19-UT19 [Normal] API /api/notifikasi: POST /langganan-push membalas 201 bila valid dan 400 bila endpoint bukan https (37 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       28 passed, 28 total
+Snapshots:   0 total
+Time:        2.307 s
+Ran all test suites matching tests/unit/NotifikasiController.test.js.

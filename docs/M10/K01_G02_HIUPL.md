@@ -436,6 +436,16 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C29 (operasi katalog) | Barang: `getKatalog`, `getDetailKatalog` | Mendalam | SQL dinamis berparameter, peloloskan pola `ILIKE`, klausa urutan dari daftar tetap, serta aturan hanya listing "Tersedia" milik akun tidak diblokir (KF17, KF25 s.d. KF30, Algo-032). Operasi C29 lainnya diklasifikasikan Modul B | C29-UT17 s.d. C29-UT27, INT-TC35 s.d. INT-TC43 |
 | C05 | HalamanKatalog | Sedang | Memuat validasi rentang harga sisi klien, penyimpanan kriteria di URL, dan pemilihan keadaan kosong; aturan yang menentukan tetap divalidasi ulang di C17 | C05-UT01 s.d. C05-UT06; UC13-TC01, UC13-TC02, UC14-TC01 s.d. UC14-TC03 |
 | C07 | HalamanDetailBarang | Sedang | Memilih tombol aksi menurut pemilik dan status listing, serta menolak ID listing yang bukan UUID sebelum memanggil API | C07-UT01 s.d. C07-UT05; UC15-TC01 s.d. UC15-TC04 |
+| C08 | HalamanPercakapan | Sedang | Mengoordinasikan daftar dan ruang percakapan I-10 serta memanggil `/api/percakapan/*`. Memuat validasi pesan kosong/spasi dan batas 2000 karakter, pengurutan gelembung pesan, pengosongan daftar pesan saat akses ditolak, serta penanda belum dibaca; aturan yang mengikat divalidasi ulang di C18 | C08-UT01 s.d. C08-UT08; UC16-TC01 s.d. UC18-TC01 |
+| C09 | PanelNotifikasi | Sedang | Mengoordinasikan panel notifikasi I-11 (termasuk Service Worker `sw.js`), penanda belum dibaca, tampilan daftar dan keadaan kosong, serta pemeriksaan dukungan Web Push di peramban; kepemilikan notifikasi dan validasi langganan tetap divalidasi di C19 | C09-UT01 s.d. C09-UT06; UC17-TC01 |
+| C18 | PercakapanController | Mendalam | Alur inti UC16 s.d. UC18: aturan pembuatan dan penggunaan ulang ruang percakapan, larangan menghubungi listing sendiri atau penjual diblokir (KF31), verifikasi peserta termasuk penolakan admin (KF35), enkripsi dan dekripsi pesan beserta pesan pengganti (KF36), validasi panjang pesan, cuplikan, dan pemicu notifikasi tanpa isi pesan (Algo-016 s.d. Algo-019) | C18-UT01 s.d. C18-UT21; INT-TC46 s.d. INT-TC51 |
+| C19 (bagian notifikasi in-app dan Web Push) | NotifikasiController | Mendalam | Pengelolaan notifikasi dalam aplikasi dan langganan Web Push (KF34, Algo-020): penyimpanan notifikasi, pemicu push asinkron agar tidak menahan pengirim pesan, validasi URL HTTPS dan panjang kunci `p256dh`/`auth`, serta kepemilikan saat menandai dibaca. Operasi surel diuji Modul A dan E | C19-UT01 s.d. C19-UT19; INT-TC49, INT-TC52, INT-TC53, INT-TC54 |
+| C33 | Percakapan | Mendalam | Persistensi ruang unik per kombinasi `(barang, pembeli, penjual)` dengan `ON CONFLICT`, pencarian daftar percakapan pengguna, pembaruan waktu terakhir, pengambilan lawan bicara, dan pemeriksaan peserta `cekPeserta` (KF31, KF33, KF35, Algo-040 s.d. Algo-044) | C33-UT01 s.d. C33-UT14; INT-TC46, INT-TC47, INT-TC48, INT-TC50, INT-TC51 |
+| C34 | Pesan | Mendalam | Penyimpanan dan pembacaan pesan terenkripsi secara berurutan, pengambilan pesan terakhir untuk cuplikan, penghitungan pesan belum dibaca hanya dari lawan bicara, dan penandaan dibaca (KF32 s.d. KF34, KF36, Algo-045 s.d. Algo-048) | C34-UT01 s.d. C34-UT10; INT-TC48, INT-TC49, INT-TC50, INT-TC51 |
+| C35 | Notifikasi | Mendalam | Penyimpanan pemberitahuan baru, penghitungan belum dibaca, pengambilan daftar terbaru berbatas, serta penandaan dibaca yang membatasi hanya milik akun bersangkutan (KF34, Algo-049, Algo-050) | C35-UT01 s.d. C35-UT10; INT-TC49, INT-TC52 |
+| C42 (bagian `enkripsi` dan `dekripsi`) | Kriptografi | Mendalam | Keamanan: enkripsi autentikasi AES-256-GCM dengan IV acak 12 byte dan tag autentikasi 16 byte untuk seluruh isi pesan, penolakan *ciphertext* yang diubah atau kunci salah, serta validasi panjang kunci 32 byte (KF36, Algo-068, Algo-069). Bagian bcrypt diklasifikasikan Modul A | C42-UT05 s.d. C42-UT13; INT-TC48; KNF03-TC03 |
+| C44 | PushNotifikasiAdapter | Mendalam | Integrasi eksternal ke *push service* peramban dengan Web Push VAPID (KF34, Algo-071), termasuk penanganan VAPID kosong, penghapusan otomatis langganan kedaluwarsa (HTTP 404/410), dan ketahanan terhadap galat jaringan | C44-UT01 s.d. C44-UT08; INT-TC54, INT-TC55 |
+| LGP (tanpa ID DPPL) | LanggananPush | Mendalam | Kelas tambahan M9 B.1 No. 27 untuk persistensi langganan Web Push per peramban (`endpoint`, `p256dh`, `auth`) dengan *upsert* berdasarkan *endpoint*, pembacaan per akun, dan penghapusan langganan kedaluwarsa (KF34) | LGP-UT01 s.d. LGP-UT07; INT-TC53, INT-TC54, INT-TC55 |
 | *[CXX]* | *[Nama kelas]* | *[Mendalam/Sedang/Tidak perlu]* | *[Alasan penentuan tingkat pengujian]* | *[ID test case atau -]* |
 
 ## 4.2 Pengujian Unit Kelas
@@ -755,15 +765,24 @@ Tabel 4.2.11. Hasil Pengujian Unit Kelas C42
 | C42-UT02 | `hash(teks)` | Batas | Teks yang sama di-*hash* dua kali | Dua hash berbeda (salt acak) | Sesuai | Pass |
 | C42-UT03 | `cocokkanHash(teks, hash): Boolean` | Normal, Negatif | "rahasia123" dan "rahasia124" terhadap hash "rahasia123" | `true`; `false` | Sesuai | Pass |
 | C42-UT04 | `cocokkanHash(teks, hash)` | Negatif | Teks `null`; hash `null` | `false` | `false` untuk keduanya | Pass |
+| C42-UT05 | `enkripsi(teks)`, `dekripsi(isi)` | Normal | Teks `"Halo kak, jas labnya masih ada?"` diikuti karakter emoji Unicode | `dekripsi(enkripsi(teks))` sama dengan teks asli; *ciphertext* (termasuk hasil dekode base64) tidak memuat teks asli | Teks kembali persis sama; *ciphertext* tidak memuat teks asli | Pass |
+| C42-UT06 | `enkripsi(teks)` | Batas | Enkripsi teks `"sama"` dua kali | Dua *ciphertext* berbeda karena IV acak 12 byte; keduanya terdekripsi menjadi `"sama"` | Kedua *ciphertext* berbeda dan keduanya terdekripsi menjadi `"sama"` | Pass |
+| C42-UT07 | `enkripsi(teks)`, `dekripsi(isi)` | Batas | Teks kosong `""`, teks 2000 karakter, dan teks Unicode multibaris (aksen, CJK, simbol) | Seluruhnya dapat dienkripsi dan didekripsi kembali tanpa kehilangan karakter | Ketiga masukan kembali utuh persis sama | Pass |
+| C42-UT08 | `dekripsi(isi)` | Negatif | Satu byte terakhir *ciphertext* dibalik (`^= 1`) | Mengembalikan `null` karena verifikasi tag GCM gagal | `null` | Pass |
+| C42-UT09 | `dekripsi(isi)` | Negatif | Byte ke-15 (bagian auth tag 16 byte) diubah (`^= 0xff`) | Mengembalikan `null` | `null` | Pass |
+| C42-UT10 | `dekripsi(isi)` | Negatif | *Ciphertext* didekripsi dengan instans `Kriptografi` berkunci 32 byte berbeda | Mengembalikan `null` | `null` | Pass |
+| C42-UT11 | `dekripsi(isi)` | Negatif | `"bukan-ciphertext"`, `""`, `null`, dan buffer 10 byte (lebih pendek dari IV + tag) | Mengembalikan `null` untuk keempatnya | `null` untuk keempat masukan | Pass |
+| C42-UT12 | `ambilKunci()` | Negatif | Kunci `undefined`, `""`, `"abcd"`, dan 64 karakter bukan hex (`"z".repeat(64)`) | Melempar galat yang memuat `"KUNCI_ENKRIPSI_PESAN"` | Keempatnya melempar galat `"KUNCI_ENKRIPSI_PESAN harus 64 karakter hex (32 byte)."` | Pass |
+| C42-UT13 | `enkripsi(teks)`, `dekripsi(isi)` | Batas | Masukan angka `150000` | Dikonversi ke string dan terdekripsi menjadi `"150000"` | `"150000"` | Pass |
 
 Tabel 4.2.11b. Ringkasan Cakupan Kelas C42
 
 | Informasi | Keterangan |
 | :--- | :--- |
 | Daftar operasi public pada DPPL | `hash()`, `cocokkanHash()`, `enkripsi()`, `dekripsi()` |
-| Operasi yang diuji | `hash()`, `cocokkanHash()` (Modul A); `enkripsi()`, `dekripsi()` oleh Modul D |
-| ID Algoritma yang tercakup | Algo-066, Algo-067 |
-| Coverage (wajib ≥ 70%) | 100% baris / 100% cabang untuk seluruh berkas `Kriptografi.js`; bukti `coverage-modul-a.txt` |
+| Operasi yang diuji | `hash()`, `cocokkanHash()` (Modul A, C42-UT01 s.d. C42-UT04); `enkripsi()`, `dekripsi()`, dan `ambilKunci()` (Modul D, C42-UT05 s.d. C42-UT13 di `src/tests/unit/Kriptografi.test.js`) |
+| ID Algoritma yang tercakup | Algo-066, Algo-067, Algo-068, Algo-069 |
+| Coverage (wajib ≥ 70%) | 100% baris / 100% cabang (pernyataan 100%, fungsi 100%) untuk seluruh berkas `Kriptografi.js`; bukti `coverage-modul-a.txt` dan `coverage-modul-d.txt` |
 
 ### 4.2.12 Kelas SurelAdapter
 
@@ -1487,6 +1506,293 @@ Tabel 4.2.35. Hasil Pengujian Unit Kelas C07
 | C07-UT04 | `mulai(): void` | Negatif | `?id=bukan-uuid` | API tidak dipanggil; pesan "ID listing tidak valid."; detail tidak dirender | Sesuai | Pass |
 | C07-UT05 | `mulai(): void` | Negatif | ID sah; API membalas 404 "Listing tidak ditemukan atau sudah tidak tersedia." | `GET /api/katalog/<id>` dipanggil; pesan server ditampilkan | Sesuai | Pass |
 
+### 4.2.36 Kelas HalamanPercakapan
+
+**ID Kelas:** C08  
+**Nama Kelas:** HalamanPercakapan  
+**Tingkat:** Sedang
+
+Skrip View dimuat langsung lewat `module.exports` dengan DOM, `window`, `history`, dan `Api` tiruan (`src/tests/unit/ViewModulD.test.js`).
+
+Tabel 4.2.36. Hasil Pengujian Unit Kelas C08
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C08-UT01 | `validasiInputKosong(isi): Boolean` | Normal | `"Halo, masih ada?"`, `"  ok  "` | `false` untuk keduanya | `false` untuk keduanya | Pass |
+| C08-UT02 | `validasiInputKosong(isi)` | Negatif | `""`, `"   \n\t  "`, `null`, `undefined` | `true` untuk keempatnya | `true` untuk keempatnya | Pass |
+| C08-UT03 | `kirimPesan(isi): void` | Normal | `"  Halo kak  "` pada ruang aktif `perc-1`; API membalas 201 | `POST /api/percakapan/perc-1/pesan` dengan `{ isi: "Halo kak" }`, input dikosongkan, tombol nonaktif, gelembung pesan tampil | Sesuai seluruhnya; gelembung pertama memuat `"Halo kak"` | Pass |
+| C08-UT04 | `kirimPesan(isi)` | Negatif | `"   "`, lalu teks 2001 karakter | API tidak dipanggil; untuk 2001 karakter tampil galat `"Pesan tidak boleh melebihi 2000 karakter."` | `Api.kirim` dipanggil 0 kali; pesan galat tampil | Pass |
+| C08-UT05 | `showDaftarPercakapan(daftar): void` | Normal | Satu percakapan dengan `belumDibaca: 2` dan cuplikan pesan | 1 item dirender, keadaan kosong tersembunyi, badge `"2 belum dibaca"` dan badge topbar `"2"` tampil | Sesuai | Pass |
+| C08-UT06 | `showPercakapan(ruang)`, `tampilkanUrutanPesan(daftarPesan)` | Normal | Dua pesan dengan urutan waktu terbalik, tautan kebijakan, dan ID percakapan | Ruang aktif tampil, pesan diurutkan dari waktu paling awal, tautan Kebijakan Privasi dan tombol Laporkan terpasang | Urutan menjadi `"Pesan pertama"` lalu `"Pesan kedua"`; tautan `/legal?jenis=kebijakan-privasi` dan `/laporan-form?objek=perc-1&jenis=Percakapan` terpasang | Pass |
+| C08-UT07 | `bukaPercakapan(idPercakapan)` | Negatif | API membalas 403 `"Anda bukan peserta percakapan ini."` saat daftar pesan sebelumnya terisi | Panel akses ditolak tampil, ruang aktif tersembunyi, daftar pesan dikosongkan (KF35) | Sesuai; `daftar-pesan` berisi 0 elemen | Pass |
+| C08-UT08 | `mulaiPercakapanDariBarang(idBarang)` | Negatif | API membalas 403 `"Penjual sedang diblokir dan tidak dapat dihubungi."` | Panel akses ditolak tampil dengan judul `"Akses ditolak"` dan pesan server | Sesuai | Pass |
+
+*Coverage* `HalamanPercakapan.js` pada `npx jest --coverage`: 64,48% baris, 38,4% cabang. C08 bertingkat Sedang sehingga tidak terikat batas 70%.
+
+### 4.2.37 Kelas PanelNotifikasi
+
+**ID Kelas:** C09  
+**Nama Kelas:** PanelNotifikasi  
+**Tingkat:** Sedang
+
+Diuji pada `src/tests/unit/ViewModulD.test.js` dengan DOM dan `Api` tiruan.
+
+Tabel 4.2.37. Hasil Pengujian Unit Kelas C09
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C09-UT01 | `tampilkanPenandaBelumDibaca(jumlah): void` | Normal | Jumlah `3`, `0`, dan `-2` | Angka `3` tampil pada badge; `0` dan `-2` menyembunyikan badge dengan teks `"0"` | Sesuai | Pass |
+| C09-UT02 | `tampilkanDaftarNotifikasi(daftar): void` | Normal | Satu notifikasi belum dibaca, lalu daftar kosong `[]` | Item memiliki kelas `is-baru` dan tombol baca semua aktif; saat kosong tampil `"Belum ada notifikasi"` dan tombol baca semua nonaktif | Sesuai | Pass |
+| C09-UT03 | `klikNotifikasi(item): void` | Normal | Item `n1` berjenis `"pesan"`, API membalas `{ belumDibaca: 0 }` | `PATCH /api/notifikasi/n1/baca` dipanggil, `statusBaca = true`, badge disembunyikan, alamat diarahkan ke `/percakapan` | Sesuai | Pass |
+| C09-UT04 | `tandaiSemuaDibaca(): void` | Normal | Dua notifikasi belum dibaca, API membalas `{ belumDibaca: 0 }` | `PATCH /api/notifikasi/baca-semua` dipanggil, seluruh item `statusBaca = true`, `jumlahBelumDibaca = 0` | Sesuai | Pass |
+| C09-UT05 | `periksaDukunganPush(): void` | Negatif | Peramban tidak mendukung push; lalu peramban mendukung tetapi `kunciPublik: null` | Tombol dan kaki push disembunyikan pada kedua kondisi | Sesuai | Pass |
+| C09-UT06 | `kelasIkonJenis(jenis): String` | Normal | `"pesan"`, `"moderasi"`, `"verifikasi"`, `"lainnya"` | `"ic--chat"`, `"ic--flag"`, `"ic--lock"`, `"ic--bell"` | Sesuai | Pass |
+
+*Coverage* `PanelNotifikasi.js` pada `npx jest --coverage`: 35,61% baris, 29,94% cabang. C09 bertingkat Sedang sehingga tidak terikat batas 70%.
+
+### 4.2.38 Kelas PercakapanController
+
+**ID Kelas:** C18  
+**Nama Kelas:** PercakapanController  
+**Tingkat:** Mendalam
+
+Model (C33, C34, C29, C30, C23) dan NotifikasiController (C19) diganti tiruan (`jest.spyOn`), sedangkan Kriptografi (C42) berjalan nyata (`src/tests/unit/PercakapanController.test.js`). Pengujian terhadap PostgreSQL nyata ada pada INT-TC46 s.d. INT-TC51.
+
+Tabel 4.2.38. Hasil Pengujian Unit Kelas C18
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C18-UT01 | `mulaiPercakapan(idAkun, idBarang)` | Negatif | Penjual berstatus diblokir (`getStatusBlokir = true`) | Status 403, `Percakapan.simpan` tidak dipanggil (KF31) | Sesuai | Pass |
+| C18-UT02 | `mulaiPercakapan(idAkun, idBarang)` | Negatif | `idAkun` sama dengan `barang.idPenjual` | Status 400, `Percakapan.simpan` tidak dipanggil | Sesuai | Pass |
+| C18-UT03 | `mulaiPercakapan(idAkun, idBarang)` | Negatif | Barang tidak ditemukan, `"bukan-uuid"`, `undefined` | Status 404 untuk ketiganya | Status 404 untuk ketiganya | Pass |
+| C18-UT04 | `mulaiPercakapan(idAkun, idBarang)` | Normal | Kombinasi `(barang, pembeli, penjual)` sudah ada | Status 200 dengan ID percakapan lama; `Percakapan.simpan` tidak dipanggil | Sesuai | Pass |
+| C18-UT05 | `mulaiPercakapan(idAkun, idBarang)` | Normal | Kombinasi belum ada | `Percakapan.simpan` dipanggil, status 201 dengan ID baru | Sesuai | Pass |
+| C18-UT06 | `bukaPercakapan(idAkun, idPercakapan)` | Negatif | Pemohon bukan peserta (akun Admin) | Status 403; `Pesan.getDaftarPesan` dan `Pesan.tandaiDibaca` tidak dipanggil (KF35) | Sesuai | Pass |
+| C18-UT07 | `bukaPercakapan(idAkun, idPercakapan)` | Negatif | Percakapan tidak ada, `"abc"`, `null` | Status 404 untuk ketiganya | Status 404 untuk ketiganya | Pass |
+| C18-UT08 | `bukaPercakapan(idAkun, idPercakapan)` | Normal | Peserta membuka ruang berisi 1 pesan terenkripsi valid dan 1 pesan rusak | Status 200, pesan valid terdekripsi, pesan rusak menjadi `"[Pesan tidak dapat dibuka]"`, tautan Kebijakan Privasi ada, `Pesan.tandaiDibaca` dipanggil | Sesuai | Pass |
+| C18-UT09 | `bukaPercakapan`, `ambilRingkasanBarang` | Batas | Barang dihapus (`null`), `idBarang = null`, barang tanpa foto | `barang: null` untuk dua kasus pertama; `fotoUtama: null` untuk barang tanpa foto | Sesuai | Pass |
+| C18-UT10 | `kirimPesan(idAkun, idPercakapan, isi)` | Negatif | 4 masukan: `""`, `"   \n "`, `undefined`, `123` | Status 400; `addPesan` tidak dipanggil | Status 400 untuk keempat masukan | Pass |
+| C18-UT11 | `kirimPesan(idAkun, idPercakapan, isi)` | Batas | Panjang 2001 karakter; tepat 2000 karakter | 400 untuk 2001 karakter; 201 untuk 2000 karakter | Sesuai | Pass |
+| C18-UT12 | `kirimPesan(idAkun, idPercakapan, isi)` | Negatif | Percakapan tidak ada, `"bukan-uuid"`, `undefined` | Status 404 untuk ketiganya | Status 404 untuk ketiganya | Pass |
+| C18-UT13 | `kirimPesan(idAkun, idPercakapan, isi)` | Negatif | Pemohon bukan peserta (Admin) | Status 403; `addPesan` dan `kirimNotifikasi` tidak dipanggil | Sesuai | Pass |
+| C18-UT14 | `kirimPesan(idAkun, idPercakapan, isi)` | Normal | `"  Jas labnya masih ada?  "` oleh pembeli | Disimpan terenkripsi tanpa teks asli, `perbaruiWaktuTerakhir` dipanggil, respons 201 berisi teks ter-trim | Sesuai; `Kriptografi.dekripsi` mengembalikan `"Jas labnya masih ada?"` | Pass |
+| C18-UT15 | `kirimPesan(idAkun, idPercakapan, isi)` | Normal | Pembeli `"Ani"` mengirim pesan berisi nomor telepon | `kirimNotifikasi(ID_PENJUAL, "pesan", "Pesan baru dari Ani")` tanpa isi pesan (KF36) | Sesuai | Pass |
+| C18-UT16 | `kirimPesan`, `beritahuPenerima` | Batas | `kirimNotifikasi` menolak galat; lawan bicara `null` | Pengiriman pesan tetap 201 dan galat dicatat; nama cadangan `"Pengguna ITBELI"` dipakai | Sesuai | Pass |
+| C18-UT17 | `getDaftarPercakapan(idAkun)` | Normal | Dua percakapan (satu berpesan, satu tanpa pesan dengan `idBarang = null`) | Status 200 berisi lawan bicara, judul barang, cuplikan terdekripsi, dan hitung `belumDibaca` | Sesuai | Pass |
+| C18-UT18 | `ambilCuplikanPesanTerakhir(idPercakapan, idAkun)` | Negatif | Pesan terakhir berisi *ciphertext* `"rusak"` | `{ isi: "[Pesan tidak dapat dibuka]", waktuKirim, dariSaya: true }` | Sesuai | Pass |
+| C18-UT19 | `getDaftarPercakapan(idAkun)` | Batas | Pengguna tanpa percakapan | `{ berhasil: true, status: 200, data: [] }` | Sesuai | Pass |
+| C18-UT20 | `potongCuplikan(isi)` | Batas | Teks 80 karakter; teks 81 karakter | 80 karakter utuh; 81 karakter menjadi 79 karakter ditambah elipsis `"…"` | Sesuai | Pass |
+| C18-UT21 | `getDaftarPercakapan(idAkun)` | Batas | `idBarang` terisi tetapi `Barang.cariById` mengembalikan `null` | `judulBarang: null` tanpa galat | Sesuai | Pass |
+
+Tabel 4.2.38b. Ringkasan Cakupan Kelas C18
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `mulaiPercakapan()`, `bukaPercakapan()`, `verifikasiPeserta()`, `dekripsiPesan()`, `kirimPesan()`, `enkripsiPesan()`, `getDaftarPercakapan()`, `ambilCuplikanPesanTerakhir()`, `hitungPesanBelumDibaca()`, ditambah `potongCuplikan()`, `beritahuPenerima()`, dan `ambilRingkasanBarang()` (M9 B.1 No. 29) |
+| Operasi yang diuji | Seluruhnya |
+| ID Algoritma yang tercakup | Algo-016, Algo-017, Algo-018, Algo-019 |
+| Coverage (wajib ≥ 70%) | **100% baris / 100% cabang** (pernyataan 100%, fungsi 100%) pada `npx jest --coverage`; integrasi nyata 97,26% baris / 66,07% cabang; bukti `coverage-modul-d.txt` |
+
+### 4.2.39 Kelas NotifikasiController (bagian notifikasi dalam aplikasi dan Web Push)
+
+**ID Kelas:** C19  
+**Nama Kelas:** NotifikasiController  
+**Tingkat:** Mendalam
+
+Model (C35, `LanggananPush`), PushNotifikasiAdapter (C44), dan Otorisasi (C41) diganti tiruan (`src/tests/unit/NotifikasiController.test.js`). Operasi surel (`kirimEmailVerifikasi`, `kirimPeringatanPenghapusan`, `kirimPesanPenangguhan`) merupakan delegasi ke C43 yang diuji pada Modul A dan E.
+
+Tabel 4.2.39. Hasil Pengujian Unit Kelas C19
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C19-UT01 | `kirimNotifikasi(idPenerima, jenis, isi)` | Normal | Jenis `"pesan"`, isi `"Pesan baru dari Budi"` | `Notifikasi.simpan` dipanggil, `hitungBelumDibaca` dipanggil, `kirimPush` dipicu dengan tautan `"/percakapan"`, hasil `true` (Algo-020) | Sesuai | Pass |
+| C19-UT02 | `kirimNotifikasi(...)` | Negatif | `PushNotifikasiAdapter.kirimPush` melempar galat | Tetap mengembalikan `true` | `true` | Pass |
+| C19-UT03 | `kirimNotifikasi(...)` | Batas | `PushNotifikasiAdapter.kirimPush` membalas `false` | Tetap mengembalikan `true` | `true` | Pass |
+| C19-UT04 | `kirimNotifikasi(...)` | Batas | `kirimPush` mengembalikan *Promise* yang tidak pernah selesai | `kirimNotifikasi` langsung mengembalikan `true` tanpa menunggu push (M9 B.1 No. 36) | Sesuai | Pass |
+| C19-UT05 | `kirimNotifikasi(...)` | Negatif | `Notifikasi.simpan` mengembalikan `false` | Mengembalikan `false` tanpa memanggil `kirimPush` | Sesuai | Pass |
+| C19-UT06 | `kirimPushNotifikasi(idPenerima, isi, jenis)` | Batas | Tanpa argumen `jenis`; lalu `jenis = "sistem"` | Tautan `"/percakapan"` untuk bawaan; `"/"` untuk `"sistem"` | Sesuai | Pass |
+| C19-UT07 | `simpanLanggananPush(idAkun, langganan)` | Normal | Endpoint HTTPS dengan kunci `p256dh` dan `auth` valid | `LanggananPush.simpan` dipanggil; `{ berhasil: true, data: null }` | Sesuai | Pass |
+| C19-UT08 | `simpanLanggananPush(idAkun, langganan)` | Negatif | 10 masukan tidak valid: `undefined`, endpoint `http://`, bukan URL, endpoint > 500 karakter, tanpa `keys`, `p256dh` kosong atau > 200 karakter, `auth` hilang, hanya spasi, atau > 100 karakter | Seluruhnya ditolak dengan `DATA_TIDAK_VALID` tanpa memanggil `LanggananPush.simpan` | Kesepuluh masukan ditolak `DATA_TIDAK_VALID` | Pass |
+| C19-UT09 | `validasiLanggananPush(langganan)` | Batas | Endpoint tepat 500 karakter, `p256dh` tepat 200 karakter, `auth` tepat 100 karakter | `true` | `true` | Pass |
+| C19-UT10 | `tandaiDibaca(idAkun, idNotifikasi)` | Negatif | Notifikasi bukan milik akun (`Notifikasi.tandaiDibaca` membalas `false`) | `TIDAK_DITEMUKAN` | `TIDAK_DITEMUKAN` | Pass |
+| C19-UT11 | `tandaiDibaca(idAkun, idNotifikasi)` | Negatif | `"bukan-uuid"` dan `null` | Gagal tanpa memanggil `Notifikasi.tandaiDibaca` | Sesuai | Pass |
+| C19-UT12 | `tandaiDibaca(idAkun, idNotifikasi)` | Normal | Notifikasi milik akun; sisa belum dibaca 2 | `{ berhasil: true, data: { belumDibaca: 2 } }` | Sesuai | Pass |
+| C19-UT13 | `getDaftarNotifikasi(idAkun)` | Normal | Satu notifikasi belum dibaca | `getDaftarByAkun(idAkun, 50)` dipanggil; `belumDibaca: 1` beserta daftar terpetakan | Sesuai | Pass |
+| C19-UT14 | `getKunciPublik()` | Normal | `PushNotifikasiAdapter.getKunciPublik` mengembalikan `"kunci-publik-vapid"` | `{ berhasil: true, data: { kunciPublik: "kunci-publik-vapid" } }` | Sesuai | Pass |
+| C19-UT15 | Route `GET /api/notifikasi` | Negatif | Tanpa token sesi | HTTP 401 | 401 | Pass |
+| C19-UT16 | Route `PATCH /api/notifikasi/:id/baca` | Negatif | Notifikasi bukan milik akun | HTTP 404 `"Notifikasi tidak ditemukan."` | 404 | Pass |
+| C19-UT17 | Route `PATCH /api/notifikasi/baca-semua` | Normal | Token valid | HTTP 200 `{ sukses: true, data: { belumDibaca: 0 } }` | 200 | Pass |
+| C19-UT18 | Route `GET /api/notifikasi/kunci-publik` | Normal | VAPID belum diatur (`null`) | HTTP 200 `{ sukses: true, data: { kunciPublik: null } }` | 200 | Pass |
+| C19-UT19 | Route `POST /api/notifikasi/langganan-push` | Normal, Negatif | Langganan HTTPS valid; lalu endpoint `http://` | 201 untuk valid; 400 untuk non-HTTPS | 201 dan 400 | Pass |
+
+Tabel 4.2.39b. Ringkasan Cakupan Kelas C19
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `kirimEmailVerifikasi()`, `kirimNotifikasi()`, `kirimPushNotifikasi()`, `kirimPeringatanPenghapusan()`, `kirimPesanPenangguhan()`, ditambah `getDaftarNotifikasi()`, `tandaiDibaca()`, `tandaiSemuaDibaca()`, `simpanLanggananPush()`, `validasiLanggananPush()`, dan `getKunciPublik()` (M9 B.1 No. 28) |
+| Operasi yang diuji | Seluruh 8 operasi notifikasi in-app dan Web Push Modul D (`kirimNotifikasi`, `kirimPushNotifikasi`, `getDaftarNotifikasi`, `tandaiDibaca`, `tandaiSemuaDibaca`, `simpanLanggananPush`, `validasiLanggananPush`, `getKunciPublik`). Tiga operasi surel merupakan delegasi ke C43 yang diuji pada Modul A dan E |
+| ID Algoritma yang tercakup | Algo-020 |
+| Coverage (wajib ≥ 70%) | **88,46% baris / 94,87% cabang** untuk seluruh berkas `NotifikasiController.js` pada `npx jest --coverage` (baris belum tercakup 16–24 dan 123–148 adalah tiga operasi surel Modul A dan E; 100% untuk bagian Modul D); integrasi nyata 82,69% baris / 71,79% cabang; bukti `coverage-modul-d.txt` |
+
+### 4.2.40 Kelas Percakapan
+
+**ID Kelas:** C33  
+**Nama Kelas:** Percakapan  
+**Tingkat:** Mendalam
+
+Kueri `db.query` diganti tiruan pada `src/tests/unit/ModelModulD.test.js`. Eksekusi SQL terhadap PostgreSQL 16 nyata diuji pada INT-TC46 s.d. INT-TC51.
+
+Tabel 4.2.40. Hasil Pengujian Unit Kelas C33
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C33-UT01 | `dariBaris(baris)` | Normal | Baris `snake_case` tabel `percakapan` | Objek `Percakapan` dengan seluruh atribut `camelCase` | Sesuai | Pass |
+| C33-UT02 | `dariBaris(baris)` | Batas | `null` dan `undefined` | `null` | `null` untuk keduanya | Pass |
+| C33-UT03 | `cariById(idPercakapan)` | Normal | ID ada di basis data | Objek `Percakapan` | Sesuai | Pass |
+| C33-UT04 | `cariById(idPercakapan)` | Negatif | 0 baris ditemukan | `null` | `null` | Pass |
+| C33-UT05 | `cariByKombinasi(idBarang, idPembeli, idPenjual)` | Normal | Satu baris cocok (Algo-040) | Objek `Percakapan` dengan kueri `WHERE id_barang = $1 AND id_pembeli = $2 AND id_penjual = $3` | Sesuai | Pass |
+| C33-UT06 | `cariByKombinasi(...)` | Negatif | 0 baris cocok | `null` | `null` | Pass |
+| C33-UT07 | `simpan(idBarang, idPembeli, idPenjual)` | Normal | INSERT mengembalikan 1 baris (Algo-041) | Objek `Percakapan` dengan UUID baru | Sesuai | Pass |
+| C33-UT08 | `simpan(...)` | Batas | `ON CONFLICT DO NOTHING` mengembalikan 0 baris | Memanggil `cariByKombinasi` dan mengembalikan percakapan yang sudah ada | Sesuai | Pass |
+| C33-UT09 | `cekPeserta(idAkun)` | Normal | `idPembeli` dan `idPenjual` | `true` untuk keduanya | `true` untuk keduanya | Pass |
+| C33-UT10 | `cekPeserta(idAkun)` | Negatif | Pihak ketiga/admin, `null`, `undefined` | `false` untuk ketiganya (KF35) | `false` untuk ketiganya | Pass |
+| C33-UT11 | `addPesan(idPengirim, isiPesanTerenkripsi)` | Normal | Meneruskan ke `Pesan.simpanPesan` | `Pesan.simpanPesan(idPercakapan, idPengirim, isi)` dipanggil dan hasilnya dikembalikan | Sesuai | Pass |
+| C33-UT12 | `perbaruiWaktuTerakhir(waktu)` | Normal | Waktu baru (Algo-042) | `UPDATE percakapan SET waktu_pembaruan_terakhir = $1` dan atribut objek diperbarui | Sesuai | Pass |
+| C33-UT13 | `getDaftarPercakapanByPengguna(idAkun)` | Normal | Satu baris (Algo-043) | Kueri `WHERE id_pembeli = $1 OR id_penjual = $1 ORDER BY waktu_pembaruan_terakhir DESC` | Sesuai | Pass |
+| C33-UT14 | `getLawanBicara(idAkun)` | Normal, Negatif | Pembeli -> penjual; penjual -> pembeli; akun tidak ada (Algo-044) | Identitas lawan bicara yang sesuai; `null` bila 0 baris | Sesuai | Pass |
+
+Tabel 4.2.40b. Ringkasan Cakupan Kelas C33
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `cariById()`, `cariByKombinasi()`, `simpan()`, `cekPeserta()`, `addPesan()`, `perbaruiWaktuTerakhir()`, `getDaftarPercakapanByPengguna()`, `getLawanBicara()` |
+| Operasi yang diuji | Seluruhnya |
+| ID Algoritma yang tercakup | Algo-040, Algo-041, Algo-042, Algo-043, Algo-044 |
+| Coverage (wajib ≥ 70%) | **100% baris / 100% cabang** pada `npx jest --coverage` (sebelumnya 41,4% / 27,3%); integrasi nyata PostgreSQL **100% baris / 90,9% cabang**; bukti `coverage-modul-d.txt` |
+
+### 4.2.41 Kelas Pesan
+
+**ID Kelas:** C34  
+**Nama Kelas:** Pesan  
+**Tingkat:** Mendalam
+
+Diuji pada `src/tests/unit/ModelModulD.test.js` dan pada PostgreSQL nyata melalui INT-TC48 s.d. INT-TC51.
+
+Tabel 4.2.41. Hasil Pengujian Unit Kelas C34
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C34-UT01 | `dariBaris(baris)` | Normal | Baris tabel `pesan` | Objek `Pesan` dengan atribut `camelCase` | Sesuai | Pass |
+| C34-UT02 | `dariBaris(baris)` | Batas | `null` | `null` | `null` | Pass |
+| C34-UT03 | `getDaftarPesan(idPercakapan)` | Normal | Satu baris (Algo-045) | Kueri `ORDER BY waktu_kirim ASC`, mengembalikan `[Pesan]` | Sesuai | Pass |
+| C34-UT04 | `getDaftarPesan(idPercakapan)` | Batas | 0 baris | `[]` | `[]` | Pass |
+| C34-UT05 | `simpanPesan(idPercakapan, idPengirim, isi)` | Normal | Isi terenkripsi (Algo-046) | `INSERT INTO pesan` dengan UUID baru dan `status_baca = false`, mengembalikan objek `Pesan` | Sesuai | Pass |
+| C34-UT06 | `getCuplikanPesanTerakhir(idPercakapan)` | Normal | Satu baris (Algo-047) | Kueri `ORDER BY waktu_kirim DESC LIMIT 1`, mengembalikan `Pesan` | Sesuai | Pass |
+| C34-UT07 | `getCuplikanPesanTerakhir(idPercakapan)` | Negatif | Percakapan belum memiliki pesan | `null` | `null` | Pass |
+| C34-UT08 | `tandaiDibaca(idPercakapan, idAkun)` | Normal | 3 baris diperbarui | `UPDATE pesan SET status_baca = true WHERE id_percakapan = $1 AND id_pengirim <> $2 AND status_baca = false`, hasil `3` | Sesuai | Pass |
+| C34-UT09 | `hitungPesanBelumDibaca(idPercakapan, idAkun)` | Normal | 4 pesan lawan belum dibaca (Algo-048) | `4` dengan syarat `id_pengirim <> $2 AND status_baca = false` | `4` | Pass |
+| C34-UT10 | `hitungPesanBelumDibaca(idPercakapan, idAkun)` | Batas | Semua pesan sudah dibaca | `0` | `0` | Pass |
+
+Tabel 4.2.41b. Ringkasan Cakupan Kelas C34
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `getDaftarPesan()`, `simpanPesan()`, `getCuplikanPesanTerakhir()`, `hitungPesanBelumDibaca()`, ditambah `tandaiDibaca()` (M9 B.1 No. 29) |
+| Operasi yang diuji | Seluruhnya |
+| ID Algoritma yang tercakup | Algo-045, Algo-046, Algo-047, Algo-048 |
+| Coverage (wajib ≥ 70%) | **100% baris / 100% cabang** pada `npx jest --coverage` (sebelumnya 45,5% / 0%); integrasi nyata PostgreSQL **100% baris / 50% cabang**; bukti `coverage-modul-d.txt` |
+
+### 4.2.42 Kelas Notifikasi
+
+**ID Kelas:** C35  
+**Nama Kelas:** Notifikasi  
+**Tingkat:** Mendalam
+
+Diuji pada `src/tests/unit/ModelModulD.test.js` dan pada PostgreSQL nyata melalui INT-TC49 dan INT-TC52.
+
+Tabel 4.2.42. Hasil Pengujian Unit Kelas C35
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C35-UT01 | `dariBaris(baris)` | Normal | Baris tabel `notifikasi` | Objek `Notifikasi` terpetakan | Sesuai | Pass |
+| C35-UT02 | `dariBaris(baris)` | Batas | `null` | `null` | `null` | Pass |
+| C35-UT03 | `simpan(idAkun, jenis, isi, waktuKirim, statusBaca)` | Normal | Parameter lengkap; lalu dengan nilai bawaan `waktuKirim` dan `statusBaca` (Algo-049) | `true` untuk keduanya; nilai bawaan mengisi `Date` dan `false` | Sesuai | Pass |
+| C35-UT04 | `simpan(...)` | Negatif | `rowCount: 0` | `false` | `false` | Pass |
+| C35-UT05 | `hitungBelumDibaca(idAkun)` | Normal | 5 baris belum dibaca (Algo-050) | `5` | `5` | Pass |
+| C35-UT06 | `getDaftarByAkun(idAkun, batas)` | Normal | Tanpa batas (bawaan 50) dan batas 10 | Mengembalikan `[Notifikasi]` dengan `LIMIT 50` dan `LIMIT 10` | Sesuai | Pass |
+| C35-UT07 | `getDaftarByAkun(idAkun)` | Batas | 0 baris | `[]` | `[]` | Pass |
+| C35-UT08 | `tandaiDibaca(idNotifikasi, idAkun)` | Normal | 1 baris berubah | `true`; syarat `WHERE id_notifikasi = $1 AND id_akun = $2` | Sesuai | Pass |
+| C35-UT09 | `tandaiDibaca(idNotifikasi, idAkun)` | Negatif | Bukan milik akun (0 baris berubah) | `false` | `false` | Pass |
+| C35-UT10 | `tandaiSemuaDibaca(idAkun)` | Normal | 2 baris berubah | `2` dengan syarat `WHERE id_akun = $1 AND status_baca = false` | `2` | Pass |
+
+Tabel 4.2.42b. Ringkasan Cakupan Kelas C35
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `simpan()`, `hitungBelumDibaca()`, ditambah `getDaftarByAkun()`, `tandaiDibaca()`, dan `tandaiSemuaDibaca()` (M9 B.1 No. 28) |
+| Operasi yang diuji | Seluruhnya |
+| ID Algoritma yang tercakup | Algo-049, Algo-050 |
+| Coverage (wajib ≥ 70%) | **100% baris / 100% cabang** pada `npx jest --coverage` (sebelumnya 42,9% / 0%); integrasi nyata PostgreSQL **100% baris / 20% cabang**; bukti `coverage-modul-d.txt` |
+
+### 4.2.43 Kelas PushNotifikasiAdapter
+
+**ID Kelas:** C44  
+**Nama Kelas:** PushNotifikasiAdapter  
+**Tingkat:** Mendalam
+
+Pustaka `web-push` diganti tiruan (`jest.mock`) pada `src/tests/unit/PushNotifikasiAdapter.test.js`. Pengiriman Web Push sungguhan ke *push service* HTTPS lokal diuji pada INT-TC54 dan INT-TC55.
+
+Tabel 4.2.43. Hasil Pengujian Unit Kelas C44
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C44-UT01 | `kirimPush(...)` | Negatif | `VAPID_PUBLIC_KEY` dan `VAPID_PRIVATE_KEY` kosong, dipanggil dua kali | Keduanya `false`, `web-push` tidak dipanggil, peringatan dicatat tepat 1 kali, `getKunciPublik() = null` | Sesuai | Pass |
+| C44-UT02 | `kirimPush(...)` | Batas | VAPID lengkap, akun memiliki 0 langganan | `false` tanpa memanggil `web-push` | Sesuai | Pass |
+| C44-UT03 | `kirimPush(idPenerima, judul, isi, tautan)` | Normal | VAPID lengkap, 2 langganan, keduanya membalas 201 (Algo-071) | `true`; `sendNotification` dipanggil 2 kali dengan muatan `{ judul, isi, tautan }` dan `vapidDetails` | Sesuai | Pass |
+| C44-UT04 | `kirimPush(...)` | Negatif | Langganan 1 membalas 410 (Gone), langganan 2 membalas 201 | Langganan 1 dihapus lewat `hapusByEndpoint`, pengiriman tetap dilanjutkan dan hasil `true` | Sesuai | Pass |
+| C44-UT05 | `kirimPush(...)` | Negatif | Satu langganan membalas 404 (Not Found) | Langganan dihapus lewat `hapusByEndpoint`, hasil `false` | Sesuai | Pass |
+| C44-UT06 | `kirimPush(...)` | Negatif | Satu langganan membalas 500 | Langganan tidak dihapus, galat dicatat, hasil `false` | Sesuai | Pass |
+| C44-UT07 | `kirimPush(...)` | Negatif | `LanggananPush.getByAkun` melempar galat basis data | Tidak melempar galat, mencatat log, mengembalikan `false` | Sesuai | Pass |
+| C44-UT08 | `getKunciPublik()`, `vapidTerkonfigurasi()` | Normal | VAPID lengkap; lalu hanya kunci publik terisi | `true` dan kunci publik; `false` dan `null` | Sesuai | Pass |
+
+Tabel 4.2.43b. Ringkasan Cakupan Kelas C44
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `kirimPush()`, ditambah `vapidTerkonfigurasi()` dan `getKunciPublik()` (M9 B.1 No. 27) |
+| Operasi yang diuji | Seluruhnya |
+| ID Algoritma yang tercakup | Algo-071 |
+| Coverage (wajib ≥ 70%) | **100% baris / 100% cabang** pada `npx jest --coverage`; integrasi nyata Web Push 88,23% baris / 61,53% cabang; bukti `coverage-modul-d.txt` |
+
+### 4.2.44 Kelas LanggananPush
+
+**ID Kelas:** - (kelas tambahan M9 B.1 No. 27, diberi awalan ID pengujian LGP)  
+**Nama Kelas:** LanggananPush  
+**Tingkat:** Mendalam
+
+Diuji pada `src/tests/unit/ModelModulD.test.js` dan pada PostgreSQL nyata melalui INT-TC53 s.d. INT-TC55.
+
+Tabel 4.2.44. Hasil Pengujian Unit Kelas LanggananPush
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| LGP-UT01 | `dariBaris(baris)` | Normal | Baris tabel `langganan_push` | Objek `LanggananPush` terpetakan | Sesuai | Pass |
+| LGP-UT02 | `dariBaris(baris)` | Batas | `null` | `null` | `null` | Pass |
+| LGP-UT03 | `simpan(idAkun, endpoint, p256dh, auth)` | Normal | `rowCount: 1` | Kueri `INSERT ... ON CONFLICT (endpoint) DO UPDATE` dengan UUID baru, hasil `true` | Sesuai | Pass |
+| LGP-UT04 | `simpan(...)` | Negatif | `rowCount: 0` | `false` | `false` | Pass |
+| LGP-UT05 | `getByAkun(idAkun)` | Normal | 1 baris, lalu 0 baris | `[LanggananPush]`, lalu `[]` | Sesuai | Pass |
+| LGP-UT06 | `hapusByEndpoint(endpoint)` | Normal | `rowCount: 1` | `DELETE FROM langganan_push WHERE endpoint = $1`, hasil `true` | Sesuai | Pass |
+| LGP-UT07 | `hapusByEndpoint(endpoint)` | Negatif | Endpoint tidak ditemukan (`rowCount: 0`) | `false` | `false` | Pass |
+
+Tabel 4.2.44b. Ringkasan Cakupan Kelas LanggananPush
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Tidak ada pada DPPL (kelas tambahan M9 B.1 No. 27). Operasi pada kode: `dariBaris()`, `simpan()`, `getByAkun()`, `hapusByEndpoint()` |
+| Operasi yang diuji | Seluruhnya |
+| ID Algoritma yang tercakup | - (tidak ada pada DPPL) |
+| Coverage (wajib ≥ 70%) | **100% baris / 100% cabang** pada `npx jest --coverage` (sebelumnya 18,8% / 0%); integrasi nyata PostgreSQL **100% baris / 50% cabang**; bukti `coverage-modul-d.txt` |
+
 <br>
 
 ## 4.3 Pengujian Integrasi
@@ -1521,6 +1827,11 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | AK-8 | KatalogController (C15) | PencarianController (C16), FilterController (C17), Barang (C29) | Controller - Model | INT-TC35 s.d. INT-TC43, INT-TC45 |
 | AK-9 | Barang (C29): `getKatalog`, `getDetailKatalog` | PostgreSQL (tabel `barang`, `akun`, `foto_barang`) | Aplikasi - Basis data | INT-TC35 s.d. INT-TC43, INT-TC45 |
 | AK-10 | Klien HTTP (dipakai C05 HalamanKatalog dan C07 HalamanDetailBarang) ke `/api/katalog` | `katalogRoutes`, Otorisasi (C41), dan KatalogController (C15) | View - Controller | INT-TC35 s.d. INT-TC45 |
+| AK-21 | PercakapanController (C18) | Percakapan, Pesan, Barang, FotoBarang, Akun (C33, C34, C29, C30, C23), Kriptografi (C42), dan NotifikasiController (C19) | Controller - Model / Pendukung | INT-TC46 s.d. INT-TC51 |
+| AK-22 | Percakapan, Pesan, Notifikasi, dan LanggananPush (C33, C34, C35, LanggananPush) | PostgreSQL (tabel `percakapan`, `pesan`, `notifikasi`, `langganan_push`) | Aplikasi - Basis data | INT-TC46 s.d. INT-TC55 |
+| AK-23 | NotifikasiController (C19) | Notifikasi (C35), LanggananPush, dan PushNotifikasiAdapter (C44) | Controller - Model / Integrasi | INT-TC49, INT-TC52, INT-TC53, INT-TC54 |
+| AK-24 | PushNotifikasiAdapter (C44) | *Push service* (server HTTPS Web Push lokal pada pengujian Modul D; *push service* peramban pada pemakaian nyata) | Aplikasi - Sistem eksternal | INT-TC54, INT-TC55 |
+| AK-25 | HalamanPercakapan dan PanelNotifikasi (C08, C09) melalui HTTP `/api/percakapan/*` dan `/api/notifikasi/*` | `percakapanRoutes`, `notifikasiRoutes`, Otorisasi (C41), PercakapanController (C18), dan NotifikasiController (C19) | View - Controller | INT-TC46 s.d. INT-TC53 |
 | *[AK-XX]* | *[Komponen asal]* | *[Komponen tujuan]* | *[Jenis batas]* | *[ID test case]* |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
@@ -1572,6 +1883,16 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC43 | AK-8, AK-9, AK-10 | Normal dan negatif: detail dengan status khusus (UC15 Alternatif 2 dan 3) | Detail listing Terjual, Dinonaktifkan, milik akun diblokir, UUID acak, dan ID "bukan-uuid" | Terjual 200 berstatus "Terjual"; tiga berikutnya 404 "Listing tidak ditemukan atau sudah tidak tersedia."; ID tidak sah 400 | 200 "Terjual"; 404, 404, 404 dengan pesan tersebut; 400 | Pass |
 | INT-TC44 | AK-10 | Negatif: tanpa sesi login | `GET /api/katalog` tanpa token dan dengan token palsu; `GET /api/katalog/:id` tanpa token | Ketiganya 401 | 401, 401, 401 | Pass |
 | INT-TC45 | AK-8, AK-9, AK-10 | Batas: nomor halaman sangat besar | `halaman = 100000`, lalu `halaman = 99999999999999999999` | Halaman 100000: 200 dengan daftar kosong. Halaman 99999999999999999999: ditolak 400 atau dibalas daftar kosong, bukan galat server | Halaman 100000: 200, daftar kosong. Halaman 99999999999999999999: **500** "Terjadi galat pada server."; log PostgreSQL `invalid input syntax for type bigint: "2e+21"` (kode 22P02) | Fail |
+| INT-TC46 | AK-21, AK-22, AK-25 | Normal dan batas: mulai percakapan baru dan pakai ulang ruang (UC16, KF31) | `POST /api/percakapan` dua kali untuk kombinasi `(barang, pembeli, penjual)` sama, lalu panggil `Percakapan.simpan` langsung; periksa `COUNT(*)` tabel `percakapan` | Pertama 201 dengan UUID baru; kedua 200 dengan `idPercakapan` sama; `ON CONFLICT` mengembalikan ruang yang sama; tetap 1 baris di tabel `percakapan` | 201, lalu 200 dengan ID sama; `Percakapan.simpan` mengembalikan ID sama; jumlah baris tetap 1 | Pass |
+| INT-TC47 | AK-21, AK-22, AK-25 | Negatif: aturan pembuatan percakapan (UC16, KF31) | `POST /api/percakapan` untuk listing sendiri, listing penjual diblokir, UUID tidak ada, ID `"bukan-uuid"`, dan tanpa token | 400 untuk listing sendiri, 403 untuk penjual diblokir, 404 untuk barang tidak ada / bukan UUID, 401 tanpa token; 0 baris untuk barang diblokir | 400, 403, 404, 404, 401; 0 baris `percakapan` untuk barang penjual diblokir | Pass |
+| INT-TC48 | AK-21, AK-22, AK-25 | Normal: kirim pesan terenkripsi (UC17, KF32, KF36) | `POST /api/percakapan/:id/pesan` dengan teks berisi penanda unik, pesan kosong `"   "`, baca langsung `isi_pesan_terenkripsi` di tabel `pesan`, lalu `GET /api/percakapan/:id` sebagai peserta | 201 dengan teks asli, pesan kosong 400; nilai di tabel `pesan` tidak memuat teks asli baik sebelum maupun sesudah dekode base64 dan terdekripsi kembali; peserta menerima teks asli dan tautan Kebijakan Privasi | 201 dan 400; `status_baca = false`; *ciphertext* tidak memuat teks asli sebelum maupun sesudah dekode base64; `Kriptografi.dekripsi` dan `GET /api/percakapan/:id` mengembalikan teks asli | Pass |
+| INT-TC49 | AK-21, AK-22, AK-23, AK-25 | Normal: notifikasi in-app saat pesan masuk dan penandaan dibaca (KF34, KF36) | Pembeli mengirim pesan berisi teks rahasia; baca langsung tabel `notifikasi` untuk penjual; `GET /api/notifikasi`; `PATCH /:id/baca` oleh akun lain lalu oleh penjual | 1 baris `notifikasi` jenis `"pesan"`, isi `"Pesan baru dari Pembeli Notif D"` tanpa teks rahasia, `status_baca = false`; `belumDibaca = 1`; akun lain ditolak 404; penjual 200 dengan `belumDibaca = 0` dan `status_baca = true` | Sesuai seluruhnya; baris `notifikasi` tidak memuat teks rahasia dan `status_baca` berubah menjadi `true` | Pass |
+| INT-TC50 | AK-21, AK-22, AK-25 | Negatif: penolakan pihak ketiga dan admin (UC16 Alt 3, KF35) | Akun pengguna pihak ketiga dan akun Admin memanggil `GET /api/percakapan/:id` dan `POST /api/percakapan/:id/pesan` | Seluruhnya 403 tanpa atribut `data`; jumlah baris di tabel `pesan` tidak bertambah | Keempat permintaan 403 tanpa `data`; jumlah baris `pesan` tetap sama | Pass |
+| INT-TC51 | AK-21, AK-22, AK-25 | Normal: daftar percakapan, urutan, cuplikan, dan belum dibaca (UC18, KF33, KF34) | Dua percakapan; kirim 1 pesan ke ruang 1 lalu 2 pesan (terakhir > 80 karakter) ke ruang 2; `GET /api/percakapan` sebagai penjual; buka ruang 2; panggil `GET /api/percakapan` lagi | Ruang 2 di posisi pertama dengan `belumDibaca: 2` dan cuplikan terpotong 79 karakter + elipsis; ruang 1 `belumDibaca: 1`; setelah ruang 2 dibuka, `belumDibaca` ruang 2 menjadi 0 dan ruang 1 tetap 1 | Urutan `[ruang 2, ruang 1]`, cuplikan dan hitungan `2` lalu `1`; setelah ruang 2 dibuka menjadi `0` dan `1` | Pass |
+| INT-TC52 | AK-22, AK-23, AK-25 | Normal: tandai semua notifikasi dibaca (KF34) | Kirim dua pesan ke penjual, periksa `GET /api/notifikasi`, panggil `PATCH /api/notifikasi/baca-semua`, lalu hitung baris `status_baca = false` di tabel `notifikasi` | Sebelum: `belumDibaca = 2`; sesudah: 200 dengan `belumDibaca = 0` dan 0 baris belum dibaca di tabel `notifikasi` | Sebelum `2`; sesudah 200 dengan `belumDibaca = 0` dan 0 baris sisa di tabel `notifikasi` | Pass |
+| INT-TC53 | AK-22, AK-23, AK-25 | Normal dan negatif: simpan, upsert, baca, dan hapus `LanggananPush` (KF34) | `POST /api/notifikasi/langganan-push` oleh pembeli, lalu *upsert* endpoint sama oleh penjual dengan kunci baru, kirim endpoint `http://`, baca `LanggananPush.getByAkun`, lalu `hapusByEndpoint` dua kali | Simpan 201, *upsert* 201 menghasilkan tetap 1 baris di `langganan_push` milik penjual dengan kunci terbaru; endpoint `http://` ditolak 400; `hapusByEndpoint` mengembalikan `true` lalu `false` | Sesuai seluruhnya; baris tabel `langganan_push` berjumlah 1 dengan `id_akun` dan kunci terbaru sebelum dihapus | Pass |
+| INT-TC54 | AK-22, AK-23, AK-24 | Normal: Web Push sungguhan ke *push service* HTTPS lokal (KF34, Algo-071) | Simpan langganan berkunci P-256 dan `auth` nyata ke `langganan_push` menuju server HTTPS lokal, atur kunci VAPID dari `webpush.generateVAPIDKeys()`, panggil `PushNotifikasiAdapter.kirimPush(...)` | Server menerima `POST` dengan header `Authorization: vapid t=..., k=...`, `Content-Encoding: aes128gcm`, dan badan terenkripsi (tidak memuat teks asli); balasan 201 membuat `kirimPush` mengembalikan `true` dan langganan tetap tersimpan | Sesuai seluruhnya; 1 permintaan `POST` diterima lengkap dengan header VAPID dan badan terenkripsi `aes128gcm`; `kirimPush` mengembalikan `true` dan 1 baris langganan tetap ada | Pass |
+| INT-TC55 | AK-22, AK-24 | Negatif: penghapusan langganan kedaluwarsa saat *push service* membalas 404/410 (KF34, Algo-071) | Simpan dua langganan menuju endpoint HTTPS lokal yang membalas 410 (Gone) dan 404 (Not Found), lalu panggil `PushNotifikasiAdapter.kirimPush(...)` | `kirimPush` mengembalikan `false` dan kedua baris langganan otomatis terhapus dari tabel `langganan_push` | `kirimPush` mengembalikan `false`; `LanggananPush.getByAkun` mengembalikan `[]` | Pass |
 | *[INT-TCYY]* | *[AK-XX]* | *[...]* | *[...]* | *[...]* | *[Hasil aktual]* | *Pass/Fail* |
 
 Skenario berhasil masuk lewat Google belum dapat diuji dengan Google sungguhan karena `GOOGLE_CLIENT_ID` belum diatur, baik di lingkungan lokal maupun di versi daring (`/api/akun/sso/penyedia` membalas `google: false`). Alur tersebut diuji dengan *token endpoint* tiruan pada SSO-UT06 dan SSO-UT16 s.d. SSO-UT21.
@@ -1583,6 +1904,8 @@ INT-TC24 s.d. INT-TC34 (Modul E) berada di `src/tests/db/ModulE.test.js` dan dij
 INT-TC35 s.d. INT-TC45 berada di `src/tests/db/ModulC.test.js` dan berjalan melalui HTTP (Supertest ke aplikasi Express) sampai PostgreSQL 16 tanpa mock. Karena basis data uji dipakai bersama modul lain, setiap putaran memakai kategori unik sehingga jumlah dan urutan hasil tidak terpengaruh data modul lain.
 
 **Penyebab INT-TC45 gagal:** `FilterController.bacaHalaman` menerima bilangan bulat berapa pun besarnya. `Number("99999999999999999999")` menjadi 1e20 sehingga offset (1e20 − 1) × 20 dikirim pustaka `pg` sebagai teks `"2e+21"`, yang ditolak PostgreSQL karena bukan bilangan `bigint`. Galat tersebut tidak ditangani sehingga pengguna menerima 500. **Usulan perbaikan:** beri batas atas nomor halaman di `bacaHalaman` (misalnya `Number.isSafeInteger(halaman * UKURAN_HALAMAN)`) dan balas 400 "Nomor halaman tidak valid." bila dilampaui, lalu tambahkan kasus batas tersebut ke C17-UT08. Kode `v9.0` tidak diubah selama pengujian.
+
+INT-TC46 s.d. INT-TC55 (Modul D) berada di `src/tests/db/ModulD.test.js` dan dijalankan pada 20 November 2026 lewat `npm run test:db -- tests/db/ModulD.test.js` melalui Supertest ke aplikasi Express dan PostgreSQL 16 (kontainer `postgres:16-alpine` pada Docker Compose) tanpa *mock* basis data; setiap putaran membuat akun dan barang unik agar tidak berbenturan dengan data modul lain. Untuk INT-TC54 dan INT-TC55, *push service* Google (FCM) atau Mozilla asli tidak dipakai karena keduanya menuntut langganan peramban sungguhan yang terikat profil peramban serta akses jaringan publik, sehingga tidak deterministik untuk pengujian otomatis. Sebagai gantinya, test menjalankan server HTTPS lokal (`127.0.0.1` dengan sertifikat TLS sementara di memori) yang menerima permintaan Web Push sungguhan dari pustaka `web-push`, sehingga header `Authorization` VAPID, `Content-Encoding: aes128gcm`, badan terenkripsi, dan penghapusan langganan saat status 404/410 tetap teruji secara nyata. Seluruh 10 test lulus; keluaran lengkap tersimpan di `INT-TC-modul-d.txt`.
 
 <br>
 
@@ -1792,21 +2115,39 @@ Tabel 4.4.15. Hasil Pengujian Use Case UC15
 **ID Use Case:** UC16  
 **Nama Use Case:** Menghubungi Penjual
 
-> *Diisi Sulthan (Modul D)*: 4 skenario pada SKPL Subbab 4.4.16.
+Pengujian UC16 s.d. UC18 dilaksanakan pada 20 November 2026 di peramban Chromium terhadap aplikasi ITBELI lokal (`http://localhost:3002`, `npm start`) dari kode `develop` (basis `v9.0` ditambah tombol Laporkan pada I-10 dari commit `05bb773`), dengan PostgreSQL 16 (`docker-compose.yml`), `npm run db:init`, dan `npm run db:seed`. Dua listing dibuat oleh `penjual.uji@itb.ac.id` ("Buku Introduction to Algorithms" Rp120.000 di Labtek V dan "Earbuds Bluetooth Preloved" Rp95.000 di Labtek VI), serta satu listing milik akun `diblokir.uji@itb.ac.id` ("HP Android Bekas Pakai" Rp850.000) disiapkan pada basis data sebagai simulasi listing yang penjualnya diblokir admin. Seluruh data di tabel `percakapan`, `pesan`, dan `notifikasi` diperiksa langsung dengan `psql`.
+
+Tabel 4.4.16. Hasil Pengujian Use Case UC16
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC16-TC01 | KF31, KF32, KF36, KF39 | Normal | 1. Masuk sebagai `pembeli.uji@itb.ac.id` dan buka detail listing `/barang?id=<idBarang>` milik `penjual.uji`.<br>2. Klik tombol "Kirim pesan".<br>3. Periksa tampilan ruang percakapan yang terbuka (kartu listing, lawan bicara, kolom pesan, tautan Kebijakan Privasi).<br>4. Ketik pesan pembuka dan klik kirim. | Listing: "Buku Introduction to Algorithms" Rp120.000<br>Pesan pembuka: "Halo kak, buku Introduction to Algorithms masih tersedia?" | Ruang percakapan baru dibuat untuk kombinasi listing, pembeli, dan penjual; kartu ringkas listing (foto, judul, harga), identitas lawan bicara, kolom pesan, dan tautan Kebijakan Privasi tampil; pesan pembuka tersimpan dan tampil pada ruang percakapan | Halaman detail menampilkan tombol "Kirim pesan" (label berbeda dari "Hubungi Penjual" pada SKPL). Setelah diklik, alamat berpindah ke `/percakapan?id=de4c58d6-0ce2-4544-a26e-622e9cf4ce81`. Ruang menampilkan lawan bicara "Penjual Uji", kartu ringkas dengan foto dan "Buku Introduction to Algorithms · Rp120.000", pemberitahuan enkripsi beserta tautan "Baca Kebijakan Privasi" (`/legal?jenis=kebijakan-privasi`), serta tombol "Laporkan". Pesan pembuka terkirim dan tampil dengan stempel waktu `15:18`, serta cuplikan daftar berubah menjadi "Anda: Halo kak, buku Introduction to Alg..." | Pass |
+| UC16-TC02 | KF31 | Alternatif 1: Akun penjual sedang diblokir | 1. Sebagai `pembeli.uji`, buka permintaan mulai percakapan `/percakapan?barang=<idBarangDiblokir>` untuk listing milik `diblokir.uji@itb.ac.id`.<br>2. Periksa respons pada layar dan tabel `percakapan`. | Listing: "HP Android Bekas Pakai" milik `diblokir.uji@itb.ac.id` | Pembuatan ruang percakapan dibatalkan, pesan "Penjual tidak dapat dihubungi karena akunnya sedang ditangguhkan" tampil, dan tersedia tautan kembali ke katalog utama | Pembuatan ruang dibatalkan (HTTP 403, 0 baris baru untuk listing tersebut di tabel `percakapan`). Panel kanan menampilkan ikon gembok, judul "Akses ditolak", dan pesan "Penjual sedang diblokir dan tidak dapat dihubungi.". Redaksi pesan berbeda dari SKPL dan di dalam kotak penolakan tidak ada tautan khusus kembali ke katalog; kembali ke katalog dilakukan melalui ikon Katalog pada bilah navigasi atas | Pass |
+| UC16-TC03 | KF31 | Alternatif 2: Ruang percakapan untuk listing tersebut sudah ada | 1. Sebagai `pembeli.uji`, buka kembali `/barang?id=<idBarang>` untuk "Buku Introduction to Algorithms".<br>2. Klik tombol "Kirim pesan" sekali lagi.<br>3. Periksa ID percakapan pada URL, riwayat pesan, dan jumlah baris di tabel `percakapan`. | Listing yang sama dengan UC16-TC01 | Tidak dibuat ruang percakapan ganda; sistem membuka ruang yang sudah ada beserta riwayat pesan sebelumnya dan menggulir ke pesan paling akhir | Alamat berpindah kembali ke ruang yang sama (`/percakapan?id=de4c58d6-0ce2-4544-a26e-622e9cf4ce81`). Riwayat pesan pembuka sebelumnya tampil utuh dan tergulir ke bawah. Pada tabel `percakapan`, jumlah baris untuk listing tersebut tetap 1 | Pass |
+| UC16-TC04 | KF35, KF36 | Alternatif 3: Percobaan akses ruang percakapan oleh pihak ketiga | 1. Masuk sebagai `admin.uji@itb.ac.id` (akun berperan Admin yang bukan peserta).<br>2. Buka langsung URL `/percakapan?id=de4c58d6-0ce2-4544-a26e-622e9cf4ce81`.<br>3. Periksa isi layar dan tabel `pesan` di basis data. | URL ruang percakapan milik `pembeli.uji` dan `penjual.uji` | Akses ditolak tanpa menampilkan satu pun isi pesan, pesan penolakan tampil, dan isi pesan di basis data tetap terenkripsi | Ruang aktif tersembunyi (0 gelembung pesan dirender). Panel penolakan tampil dengan judul "Akses ditolak" dan pesan "Anda bukan peserta percakapan ini." (HTTP 403). Inspeksi tabel `pesan` dengan `psql` memastikan seluruh baris `isi_pesan_terenkripsi` tetap berupa teks base64 AES-256-GCM (panjang 88 s.d. 116 karakter) tanpa teks asli | Pass |
 
 ### 4.4.17 Use Case Mengirim Pesan dalam Percakapan
 
 **ID Use Case:** UC17  
 **Nama Use Case:** Mengirim Pesan dalam Percakapan
 
-> *Diisi Sulthan (Modul D)*: 2 skenario pada SKPL Subbab 4.4.17.
+Tabel 4.4.17. Hasil Pengujian Use Case UC17
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC17-TC01 | KF32, KF34, KF36 | Normal | 1. Sebagai `pembeli.uji`, kirim pesan negosiasi COD pada ruang percakapan buku.<br>2. Inspeksi tabel `pesan` dan `notifikasi` melalui `psql`.<br>3. Masuk sebagai `penjual.uji`, buka `/percakapan`, buka panel notifikasi I-11 di *topbar*, lalu balas pesan pada ruang tersebut. | Pesan pembeli: "Bisa COD besok jam 13.00 di Labtek V?"<br>Balasan penjual: "Bisa kak, ketemu di depan Labtek V ya." | Pesan dienkripsi di basis data, tampil berurutan dengan stempel waktu secara *realtime* pada kedua pihak, notifikasi terkirim termasuk saat aplikasi tidak dibuka, dan penanda belum dibaca diperbarui | Pesan tersimpan terenkripsi pada tabel `pesan` (base64 88 karakter, tanpa teks asli) dan tampil berurutan dengan stempel waktu `15:18`, `15:19`, `15:20` beserta balasan penjual. Tabel `notifikasi` mencatat baris `"Pesan baru dari Pembeli Uji"` tanpa membocorkan isi pesan; penanda lonceng *topbar* menampilkan angka `3` dan panel I-11 memuat daftar notifikasi belum dibaca. Namun pesan masuk pada sisi penerima tidak tampil seketika (*realtime*) seperti yang diminta SKPL, melainkan baru muncul pada *polling* berikutnya (setiap 4 detik di ruang percakapan, 30 detik di panel notifikasi). Notifikasi Web Push saat aplikasi tidak dibuka tidak teramati pada uji ini karena `VAPID_PUBLIC_KEY` dan `VAPID_PRIVATE_KEY` di `.env` lokal kosong, sehingga tombol "Aktifkan notifikasi peramban" tidak tampil. Ini batasan lingkungan uji, bukan cacat kode; pengiriman Web Push diuji terpisah pada INT-TC54 dan INT-TC55.<br>**Penyebab:** `HalamanPercakapan` (C08) dan `PanelNotifikasi` (C09) memperbarui tampilan dengan `setInterval` tanpa WebSocket atau SSE (M9 B.3.3 No. 2).<br>**Usulan perbaikan:** ganti *polling* dengan WebSocket atau Server-Sent Events agar pesan dan penanda belum dibaca tampil seketika. Tambahkan juga langkah membuat kunci VAPID (`npx web-push generate-vapid-keys`) pada panduan penyiapan lokal agar Web Push dapat diuji ujung ke ujung di peramban | Fail |
+| UC17-TC02 | KF32 | Alternatif 1: Percobaan pengiriman pesan kosong | 1. Pada ruang percakapan aktif sebagai `pembeli.uji`, periksa tombol kirim saat kolom pesan kosong.<br>2. Ketik 5 spasi (`"     "`), periksa status tombol kirim, lalu tekan tombol Enter.<br>3. Periksa jumlah gelembung pesan di layar dan basis data. | Masukan kosong `""`, lalu `"     "` (5 spasi) | Tombol kirim dinonaktifkan, penekanan Enter diabaikan, dan tidak ada data dikirim ke server | Saat kolom kosong maupun berisi 5 spasi, tombol kirim tetap dalam keadaan `disabled`. Menekan Enter tidak mengubah halaman dan tidak mengirim permintaan ke server; jumlah gelembung pesan tetap 1 | Pass |
 
 ### 4.4.18 Use Case Melihat Daftar Percakapan
 
 **ID Use Case:** UC18  
 **Nama Use Case:** Melihat Daftar Percakapan
 
-> *Diisi Sulthan (Modul D)*: 1 skenario pada SKPL Subbab 4.4.18.
+Tabel 4.4.18. Hasil Pengujian Use Case UC18
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC18-TC01 | KF33, KF34 | Normal | 1. Sebagai `pembeli.uji`, kirim juga pesan pembuka pada listing kedua ("Earbuds Bluetooth Preloved") agar `penjual.uji` memiliki 2 percakapan.<br>2. Masuk sebagai `penjual.uji` dan buka halaman `/percakapan`.<br>3. Periksa urutan daftar, nama lawan bicara, cuplikan pesan terakhir, dan angka belum dibaca.<br>4. Klik percakapan kedua ("Buku Introduction to Algorithms") dan periksa perubahan penanda belum dibaca. | Dua percakapan milik `penjual.uji`: "Earbuds Bluetooth Preloved" (1 pesan baru) dan "Buku Introduction to Algorithms" (2 pesan baru) | Seluruh percakapan pengguna tampil terurut terbaru lebih dulu, lengkap dengan cuplikan pesan terakhir, identitas lawan bicara, dan penanda jumlah pesan belum dibaca | Kolom kiri menampilkan penanda total `"3 belum dibaca"` dan lonceng *topbar* `"3"`. Dua percakapan tampil urut dari interaksi terbaru: (1) "Pembeli Uji", `15:20`, cuplikan `"Earbuds-nya baterainya masih awe..."`, judul "Earbuds Bluetooth Preloved", penanda `1`; (2) "Pembeli Uji", `15:19`, cuplikan `"Bisa COD besok jam 13.00 di Labte..."`, judul "Buku Introduction to Algorithms", penanda `2`. Setelah percakapan kedua diklik, ruang terbuka dengan 2 pesan pembeli, penanda item tersebut hilang, dan penanda total turun menjadi `"1 belum dibaca"` | Pass |
 
 ### 4.4.19 Use Case Mengirimkan Laporan
 
@@ -2017,6 +2358,21 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC15-TC03 | <img src="assets/bukti/UC15-TC03.png" width="600"><br><img src="assets/bukti/UC15-TC03-nonaktif.png" width="600"><br><img src="assets/bukti/UC15-TC03-hasil.png" width="600"> |
 | UC15-TC04 | <img src="assets/bukti/UC15-TC04.png" width="600"> |
 | UC13-TC01 s.d. UC15-TC04 (penyiapan data) | [data-uji-modul-c.cjs](assets/bukti/data-uji-modul-c.cjs) |
+| C08-UT01 s.d. C08-UT08, C09-UT01 s.d. C09-UT06 | [C08-C09-UT.txt](assets/bukti/C08-C09-UT.txt) |
+| C18-UT01 s.d. C18-UT21 | [C18-UT.txt](assets/bukti/C18-UT.txt) |
+| C19-UT01 s.d. C19-UT19 | [C19-UT.txt](assets/bukti/C19-UT.txt) |
+| C33-UT01 s.d. C33-UT14, C34-UT01 s.d. C34-UT10, C35-UT01 s.d. C35-UT10, LGP-UT01 s.d. LGP-UT07 | [C33-C35-LGP-UT.txt](assets/bukti/C33-C35-LGP-UT.txt) |
+| C42-UT05 s.d. C42-UT13 | [C42-UT-modul-d.txt](assets/bukti/C42-UT-modul-d.txt) |
+| C44-UT01 s.d. C44-UT08 | [C44-UT.txt](assets/bukti/C44-UT.txt) |
+| C18, C19, C33, C34, C35, C42, C44, LanggananPush (coverage Modul D) | [coverage-modul-d.txt](assets/bukti/coverage-modul-d.txt) |
+| INT-TC46 s.d. INT-TC55 | [INT-TC-modul-d.txt](assets/bukti/INT-TC-modul-d.txt) |
+| UC16-TC01 | <img src="assets/bukti/UC16-TC01.png" width="600"><br><img src="assets/bukti/UC16-TC01-hasil.png" width="600"> |
+| UC16-TC02 | <img src="assets/bukti/UC16-TC02.png" width="600"> |
+| UC16-TC03 | Ruang yang dibuka ulang tampil sama persis dengan hasil UC16-TC01 (ID percakapan dan riwayat pesan sama), sehingga buktinya memakai tangkapan yang sama. Jumlah baris `percakapan` yang tetap 1 diperiksa juga pada INT-TC46.<br><img src="assets/bukti/UC16-TC01-hasil.png" width="600"> |
+| UC16-TC04 | <img src="assets/bukti/UC16-TC04.png" width="600"> |
+| UC17-TC01 | <img src="assets/bukti/UC17-TC01.png" width="600"><br><img src="assets/bukti/UC17-TC01-hasil.png" width="600"> |
+| UC17-TC02 | <img src="assets/bukti/UC17-TC02.png" width="600"> |
+| UC18-TC01 | <img src="assets/bukti/UC18-TC01.png" width="600"><br><img src="assets/bukti/UC18-TC01-hasil.png" width="600"> |
 | *[ID pengujian]* | *[Bukti hasil pengujian]* |
 
 <br>
@@ -2046,7 +2402,7 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | KF13 | KNF03 | UC01<br>UC06 | C01 - HalamanOtentikasi<br>C12 - HalamanDokumenLegal<br>C13 - AkunController<br>C22 - DokumenLegalController<br>C40 - DokumenLegal | `src/views/pages/daftar.html`<br>`src/views/pages/legal.html`<br>`src/views/js/HalamanDokumenLegal.js`<br>`src/controllers/DokumenLegalController.js`<br>`src/models/DokumenLegal.js` | UC01-TC01, UC06-TC01 | C13-UT41, C13-UT42, C22-UT01 s.d. C22-UT03, C40-UT01 s.d. C40-UT03, INT-TC10 |
 | KF14 | KNF03 | UC01 | C01 - HalamanOtentikasi<br>C13 - AkunController | `src/views/js/HalamanOtentikasi.js`<br>`src/controllers/AkunController.js` | - (bukan skenario SKPL UC01) | C01-UT03, C13-UT04 s.d. C13-UT06, C13-UT09, C13-UT51 |
 | KF38 | KNF03 | UC06 | C12 - HalamanDokumenLegal<br>C22 - DokumenLegalController<br>C40 - DokumenLegal | `src/views/js/HalamanDokumenLegal.js`<br>`src/controllers/DokumenLegalController.js`<br>`src/database/seedDokumenLegal.js` | UC06-TC01 | C22-UT04, C22-UT05, C40-UT01, INT-TC10 |
-| KF39 | KNF03 | UC05<br>UC06<br>UC16, UC17 | C01 - HalamanOtentikasi<br>C02 - HalamanProfil<br>C08 - HalamanPercakapan<br>C13 - AkunController | `src/views/pages/daftar.html`<br>`src/views/pages/profil.html`<br>`src/views/pages/percakapan.html` | UC05-TC01, UC06-TC01, test case UC16 dan UC17 (Modul D) | C13-UT41, INT-TC10 |
+| KF39 | KNF03 | UC05<br>UC06<br>UC16, UC17 | C01 - HalamanOtentikasi<br>C02 - HalamanProfil<br>C08 - HalamanPercakapan<br>C13 - AkunController | `src/views/pages/daftar.html`<br>`src/views/pages/profil.html`<br>`src/views/pages/percakapan.html` | UC05-TC01, UC06-TC01, UC16-TC01, UC16-TC03 | C13-UT41, C08-UT06, C18-UT08, INT-TC10, INT-TC48 |
 | KF15 | KNF01 | UC07 | C04 - FormulirBarang<br>C14 - BarangController<br>C31 - Kategori<br>C32 - LokasiCOD | `src/views/pages/listing-form.html`<br>`src/views/js/FormulirBarang.js`<br>`src/controllers/BarangController.js`<br>`src/models/ReferensiListing.js` | UC07-TC01 | C04-UT06, C14-UT17, C31-UT01, C32-UT01; KNF01-TC01 |
 | KF16 | KNF01 | UC07 | C04 - FormulirBarang<br>C14 - BarangController<br>C25 - Penjual<br>C28 - SesiLogin<br>C29 - Barang<br>C30 - FotoBarang<br>C41 - Otorisasi<br>C45 - PenyimpananBerkas | `src/services/ListingService.js`<br>`src/models/Barang.js`<br>`src/models/ListingPenjual.js`<br>`src/models/FotoBarang.js`<br>`src/routes/barangRoutes.js`<br>`src/penyimpanan/PenyimpananBerkas.js` | UC07-TC01 | C14-UT08, C29-UT02, C30-UT02; INT-TC13, INT-TC21; KNF01-TC01 |
 | KF18 | - | UC07, UC09 | C04 - FormulirBarang<br>C14 - BarangController<br>C29 - Barang | `src/views/js/FormulirBarang.js`<br>`src/services/ListingService.js` | UC07-TC02, UC09-TC02 | C04-UT02, C14-UT03, C14-UT09; INT-TC22 |
@@ -2066,6 +2422,12 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | KF28 | - | UC13, UC14 | C05 - HalamanKatalog<br>C06 - KartuProduk<br>C15 - KatalogController<br>C17 - FilterController<br>C29 - Barang | `src/views/pages/katalog.html`<br>`src/views/js/HalamanKatalog.js`<br>`src/views/js/KartuProduk.js`<br>`src/controllers/KatalogController.js`<br>`src/routes/katalogRoutes.js`<br>`src/controllers/FilterController.js`<br>`src/models/Barang.js` | UC13-TC01, UC14-TC01 | C15-UT01, C15-UT03, C15-UT05, C17-UT08, C17-UT12 s.d. C17-UT14, C29-UT17, C29-UT25; INT-TC35, INT-TC45 |
 | KF29 | - | UC14 | C05 - HalamanKatalog<br>C15 - KatalogController | `src/views/pages/katalog.html`<br>`src/views/js/HalamanKatalog.js`<br>`src/controllers/KatalogController.js` | UC14-TC02 | C15-UT04; INT-TC40 |
 | KF30 | KNF01 | UC13, UC14 | C05 - HalamanKatalog<br>C15 - KatalogController<br>C29 - Barang | `src/views/pages/katalog.html`<br>`src/views/js/HalamanKatalog.js`<br>`src/controllers/KatalogController.js`<br>`src/routes/katalogRoutes.js`<br>`src/models/Barang.js` | UC13-TC01, UC13-TC02, UC13-TC03 | C29-UT17, C29-UT26, C29-UT27; INT-TC36, INT-TC43 |
+| KF31 | - | UC16 | C08 - HalamanPercakapan<br>C18 - PercakapanController<br>C33 - Percakapan | `src/views/pages/percakapan.html`<br>`src/views/js/HalamanPercakapan.js`<br>`src/controllers/PercakapanController.js`<br>`src/routes/percakapanRoutes.js`<br>`src/models/Percakapan.js` | UC16-TC01, UC16-TC02, UC16-TC03 | C08-UT08, C18-UT01 s.d. C18-UT05, C33-UT05 s.d. C33-UT08; INT-TC46, INT-TC47 |
+| KF32 | - | UC16, UC17 | C08 - HalamanPercakapan<br>C18 - PercakapanController<br>C34 - Pesan | `src/views/js/HalamanPercakapan.js`<br>`src/controllers/PercakapanController.js`<br>`src/routes/percakapanRoutes.js`<br>`src/models/Pesan.js` | UC16-TC01, UC17-TC01, UC17-TC02 | C08-UT01 s.d. C08-UT04, C08-UT06, C18-UT10 s.d. C18-UT14, C34-UT03 s.d. C34-UT05; INT-TC48 |
+| KF33 | - | UC18 | C08 - HalamanPercakapan<br>C18 - PercakapanController<br>C33 - Percakapan<br>C34 - Pesan | `src/views/js/HalamanPercakapan.js`<br>`src/controllers/PercakapanController.js`<br>`src/models/Percakapan.js`<br>`src/models/Pesan.js` | UC18-TC01 | C08-UT05, C18-UT17 s.d. C18-UT21, C33-UT12 s.d. C33-UT14, C34-UT06, C34-UT07; INT-TC51 |
+| KF34 | - | UC17, UC18 | C09 - PanelNotifikasi<br>C18 - PercakapanController<br>C19 - NotifikasiController<br>C34 - Pesan<br>C35 - Notifikasi<br>C44 - PushNotifikasiAdapter<br>LanggananPush | `src/views/js/PanelNotifikasi.js`<br>`src/views/sw.js`<br>`src/controllers/NotifikasiController.js`<br>`src/routes/notifikasiRoutes.js`<br>`src/models/Pesan.js`<br>`src/models/Notifikasi.js`<br>`src/models/LanggananPush.js`<br>`src/integrasi/PushNotifikasiAdapter.js` | UC17-TC01, UC18-TC01 | C09-UT01 s.d. C09-UT06, C18-UT15, C18-UT16, C19-UT01 s.d. C19-UT19, C34-UT08 s.d. C34-UT10, C35-UT01 s.d. C35-UT10, C44-UT01 s.d. C44-UT08, LGP-UT01 s.d. LGP-UT07; INT-TC49, INT-TC51 s.d. INT-TC55 |
+| KF35 | KNF03 | UC16, UC17 | C08 - HalamanPercakapan<br>C18 - PercakapanController<br>C33 - Percakapan | `src/views/js/HalamanPercakapan.js`<br>`src/controllers/PercakapanController.js`<br>`src/models/Percakapan.js` | UC16-TC04 | C08-UT07, C18-UT06, C18-UT13, C33-UT09, C33-UT10; INT-TC50; KNF03-TC03 |
+| KF36 | KNF03 | UC16, UC17 | C18 - PercakapanController<br>C34 - Pesan<br>C42 - Kriptografi | `src/controllers/PercakapanController.js`<br>`src/models/Pesan.js`<br>`src/pendukung/Kriptografi.js` | UC16-TC01, UC16-TC04, UC17-TC01 | C18-UT08, C18-UT14, C18-UT15, C18-UT18, C34-UT05, C42-UT05 s.d. C42-UT13; INT-TC48, INT-TC49; KNF03-TC03 |
 | KF37 | - | UC19 | C20 - LaporanController<br>C10 - FormulirLaporan<br>C08 - HalamanPercakapan | `src/controllers/LaporanController.js`<br>`src/views/js/FormulirLaporan.js`<br>`src/views/js/HalamanPercakapan.js`<br>`src/views/pages/percakapan.html` | UC19-TC02 | C20-UT09, C20-UT23 |
 | KF43 | - | UC19 | C10 - FormulirLaporan<br>C20 - LaporanController | `src/views/js/FormulirLaporan.js`<br>`src/controllers/LaporanController.js` | UC19-TC01, UC19-TC02, UC19-TC03 | C10-UT01, C10-UT02, C20-UT01 sampai C20-UT04, C20-UT11, C20-UT14 |
 | KF44 | - | UC19 | C10 - FormulirLaporan<br>C20 - LaporanController<br>C37 - BuktiLaporan<br>C45 - PenyimpananBerkas | `src/controllers/LaporanController.js`<br>`src/models/BuktiLaporan.js`<br>`src/penyimpanan/PenyimpananBerkas.js` | UC19-TC01, UC19-TC04 | C10-UT03 sampai C10-UT06, C20-UT05 sampai C20-UT08, C20-UT12, C20-UT13, C20-UT17, C20-UT18, C37-UT01 sampai C37-UT07, C45-UT01 sampai C45-UT06, INT-TC24, INT-TC31, INT-TC32 |

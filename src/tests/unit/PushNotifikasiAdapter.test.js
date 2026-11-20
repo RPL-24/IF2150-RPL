@@ -1,4 +1,5 @@
 // src/tests/unit/PushNotifikasiAdapter.test.js
+// Uji unit C44 PushNotifikasiAdapter (KF34, Algo-071) dengan web-push di-mock.
 jest.mock('web-push');
 
 const ENV_VAPID = ['VAPID_PUBLIC_KEY', 'VAPID_PRIVATE_KEY', 'VAPID_SUBJECT'];
@@ -30,7 +31,7 @@ describe('PushNotifikasiAdapter (C44, Algo-071)', () => {
     }
   });
 
-  test('tanpa VAPID: mengembalikan false tanpa mengirim, dan hanya mencatat log sekali', async () => {
+  test('C44-UT01 [Negatif] kirimPush: tanpa VAPID mengembalikan false tanpa mengirim dan hanya mencatat log sekali', async () => {
     const { adapter, webpush, LanggananPush } = muatAdapter({ VAPID_PUBLIC_KEY: '', VAPID_PRIVATE_KEY: '' });
     const getByAkun = jest.spyOn(LanggananPush, 'getByAkun');
     const peringatan = jest.spyOn(console, 'warn').mockImplementation(() => {});
@@ -44,7 +45,7 @@ describe('PushNotifikasiAdapter (C44, Algo-071)', () => {
     expect(adapter.getKunciPublik()).toBeNull();
   });
 
-  test('tanpa langganan: mengembalikan false', async () => {
+  test('C44-UT02 [Batas] kirimPush: akun tanpa langganan mengembalikan false tanpa memanggil web-push', async () => {
     const { adapter, webpush, LanggananPush } = muatAdapter(VAPID_LENGKAP);
     jest.spyOn(LanggananPush, 'getByAkun').mockResolvedValue([]);
 
@@ -52,17 +53,17 @@ describe('PushNotifikasiAdapter (C44, Algo-071)', () => {
     expect(webpush.sendNotification).not.toHaveBeenCalled();
   });
 
-  test('mengirim payload { judul, isi, tautan } dengan kunci VAPID ke setiap langganan', async () => {
+  test('C44-UT03 [Normal] kirimPush: mengirim payload { judul, isi, tautan } dengan kunci VAPID ke setiap langganan', async () => {
     const { adapter, webpush, LanggananPush } = muatAdapter(VAPID_LENGKAP);
     jest.spyOn(LanggananPush, 'getByAkun').mockResolvedValue([langganan(1), langganan(2)]);
     webpush.sendNotification.mockResolvedValue({ statusCode: 201 });
 
-    expect(await adapter.kirimPush('akun-1', 'ITBELI', 'Budi: halo', '/percakapan')).toBe(true);
+    expect(await adapter.kirimPush('akun-1', 'ITBELI', 'Pesan baru dari Budi', '/percakapan')).toBe(true);
     expect(webpush.sendNotification).toHaveBeenCalledTimes(2);
 
     const [subscription, muatan, opsi] = webpush.sendNotification.mock.calls[0];
     expect(subscription).toEqual({ endpoint: 'https://push.contoh.test/1', keys: { p256dh: 'p256dh-1', auth: 'auth-1' } });
-    expect(JSON.parse(muatan)).toEqual({ judul: 'ITBELI', isi: 'Budi: halo', tautan: '/percakapan' });
+    expect(JSON.parse(muatan)).toEqual({ judul: 'ITBELI', isi: 'Pesan baru dari Budi', tautan: '/percakapan' });
     expect(opsi.vapidDetails).toEqual({
       subject: 'mailto:admin@itbeli.local',
       publicKey: 'kunci-publik',
@@ -70,7 +71,7 @@ describe('PushNotifikasiAdapter (C44, Algo-071)', () => {
     });
   });
 
-  test('status 410 dari push service: langganan kedaluwarsa dihapus', async () => {
+  test('C44-UT04 [Negatif] kirimPush: status 410 dari push service menghapus langganan kedaluwarsa dan tetap mengirim ke sisanya', async () => {
     const { adapter, webpush, LanggananPush } = muatAdapter(VAPID_LENGKAP);
     jest.spyOn(LanggananPush, 'getByAkun').mockResolvedValue([langganan(1), langganan(2)]);
     const hapus = jest.spyOn(LanggananPush, 'hapusByEndpoint').mockResolvedValue(true);
@@ -83,7 +84,18 @@ describe('PushNotifikasiAdapter (C44, Algo-071)', () => {
     expect(hapus).toHaveBeenCalledWith('https://push.contoh.test/1');
   });
 
-  test('galat lain tidak menghapus langganan dan tidak melempar; false bila tidak ada yang terkirim', async () => {
+  test('C44-UT05 [Negatif] kirimPush: status 404 dari push service menghapus langganan dan mengembalikan false bila tidak ada yang berhasil', async () => {
+    const { adapter, webpush, LanggananPush } = muatAdapter(VAPID_LENGKAP);
+    jest.spyOn(LanggananPush, 'getByAkun').mockResolvedValue([langganan(1)]);
+    const hapus = jest.spyOn(LanggananPush, 'hapusByEndpoint').mockResolvedValue(true);
+    webpush.sendNotification.mockRejectedValueOnce(Object.assign(new Error('Not Found'), { statusCode: 404 }));
+
+    expect(await adapter.kirimPush('akun-1', 'ITBELI', 'Halo')).toBe(false);
+    expect(hapus).toHaveBeenCalledTimes(1);
+    expect(hapus).toHaveBeenCalledWith('https://push.contoh.test/1');
+  });
+
+  test('C44-UT06 [Negatif] kirimPush: galat 500 tidak menghapus langganan dan mengembalikan false', async () => {
     const { adapter, webpush, LanggananPush } = muatAdapter(VAPID_LENGKAP);
     jest.spyOn(LanggananPush, 'getByAkun').mockResolvedValue([langganan(1)]);
     const hapus = jest.spyOn(LanggananPush, 'hapusByEndpoint').mockResolvedValue(true);
@@ -92,5 +104,25 @@ describe('PushNotifikasiAdapter (C44, Algo-071)', () => {
 
     expect(await adapter.kirimPush('akun-1', 'ITBELI', 'Halo')).toBe(false);
     expect(hapus).not.toHaveBeenCalled();
+    expect(console.error).toHaveBeenCalled();
+  });
+
+  test('C44-UT07 [Negatif] kirimPush: galat saat mengambil daftar langganan ditangani tanpa melempar dan mengembalikan false', async () => {
+    const { adapter, LanggananPush } = muatAdapter(VAPID_LENGKAP);
+    jest.spyOn(LanggananPush, 'getByAkun').mockRejectedValue(new Error('koneksi db putus'));
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    expect(await adapter.kirimPush('akun-1', 'ITBELI', 'Halo')).toBe(false);
+    expect(console.error).toHaveBeenCalled();
+  });
+
+  test('C44-UT08 [Normal] getKunciPublik dan vapidTerkonfigurasi: mengembalikan kunci publik saat VAPID lengkap dan null bila salah satu kosong', () => {
+    const { adapter: lengkap } = muatAdapter(VAPID_LENGKAP);
+    expect(lengkap.vapidTerkonfigurasi()).toBe(true);
+    expect(lengkap.getKunciPublik()).toBe('kunci-publik');
+
+    const { adapter: parsial } = muatAdapter({ VAPID_PUBLIC_KEY: 'kunci-publik', VAPID_PRIVATE_KEY: '' });
+    expect(parsial.vapidTerkonfigurasi()).toBe(false);
+    expect(parsial.getKunciPublik()).toBeNull();
   });
 });
