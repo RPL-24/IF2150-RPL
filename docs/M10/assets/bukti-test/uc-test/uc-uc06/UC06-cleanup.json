@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "target": {
+    "id": "f0f9bf16-a29c-4316-ae09-60bba87528a3",
+    "ticket": "LK-0038",
+    "marker": "[TEST-UC06-D]"
+  },
+  "countsBefore": {
+    "laporan": 1,
+    "foto": 1,
+    "video": 0,
+    "upvote": 1,
+    "hasil_perbaikan": 0,
+    "evaluasi": 0,
+    "notifikasi": 1,
+    "riwayat_status": 1
+  },
+  "databaseRemaining": {
+    "laporan": 0,
+    "foto": 0,
+    "video": 0,
+    "upvote": 0,
+    "hasil_perbaikan": 0,
+    "evaluasi": 0,
+    "notifikasi": 0,
+    "riwayat_status": 0
+  },
+  "storageFilesRemoved": [
+    "laporan/00000000-0000-4000-a000-000000000001/5067f22c-fdcb-44a9-9835-bbbbcc14fa1f.png"
+  ],
+  "storageRemaining": 0,
+  "manualMarkerRemaining": 0,
+  "checkedAt": "2026-11-20T12:29:57.881Z",
+  "timezone": "Asia/Jakarta"
+}
