@@ -10,21 +10,21 @@ HASIL IMPLEMENTASI DAN UJI PERANGKAT LUNAK (HIUPL)
 ## *Nama Perangkat Lunak*
 ### *[Logo Perangkat Lunak]*
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Mikhael Andrian Yonatan
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | K03 |
+| Kelompok | G05 |
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| 13525057 | Raya Medina Farrelin |
+| 13525003 | Cherinette Corsane Khassyah Purceria |
+| 13525108 | Khasya Nurul Amini |
+| 13525150 | Livy Chandra |
+| 13525138 | Cathrine Angel Siburian |
 
 ---
 
@@ -167,9 +167,56 @@ Tabel 3.2. Implementasi Modul
 
 | No | ID Kelas | Nama Modul/Kelas | Nama File Fisik | Nama File Executable |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | *[C01]* | *[Nama modul/kelas]* | *[path/ke/file]* | *[Nama file executable, atau - jika tidak ada]* |
-| 2 | *[C02]* | *[Nama modul/kelas]* | *[path/ke/file]* | *[...]* |
-| ... | *...* | *...* | *...* | *...* |
+| 1 | C01 | RegistrasiMasyarakatPage | src/views/auth/registrasi-masyarakat.ejs | server.js |
+| 2 | C02 | LoginMasyarakatPage | src/views/auth/login-masyarakat.ejs | server.js |
+| 3 | C03 | BerandaPage | src/views/masyarakat/beranda.ejs, src/views/mitra/beranda.ejs | server.js |
+| 4 | C04 | RegistrasiMitraPage | src/views/auth/registrasi-mitra.ejs | server.js |
+| 5 | C05 | LoginMitraPage | src/views/auth/login.ejs | server.js |
+| 6 | C07 | VerifikasiMitraPage | src/views/admin/verifikasi.ejs, src/views/admin/verifikasi2.ejs | server.js |
+| 7 | C08 | EditProfilMitraPage | src/views/mitra/EditProfilMitraPage.ejs | server.js |
+| 8 | C09 | EditDokumenLegalitasPage | src/views/mitra/EditDokumenLegalitasPage.ejs | server.js |
+| 9 | C10 | SearchLawPage | src/views/searchLaw.ejs | server.js |
+| 10 | C11 | DaftarMitraPengacaraPage | src/views/halolaw/daftar-mitra.ejs | server.js |
+| 11 | C12 | PemilihanJadwalKonsultasiPage | src/views/konsultasi/jadwal.ejs, src/public/js/konsultasi-jadwal.js | server.js |
+| 12 | C13 | KonfirmasiKonsultasiPage | src/views/konsultasi/konfirmasi.ejs, src/views/konsultasi/pengajuan.ejs | server.js |
+| 13 | C14 | ChatKonsultasiPage | src/views/konsultasi/chat.ejs, src/public/js/konsultasi-chat.js | server.js |
+| 14 | C15 | UlasanPage | src/views/transaksi/ulasan.ejs | server.js |
+| 15 | C16 | LaporanAkunPage / LaporanUlasanPage | src/views/laporan/form.ejs (mode akun) | server.js |
+| 16 | C17 | LaporanUlasanPage | src/views/laporan/form.ejs (mode ulasan) | server.js |
+| 17 | C18 | TinjauanPage | src/views/admin/laporan.ejs | server.js |
+| 18 | C19 | HistoryPage | src/views/transaksi/riwayat-list.ejs, src/views/transaksi/riwayat-chat.ejs | server.js |
+| 19 | C20 | LiveChatMasyarakatPage | src/views/livechat/masyarakat.ejs, src/public/js/livechat.js | server.js |
+| 20 | C21 | LiveChatAdminPage | src/views/livechat/admin.ejs | server.js |
+| 21 | C22 | PembayaranPage | src/views/transaksi/pembayaran.ejs | server.js |
+| 22 | C23 | PencairanDanaPage | src/views/transaksi/pencairan.ejs | server.js |
+| 23 | C24 | RegistrasiMasyarakatController | src/controllers/RegistrasiController.js | server.js |
+| 24 | C25 | AutentikasiController | src/controllers/AuthController.js | server.js |
+| 25 | C26 | RegistrasiMitraController | src/controllers/RegistrasiController.js | server.js |
+| 26 | C27 | VerifikasiMitraController | src/controllers/VerifikasiMitraController.js | server.js |
+| 27 | C28 | ProfilMitraController | src/controllers/ProfilMitraController.js | server.js |
+| 28 | C29 | SearchLawController | src/routes/searchLaw.js | server.js |
+| 29 | C30 | PencarianMitraController | src/controllers/PencarianMitraController.js | server.js |
+| 30 | C31 | PenjadwalanKonsultasiController | src/controllers/PenjadwalanKonsultasiController.js | server.js |
+| 31 | C32 | SesiKonsultasiController | src/controllers/SesiKonsultasiController.js | server.js |
+| 32 | C33 | UlasanController | src/controllers/UlasanController.js | server.js |
+| 33 | C34 | LaporanController | src/controllers/LaporanController.js | server.js |
+| 34 | C35 | ModerasiAkunController | src/controllers/ModerasiAkunController.js | server.js |
+| 35 | C36 | RiwayatController | src/controllers/RiwayatController.js | server.js |
+| 36 | C37 | LiveChatController | src/controllers/LiveChatController.js, src/socket/livechat.js | server.js |
+| 37 | C38 | PembayaranController | src/controllers/PembayaranController.js, src/services/PaymentGateway.js | server.js |
+| 38 | C39 | PencairanDanaController | src/controllers/PencairanController.js | server.js |
+| 39 | C40 | Masyarakat | src/models/Masyarakat.js | server.js |
+| 40 | C41 | MitraPengacara | src/models/MitraPengacara.js | server.js |
+| 41 | C42 | Admin | src/models/Akun.js | server.js |
+| 42 | C43 | Kasus | src/models/Kasus.js | server.js |
+| 43 | C44 | DasarHukum | src/models/DasarHukum.js | server.js |
+| 44 | C45 | DokumenLegalitas | src/models/DokumenLegalitas.js | server.js |
+| 45 | C46 | SesiKonsultasi | src/models/SesiKonsultasi.js, src/socket/konsultasi.js | server.js |
+| 46 | C47 | Ulasan / Laporan | src/models/Ulasan.js | server.js |
+| 47 | C48 | Laporan | src/models/Laporan.js | server.js |
+| 48 | C49 | Pembayaran | src/models/Pembayaran.js | server.js |
+| 49 | C50 | LiveChat | src/models/LiveChat.js | server.js |
+| 50 | C51 | PencairanDana | src/models/PencairanDana.js | server.js |
 
 ## 3.3 Implementasi Antarmuka
 
