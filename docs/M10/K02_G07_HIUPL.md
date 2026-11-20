@@ -923,10 +923,6 @@ Tabel 4.5. Hasil Pengujian KNF
 
 ## 4.6 Tangkapan Layar dan Bukti Hasil Pengujian
 
-Bukti pengujian dilampirkan sesuai ID Pengujian pada Subbab 4.2 sampai 4.5, berupa tangkapan layar aplikasi, keluaran *test runner*, laporan *coverage* untuk setiap kelas Mendalam, atau hasil alat ukur.
-
-## 4.6 Tangkapan Layar dan Bukti Hasil Pengujian
-
 Bukti pengujian dilampirkan sesuai ID Pengujian pada Subbab 4.2 sampai 4.5, berupa tangkapan layar aplikasi, keluaran *test runner*, laporan *coverage* untuk kelas Mendalam, dan rekaman pengukuran waktu respons.
 
 Tabel 4.6. Bukti Hasil Pengujian
@@ -991,15 +987,19 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | *KF02* | *KNF01, KNF03* | *UC01* | *C01 — PemilikUsaha<br>C05 — RegistrationPage<br>C06 — AuthController* | *`src/models/PemilikUsaha.ts`<br>`src/views/RegistrationPage.tsx`<br>`src/controllers/AuthController.ts`<br>`src/supabase/schema.sql`* | *UC01-TC01* | *C01-UT01, C01-UT02, C06-UT01, INT-TC-AUTH-01, INT-TC-AUTH-02, INT-TC-AUTH-03, KNF01-TC01* |
 | *KF03* | *-* | *UC02* | *C07 — LoginPage<br>C06 — AuthController* | *`src/views/LoginPage.tsx`<br>`src/controllers/AuthController.ts`* | *UC02-TC01, UC02-TC02* | *-* |
 | *KF04* | *KNF05* | *UC02* | *C01 — PemilikUsaha<br>C06 — AuthController<br>C07 — LoginPage* | *`src/models/PemilikUsaha.ts`<br>`src/controllers/AuthController.ts`<br>`src/views/LoginPage.tsx`<br>`src/supabase/functions/login-with-username/index.ts`* | *UC02-TC01, UC02-TC02, UC02-TC03, UC02-TC04* | *C06-UT06 – C06-UT11, INT-TC-AUTH-04, INT-TC-AUTH-05, KNF05-TC01* |
-| *KF08* | *KNF09* | *UC05* | *C02 — Produk<br>C12 — EditProductPage<br>C13 — PriceController* | *`src/models/Produk.ts`<br>`src/views/EditProductPage.tsx`<br>`src/controllers/PriceController.ts`* | *UC05-TC01* | *C13-UT01, C13-UT04 – C13-UT07, KNF09-TC01* |
-| *KF09* | *KNF09* | *UC05* | *C02 — Produk<br>C12 — EditProductPage<br>C13 — PriceController<br>C20 — RiwayatHargaJual* | *`src/models/Produk.ts`<br>`src/views/EditProductPage.tsx`<br>`src/controllers/PriceController.ts`<br>`src/models/RiwayatHargaJual.ts`* | *UC05-TC01, UC05-TC02, UC05-TC03* | *C13-UT01 – C13-UT11, C20-UT01 – C20-UT07, KNF09-TC01* |
-| *KF17* | *KNF16* | *UC07* | *C20 — RiwayatHargaJual<br>C23 — PriceHistoryPage<br>C24 — PriceHistoryController (belum diimplementasikan pada tag v9.0)* | *`src/models/RiwayatHargaJual.ts`<br>`src/views/PriceHistoryPage.tsx`* | *UC07-TC01, UC07-TC02* | *C20-UT01 – C20-UT07, KNF16-TC01* |
-| *KF18* | *KNF16* | *UC07* | *C13 — PriceController<br>C20 — RiwayatHargaJual* | *`src/controllers/PriceController.ts`<br>`src/models/RiwayatHargaJual.ts`<br>`src/supabase/migrations/20261111000000_riwayat_harga_jual.sql`* | *UC05-TC01, UC07-TC01* | *C13-UT01, C13-UT09 – C13-UT11, C20-UT01 – C20-UT07, KNF16-TC01* |
+| *KF08* | *KNF09* | *UC05* | *C02 — Produk<br>C12 — EditProductPage (I-07)<br>C13 — PriceController* | *`src/models/Produk.ts`<br>`src/views/EditProductPage.tsx`<br>`src/controllers/PriceController.ts`* | *UC05-TC01* | *C13-UT01, C13-UT04 – C13-UT07, KNF09-TC01* |
+| *KF09* | *KNF09* | *UC05* | *C02 — Produk<br>C12 — EditProductPage (I-07)<br>C13 — PriceController<br>C20 — RiwayatHargaJual* | *`src/models/Produk.ts`<br>`src/views/EditProductPage.tsx`<br>`src/controllers/PriceController.ts`<br>`src/models/RiwayatHargaJual.ts`* | *UC05-TC01, UC05-TC02, UC05-TC03* | *C13-UT01 – C13-UT11, C20-UT01 – C20-UT07, KNF09-TC01* |
+| *KF10* | *KNF09* | *UC05* | *C02 — Produk<br>C12 — EditProductPage (I-07)<br>C13 — PriceController* | *`src/models/Produk.ts`<br>`src/views/EditProductPage.tsx`<br>`src/controllers/PriceController.ts`* | *UC05-TC01* | *C13-UT01, C13-UT04 – C13-UT08, KNF09-TC01* |
+| *KF16* | *KNF09, KNF16* | *UC05, UC07* | *C13 — PriceController<br>C20 — RiwayatHargaJual* | *`src/controllers/PriceController.ts`<br>`src/models/RiwayatHargaJual.ts`<br>`src/supabase/migrations/20261111000000_riwayat_harga_jual.sql`* | *UC05-TC01, UC07-TC01* | *C13-UT01, C13-UT09 – C13-UT11, C20-UT01 – C20-UT07, KNF09-TC01, KNF16-TC01* |
+| *KF17* | *KNF16* | *UC07* | *C20 — RiwayatHargaJual<br>C23 — PriceHistoryPage (I-08)<br>C24 — PriceHistoryController (Tidak diimplementasikan: berkas `src/controllers/PriceHistoryController.ts` masih kosong 0 byte pada tag release `v9.0` yang menjadi acuan pengujian)* | *`src/models/RiwayatHargaJual.ts`<br>`src/views/PriceHistoryPage.tsx`<br>`src/controllers/PriceHistoryController.ts` (Tidak diimplementasikan: kosong pada tag `v9.0`)* | *UC07-TC01, UC07-TC02* | *C20-UT01 – C20-UT07, KNF16-TC01* |
+| *KF18* | *KNF16* | *UC07* | *C13 — PriceController<br>C20 — RiwayatHargaJual<br>C23 — PriceHistoryPage (I-08)<br>C24 — PriceHistoryController (Tidak diimplementasikan: berkas `src/controllers/PriceHistoryController.ts` masih kosong 0 byte pada tag release `v9.0`)* | *`src/controllers/PriceController.ts`<br>`src/models/RiwayatHargaJual.ts`<br>`src/views/PriceHistoryPage.tsx`<br>`src/supabase/migrations/20261111000000_riwayat_harga_jual.sql`* | *UC05-TC01, UC07-TC01* | *C13-UT01, C13-UT09 – C13-UT11, C20-UT01 – C20-UT07, KNF16-TC01* |
 | *KF20* | *-* | *UC09* | *C17 — Notifikasi<br>C18 — PushNotificationUI<br>C19 — NotificationController* | *`src/models/Notifikasi.ts`<br>`src/services/PushNotificationUI.ts`<br>`src/controllers/NotificationController.ts`<br>`src/controllers/notification.ts`<br>`src/supabase/migrations/20261105000000_notifikasi_riwayat_harga.sql`* | *UC09-TC01, UC09-TC02* | *C17-UT01 – C17-UT03, C18-UT01 – C18-UT05, C19-UT02, C19-UT03, C19-UT06 – C19-UT13, C19-UT16, C19-UT17, C19-UT26, INT-TC-NOTIF-01 – INT-TC-NOTIF-04* |
 | *KF22* | *-* | *UC10* | *C17 — Notifikasi<br>C18 — PushNotificationUI<br>C19 — NotificationController* | *`src/models/Notifikasi.ts`<br>`src/services/PushNotificationUI.ts`<br>`src/controllers/NotificationController.ts`<br>`src/controllers/notification.ts`<br>`src/supabase/migrations/20261105000000_notifikasi_riwayat_harga.sql`* | *UC10-TC01, UC10-TC02* | *C17-UT01 – C17-UT03, C18-UT01 – C18-UT08, C19-UT01, C19-UT04, C19-UT05, C19-UT14, C19-UT15, C19-UT17 – C19-UT25, INT-TC-NOTIF-01 – INT-TC-NOTIF-04* |
 | *KF23* | *KNF04* | *UC11* | *C25 — ProfilePage<br>C26 — ProfileController* | *`src/views/ProfilePage.tsx`<br>`src/controllers/ProfileController.ts`* | *UC11-TC01, UC11-TC02* | *C26-UT01 – C26-UT09, KNF04-TC01 (parsial)* |
 | *KF24* | *-* | *UC12* | *C25 — ProfilePage<br>C26 — ProfileController* | *`src/views/ProfilePage.tsx`<br>`src/controllers/ProfileController.ts`* | *UC12-TC01, UC12-TC02* | *C26-UT10, C26-UT11* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+
+Catatan: **C24 (`PriceHistoryController`)** — *Tidak diimplementasikan: berkas `src/controllers/PriceHistoryController.ts` masih kosong (0 byte) pada tag release `v9.0` yang menjadi acuan pengujian, sehingga operasi `getRiwayatHarga()`, `filterDataByDate()`, dan `generateChartData()` tidak dapat diuji pada unit test untuk tag tersebut (diperbaiki terpisah pada branch pengembangan setelah `v9.0`).*
 
 Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 
@@ -1010,6 +1010,6 @@ Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 | *KNF05* | *Response time* | *KF04 / UC02* | *KNF05-TC01* |
 | *KNF03* | *Reliability* | *KF02 / UC01* | *KNF03-TC01* |
 | *KNF04* | *Security* | *KF01, KF23 / UC01, UC11* | *KNF04-TC01 (parsial)* |
-| *KNF09* | *Reliability* | *KF08, KF09 / UC05* | *KNF09-TC01* |
-| *KNF16* | *Response time* | *KF17, KF18 / UC07* | *KNF16-TC01* |
+| *KNF09* | *Reliability* | *KF08, KF09, KF10, KF16 / UC05 (I-07)* | *KNF09-TC01* |
+| *KNF16* | *Response time* | *KF16, KF17, KF18 / UC07 (I-08)* | *KNF16-TC01* |
 | *...* | *...* | *...* | *...* |
