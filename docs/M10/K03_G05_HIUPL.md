@@ -252,6 +252,57 @@ Setiap kelas perancangan pada Tabel 4.1 DPPL diklasifikasikan ke dalam tiga ting
 
 Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 
+| ID Kelas | Nama Kelas | Tingkat | Alasan | Test Case Terkait |
+| :--- | :--- | :--- | :--- | :--- |
+| C01 | RegistrasiMasyarakatPage | Sedang | Halaman berfungsi sebagai form registrasi dan meneruskan data ke proses registrasi. Validasi utama dan penyimpanan dilakukan oleh controller/model. | INT-TC01, INT-TC02 |
+| C02 | LoginMasyarakatPage | Sedang | Halaman menerima kredensial dan mengirimkannya ke proses autentikasi; pemeriksaan sandi, status akun, dan pembentukan sesi dilakukan oleh controller. | INT-TC05, INT-TC06, INT-TC07, INT-TC08 |
+| C04 | RegistrasiMitraPage | Sedang | Halaman mengumpulkan data mitra dan dokumen legalitas; aturan dokumen wajib, duplikasi akun, dan penyimpanan ditangani di backend. | INT-TC03, INT-TC04 |
+| C05 | LoginMitraPage | Sedang | Halaman login mitra memakai alur autentikasi bersama. Pengujian yang tersedia mencakup penolakan peran yang salah dan login mitra yang belum terverifikasi, belum skenario login mitra terverifikasi secara khusus. | INT-TC07, INT-TC09 |
+| C06 | StatusVerifikasiMitraPage | Tidak perlu | Halaman terutama menampilkan status dan tahapan verifikasi dari data backend; tidak memiliki aturan bisnis mandiri yang perlu diuji terpisah. | INT-TC54, INT-TC55 |
+| C07 | VerifikasiMitraPage | Sedang | Halaman menyediakan tampilan dan input keputusan admin; validasi keputusan dan perubahan status dilakukan oleh controller/model. | INT-TC10, INT-TC11 |
+| C08 | EditProfilMitraPage | Sedang | Halaman mengumpulkan perubahan profil. Pemeriksaan data dan penyimpanan profil dikerjakan oleh backend. | INT-TC12, INT-TC13 |
+| C09 | EditDokumenLegalitasPage | Sedang | Halaman menjadi antarmuka unggah/perubahan dokumen; validasi format, penyimpanan berkas, dan perubahan data ditangani middleware/controller/model. | INT-TC16, INT-TC17 |
+| C10 | SearchLawPage | Sedang | Halaman menerima kata kunci dan menampilkan hasil pencarian. Proses query dijalankan oleh route/backend. | INT-TC18, INT-TC19 |
+| C11 | DaftarMitraPengacaraPage | Sedang | Halaman menampilkan daftar mitra dan filter pencarian; penyaringan berdasarkan kasus, tag, dan rating didelegasikan ke backend/model. | INT-TC20, INT-TC21, INT-TC22 |
+| C12 | PemilihanJadwalKonsultasiPage | Sedang | Halaman memilih mitra, tanggal, dan slot waktu. Ketersediaan slot dan pencegahan pemesanan ganda diproses oleh controller/model. | INT-TC23, INT-TC24 |
+| C13 | KonfirmasiKonsultasiPage | Sedang | Halaman mengirim keputusan terima/tolak dan catatan mitra; validasi catatan dan transisi status sesi dikerjakan oleh backend. | INT-TC25, INT-TC26, INT-TC27 |
+| C14 | ChatKonsultasiPage | Sedang | Halaman menjadi klien chat real-time dan meneruskan pesan melalui Socket.IO; otorisasi sesi, status pembayaran, enkripsi, dan penyimpanan dikelola di sisi server/model. | INT-TC28, INT-TC29, INT-TC30 |
+| C15 | UlasanPage | Sedang | Halaman menyediakan form rating dan teks ulasan; syarat sesi selesai, batas nilai, dan penyimpanan ulasan divalidasi backend. | INT-TC35, INT-TC36, INT-TC37 |
+| C16 | LaporanAkunPage / LaporanUlasanPage | Sedang | Kedua halaman merupakan form pelaporan. Validasi target, deskripsi, dan keterkaitan laporan dengan ulasan dijalankan oleh controller/model. | INT-TC43, INT-TC44, INT-TC52, INT-TC53 |
+| C18 | TinjauanPage | Sedang | Halaman menampilkan laporan dan mengirim keputusan admin; validasi status laporan serta tindakan moderasi didelegasikan ke backend. | INT-TC45, INT-TC46, INT-TC47 |
+| C19 | HistoryPage | Sedang | Halaman menampilkan riwayat dan detail sesi. Pengambilan data serta pemeriksaan kepemilikan riwayat dilakukan oleh controller/model. | INT-TC38, INT-TC39 |
+| C20 | LiveChatMasyarakatPage | Sedang | Halaman masyarakat menjadi antarmuka untuk memulai dan mengakhiri live chat serta bertukar pesan; pengelolaan sesi dilakukan oleh controller/socket. | INT-TC48, INT-TC50 |
+| C21 | LiveChatAdminPage | Sedang | Halaman admin menampilkan antrean, menerima chat, dan mengakhiri sesi; pengelolaan antrean dan status dikerjakan oleh controller/socket. | INT-TC48, INT-TC49 |
+| C22 | PembayaranPage | Sedang | Halaman mengumpulkan metode dan data pembayaran. Validasi, perhitungan biaya, pemanggilan gateway, dan perubahan status dilakukan di backend. | INT-TC31, INT-TC32, INT-TC33 |
+| C23 | PencairanDanaPage | Sedang | Halaman mengumpulkan rekening dan nominal pencairan; validasi saldo, pemrosesan gateway, dan pencatatan transaksi dilakukan di backend. | INT-TC40, INT-TC41 |
+| C24 | RegistrasiMasyarakatController | Mendalam | Memuat validasi registrasi, pemeriksaan email/username duplikat, hashing kata sandi, dan penyimpanan akun. Implementasi registrasi masyarakat berada di `RegistrasiController.js`. | INT-TC01, INT-TC02 |
+| C25 | AutentikasiController | Mendalam | Memuat pemeriksaan kredensial, hashing/verifikasi sandi, pembatasan peran, status akun, dan pembentukan/penghapusan sesi. | INT-TC05, INT-TC06, INT-TC07, INT-TC08, INT-TC09, INT-TC51 |
+| C26 | RegistrasiMitraController | Mendalam | Memvalidasi dokumen wajib dan akun duplikat, melakukan hashing sandi, membersihkan berkas unggahan saat gagal, serta menyimpan akun beserta dokumennya. Implementasinya berbagi `RegistrasiController.js` dengan C24. | INT-TC03, INT-TC04 |
+| C27 | VerifikasiMitraController | Mendalam | Memvalidasi ID dan keputusan verifikasi, mewajibkan catatan saat penolakan, serta mengubah status verifikasi dan validitas dokumen. | INT-TC10, INT-TC11 |
+| C29 | SearchLawController | Sedang | Implementasi pencarian berada pada handler di `routes/searchLaw.js`; handler membersihkan kata kunci, menjalankan query, dan mengirim hasil ke halaman tanpa algoritma bisnis yang kompleks. | INT-TC18, INT-TC19 |
+| C30 | PencarianMitraController | Mendalam | Memuat aturan pemilihan kasus, normalisasi tag, filter keahlian/rating, dan pencarian mitra sesuai kriteria. | INT-TC20, INT-TC21, INT-TC22 |
+| C31 | PenjadwalanKonsultasiController | Mendalam | Memvalidasi tanggal/waktu dan mitra, memeriksa slot yang tersedia, serta mencegah pemesanan slot yang sudah terisi. | INT-TC23, INT-TC24 |
+| C32 | SesiKonsultasiController | Mendalam | Mengatur hak akses peserta sesi, validasi terima/tolak, catatan penolakan, transisi status sesi, akses chat, dan pengakhiran sesi. | INT-TC25, INT-TC26, INT-TC27, INT-TC28, INT-TC29, INT-TC30 |
+| C33 | UlasanController | Mendalam | Memastikan sesi milik pengguna dan telah selesai, mencegah ulasan ganda, memvalidasi rating/teks, serta menyimpan ulasan. | INT-TC35, INT-TC36, INT-TC37 |
+| C34 | LaporanController | Mendalam | Memvalidasi peran dan target terlapor, deskripsi pelanggaran, serta hubungan laporan dengan ulasan sebelum menyimpan laporan. | INT-TC43, INT-TC44, INT-TC52, INT-TC53 |
+| C35 | ModerasiAkunController | Mendalam | Memproses keputusan admin, memvalidasi laporan yang masih menunggu, memperbarui status laporan, dan menjalankan pemblokiran akun. | INT-TC45, INT-TC46, INT-TC47 |
+| C36 | RiwayatController | Mendalam | Mengambil riwayat berdasarkan peran dan memeriksa kepemilikan sesi sebelum mengizinkan pengguna melihat detail/isi chat. | INT-TC38, INT-TC39 |
+| C37 | LiveChatController | Sedang | Mengorkestrasi tampilan antrean, status standby admin, dan penutupan chat dengan mendelegasikan pengelolaan data ke model serta notifikasi ke Socket.IO. | INT-TC48, INT-TC49, INT-TC50 |
+| C38 | PembayaranController | Mendalam | Memvalidasi sesi dan metode pembayaran, menghitung biaya, memanggil payment gateway, serta menangani hasil pembayaran dan perubahan status/saldo. | INT-TC31, INT-TC32, INT-TC33, INT-TC34 |
+| C39 | PencairanDanaController | Mendalam | Memvalidasi rekening dan nominal, memastikan saldo mencukupi, memanggil gateway, serta mencatat hasil pencairan dan perubahan saldo. | INT-TC40, INT-TC41 |
+| C40 | Masyarakat | Tidak perlu | Model masyarakat terutama menyimpan dan memeriksa data akun; tidak ditemukan algoritma atau aturan bisnis kompleks di model ini. Perilakunya diuji tidak langsung melalui alur registrasi dan penggunaan fitur masyarakat. | INT-TC01, INT-TC02, INT-TC05, INT-TC20, INT-TC21, INT-TC43, INT-TC44 |
+| C41 | MitraPengacara | Mendalam | Model memuat transaksi registrasi mitra, pencarian dengan filter status/tag/rating, perubahan profil/status, dan pemeriksaan bentrok jadwal. | INT-TC03, INT-TC04, INT-TC10, INT-TC11, INT-TC12, INT-TC13, INT-TC14, INT-TC15, INT-TC20, INT-TC22, INT-TC54, INT-TC55, INT-TC56, INT-TC57 |
+| C42 | Admin | Tidak perlu | Admin berperan sebagai data/identitas pengguna. Operasi login, verifikasi, moderasi, dan balasan chat diimplementasikan pada controller serta handler terkait, bukan sebagai logika pada model Admin tersendiri. | INT-TC11, INT-TC45, INT-TC46, INT-TC47, INT-TC48, INT-TC49, INT-TC51 |
+| C43 | Kasus | Sedang | Model menyediakan operasi simpan, ubah, dan ambil kasus dengan pembatasan kepemilikan; logikanya berupa operasi basis data sederhana yang dipanggil controller. | INT-TC20, INT-TC21, INT-TC22 |
+| C44 | DasarHukum | Sedang | Model menyediakan pencarian kata kunci dan pencarian berdasarkan ID dengan query sederhana. Namun, model `DasarHukum.js` tidak ditemukan dipakai oleh alur aktif; `INT-TC18–INT-TC19` menguji handler `/searchlaw` terhadap tabel `Peraturan`, bukan model ini. | - |
+| C45 | DokumenLegalitas | Mendalam | Mengelola metadata dokumen, penyimpanan/perubahan dokumen legalitas, reset validitas, dan penghapusan berkas lama sehingga konsistensi file dan basis data perlu diperhatikan. | INT-TC03, INT-TC04, INT-TC11, INT-TC16, INT-TC17 |
+| C46 | SesiKonsultasi | Mendalam | Memuat logika inti konsultasi: penyusunan slot, pencegahan bentrok, pembuatan sesi, kedaluwarsa permintaan, perubahan status, validasi pembayaran, enkripsi pesan, izin chat, dan waktu mulai/selesai. | INT-TC23, INT-TC24, INT-TC25, INT-TC26, INT-TC27, INT-TC28, INT-TC29, INT-TC30, INT-TC33, INT-TC35, INT-TC36, INT-TC37, INT-TC38, INT-TC39 |
+| C47 | Ulasan / Laporan | Mendalam | Mewakili dua domain yang memiliki aturan bisnis: penyimpanan ulasan dan perhitungan rating, serta pembuatan/pemrosesan laporan pelanggaran. | INT-TC35, INT-TC36, INT-TC37, INT-TC43, INT-TC44, INT-TC45, INT-TC46, INT-TC47, INT-TC52, INT-TC53 |
+| C48 | Laporan | Mendalam | Mengelola pembuatan, pemeriksaan status, dan detail laporan serta mendukung alur moderasi yang membatasi pemrosesan ulang laporan. | INT-TC43, INT-TC44, INT-TC45, INT-TC46, INT-TC47, INT-TC52, INT-TC53 |
+| C49 | Pembayaran | Mendalam | Memuat perhitungan subtotal/pajak/total, pencatatan hasil transaksi, serta perubahan status pembayaran sesi dan saldo mitra secara transaksional. | INT-TC31, INT-TC32, INT-TC33, INT-TC34 |
+| C50 | LiveChat | Mendalam | Mengelola pembuatan sesi live chat, antrean, ketersediaan admin, penugasan admin, penyimpanan pesan, dan transisi status sesi. | INT-TC48, INT-TC49, INT-TC50 |
+| C51 | PencairanDana | Mendalam | Memuat pencatatan pencairan dan pengurangan saldo secara transaksional dengan pemeriksaan kecukupan saldo agar saldo tidak menjadi negatif. | INT-TC40, INT-TC41 |
+
 ## 4.2 Pengujian Unit Kelas
 
 Pengujian unit dilakukan pada kelas bertingkat Mendalam dan Sedang. Kelas Mendalam diuji pada seluruh operasi public dengan kasus normal, batas, dan negatif, serta mencapai *coverage* minimal 70%. Kelas Sedang diuji minimal dengan satu kasus normal dan satu kasus gagal pada operasi public utama.
