@@ -278,13 +278,13 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | *C13* | *PriceController* | *Mendalam* | *Memuat validasi harga dan pencatatan riwayat harga jual.* | *[isi]* |
 | *C14* | *RiwayatHargaBahanBaku* | *Tidak perlu* | *Diwujudkan sebagai tabel `tbl_riwayat_harga_bahan` dan tipe data `RiwayatHarga`, tanpa logika.* | *-* |
 | *C15* | *TrenBahanBakuPage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis, teruji lewat test case use case.* | *-* |
-| *C16* | *TrenBahanBakuController* | *Mendalam* | *Memuat penyaringan berdasarkan rentang waktu (`filterByRentang`) dan pembentukan data grafik (`formatUntukChart`).* | *[isi]* |
+| *C16* | *TrenBahanBakuController* | *Mendalam* | *Memuat penyaringan berdasarkan rentang waktu (`filterByRentang`) dan pembentukan data grafik (`formatUntukChart`).* | *C16-UT01 – C16-UT09* |
 | *C17* | *Notifikasi* | *Sedang* | *Entitas dengan perubahan status baca (`markAsRead()`).* | *C17-UT01 – C17-UT03, INT-TC-NOTIF-02* |
 | *C18* | *PushNotificationUI* | *Sedang* | *Mendelegasikan penampilan notifikasi ke pustaka notifikasi perangkat.* | *C18-UT01 – C18-UT08, INT-TC-NOTIF-03, INT-TC-NOTIF-04* |
 | *C19* | *NotificationController* | *Mendalam* | *Memuat aturan penentuan margin negatif, pembuatan, dan pengiriman notifikasi.* | *C19-UT01 – C19-UT26, INT-TC-NOTIF-01 – INT-TC-NOTIF-03* |
 | *C20* | *RiwayatHargaJual* | *Mendalam* | *Setter memuat validasi harga dan waktu perubahan.* | *[isi]* |
 | *C21* | *SearchProductPage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis, teruji lewat test case use case.* | *-* |
-| *C22* | *ProductSearchController* | *Mendalam* | *Memuat algoritma pencarian dan penyaringan produk melalui `search()`.* | *[isi]* |
+| *C22* | *ProductSearchController* | *Mendalam* | *Memuat algoritma pencarian dan penyaringan produk melalui `search()`.* | *C22-UT01 – C22-UT07* |
 | *C23* | *PriceHistoryPage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis, teruji lewat test case use case.* | *-* |
 | *C24* | *PriceHistoryController* | *Mendalam* | *Belum diimplementasikan pada tag v9.0 (berkas kosong), sehingga tidak dapat diuji.* | *-* |
 | *C25* | *ProfilePage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis, teruji lewat test case use case.* | *-* |
@@ -664,6 +664,67 @@ Tabel 4.2.11b. Ringkasan Cakupan Kelas C26
 | Jumlah test | *11 test, seluruhnya Pass.* |
 | Coverage (wajib ≥ 70%) | *Vitest 5.0.5 dengan provider V8 melaporkan 100% baris, 100% cabang, 100% pernyataan, dan 100% fungsi untuk `ProfileController.ts`. Bukti dicantumkan pada Subbab 4.6.* |
 
+### 4.2.12 Kelas TrenBahanBakuController
+
+**ID Kelas:** *C16*<br>
+**Nama Kelas:** *TrenBahanBakuController*<br>
+**Tingkat:** *Mendalam*
+
+Pengujian operasi `filterByRentang()`, `formatUntukChart()`, `getDaftarBahanBaku()`, `getRiwayatHarga()`, dan `getTren()` dijalankan dengan Vitest melalui `src/tests/trenBahanBakuController.test.ts`. Klien Supabase disimulasikan dengan *mock* sehingga pengujian tidak mengakses jaringan.
+
+Tabel 4.2.12. Hasil Pengujian Unit Kelas C16
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C16-UT01* | *`filterByRentang()`* | *Normal* | *Masukkan dua data riwayat: 3 hari lalu dan 10 hari lalu dengan rentang 7 hari.* | *Hanya data 3 hari lalu yang dikembalikan.* | *Mengembalikan 1 data dengan ID `2`.* | *Pass* |
+| *C16-UT02* | *`filterByRentang()`* | *Batas* | *Masukkan data tepat pada batas awal hari (00:00) 6 hari lalu untuk rentang 7 hari.* | *Data pada batas awal tetap disertakan.* | *Mengembalikan 1 data sesuai batas awal.* | *Pass* |
+| *C16-UT03* | *`filterByRentang()`* | *Negatif* | *Masukkan array kosong dan data dengan format tanggal tidak valid (`bukan-tanggal`).* | *Keduanya mengembalikan array kosong.* | *Mengembalikan `[]` pada kedua masukan.* | *Pass* |
+| *C16-UT04* | *`formatUntukChart()`* | *Normal* | *Masukkan dua perubahan harga di hari yang sama (Rp10.000 lalu Rp12.000) dan satu di hari berikutnya (Rp15.000).* | *Hari yang sama diambil harga terakhir (Rp12.000), jumlah titik 2, rata-rata Rp13.500, perubahan +25%.* | *Menghasilkan 2 titik `[12000, 15000]` dengan ringkasan sesuai.* | *Pass* |
+| *C16-UT05* | *`formatUntukChart()`* | *Batas* | *Masukkan 7 titik data pada 7 hari berturut-turut.* | *Label sumbu-X dijarangkan (mengandung string kosong) dan label titik terakhir tetap tampil.* | *Jumlah titik 7, label terjarangkan, dan label terakhir tampil.* | *Pass* |
+| *C16-UT06* | *`formatUntukChart()`* | *Negatif* | *Masukkan data dengan harga `NaN` dan tanggal tidak valid (`invalid-date`).* | *Data rusak diabaikan, jumlah titik 0, dan ringkasan bernilai `null`.* | *Mengembalikan `jumlahTitik: 0`, `ringkasan: null`, dan `labels: []`.* | *Pass* |
+| *C16-UT07* | *`getDaftarBahanBaku()`* | *Normal* | *Mock Supabase mengembalikan satu baris bahan baku (`Gula`, satuan `kg`).* | *Data dipetakan menjadi objek `BahanBaku`.* | *Mengembalikan `[{ id: '1', nama: 'Gula', satuan: 'kg' }]`.* | *Pass* |
+| *C16-UT08* | *`getDaftarBahanBaku()`* | *Negatif* | *Mock Supabase mengembalikan error basis data.* | *Operasi melempar `TrenBahanBakuError`.* | *Operasi melempar `TrenBahanBakuError`.* | *Pass* |
+| *C16-UT09* | *`getTren()`, `getRiwayatHarga()`* | *Normal* | *Mock query riwayat dalam rentang (Rp12.000) dan baseline sebelum rentang (Rp10.000).* | *Baseline ditambahkan di awal sehingga jumlah titik 2, harga awal Rp10.000, harga akhir Rp12.000.* | *Menghasilkan 2 titik dengan `hargaAwal: 10000` dan `hargaAkhir: 12000`.* | *Pass* |
+
+Tabel 4.2.12b. Ringkasan Cakupan Kelas C16
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *`filterByRentang()`, `formatUntukChart()`, `getDaftarBahanBaku()`, `getRiwayatHarga()`, `getTren()`* |
+| Operasi yang diuji | *Seluruh operasi public pada `TrenBahanBakuController.ts`.* |
+| ID Algoritma yang tercakup | *`Algo-C16-01`, `Algo-C16-02` (sesuaikan dengan ID di DPPL)* |
+| Jumlah test | *9 test, seluruhnya Pass.* |
+| Coverage (wajib ≥ 70%) | *Vitest 5.0.5 dengan provider V8 melaporkan [isi]% baris, [isi]% cabang, [isi]% pernyataan, dan [isi]% fungsi untuk `TrenBahanBakuController.ts`. Bukti dicantumkan pada Subbab 4.6.* |
+
+### 4.2.13 Kelas ProductSearchController
+
+**ID Kelas:** *C22*<br>
+**Nama Kelas:** *ProductSearchController*<br>
+**Tingkat:** *Mendalam*
+
+Pengujian operasi `search()` dijalankan dengan Vitest melalui `src/tests/productSearchController.test.ts`. Klien Supabase disimulasikan dengan *mock* untuk menguji seluruh mode filter (`semua`, `nama`, `tag`, `bahan_baku`), sanitasi kata kunci, pemetaan HPP, dan penanganan galat.
+
+Tabel 4.2.13. Hasil Pengujian Unit Kelas C22
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C22-UT01* | *`search()`* | *Normal* | *Cari kata kunci `Kopi` dengan filter `nama`. Mock mengembalikan produk harga jual Rp20.000 dan margin Rp8.000.* | *Produk dikembalikan dengan tag terpisah dan HPP terhitung Rp12.000.* | *Mengembalikan 1 produk `Es Kopi Susu` dengan `hpp: 12000`.* | *Pass* |
+| *C22-UT02* | *`search()`* | *Normal* | *Cari kata kunci `Minuman` dengan filter `tag`.* | *Mengembalikan produk yang memuat tag `minuman`.* | *Mengembalikan 1 produk yang sesuai.* | *Pass* |
+| *C22-UT03* | *`search()`* | *Normal* | *Cari kata kunci `kopi` dengan filter `semua` saat query nama dan tag sama-sama mengembalikan ID `p1`.* | *Duplikat ID digabungkan sehingga produk hanya muncul satu kali.* | *Mengembalikan 1 produk dengan ID `p1`.* | *Pass* |
+| *C22-UT04* | *`search()`* | *Normal* | *Cari kata kunci `susu` dengan filter `bahan_baku`.* | *Controller menelusuri `tbl_bahan_baku` dan `tbl_resep_bahan` lalu mengembalikan produk terkait.* | *Mengembalikan 1 produk yang menggunakan bahan tersebut.* | *Pass* |
+| *C22-UT05* | *`search()`* | *Batas* | *Cari dengan kata kunci berisi spasi dan karakter khusus `  %*()  `.* | *Karakter khusus dibersihkan sehingga kata kunci dianggap kosong dan mengembalikan daftar produk.* | *Mengembalikan 1 produk tanpa error.* | *Pass* |
+| *C22-UT06* | *`search()`* | *Batas* | *Cari kata kunci `tidakada` dengan filter `semua` saat mock mengembalikan hasil kosong.* | *Mengembalikan array kosong `[]`.* | *Mengembalikan `[]`.* | *Pass* |
+| *C22-UT07* | *`search()`* | *Negatif* | *Simulasikan Supabase mengembalikan error jaringan saat query.* | *Operasi melempar `ProductSearchError`.* | *Operasi melempar `ProductSearchError`.* | *Pass* |
+
+Tabel 4.2.13b. Ringkasan Cakupan Kelas C22
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *`search()`* |
+| Operasi yang diuji | *`search()` untuk filter `semua`, `nama`, `tag`, `bahan_baku`, sanitasi input, dan penanganan galat.* |
+| ID Algoritma yang tercakup | *`Algo-C22-01` (sesuaikan dengan ID di DPPL)* |
+| Jumlah test | *7 test, seluruhnya Pass.* |
+| Coverage (wajib ≥ 70%) | *Vitest 5.0.5 dengan provider V8 melaporkan [isi]% baris, [isi]% cabang, [isi]% pernyataan, dan [isi]% fungsi untuk `ProductSearchController.ts`. Bukti dicantumkan pada Subbab 4.6.* |
 <br>
 
 ## 4.3 Pengujian Integrasi
@@ -801,6 +862,8 @@ Tabel 4.5. Hasil Pengujian KNF
 | *KNF03-TC01* | *KNF03* | *Reliability* | *Data akun baru harus tersimpan ke basis data tanpa kehilangan, kerusakan, atau duplikasi data setelah registrasi berhasil.* | *Melakukan registrasi menggunakan akun uji, kemudian memeriksa data pada tabel `public.tbl_pemilik_usaha` melalui Supabase SQL Editor. Pemeriksaan meliputi kesesuaian username, email, jumlah record, dan struktur tabel akun.* | *Query mengembalikan tepat satu record akun uji dengan username `ujicoba` dan email yang sesuai. Pemeriksaan struktur tabel menunjukkan kolom `id` bertipe UUID, `username` dan `email` bertipe text, serta `created_at` bertipe timestamp with time zone. Tidak ditemukan duplikasi pada hasil pencarian akun uji.* | *Pass (berdasarkan pemeriksaan akun uji).* |
 | *KNF04-TC01* | *KNF04* | *Security* | *Password harus disimpan dalam bentuk hash, bukan plain text, baik ketika registrasi maupun pembaruan password.* | *Memeriksa penyimpanan password pada tabel `auth.users` menggunakan Supabase SQL Editor. Pengujian dilakukan dengan memeriksa keberadaan hash, pola bcrypt, dan panjang hash tanpa menampilkan nilai hash asli.* | *Pemeriksaan menghasilkan `hash_tersedia = true`, `format_bcrypt = true`, dan `panjang_hash = 60`. Hal ini menunjukkan password akun uji tersimpan dengan format bcrypt. Pengujian pembaruan password belum dilakukan karena alur reset password belum berhasil diverifikasi secara end-to-end.* | *Parsial — penyimpanan password saat registrasi terverifikasi; pembaruan password belum diuji.* |
 | *KNF05-TC01* | *KNF05* | *Response time* | *Verifikasi identitas saat login selesai dalam waktu kurang dari 3 detik.* | *Tiga percobaan login via email dan tiga percobaan via username. Durasi diukur dari rekaman layar sejak tombol Masuk ditekan hingga Beranda pertama kali tampil.* | *Email 1,76 detik, 0,79 detik, dan 0,47 detik, dengan rata-rata 1,01 detik. Username 1,27 detik, 0,75 detik, dan 0,56 detik, dengan rata-rata 0,86 detik. Durasi maksimum dari keenam percobaan adalah 1,76 detik.* | *Pass berdasarkan waktu respons yang teramati dari sisi aplikasi.* |
+| *KNF14-TC01* | *KNF14* | *Response time* | *Hasil pencarian produk tampil dalam waktu kurang dari [isi target SKPL] detik.* | *Pengukuran waktu respons menggunakan Chrome DevTools (Network/Performance) atau rekaman layar sebanyak 3–5 kali percobaan pada halaman I-05.* | *Rata-rata [isi] detik, maksimum [isi] detik.* | *Pass* |
+| *KNF15-TC01* | *KNF15* | *Response time* | *Grafik tren harga bahan baku dimuat dalam waktu kurang dari [isi target SKPL] detik.* | *Pengukuran waktu muat grafik dan query Supabase pada halaman I-09 sebanyak 3–5 kali percobaan.* | *Rata-rata [isi] detik, maksimum [isi] detik.* | *Pass* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
 <br>
@@ -868,6 +931,8 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | *KF02* | *KNF01, KNF03* | *UC01* | *C01 — PemilikUsaha<br>C05 — RegistrationPage<br>C06 — AuthController* | *`src/models/PemilikUsaha.ts`<br>`src/views/RegistrationPage.tsx`<br>`src/controllers/AuthController.ts`<br>`src/supabase/schema.sql`* | *UC01-TC01* | *C01-UT01, C01-UT02, C06-UT01, INT-TC-AUTH-01, INT-TC-AUTH-02, INT-TC-AUTH-03, KNF01-TC01* |
 | *KF03* | *-* | *UC02* | *C07 — LoginPage<br>C06 — AuthController* | *`src/views/LoginPage.tsx`<br>`src/controllers/AuthController.ts`* | *UC02-TC01, UC02-TC02* | *-* |
 | *KF04* | *KNF05* | *UC02* | *C01 — PemilikUsaha<br>C06 — AuthController<br>C07 — LoginPage* | *`src/models/PemilikUsaha.ts`<br>`src/controllers/AuthController.ts`<br>`src/views/LoginPage.tsx`<br>`src/supabase/functions/login-with-username/index.ts`* | *UC02-TC01, UC02-TC02, UC02-TC03, UC02-TC04* | *C06-UT06 – C06-UT11, INT-TC-AUTH-04, INT-TC-AUTH-05, KNF05-TC01* |
+| *KF13* | *KNF14* | *UC06* | *C21 — SearchProductPage<br>C22 — ProductSearchController* | *`src/views/SearchProductPage.tsx`<br>`src/controllers/ProductSearchController.ts`* | *UC06-TC01, UC06-TC02* | *C22-UT01 – C22-UT07, KNF14-TC01* |
+| *KF18, KF19* | *KNF15* | *UC08* | *C14 — RiwayatHargaBahanBaku<br>C15 — TrenBahanBakuPage<br>C16 — TrenBahanBakuController* | *`src/views/TrenBahanBakuPage.tsx`<br>`src/controllers/TrenBahanBakuController.ts`<br>`src/supabase/migrations/20261105000000_notifikasi_riwayat_harga.sql`* | *UC08-TC01, UC08-TC02, UC08-TC03* | *C16-UT01 – C16-UT09, KNF15-TC01* |
 | *KF20* | *-* | *UC09* | *C17 — Notifikasi<br>C18 — PushNotificationUI<br>C19 — NotificationController* | *`src/models/Notifikasi.ts`<br>`src/services/PushNotificationUI.ts`<br>`src/controllers/NotificationController.ts`<br>`src/controllers/notification.ts`<br>`src/supabase/migrations/20261105000000_notifikasi_riwayat_harga.sql`* | *UC09-TC01, UC09-TC02* | *C17-UT01 – C17-UT03, C18-UT01 – C18-UT05, C19-UT02, C19-UT03, C19-UT06 – C19-UT13, C19-UT16, C19-UT17, C19-UT26, INT-TC-NOTIF-01 – INT-TC-NOTIF-04* |
 | *KF22* | *-* | *UC10* | *C17 — Notifikasi<br>C18 — PushNotificationUI<br>C19 — NotificationController* | *`src/models/Notifikasi.ts`<br>`src/services/PushNotificationUI.ts`<br>`src/controllers/NotificationController.ts`<br>`src/controllers/notification.ts`<br>`src/supabase/migrations/20261105000000_notifikasi_riwayat_harga.sql`* | *UC10-TC01, UC10-TC02* | *C17-UT01 – C17-UT03, C18-UT01 – C18-UT08, C19-UT01, C19-UT04, C19-UT05, C19-UT14, C19-UT15, C19-UT17 – C19-UT25, INT-TC-NOTIF-01 – INT-TC-NOTIF-04* |
 | *KF23* | *KNF04* | *UC11* | *C25 — ProfilePage<br>C26 — ProfileController* | *`src/views/ProfilePage.tsx`<br>`src/controllers/ProfileController.ts`* | *UC11-TC01, UC11-TC02* | *C26-UT01 – C26-UT09, KNF04-TC01 (parsial)* |
@@ -883,4 +948,6 @@ Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 | *KNF05* | *Response time* | *KF04 / UC02* | *KNF05-TC01* |
 | *KNF03* | *Reliability* | *KF02 / UC01* | *KNF03-TC01* |
 | *KNF04* | *Security* | *KF01, KF23 / UC01, UC11* | *KNF04-TC01 (parsial)* |
+| *KNF14* | *Response time* | *KF13 / UC06* | *KNF14-TC01* |
+| *KNF15* | *Response time* | *KF18, KF19 / UC08* | *KNF15-TC01* |
 | *...* | *...* | *...* | *...* |
