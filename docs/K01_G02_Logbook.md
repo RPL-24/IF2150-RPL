@@ -23,6 +23,13 @@
 
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
+* [Milestone 2](#milestone-2)
+* [Milestone 3](#milestone-3)
+* [Milestone 4](#milestone-4)
+* [Milestone 5](#milestone-5)
+* [Milestone 6](#milestone-6)
+* [Milestone 7](#milestone-7)
+* [Milestone 8](#milestone-8)
 * [Milestone 9](#milestone-9)
 * [Milestone 10](#milestone-10)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
@@ -45,6 +52,8 @@
 | *30-08-2026* | *I Made Adi Kusuma Ardana* | *Menyusun subbab 3.3 Model Proses Bisnis: pemetaan alur proses bisnis jual beli preloved dan pembuatan Activity/Swimlane Diagram dengan lajur Penjual, Sistem, dan Pembeli* | *4* | *On Progress* | *Penyesuaian notasi diagram agar sesuai standar UML dan konsisten dengan alur yang dideskripsikan pada Bab 2* | 
 | *30-08-2026* | *Sulthan Dhiyazka Suwandi* | *Penambahan roadmap pengembangan aplikasi mobile sebagai rencana jangka panjang pada subbab 2.1.2, dengan penegasan bahwa roadmap berada di luar cakupan pengerjaan tugas besar* | *1* | *Done* | *-* | 
 | *30-08-2026* | *Seluruh Anggota* | *Review untuk draft awal: pengecekan konsistensi antarbab, penyeragaman istilah dan penulisan, serta pengisian dokumen Logbook dan Deklarasi Penggunaan AI* | *2* | *On Progress* | *-* | 
+| *01-09-2026* | *Dhanesworo Muhammad Datiputro* | *Menambah rujukan dan bukti pendukung permasalahan pada subbab 1.1 dokumen M1* | *1* | *Done* | *-* | 
+| *02-09-2026* | *Dhanesworo Muhammad Datiputro* | *Revisi subbab 1.1 dan penamaan berkas form asistensi M1 menjadi `K01_G02_Form-Asistensi.md`* | *1* | *Done* | *-* | 
 
 **Catatan/Evaluasi Milestone 1:**
 * *Pembagian tugas dilakukan per subbab agar setiap anggota memiliki tanggung jawab yang jelas dan dapat ditelusuri: subbab 1.1 dan 1.2 oleh Dhanesworo, subbab 2.1 oleh Sulthan, subbab 2.2 oleh Ghaniyul, subbab 3.1 dan 3.2 oleh Nazhif, serta subbab 3.3 oleh I Made Adi.*
@@ -53,27 +62,99 @@
 
 ---
 
+### Milestone 2
+**Periode:** 02-09-2026 - 09-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *04-09-2026* | *Dhanesworo Muhammad Datiputro* | *Mengisi subbab 1.1 dan 1.2 serta identitas dokumen pada dokumen RG, dan mengganti nama berkas templat menjadi `K01_G02_RG.md`* | *2* | *Done* | *-* | 
+
+---
+
+### Milestone 3
+**Periode:** 09-09-2026 - 16-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *11-09-2026* | *Dhanesworo Muhammad Datiputro* | *Menyusun subbab 3.2 Identifikasi Use Case pada dokumen UC: daftar use case beserta deskripsinya, lalu merapikan isinya* | *3* | *Done* | *-* | 
+| *15-09-2026* | *Dhanesworo Muhammad Datiputro* | *Memperbaiki traceability pada dokumen RG dan UC* | *2* | *Done* | *-* | 
+| *16-09-2026* | *Dhanesworo Muhammad Datiputro* | *Mengisi subbab 3.1 dokumen UC* | *1* | *Done* | *-* | 
+
+---
+
+### Milestone 4
+**Periode:** 16-09-2026 - 23-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *18-09-2026* | *Dhanesworo Muhammad Datiputro* | *Merapikan letak tabel pada BAB 4 dokumen CD* | *1* | *Done* | *-* | 
+| *19-09-2026* | *Dhanesworo Muhammad Datiputro* | *Menyusun subbab 4.2.1 sampai 4.2.8 dokumen CD: kelas analisis beserta atribut dan operasinya, serta diagram kelas UC01 sampai UC08* | *5* | *Done* | *-* | 
+| *21-09-2026* | *Dhanesworo Muhammad Datiputro* | *Menambah kelas analisis pada dokumen CD* | *2* | *Done* | *-* | 
+| *22-09-2026* | *Dhanesworo Muhammad Datiputro* | *Memperbaiki diagram kelas UC01 sampai UC08 dan menyesuaikan nama kelas, misalnya HalamanOtentikasi, AkunController, Akun, dan TokenVerifikasi* | *3* | *Done* | *-* | 
+| *23-09-2026* | *Dhanesworo Muhammad Datiputro* | *Mengisi form asistensi M4* | *1* | *Done* | *-* | 
+
+---
+
+### Milestone 5
+**Periode:** 23-09-2026 - 30-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *27-09-2026* | *Dhanesworo Muhammad Datiputro* | *Mengisi subbab 1.4 Aturan Penomoran, 1.5 Referensi, dan 4.1 Identifikasi Aktor pada SKPL* | *2* | *Done* | *-* | 
+| *29-09-2026* | *Dhanesworo Muhammad Datiputro* | *Memperbaiki subbab 1.5 Referensi SKPL* | *1* | *Done* | *-* | 
+
+---
+
+### Milestone 6
+**Periode:** 30-09-2026 - 07-10-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *04-10-2026* | *Dhanesworo Muhammad Datiputro* | *Mengisi BAB 2 Identifikasi Komponen / Modul / Subsistem pada dokumen APL* | *3* | *Done* | *-* | 
+
+---
+
+### Milestone 7
+**Periode:** 07-10-2026 - 21-10-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *18-10-2026* | *Dhanesworo Muhammad Datiputro* | *Merapikan BAB 1 dan mengisi BAB 2 DPPL: 2.1 rancangan lingkungan implementasi, 2.2 arsitektur MVC, 2.3 identifikasi komponen, dan 2.4 logical view, beserta diagram arsitektur MVC dan logical view* | *1* | *Done* | *Perlu memilah isi yang diwajibkan spesifikasi M7 dan isi tambahan, serta merapikan daftar referensi yang sempat memuat dokumen sendiri dan teknologi yang dipakai* | 
+
+---
+
+### Milestone 8
+**Periode:** 21-10-2026 - 28-10-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *25-10-2026* | *Dhanesworo Muhammad Datiputro* | *Menyusun BAB 5 DPPL untuk kelas C01 sampai C15: operasi dan atribut beserta visibility, serta algoritma dalam pseudocode* | *1* | *Done* | *-* | 
+| *27-10-2026* | *Dhanesworo Muhammad Datiputro* | *Memperbaiki BAB 5: pengantar Tabel 5.1 dikembalikan ke kalimat templat* | *1* | *Done* | *Pengantar Tabel 5.1 sempat memuat paragraf dan ketentuan tambahan yang tidak diminta templat, sehingga harus dikembalikan* | 
+
+---
+
 ### Milestone 9
 **Periode:** 04-11-2026 - 13-11-2026
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
-| *04-11-2026* | *Dhanesworo Muhammad Datiputro* | *Menyiapkan kerangka proyek (Express, konfigurasi, Docker Compose untuk PostgreSQL dan Mailpit), tabel `akun`, `sesi_login`, dan `token_verifikasi` beserta seed akun uji, model akun dan sesi, Otorisasi dengan middleware `wajibLogin` dan `wajibAdmin`, serta login, logout, daftar akun, verifikasi surel, dan halaman I-01 sampai I-03 (UC01 sampai UC04). 14 commit, PR #8 dan #21* | *-* | *Done* | *-* | 
+| *04-11-2026* | *Dhanesworo Muhammad Datiputro* | *Menyiapkan kerangka proyek (Express, konfigurasi, Docker Compose untuk PostgreSQL dan Mailpit), tabel `akun`, `sesi_login`, dan `token_verifikasi` beserta seed akun uji, model akun dan sesi, Otorisasi dengan middleware `wajibLogin` dan `wajibAdmin`, serta login, logout, daftar akun, verifikasi surel, dan halaman I-01 sampai I-03 (UC01 sampai UC04). 14 commit, PR #8 dan #21* | *3* | *Done* | *`docker compose up` gagal karena Docker Desktop belum berjalan. PR sempat tidak bisa digabung otomatis karena `develop` berubah setelah Modul E masuk, dan halaman PR sempat mengarah ke repo asisten hasil fork. Issue #2 tidak tertutup otomatis setelah PR digabung* | 
 | *04-11-2026* | *Ghaniyul Amri Caulava* | *Implementasi UC19 Mengirimkan Laporan (commit `7131603`). Branch `feat/laporan-uc19` digabung langsung ke `develop`* | *-* | *Done* | *-* | 
 | *05-11-2026* | *Ghaniyul Amri Caulava* | *Implementasi UC20 Melihat dan Menyaring Daftar Laporan. PR #22* | *-* | *Done* | *-* | 
 | *06-11-2026* | *Ghaniyul Amri Caulava* | *Implementasi UC22 Menghapus Listing yang Dilaporkan. PR #23 dan #24* | *-* | *Done* | *-* | 
-| *06-11-2026* | *Dhanesworo Muhammad Datiputro* | *Dokumen legal (UC06): model DokumenLegal, DokumenLegalController, tabel dan seed dokumen legal versi 1.0, halaman I-15, serta tautan Kebijakan Privasi pada I-02. 5 commit, PR #25* | *-* | *Done* | *`schema.sql` yang tersimpan sebagai UTF-8 dengan BOM ditolak PostgreSQL saat `db:init`; `init.js` diubah agar membuang BOM (commit `ebe2a77`)* | 
-| *07-11-2026* | *Dhanesworo Muhammad Datiputro* | *Profil akun (UC05): `getProfil`, `GET /api/akun/profil`, halaman I-09, `Barang.getListingPenjual` beserta foto utama, dan penyesuaian kerangka halaman. 4 commit, PR #26* | *-* | *Done* | *-* | 
+| *06-11-2026* | *Dhanesworo Muhammad Datiputro* | *Dokumen legal (UC06): model DokumenLegal, DokumenLegalController, tabel dan seed dokumen legal versi 1.0, halaman I-15, serta tautan Kebijakan Privasi pada I-02. 5 commit, PR #25* | *1* | *Done* | *`schema.sql` yang tersimpan sebagai UTF-8 dengan BOM ditolak PostgreSQL saat `db:init`; `init.js` diubah agar membuang BOM* | 
+| *07-11-2026* | *Dhanesworo Muhammad Datiputro* | *Profil akun (UC05): `getProfil`, `GET /api/akun/profil`, halaman I-09, `Barang.getListingPenjual` beserta foto utama, dan penyesuaian kerangka halaman. 4 commit, PR #26* | *1* | *Done* | *-* | 
 | *07-11-2026* | *Ghaniyul Amri Caulava* | *Implementasi UC23 Memblokir Akun Pengguna. PR #27* | *-* | *Done* | *-* | 
 | *08-11-2026* | *Ghaniyul Amri Caulava* | *Implementasi UC24 Membuka Blokir Akun Pengguna (PR #29) dan UC21 Mengubah Status Penanganan Laporan (PR #31)* | *-* | *Done* | *-* | 
 | *08-11-2026* | *Nazhif Hilmi Kistijantoro* | *Listing penjual UC07 sampai UC12 beserta test (commit `b9fe310`): halaman Listing Saya, formulir listing, `ListingService`, dan `ListingPenjual`. PR #28 dan #32* | *-* | *Done* | *PR #28 menyentuh 34 berkas dan ditutup tanpa merge, lalu diajukan ulang sebagai PR #32 dengan perubahan yang lebih sempit* | 
 | *09-11-2026* | *Ghaniyul Amri Caulava* | *Melengkapi pengujian modul laporan dan moderasi (PR #33) dan menyinkronkan ulang UC21 setelah merge PR listing (commit `448d0fb`)* | *-* | *Done* | *Sebagian perubahan UC21 tertimpa saat PR #32 masuk dan harus dikembalikan* | 
 | *09-11-2026* | *I Made Adi Kusuma Ardana* | *Katalog dan pencarian UC13 sampai UC15: endpoint katalog dengan pencarian, filter, dan paginasi, halaman katalog, serta halaman detail listing untuk pembeli. 3 commit, PR #44* | *-* | *Done* | *Tombol Laporkan belum mengikuti format objek laporan Modul E dan disesuaikan pada commit `f3c05f1`* | 
 | *09-11-2026* | *Sulthan Dhiyazka Suwandi* | *Modul percakapan dan notifikasi: tabel `percakapan`, `pesan`, `notifikasi`, dan `langganan_push`, enkripsi pesan AES-256-GCM, UC16 sampai UC18, notifikasi dalam aplikasi dan Web Push, Service Worker, halaman I-10 dan panel I-11, test unit dan integrasi, serta workflow issue tracker. 25 commit, PR #45, #46, #47, dan #49 sampai #54* | *-* | *Done* | *Notifikasi pesan baru versi awal memuat cuplikan isi pesan sehingga melanggar KF36; cuplikan dihapus pada commit `0863fd5`* | 
-| *09-11-2026* | *Dhanesworo Muhammad Datiputro* | *Pengujian Modul A: uji unit AkunController, DokumenLegalController, model akun, token verifikasi, sesi, dan Otorisasi, serta uji integrasi API akun dan alur daftar sampai keluar. 4 commit, PR #55* | *-* | *Done* | *-* | 
-| *10-11-2026* | *Dhanesworo Muhammad Datiputro* | *Mengisi Tabel B.1 dan B.5 bagian Modul A pada laporan implementasi. PR #56* | *-* | *Done* | *-* | 
+| *09-11-2026* | *Dhanesworo Muhammad Datiputro* | *Pengujian Modul A: uji unit AkunController, DokumenLegalController, model akun, token verifikasi, sesi, dan Otorisasi, serta uji integrasi API akun dan alur daftar sampai keluar. 4 commit, PR #55* | *1* | *Done* | *-* | 
+| *10-11-2026* | *Dhanesworo Muhammad Datiputro* | *Mengisi Tabel B.1 dan B.5 bagian Modul A pada laporan implementasi. PR #56* | *1* | *Done* | *-* | 
 | *11-11-2026* | *Ghaniyul Amri Caulava* | *Menambah indeks katalog dan pencarian pada tabel `barang` beserta profilingnya (B.2.1), menulis `src/README.md`, melengkapi laporan implementasi M9, dan mengisi identitas form asistensi. 4 commit langsung ke `develop`* | *-* | *Done* | *-* | 
-| *13-11-2026* | *Dhanesworo Muhammad Datiputro* | *Pendaftaran kini menerima surel subdomain ITB seperti `@mahasiswa.itb.ac.id` beserta 13 test baru (PR #57), dan tema warna aplikasi diganti dari hijau menjadi biru ITB (PR #59). Dua kali menggabungkan `develop` ke `main` (PR #58 dan #60)* | *-* | *Done* | *-* | 
+| *13-11-2026* | *Dhanesworo Muhammad Datiputro* | *Pendaftaran kini menerima surel subdomain ITB seperti `@mahasiswa.itb.ac.id` beserta 13 test baru (PR #57), dan tema warna aplikasi diganti dari hijau menjadi biru ITB (PR #59). Dua kali menggabungkan `develop` ke `main` (PR #58 dan #60)* | *2* | *Done* | *Saat mencoba mendaftar, kode verifikasi tidak masuk ke surel ITB karena aplikasi lokal mengirim surel ke Mailpit; kode diambil dari kotak masuk Mailpit* | 
+| *13-11-2026* | *Dhanesworo Muhammad Datiputro* | *Deploy ke Vercel: konfigurasi Vercel (region `sin1`, salin berkas statis, migrasi saat build), penyimpanan berkas ke Vercel Blob bila `BLOB_READ_WRITE_TOKEN` diisi, serta panduan deploy dan seed khusus dokumen legal. 3 commit, PR #70. Merevisi Tabel B.1 sampai B.5 laporan implementasi untuk deploy Vercel, Blob, SSO Google, dan tampilan baru (PR #72)* | *2* | *Done* | *Perubahan tampilan terakhir dari Sulthan belum ikut pada deploy pertama, sehingga deploy diulang dari commit terakhir `main`* | 
 | *13-11-2026* | *Ghaniyul Amri Caulava* | *Review pasca-merge PR #8, #31, dan #50 dengan bantuan AI, lima commit tindak lanjut beserta 11 test pada branch `fix/tindak-lanjut-review`, pengisian Tabel B.2 dan B.2c laporan implementasi, logbook Milestone 9, dan deklarasi penggunaan AI pada branch `docs/finalisasi-m9`* | *-* | *Done* | *Tidak ada PR yang di-review sebelum digabung, sehingga review baru dapat dilakukan setelah merge dan hanya mencakup tiga PR* | 
 | *13-11-2026* | *Ghaniyul Amri Caulava* | *Merancang logo ITBELI dengan bantuan AI (dua putaran, enam konsep; terpilih tas belanja berbentuk kepala gajah), membuat favicon dan ikon web, memasangnya pada top bar semua halaman di branch `feat/logo-gajah`, lalu memperbarui angka laporan implementasi pada branch `docs/pembaruan-angka-m9`* | *-* | *Done* | *Tema aplikasi berganti menjadi biru saat logo hijau sedang dipasang, sehingga logo dan seluruh berkasnya dibuat ulang dalam biru ITB* | 
 
