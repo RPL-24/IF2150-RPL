@@ -70,7 +70,7 @@ Dipersiapkan oleh:
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Dokumen Hasil Implementasi dan Uji Perangkat Lunak (HIUPL) ini disusun untuk melaporkan hasil implementasi platform LaporKota beserta hasil pengujiannya. Dokumen ini memuat rancangan dan deskripsi perangkat lunka, lingkungan dan hasil implementasinya serta bukti hasil pengujiannya yang mencakup Pengujian Unit, Integrasi, Use Case, dan Kebutuhan Non-Fungsional. Dokumen ini ditujukan bagi Tim Pengembang (anggota kelompok) sebagai catatan hasil akhir implementasi perangkat lunak, dan Tim Penguji (asisten/dosen) sebagai landasan pengujian kesesuaian implementasi dengan rancangan awal.
+Dokumen Hasil Implementasi dan Uji Perangkat Lunak (HIUPL) ini disusun untuk melaporkan hasil implementasi platform LaporKota beserta hasil pengujiannya. Dokumen ini memuat rancangan dan deskripsi perangkat lunak, lingkungan dan hasil implementasinya serta bukti hasil pengujiannya yang mencakup Pengujian Unit, Integrasi, Use Case, dan Kebutuhan Non-Fungsional. Dokumen ini ditujukan bagi Tim Pengembang (anggota kelompok) sebagai catatan hasil akhir implementasi perangkat lunak, dan Tim Penguji (asisten/dosen) sebagai landasan pengujian kesesuaian implementasi dengan rancangan awal.
 
 ## 1.2 Lingkup Masalah
 Perangkat lunak yang akan dikembangkan adalah LaporKota, sebuah platform pelaporan kerusakan infrastruktur publik berbasis website yang dirancang untuk mempermudah warga dalam menyampaikan dan memantau laporannya. Sistem pelaporan ini memfasilitasi pengguna untuk melaporkan masalah fasilitas umum dalam lingkup satu kota, kapan saja dan di mana saja dengan menyertakan foto serta koordinat lokasi. Dengan adanya sistem ini diharapkan pengguna tidak lagi kesulitan mencari saluran pengaduan yang responsif dan proses perbaikan kerusakan fasilitas publik dapat berjalan dengan efisien.
@@ -110,7 +110,6 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *Seed* | *Skrip npm run seed yang mengisi akun uji dan data contoh fiktif* |
 | *ID Tiket* | *Kode unik laporan dalam platform dengan format LK-XXXX* |
 
-| *...* | *...* |
 
 ## 1.4 Aturan Penomoran
 Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya (SKPL, APL, DPPL), kecuali untuk ID pengujian yang baru diperkenalkan pada dokumen ini.
@@ -131,13 +130,14 @@ Tabel 1.4. Aturan Penomoran
 | *Test Case Integrasi* | *INT-TCYY* | *YY adalah nomor urut test case integrasi* |
 | *Test Case Use Case* | *UCXX-TCYY* | *XX adalah nomor use case, YY adalah nomor urut test case pada use case tersebut* |
 | *Test Case KNF* | *KNFXX-TCYY* | *XX adalah nomor KNF, YY adalah nomor urut test case pada KNF tersebut* |
-| *...* | *...* | *...* |
 
 ## 1.5 Referensi
 | 1 | Dokumen Spesifikasi Kebutuhan Perangkat Lunak LaporKota | Repository IF2150-RPL-K03-G07/docs/M5/K03_G07_SKPL.md |
 | 2 | Dokumen Aristektur Perangkat Lunak LaporKota | Repository IF2150-RPL-K03-G07/docs/M6/K03_G07_APL.md |
 | 3 | Dokumen Deskripsi Perancangan Perangkat Lunak LaporKota | Repository IF2150-RPL-K03-G07/docs/M8/K03_G07_DPPL2.md |
 | 4 | Laporan Implementasi Perangkat Lunak LaporKota | Repository IF2150-RPL-K03-G07/docs/M9/K03_G07_Implementasi.md |
+| 5 | Dokumentasi Vitest & `@vitest/coverage-v8` | https://vitest.dev/guide/coverage.html |
+| 6 | Dokumentasi Chrome DevTools | https://developer.chrome.com/docs/devtools |
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
 Dokumen Hasil Implementasi dan Uji Perangkat Lunak (HIUPL) ini disusun dengan sistematika berikut. **BAB 1: Pendahuluan** memuat tujuan penulisan dokumen, lingkup masalah, daftar definisi, aturan penomoran, referensi, serta ikhtisar dokumen. **BAB 2: Deskripsi Umum Perangkat Lunak** menjelaskan gambaran rancangan sistem, batasan, dan keterkaitannya dengan sistem eksternal. Terlampir juga pemodelan sistem perangkat lunak menggunakan Use Case Diagram. **BAB 3: Implementasi**  menjabarkan lingkungan implementasi, dan hasil-hasil implementasi perangkat lunak (modul, antarmuka, dll) yang telah dibuat berdasarkan DPPL. **BAB 4: Hasil Pengujian** menguraikan kedalaman pengujian pada setiap kelas, serta masing-masing hasil pengujiannya yang meliputi pengujian Unit, Integrasi, Use Case, dan Kebutuhan Non-Fungsional. **BAB 5: Traceability** memetakan seluruh KF, KNF, UC, Kelas, Hasil Implementasi, dan Test Case untuk memverifikasi kelengkapan dan keterkaitannya.
@@ -193,6 +193,11 @@ Tabel 3.2. Implementasi Modul
 | :--- | :--- | :--- | :--- | :--- |
 | 1 | *[C01]* | *[Nama modul/kelas]* | *[path/ke/file]* | *[Nama file executable, atau - jika tidak ada]* |
 | 2 | *[C02]* | *[Nama modul/kelas]* | *[path/ke/file]* | *[...]* |
+| 3 | C09 | Evaluasi | `src/server/entities/Evaluasi.ts` | – |
+| 4 | C12 | ValidasiPage | `src/client/views/ValidasiPage.tsx`<br>`src/app/(admin)/validasi/page.tsx` | – |
+| 5 | C15 | EvaluasiPage | `src/client/views/EvaluasiPage.tsx`<br>`src/app/(admin)/evaluasi/page.tsx` | – |
+| 6 | C18 | ValidasiController | `src/server/controllers/ValidasiController.ts` | – |
+| 7 | C21 | EvaluasiController | `src/server/controllers/EvaluasiController.ts` | – |
 | ... | *...* | *...* | *...* | *...* |
 
 ## 3.3 Implementasi Antarmuka
@@ -205,6 +210,8 @@ Tabel 3.3. Implementasi Antarmuka
 | :--- | :--- | :--- | :--- | :--- |
 | 1 | *[I-01]* | *[Nama layar]* | *[path/ke/file]* | *[Nama file executable, atau - jika tidak ada]* |
 | 2 | *[I-02]* | *[Nama layar]* | *[path/ke/file]* | *[...]* |
+| 3 | I-03 | Validasi Laporan | `src/app/(admin)/validasi/page.tsx`<br>`src/client/views/ValidasiPage.tsx`<br>`src/client/components/validasi/AntreanLaporan.tsx`<br>`src/client/components/validasi/RincianLaporan.tsx`<br>`src/client/components/validasi/DialogTolak.tsx`<br>`src/app/(admin)/layout.tsx`<br>`src/client/components/validasi/AdminSidebar.tsx` | – |
+| 4 | I-04 | Evaluasi Hasil Kerja | `src/app/(admin)/evaluasi/page.tsx`<br>`src/client/views/EvaluasiPage.tsx`<br>`src/client/components/evaluasi/DaftarSiapEvaluasi.tsx`<br>`src/client/components/evaluasi/KomparasiEvaluasi.tsx`<br>`src/client/components/evaluasi/DialogKeputusanEvaluasi.tsx`<br>`src/app/(admin)/layout.tsx`<br>`src/client/components/validasi/AdminSidebar.tsx` | – |
 | ... | *...* | *...* | *...* | *...* |
 
 ## 3.4 File Lain
@@ -238,6 +245,11 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | *C03* | *Keranjang* | *Sedang* | *Delegasi sederhana ke Produk dan Pesanan* | *C03-UT01 s.d. C03-UT03, INT-TC02* |
 | *C01* | *Pelanggan* | *Tidak perlu* | *Hanya menyimpan data akun, tanpa logika* | *-* |
 | *[CXX]* | *[Nama kelas]* | *[Mendalam/Sedang/Tidak perlu]* | *[Alasan penentuan tingkat pengujian]* | *[ID test case atau -]* |
+| C09 | Evaluasi | Mendalam | Memilih bukti terbaru, menangani relasi opsional serta hasil kosong/error, dan menyediakan operasi simpan evaluasi. | C09-UT01–C09-UT17 |
+| C12 | ValidasiPage | Tidak perlu | Boundary yang merender antrean dan rincian serta meneruskan interaksi ke Server Action. Perilaku UI diuji melalui UC02. | UC02-TC01–UC02-TC03 |
+| C15 | EvaluasiPage | Tidak perlu | Boundary yang menampilkan komparasi bukti dan meneruskan keputusan ke Server Action. Perilaku UI diuji melalui UC05. | UC05-TC01–UC05-TC03 |
+| C18 | ValidasiController | Mendalam | Memeriksa akses admin, mengurutkan dan menyaring antrean, serta memvalidasi persetujuan dan penolakan. | C18-UT01–C18-UT10 |
+| C21 | EvaluasiController | Mendalam | Memeriksa akses admin, kesiapan evaluasi, keabsahan keputusan, dan kewajiban catatan. | C21-UT01–C21-UT21 |
 | *...* | *...* | *...* | *...* | *...* |
 
 ## 4.2 Pengujian Unit Kelas
@@ -359,6 +371,79 @@ Tabel 4.2.8b. Ringkasan Cakupan Kelas C08
 | ID Algoritma yang tercakup | *`Algo-014`, `Algo-015`* |
 | Coverage (wajib ≥ 70%) | *100% line / 100% branch (100% statement, 100% function), tool: Vitest 5.1.0 + @vitest/coverage-v8. Bukti pada Subbab 4.6 (C08-coverage.png)* |
 
+### 4.2.9 Kelas Evaluasi
+
+**ID Kelas:** C09<br>
+**Nama Kelas:** Evaluasi<br>
+**Tingkat:** Mendalam<br>
+**File uji:** `src/server/entities/Evaluasi.test.ts`
+
+Tabel 4.2.9. Hasil Pengujian Unit Kelas [C09]
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C09-UT01 | `ambilDaftarSiapEvaluasi()` | Normal | Laporan dengan dua bukti, tanpa bukti, dan tanpa profil eksekutor | Bukti terbaru dipilih, laporan tanpa bukti dilewati, nama yang tidak tersedia bernilai `null` | Sesuai harapan | Pass |
+| C09-UT02 | `ambilDaftarSiapEvaluasi()` | Batas | Daftar laporan kosong | Daftar kosong dikembalikan | Sesuai harapan | Pass |
+| C09-UT03 | `ambilDaftarSiapEvaluasi()` | Negatif | Query ditolak database | Data `null` dan error diteruskan | Sesuai harapan | Pass |
+| C09-UT04 | `ambilDetailEvaluasi()` | Normal | Tiket dengan profil pelapor dan bukti terbaru | Rincian, nama pelapor/eksekutor, foto dan video dipetakan | Sesuai harapan | Pass |
+| C09-UT05 | `ambilDetailEvaluasi()` | Batas | Tiket tanpa profil pelapor dan tanpa bukti | Nama pelapor dan hasil perbaikan bernilai `null` | Sesuai harapan | Pass |
+| C09-UT06 | `ambilDetailEvaluasi()` | Batas | Bukti tersedia tanpa profil eksekutor | Bukti tetap tampil dengan nama eksekutor `null` | Sesuai harapan | Pass |
+| C09-UT07 | `ambilDetailEvaluasi()` | Batas | Tiket tidak ditemukan | Data dan error `null` | Sesuai harapan | Pass |
+| C09-UT08 | `ambilDetailEvaluasi()` | Negatif | Query ditolak database | Data `null` dan error diteruskan | Sesuai harapan | Pass |
+| C09-UT09 | `cariIdLaporan()` | Normal | Tiket ditemukan | ID internal laporan dikembalikan | Sesuai harapan | Pass |
+| C09-UT10 | `cariIdLaporan()` | Batas | Tidak ada baris yang cocok | ID dan error `null` | Sesuai harapan | Pass |
+| C09-UT11 | `cariIdLaporan()` | Negatif | Query ditolak database | ID `null` dan error diteruskan | Sesuai harapan | Pass |
+| C09-UT12 | `simpanEvaluasi()` | Normal | Keputusan `belum_selesai` dengan catatan | INSERT ke tabel `evaluasi` mengembalikan ID evaluasi | Sesuai harapan | Pass |
+| C09-UT13 | `simpanEvaluasi()` | Batas | Keputusan `selesai` dengan catatan `null` | INSERT menerima catatan `null` dan mengembalikan ID evaluasi | Sesuai harapan | Pass |
+| C09-UT14 | `simpanEvaluasi()` | Negatif | INSERT ditolak database | Data `null` dan error diteruskan | Sesuai harapan | Pass |
+| C09-UT15 | `getEvaluasiTerakhir()` | Normal | Tiket memiliki evaluasi | Query mengambil satu evaluasi terbaru beserta keputusan, catatan, dan waktu | Sesuai harapan | Pass |
+| C09-UT16 | `getEvaluasiTerakhir()` | Batas | Tiket belum memiliki evaluasi | Data dan error `null` | Sesuai harapan | Pass |
+| C09-UT17 | `getEvaluasiTerakhir()` | Negatif | Query ditolak database | Data `null` dan error diteruskan | Sesuai harapan | Pass |
+
+Tabel 4.2.9b. Ringkasan Cakupan Kelas C09
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Konstruktor `Evaluasi(...)`, `simpanEvaluasi()`, `getKeputusan()` |
+| Operasi yang diuji | `ambilDaftarSiapEvaluasi()`, `ambilDetailEvaluasi()`, `cariIdLaporan()`, `simpanEvaluasi()`, `getEvaluasiTerakhir()` |
+| ID Algoritma yang tercakup | `Algo-016` melalui `simpanEvaluasi()` (C09-UT12–C09-UT14) |
+| Coverage (wajib ≥ 70%) | 100% line / 100% branch (100% statement, 100% function). Diukur dengan `npx vitest run --coverage` (Vitest 5.1.0 dan V8). Bukti dirujuk pada Subbab 4.6 (`C09-coverage.png`). |
+
+Pada implementasi M9, data konstruktor diteruskan sebagai `DataEvaluasiBaru` dan keputusan terakhir dibaca melalui `getEvaluasiTerakhir()`.
+
+### 4.2.18 Kelas ValidasiController
+
+**ID Kelas:** C18<br>
+**Nama Kelas:** ValidasiController<br>
+**Tingkat:** Mendalam<br>
+**File uji:** `src/server/controllers/ValidasiController.test.ts`
+
+Tabel 4.2.18. Hasil Pengujian Unit Kelas [C18]
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C18-UT01 | `Seluruh operasi publik` | Negatif | Guard menolak akun non-admin | Kelima operasi mengembalikan penolakan tanpa membuat klien database | Sesuai harapan | Pass |
+| C18-UT02 | `susunAntrean()` | Normal | Dua laporan Diterima dengan waktu masuk berbeda, parameter urutan dihilangkan | Mengambil status Diterima dan mengurutkan terbaru dahulu | Sesuai harapan | Pass |
+| C18-UT03 | `susunAntrean(true)` | Normal | Dua laporan yang sama dengan urutan naik | Laporan terlama tampil dahulu | Sesuai harapan | Pass |
+| C18-UT04 | `saringAntrean()` | Batas | Kategori `semua` atau hanya spasi | Seluruh antrean dikembalikan | Sesuai harapan | Pass |
+| C18-UT05 | `saringAntrean()` | Normal | Kategori `jalan_berlubang` | Hanya laporan yang cocok dikembalikan | Sesuai harapan | Pass |
+| C18-UT06 | `saringAntrean()` | Negatif | Kategori di luar enum | Pesan “Kategori tidak valid.” | Sesuai harapan | Pass |
+| C18-UT07 | `ambilRincianLaporan()` | Normal | ID tiket ditemukan | Rincian tiket dari entity Laporan dikembalikan | Sesuai harapan | Pass |
+| C18-UT08 | `setujuiLaporan()` | Normal | Tiket berstatus Diterima | Status menjadi Dikerjakan / menunggu eksekusi, halaman direvalidasi, prioritas ditangani database | Sesuai harapan | Pass |
+| C18-UT09 | `tolakLaporan()` | Negatif | Alasan kosong, hanya spasi, atau whitespace baris baru/tab | Pesan wajib isi alasan, tanpa UPDATE atau revalidasi | 3/3 variasi lulus | Pass |
+| C18-UT10 | `tolakLaporan()` | Normal | Tiket Diterima dengan alasan valid yang diapit spasi | Status Ditolak, alasan disimpan setelah trim, halaman direvalidasi | Sesuai harapan | Pass |
+
+Tabel 4.2.18b. Ringkasan Cakupan Kelas C18
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `verifikasiAkses()`, `susunAntrean()`, `saringAntrean()`, `ambilRincianLaporan()`, `setujuiLaporan()`, `tolakLaporan()` |
+| Operasi yang diuji | Kelima Server Action publik, termasuk guard internal melalui C18-UT01 |
+| ID Algoritma yang tercakup | `Algo-041` (C18-UT01–C18-UT03), `Algo-042` (C18-UT01, C18-UT08), `Algo-043` (C18-UT01, C18-UT09–C18-UT10) |
+| Coverage (wajib ≥ 70%) | 100% line / 78,94% branch (85,18% statement, 100% function). Diukur dengan `npx vitest run --coverage` (Vitest 5.1.0 dan V8). Bukti dirujuk pada Subbab 4.6 (`C18-coverage.png`). |
+
+Suite C18 mencapai target coverage. Kasus batas `susunAntrean()`, `ambilRincianLaporan()`, `setujuiLaporan()`, dan `tolakLaporan()` belum tercakup sebagai uji tersendiri, sehingga syarat tiga jenis kasus per operasi publik masih belum terpenuhi sepenuhnya.
+
 ### 4.2.19 Kelas PenugasanController
 
 **ID Kelas:** *C19*  
@@ -425,6 +510,52 @@ Tabel 4.2.20. Hasil Pengujian Unit Kelas C20
 
 <br>
 
+### 4.2.21 Kelas EvaluasiController
+
+**ID Kelas:** C21<br>
+**Nama Kelas:** EvaluasiController<br>
+**Tingkat:** Mendalam<br>
+**File uji:** `src/server/controllers/EvaluasiController.test.ts`
+
+Tabel 4.2.21. Hasil Pengujian Unit Kelas [C21]
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C21-UT01 | `Seluruh operasi publik` | Negatif | Guard menolak akun non-admin | Ketiga operasi gagal tanpa membuat klien database | Sesuai harapan | Pass |
+| C21-UT02 | `ambilDaftarUntukEvaluasi()` | Normal | Entity mengembalikan satu laporan siap dievaluasi | Daftar dikembalikan dalam hasil sukses | Sesuai harapan | Pass |
+| C21-UT03 | `ambilDaftarUntukEvaluasi()` | Batas | Daftar siap evaluasi kosong | Hasil sukses dengan daftar kosong | Sesuai harapan | Pass |
+| C21-UT04 | `ambilDaftarUntukEvaluasi()` | Negatif | Query daftar ditolak | Pesan akses database diterjemahkan | Sesuai harapan | Pass |
+| C21-UT05 | `ambilDetailEvaluasi()` | Normal | Tiket Dikerjakan / menunggu evaluasi dengan bukti | Detail dikembalikan dalam hasil sukses | Sesuai harapan | Pass |
+| C21-UT06 | `ambilDetailEvaluasi()` | Batas | ID tiket diapit spasi | Entity menerima ID hasil trim dan detail dikembalikan | Sesuai harapan | Pass |
+| C21-UT07 | `ambilDetailEvaluasi()` | Negatif | ID tiket hanya spasi | Pesan wajib isi ID tanpa membuat klien database | Sesuai harapan | Pass |
+| C21-UT08 | `ambilDetailEvaluasi()` | Negatif | Tiket tidak ditemukan | Pesan “Laporan tidak ditemukan.” | Sesuai harapan | Pass |
+| C21-UT09 | `ambilDetailEvaluasi()` | Negatif | Query detail ditolak | Pesan akses database diterjemahkan | Sesuai harapan | Pass |
+| C21-UT10 | `ambilDetailEvaluasi()` | Negatif | Laporan sudah Berhasil | Pesan bahwa laporan tidak sedang menunggu evaluasi | Sesuai harapan | Pass |
+| C21-UT11 | `ambilDetailEvaluasi()` | Negatif | Tahap masih menunggu eksekusi | Pesan bahwa laporan tidak sedang menunggu evaluasi | Sesuai harapan | Pass |
+| C21-UT12 | `ambilDetailEvaluasi()` | Negatif | Bukti perbaikan belum tersedia | Pesan bahwa laporan tidak sedang menunggu evaluasi | Sesuai harapan | Pass |
+| C21-UT13 | `simpanKeputusan()` | Negatif | ID tiket atau ID hasil hanya berisi spasi | Pesan data tidak lengkap tanpa membuat klien database atau merevalidasi halaman | 2/2 variasi lulus | Pass |
+| C21-UT14 | `simpanKeputusan()` | Negatif | Keputusan di luar enum | Pesan keputusan tidak valid tanpa membuat klien database atau merevalidasi halaman | Sesuai harapan | Pass |
+| C21-UT15 | `simpanKeputusan()` | Negatif | ID internal laporan tidak ditemukan | Pesan laporan tidak ditemukan tanpa INSERT atau revalidasi | Sesuai harapan | Pass |
+| C21-UT16 | `simpanKeputusan()` | Negatif | Query pencarian ID laporan ditolak | Pesan akses database tanpa INSERT atau revalidasi | Sesuai harapan | Pass |
+| C21-UT17 | `simpanKeputusan()` | Negatif | INSERT ditolak database | Pesan akses database tanpa revalidasi | Sesuai harapan | Pass |
+| C21-UT18 | `simpanKeputusan()` | Negatif | `belum_selesai` dengan catatan kosong, spasi saja, atau tanpa catatan | Pesan catatan wajib diisi tanpa INSERT atau revalidasi | 3/3 variasi lulus | Pass |
+| C21-UT19 | `simpanKeputusan()` | Negatif | `minta_ulang_bukti` dengan catatan kosong, spasi saja, atau tanpa catatan | Pesan catatan wajib diisi tanpa INSERT atau revalidasi | 3/3 variasi lulus | Pass |
+| C21-UT20 | `simpanKeputusan()` | Batas | `selesai` dengan catatan hanya spasi | Keputusan disimpan dengan catatan `null` dan halaman direvalidasi | Sesuai harapan | Pass |
+| C21-UT21 | `simpanKeputusan()` | Normal | `belum_selesai` dengan catatan diapit spasi | Keputusan disimpan dengan catatan hasil trim, status ditangani database, dan halaman direvalidasi | Sesuai harapan | Pass |
+
+Tabel 4.2.21b. Ringkasan Cakupan Kelas C21
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `verifikasiAkses()`, `ambilDaftarUntukEvaluasi()`, `pilihSiapEvaluasi()`, `urutkanBerdasarkanWaktu()`, `ambilDetailEvaluasi()`, `simpanKeputusan()`, `ambilIdEksekutor()`, `ambilIdWarga()` |
+| Operasi yang diuji | `ambilDaftarUntukEvaluasi()`, `ambilDetailEvaluasi()`, `simpanKeputusan()` dan guard internal |
+| ID Algoritma yang tercakup | `Algo-048` (C21-UT01), `Algo-049` (C21-UT02–C21-UT04 dan C09-UT01–C09-UT03), `Algo-050` (C21-UT13–C21-UT21) |
+| Coverage (wajib ≥ 70%) | 100% line / 100% branch (100% statement, 100% function). Diukur dengan `npx vitest run --coverage` (Vitest 5.1.0 dan V8). Bukti dirujuk pada Subbab 4.6 (`C21-coverage.png`). |
+
+Pemilahan dan pengurutan daftar berada di query C09. Pemutakhiran status serta notifikasi pelapor dan eksekutor ditangani trigger basis data. Uji unit memeriksa data yang diteruskan controller dan responsnya.
+
+<br>
+
 ## 4.3 Pengujian Integrasi
 
 Pengujian integrasi memeriksa interaksi antarkomponen yang melewati batas, yaitu *Controller* ke *Model*, aplikasi ke basis data, dan aplikasi ke sistem eksternal. Daftar antarmuka mengacu pada dokumen DPPL, dengan minimal satu test case untuk setiap antarmuka. Pengujian memakai komponen nyata, bukan *mock*. Apabila ada antarmuka tambahan yang belum didaftarkan pada dokumen DPPL, cantumkan juga.
@@ -475,9 +606,20 @@ Tabel 4.4.1. Hasil Pengujian Use Case [UC01]
 | *UC01-TC02* | *KF01* | *Alternatif 1: [Nama skenario]* | *[Langkah-langkah pengujian]* | *[Data masukan]* | *[Hasil yang diharapkan]* | *[Hasil aktual]* | *[Pass/Fail. Jika Fail: penjelasan dan solusi]* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
-### 4.4.2 Use Case [Nama Use Case 2]
+### 4.4.2 Use Case Memvalidasi Laporan Baru
 
-*[Lanjutkan untuk seluruh use case dengan pola yang sama, hingga 4.4.N.]*
+**ID Use Case:** UC02<br>
+**Nama Use Case:** Memvalidasi Laporan Baru<br>
+**Prakondisi:** Admin sudah masuk dan tersedia beberapa laporan Diterima dengan kategori dan waktu masuk berbeda. Siapkan akun warga pelapor, warga lain untuk memberi dukungan, serta akun eksekutor.
+
+Tabel 4.4.2. Hasil Pengujian Use Case UC02
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC02-TC01 | KF07, KF09, KF10, KF12, KF13 | Normal — laporan dinyatakan valid | 1. Beri dukungan tambahan pada tiket uji dengan akun warga lain.<br>2. Buka `/validasi` sebagai admin dan pilih tiket.<br>3. Klik “Validasi” dan konfirmasi.<br>4. Buka daftar tugas sebagai eksekutor dan lonceng notifikasi sebagai pelapor. | Tiket Diterima dengan foto/video, koordinat dan dukungan. Siapkan tugas pembanding dengan skor lebih rendah. | Antrean Diterima tampil terbaru dahulu dengan filter kategori. Rincian menampilkan bukti, deskripsi, kategori, waktu, peta dan jumlah dukungan yang sudah bertambah. Tiket menjadi Dikerjakan / menunggu eksekusi dan hilang dari antrean validasi setelah konfirmasi. Daftar tugas menempatkan tiket sesuai skor yang diperbarui dan pelapor menerima notifikasi di aplikasi. | Belum diuji | – |
+| UC02-TC02 | KF09, KF10 | Alternatif 1 — menyaring antrean sebelum meninjau | 1. Buka `/validasi`.<br>2. Pilih kategori dan ubah urutan waktu masuk ke terlama dahulu.<br>3. Pilih satu tiket hasil saringan, lalu kembalikan filter ke “Semua kategori”. | Dua tiket Diterima dari kategori yang sama dengan waktu masuk berbeda dan satu tiket kategori lain. | Antrean hanya menampilkan kategori terpilih dengan urutan terlama dahulu. Rincian tiket yang dipilih tampil. “Semua kategori” menampilkan kembali seluruh antrean. | Belum diuji | – |
+| UC02-TC03 | KF07, KF10, KF11 | Alternatif 2 — laporan dinyatakan tidak valid | 1. Pilih tiket Diterima dan periksa rinciannya.<br>2. Klik “Tolak”, lalu coba konfirmasi dengan alasan kosong.<br>3. Isi alasan dan konfirmasi.<br>4. Periksa notifikasi dan status tiket sebagai pelapor. | Tiket uji berbeda dari UC02-TC01, alasan kosong lalu “Lokasi pada bukti tidak sesuai laporan”. | Alasan wajib diisi dan tiket tetap Diterima saat pengiriman tanpa alasan. Setelah konfirmasi dengan alasan valid, status menjadi Ditolak, alasan tersimpan, aplikasi menampilkan konfirmasi dan kembali ke antrean. Pelapor menerima notifikasi di aplikasi yang memuat alasan. | Belum diuji | – |
+
 
 ### 4.4.3 Use Case Melihat Penugasan Lapangan
 
@@ -512,6 +654,22 @@ Tabel 4.4.1. Hasil Pengujian Use Case UC04
 
 <br>
 
+### 4.4.5 Use Case Mengevaluasi Hasil Kerja
+
+**ID Use Case:** UC05<br>
+**Nama Use Case:** Mengevaluasi Hasil Kerja<br>
+**Prakondisi:** Admin sudah masuk. Siapkan tiket berbeda untuk tiap skenario dengan status Dikerjakan / menunggu evaluasi dan akses akun pelapor serta eksekutor.
+
+Tabel 4.4.5. Hasil Pengujian Use Case UC05
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC05-TC01 | KF07, KF16, KF18 | Normal — pekerjaan selesai | 1. Buka `/evaluasi`, periksa urutan daftar, dan pilih tiket.<br>2. Tinjau komparasi bukti awal dan hasil, catatan teknis, dan waktu unggah.<br>3. Pilih “Konfirmasi Selesai”, lalu konfirmasi.<br>4. Periksa status, waktu penyelesaian, dan notifikasi pelapor serta eksekutor. | Tiket dengan bukti perbaikan yang jelas dan catatan teknis. Catatan evaluasi boleh kosong. | Daftar tampil terbaru dahulu sesuai waktu masuk laporan. Detail menunjukkan foto awal dan hasil, video jika tersedia, waktu unggah, dan catatan teknis. Status menjadi Berhasil, `waktu_selesai` terisi, tiket keluar dari antrean, dan pelapor serta eksekutor menerima notifikasi di aplikasi. | Belum diuji | – |
+| UC05-TC02 | KF07, KF16, KF17 | Alternatif 1 — pekerjaan belum selesai | 1. Pilih tiket di `/evaluasi` dan periksa bukti.<br>2. Pilih “Belum Selesai” dan coba kirim tanpa catatan.<br>3. Isi catatan dan konfirmasi.<br>4. Periksa tugas eksekutor, notifikasi pelapor dan riwayat status. | Tiket dengan perbaikan belum tuntas. Catatan kosong lalu “Tambalan masih belum rata”. | Pengiriman tanpa catatan ditolak. Keputusan dan catatan tersimpan setelah konfirmasi. Tiket kembali ke Dikerjakan / menunggu eksekusi, riwayat transisi tercatat, eksekutor menerima catatan, dan pelapor menerima notifikasi bahwa pekerjaan akan diulang. | Belum diuji | – |
+| UC05-TC03 | KF07, KF16, KF17 | Alternatif 2 — foto/video tidak ada atau tidak jelas | 1. Pilih tiket di `/evaluasi` dan periksa bukti yang kabur.<br>2. Pilih “Minta Ulang Bukti” dan coba kirim tanpa catatan.<br>3. Jelaskan kekurangan bukti dan konfirmasi.<br>4. Periksa tugas eksekutor, notifikasi pelapor dan riwayat status. | Tiket dengan foto yang tidak jelas. Catatan kosong lalu “Unggah ulang foto yang memperlihatkan seluruh area perbaikan”. | Pengiriman tanpa catatan ditolak. Keputusan dan catatan tersimpan setelah konfirmasi. Tiket kembali ke Dikerjakan / menunggu eksekusi untuk pengunggahan ulang, riwayat transisi tercatat, eksekutor menerima instruksi, dan pelapor menerima notifikasi di aplikasi. | Belum diuji | – |
+
+Langkah terakhir SKPL 4.4.5 alternatif 2 menyebut status “selesai”. Hasil yang diharapkan pada UC05-TC03 mengikuti KF17, keputusan “Minta Ulang Bukti” di DPPL (I04-11), dan transisi di M9 B.1 butir 31.
+
 ## 4.5 Pengujian Kebutuhan Non-Fungsional (KNF)
 
 Setiap KNF pada Tabel 3.2 SKPL diuji secara terukur berdasarkan parameter yang telah didefinisikan. Setiap pengujian memuat target terukur, metode dan alat yang sesuai dengan parameter (misalnya Chrome DevTools untuk *response time* dan inspeksi basis data untuk *security*), serta hasil aktual berupa angka atau data. KNF yang belum dipenuhi atau tidak diimplementasikan dicantumkan beserta alasan dan rencana perbaikan.
@@ -543,6 +701,18 @@ Tabel 4.6. Bukti Hasil Pengujian
 | *UC01-TC01* | *[Sisipkan tangkapan layar UC01-TC01 sesuai prosedur pengujian]* |
 | *UC01-TC02* | *[Sisipkan tangkapan layar UC01-TC02 sesuai prosedur pengujian]* |
 | *KNF01-TC01* | *[Sisipkan bukti pengukuran parameter KNF01-TC01]* |
+| C09-UT01–C09-UT17 | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C09-UT.png` |
+| C09 (coverage) | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C09-coverage.png` |
+| C18-UT01–C18-UT10 | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C18-UT.png` |
+| C18 (coverage) | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C18-coverage.png` |
+| C21-UT01–C21-UT21 | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C21-UT.png` |
+| C21 (coverage) | Placeholder `./assets/bukti-test/unit-test/ut-uc02-uc05/C21-coverage.png` |
+| UC02-TC01 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC02-TC01.png` |
+| UC02-TC02 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC02-TC02.png` |
+| UC02-TC03 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC02-TC03.png` |
+| UC05-TC01 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC05-TC01.png` |
+| UC05-TC02 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC05-TC02.png` |
+| UC05-TC03 | Placeholder `./assets/bukti-test/uc-test/uc-uc02-uc05/UC05-TC03.png` |
 | *C07-UT01 - C07-UT16* | <img alt="C07-UT" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C07-UT.png" width="600"> |
 | *C07 (coverage)* | <img alt="C07-Coverage" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C07-coverage.png" width="600"> |
 | *C08-UT01 - C08-UT20* | <img alt="C08-UT" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C08-UT.png" width="600"> |
@@ -579,6 +749,15 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | *KF05* | *KNF01* | *UC03* | *C02 - Pesanan* | *`src/...`* | *UC03-TC01* | *C02-UT05, INT-TC04, KNF01-TC01* |
 | *KF01* | *-* | *UC01<br>UC02* | *[C01 - Nama kelas]<br>[C02 - Nama kelas]* | *[path/ke/file1]<br>[path/ke/file2]* | *UC01-TC01, UC01-TC02<br>UC02-TC01* | *-* |
 | *KF02* | *[KNFXX atau -]* | *[UCXX]* | *[CXX - Nama kelas]* | *[path/ke/file]* | *[UCXX-TCYY]* | *[CXX-UTYY, INT-TCYY, KNFXX-TCYY atau -]* |
+| KF07 | KNF13 | UC02, UC05 | C02 - Laporan<br>C10 - Notifikasi<br>C23 - NotifikasiController | `supabase/migrations/20261107155512_trigger_status.sql` (`catat_perubahan_status`)<br>`src/client/components/shared/LoncengNotifikasi.tsx` | UC02-TC01, UC02-TC03, UC05-TC01–UC05-TC03 | – |
+| KF09 | KNF08 | UC02 | C12 - ValidasiPage<br>C18 - ValidasiController | `src/client/views/ValidasiPage.tsx`<br>`src/client/components/validasi/AntreanLaporan.tsx`<br>`src/server/controllers/ValidasiController.ts` | UC02-TC01, UC02-TC02 | C18-UT01–C18-UT06 |
+| KF10 | KNF11 | UC02 | C02 - Laporan<br>C12 - ValidasiPage<br>C18 - ValidasiController | `src/server/entities/Laporan.ts`<br>`src/client/views/ValidasiPage.tsx`<br>`src/client/components/validasi/RincianLaporan.tsx`<br>`src/server/controllers/ValidasiController.ts` | UC02-TC01–UC02-TC03 | C18-UT07 |
+| KF11 | KNF07 | UC02 | C02 - Laporan<br>C12 - ValidasiPage<br>C18 - ValidasiController | `src/client/components/validasi/DialogTolak.tsx`<br>`src/server/controllers/ValidasiController.ts`<br>`supabase/migrations/20261107155512_trigger_status.sql` (`cek_transisi_status`) | UC02-TC03 | C18-UT01, C18-UT09–C18-UT10 |
+| KF12 | KNF07 | UC02 | C02 - Laporan<br>C12 - ValidasiPage<br>C18 - ValidasiController | `src/client/views/ValidasiPage.tsx`<br>`src/server/controllers/ValidasiController.ts`<br>`supabase/migrations/20261107155512_trigger_status.sql` (`cek_transisi_status`) | UC02-TC01 | C18-UT01, C18-UT08 |
+| KF13 | KNF09 | UC02 | C02 - Laporan<br>C06 - Upvote<br>C07 - ListTugas<br>C18 - ValidasiController | `src/server/entities/Upvote.ts`<br>`supabase/migrations/20261107155512_trigger_status.sql` (`tambah_upvote`)<br>`src/server/entities/ListTugas.ts`<br>`src/server/controllers/ValidasiController.ts` | UC02-TC01 | C18-UT08 (delegasi prioritas ke basis data) |
+| KF16 | – | UC05 | C09 - Evaluasi<br>C15 - EvaluasiPage<br>C21 - EvaluasiController | `src/server/entities/Evaluasi.ts`<br>`src/client/views/EvaluasiPage.tsx`<br>`src/client/components/evaluasi/KomparasiEvaluasi.tsx`<br>`src/server/controllers/EvaluasiController.ts` | UC05-TC01–UC05-TC03 | C09-UT01–C09-UT08, C21-UT02–C21-UT12 |
+| KF17 | – | UC05 | C09 - Evaluasi<br>C15 - EvaluasiPage<br>C21 - EvaluasiController | `src/server/entities/Evaluasi.ts`<br>`src/client/components/evaluasi/DialogKeputusanEvaluasi.tsx`<br>`src/server/controllers/EvaluasiController.ts`<br>`supabase/migrations/20261107155512_trigger_status.sql` (`terapkan_evaluasi`, `catat_perubahan_status`) | UC05-TC02, UC05-TC03 | C09-UT12–C09-UT14, C21-UT18–C21-UT19, C21-UT21 |
+| KF18 | – | UC05 | C02 - Laporan<br>C09 - Evaluasi<br>C15 - EvaluasiPage<br>C21 - EvaluasiController | `src/server/entities/Evaluasi.ts`<br>`src/client/views/EvaluasiPage.tsx`<br>`src/server/controllers/EvaluasiController.ts`<br>`supabase/migrations/20261107155512_trigger_status.sql` (`terapkan_evaluasi`, `cek_transisi_status`) | UC05-TC01 | C09-UT13, C21-UT20 |
 | *KF13* | *KN09* | *UC03, UC02, UC06* | *C02 - Laporan<br>C07 - ListTugas<br>C19 - PenugasanController* | `src/server/entities/Laporan.ts` (trigger `tambah_upvote`)<br>`src/server/entities/ListTugas.ts`<br>`src/server/controllers/PenugasanController.ts` | *UC03-TC01* | *C02-UT43 – C02-UT45, C07-UT01 – C07-UT04, C07-UT14, C19-UT03, C19-UT04, INT-TC40, KNF09-TC01* |
 | KF14 | KNF09, KNF10 | UC03 | C02 - Laporan<br>C07 - ListTugas<br>C13 - PenugasanPage<br>C19 - PenugasanController | `src/server/entities/Laporan.ts`<br>`src/server/entities/ListTugas.ts`<br>`src/client/views/PenugasanPage.tsx`<br>`src/client/components/penugasan/*`<br>`src/server/controllers/PenugasanController.ts` | UC03-TC01 – UC03-TC05 | C02-UT40 – C02-UT42, C07-UT01 – C07-UT16, C19-UT01 – C19-UT15, INT-TC40 – INT-TC43, KNF10-TC01 |
 | KF15 | - | UC04 | C04 - Foto<br>C05 - Video<br>C08 - HasilPerbaikan<br>C14 - HasilPerbaikanForm<br>C20 - PerbaikanController | `src/server/entities/HasilPerbaikan.ts`<br>`src/client/views/HasilPerbaikanForm.tsx`<br>`src/server/controllers/PerbaikanController.ts`<br>`src/lib/validasi-perbaikan.ts` | UC04-TC01 – UC04-TC04 | C08-UT01 – C08-UT07, C08-UT15 – C08-UT17, C20-UT01 – C20-UT24, INT-TC44 – INT-TC46 |
@@ -586,6 +765,8 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | KF19 | - | UC06 | C08 - HasilPerbaikan<br>C22 - StatusController | `src/server/entities/HasilPerbaikan.ts` (`getBuktiLengkap`) | UC06-TC… (D) | C08-UT08 – C08-UT14, C08-UT18 – C08-UT20 |
 | *KFXX* | *-* | *[UCXX atau -]* | *[CXX - Nama kelas atau -]* | *Tidak diimplementasikan: [alasan]* | *-* | *-* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+
+Untuk KF07 pada UC02 dan UC05, skenario manual memeriksa notifikasi di dalam aplikasi. Keterkaitan dengan KNF13 dicatat sesuai SKPL, dengan batas implementasi notifikasi dalam aplikasi pada M9 B.1 butir 49.
 
 Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 
