@@ -8,7 +8,7 @@ HASIL IMPLEMENTASI DAN UJI PERANGKAT LUNAK (HIUPL)
 <br>
 
 ## *Nama Perangkat Lunak*
-### *[Logo Perangkat Lunak]*
+### *LawHub*
 
 ### Untuk: Mikhael Andrian Yonatan
 
@@ -71,10 +71,9 @@ Dipersiapkan oleh:
 Tuliskan uraian ringkas mengenai isi dokumen, tujuan pembuatan dokumen HIUPL ini, dan siapa saja target pembacanya.
 
 ## 1.2 Lingkup Masalah
-Tuliskan lingkup masalah, yaitu membangun perangkat lunak *[nama perangkat lunak]*. Jelaskan dengan singkat dan jelas deskripsi aplikasi serta keterkaitannya dengan perangkat lunak atau sistem lain (jika ada). Bagian ini maksimal berisi satu paragraf, dapat diambil dari SKPL/DPPL.
+LawHub merupakan platform layanan konsultasi hukum digital yang dikembangkan untuk memperluas akses bantuan hukum bagi masyarakat Indonesia, di tengah tingginya angka sengketa dan konflik hukum yang belum terselesaikan serta terbatasnya kanal konsultasi hukum yang interaktif dan efisien. Berbeda dari laman bantuan hukum yang sudah ada dan umumnya berfokus pada forum tanya jawab terbuka, LawHub menghadirkan dua fitur utama, yaitu HaloLaw untuk konsultasi hukum on-demand secara langsung dengan mitra pengacara melalui chat, dan SearchLaw untuk membantu masyarakat menemukan dasar hukum yang relevan dengan kasus yang dihadapi, sehingga proses konsultasi hukum menjadi lebih cepat, transparan, dan mudah diakses oleh berbagai kalangan.
 
 ## 1.3 Definisi, Istilah, dan Singkatan
-Semua definisi dan singkatan yang digunakan dalam dokumen ini beserta penjelasannya.
 
 Tabel 1.3. Definisi Istilah dan Singkatan
 
@@ -92,10 +91,8 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *INT* | *Singkatan dari Integration Test, yaitu test case yang menguji interaksi antarkomponen.* |
 | *Boundary* | *Kasus uji pada nilai batas masukan, misalnya nilai minimum, maksimum, atau tepat di ambang aturan.* |
 | *Coverage* | *Persentase baris/cabang kode yang dieksekusi oleh pengujian.* |
-| *...* | *...* |
 
 ## 1.4 Aturan Penomoran
-Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya (SKPL, APL, DPPL), kecuali untuk ID pengujian yang baru diperkenalkan pada dokumen ini.
 
 Tabel 1.4. Aturan Penomoran
 
@@ -110,13 +107,13 @@ Tabel 1.4. Aturan Penomoran
 | *Test Case Integrasi* | *INT-TCYY* | *YY adalah nomor urut test case integrasi* |
 | *Test Case Use Case* | *UCXX-TCYY* | *XX adalah nomor use case, YY adalah nomor urut test case pada use case tersebut* |
 | *Test Case KNF* | *KNFXX-TCYY* | *XX adalah nomor KNF, YY adalah nomor urut test case pada KNF tersebut* |
-| *...* | *...* | *...* |
 
 ## 1.5 Referensi
-Cantumkan daftar buku, panduan, atau dokumentasi lain yang dirujuk dalam pembuatan dokumen dan pengembangan P/L, **minimal dokumen SKPL, APL, DPPL, dan Implementasi (Tugas 9)**. Tambahkan dokumentasi *framework*/*library*/*testing tool* atau referensi lain apabila digunakan.
+Daftar buku, panduan, atau dokumentasi lain yang dirujuk dalam pembuatan dokumen dan pengembangan P/L ini adalah SKPL, APL, DPPL, dan Implementasi.
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
 Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut bab demi bab, dengan maksimal 1 paragraf.
+Pada dokumen ini terdapat 5 bab. Bab 1 membahas pendahuluan dengan subbab berupa tujuan penulisan dokumen, lingkup masalah, definisi istilah dan singkatan, aturan penomoran, referensi, serta ikhtisar dokumen. Kemudian, bab 2 membahas deskripsi umum perangkat lunak dengan memaparkan gambaran menyeluruh mengenai perangkat lunak LawHub yang dikembangkan beserta cakupan fungsionalitasnya. Bab 3 membahas implementasi dengan rincian realisasi teknis sistem yang mencakup lingkungan implementasi, implementasi modul, implementasi antarmuka, serta berkas pendukung lainnya. Selanjutnya, bab 4 membahas hasil pengujian dengan rincian strategi dan kedalaman pengujian kelas, hasil pengujian unit kelas, pengujian integrasi, pengujian use case, pengujian kebutuhan non-fungsional (KNF), serta tangkapan layar dan bukti hasil pengujian. Terakhir, bab 5 memetakan tabel traceability.
 
 <br>
 
@@ -254,14 +251,6 @@ Bab ini melaporkan hasil pengujian P/L pada level unit, integrasi, dan sistem. P
 Setiap kelas perancangan pada Tabel 4.1 DPPL diklasifikasikan ke dalam tiga tingkat kedalaman pengujian. Tingkat **Mendalam** diberikan pada kelas yang memuat logika bisnis, perhitungan, validasi, aturan status, algoritma, integrasi eksternal, atau keamanan. Tingkat **Sedang** diberikan pada kelas yang hanya mengoordinasikan atau mendelegasikan proses. Tingkat **Tidak perlu** diberikan pada kelas tanpa logika, seperti *entity/DTO* dan kelas konfigurasi, yang teruji secara tidak langsung melalui test case use case. Seluruh kelas wajib dicantumkan beserta alasan penentuan tingkatnya.
 
 Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
-
-| ID Kelas | Nama Kelas | Tingkat | Alasan | Test Case Terkait |
-| :--- | :--- | :--- | :--- | :--- |
-| *C02* | *Pesanan* | *Mendalam* | *Memuat `hitungTotal()` dan transisi status pembayaran* | *C02-UT01 s.d. C02-UT08* |
-| *C03* | *Keranjang* | *Sedang* | *Delegasi sederhana ke Produk dan Pesanan* | *C03-UT01 s.d. C03-UT03, INT-TC02* |
-| *C01* | *Pelanggan* | *Tidak perlu* | *Hanya menyimpan data akun, tanpa logika* | *-* |
-| *[CXX]* | *[Nama kelas]* | *[Mendalam/Sedang/Tidak perlu]* | *[Alasan penentuan tingkat pengujian]* | *[ID test case atau -]* |
-| *...* | *...* | *...* | *...* | *...* |
 
 ## 4.2 Pengujian Unit Kelas
 
