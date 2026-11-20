@@ -828,8 +828,12 @@ Tabel 4.6. Bukti Hasil Pengujian
 
 | ID Pengujian | Bukti Hasil Pengujian |
 | :--- | :--- |
-| *C02-UT01 – C02-UT08* | *[Sisipkan hasil keluaran unit test]* |
-| *C02 (coverage)* | *[Sisipkan laporan coverage kelas C02]* |
+| 1 | `C46-UT01` s.d. `C46-UT08` | Keluaran Jest 30 untuk pengujian unit kelas `SesiKonsultasi` (8 kasus uji: 8 `Pass`) | `assets/4.2-unit-01-sesi.png` (Gambar 4.6.1) |
+| 2 | `PG-UT01` s.d. `PG-UT05`, `C49-UT01` s.d. `C49-UT03`, `C51-UT01` s.d. `C51-UT04` | Keluaran Jest 30 untuk pengujian unit modul `PaymentGateway`, kelas `Pembayaran`, dan kelas `PencairanDana` (12 kasus uji: 11 `Pass`, 1 `Fail` pada `C49-UT03` akibat cacat operator `+` di awal query SQL) | `assets/4.2-unit-02-pembayaran.png` (Gambar 4.6.2) |
+| 3 | `C47-UT01` s.d. `C47-UT03`, `C36-UT01` s.d. `C36-UT02` | Keluaran Jest 30 untuk pengujian unit kelas `Ulasan` dan `Riwayat` (5 kasus uji: 4 `Pass`, 1 `Fail` pada `C36-UT01` karena pesan riwayat belum didekripsi) | `assets/4.2-unit-03-ulasan-riwayat.png` (Gambar 4.6.3) |
+| 4 | `C48-UT01` s.d. `C48-UT05`, `C50-UT01` s.d. `C50-UT04` | Keluaran Jest 30 untuk pengujian unit kelas `Laporan` dan `LiveChat` (9 kasus uji: 9 `Pass`) | `assets/4.2-unit-04-laporan-livechat.png` (Gambar 4.6.4) |
+| 5 | `C41-UT01` s.d. `C41-UT05`, `C43-UT01` s.d. `C43-UT02`, `C44-UT01`, `C45-UT01` | Keluaran Jest 30 untuk pengujian unit kelas `MitraPengacara` / `verifikasiMitra` serta kelas tingkat Sedang (`Kasus`, `DasarHukum`, `DokumenLegalitas`) (9 kasus uji: 9 `Pass`) | `assets/4.2-unit-05-mitra.png` (Gambar 4.6.5) |
+| 6 | Cakupan Kode Unit Test (`C41`, `C46`, `C47`, `C48`, `C49`, `C50`, `C51`, `PaymentGateway`) | Laporan *code coverage* Jest 30 (`npm run test:unit -- --coverage`) yang menunjukkan total cakupan baris **71,82%** (311/433) dan seluruh kelas tingkat **Mendalam** memenuhi ambang batas minimal **70%** | `assets/4.2-unit-coverage.png` (Gambar 4.6.6) |
 | INT-TC01 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC01 Normal: registrasi masyarakat tersimpan di basis data dengan sandi ter-hash (90 ms)`. Hasil: **Pass**. |
 | INT-TC02 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC02 Gagal: registrasi dengan email yang sudah terdaftar ditolak dan tidak menambah baris (6 ms)`. Hasil: **Pass**. |
 | INT-TC03 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC03 Normal: registrasi mitra menyimpan akun berstatus menunggu, 4 dokumen, dan berkasnya (80 ms)`. Hasil: **Pass**. |
