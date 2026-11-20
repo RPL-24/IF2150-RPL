@@ -122,7 +122,7 @@ describe("simpanBukti", () => {
     expect(await simpanBukti({ rpc } as never, { idLaporan: "x", catatan: "c", media })).toEqual({ data: null, error });
   });
 
-  it("C08-UT20 simpanBukti (batas): 3 foto + 1 video dikirim dalam satu panggilan RPC", async () => {
+  it("C08-UT17 simpanBukti (batas): 3 foto + 1 video dikirim dalam satu panggilan RPC", async () => {
     const banyak = [
       { path: "hasil/u1/1.jpg", format: "jpg", ukuran: 1024, tipe: "foto" as const },
       { path: "hasil/u1/2.jpg", format: "jpg", ukuran: 1024, tipe: "foto" as const },
@@ -148,7 +148,7 @@ describe("getBuktiLengkap", () => {
     foto: [{ path: `hasil/u1/${id_hasil}.jpg` }], video: [], evaluasi: [{ keputusan }],
   });
 
-  it("C08-UT17 getBuktiLengkap (normal): membaca hasil_perbaikan laporan, memilih bukti yang selesai", async () => {
+  it("C08-UT18 getBuktiLengkap (normal): membaca hasil_perbaikan laporan, memilih bukti yang selesai", async () => {
     const p = supabasePalsu({
       data: [baris("h1", "2026-11-05T08:00:00Z", "minta_ulang_bukti"), baris("h2", "2026-11-06T08:00:00Z", "selesai")],
       error: null,
@@ -162,11 +162,11 @@ describe("getBuktiLengkap", () => {
     });
   });
 
-  it("C08-UT18 getBuktiLengkap (batas): data null dari basis data -> belum ada bukti", async () => {
+  it("C08-UT19 getBuktiLengkap (batas): data null dari basis data -> belum ada bukti", async () => {
     expect(await getBuktiLengkap(supabasePalsu({ data: null, error: null }).client, "uuid-lap")).toEqual({ data: null, error: null });
   });
 
-  it("C08-UT19 getBuktiLengkap (negatif): error basis data diteruskan, data null", async () => {
+  it("C08-UT20 getBuktiLengkap (negatif): error basis data diteruskan, data null", async () => {
     const error = { code: "500", message: "x" };
     expect(await getBuktiLengkap(supabasePalsu({ data: [baris("h1", "2026-11-05T08:00:00Z", "selesai")], error }).client, "uuid-lap"))
       .toEqual({ data: null, error });
