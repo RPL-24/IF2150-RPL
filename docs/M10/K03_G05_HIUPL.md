@@ -933,8 +933,8 @@ Pengujian use case dilakukan pada seluruh skenario normal dan alternatif sesuai 
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 |---|---|---|---|---|---|---|---|
-| UC18-TC01 | KF17 | Normal |1. Login sebagai Masyarakat.2. Buka fitur Live Chat.3. Ketik pertanyaan mengenai kendala teknis.4. Kirim pesan dan amati ruang chat. | Pesan: Saya mengalami kendala saat membuka halaman konsultasi. Mohon bantuannya. | Sistem meneruskan pesan ke Admin dan menampilkan percakapan/pesan pada Live Chat.  | [Isi hasil aktual setelah diuji] | [Pass/Fail] |
-| UC18-TC02 | KF17 | Alternatif 1: Riwayat kosong | [Isi langkah pengujian sesuai skenario SKPL] | [Isi data uji] | [Isi reaksi sistem yang diharapkan sesuai SKPL] | [Isi hasil aktual setelah diuji] | [Pass/Fail] |
+| UC18-TC01 | KF17 | Normal |1. Login sebagai Mitra yang pernah menangani konsultasi. 2. Buka halaman riwayat penanganan/riwayat konsultasi. 3. Periksa daftar riwayat yang ditampilkan. | Akun Mitra yang memiliki minimal satu sesi konsultasi selesai. | Sistem menampilkan seluruh riwayat kasus/konsultasi yang pernah ditangani Mitra tersebut.  | Pembayaran yang gagal menyebabkan konsultasi tidak dapat berjalan sehingga riwayat konsultasi tidak muncul. | Fail |
+| UC18-TC02 | KF17 | Alternatif 1: Riwayat kosong | 1. Login sebagai Mitra yang belum pernah menangani konsultasi. 2. Buka halaman riwayat penanganan.	| Akun Mitra baru tanpa sesi konsultasi.| Sistem menampilkan informasi bahwa belum ada riwayat penanganan kasus.| Sistem menampilkan informasi bahwa belum ada riwayat penanganan kasus | Pass |
 
 ### 4.4.19 Use Case Menanyakan Masalah Teknis
 
