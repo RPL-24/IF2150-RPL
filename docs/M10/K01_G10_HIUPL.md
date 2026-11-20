@@ -1080,7 +1080,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 | KNF10-TC01, KNF10-TC02 (Reliability — Keandalan & Penanganan Gagal Pembayaran) | ![Bukti KNF10](assets/image-45.png) |
 | KNF11-TC01 (Availability — Pendaftaran Mitra Bersamaan) | ![Bukti KNF11 Mitra 1](assets/image-49.png)<br>![Bukti KNF11 Mitra 2](assets/image-50.png)<br>![Bukti KNF11 Admin](assets/image-51.png) |
 | KNF12-TC01 (Response Time — Verifikasi Mitra ≤ 4 Hari Kerja) | ![Bukti KNF12 Dokumen](assets/image-52.png)<br>![Bukti KNF12 Setujui](assets/image-53.png)<br>![Bukti KNF12 Email](assets/image-54.png) |
-| KNF13-TC01 (Ergonomy — Usability Testing ≤ 8 menit) | *[Sisipkan bukti pencatatan waktu stopwatch 3 responden]* |
+| KNF13-TC01 (Ergonomy — Usability Testing ≤ 8 menit) | ![Bukti KNF13 Ketersediaan Responden](assets/image-55.jpg)<br>![Bukti KNF13 Hasil Waktu Pengujian](assets/image-56.jpg) |
 | KNF14-TC01 (Reliability — Pencegahan Double-Charge) | ![Bukti KNF14](assets/image-42.png) |
 
 | *...* | *...* |
