@@ -212,6 +212,15 @@
 | 13-11-2026 | Gede Pranajayanta Suputra | Menambahkan tombol tutup kartu ringkasan laporan pada Peta |  | Done |  |
 
 
+### Milestone 10
+**Periode:** 13-11-2026 - 20-11-2026 
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / Blocker | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 18-11-2026 | Pasaribu Fritz T.A.M. | Mengisi template tabel di HIUPL untuk tes berkaitan UC03 & UC04 | 1 | Done |  |
+| 19-11-2026 | Pasaribu Fritz T.A.M. | Unit & INT test berkaitan UC03 & UC04 | 1 | Done |  |
+| 20-11-2026 | Pasaribu Fritz T.A.M. | Use Case & KNF Test berkaitan UC03 & UC04 | 1 | Done |  |
+
 
 
 
