@@ -927,7 +927,28 @@ Tabel 4.6. Bukti Hasil Pengujian
 | **UC20-TC01** | ![UC20-TC01](assets/UC20-TC01.png) |
 | **UC22-TC01** | ![UC22-TC01](assets/UC22-TC01.png) |
 | **UC22-TC02** | ![UC22-TC02](assets/UC22-TC02.png) |
-| *KNF01-TC01* | *[Sisipkan bukti pengukuran parameter KNF01-TC01]* |
+| KNF01-TC01 | Hasil pengukuran melalui Chrome DevTools dan script `knf-ukur.js` sebanyak 5 kali percobaan menunjukkan rata-rata waktu pemuatan 0,082 detik dan maksimum 0,116 detik. |
+| KNF02-TC01 | Struktur tabel `DokumenLegalitas` pada `src/db/schema.sql` menunjukkan kolom `waktuUnggah`. Tidak terdapat pencatatan waktu keputusan verifikasi maupun mekanisme pengingat batas waktu verifikasi 3 hari. |
+| KNF03-TC01 | Pemeriksaan mekanisme unggah dan isi folder `uploads/` menunjukkan bahwa dokumen legalitas tidak dienkripsi AES-256 pada mekanisme penyimpanannya. |
+| KNF04-TC01 | Hasil pengukuran melalui Chrome DevTools dan script `knf-ukur.js` sebanyak 5 kali percobaan menunjukkan rata-rata waktu penyimpanan dan penampilan profil 0,013 detik dan maksimum 0,028 detik. |
+| KNF05-TC01 | Potongan query `SearchLaw` menunjukkan pencarian menggunakan `LIKE` pada 5 kolom dan `ORDER BY tahun DESC`, tanpa skor relevansi. |
+| KNF06-TC01 | Hasil pengukuran pencarian menggunakan Chrome DevTools dan script `knf-ukur.js` dengan 5 kata kunci berbeda menunjukkan rata-rata dan waktu maksimum 0,003 detik. |
+| KNF07-TC01 | Potongan implementasi `MitraPengacara.cari` menunjukkan pengurutan menggunakan `ORDER BY` pada query SQL, tanpa implementasi quick sort maupun merge sort. |
+| KNF08-TC01 | Hasil akses halaman daftar mitra pada `/halolaw/mitra` menunjukkan HTTP 500 karena variabel `kasus` tidak tersedia saat View EJS dirender. |
+| KNF09-TC01 | Pemeriksaan `server.js` menunjukkan `socket/konsultasi.js` tidak dimuat sehingga namespace konsultasi tidak terdaftar dan pesan tidak terkirim. |
+| KNF10-TC01 | Potongan kode `SesiKonsultasi.js` menunjukkan pesan konsultasi dienkripsi AES-256-GCM sebelum disimpan, tetapi kunci berada di server dan pesan dikirim kepada klien sebagai plaintext. |
+| KNF11-TC01 | Pemeriksaan route HaloLaw, daftar mitra, dan booking menunjukkan tidak terdapat pembatasan jam operasional. Chat dibatasi jadwal sesi melalui `izinChat` dan saat ini tidak berfungsi. |
+| KNF12-TC01 | Pemeriksaan route `/konsultasi/konfirmasi/:idSesi` menunjukkan tidak terdapat pembatasan jam operasional pada proses konfirmasi pengajuan. |
+| KNF13-TC01 | Pemeriksaan fitur pada UI dan kode menunjukkan tidak ditemukan fitur atau route komunikasi lanjutan setelah sesi konsultasi selesai. |
+| KNF14-TC01 | Potongan `UlasanController` menunjukkan validasi hanya mencakup skor 1–5 dan panjang teks maksimal 1.000 karakter, tanpa regex atau filter kata tidak pantas. |
+| KNF15-TC01 | Pemeriksaan route `/admin/laporan` menunjukkan route dilindungi middleware `wajibAdmin`. Nama dan email pelapor tidak ditampilkan pada halaman terlapor. |
+| KNF16-TC01 | Struktur tabel `Laporan` hanya menyimpan `tanggalLaporan`, tanpa pencatatan waktu peninjauan laporan maupun mekanisme pengingat batas waktu 3 hari. |
+| KNF17-TC01 | Hasil pemeriksaan akses `/admin/laporan` menggunakan akun non-admin dan akun terlapor mengacu pada hasil pengujian KNF15-TC01. |
+| KNF18-TC01 | Struktur tabel `Laporan` hanya menyimpan `tanggalLaporan`, tanpa pencatatan waktu peninjauan. Hasil pengujian mengacu pada KNF16-TC01. |
+| KNF19-TC01 | Pemeriksaan `SesiKonsultasi` menunjukkan pesan dienkripsi AES-256-GCM, sedangkan `Riwayat.pesanSesi` membaca `PesanChat` tanpa dekripsi sehingga menampilkan teks terenkripsi dan riwayat dapat diakses masyarakat. |
+| KNF20-TC01 | Hasil pengujian pengiriman pesan melalui dua akun konsultasi menunjukkan pesan masyarakat langsung terkirim. |
+| KNF21-TC01 | Pemeriksaan skema tabel `DokumenLegalitas` menunjukkan kolom `validitas` (0/1) dan `waktuUnggah`, tanpa kolom masa berlaku dokumen legalitas. |
+| KNF22-TC01 | Pemeriksaan query `SearchLaw` menunjukkan pencarian hanya menggunakan tabel `Peraturan` pada database lokal, tanpa pemanggilan sumber data eksternal. |
 | *...* | *...* |
 
 <br>
