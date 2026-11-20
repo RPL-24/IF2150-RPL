@@ -148,13 +148,13 @@ Tabel 3.1. Lingkungan Implementasi
 
 | Aspek | Keterangan |
 | :--- | :--- |
-| *Hardware* | *[Spesifikasi perangkat keras]* |
-| *Operating System* | *[Nama dan versi OS]* |
-| *Bahasa Pemrograman* | *[Bahasa dan versi]* |
-| *Framework/Library* | *[Daftar framework/library beserta versi]* |
-| *DBMS* | *[Nama dan versi DBMS]* |
-| *Development Tools* | *[IDE, version control, tools lain]* |
-| *Testing Tools* | *[Framework unit test, alat ukur performa, alat coverage]* |
+| *Hardware* | prosesor Intel Core Ultra 9, RAM 32 GB LPDDR5X, dan SSD 1 TB PCIe NVMe |
+| *Operating System* | Windows dan macOS, dijalankan lewat browser berbasis Chromium |
+| *Bahasa Pemrograman* | JavaScript (CommonJS) di atas Node.js (minimal v20) |
+| *Framework/Library* | Express 5.3.0, EJS 7.0.2, Socket.IO 4.8.4, express-session 1.19.0, connect-flash 0.1.1, express-validator 7.3.2, multer 2.5.0, bcryptjs 3.0.3, dotenv 18.0.9, modul bawaan crypto (AES-256). Sisi klien: HTML, CSS, JavaScript biasa, font Public Sans. |
+| *DBMS* | SQLite (better-sqlite3 13.0.3), berkas db/lawhub.db |
+| *Development Tools* | Visual Studio Code, Git dan GitHub, nodemon 3.1.14, Postman, Figma, draw.io |
+| *Testing Tools* | Pengujian manual lewat browser, Chrome DevTools (tab Network) untuk waktu respons, dan Postman untuk API. |
 
 ## 3.2 Implementasi Modul
 
