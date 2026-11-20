@@ -1,3 +1,5 @@
+import type { Produk } from '../models/Produk';
+
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
@@ -10,8 +12,6 @@ export type RootStackParamList = {
   Notifikasi: undefined;
   IzinNotifikasi: undefined;
   ProductDetail: { idProduk: string };
-  
-// nuha menambahkan editproduct dan pricehistorypage
-  EditProduct: { idProduk: string; produkData: any }; 
+  EditProduct: { idProduk: string; produkData: Produk };
   PriceHistoryPage: { idProduk: string; currentHargaJual: number; namaProduk: string };
 };

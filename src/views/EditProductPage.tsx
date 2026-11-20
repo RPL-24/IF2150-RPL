@@ -3,19 +3,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator, StyleSheet } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PriceController, ValidationError } from '../controllers/PriceController';
-import { Produk } from '../models/Produk';
-
-type ParamList = {
-  EditProduct: {
-    idProduk: string;
-    produkData: Produk;
-  };
-};
+import type { RootStackParamList } from '../navigation/types';
 
 export default function EditProductPage() {
-  const navigation = useNavigation<any>();
-  const route = useRoute<RouteProp<ParamList, 'EditProduct'>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'EditProduct'>>();
+  const route = useRoute<RouteProp<RootStackParamList, 'EditProduct'>>();
   
   const { idProduk, produkData } = route.params;
 

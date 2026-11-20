@@ -211,6 +211,16 @@ export default function App() {
             options={{ title: 'Detail Produk' }}
           />
           <Stack.Screen
+            name="EditProduct"
+            component={EditProductPage}
+            options={{ title: 'Edit Produk' }}
+          />
+          <Stack.Screen
+            name="PriceHistoryPage"
+            component={PriceHistoryPage}
+            options={{ title: 'Riwayat Harga Jual' }}
+          />
+          <Stack.Screen
             name="Profile"
             component={ProfilePage}
             options={{ headerShown: false }}
