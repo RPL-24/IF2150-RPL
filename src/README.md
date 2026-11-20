@@ -149,6 +149,40 @@ npm run build      # build produksi Next.js
 
 CI ([`.github/workflows/ci.yml`](../.github/workflows/ci.yml)) menjalankan lint, typecheck, dan test pada setiap pull request ke `dev`/`main` dan setiap push ke `dev`.
 
+### Pengujian
+
+```bash
+npm run test              # unit test (dipakai CI)
+npm run test:coverage     # unit test + coverage → coverage/index.html, ringkasan di terminal
+npm run test:integration  # uji integrasi ke Supabase PRODUCTION, jalankan manual saja
+```
+
+| Jenis | Lokasi | Config |
+|---|---|---|
+| Unit test | `src/**/*.test.ts`, di sebelah file yang diuji | `vitest.config.mts` |
+| Uji integrasi | `tests/integration/**/*.int.test.ts`, helper di `tests/integration/helpers/`, contoh di `contoh.int.test.ts` | `vitest.integration.config.mts` |
+
+Aturan uji integrasi (tidak ada database uji terpisah, jadi tes menulis ke **production**):
+
+- Pakai akun tes dari env `TEST_INT_WARGA_EMAIL`, `TEST_INT_ADMIN_EMAIL`, `TEST_INT_EKSEKUTOR_EMAIL`, `TEST_INT_PASSWORD` (lihat `.env.example`), lewat `loginSebagai(peran)`. Aksi yang diuji memakai client peran, bukan service role, supaya RLS ikut teruji. Client service role (`buatClientAdmin()`) hanya untuk setup, membaca ulang, dan bersih-bersih.
+- Semua teks data tes diawali `[TEST-INT]` (konstanta `PENANDA`).
+- Semua laporan tes memakai lokasi `KOORDINAT_TES` (jauh dari laporan asli dan dari tengah peta publik).
+- Assertion berdasarkan ID yang baru dibuat, bukan jumlah total baris.
+- Catat setiap ID/berkas yang dibuat (`pelacak.catat()`, `pelacak.catatBerkas()`) dan panggil `pelacak.bersihkan()` di `afterAll`. Yang dihapus hanya yang dicatat; laporan tanpa awalan `[TEST-INT]` ditolak.
+- Hanya berinteraksi (validasi, upvote, evaluasi, dll.) dengan laporan tes milik sendiri.
+- Tidak ikut CI: `npm run test` mengecualikan `*.int.test.ts`.
+- `SUPABASE_SECRET_KEY` hanya di `.env.local`, jangan pernah di-commit.
+- Setelah selesai, sisa data `[TEST-INT]` harus 0 (dicek otomatis di akhir run; cek manual: `select count(*) from laporan where deskripsi like '[TEST-INT]%';`).
+
+Format ID test case, tulis di awal nama test (mis. `it("INT-TC03 admin menyetujui laporan ...")`):
+
+| Format | Untuk |
+|---|---|
+| `CXX-UTYY` | unit test kelas DPPL `CXX` |
+| `INT-TCYY` | uji integrasi, `YY` sesuai rentang nomor masing-masing anggota |
+| `UCXX-TCYY` | uji fungsional skenario use case `UCXX` |
+| `KNFXX-TCYY` | uji kebutuhan non-fungsional `KNFXX` |
+
 ## 7. Akun uji
 
 Semua akun memakai password **`LaporKota2026!`** (data fiktif dari `scripts/seed.ts`).

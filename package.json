@@ -9,7 +9,9 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
-    "seed": "node --env-file=.env.local --import tsx scripts/seed.ts"
+    "seed": "node --env-file=.env.local --import tsx scripts/seed.ts",
+    "test:coverage": "vitest run --coverage",
+    "test:integration": "vitest run --config vitest.integration.config.mts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -26,6 +28,7 @@
     "@types/node": "^22.20.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^5.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.4",
     "supabase": "^3.0.0",
