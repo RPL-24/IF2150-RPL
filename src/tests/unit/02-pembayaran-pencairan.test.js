@@ -29,7 +29,7 @@ describe('PG PaymentGateway (Mendalam)', () => {
       cvc: '123',
       nominal: 70000,
     });
-    expect(hasil.sukses || hasil.berhasil).toBe(true);
+    expect(hasil.berhasil).toBe(true);
   });
 
   test('PG-UT02 Batas: prosesPembayaran menyetujui kartu batas non-0000 (1000000000000001)', async () => {
@@ -40,7 +40,7 @@ describe('PG PaymentGateway (Mendalam)', () => {
       cvc: '123',
       nominal: 70000,
     });
-    expect(hasil.sukses || hasil.berhasil).toBe(true);
+    expect(hasil.berhasil).toBe(true);
   });
 
   test('PG-UT03 Negatif: prosesPembayaran menolak kartu berawalan 0000', async () => {
@@ -51,33 +51,39 @@ describe('PG PaymentGateway (Mendalam)', () => {
       cvc: '123',
       nominal: 70000,
     });
-    expect(hasil.sukses || hasil.berhasil).toBe(false);
-    expect(hasil.pesan || hasil.message).toContain('Kartu ditolak oleh bank penerbit');
+    expect(hasil.berhasil).toBe(false);
+    expect(hasil.pesan).toContain('Kartu ditolak oleh bank penerbit');
   });
 
   test('PG-UT04 Normal: prosesPencairan menyetujui transfer ke rekening tujuan valid', async () => {
     const hasil = await PaymentGateway.prosesPencairan({
-      rekeningTujuan: 'BCA|1234567890|Ami Pengacara',
+      rekening: 'BCA|1234567890|Ami Pengacara',
       nominal: 100000,
     });
-    expect(hasil.sukses || hasil.berhasil).toBe(true);
+    expect(hasil.berhasil).toBe(true);
+  });
+
+  test('PG-UT05 Negatif: prosesPencairan menolak rekening kosong atau nominal tidak valid', async () => {
+    const hasil = await PaymentGateway.prosesPencairan({
+      rekening: '',
+      nominal: 100000,
+    });
+    expect(hasil.berhasil).toBe(false);
+    expect(hasil.pesan).toContain('Rekening tidak valid');
   });
 });
 
 describe('C49 Pembayaran (Mendalam)', () => {
-  test('C49-UT01 Normal: hitungBiaya mengembalikan rincian biaya sesi konsultasi', () => {
-    const info = U.db.prepare(
-      `INSERT INTO SesiKonsultasi (idMasyarakat, idMitra, tanggalJadwal, waktuJadwal, statusSesi, statusPembayaran, waktuPengajuan)
-       VALUES (?, ?, ?, '15:00', 'terjadwal', 'belum bayar', ?)`
-    ).run(idSisi, idAmi, tanggalWib(2), new Date().toISOString());
-
-    const biaya = Pembayaran.hitungBiaya(info.lastInsertRowid);
-    expect(biaya).toBeDefined();
-    expect(biaya.total || biaya.totalBayar || biaya).toBe(70000);
+  test('C49-UT01 Normal: hitungBiaya mengembalikan subtotal, pajak 11%, dan total biaya konsultasi', () => {
+    const biaya = Pembayaran.hitungBiaya(70000, 1);
+    expect(biaya.subtotal).toBe(70000);
+    expect(biaya.pajak).toBe(7700);
+    expect(biaya.total).toBe(77700);
   });
 
-  test('C49-UT02 Negatif: hitungBiaya untuk idSesi tidak terdaftar mengembalikan falsy', () => {
-    expect(Pembayaran.hitungBiaya(999999)).toBeFalsy();
+  test('C49-UT02 Batas: hitungBiaya dengan tarif 0 mengembalikan total 0', () => {
+    const biaya = Pembayaran.hitungBiaya(0, 1);
+    expect(biaya.total).toBe(0);
   });
 
   // Dilaporkan FAIL apa adanya (selaras dengan INT-TC33): terdapat karakter '+' pada query UPDATE SesiKonsultasi di models/Pembayaran.js
@@ -91,10 +97,9 @@ describe('C49 Pembayaran (Mendalam)', () => {
 
     Pembayaran.simpanHasil({
       idSesi,
-      metodePembayaran: 'kartu',
-      totalBayar: 70000,
-      statusPembayaran: 'berhasil',
-      referensiGateway: 'REF-UT-01',
+      nominal: 70000,
+      berhasil: true,
+      metode: 'kartu',
     });
 
     const sesi = U.db.prepare('SELECT statusPembayaran FROM SesiKonsultasi WHERE idSesi = ?').get(idSesi);
@@ -112,7 +117,12 @@ describe('C51 PencairanDana (Mendalam)', () => {
 
   test('C51-UT02 Normal: ajukan mengurangi saldo mitra dan menyimpan riwayat pencairan', () => {
     U.db.prepare('UPDATE MitraPengacara SET saldo = 250000 WHERE idMitra = ?').run(idAmi);
-    PencairanDana.ajukan(idAmi, 100000, 'BCA|1234567890|Ami Pengacara', 'REF-CAIR-01');
+    PencairanDana.ajukan({
+      idMitra: idAmi,
+      nominal: 100000,
+      rekening: 'BCA|1234567890|Ami Pengacara',
+      berhasil: true,
+    });
 
     expect(U.db.prepare('SELECT saldo FROM MitraPengacara WHERE idMitra = ?').get(idAmi).saldo).toBe(150000);
     expect(PencairanDana.riwayatPencairan(idAmi).length).toBeGreaterThan(0);
@@ -120,15 +130,25 @@ describe('C51 PencairanDana (Mendalam)', () => {
 
   test('C51-UT03 Batas: ajukan tepat sebesar seluruh saldo menyisakan saldo 0', () => {
     U.db.prepare('UPDATE MitraPengacara SET saldo = 120000 WHERE idMitra = ?').run(idAmi);
-    PencairanDana.ajukan(idAmi, 120000, 'BCA|1234567890|Ami Pengacara', 'REF-CAIR-02');
+    PencairanDana.ajukan({
+      idMitra: idAmi,
+      nominal: 120000,
+      rekening: 'BCA|1234567890|Ami Pengacara',
+      berhasil: true,
+    });
     expect(U.db.prepare('SELECT saldo FROM MitraPengacara WHERE idMitra = ?').get(idAmi).saldo).toBe(0);
   });
 
   test('C51-UT04 Negatif: ajukan melebihi saldo ditolak dan saldo mitra tetap', () => {
     U.db.prepare('UPDATE MitraPengacara SET saldo = 50000 WHERE idMitra = ?').run(idAmi);
     expect(() => {
-      PencairanDana.ajukan(idAmi, 50001, 'BCA|1234567890|Ami Pengacara', 'REF-CAIR-03');
-    }).toThrow();
+      PencairanDana.ajukan({
+        idMitra: idAmi,
+        nominal: 50001,
+        rekening: 'BCA|1234567890|Ami Pengacara',
+        berhasil: true,
+      });
+    }).toThrow('Saldo tidak mencukupi');
     expect(U.db.prepare('SELECT saldo FROM MitraPengacara WHERE idMitra = ?').get(idAmi).saldo).toBe(50000);
   });
 });

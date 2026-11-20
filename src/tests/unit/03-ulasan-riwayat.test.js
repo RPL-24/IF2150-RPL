@@ -33,8 +33,8 @@ describe('C47 Ulasan (Mendalam)', () => {
       idSesi,
       idMasyarakat: idSisi,
       idMitra: idCitra,
-      skorRating: 5,
-      teksUlasan: 'Penjelasan sangat jelas dan membantu.',
+      skor: 5,
+      teks: 'Penjelasan sangat jelas dan membantu.',
     });
 
     expect(U.db.prepare('SELECT skorRating FROM Ulasan WHERE idSesi = ?').get(idSesi).skorRating).toBe(5);
@@ -47,8 +47,8 @@ describe('C47 Ulasan (Mendalam)', () => {
       idSesi,
       idMasyarakat: idSisi,
       idMitra: idCitra,
-      skorRating: 1,
-      teksUlasan: 'Kurang sesuai harapan.',
+      skor: 1,
+      teks: 'Kurang sesuai harapan.',
     });
 
     expect(U.db.prepare('SELECT rating FROM MitraPengacara WHERE idMitra = ?').get(idCitra).rating).toBe(3);
@@ -61,8 +61,8 @@ describe('C47 Ulasan (Mendalam)', () => {
         idSesi,
         idMasyarakat: idSisi,
         idMitra: idCitra,
-        skorRating: 6,
-        teksUlasan: 'Skor tidak valid',
+        skor: 6,
+        teks: 'Skor tidak valid',
       })
     ).toThrow();
   });
@@ -78,9 +78,9 @@ describe('C36 Riwayat (Sedang)', () => {
 
     const cipher = SesiKonsultasi.enkripsi('Pesan untuk riwayat konsultasi');
     U.db.prepare(
-      `INSERT INTO PesanChat (idSesi, peranPengirim, isiPesan, waktuKirim)
-       VALUES (?, 'masyarakat', ?, ?)`
-    ).run(idSesi, cipher, new Date().toISOString());
+      `INSERT INTO PesanChat (idSesi, peranPengirim, idPengirim, isiPesan, waktuKirim)
+       VALUES (?, 'masyarakat', ?, ?, ?)`
+    ).run(idSesi, idSisi, cipher, new Date().toISOString());
 
     const pesan = Riwayat.pesanSesi(idSesi);
     expect(pesan).toHaveLength(1);

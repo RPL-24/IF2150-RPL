@@ -27,7 +27,7 @@ afterAll(() => {
 describe('C48 Laporan (Mendalam)', () => {
   let idLaporanUji;
 
-  test('C48-UT01 Normal: buatLaporan menyimpan laporan pelanggaran berstatus menunggu', () => {
+  test('C48-UT01 Normal: buatLaporan dan ambilDaftarLaporan menampilkan laporan berstatus menunggu', () => {
     const res = Laporan.buatLaporan({
       idPelapor: idSisi,
       peranPelapor: 'masyarakat',
@@ -38,9 +38,11 @@ describe('C48 Laporan (Mendalam)', () => {
     });
     idLaporanUji = res.lastInsertRowid;
     expect(Laporan.getDetailLaporan(idLaporanUji).statusLaporan).toBe('menunggu');
+    expect(Laporan.ambilDaftarLaporan('menunggu').some((l) => l.idLaporan === idLaporanUji)).toBe(true);
+    expect(Laporan.ambilDaftarLaporan('semua').length).toBeGreaterThan(0);
   });
 
-  test('C48-UT02 Normal: prosesBlokirAkun menyetujui laporan dan memblokir akun terlapor', () => {
+  test('C48-UT02 Normal: prosesBlokirAkun memblokir akun mitra maupun masyarakat terlapor', () => {
     Laporan.prosesBlokirAkun(idLaporanUji, 'Terbukti melanggar ketentuan.');
     const lap = U.db.prepare('SELECT * FROM Laporan WHERE idLaporan = ?').get(idLaporanUji);
     const mitra = U.db.prepare('SELECT statusAkun FROM MitraPengacara WHERE idMitra = ?').get(idBudi);
@@ -48,6 +50,18 @@ describe('C48 Laporan (Mendalam)', () => {
     expect(lap.statusLaporan).toBe('disetujui');
     expect(lap.catatanAdmin).toBe('Terbukti melanggar ketentuan.');
     expect(mitra.statusAkun).toBe('diblokir');
+
+    const resMasy = Laporan.buatLaporan({
+      idPelapor: idCitra,
+      peranPelapor: 'mitra',
+      idTerlapor: idTono,
+      peranTerlapor: 'masyarakat',
+      jenisPelanggaran: 'Spam',
+      deskripsi: 'Spam pesan berulang.',
+    });
+    Laporan.prosesBlokirAkun(resMasy.lastInsertRowid, 'Akun masyarakat diblokir.');
+    expect(U.db.prepare('SELECT statusAkun FROM Masyarakat WHERE idMasyarakat = ?').get(idTono).statusAkun)
+      .toBe('diblokir');
   });
 
   test('C48-UT03 Negatif: prosesBlokirAkun pada laporan yang sudah ditinjau melempar LAPORAN_SUDAH_DITINJAU', () => {
@@ -69,40 +83,53 @@ describe('C48 Laporan (Mendalam)', () => {
       .toBe('ditolak');
     expect(U.db.prepare('SELECT statusAkun FROM MitraPengacara WHERE idMitra = ?').get(idCitra).statusAkun)
       .toBe('aktif');
+    expect(Laporan.cariUlasanById(999999)).toBeUndefined();
   });
 
-  test('C48-UT05 Negatif: prosesBlokirAkun dengan ID tidak terdaftar melempar LAPORAN_TIDAK_DITEMUKAN', () => {
+  test('C48-UT05 Negatif: prosesBlokirAkun dan tolakLaporan dengan ID tidak terdaftar melempar LAPORAN_TIDAK_DITEMUKAN', () => {
     expect(() => Laporan.prosesBlokirAkun(999999, '')).toThrow('LAPORAN_TIDAK_DITEMUKAN');
+    expect(() => Laporan.tolakLaporan(999999, '')).toThrow('LAPORAN_TIDAK_DITEMUKAN');
   });
 });
 
 describe('C50 LiveChat (Mendalam)', () => {
   let idChatUji;
 
-  test('C50-UT01 Normal: buatSesiChat membuat sesi menunggu saat ada admin standby', () => {
-    U.db.prepare('UPDATE Admin SET statusStandby = 1 WHERE idAdmin = ?').run(idAdmin);
-    const hasil = LiveChat.buatSesiChat(idSisi);
-    idChatUji = hasil.idChat || hasil.lastInsertRowid || hasil;
+  test('C50-UT01 Normal: cekAdaAdminStandby true dan buatSesiChat membuat sesi menunggu', () => {
+    LiveChat.ubahStatusStandby(idAdmin, 1);
+    expect(Boolean(LiveChat.cekAdaAdminStandby())).toBe(true);
 
-    expect(U.db.prepare('SELECT statusChat FROM LiveChat WHERE idChat = ?').get(idChatUji).statusChat)
-      .toBe('menunggu');
+    const sesiChat = LiveChat.buatSesiChat(idSisi);
+    idChatUji = sesiChat.idChat;
+    expect(sesiChat.statusChat).toBe('menunggu');
   });
 
-  test('C50-UT02 Normal: klaimChatOlehAdmin menetapkan idAdmin dan mengubah status menjadi berlangsung', () => {
+  test('C50-UT02 Normal: klaimChatOlehAdmin, tambahPesan, dan selesaikanChat menjalankan siklus live chat', () => {
     LiveChat.klaimChatOlehAdmin(idChatUji, idAdmin);
-    const chat = U.db.prepare('SELECT * FROM LiveChat WHERE idChat = ?').get(idChatUji);
-    expect(chat.idAdmin).toBe(idAdmin);
-    expect(chat.statusChat).toBe('berlangsung');
+    const berlangsung = LiveChat.cariChatById(idChatUji);
+    expect(berlangsung.idAdmin).toBe(idAdmin);
+    expect(berlangsung.statusChat).toBe('berlangsung');
+
+    LiveChat.tambahPesan({
+      idChat: idChatUji,
+      peranPengirim: 'admin',
+      idPengirim: idAdmin,
+      isiPesan: 'Halo, ada yang bisa dibantu?',
+    });
+    expect(LiveChat.ambilPesanByChat(idChatUji)).toHaveLength(1);
+
+    LiveChat.selesaikanChat(idChatUji);
+    const selesai = LiveChat.cariChatById(idChatUji);
+    expect(selesai.statusChat).toBe('selesai');
   });
 
   test('C50-UT03 Batas: klaimChatOlehAdmin kedua pada sesi yang sudah diklaim tidak menimpa idAdmin awal', () => {
     LiveChat.klaimChatOlehAdmin(idChatUji, idAdmin + 99);
-    const chat = U.db.prepare('SELECT * FROM LiveChat WHERE idChat = ?').get(idChatUji);
-    expect(chat.idAdmin).toBe(idAdmin);
+    expect(LiveChat.cariChatById(idChatUji).idAdmin).toBe(idAdmin);
   });
 
-  test('C50-UT04 Negatif: buatSesiChat ditolak saat tidak ada admin standby', () => {
+  test('C50-UT04 Negatif: cekAdaAdminStandby mengembalikan falsy saat seluruh admin tidak standby', () => {
     U.db.prepare('UPDATE Admin SET statusStandby = 0').run();
-    expect(() => LiveChat.buatSesiChat(idTono)).toThrow();
+    expect(Boolean(LiveChat.cekAdaAdminStandby())).toBe(false);
   });
 });
