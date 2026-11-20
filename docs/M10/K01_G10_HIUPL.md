@@ -1068,7 +1068,21 @@ Tabel 4.6. Bukti Hasil Pengujian
 | *INT-TC01* | *[Sisipkan bukti pengujian integrasi]* |
 | *UC01-TC01* | *[Sisipkan tangkapan layar UC01-TC01 sesuai prosedur pengujian]* |
 | *UC01-TC02* | *[Sisipkan tangkapan layar UC01-TC02 sesuai prosedur pengujian]* |
-| *KNF01-TC01* | *[Sisipkan bukti pengukuran parameter KNF01-TC01]* |
+| KNF01-TC01 (Availability — Ketersediaan Data Restoran) | ![Bukti KNF01](assets/image-40.png) |
+| KNF02-TC01 (Response Time — Waktu Muat Restoran ≤ 1 detik) | ![Bukti KNF02 Beranda](assets/image-40.png)<br>![Bukti KNF02 Detail](assets/image-41.png) |
+| KNF03-TC01 (Reliability — Nomor Antrean Unik) | ![Bukti KNF03](assets/image-42.png) |
+| KNF04-TC01 (Ergonomy — Tampilan Nomor Antrean `I-11`) | ![Bukti KNF04](assets/image-43.png) |
+| KNF05-TC01 (Availability — Persistensi Tiket Antrean) | ![Bukti KNF05](assets/image-44.png) |
+| KNF06-TC01 (Reliability — Pencegahan Double-Booking Meja) | ![Bukti KNF06](assets/image-42.png) |
+| KNF07-TC01 (Availability — Batas Waktu Pembayaran 5 Menit) | ![Bukti KNF07](assets/image-45.png) |
+| KNF08-TC01 (Security — Skema Basis Data `schema.sql`) | ![Bukti KNF08 Tabel Pembayaran](assets/image-46.png)<br>![Bukti KNF08 Tabel Pengguna](assets/image-47.png) |
+| KNF09-TC01 (Response Time — Konfirmasi Pembayaran ≤ 10 detik) | ![Bukti KNF09](assets/image-48.png) |
+| KNF10-TC01, KNF10-TC02 (Reliability — Keandalan & Penanganan Gagal Pembayaran) | ![Bukti KNF10](assets/image-45.png) |
+| KNF11-TC01 (Availability — Pendaftaran Mitra Bersamaan) | ![Bukti KNF11 Mitra 1](assets/image-49.png)<br>![Bukti KNF11 Mitra 2](assets/image-50.png)<br>![Bukti KNF11 Admin](assets/image-51.png) |
+| KNF12-TC01 (Response Time — Verifikasi Mitra ≤ 4 Hari Kerja) | ![Bukti KNF12 Dokumen](assets/image-52.png)<br>![Bukti KNF12 Setujui](assets/image-53.png)<br>![Bukti KNF12 Email](assets/image-54.png) |
+| KNF13-TC01 (Ergonomy — Usability Testing ≤ 8 menit) | *[Sisipkan bukti pencatatan waktu stopwatch 3 responden]* |
+| KNF14-TC01 (Reliability — Pencegahan Double-Charge) | ![Bukti KNF14](assets/image-42.png) |
+
 | *...* | *...* |
 
 <br>
