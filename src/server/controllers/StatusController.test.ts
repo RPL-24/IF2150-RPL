@@ -99,7 +99,7 @@ describe("StatusController.ambilDetailStatus", () => {
     },
   );
 
-  it("mengirim detail, media dan linimasa tanpa profil pelapor atau kolom internal", async () => {
+  it("C22-UT03 mengirim detail, media dan linimasa tanpa profil pelapor atau kolom internal", async () => {
     const hasil = await ambilDetailStatus("LK-0001");
 
     expect(hasil).toEqual(ok({
@@ -118,7 +118,7 @@ describe("StatusController.ambilDetailStatus", () => {
     expect(hasil.ok && hasil.data).not.toHaveProperty("skor_prioritas");
   });
 
-  it("memberi pesan yang sama saat tiket tidak ada atau tidak terlihat karena RLS", async () => {
+  it("C22-UT04 memberi pesan yang sama saat tiket tidak ada atau tidak terlihat karena RLS", async () => {
     vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: null });
 
     expect(await ambilDetailStatus("LK-0001")).toEqual(gagal("Tiket tidak ditemukan atau tidak dapat diakses."));
@@ -177,45 +177,45 @@ describe("StatusController.ambilDetailStatus", () => {
   });
 
   it("tidak menganggap foto laporan awal sebagai foto hasil", async () => {
-  vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: { ...rincian, status: "berhasil" } });
+    vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: { ...rincian, status: "berhasil" } });
 
-  const hasil = await ambilDetailStatus(rincian.id_tiket);
+    const hasil = await ambilDetailStatus(rincian.id_tiket);
 
-  expect(hasil.ok).toBe(true);
-  if (!hasil.ok) return;
-  expect(getBuktiLengkap).toHaveBeenCalledWith(expect.anything(), rincian.id);
-  expect(hasil.data.hasilPerbaikan).toBeNull(); // bukan foto laporan awal
-  expect(hasil.data.foto).toEqual(rincian.foto); // foto laporan awal tetap di tempatnya
-});
-
-it("mengirim bukti hasil perbaikan untuk laporan berhasil", async () => {
-  vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: { ...rincian, status: "berhasil" } });
-  const bukti = {
-    id_hasil: "h1",
-    catatan: "Lubang ditambal.",
-    waktu_unggah: "2026-11-10T08:00:00Z",
-    foto: [{ path: "hasil/u/h1.jpg" }],
-    video: [],
-  };
-  vi.mocked(getBuktiLengkap).mockResolvedValue({ data: bukti, error: null });
-
-  const hasil = await ambilDetailStatus(rincian.id_tiket);
-
-  expect(hasil.ok && hasil.data.hasilPerbaikan).toEqual(bukti);
-});
-
-it("menandai bukti belum dapat ditampilkan saat pembacaan bukti gagal", async () => {
-  vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: { ...rincian, status: "berhasil" } });
-  vi.mocked(getBuktiLengkap).mockResolvedValue({
-    data: null,
-    error: new PostgrestError({ code: "500", message: "x", details: "", hint: "" }),
+    expect(hasil.ok).toBe(true);
+    if (!hasil.ok) return;
+    expect(getBuktiLengkap).toHaveBeenCalledWith(expect.anything(), rincian.id);
+    expect(hasil.data.hasilPerbaikan).toBeNull(); // bukan foto laporan awal
+    expect(hasil.data.foto).toEqual(rincian.foto); // foto laporan awal tetap di tempatnya
   });
 
-  const hasil = await ambilDetailStatus(rincian.id_tiket);
+  it("mengirim bukti hasil perbaikan untuk laporan berhasil", async () => {
+    vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: { ...rincian, status: "berhasil" } });
+    const bukti = {
+      id_hasil: "h1",
+      catatan: "Lubang ditambal.",
+      waktu_unggah: "2026-11-10T08:00:00Z",
+      foto: [{ path: "hasil/u/h1.jpg" }],
+      video: [],
+    };
+    vi.mocked(getBuktiLengkap).mockResolvedValue({ data: bukti, error: null });
 
-  expect(hasil.ok).toBe(true);
-  expect(hasil.ok && hasil.data.hasilPerbaikan).toBeUndefined();
-});
+    const hasil = await ambilDetailStatus(rincian.id_tiket);
+
+    expect(hasil.ok && hasil.data.hasilPerbaikan).toEqual(bukti);
+  });
+
+  it("menandai bukti belum dapat ditampilkan saat pembacaan bukti gagal", async () => {
+    vi.mocked(getRincian).mockResolvedValue({ ...responsRincian, data: { ...rincian, status: "berhasil" } });
+    vi.mocked(getBuktiLengkap).mockResolvedValue({
+      data: null,
+      error: new PostgrestError({ code: "500", message: "x", details: "", hint: "" }),
+    });
+
+    const hasil = await ambilDetailStatus(rincian.id_tiket);
+
+    expect(hasil.ok).toBe(true);
+    expect(hasil.ok && hasil.data.hasilPerbaikan).toBeUndefined();
+  });
 
   it("menyembunyikan pesan mentah kegagalan database", async () => {
     vi.mocked(getRincian).mockResolvedValue({
@@ -236,7 +236,7 @@ it("menandai bukti belum dapat ditampilkan saat pembacaan bukti gagal", async ()
 });
 
 describe("StatusController.ambilRiwayatWarga", () => {
-  it("mengambil riwayat dengan identitas sesi dan hanya mengirim kolom kartu", async () => {
+  it("C22-UT01 mengambil riwayat dengan identitas sesi dan hanya mengirim kolom kartu", async () => {
     vi.mocked(getMilikSaya).mockResolvedValue({
       ...responsRincian,
       data: [{
@@ -279,7 +279,7 @@ describe("StatusController.ambilLaporanPublik", () => {
     expect(getDaftarPublik).toHaveBeenCalledWith(supabase);
   });
 
-  it("menyediakan isi kartu marker tanpa mengirim identitas atau kolom rincian", async () => {
+  it("C22-UT05 menyediakan isi kartu marker tanpa mengirim identitas atau kolom rincian", async () => {
     const sumber = { ...laporanPublik, id_pelapor: "identitas-pribadi", alasan_penolakan: "catatan-pribadi" };
     vi.mocked(getDaftarPublik).mockResolvedValue({ data: [sumber], error: null });
 
@@ -380,7 +380,7 @@ describe("StatusController.ambilLaporanPublik", () => {
     expect(await ambilLaporanPublik()).toEqual(ok([]));
   });
 
-  it("menangani kegagalan pembacaan publik tanpa membocorkan pesan database", async () => {
+  it("C22-UT06 menangani kegagalan pembacaan publik tanpa membocorkan pesan database", async () => {
     vi.mocked(getDaftarPublik).mockResolvedValue({
       data: null,
       error: new PostgrestError({ code: "42703", message: "Internal database details", details: "", hint: "" }),
@@ -412,7 +412,7 @@ describe("StatusController.prosesUpvote", () => {
     vi.mocked(getJumlahUpvote).mockResolvedValue({ data: 13, error: null });
   });
 
-  it("mencatat dukungan dengan identitas sesi dan mengembalikan counter terbaru dari DB", async () => {
+  it("C22-UT07 mencatat dukungan dengan identitas sesi dan mengembalikan counter terbaru dari DB", async () => {
     // Dukungan pengguna lain dapat bertambah bersamaan; jangan memakai nilai awal + 1.
     vi.mocked(getJumlahUpvote).mockResolvedValue({ data: 15, error: null });
 
@@ -456,7 +456,7 @@ describe("StatusController.prosesUpvote", () => {
     expect(catatUpvote).not.toHaveBeenCalled();
   });
 
-  it("menangani dukungan yang sudah pernah diberikan tanpa insert ulang", async () => {
+  it("C22-UT08 menangani dukungan yang sudah pernah diberikan tanpa insert ulang", async () => {
     vi.mocked(sudahUpvote).mockResolvedValue({ data: true, error: null });
 
     expect(await prosesUpvote("LK-0097")).toEqual({ ...gagal("Anda sudah mendukung laporan ini."), dukunganTercatat: true });
@@ -518,5 +518,22 @@ describe("StatusController.prosesUpvote", () => {
 
     expect(hasil).toHaveProperty("ok", false);
     expect(hasil).toHaveProperty("dukunganTercatat", true);
+  });
+});
+
+describe("StatusController.ambilRiwayatWarga - akses", () => {
+  it("C22-UT02 menolak pengambilan riwayat jika pengguna belum login", async () => {
+    vi.mocked(requireRole).mockResolvedValue(
+      gagal("Silakan masuk terlebih dahulu."),
+    );
+
+    const hasil = await ambilRiwayatWarga();
+
+    expect(hasil).toEqual(
+      gagal("Silakan masuk terlebih dahulu."),
+    );
+    expect(requireRole).toHaveBeenCalledWith("warga");
+    expect(createClient).not.toHaveBeenCalled();
+    expect(getMilikSaya).not.toHaveBeenCalled();
   });
 });
