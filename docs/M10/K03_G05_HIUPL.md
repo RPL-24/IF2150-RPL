@@ -148,8 +148,8 @@ Tabel 3.1. Lingkungan Implementasi
 
 | Aspek | Keterangan |
 | :--- | :--- |
-| *Hardware* | prosesor Intel Core Ultra 9, RAM 32 GB LPDDR5X, dan SSD 1 TB PCIe NVMe |
-| *Operating System* | Windows dan macOS, dijalankan lewat browser berbasis Chromium |
+| *Hardware* | 	Laptop/komputer dengan prosesor minimal Intel Core i3 atau setara, RAM minimal 4 GB, dan ruang penyimpanan tersedia minimal 1 GB |
+| *Operating System* | Windows 10 atau lebih baru dan macOS 12 atau lebih baru |
 | *Bahasa Pemrograman* | JavaScript (CommonJS) di atas Node.js (minimal v20) |
 | *Framework/Library* | Express 5.3.0, EJS 7.0.2, Socket.IO 4.8.4, express-session 1.19.0, connect-flash 0.1.1, express-validator 7.3.2, multer 2.5.0, bcryptjs 3.0.3, dotenv 18.0.9, modul bawaan crypto (AES-256). Sisi klien: HTML, CSS, JavaScript biasa, font Public Sans. |
 | *DBMS* | SQLite (better-sqlite3 13.0.3), berkas db/lawhub.db |
