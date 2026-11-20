@@ -30,6 +30,8 @@ import NotificationPage from './views/NotificationPage';
 import IzinNotifikasiPage from './views/IzinNotifikasiPage';
 import ProductDetailPage from './views/ProductDetailPage';
 import ProfilePage from './views/ProfilePage';
+import EditProductPage from './views/EditProductPage';
+import PriceHistoryPage from './views/PriceHistoryPage';
 import AddProductPage from './views/AddProductPage';
 import SearchProductPage from './views/SearchProductPage';
 import TrenBahanBakuPage from './views/TrenBahanBakuPage';

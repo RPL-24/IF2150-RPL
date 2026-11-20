@@ -1,5 +1,3 @@
-// src/controllers/PriceController.ts
-
 import { supabase } from '../services/supabase';
 import { Produk } from '../models/Produk';
 import { RiwayatHargaJual } from '../models/RiwayatHargaJual';
