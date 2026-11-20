@@ -223,8 +223,38 @@ Tabel 3.3. Implementasi Antarmuka
 
 | No | ID Antarmuka | Nama Antarmuka | Nama File Fisik | Nama File Executable |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | *[I-01]* | *[Nama layar]* | *[path/ke/file]* | *[Nama file executable, atau - jika tidak ada]* |
-| 2 | *[I-02]* | *[Nama layar]* | *[path/ke/file]* | *[...]* |
+| 1 | UI-01 | Registrasi Masyarakat | src/views/auth/registrasi-masyarakat.ejs | - |
+| 2 | UI-02 | Login Masyarakat | src/views/auth/login-masyarakat.ejs | - |
+| 3 | UI-03 | Beranda Masyarakat | src/views/masyarakat/beranda.ejs | - |
+| 4 | UI-04 | searchLaw | src/views/searchLaw.ejs | - |
+| 5 | UI-05 | HaloLaw Form Kasus | src/views/halolaw/form-kasus.ejs | - |
+| 6 | UI-06 | HaloLaw List Mitra |src/views/halolaw/daftar-mitra.ejs | - |
+| 7 | UI-07 | HaloLaw List Mitra Kosong | src/views/halolaw/daftar-mitra.ejs | - |
+| 8 | UI-08 | Pemilihan Jadwal Konsultasi | src/views/konsultasi/jadwal.ejs| - |
+| 9 | UI-09 | Pembayaran | src/views/transaksi/pembayaran.ejs | - |
+| 10 | UI-10 | Chat Konsultasi Masyarakat | src/views/konsultasi/chat.ejs | - |
+| 11 | UI-11 | Chat Konsultasi Mitra Pengacara | src/views/konsultasi/chat.ejs | - |
+| 12 | UI-12 | Form Ulasan | src/views/transaksi/ulasan.ejs | - |
+| 13 | UI-13 | History Chat  | src/views/transaksi/riwayat-chat.ejs | - |
+| 14 | UI-14 | List History Chat Masyarakat | src/views/transaksi/riwayat-list.ejs | - |
+| 15 | UI-15 | List History Chat Mitra | src/views/transaksi/riwayat-list.ejs | - |
+| 16 | UI-16 | Live Chat Masyarakat | src/views/livechat/masyarakat.ejs | - |
+| 17 | UI-17 | Live Chat Admin | src/views/livechat/admin.ejs | - |
+| 18 | UI-18 | Registrasi Mitra | src/views/auth/registrasi-mitra.ejs | - |
+| 19 | UI-19 | Login Mitra | src/views/auth/login.ejs | - |
+| 20 | UI-20 | Landing Page | src/views/landing.ejs | - |
+| 21 | UI-21 | Verifikasi Mitra Lanjutan | src/views/admin/verifikasi-detail.ejs | - |
+| 22 | UI-22 | Tinjauan Laporan | src/views/admin/laporan.ejs | - |
+| 23 | UI-23 | Verifikasi Mitra | src/views/admin/verifikasi.ejs | - |
+| 24 | UI-24 | Laporkan Ulasan | src/views/laporan/form.ejs| - |
+| 25 | UI-25 | Laporkan Akun | src/views/laporan/form.ejs | - |
+| 26 | UI-26 | Pencairan Dana	| src/views/transaksi/pencairan.ejs | - |
+| 27 | UI-27 | Edit Dokumen Legalitas Mitra | src/views/mitra/EditDokumenLegalitasPage.ejs | - |
+| 28 | UI-28 | Edit Profil Mitra	| src/views/mitra/EditProfilMitraPage.ejs| - |
+| 29 | UI-29 | Konfirmasi Konsultasi | src/views/konsultasi/konfirmasi.ejs | - |
+| 30 | UI-30 | List Pengajuan |	src/views/konsultasi/pengajuan.ejs | - |
+| 31 | UI-31 | Beranda Mitra | src/views/mitra/beranda.ejs | - |
+| 32 | UI-32 | Status Verifikasi Mitra | src/views/mitra/status-registrasi.ejs | - |
 | ... | *...* | *...* | *...* | *...* |
 
 ## 3.4 File Lain
@@ -235,8 +265,46 @@ Tabel 3.4. File Lain
 
 | No | Nama File | Keterangan |
 | :--- | :--- | :--- |
-| 1 | *[Nama file]* | *[Fungsi file]* |
+| 1 | src/server.js| File utama untuk menjalankan server aplikasi LawHub menggunakan Express dan menginisialisasi koneksi serta layanan yang diperlukan. |
+| 2 | src/package.json | Menyimpan konfigurasi proyek Node.js, daftar dependency, serta script untuk menjalankan aplikasi dan menginisialisasi database. |
+| 3 | src/package-lock.json | Mengunci versi dependency yang digunakan agar instalasi package konsisten di lingkungan pengembangan. |
+| 4 | src/.env.example | Menyediakan contoh konfigurasi env variable yang diperlukan oleh aplikasi. |
+| 5 | src/db/database.js | Mengatur koneksi aplikasi dengan basis data SQLite. |
+| 6 | src/db/schema.sql | Mendefinisikan struktur tabel dan skema basis data yang digunakan oleh LawHub.|
+| 7 | src/db/init.js | Menginisialisasi basis data dengan menjalankan skema tabel yang telah didefinisikan. |
+| 8 | src/db/dataPasal.js | Menyediakan data pasal hukum yang digunakan dalam fitur SearchLaw. |
+| 9 | src/db/seed-konsultasi.js	| Menyediakan data awal (seed) yang berkaitan dengan fitur konsultasi.|
+| 10 | src/db/seed-transaksi.js	| Menyediakan data awal (seed) yang berkaitan dengan transaksi.|
+| 11 | src/routes/auth.js |Mendefinisikan routing untuk proses autentikasi dan registrasi pengguna. |
+| 12 | src/routes/admin.js | Mendefinisikan routing untuk fitur dan aktivitas Admin. |
+| 13 | src/routes/halolaw.js | Mendefinisikan routing untuk fitur HaloLaw, termasuk pengajuan kasus dan pencarian mitra. |
+| 14 |src/routes/konsultasi.js | Mendefinisikan routing untuk proses penjadwalan, pengajuan, dan sesi konsultasi.|
+| 15 | src/routes/laporan.js | Mendefinisikan routing untuk proses pelaporan akun maupun ulasan. |
+| 16 |src/routes/masyarakat.js | Mendefinisikan routing untuk halaman dan aktivitas pengguna Masyarakat. |
+| 17 | src/routes/mitra.js | Mendefinisikan routing untuk halaman dan aktivitas Mitra Pengacara.|
+| 18 | src/routes/searchLaw.js	| Mendefinisikan routing untuk fitur pencarian dasar hukum SearchLaw.|
+| 19 | src/routes/transaksi.js | Mendefinisikan routing untuk pembayaran, pencairan dana, dan riwayat transaksi. |
+| 20 | src/middleware/auth.js | Mengatur middleware autentikasi dan pembatasan akses berdasarkan status atau peran pengguna.|
+| 21 | src/middleware/upload.js | Mengatur proses unggah berkas yang dibutuhkan dalam aplikasi, seperti dokumen legalitas dan bukti pendukung kasus.|
+| 22 | src/middleware/validasi.js | Menangani validasi data masukan pengguna sebelum diproses lebih lanjut oleh aplikasi. |
+| 23 | src/services/PaymentGateway.js | Menyediakan layanan adapter untuk menghubungkan proses pembayaran dengan payment gateway. |
+| 24 | src/socket/konsultasi.js | Mengatur komunikasi real-time menggunakan Socket.IO untuk sesi chat konsultasi.|
+| 25 | src/socket/livechat.js | Mengatur komunikasi real-time menggunakan Socket.IO pada fitur Live Chat antara Masyarakat dan Admin.|
+| 26 | src/utils/Format.js | Menyediakan fungsi utilitas untuk pemformatan data yang digunakan oleh aplikasi.|
+| 27 | src/public/css/style.css | Menyimpan stylesheet utama untuk mengatur tampilan umum aplikasi LawHub. |
+| 28 | src/public/css/konsultasi.css | Mengatur tampilan antarmuka pada fitur konsultasi.|
+| 29 | src/public/css/laporan.css | Mengatur tampilan antarmuka pada fitur pelaporan.|
+| 30 | src/public/css/livechat.css | Mengatur tampilan antarmuka pada fitur Live Chat. |
+| 31 | src/public/js/login.js | Menyediakan fungsi JavaScript pada halaman login. |
+| 32 | src/public/js/konsultasi-chat.js | Menangani interaksi sisi client pada fitur chat konsultasi.|
+| 33 | src/public/js/konsultasi-jadwal.js | Menangani interaksi sisi client pada pemilihan jadwal konsultasi.|
+| 34 | src/public/js/livechat.js |	Menangani interaksi sisi client pada fitur Live Chat.|
+| 35 | src/public/img/LawHub.png | Menyimpan aset gambar logo LawHub yang digunakan pada antarmuka aplikasi.|
+| 36 | src/public/fonts/ | Menyimpan berkas font Public Sans beserta lisensinya untuk digunakan pada antarmuka aplikasi.|
+| 37 | src/uploads/ | Direktori penyimpanan berkas yang diunggah oleh pengguna melalui aplikasi.|
 | ... | *...* | *...* |
+
+
 
 <br>
 
@@ -450,18 +518,268 @@ Hasil: 57 test case integrasi dijalankan pada 24 antarmuka, 55 Pass dan 2 Fail (
 
 Pengujian use case dilakukan pada seluruh skenario normal dan alternatif sesuai Subbab 4.4 SKPL, dengan minimal satu test case untuk setiap skenario. Kolom ID KF menunjukkan KF yang diverifikasi oleh test case tersebut.
 
-### 4.4.1 Use Case [Nama Use Case 1]
+### 4.4.1 Use Case Melakukan Registrasi Akun bagi Masyarakat
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** UC01  
+**Nama Use Case:** Melakukan Registrasi Akun bagi Masyarakat
 
-Tabel 4.4.1. Hasil Pengujian Use Case [UC01]
+**Tabel 4.4.1. Hasil Pengujian Use Case UC01**
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *UC01-TC01* | *KF01* | *Normal* | *1. Buka halaman login.<br>2. Masukkan kredensial.<br>3. Klik tombol "Login".* | *User: rpl@gmail.com<br>Pass: 123456* | *Pengguna diarahkan ke Halaman Dashboard.* | *Pengguna diarahkan ke Halaman Dashboard sesuai hasil yang diharapkan.* | *Pass* |
-| *UC01-TC02* | *KF01* | *Alternatif 1: [Nama skenario]* | *[Langkah-langkah pengujian]* | *[Data masukan]* | *[Hasil yang diharapkan]* | *[Hasil aktual]* | *[Pass/Fail. Jika Fail: penjelasan dan solusi]* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+|---|---|---|---|---|---|---|---|
+| UC01-TC01 | KF01 | Normal | 1. Buka halaman registrasi Masyarakat. 2. Isi seluruh field wajib dengan data valid. 3. Klik tombol Daftar. | Nama: Raya Medina Farrelin; email: raya.test@lawhub.com ; username: rayalawhub; password: testRayalawhub; nomor HP: 081234567801 | Sistem memvalidasi data, membuat akun Masyarakat, lalu mengarahkan pengguna ke halaman pengguna.  |Sistem memvalidasi data, membuat akun Masyarakat, lalu mengarahkan pengguna ke login masyarakat. | Pass |
+| UC01-TC02 | KF01 | Alternatif 1: Registrasi gagal |1. Buka halaman registrasi Masyarakat. 2. Isi formulir menggunakan email yang sudah terdaftar, lalu klik Daftar.  | Nama: Raya Medina Farrelin; email: raya.test@lawhub.com ; username: rayahub; password: 123 nomor HP: 081234567801 | Sistem menolak registrasi, menampilkan pesan email sudah terdaftar dan meminta pengguna memperbaiki input. | Sistem menolak registrasi, menampilkan pesan email sudah terdaftar dan meminta pengguna memperbaiki input. | Pass |
+
+### 4.4.2 Use Case Melakukan Login bagi Masyarakat
+
+**ID Use Case:** UC02  
+**Nama Use Case:** Melakukan Login bagi Masyarakat
+
+**Tabel 4.4.2. Hasil Pengujian Use Case UC02**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC02-TC01 | KF01, KF02 | Normal |1. Buka halaman login Masyarakat. 2. Masukkan email dan password akun Masyarakat yang sudah terdaftar. 3. Klik Login.  | email: raya.test@lawhub.com; password : testRayalawhub | Sistem memvalidasi kredensial dan mengarahkan Masyarakat ke halaman utama yang menyediakan pilihan SearchLaw dan HaloLaw.  | Sistem memvalidasi kredensial dan mengarahkan Masyarakat ke halaman utama yang menyediakan pilihan SearchLaw dan HaloLaw.  | Pass |
+| UC02-TC02 | KF01, KF02 | Alternatif 1: Kredensial salah |1. Buka halaman login Masyarakat. 2. Masukkan email terdaftar dengan password yang salah. 3. Klik Login.  | email: raya.test@lawhub.com; password : testAmilawhub | Sistem menolak login dan menampilkan pesan kombinasi username/password salah pada form login. | Sistem menolak login dan menampilkan pesan kombinasi username/password salah pada form login, namun terdapat beberapa bug UI diaman error muncul kedalam dua container | Pass, namun terdapat beberapa bug UI|
+| UC02-TC03 | KF01, KF02 | Alternatif 2: Akun tidak terdaftar | 1. Buka halaman login Masyarakat.2. Masukkan email yang belum pernah didaftarkan. 3. Klik Login.  | Email: unknown@example.com; password: LawHubTest#2026  | Sistem menampilkan pesan akun tidak ditemukan serta pilihan untuk mengedit input atau menuju halaman registrasi.  | Sistem hanya menampilkan pesan email atau kata sandi salah tanpa opsi menuju ke halaman registrasi | Fail |
+
+### 4.4.3 Use Case Melakukan Registrasi Akun bagi Mitra Pengacara
+
+**ID Use Case:** UC03  
+**Nama Use Case:** Melakukan Registrasi Akun bagi Mitra Pengacara
+
+**Tabel 4.4.3. Hasil Pengujian Use Case UC03**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC03-TC01 | KF03 | Normal | 1. Buka halaman registrasi Mitra. 2. Isi data diri/firma dan seluruh field wajib. 3. Unggah dokumen legalitas dengan format yang diterima aplikasi. 4. Klik Submit/Daftar. | nama :Budi Mitra Pengacara; email:budi.mitra@lawhub.com; username: BudiMitra; password: testBudilawhub; nama firma: Budi Jaya Makmur; dokumen: berkas PDF/JPG valid sesuai field aplikasi. | Sistem memvalidasi dan menyimpan data, membuat akun berstatus pending, serta menampilkan notifikasi bahwa pengajuan menunggu persetujuan admin.  | Sistem memvalidasi dan menyimpan data, serta menampilkan notifikasi bahwa pengajuan menunggu persetujuan admin.  | Pass |
+| UC03-TC02 | KF03 | Alternatif 1: Gagal submit | 1. Buka halaman registrasi Mitra. 2. Kosongkan salah satu field wajib atau masukkan format data tidak valid. 3. Klik Submit/Daftar.  | Sistem menolak pengajuan dan menampilkan pesan pada field yang bermasalah agar diperbaiki.  | Sistem menolak pengajuan dan menampilkan pesan pada field yang bermasalah agar diperbaiki.| Pass |
+
+### 4.4.4 Use Case Melakukan Login bagi Mitra Pengacara
+
+**ID Use Case:** UC04  
+**Nama Use Case:** Melakukan Login bagi Mitra Pengacara
+
+**Tabel 4.4.4. Hasil Pengujian Use Case UC04**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC04-TC01 | KF03 | Normal | 1. Buka halaman login Mitra. 2. Masukkan kredensial akun Mitra yang sudah berstatus approved.3. Klik Login. | email: 'ami@lawhub.test', password: ami657 | Sistem memvalidasi kredensial dan mengarahkan Mitra ke halaman utama Mitra.  | Sistem memvalidasi kredensial dan mengarahkan Mitra ke Beranda Mitra | Pass |
+| UC04-TC02 | KF03 | Alternatif 1: Kredensial Salah |1. Buka halaman login Mitra.2. Masukkan email akun Mitra yang terdaftar dengan password salah.3. Klik Login.  | email: 'ami@lawhub.test', password: ami123 | Sistem menolak login dan menampilkan pesan kombinasi username/password salah.  | Sistem menolak login dan menampilkan pesan kombinasi username/password salah pada form login, namun terdapat beberapa bug UI diaman error muncul kedalam dua container | Pass, ada bug di UI  |
+| UC04-TC03 | KF03 | Alternatif 2: Akun tidak terdaftar |1. Buka halaman login Mitra.2. Masukkan email yang belum terdaftar.3. Klik Login dan amati pilihan yang muncul. | email: raya.mitra@lawhub.com password: raya123 | Sistem menampilkan pesan akun tidak ditemukan serta opsi mengedit input atau menuju halaman registrasi Mitra.  | Sistem hanya menampilkan pesan email atau kata sandi salah tanpa opsi menuju ke halaman registrasi  | Fail |
+| UC04-TC04 | KF03 | Alternatif 3: Akun mitra belum/gagal terverifikasi | 1. Pastikan tersedia akun Mitra berstatus pending atau rejected.2. Buka halaman login Mitra.3. Masukkan kredensial akun tersebut.4. Klik Login.  | email:budi.mitra@lawhub.com; password:password: testBudilawhub | Sistem menolak akses, menampilkan informasi bahwa akun belum/tidak terverifikasi, dan mengarahkan pengguna kembali ke halaman login atau status registrasi. | Sistem hanya menampilkan pesan email atau kata sandi salah tanpa keterangan status  | Fail 
+### 4.4.5 Use Case Melihat Status Registrasi Akun Mitra Pengacara
+
+**ID Use Case:** UC05  
+**Nama Use Case:** Melihat Status Registrasi Akun Mitra Pengacara
+
+**Tabel 4.4.5. Hasil Pengujian Use Case UC05**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC05-TC01 | KF04 | Normal | 1. Buka halaman status registrasi/verifikasi Mitra.2. Masukkan atau akses akun Mitra yang pernah mendaftar.3. Periksa status yang ditampilkan.  | username: BudiMitra | Sistem menampilkan status verifikasi akun sesuai kondisi pengajuan: pending, approved, atau rejected |SIstem menampilkan tahapan pengajuan dokumen | Pass |
+| UC05-TC02 | KF04 | Alternatif 1: Belum pernah mengajukan pendaftaran | 1. Buka halaman status registrasi Mitra menggunakan akun/email yang belum pernah mengajukan pendaftaran.2. Amati respons sistem.  | username: rayaMasyarakat | Sistem memberi informasi bahwa belum ada pengajuan registrasi.  | Sistem menampilkan warning sign bahwa username belum ditemukan/diajukan | Pass|
+### 4.4.6 Use Case Memverifikasi Pendaftar Mitra Pengacara
+
+**ID Use Case:** UC06  
+**Nama Use Case:** Memverifikasi Pendaftar Mitra Pengacara
+
+**Tabel 4.4.6. Hasil Pengujian Use Case UC06**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC06-TC01 | KF05 | Normal | 1. Login sebagai Admin.2. Buka menu verifikasi Mitra.3. Pilih pengajuan berstatus pending.4. Periksa detail data dan dokumen.5. Setujui pengajuan.  | Akun Mitra berstatus pending dengan dokumen lengkap dan valid; keputusan: approve.  | Sistem mengubah status Mitra menjadi approved dan mengirim/menampilkan notifikasi persetujuan. | Admin dapat memverifikasi dan melihat dokumen ajuan mitra | Pass |
+| UC06-TC02 | KF05 | Alternatif 1: Admin meminta penambahan/revisi dokumen | 1. Login sebagai Admin.2. Buka pengajuan Mitra berstatus pending.3. Pilih tindakan meminta revisi/tambahan dokumen.4. Isi catatan revisi dan kirim. | Akun Mitra berstatus pending dengan dokumen lengkap dan kurang valid; keputusan:tolak. | Sistem mengubah status pengajuan menjadi status revisi/wajib perbaikan dan menyampaikan catatan revisi kepada Mitra.  | Admin dapat memberikan catatan dan muncul di rincian registarsi mitra | Pass |
+| UC06-TC03 | KF05 | Alternatif 2: Dokumen tidak memenuhi syarat atau terindikasi pelanggaran | 1. Login sebagai Admin.2. Buka pengajuan Mitra pending dengan dokumen uji yang tidak valid/kedaluwarsa.3. Pilih tindakan menolak pengajuan.4. Masukkan alasan penolakan. | Akun Mitra berstatus pending dengan dokumen lengkap dan kurang valid; keputusan:tolak. | Sistem mengubah status pengajuan menjadi status revisi/wajib perbaikan dan menyampaikan catatan revisi kepada Mitra.  | Admin dapat memberikan catatan dan muncul di rincian registarsi mitra | Pass |
+### 4.4.7 Use Case Verifikasi Akun Pengacara
+
+**ID Use Case:** UC07  
+**Nama Use Case:** Verifikasi Akun Pengacara
+
+**Tabel 4.4.7. Hasil Pengujian Use Case UC07**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC07-TC01 | KF06, KF07 | Normal |1. Login sebagai Mitra.2. Buka halaman Edit Profil Firma.3. Periksa data profil dan dokumen yang tampil.4. Ubah deskripsi/tag profil lalu simpan.5. Jika tersedia, unggah/perbarui dokumen legalitas dan simpan.  | Deskripsi baru: Firma Bima memberikan layanan konsultasi hukum keluarga dan perdata; tag: Hukum Keluarga; dokumen: PDF/JPG valid bila diuji. | Sistem menampilkan data profil saat ini. Perubahan profil non-dokumen tersimpan; jika dokumen diperbarui, dokumen tersimpan dan status verifikasi dokumen kembali pending.  | Sistem menampilkan data profil saat ini. Perubahan profil non-dokumen tersimpan; jika dokumen diperbarui, dokumen tersimpan namun status verifikasi tidak berubah | Pass |
+
+### 4.4.8 Use Case Melakukan Pencarian Pasal
+
+**ID Use Case:** UC08  
+**Nama Use Case:** Melakukan Pencarian Pasal
+
+**Tabel 4.4.8. Hasil Pengujian Use Case UC08**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC08-TC01 | KF08 | Normal | 1. Login sebagai Masyarakat.2. Buka fitur SearchLaw.3. Masukkan minimal satu kata kunci.4. Tekan tombol Cari.  | keyword: permenkominfo | Sistem menampilkan daftar pasal yang relevan dengan kata kunci pencarian.  | Sistem menampilkan daftar pasal yang relevan dengan kata kunci pencarian.  | Pass |
+| UC08-TC02 | KF08 | Alternatif 1: Tidak ada pasal yang sesuai |1. Buka fitur SearchLaw.2. Masukkan kata kunci acak yang tidak terdapat pada data pasal.3. Tekan Cari.  | keyword: narkoba | Sistem menampilkan pesan bahwa tidak ditemukan pasal yang sesuai dan menyarankan kata kunci lain.  |Sistem menampilkan pesan bahwa tidak ditemukan pasal yang sesuai dan menyarankan kata kunci lain. | Pass |
+### 4.4.9 Use Case Melihat Daftar Pengacara
+
+**ID Use Case:** UC09  
+**Nama Use Case:** Melihat Daftar Pengacara
+
+**Tabel 4.4.9. Hasil Pengujian Use Case UC09**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC09-TC01 | KF09 | Normal | 1. Login sebagai Masyarakat.2. Buka fitur HaloLaw/pencarian Mitra.3. Masukkan kata kunci kasus dan/atau pilih filter yang tersedia.4. Jalankan pencarian.  | Tag: Hukum Pidana|Sistem menampilkan daftar profil Mitra yang sesuai dengan kata kunci atau filter yang dipilih. | Sistem menampilkan daftar profil Mitra yang sesuai dengan kata kunci atau filter yang dipilih.  | Pass |
+| UC09-TC02 | KF09 | Alternatif 1: Tidak ada mitra yang sesuai filter dan/atau keyword | 1. Buka fitur pencarian Mitra.2. Masukkan kata kunci atau kombinasi filter yang tidak cocok dengan Mitra mana pun.3. Jalankan pencarian. | tag Hukum perdata dan Hukum Administrasi negara | Sistem menampilkan pesan tidak ada Mitra Pengacara yang sesuai dan menyarankan perubahan/penghapusan filter atau kata kunci lain. | Sistem menampilkan pesan tidak ada Mitra Pengacara yang sesuai dan menyarankan perubahan/penghapusan filter atau kata kunci lain.  | Pass |
+### 4.4.10 Use Case Memilih Mitra Pengacara untuk Sesi Konsultasi
+
+**ID Use Case:** UC10  
+**Nama Use Case:** Memilih Mitra Pengacara untuk Sesi Konsultasi
+
+**Tabel 4.4.10. Hasil Pengujian Use Case UC10**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC10-TC01 | KF09 | Normal |1. Login sebagai Masyarakat.2. Cari dan pilih salah satu Mitra.3. Lihat jadwal ketersediaan.4. Pilih slot kosong.5. Isi ringkasan kasus jika diminta dan konfirmasi permintaan konsultasi.  | Deskripsi kasus dengan tag Hukum pidana | Sistem mengunci slot sementara, membuat permintaan konsultasi berstatus menunggu tanggapan Mitra, dan mengirim notifikasi/permintaan kepada Mitra.  | Sistem membuat permintaan konsultasi berstatus menunggu tanggapan Mitra, dan mengirim notifikasi/permintaan kepada Mitra | Pass |
+| UC10-TC02 | KF09 | Alternatif 1: Semua jadwal penuh atau tidak sesuai kebutuhan masyarakat | 1. Login sebagai Masyarakat.2. Pilih Mitra yang seluruh slot jadwalnya penuh/tidak sesuai.3. Periksa respons halaman jadwal.  | Mitra: Mitra dengan seluruh slot penuh; atau gunakan data uji jadwal penuh. | Sistem menampilkan informasi bahwa tidak ada jadwal tersedia |Sistem menampilkan informasi bahwa tidak ada jadwal tersedia | Pass|
+### 4.4.11 Use Case Menanggapi Sesi Konsultasi
+
+**ID Use Case:** UC11  
+**Nama Use Case:** Menanggapi Sesi Konsultasi
+
+**Tabel 4.4.11. Hasil Pengujian Use Case UC11**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC11-TC01 | KF10 | Normal |1. Login sebagai Mitra yang menerima permintaan konsultasi.2. Buka daftar/notifikasi pengajuan konsultasi.3. Buka detail permintaan.4. Pilih Terima/Accept.  | Permintaan konsultasi berstatus menunggu tanggapan; keputusan: Terima.  | Sistem mengubah status sesi menjadi terjadwal, mempertahankan slot jadwal, dan mengirim konfirmasi kepada Masyarakat. | Sistem mengubah status sesi menjadi terjadwal, mempertahankan slot jadwal, dan mengirim konfirmasi kepada Masyarakat.  | Pass |
+| UC11-TC02 | KF10 | Alternatif 1: Mitra menolak permintaan konsultasi |1. Login sebagai Mitra.2. Buka detail permintaan konsultasi yang menunggu tanggapan.3. Pilih Tolak/Reject.  | Permintaan konsultasi pending; keputusan: Tolak.  | Sistem membatalkan permintaan. | Sistem membatalkan permintaan.  | Pass  |
+| UC11-TC03 | KF10 | Alternatif 2: Mitra tidak merespon dalam waktu tertentu | [Isi langkah pengujian sesuai skenario SKPL] | [Isi data uji] | [Isi reaksi sistem yang diharapkan sesuai SKPL] | [Isi hasil aktual setelah diuji] | [Pass/Fail] |
+
+### 4.4.12 Use Case Melakukan Sesi Konsultasi
+
+**ID Use Case:** UC12  
+**Nama Use Case:** Melakukan Sesi Konsultasi
+
+**Tabel 4.4.12. Hasil Pengujian Use Case UC12**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC12-TC01 | KF11 | Normal | 1. Pastikan permintaan konsultasi diterima dan pembayaran telah lunas jika aplikasi mensyaratkannya.2. Login sebagai Masyarakat dan Mitra pada dua browser/sesi berbeda.3. Buka ruang chat pada jadwal yang disepakati.4. Kirim pesan dari kedua pihak.5. Akhiri sesi melalui kontrol yang tersedia. | Pesan Masyarakat: Selamat siang, saya ingin berkonsultasi mengenai kasus saya.; pesan Mitra: Baik, silakan jelaskan kronologiny  | Sistem membuka sesi chat, mencatat waktu mulai, mengirim dan menyimpan pesan secara real-time, lalu menutup sesi dan mengubah status menjadi selesai ketika diakhiri.  | pembayaran gagal sehingga tidak bisa melakukan konsultasi | fail  |
+| UC12-TC02 | KF11 | Alternatif 1: Sesi terputus/salah satu pihak tidak merespon | 1. Mulai sesi chat yang valid.2. Putuskan koneksi salah satu pihak atau biarkan tidak ada aktivitas.3. Amati status pada pihak yang masih aktif dan tunggu batas waktu sistem. |Kondisi uji: koneksi salah satu browser diputus / tidak mengirim pesan hingga melewati batas waktu.  |Sistem menampilkan status sesi tertunda/terputus dan menutup sesi otomatis jika batas waktu maksimum tercapai.  | fail | fail |
+
+### 4.4.13 Use Case Memberi Ulasan, Feedback, dan/atau Rating
+
+**ID Use Case:** UC13  
+**Nama Use Case:** Memberi Ulasan, Feedback, dan/atau Rating
+
+**Tabel 4.4.13. Hasil Pengujian Use Case UC13**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC13-TC01 | KF12 | Normal | 1. Login sebagai Masyarakat yang memiliki sesi konsultasi selesai.2. Buka halaman/formulir ulasan.3. Isi rating dan teks ulasan; lampirkan foto bila ingin menguji unggahan.4. Kirim ulasan. | - | Sistem menyimpan laporan berstatus menunggu tinjauan Admin dan menampilkan notifikasi laporan berhasil dikirim. | Sistem menyimpan laporan berstatus menunggu tinjauan Admin dan menampilkan notifikasi laporan berhasil dikirim. | Fail |
+| UC13-TC02 | KF12 | Alternatif 1: Gagal mengirim ulasan | 1. Buka formulir lapor pelanggaran sebagai Masyarakat.2. Kosongkan kategori atau deskripsi.3. Klik Kirim. | Kategori: kosong; deskripsi: kosong  | Sistem menolak laporan dan menampilkan pesan bahwa field wajib harus dilengkapi. |  Karena pembayaran gagal tidak mengakses riwayat dan tidak bisa mensubmit ulasan | Fail |
+
+### 4.4.14 Use Case Melaporkan Pelanggaran (Masyarakat)
+
+**ID Use Case:** UC14  
+**Nama Use Case:** Melaporkan Pelanggaran (Masyarakat)
+
+**Tabel 4.4.14. Hasil Pengujian Use Case UC14**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC14-TC01 | KF13 | Normal | 1. Login sebagai Masyarakat yang memiliki sesi konsultasi terkait.2. Buka fitur lapor pelanggaran pada sesi tersebut. 3. Pilih kategori pelanggaran dan isi deskripsi.4. Lampirkan bukti bila tersedia.5. Kirim laporan.  | Kategori: Perilaku tidak profesional; deskripsi: Mitra mengirim pesan yang tidak berkaitan dengan konsultasi.; bukti: gambar/screenshot uji (jika field tersedia).  | Sistem menyimpan laporan berstatus menunggu tinjauan Admin dan menampilkan notifikasi laporan berhasil dikirim.  | Sistem menyimpan laporan berstatus menunggu tinjauan Admin dan menampilkan notifikasi laporan berhasil dikirim.  | Pass |
+| UC14-TC02 | KF13 | Alternatif 1: Formulir laporan tidak lengkap |1. Buka formulir lapor pelanggaran sebagai Masyarakat.2. Kosongkan kategori atau deskripsi.3. Klik Kirim.  | Kategori: kosong; | Sistem menolak laporan dan menampilkan pesan bahwa field wajib harus dilengkapi.  |Sistem menolak laporan dan menampilkan pesan bahwa field wajib harus dilengkapi.  | Pass |
+
+### 4.4.15 Use Case Melaporkan Pelanggaran (Mitra Pengacara)
+
+**ID Use Case:** UC15  
+**Nama Use Case:** Melaporkan Pelanggaran (Mitra Pengacara)
+
+**Tabel 4.4.15. Hasil Pengujian Use Case UC15**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC15-TC01 | KF13 | Normal | 1. Login sebagai Mitra yang memiliki sesi konsultasi terkait.2. Buka fitur lapor pelanggaran pada sesi tersebut3. Pilih kategori dan isi deskripsi pelanggaran oleh Masyarakat.4. Lampirkan bukti bila tersedia.5. Kirim laporan.  | Kategori: Perilaku tidak pantas; deskripsi: Pengguna mengirim pesan yang mengandung ancaman.;  | Sistem menyimpan laporan berstatus menunggu tinjauan Admin dan menampilkan notifikasi laporan berhasil dikirim.  | Sistem menyimpan laporan berstatus menunggu tinjauan Admin dan menampilkan notifikasi laporan berhasil dikirim. | Pass  |
+| UC15-TC02 | KF13 | Alternatif 1: Formulir laporan tidak lengkap |1. Buka formulir lapor pelanggaran sebagai Masyarakat.2. Kosongkan kategori atau deskripsi.3. Klik Kirim.  | Kategori: kosong; | Sistem menolak laporan dan menampilkan pesan bahwa field wajib harus dilengkapi.  |Sistem menolak laporan dan menampilkan pesan bahwa field wajib harus dilengkapi.  | Pass |
+
+### 4.4.16 Use Case Melaporkan Ulasan
+
+**ID Use Case:** UC16  
+**Nama Use Case:** Melaporkan Ulasan
+
+**Tabel 4.4.16. Hasil Pengujian Use Case UC16**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC16-TC01 | KF14 | Normal | 1. Login sebagai Mitra.2. Buka profil Mitra dan pilih ulasan yang akan dilaporkan3. Buka formulir laporan ulasan.4. Pilih alasan dan isi keterangan.5. Kirim laporan.  | Alasan: Ulasan tidak relevan; keterangan: Isi ulasan tidak berkaitan dengan sesi konsultasi yang dilakukan.  | Sistem menyimpan laporan berstatus menunggu tinjauan Admin dan menampilkan notifikasi laporan berhasil dikirim. | Karena  ulasan tidak bisa diberikan maka laporan ulasan tidak bisa diakses | Fail |
+| UC16-TC02 | KF14 | Alternatif 1: Formulir laporan tidak lengkap | 1. Buka formulir laporan ulasan.2. Kosongkan alasan atau keterangan wajib.3. Klik Kirim.  | Alasan: kosong; keterangan: kosong.  | Sistem menampilkan pesan kesalahan dan meminta Mitra melengkapi formulir.  | Karena  ulasan tidak bisa diberikan maka laporan ulasan tidak bisa diakses | Fail |
+
+
+### 4.4.17 Use Case Memblokir Akun
+
+**ID Use Case:** UC17  
+**Nama Use Case:** Memblokir Akun
+
+**Tabel 4.4.17. Hasil Pengujian Use Case UC17**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC17-TC01 | KF15, KF16 | Normal |1. Login sebagai Admin.2. Buka daftar laporan masuk.3. Pilih laporan dan periksa detail/bukti.4. Nyatakan laporan valid dan pilih tindakan blokir akun.5. Konfirmasi tindakan. | Laporan uji yang valid; akun terlapor: akun dummy Masyarakat/Mitra; keputusan: setujui laporan dan blokir.  | Sistem memblokir akun terlapor, mengubah status akun menjadi diblokir, dan memberi notifikasi kepada akun terkait. Akun terblokir tidak dapat mengakses sistem.  | Sistem memblokir akun terlapor, mengubah status akun menjadi diblokir, dan memberi notifikasi kepada akun terkait. Akun terblokir tidak dapat mengakses sistem.| Pass\|
+| UC17-TC02 | KF15, KF16 | Alternatif 1: Laporan tidak disetujui admin |1. Login sebagai Admin.2. Buka laporan masuk.3. Periksa detail laporan.4. Pilih tindakan menolak laporan/tidak memblokir akun. | Laporan uji dengan bukti tidak cukup; keputusan: tolak laporan.  | Sistem menutup laporan dengan status ditolak, tidak memblokir akun terlapor, dan memberi notifikasi hasil tinjauan kepada pelapor. | Sistem menutup laporan dengan status ditolak, tidak memblokir akun terlapor, dan memberi notifikasi hasil tinjauan kepada pelapor. | Pass  |
+
+### 4.4.18 Use Case Melihat Riwayat Penanganan
+
+**ID Use Case:** UC18  
+**Nama Use Case:** Melihat Riwayat Penanganan
+
+**Tabel 4.4.18. Hasil Pengujian Use Case UC18**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC18-TC01 | KF17 | Normal |1. Login sebagai Masyarakat.2. Buka fitur Live Chat.3. Ketik pertanyaan mengenai kendala teknis.4. Kirim pesan dan amati ruang chat. | Pesan: Saya mengalami kendala saat membuka halaman konsultasi. Mohon bantuannya. | Sistem meneruskan pesan ke Admin dan menampilkan percakapan/pesan pada Live Chat.  | [Isi hasil aktual setelah diuji] | [Pass/Fail] |
+| UC18-TC02 | KF17 | Alternatif 1: Riwayat kosong | [Isi langkah pengujian sesuai skenario SKPL] | [Isi data uji] | [Isi reaksi sistem yang diharapkan sesuai SKPL] | [Isi hasil aktual setelah diuji] | [Pass/Fail] |
+
+### 4.4.19 Use Case Menanyakan Masalah Teknis
+
+**ID Use Case:** UC19  
+**Nama Use Case:** Menanyakan Masalah Teknis
+
+**Tabel 4.4.19. Hasil Pengujian Use Case UC19**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC19-TC01 | KF18 | Normal | 1. Login sebagai Masyarakat.2. Buka fitur Live Chat.3. Ketik pertanyaan mengenai kendala teknis.4. Kirim pesan dan amati ruang chat. | Pesan: Saya mengalami kendala saat membuka halaman konsultasi. Mohon bantuannya. | Sistem meneruskan pesan ke Admin dan menampilkan percakapan/pesan pada Live Chat.  | Sistem meneruskan pesan ke Admin dan menampilkan percakapan/pesan pada Live Chat. | Pass  | 
+
+### 4.4.20 Use Case Menjawab Pertanyaan
+
+**ID Use Case:** UC20  
+**Nama Use Case:** Menjawab Pertanyaan
+
+**Tabel 4.4.20. Hasil Pengujian Use Case UC20**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC20-TC01 | KF18 | Normal | 1. Pastikan Masyarakat telah mengirim pesan melalui Live Chat.2. Login sebagai Admin.3. Buka halaman Live Chat Admin dan pilih percakapan Masyarakat.4. Ketik jawaban dan kirim.5. Periksa tampilan pada sisi Masyarakat. | Pertanyaan Masyarakat: Saya mengalami kendala saat membuka halaman konsultasi.; jawaban Admin: Silakan muat ulang halaman dan coba masuk kembali. | Sistem mengirim jawaban Admin dan menampilkannya pada Live Chat Masyarakat secara real-time. | Sistem mengirim jawaban Admin dan menampilkannya pada Live Chat Masyarakat secara real-time. | Pass 
+
+
+### 4.4.21 Use Case Membayar Biaya Sesi Konsultasi
+
+**ID Use Case:** UC21  
+**Nama Use Case:** Membayar Biaya Sesi Konsultasi
+
+**Tabel 4.4.21. Hasil Pengujian Use Case UC21**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC21-TC01 | KF19 | Normal | 1. Login sebagai Masyarakat yang memiliki tagihan konsultasi.2. Buka ringkasan tagihan3. Pilih salah satu metode pembayaran digital yang tersedia.4. Lanjutkan ke halaman konfirmasi/payment gateway.5. Selesaikan pembayaran menggunakan alur sandbox jika tersedia.|Tagihan konsultasi yang belum lunas; metode: salah satu metode yang tersedia; transaksi: simulasi sukses/sandbox. |Sistem menerima respons pembayaran berhasil, mengubah status tagihan menjadi lunas, dan menampilkan notifikasi pembayaran berhasil.  | Pembayaran gagal | Fail |
+
+
+### 4.4.22 Use Case Mencairkan Dana
+
+**ID Use Case:** UC22  
+**Nama Use Case:** Mencairkan Dana
+
+**Tabel 4.4.22. Hasil Pengujian Use Case UC22**
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+|---|---|---|---|---|---|---|---|
+| UC22-TC01 | KF20 | Normal | 1. Login sebagai Mitra yang memiliki saldo hasil pembayaran.2. Buka halaman dana/riwayat pembayaran yang diterima.3. Pilih opsi pencairan dana.4. Masukkan jumlah pencairan yang tidak melebihi saldo.5. Konfirmasi pengajuan pencairan.| Saldo tersedia: gunakan saldo akun uji; jumlah pencairan: Rp10.000 (atau nominal lebih kecil dari saldo); rekening tujuan: rekening dummy yang terdaftar pada akun uji.| Sistem menerima pengajuan pencairan, memprosesnya, dan menampilkan notifikasi pencairan berhasil/berhasil diajukan sesuai implementasi.  | Sistem menerima pengajuan pencairan, memprosesnya, dan menampilkan notifikasi pencairan berhasil/berhasil diajukan sesuai implementasi | Pass  |
+| UC22-TC02 | KF20 | Alternatif 1: Pencairan ditolak | 1. Login sebagai Mitra yang memiliki saldo.2. Buka halaman pencairan dana.3. Masukkan nominal pencairan yang lebih besar daripada saldo tersedia.4. Kirim pengajuan.| Saldo tersedia: misalnya Rp10.000; jumlah pencairan: Rp100.000. | Sistem menolak pengajuan dan menampilkan pesan bahwa dana yang ingin dicairkan melebihi saldo saat ini, lalu meminta Mitra memasukkan nominal lain.| Sistem menolak pengajuan dan menampilkan pesan bahwa dana yang ingin dicairkan melebihi saldo saat ini, lalu meminta Mitra memasukkan nominal lain.|   Pass |
+
 
 ### 4.4.2 Use Case [Nama Use Case 2]
 
