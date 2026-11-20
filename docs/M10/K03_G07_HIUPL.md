@@ -579,6 +579,11 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | *KF05* | *KNF01* | *UC03* | *C02 - Pesanan* | *`src/...`* | *UC03-TC01* | *C02-UT05, INT-TC04, KNF01-TC01* |
 | *KF01* | *-* | *UC01<br>UC02* | *[C01 - Nama kelas]<br>[C02 - Nama kelas]* | *[path/ke/file1]<br>[path/ke/file2]* | *UC01-TC01, UC01-TC02<br>UC02-TC01* | *-* |
 | *KF02* | *[KNFXX atau -]* | *[UCXX]* | *[CXX - Nama kelas]* | *[path/ke/file]* | *[UCXX-TCYY]* | *[CXX-UTYY, INT-TCYY, KNFXX-TCYY atau -]* |
+| *KF13* | *KN09* | *UC03, UC02, UC06* | *C02 - Laporan<br>C07 - ListTugas<br>C19 - PenugasanController* | `src/server/entities/Laporan.ts` (trigger `tambah_upvote`)<br>`src/server/entities/ListTugas.ts`<br>`src/server/controllers/PenugasanController.ts` | *UC03-TC01* | *C02-UT43 – C02-UT45, C07-UT01 – C07-UT04, C07-UT14, C19-UT03, C19-UT04, INT-TC40, KNF09-TC01* |
+| KF14 | KNF09, KNF10 | UC03 | C02 - Laporan<br>C07 - ListTugas<br>C13 - PenugasanPage<br>C19 - PenugasanController | `src/server/entities/Laporan.ts`<br>`src/server/entities/ListTugas.ts`<br>`src/client/views/PenugasanPage.tsx`<br>`src/client/components/penugasan/*`<br>`src/server/controllers/PenugasanController.ts` | UC03-TC01 – UC03-TC05 | C02-UT40 – C02-UT42, C07-UT01 – C07-UT16, C19-UT01 – C19-UT15, INT-TC40 – INT-TC43, KNF10-TC01 |
+| KF15 | - | UC04 | C04 - Foto<br>C05 - Video<br>C08 - HasilPerbaikan<br>C14 - HasilPerbaikanForm<br>C20 - PerbaikanController | `src/server/entities/HasilPerbaikan.ts`<br>`src/client/views/HasilPerbaikanForm.tsx`<br>`src/server/controllers/PerbaikanController.ts`<br>`src/lib/validasi-perbaikan.ts` | UC04-TC01 – UC04-TC04 | C08-UT01 – C08-UT07, C08-UT15 – C08-UT17, C20-UT01 – C20-UT24, INT-TC44 – INT-TC46 |
+| KF17 | - | UC05, UC03 | C09 - Evaluasi<br>C19 - PenugasanController | `src/server/entities/Evaluasi.ts` (`getEvaluasiTerakhir`)<br>`src/server/controllers/PenugasanController.ts` | UC03-TC05 | C19-UT11, INT-TC47 |
+| KF19 | - | UC06 | C08 - HasilPerbaikan<br>C22 - StatusController | `src/server/entities/HasilPerbaikan.ts` (`getBuktiLengkap`) | UC06-TC… (D) | C08-UT08 – C08-UT14, C08-UT18 – C08-UT20 |
 | *KFXX* | *-* | *[UCXX atau -]* | *[CXX - Nama kelas atau -]* | *Tidak diimplementasikan: [alasan]* | *-* | *-* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
@@ -587,5 +592,7 @@ Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 | ID KNF | Parameter | KF/UC Terkait | Test Case |
 | :--- | :--- | :--- | :--- |
 | *KNF01* | *Reliability* | *KF05 / UC03* | *KNF01-TC01* |
+| KNF09 | Response time | KF13, KF14 / UC03 | KNF09-TC01 |
+| KNF10 | Ergonomy | KF14 / UC03 | KNF10-TC01 |
 | *KNFXX* | *[Parameter]* | *[KFXX / UCXX atau -]* | *[KNFXX-TCYY]* |
 | *...* | *...* | *...* | *...* |
