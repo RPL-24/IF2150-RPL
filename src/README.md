@@ -119,6 +119,17 @@ npm test
 
 Ada 358 test dalam 24 suite (17 unit dan 7 integrasi). Test tidak memerlukan PostgreSQL maupun Mailpit karena kueri diganti tiruan, jadi perintah ini bisa dijalankan tepat setelah `npm ci`. Laporan cakupan dicetak dengan `npx jest --coverage`.
 
+#### Test integrasi dengan komponen nyata
+
+Selain test tiruan di atas, tersedia suite test integrasi di `tests/db/` yang berjalan langsung terhadap PostgreSQL dan Mailpit nyata. Untuk menjalankannya di mesin lokal (dari folder `src/`, setelah `.env` terisi):
+
+```bash
+docker compose up -d
+npm run test:db
+```
+
+Suite ini membuat ulang basis data uji terpisah (`itbeli_uji`, dapat diubah lewat `DB_NAME_UJI`) sehingga basis data pengembangan tidak tersentuh. Di CI, test unit dan `npm run test:db` dijalankan otomatis oleh workflow `.github/workflows/test-db.yml` pada setiap `push` dan `pull_request` ke `develop` dan `main`.
+
 ## Akun dan Data Uji
 
 `npm run db:seed` membuat lima akun fiktif berikut. Kata sandi semuanya `ujicoba123`.

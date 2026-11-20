@@ -1,0 +1,91 @@
+# Menjalankan test unit/integrasi tiruan dan test integrasi nyata (PostgreSQL + Mailpit).
+name: test-db
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  uji-integrasi:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: src
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: itbeli
+          POSTGRES_PASSWORD: itbeli_ci
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U itbeli -d postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      mailpit:
+        image: axllent/mailpit:v1.21
+        ports:
+          - 1025:1025
+          - 8025:8025
+
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: itbeli
+      DB_PASSWORD: itbeli_ci
+      DB_NAME: itbeli
+      DB_NAME_UJI: itbeli_uji
+      SMTP_HOST: localhost
+      SMTP_PORT: 1025
+      SUREL_PENGIRIM: ITBELI <no-reply@itbeli.local>
+      MAILPIT_URL: http://localhost:8025
+      # Nilai uji khusus CI (bukan rahasia produksi)
+      KUNCI_ENKRIPSI_PESAN: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      KUNCI_SSO: fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210
+      SSO_URL_DASAR: http://localhost:3000
+
+    steps:
+      - name: Ambil kode repositori
+        uses: actions/checkout@v4
+
+      - name: Siapkan Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: src/package-lock.json
+
+      - name: Pasang dependensi
+        run: npm ci
+
+      - name: Jalankan test unit dan integrasi tiruan
+        run: npm test -- --coverage
+
+      - name: Jalankan test integrasi dengan komponen nyata
+        run: npm run test:db -- --coverage --coverageDirectory=coverage-db
+
+      - name: Unggah laporan cakupan test unit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-unit
+          path: src/coverage
+
+      - name: Unggah laporan cakupan test integrasi nyata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-db
+          path: src/coverage-db
