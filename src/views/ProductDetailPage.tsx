@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, View, Pressable } from 'react-native';
 import { supabase } from '../services/supabase';
 import { formatRupiah } from '../controllers/margin';
 import { palette, styles } from './styles';
+import { Produk } from '../models/Produk';
+import { ActivityIndicator, ScrollView, Text, View, Pressable } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/types';
 
@@ -73,6 +75,20 @@ export default function ProductDetailPage({ route }: Props) {
       {detail.tag.length > 0 && (
         <Text style={{ color: palette.secondary }}>Tag: {detail.tag.join(', ')}</Text>
       )}
+      <Pressable
+        style={[styles.primaryButton, { marginTop: 20 }]}
+        onPress={() => {
+          const p = new Produk();
+          p.setNamaProduk(detail.nama_produk);
+          p.setTag(detail.tag);
+          p.setHargaJual(Number(detail.harga_jual));
+          p.setMargin(Number(detail.margin));
+
+          navigation.navigate('EditProduct', { idProduk, produkData: p });
+        }}
+      >
+        <Text style={styles.primaryButtonText}>Edit Harga Jual</Text>
+      </Pressable>
     </ScrollView>
   );
 }
