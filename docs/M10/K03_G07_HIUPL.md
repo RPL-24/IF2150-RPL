@@ -495,19 +495,19 @@ Tabel 4.4.3. Hasil Pengujian Use Case UC03
 | *UC03-TC05* | *KF14, KF17* | *Tambahan: tugas hasil revisi* | *1. Admin "Minta ulang bukti" LK-X.<br>2. Eksekutor buka LK-X.* | *LK-0027* | *Kotak "Dikembalikan Tim Administrasi" + catatan admin* | *Rincian LK-0027 tetap lengkap dan menambahkan kotak "Dikembalikan Tim Administrasi: Minta ulang bukti" dengan catatan admin "Masih kurang bener". Lonceng notifikasi menampilkan 1 pesan baru.* | *Pass* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
-### 4.4.4 Use Case [Nama Use Case 1]
+### 4.4.4 Use Case Melaporkan Hasil Penugasan
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** UC04
+**Nama Use Case:** Melaporkan Hasil Penugasan
 
-Tabel 4.4.1. Hasil Pengujian Use Case [UC01]
+Tabel 4.4.1. Hasil Pengujian Use Case UC04
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *UC04-TC01* | *KFXX* | *Normal* | *1. Rincian LK-X -> Laporkan Hasil.<br>2. Isi catatan, unggah foto + video.<br>3. Kirim.* | *Catatan, foto, video* | *Layar terkirim, LK-X hilang dari Daftar Tugas, muncul di /evaluasi* | *xxx* | *Pass/Fail* |
-| *UC04-TC02* | *KFXX* | *Alternatif 1: data belum lengkap.* | *1. Formulir LK-Y, foto saja.* | *foto* | *Gagal terkirim: foto dan deskripsi wajib diisi, bagian catatan bergaris merah.* | *xxx* | *Pass/Fail* |
-| *UC04-TC03* | *KFXX* | *Alternatif 1: data belum lengkap* | *1. Catatan saja.<br>2. Kirim.* | *Catatan* | *Gagal terkirim: foto dan deskripsi wajib diisi, bagian foto bergaris merah.* | *xxx* | *Pass/Fail* |
-| *UC04-TC04* | *KFXX* | *Alternatif 2: berkas tidak valid* | *1. Unggah animasi.gif dan foto besar.jpg* | *Berkas gif & foto besar* | *Berkas ditolak dengan pesan format/ukuran* | *xxx* | *Pass/Fail* |
+| *UC04-TC01* | *KF15* | *Normal* | *1. Rincian LK-X -> Laporkan Hasil.<br>2. Isi catatan, unggah foto + video.<br>3. Kirim.* | *Catatan, foto, video* | *Layar terkirim, LK-X hilang dari Daftar Tugas, muncul di /evaluasi* | *Muncul layar "Hasil perbaikan terkirim". Laporan sudah tidak ada di DaftarTugas. Tiket terkirim sampai ke Tim Admin.* | *Pass* |
+| *UC04-TC02* | *KF15* | *Alternatif 1: data belum lengkap.* | *1. Formulir LK-Y, foto saja.* | *foto* | *Gagal terkirim: foto dan deskripsi wajib diisi, bagian catatan bergaris merah.* | *Muncul pesan "Gagal terkirim: Foto dan deskripsi wajib diisi", kolom catatan bergaris tepi merah, data tidak terkirim.* | *Pass* |
+| *UC04-TC03* | *KF15* | *Alternatif 1: data belum lengkap* | *1. Catatan saja.<br>2. Kirim.* | *Catatan* | *Gagal terkirim: foto dan deskripsi wajib diisi, bagian foto bergaris merah.* | *Muncul pesan "Gagal terkirim: Foto dan deskripsi wajib diisi", kolom foto bukti bergaris tepi merah, data tidak terkirim.* | *Pass* |
+| *UC04-TC04* | *KF15* | *Alternatif 2: berkas tidak valid* | *1. Unggah animasi.gif dan foto besar.jpg* | *Berkas gif & foto besar* | *Berkas ditolak dengan pesan format/ukuran* | *Berkas ditolak "Foto harus JPG/PNG, video MP4/MOV/MKV, maks. 10 MB". Foto tidak tampil sebagai daftar unggahan, data tidak terkirim* | *Pass* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
 <br>
