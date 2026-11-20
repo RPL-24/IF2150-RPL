@@ -7,8 +7,10 @@ HASIL IMPLEMENTASI DAN UJI PERANGKAT LUNAK (HIUPL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
-### *LawHub*
+## LawHub
+### <p align="center">
+<img alt="Logo_LawHub" src="../M7/assets/Logo_LawHub.png" width="50%">
+</p>
 
 ### Untuk: Mikhael Andrian Yonatan
 
@@ -58,17 +60,20 @@ Dipersiapkan oleh:
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
-| *B* |  |
-| *C* |  |
-| ... |  |
+| - | - |
+
 
 ---
 
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Tuliskan uraian ringkas mengenai isi dokumen, tujuan pembuatan dokumen HIUPL ini, dan siapa saja target pembacanya.
+Dokumen **Hasil Implementasi dan Uji Perangkat Lunak (HIUPL)** ini disusun untuk mendokumentasikan realisasi teknis perangkat lunak **LawHub** beserta hasil verifikasi dan pengujiannya pada tingkat unit, integrasi, *use case* (kebutuhan fungsional), dan kebutuhan non-fungsional. Tujuan utama pembuatan dokumen ini adalah memastikan bahwa seluruh modul, antarmuka, dan fungsi sistem telah diimplementasikan sesuai dengan rancangan pada SKPL dan DPPL serta mengidentifikasi temuan cacat (*bug*) maupun keterbatasan sebelum sistem dirilis.
+
+Target pembaca dokumen ini meliputi:
+* **Tim Pengembang (*Developer* & *Quality Assurance*):** Sebagai acuan evaluasi hasil implementasi, analisis akar penyebab cacat (*root cause*), serta dasar perbaikan kode pada rilis berikutnya.
+* **Dosen Pengampu dan Asisten Praktikum IF2150 Rekayasa Perangkat Lunak:** Sebagai laporan pertanggungjawaban capaian implementasi dan pengujian perangkat lunak pada Tugas 10.
+* **Pemangku Kepentingan (*Stakeholder*):** Sebagai bukti keterlacakan (*traceability*) dan jaminan kualitas pemenuhan kebutuhan fungsional maupun non-fungsional sistem LawHub.
 
 ## 1.2 Lingkup Masalah
 LawHub merupakan platform layanan konsultasi hukum digital yang dikembangkan untuk memperluas akses bantuan hukum bagi masyarakat Indonesia, di tengah tingginya angka sengketa dan konflik hukum yang belum terselesaikan serta terbatasnya kanal konsultasi hukum yang interaktif dan efisien. Berbeda dari laman bantuan hukum yang sudah ada dan umumnya berfokus pada forum tanya jawab terbuka, LawHub menghadirkan dua fitur utama, yaitu HaloLaw untuk konsultasi hukum on-demand secara langsung dengan mitra pengacara melalui chat, dan SearchLaw untuk membantu masyarakat menemukan dasar hukum yang relevan dengan kasus yang dihadapi, sehingga proses konsultasi hukum menjadi lebih cepat, transparan, dan mudah diakses oleh berbagai kalangan.
@@ -121,15 +126,19 @@ Pada dokumen ini terdapat 5 bab. Bab 1 membahas pendahuluan dengan subbab berupa
 
 # BAB 2: Deskripsi Umum Perangkat Lunak
 
-Bagian ini diisi dengan *System Overview*, dalam bentuk gambar dan narasi yang memberikan gambaran tentang aplikasi dan konteksnya. **Batasan dan keterkaitan** antara sistem yang dibangun dengan sistem lain di luarnya harus jelas. Deskripsi umum sistem perlu dilengkapi dengan pemodelan kasus yang dihadapi, seperti *use case diagram*. Berikan narasi yang jelas untuk setiap gambar yang ditampilkan.
+LawHub merupakan aplikasi web layanan konsultasi hukum digital berbasis arsitektur *Model-View-Controller* (MVC) yang dijalankan di atas lingkungan Node.js (Express) dengan basis data lokal SQLite (`lawhub.db`) serta dukungan komunikasi waktu nyata (*real-time*) melalui Socket.IO. 
 
-Bagian ini dapat menyalin atau meringkas dari dokumen SKPL atau DPPL.
+Dalam operasionalnya, perangkat lunak LawHub memiliki batasan sistem serta berinteraksi dengan komponen eksternal berikut:
+* **Payment Gateway (Simulasi/Sandbox):** Sistem eksternal yang diakses melalui adapter `PaymentGateway.js` untuk memproses otorisasi pembayaran sesi konsultasi oleh Masyarakat dan transfer pencairan dana oleh Mitra Pengacara.
+* **Sistem Penyimpanan Berkas Lokal (*File System*):** Digunakan untuk menyimpan dokumen legalitas unggahan Mitra Pengacara pada direktori `src/uploads/`.
+* **Peramban Web (*Web Browser*) & Socket.IO Client:** Antarmuka pengguna di sisi klien yang berkomunikasi melalui protokol HTTP/HTTPS untuk navigasi halaman serta WebSocket (Socket.IO) untuk pertukaran pesan waktu nyata pada sesi konsultasi dan *Live Chat*.
+* **Batasan Sistem:** Pencarian peraturan pada fitur SearchLaw bersumber sepenuhnya dari basis data internal (`tabel Peraturan`) tanpa penarikan data langsung dari portal peraturan eksternal, serta pembayaran dan pencairan dana berjalan pada mode simulasi.
 
 <p align="center">
-<img alt="System Overview / Use Case Diagram" src="./assets/contoh-uc-diagram.webp" width="90%">
+<img alt="Arsitektur MVC" src="./assets/arsitektur-mvc-lawhub.webp" width="70%">
 </p>
 <p align="center">
-<i>Gambar 2.1. Use Case Diagram [Nama P/L]</i>
+<i>Gambar 1. Arsitektur MVC LawHub</i>
 </p>
 
 <br>
@@ -138,11 +147,7 @@ Bagian ini dapat menyalin atau meringkas dari dokumen SKPL atau DPPL.
 
 # BAB 3: Implementasi
 
-Bagian ini diisi dengan informasi tentang elemen P/L yang dikembangkan (*executable files*, *configuration files*, *data files*, dan sebagainya) serta perubahannya terhadap rancangan pada DPPL (jika ada).
-
 ## 3.1 Lingkungan Implementasi
-
-Tuliskan *hardware* dan *software* yang digunakan untuk implementasi, mencakup *operating system*, bahasa pemrograman beserta versinya, *framework*/*library*, DBMS, *development tools*, dan *version control*. Lingkungan ini harus konsisten dengan **Subbab 2.1 DPPL**; jelaskan jika ada perubahan. Cantumkan juga *framework* dan alat pengujian yang dipakai.
 
 Tabel 3.1. Lingkungan Implementasi
 
@@ -157,8 +162,6 @@ Tabel 3.1. Lingkungan Implementasi
 | *Testing Tools* | Pengujian manual lewat browser, Chrome DevTools (tab Network) untuk waktu respons, dan Postman untuk API. |
 
 ## 3.2 Implementasi Modul
-
-Daftar modul/kelas yang **TELAH** diimplementasikan. Gunakan nama dan ID kelas yang sama dengan DPPL, dan konsisten dengan Tabel B.5 pada dokumen Implementasi (Tugas 9).
 
 Tabel 3.2. Implementasi Modul
 
@@ -302,9 +305,6 @@ Tabel 3.4. File Lain
 | 35 | src/public/img/LawHub.png | Menyimpan aset gambar logo LawHub yang digunakan pada antarmuka aplikasi.|
 | 36 | src/public/fonts/ | Menyimpan berkas font Public Sans beserta lisensinya untuk digunakan pada antarmuka aplikasi.|
 | 37 | src/uploads/ | Direktori penyimpanan berkas yang diunggah oleh pengguna melalui aplikasi.|
-| ... | *...* | *...* |
-
-
 
 <br>
 
@@ -373,42 +373,245 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 
 ## 4.2 Pengujian Unit Kelas
 
-Pengujian unit dilakukan pada kelas bertingkat Mendalam dan Sedang. Kelas Mendalam diuji pada seluruh operasi public dengan kasus normal, batas, dan negatif, serta mencapai *coverage* minimal 70%. Kelas Sedang diuji minimal dengan satu kasus normal dan satu kasus gagal pada operasi public utama.
+Pengujian unit dilakukan menggunakan kerangka kerja **Jest 30** dengan berkas konfigurasi bersama `src/jest.config.js` (`testEnvironment: 'node'`, `testTimeout: 30000`, `reporters: ['default']`) pada seluruh kelas yang diklasifikasikan ke dalam tingkat kedalaman **Mendalam** dan **Sedang** berdasarkan rancangan DPPL dan realisasi kode pada `src/`. Setiap berkas pengujian menggunakan basis data SQLite sementara di direktori temporer sistem operasi melalui variabel lingkungan `DB_PATH` (`src/tests/unit/helpers/dbUnit.js`), sehingga basis data utama `src/db/lawhub.db` tetap terisolasi dan tidak berubah selama pengujian berlangsung.
 
-Cara menjalankan unit test: *[tuliskan perintah, mis. `pytest src/tests/`]*.
+Kelas bertingkat **Mendalam**—yang memuat logika bisnis inti, perhitungan biaya, validasi aturan jadwal, transisi status transaksi, algoritma kriptografi, serta simulasi gerbang pembayaran—diuji pada seluruh operasi *public* menggunakan skenario kasus **Normal**, **Batas (*Boundary*)**, dan **Negatif**, dengan target cakupan kode (*code coverage*) minimal **70%** yang diukur menggunakan fasilitas *coverage* bawaan Jest. Kelas bertingkat **Sedang** diuji minimal menggunakan skenario **Normal** dan **Negatif** pada operasi *public* utamanya. Seluruh temuan cacat (*bug*) pada kode cabang rilis dilaporkan berstatus **Fail** apa adanya tanpa memperbaiki kode aplikasi di cabang pengujian.
 
-Lokasi file test: *[path, mis. `src/tests/`]*.
+* **Cara menjalankan unit test:** `npm run test:unit` (atau `npm run test:unit -- --coverage` untuk menampilkan laporan cakupan kode; `npm test` menjalankan seluruh pengujian unit dan integrasi) dari direktori `src/`
+* **Berkas konfigurasi:** `src/jest.config.js`
+* **Lokasi file test:** `src/tests/unit/*.test.js`
 
-### 4.2.1 Kelas [Nama Kelas 1]
+---
 
-**ID Kelas:** *[C02]*  
-**Nama Kelas:** *[Pesanan]*  
-**Tingkat:** *[Mendalam]*
+### 4.2.1 Kelas SesiKonsultasi
 
-Tabel 4.2.1. Hasil Pengujian Unit Kelas [C02]
+**ID Kelas:** C46  
+**Nama Kelas:** SesiKonsultasi (`src/models/SesiKonsultasi.js`)  
+**Tingkat:** Mendalam  
+
+Tabel 4.2.1. Hasil Pengujian Unit Kelas C46
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *C02-UT01* | *`hitungTotal(): Decimal`* | *Normal* | *Pesanan berisi 2 item: 10.000 x 2 dan 5.000 x 1* | *Total = 25.000* | *[Hasil aktual]* | *Pass/Fail* |
-| *C02-UT02* | *`hitungTotal(): Decimal`* | *Batas* | *Pesanan berisi tepat 1 item dengan jumlah 1* | *Total = harga item tersebut* | *[...]* | *Pass/Fail* |
-| *C02-UT03* | *`hitungTotal(): Decimal`* | *Negatif* | *Pesanan tanpa item* | *Total = 0 atau melempar kesalahan sesuai rancangan* | *[...]* | *Pass/Fail* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| C46-UT01 | `slotTersedia(idMitra, tanggal)` | Normal | Memanggil `slotTersedia()` untuk mitra `budi` pada tanggal H+3 setelah satu slot jam dipesan | Mengembalikan daftar slot kosong dan tidak menyertakan jam yang sudah dipesan | Slot yang dipesan tidak lagi muncul pada daftar slot tersedia | Pass |
+| C46-UT02 | `slotTersedia(idMitra, tanggal)` | Batas | Mengisi seluruh slot tersedia milik mitra `budi` pada tanggal H+15 lalu memanggil `slotTersedia()` | Mengembalikan array kosong `[]` tanpa melempar error | Mengembalikan `[]` | Pass |
+| C46-UT03 | `buat(dataSesi)` & `tanggapi(idSesi, idMitra, statusBaru, catatan)` | Normal | Membuat pengajuan sesi baru pada slot tersedia lalu memanggil `tanggapi(idSesi, idBudi, 'terjadwal', null)` | Status awal `'menunggu tanggapan mitra'` berubah menjadi `'terjadwal'` | Status sesi pada basis data berubah menjadi `'terjadwal'` | Pass |
+| C46-UT04 | `cekStatusPembayaran(sesi)` & `izinChat(sesi)` | Negatif | Memanggil `cekStatusPembayaran()` dan `izinChat()` pada sesi berstatus `'belum bayar'` | Mengembalikan `'Belum Lunas'` dan `izinChat().ok === false` | Mengembalikan `'Belum Lunas'` dan akses chat ditolak (`ok: false`) | Pass |
+| C46-UT05 | `enkripsi(teks)`, `dekripsi(cipher)`, `simpanPesan()`, `ambilPesan()` | Normal | Mengenkripsi teks `"Konsultasi sengketa perjanjian kerja."`, menyimpan pesan ke sesi berlangsung, lalu membacanya kembali | Ciphertext berawalan `enc:v1:` dan hasil dekripsi identik dengan teks asli | Ciphertext berawalan `enc:v1:` dan hasil dekripsi sesuai teks asli | Pass |
+| C46-UT06 | `enkripsi(teks)` & `dekripsi(cipher)` | Batas | Mengenkripsi dan mendekripsi pesan dengan panjang batas minimum 1 karakter (`"A"`) | Ciphertext valid dan hasil dekripsi kembali menjadi `"A"` | Berhasil dienkripsi dan didekripsi kembali menjadi `"A"` | Pass |
+| C46-UT07 | `dekripsi(cipher)` | Negatif | Memanggil `dekripsi()` dengan string rusak `"enc:v1:payload-rusak-tidak-valid"` | Menangani kegagalan autentikasi GCM secara terkendali tanpa *unhandled exception* | Tidak melempar exception yang menghentikan proses | Pass |
+| C46-UT08 | `mulai(idSesi)` & `akhiri(idSesi)` | Normal | Memanggil `mulai()` pada sesi `'terjadwal'` dan `'lunas'`, lalu memanggil `akhiri()` | `waktuMulai` tercatat saat mulai (`'berlangsung'`) dan `waktuSelesai` tercatat saat selesai (`'selesai'`) | Status bertransisi `terjadwal` → `berlangsung` → `selesai` dengan stempel waktu lengkap | Pass |
 
-Khusus kelas **Mendalam**:
-
-Tabel 4.2.1b. Ringkasan Cakupan Kelas [C02]
+Tabel 4.2.1b. Ringkasan Cakupan Kelas C46
 
 | Informasi | Keterangan |
 | :--- | :--- |
-| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
-| Operasi yang diuji | *[op1(), op2(), ...]* |
-| ID Algoritma yang tercakup | *[Algo-001, ...]* |
-| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
+| Daftar operasi public pada DPPL | `buat()`, `tanggapi()`, `mulai()`, `akhiri()`, `catatWaktuMulaiSelesai()`, `cekStatusPembayaran()` (serta operasi realisasi: `izinChat()`, `slotTersedia()`, `enkripsi()`, `dekripsi()`, `simpanPesan()`, `ambilPesan()`, `batalkanKedaluwarsa()`, `tutupJikaIdle()`) |
+| Operasi yang diuji | `slotTersedia()`, `buat()`, `tanggapi()`, `cekStatusPembayaran()`, `izinChat()`, `enkripsi()`, `dekripsi()`, `simpanPesan()`, `ambilPesan()`, `mulai()`, `akhiri()` |
+| ID Algoritma yang tercakup | Algo-SlotTersedia, Algo-EnkripsiPesan-AES256GCM, Algo-TransisiStatusSesi |
+| Coverage (wajib ≥ 70%) | **73,13% Lines** / **66,45% Statements** / **47,94% Branches** (bukti pada Subbab 4.6) |
 
-### 4.2.2 Kelas [Nama Kelas 2]
+---
 
-*[Ulangi pola 4.2.1 untuk setiap kelas bertingkat Mendalam atau Sedang.]*
+### 4.2.2 Kelas Pembayaran
 
+**ID Kelas:** C49  
+**Nama Kelas:** Pembayaran (`src/models/Pembayaran.js`)  
+**Tingkat:** Mendalam  
+
+Tabel 4.2.2. Hasil Pengujian Unit Kelas C49
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C49-UT01 | `hitungBiaya(tarifPerJam, durasiJam)` | Normal | Memanggil `hitungBiaya(70000, 1)` untuk tarif Rp70.000 durasi 1 jam dengan PPN 11% | Mengembalikan `subtotal = 70000`, `pajak = 7700`, dan `total = 77700` | Mengembalikan `subtotal = 70000`, `pajak = 7700`, `total = 77700` | Pass |
+| C49-UT02 | `hitungBiaya(tarifPerJam, durasiJam)` | Batas | Memanggil `hitungBiaya(0, 1)` dengan batas bawah tarif `0` | Mengembalikan `total = 0` | Mengembalikan `total = 0` | Pass |
+| C49-UT03 | `simpanHasil({ idSesi, nominal, berhasil, metode })` | Normal | Menyimpan hasil transaksi berhasil (`berhasil: true`, `nominal: 70000`) pada sesi berstatus `'belum bayar'` | Transaksi tersimpan, `SesiKonsultasi.statusPembayaran` menjadi `'lunas'`, dan saldo mitra bertambah `70000` | Melempar `TypeError: Expected first argument to be a string` karena operator `+` di awal baris query `UPDATE SesiKonsultasi` mengubah query menjadi `NaN` | **Fail.** Penyebab (selaras dengan `INT-TC33`): pada `src/models/Pembayaran.js` fungsi `simpanHasil()` terdapat tanda `+` di awal baris query `UPDATE SesiKonsultasi ...`. Usulan perbaikan: hapus tanda `+` tersebut. |
+
+Tabel 4.2.2b. Ringkasan Cakupan Kelas C49
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `simpanHasil()`, `hitungBiaya()` |
+| Operasi yang diuji | `hitungBiaya()`, `simpanHasil()` |
+| ID Algoritma yang tercakup | Algo-HitungBiayaKonsultasi, Algo-TransaksiPembayaranAtomik |
+| Coverage (wajib ≥ 70%) | **84,61% Lines** / **84,61% Statements** / **50,00% Branches** (bukti pada Subbab 4.6) |
+
+---
+
+### 4.2.3 Kelas PencairanDana
+
+**ID Kelas:** C51  
+**Nama Kelas:** PencairanDana (`src/models/PencairanDana.js`)  
+**Tingkat:** Mendalam  
+
+Tabel 4.2.3. Hasil Pengujian Unit Kelas C51
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C51-UT01 | `profilKeuangan(idMitra)` | Normal | Mengambil profil keuangan mitra `ami` yang telah memiliki saldo dan rekening bank | Mengembalikan objek profil berisi `saldo` numerik dan informasi rekening | Objek profil keuangan dikembalikan sesuai data mitra | Pass |
+| C51-UT02 | `ajukan({ idMitra, nominal, rekening, berhasil })` & `riwayatPencairan(idMitra)` | Normal | Mitra `ami` dengan saldo `250000` mengajukan pencairan `100000` ke `BCA\|1234567890\|Ami Pengacara` | Pencairan tercatat dan saldo mitra berkurang menjadi `150000` | Saldo mitra menjadi `150000` dan riwayat pencairan bertambah | Pass |
+| C51-UT03 | `ajukan({ idMitra, nominal, rekening, berhasil })` | Batas | Mitra `ami` dengan saldo `120000` mengajukan pencairan tepat sebesar seluruh saldo (`120000`) | Pencairan diproses dan saldo mitra tersisa tepat `0` | Saldo akhir mitra menjadi `0` | Pass |
+| C51-UT04 | `ajukan({ idMitra, nominal, rekening, berhasil })` | Negatif | Mitra `ami` dengan saldo `50000` mengajukan pencairan `50001` (melebihi saldo) | Pengajuan ditolak dengan pesan `'Saldo tidak mencukupi'` dan saldo mitra tetap `50000` | Melempar `'Saldo tidak mencukupi'` dan saldo tetap `50000` | Pass |
+
+Tabel 4.2.3b. Ringkasan Cakupan Kelas C51
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `ajukan()`, `riwayatPencairan()`, `profilKeuangan()` |
+| Operasi yang diuji | `profilKeuangan()`, `ajukan()`, `riwayatPencairan()` |
+| ID Algoritma yang tercakup | Algo-ValidasiSaldoPencairan, Algo-TransaksiPencairanDana |
+| Coverage (wajib ≥ 70%) | **85,71% Lines** / **86,66% Statements** / **66,66% Branches** (bukti pada Subbab 4.6) |
+
+---
+
+### 4.2.4 Kelas Ulasan
+
+**ID Kelas:** C47  
+**Nama Kelas:** Ulasan (`src/models/Ulasan.js`)  
+**Tingkat:** Mendalam  
+
+Tabel 4.2.4. Hasil Pengujian Unit Kelas C47
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C47-UT01 | `simpan({ idSesi, idMasyarakat, idMitra, skor, teks })` | Normal | Menyimpan ulasan dengan `skor = 5` pada sesi selesai milik mitra `citra` | Ulasan tersimpan dan `MitraPengacara.rating` diperbarui menjadi `5` | Ulasan tersimpan dan rating mitra menjadi `5` | Pass |
+| C47-UT02 | `simpan({ idSesi, idMasyarakat, idMitra, skor, teks })` | Batas | Menyimpan ulasan kedua dengan batas bawah `skor = 1` pada sesi selesai berikutnya milik mitra `citra` | Rata-rata rating mitra dihitung ulang menjadi `(5 + 1) / 2 = 3` | Rating mitra diperbarui menjadi `3` | Pass |
+| C47-UT03 | `simpan({ idSesi, idMasyarakat, idMitra, skor, teks })` | Negatif | Menyimpan ulasan dengan `skor = 6` (di luar rentang 1–5) | Penyimpanan ditolak dan melempar kesalahan validasi | Penyimpanan ditolak | Pass |
+
+Tabel 4.2.4b. Ringkasan Cakupan Kelas C47
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `simpanUlasanBaru()`, `perbaruiRatingMitra()` (direalisasikan dalam transaksi `Ulasan.simpan()` dan `ambilByMitra()`) |
+| Operasi yang diuji | `simpan()` |
+| ID Algoritma yang tercakup | Algo-SimpanUlasanDanHitungRating |
+| Coverage (wajib ≥ 70%) | **77,77% Lines** / **77,77% Statements** / **50,00% Branches** (bukti pada Subbab 4.6) |
+
+---
+
+### 4.2.5 Kelas Laporan
+
+**ID Kelas:** C48  
+**Nama Kelas:** Laporan (`src/models/Laporan.js`)  
+**Tingkat:** Mendalam  
+
+Tabel 4.2.5. Hasil Pengujian Unit Kelas C48
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C48-UT01 | `buatLaporan()`, `getDetailLaporan()`, `ambilDaftarLaporan()` | Normal | Menyimpan laporan pelanggaran akun terhadap mitra `budi` lalu mengambil detail dan daftar antrean | Laporan baru tersimpan dengan `statusLaporan = 'menunggu'` dan muncul di antrean | Laporan tersimpan dengan status `'menunggu'` dan muncul pada daftar antrean | Pass |
+| C48-UT02 | `prosesBlokirAkun(idLaporan, catatan)` | Normal | Memanggil `prosesBlokirAkun()` untuk laporan terhadap mitra `budi` dan masyarakat `tono` | `statusLaporan` menjadi `'disetujui'`, `catatanAdmin` tersimpan, dan `statusAkun` terlapor menjadi `'diblokir'` | Status laporan `'disetujui'` dan akun mitra maupun masyarakat terlapor menjadi `'diblokir'` | Pass |
+| C48-UT03 | `prosesBlokirAkun(idLaporan, catatan)` | Negatif | Memanggil `prosesBlokirAkun()` ulang pada laporan yang sudah berstatus `'disetujui'` | Melempar error `LAPORAN_SUDAH_DITINJAU` | Melempar error `LAPORAN_SUDAH_DITINJAU` | Pass |
+| C48-UT04 | `tolakLaporan(idLaporan, catatan)` & `cariUlasanById()` | Normal | Memanggil `tolakLaporan()` pada laporan terhadap mitra `citra` | `statusLaporan` menjadi `'ditolak'` dan `statusAkun` mitra `citra` tetap `'aktif'` | Status laporan `'ditolak'` dan akun mitra `citra` tetap `'aktif'` | Pass |
+| C48-UT05 | `prosesBlokirAkun()` & `tolakLaporan()` | Negatif | Memanggil `prosesBlokirAkun(999999, '')` dan `tolakLaporan(999999, '')` untuk ID tidak terdaftar | Melempar error `LAPORAN_TIDAK_DITEMUKAN` | Melempar error `LAPORAN_TIDAK_DITEMUKAN` | Pass |
+
+Tabel 4.2.5b. Ringkasan Cakupan Kelas C48
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `buatLaporan()`, `getDetailLaporan()`, `updateStatusLaporan()` (direalisasikan melalui `buatLaporan()`, `ambilDaftarLaporan()`, `getDetailLaporan()`, `prosesBlokirAkun()`, `tolakLaporan()`, `cariUlasanById()`) |
+| Operasi yang diuji | `buatLaporan()`, `ambilDaftarLaporan()`, `getDetailLaporan()`, `prosesBlokirAkun()`, `tolakLaporan()`, `cariUlasanById()` |
+| ID Algoritma yang tercakup | Algo-TransaksiBlokirAkun, Algo-ModerasiLaporan |
+| Coverage (wajib ≥ 70%) | **82,92% Lines** / **79,16% Statements** / **65,11% Branches** (bukti pada Subbab 4.6) |
+
+---
+
+### 4.2.6 Kelas MitraPengacara
+
+**ID Kelas:** C41  
+**Nama Kelas:** MitraPengacara (`src/models/MitraPengacara.js`, `src/models/verifikasiMitra.js`)  
+**Tingkat:** Mendalam  
+
+Tabel 4.2.6. Hasil Pengujian Unit Kelas C41
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C41-UT01 | `cari({ tags, q, ratingMin })`, `IsUsnAda()`, `infoProfil()`, `cekKetersediaanJadwal()` | Normal | Memanggil `MitraPengacara.cari()` dengan tag keahlian milik `budi` dan kata kunci `'Budi'` | Mengembalikan mitra terverifikasi yang cocok serta mengecek profil dan ketersediaan jadwal | Data mitra `budi` ditemukan dan profil/ketersediaan jadwal valid | Pass |
+| C41-UT02 | `cari({})` | Batas | Memanggil `MitraPengacara.cari({})` tanpa parameter penyaring | Mengembalikan seluruh mitra terverifikasi aktif | Daftar seluruh mitra terverifikasi aktif dikembalikan | Pass |
+| C41-UT03 | `cari({ q })` | Negatif | Memanggil `MitraPengacara.cari({ q: 'zzqqxxmitratidakada' })` | Mengembalikan array kosong `[]` | Mengembalikan `[]` | Pass |
+| C41-UT04 | `ambilDaftarMitra()`, `ambilDetailMitra()`, `prosesKeputusanVerifikasi()`, `ubahProfil()`, `ubahStatusVerifikasi()` | Normal | Menguji penolakan lalu verifikasi akun `dimas` beserta validasi dokumen dan pembaruan profil | `statusVerifikasi` berubah `'ditolak'` lalu `'terverifikasi'` dan `validitas` dokumen menjadi `1` | Status mitra menjadi `'terverifikasi'`, seluruh dokumen valid (`1`), dan profil terbarui | Pass |
+| C41-UT05 | `prosesKeputusanVerifikasi(idMitra, keputusan, catatan)` | Negatif | Memanggil `prosesKeputusanVerifikasi(999999, 'verifikasi', '')` | Melempar error `MITRA_TIDAK_DITEMUKAN` | Melempar error `MITRA_TIDAK_DITEMUKAN` | Pass |
+
+Tabel 4.2.6b. Ringkasan Cakupan Kelas C41
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `infoProfil()`, `cekKetersediaanJadwal()`, `ubahProfil()`, `ubahStatusVerifikasi()`, `tambahSaldo()`, `cari()` |
+| Operasi yang diuji | `cari()`, `IsUsnAda()`, `infoProfil()`, `cekKetersediaanJadwal()`, `ubahProfil()`, `ubahStatusVerifikasi()`, `statusRegistrasiById()`, `statusRegistrasiByUsername()`, `ambilDaftarMitra()`, `ambilDetailMitra()`, `ambilDokumenById()`, `ambilBerkasDariMitra()`, `prosesKeputusanVerifikasi()` |
+| ID Algoritma yang tercakup | Algo-FilterMitraHaloLaw, Algo-VerifikasiMitra |
+| Coverage (wajib ≥ 70%) | `MitraPengacara.js`: **88,89% Lines** / **89,47% Statements**; `verifikasiMitra.js`: **84,50% Lines** / **85,33% Statements** (bukti pada Subbab 4.6) |
+
+---
+
+### 4.2.7 Kelas LiveChat
+
+**ID Kelas:** C50  
+**Nama Kelas:** LiveChat (`src/models/LiveChat.js`)  
+**Tingkat:** Mendalam  
+
+Tabel 4.2.7. Hasil Pengujian Unit Kelas C50
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C50-UT01 | `ubahStatusStandby()`, `cekAdaAdminStandby()`, `buatSesiChat(idMasyarakat)` | Normal | Mengatur admin `statusStandby = 1` lalu memanggil `buatSesiChat()` untuk `sisi` | `cekAdaAdminStandby()` bernilai truthy dan sesi `LiveChat` baru berstatus `'menunggu'` | Admin standby terdeteksi dan baris `LiveChat` baru berstatus `'menunggu'` | Pass |
+| C50-UT02 | `klaimChatOlehAdmin()`, `tambahPesan()`, `ambilPesanByChat()`, `selesaikanChat()` | Normal | Admin mengklaim sesi `'menunggu'`, mengirim pesan balasan, lalu mengakhiri sesi | `statusChat` berubah `'berlangsung'`, pesan tersimpan, lalu status menjadi `'selesai'` | Siklus klaim, pengiriman pesan, dan penyelesaian sesi berjalan sesuai urutan | Pass |
+| C50-UT03 | `klaimChatOlehAdmin(idChat, idAdmin)` | Batas | Admin lain mencoba mengklaim sesi yang sudah diklaim admin pertama | Klaim kedua tidak menimpa `idAdmin` pertama | `idAdmin` tetap milik admin pertama yang mengklaim | Pass |
+| C50-UT04 | `cekAdaAdminStandby()` | Negatif | Mengubah `statusStandby = 0` untuk seluruh admin lalu memanggil `cekAdaAdminStandby()` | Mengembalikan nilai falsy karena tidak ada admin yang standby | Mengembalikan `false` | Pass |
+
+Tabel 4.2.7b. Ringkasan Cakupan Kelas C50
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `buatSesiChat()`, `klaimChatOlehAdmin()`, `selesaikanChat()`, `simpanPesan()`, `cekAdminStandby()`, `setStatusStandby()` |
+| Operasi yang diuji | `ubahStatusStandby()`, `cekAdaAdminStandby()`, `buatSesiChat()`, `klaimChatOlehAdmin()`, `tambahPesan()`, `ambilPesanByChat()`, `selesaikanChat()`, `cariChatById()` |
+| ID Algoritma yang tercakup | Algo-AntreanLiveChat, Algo-KlaimSesiAdmin |
+| Coverage (wajib ≥ 70%) | **88,46% Lines** / **88,46% Statements** / **50,00% Branches** (bukti pada Subbab 4.6) |
+
+---
+
+### 4.2.8 Modul PaymentGatewayAdapter
+
+**ID Kelas:** - (Modul fungsi `PaymentGateway` — kode uji `PG`)  
+**Nama Kelas:** PaymentGateway (`src/services/PaymentGateway.js`)  
+**Tingkat:** Mendalam  
+
+Tabel 4.2.8. Hasil Pengujian Unit Modul PaymentGateway
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| PG-UT01 | `prosesPembayaran(data)` | Normal | Memanggil `prosesPembayaran()` dengan kartu `4111111111111111`, kadaluwarsa `12/29`, CVC `123`, nominal `70000` | Mengembalikan persetujuan pembayaran (`berhasil: true`) | Mengembalikan `{ berhasil: true }` | Pass |
+| PG-UT02 | `prosesPembayaran(data)` | Batas | Memanggil `prosesPembayaran()` dengan nomor kartu batas non-`0000` (`1000000000000001`) | Mengembalikan persetujuan pembayaran (`berhasil: true`) | Mengembalikan `{ berhasil: true }` | Pass |
+| PG-UT03 | `prosesPembayaran(data)` | Negatif | Memanggil `prosesPembayaran()` dengan kartu berawalan `0000` (`0000111122223333`) | Menolak pembayaran dengan pesan `"Kartu ditolak oleh bank penerbit"` | Mengembalikan `{ berhasil: false }` dengan pesan `"Kartu ditolak oleh bank penerbit"` | Pass |
+| PG-UT04 | `prosesPencairan({ rekening, nominal })` | Normal | Memanggil `prosesPencairan()` dengan rekening `BCA\|1234567890\|Ami Pengacara` dan nominal `100000` | Mengembalikan persetujuan transfer pencairan (`berhasil: true`) | Mengembalikan `{ berhasil: true }` | Pass |
+| PG-UT05 | `prosesPencairan({ rekening, nominal })` | Negatif | Memanggil `prosesPencairan()` dengan `rekening: ''` dan `nominal: 100000` | Menolak pencairan dengan pesan `"Rekening tidak valid"` | Mengembalikan `{ berhasil: false }` dengan pesan `"Rekening tidak valid"` | Pass |
+
+Tabel 4.2.8b. Ringkasan Cakupan Modul PaymentGateway
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `prosesPembayaran()`, `prosesPencairan()` |
+| Operasi yang diuji | `prosesPembayaran()`, `prosesPencairan()` |
+| ID Algoritma yang tercakup | Algo-SimulasiOtorisasiKartu, Algo-SimulasiTransferPencairan |
+| Coverage (wajib ≥ 70%) | **100% Lines** / **100% Statements** / **100% Branches** (bukti pada Subbab 4.6) |
+
+---
+
+### 4.2.9 Kelas Tingkat Sedang
+
+**ID Kelas:** C36, C43, C44, C45 (Model Entitas Tingkat Sedang)  
+**Nama Kelas:** Riwayat (`C36`), Kasus (`C43`), DasarHukum (`C44`), DokumenLegalitas (`C45`)  
+**Tingkat:** Sedang  
+
+Tabel 4.2.9. Hasil Pengujian Unit Kelas Tingkat Sedang
+
+| ID Pengujian | Kelas | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C36-UT01 | C36 - Riwayat (`models/Riwayat.js`) | `pesanSesi(idSesi)` | Normal | Menyimpan pesan terenkripsi `enc:v1:...` pada sesi selesai lalu memanggil `Riwayat.pesanSesi(idSesi)` | Mengembalikan daftar pesan dengan `isiPesan` sudah didekripsi (`"Pesan untuk riwayat konsultasi"`) | Mengembalikan `isiPesan` masih berbentuk ciphertext `enc:v1:...` | **Fail.** Penyebab (selaras dengan `INT-TC38`): `models/Riwayat.js` fungsi `pesanSesi()` membaca kolom `isiPesan` langsung tanpa memanggil `dekripsi()` dari `models/SesiKonsultasi.js`. Usulan perbaikan: petakan hasil query menggunakan `dekripsi()`. |
+| C36-UT02 | C36 - Riwayat (`models/Riwayat.js`) | `untukMasyarakat(idMasyarakat)` | Negatif | Memanggil `untukMasyarakat()` untuk pengguna `tono` yang belum memiliki riwayat sesi | Mengembalikan array kosong `[]` | Mengembalikan `[]` | Pass |
+| C43-UT01 | C43 - Kasus (`models/Kasus.js`) | `buat({ idMasyarakat, judulKasus, kategoriMasalah, deskripsi })` | Normal | Menyimpan deskripsi kasus wanprestasi dengan kategori `'perdata'` untuk `sisi` | Kasus baru tersimpan dan dapat diambil kembali lewat `cariMilik()` | Kasus tersimpan dengan `kategoriMasalah = 'perdata'` | Pass |
+| C43-UT02 | C43 - Kasus (`models/Kasus.js`) | `cariMilik(idKasus, idMasyarakat)` | Negatif | Memanggil `cariMilik()` untuk kasus milik `sisi` menggunakan ID pengguna `tono` | Mengembalikan `undefined` karena bukan pemilik sah | Mengembalikan `undefined` | Pass |
+| C44-UT01 | C44 - DasarHukum (`models/DasarHukum.js`) | `cariById(idPasal)` | Normal | Memanggil `cariById()` dengan ID pasal dasar hukum yang tersedia | Mengembalikan objek dasar hukum sesuai ID | Mengembalikan objek data dasar hukum | Pass |
+| C45-UT01 | C45 - DokumenLegalitas (`models/DokumenLegalitas.js`) | `cariByMitra(idMitra)` | Normal | Memanggil `cariByMitra()` untuk mitra `dimas` yang memiliki berkas legalitas | Mengembalikan daftar dokumen legalitas milik mitra tersebut | Mengembalikan array dokumen milik `dimas` | Pass |
 <br>
 
 ## 4.3 Pengujian Integrasi
@@ -781,10 +984,6 @@ Pengujian use case dilakukan pada seluruh skenario normal dan alternatif sesuai 
 | UC22-TC02 | KF20 | Alternatif 1: Pencairan ditolak | 1. Login sebagai Mitra yang memiliki saldo.2. Buka halaman pencairan dana.3. Masukkan nominal pencairan yang lebih besar daripada saldo tersedia.4. Kirim pengajuan.| Saldo tersedia: misalnya Rp10.000; jumlah pencairan: Rp100.000. | Sistem menolak pengajuan dan menampilkan pesan bahwa dana yang ingin dicairkan melebihi saldo saat ini, lalu meminta Mitra memasukkan nominal lain.| Sistem menolak pengajuan dan menampilkan pesan bahwa dana yang ingin dicairkan melebihi saldo saat ini, lalu meminta Mitra memasukkan nominal lain.|   Pass |
 
 
-### 4.4.2 Use Case [Nama Use Case 2]
-
-*[Lanjutkan untuk seluruh use case dengan pola yang sama, hingga 4.4.N.]*
-
 <br>
 
 ## 4.5 Pengujian Kebutuhan Non-Fungsional (KNF)
@@ -822,18 +1021,16 @@ Tabel 4.5. Hasil Pengujian KNF
 
 ## 4.6 Tangkapan Layar dan Bukti Hasil Pengujian
 
-Bukti pengujian dilampirkan sesuai ID Pengujian pada Subbab 4.2 sampai 4.5, berupa tangkapan layar aplikasi, keluaran *test runner*, laporan *coverage* untuk setiap kelas Mendalam, atau hasil alat ukur.
-
 Tabel 4.6. Bukti Hasil Pengujian
 
 | ID Pengujian | Bukti Hasil Pengujian |
 | :--- | :--- |
-| 1 | `C46-UT01` s.d. `C46-UT08` | Keluaran Jest 30 untuk pengujian unit kelas `SesiKonsultasi` (8 kasus uji: 8 `Pass`) | `assets/4.2-unit-01-sesi.png` (Gambar 4.6.1) |
-| 2 | `PG-UT01` s.d. `PG-UT05`, `C49-UT01` s.d. `C49-UT03`, `C51-UT01` s.d. `C51-UT04` | Keluaran Jest 30 untuk pengujian unit modul `PaymentGateway`, kelas `Pembayaran`, dan kelas `PencairanDana` (12 kasus uji: 11 `Pass`, 1 `Fail` pada `C49-UT03` akibat cacat operator `+` di awal query SQL) | `assets/4.2-unit-02-pembayaran.png` (Gambar 4.6.2) |
-| 3 | `C47-UT01` s.d. `C47-UT03`, `C36-UT01` s.d. `C36-UT02` | Keluaran Jest 30 untuk pengujian unit kelas `Ulasan` dan `Riwayat` (5 kasus uji: 4 `Pass`, 1 `Fail` pada `C36-UT01` karena pesan riwayat belum didekripsi) | `assets/4.2-unit-03-ulasan-riwayat.png` (Gambar 4.6.3) |
-| 4 | `C48-UT01` s.d. `C48-UT05`, `C50-UT01` s.d. `C50-UT04` | Keluaran Jest 30 untuk pengujian unit kelas `Laporan` dan `LiveChat` (9 kasus uji: 9 `Pass`) | `assets/4.2-unit-04-laporan-livechat.png` (Gambar 4.6.4) |
-| 5 | `C41-UT01` s.d. `C41-UT05`, `C43-UT01` s.d. `C43-UT02`, `C44-UT01`, `C45-UT01` | Keluaran Jest 30 untuk pengujian unit kelas `MitraPengacara` / `verifikasiMitra` serta kelas tingkat Sedang (`Kasus`, `DasarHukum`, `DokumenLegalitas`) (9 kasus uji: 9 `Pass`) | `assets/4.2-unit-05-mitra.png` (Gambar 4.6.5) |
-| 6 | Cakupan Kode Unit Test (`C41`, `C46`, `C47`, `C48`, `C49`, `C50`, `C51`, `PaymentGateway`) | Laporan *code coverage* Jest 30 (`npm run test:unit -- --coverage`) yang menunjukkan total cakupan baris **71,82%** (311/433) dan seluruh kelas tingkat **Mendalam** memenuhi ambang batas minimal **70%** | `assets/4.2-unit-coverage.png` (Gambar 4.6.6) |
+| `C46-UT01` s.d. `C46-UT08` | Keluaran Jest 30 untuk pengujian unit kelas `SesiKonsultasi` (8 kasus uji: 8 `Pass`) | `assets/4.2-unit-01-sesi.png` (Gambar 4.6.1) |
+| `PG-UT01` s.d. `PG-UT05`, `C49-UT01` s.d. `C49-UT03`, `C51-UT01` s.d. `C51-UT04` | Keluaran Jest 30 untuk pengujian unit modul `PaymentGateway`, kelas `Pembayaran`, dan kelas `PencairanDana` (12 kasus uji: 11 `Pass`, 1 `Fail` pada `C49-UT03` akibat cacat operator `+` di awal query SQL) | `assets/4.2-unit-02-pembayaran.png` (Gambar 4.6.2) |
+| `C47-UT01` s.d. `C47-UT03`, `C36-UT01` s.d. `C36-UT02` | Keluaran Jest 30 untuk pengujian unit kelas `Ulasan` dan `Riwayat` (5 kasus uji: 4 `Pass`, 1 `Fail` pada `C36-UT01` karena pesan riwayat belum didekripsi) | `assets/4.2-unit-03-ulasan-riwayat.png` (Gambar 4.6.3) |
+| `C48-UT01` s.d. `C48-UT05`, `C50-UT01` s.d. `C50-UT04` | Keluaran Jest 30 untuk pengujian unit kelas `Laporan` dan `LiveChat` (9 kasus uji: 9 `Pass`) | `assets/4.2-unit-04-laporan-livechat.png` (Gambar 4.6.4) |
+| `C41-UT01` s.d. `C41-UT05`, `C43-UT01` s.d. `C43-UT02`, `C44-UT01`, `C45-UT01` | Keluaran Jest 30 untuk pengujian unit kelas `MitraPengacara` / `verifikasiMitra` serta kelas tingkat Sedang (`Kasus`, `DasarHukum`, `DokumenLegalitas`) (9 kasus uji: 9 `Pass`) | `assets/4.2-unit-05-mitra.png` (Gambar 4.6.5) |
+| Cakupan Kode Unit Test (`C41`, `C46`, `C47`, `C48`, `C49`, `C50`, `C51`, `PaymentGateway`) | Laporan *code coverage* Jest 30 (`npm run test:unit -- --coverage`) yang menunjukkan total cakupan baris **71,82%** (311/433) dan seluruh kelas tingkat **Mendalam** memenuhi ambang batas minimal **70%** | `assets/4.2-unit-coverage.png` (Gambar 4.6.6) |
 | INT-TC01 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC01 Normal: registrasi masyarakat tersimpan di basis data dengan sandi ter-hash (90 ms)`. Hasil: **Pass**. |
 | INT-TC02 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC02 Gagal: registrasi dengan email yang sudah terdaftar ditolak dan tidak menambah baris (6 ms)`. Hasil: **Pass**. |
 | INT-TC03 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC03 Normal: registrasi mitra menyimpan akun berstatus menunggu, 4 dokumen, dan berkasnya (80 ms)`. Hasil: **Pass**. |
@@ -949,7 +1146,6 @@ Tabel 4.6. Bukti Hasil Pengujian
 | KNF20-TC01 | Hasil pengujian pengiriman pesan melalui dua akun konsultasi menunjukkan pesan masyarakat langsung terkirim. |
 | KNF21-TC01 | Pemeriksaan skema tabel `DokumenLegalitas` menunjukkan kolom `validitas` (0/1) dan `waktuUnggah`, tanpa kolom masa berlaku dokumen legalitas. |
 | KNF22-TC01 | Pemeriksaan query `SearchLaw` menunjukkan pencarian hanya menggunakan tabel `Peraturan` pada database lokal, tanpa pemanggilan sumber data eksternal. |
-| *...* | *...* |
 
 <br>
 
@@ -957,22 +1153,56 @@ Tabel 4.6. Bukti Hasil Pengujian
 
 # BAB 5: Traceability
 
-Petakan setiap KF ke KNF, use case, kelas perancangan, file implementasi, dan test case. Tabel traceability berikut akan menjadi sarana verifikasi KF. Setiap KF memiliki minimal satu test case dan dinyatakan terpenuhi apabila **seluruh** test case terkaitnya berkesimpulan `Pass`. KF yang tidak diimplementasikan tetap dicantumkan beserta alasannya.
-
 Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 
 | KF ID | KNF Terkait | Use Case ID | Kelas Terkait | Implementasi File Terkait | Test Case (UC) | Test Case (Unit/Integrasi/KNF) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *KF05* | *KNF01* | *UC03* | *C02 - Pesanan* | *`src/...`* | *UC03-TC01* | *C02-UT05, INT-TC04, KNF01-TC01* |
-| *KF01* | *-* | *UC01<br>UC02* | *[C01 - Nama kelas]<br>[C02 - Nama kelas]* | *[path/ke/file1]<br>[path/ke/file2]* | *UC01-TC01, UC01-TC02<br>UC02-TC01* | *-* |
-| *KF02* | *[KNFXX atau -]* | *[UCXX]* | *[CXX - Nama kelas]* | *[path/ke/file]* | *[UCXX-TCYY]* | *[CXX-UTYY, INT-TCYY, KNFXX-TCYY atau -]* |
-| *KFXX* | *-* | *[UCXX atau -]* | *[CXX - Nama kelas atau -]* | *Tidak diimplementasikan: [alasan]* | *-* | *-* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| **KF01** | KNF01 | UC01<br>UC02 | C01 - RegistrasiMasyarakatPage<br>C02 - LoginMasyarakatPage<br>C03 - BerandaPage<br>C24 - RegistrasiMasyarakatController<br>C25 - AutentikasiController<br>C40 - Masyarakat | `src/views/auth/registrasi-masyarakat.ejs`<br>`src/views/auth/login-masyarakat.ejs`<br>`src/views/masyarakat/beranda.ejs`<br>`src/controllers/RegistrasiController.js`<br>`src/controllers/AuthController.js`<br>`src/models/Masyarakat.js` | UC01-TC01, UC01-TC02<br>UC02-TC01, UC02-TC02, UC02-TC03 *(Fail)* | INT-TC01, INT-TC02, INT-TC05, INT-TC06, INT-TC07, INT-TC08, KNF01-TC01 | **Belum Terpenuhi** *(UC02-TC03 Fail)* |
+| **KF02** | KNF01 | UC02 | C02 - LoginMasyarakatPage<br>C03 - BerandaPage<br>C25 - AutentikasiController<br>C40 - Masyarakat | `src/views/auth/login-masyarakat.ejs`<br>`src/views/masyarakat/beranda.ejs`<br>`src/controllers/AuthController.js`<br>`src/models/Masyarakat.js` | UC02-TC01, UC02-TC02, UC02-TC03 *(Fail)* | INT-TC05, INT-TC06, INT-TC07, INT-TC08, KNF01-TC01 | **Belum Terpenuhi** *(UC02-TC03 Fail)* |
+| **KF03** | KNF01 | UC03<br>UC04 | C04 - RegistrasiMitraPage<br>C05 - LoginMitraPage<br>C25 - AutentikasiController<br>C26 - RegistrasiMitraController<br>C41 - MitraPengacara<br>C45 - DokumenLegalitas | `src/views/auth/registrasi-mitra.ejs`<br>`src/views/auth/login.ejs`<br>`src/controllers/RegistrasiController.js`<br>`src/controllers/AuthController.js`<br>`src/models/MitraPengacara.js`<br>`src/models/DokumenLegalitas.js` | UC03-TC01, UC03-TC02<br>UC04-TC01, UC04-TC02, UC04-TC03 *(Fail)*, UC04-TC04 *(Fail)* | C45-UT01, INT-TC03, INT-TC04, INT-TC09, KNF01-TC01 | **Belum Terpenuhi** *(UC04-TC03, UC04-TC04 Fail)* |
+| **KF04** | KNF01 | UC05 | C06 - StatusVerifikasiMitraPage<br>C41 - MitraPengacara | `src/views/mitra/status-registrasi.ejs`<br>`src/models/MitraPengacara.js` | UC05-TC01, UC05-TC02 | INT-TC54, INT-TC55, KNF01-TC01 | **Terpenuhi** |
+| **KF05** | KNF02 | UC06 | C07 - VerifikasiMitraPage<br>C27 - VerifikasiMitraController<br>C41 - MitraPengacara<br>C42 - Admin<br>C45 - DokumenLegalitas | `src/views/admin/verifikasi.ejs`<br>`src/views/admin/verifikasi-detail.ejs`<br>`src/controllers/VerifikasiMitraController.js`<br>`src/models/verifikasiMitra.js`<br>`src/models/DokumenLegalitas.js` | UC06-TC01, UC06-TC02, UC06-TC03 | C41-UT04, C41-UT05, INT-TC10, INT-TC11, INT-TC51, KNF02-TC01 *(Fail)* | **Belum Terpenuhi** *(KNF02-TC01 Fail)* |
+| **KF06** | KNF04 | UC07 | C08 - EditProfilMitraPage<br>C28 - ProfilMitraController<br>C41 - MitraPengacara | `src/views/mitra/EditProfilMitraPage.ejs`<br>`src/controllers/ProfilMitraController.js`<br>`src/models/MitraPengacara.js` | UC07-TC01 | C41-UT01, C41-UT04, INT-TC12, INT-TC13, INT-TC14, INT-TC15, KNF04-TC01 | **Terpenuhi** |
+| **KF07** | KNF03, KNF04, KNF21 | UC07 | C09 - EditDokumenLegalitasPage<br>C28 - ProfilMitraController<br>C41 - MitraPengacara<br>C45 - DokumenLegalitas | `src/views/mitra/EditDokumenLegalitasPage.ejs`<br>`src/controllers/ProfilMitraController.js`<br>`src/models/DokumenLegalitas.js`<br>`src/middleware/upload.js` | UC07-TC01 | C45-UT01, INT-TC16, INT-TC17, KNF03-TC01 *(Fail)*, KNF04-TC01, KNF21-TC01 *(Fail)* | **Belum Terpenuhi** *(KNF03-TC01, KNF21-TC01 Fail)* |
+| **KF08** | KNF05, KNF06, KNF22 | UC08 | C10 - SearchLawPage<br>C29 - SearchLawController<br>C44 - DasarHukum | `src/views/searchLaw.ejs`<br>`src/routes/searchLaw.js`<br>`src/models/DasarHukum.js`<br>`src/db/dataPasal.js` | UC08-TC01, UC08-TC02 | C44-UT01, INT-TC18, INT-TC19, KNF05-TC01 *(Fail)*, KNF06-TC01, KNF22-TC01 | **Belum Terpenuhi** *(KNF05-TC01 Fail)* |
+| **KF09** | KNF07, KNF08, KNF11 | UC09<br>UC10 | C11 - DaftarMitraPengacaraPage<br>C12 - PemilihanJadwalKonsultasiPage<br>C30 - PencarianMitraController<br>C31 - PenjadwalanKonsultasiController<br>C41 - MitraPengacara<br>C43 - Kasus<br>C46 - SesiKonsultasi | `src/views/halolaw/form-kasus.ejs`<br>`src/views/halolaw/daftar-mitra.ejs`<br>`src/views/konsultasi/jadwal.ejs`<br>`src/controllers/PencarianMitraController.js`<br>`src/controllers/PenjadwalanKonsultasiController.js`<br>`src/models/Kasus.js`<br>`src/models/MitraPengacara.js` | UC09-TC01, UC09-TC02<br>UC10-TC01, UC10-TC02 | C41-UT01 s.d. C41-UT03, C43-UT01, C43-UT02, C46-UT01, C46-UT02, INT-TC20 s.d. INT-TC24, KNF07-TC01 *(Fail)*, KNF08-TC01 *(Fail)*, KNF11-TC01 *(Fail)* | **Belum Terpenuhi** *(KNF07, KNF08, KNF11 Fail)* |
+| **KF10** | KNF12 | UC11 | C13 - KonfirmasiKonsultasiPage<br>C32 - SesiKonsultasiController<br>C46 - SesiKonsultasi | `src/views/konsultasi/konfirmasi.ejs`<br>`src/views/konsultasi/pengajuan.ejs`<br>`src/controllers/SesiKonsultasiController.js`<br>`src/models/SesiKonsultasi.js` | UC11-TC01, UC11-TC02, UC11-TC03 *(Belum diuji)* | C46-UT03, INT-TC25, INT-TC26, INT-TC27, INT-TC56, KNF12-TC01 | **Belum Terpenuhi** *(UC11-TC03 belum diuji)* |
+| **KF11** | KNF09, KNF10, KNF11, KNF13 | UC12 | C14 - ChatKonsultasiPage<br>C32 - SesiKonsultasiController<br>C46 - SesiKonsultasi | `src/views/konsultasi/chat.ejs`<br>`src/public/js/konsultasi-chat.js`<br>`src/controllers/SesiKonsultasiController.js`<br>`src/socket/konsultasi.js`<br>`src/models/SesiKonsultasi.js` | UC12-TC01 *(Fail)*, UC12-TC02 *(Fail)* | C46-UT04 s.d. C46-UT08, INT-TC28, INT-TC29, INT-TC30, KNF09-TC01 *(Fail)*, KNF10-TC01 *(Fail)*, KNF11-TC01 *(Fail)*, KNF13-TC01 *(Fail)* | **Belum Terpenuhi** *(UC12, KNF09, KNF10, KNF11, KNF13 Fail)* |
+| **KF12** | KNF14 | UC13 | C15 - UlasanPage<br>C33 - UlasanController<br>C47 - Ulasan | `src/views/transaksi/ulasan.ejs`<br>`src/controllers/UlasanController.js`<br>`src/models/Ulasan.js` | UC13-TC01 *(Fail)*, UC13-TC02 *(Fail)* | C47-UT01, C47-UT02, C47-UT03, INT-TC35, INT-TC36, INT-TC37, KNF14-TC01 *(Fail)* | **Belum Terpenuhi** *(UC13, KNF14 Fail)* |
+| **KF13** | KNF15 | UC14<br>UC15 | C16 - LaporanAkunPage<br>C34 - LaporanController<br>C48 - Laporan | `src/views/laporan/form.ejs`<br>`src/controllers/LaporanController.js`<br>`src/models/Laporan.js` | UC14-TC01, UC14-TC02<br>UC15-TC01, UC15-TC02 | C48-UT01, INT-TC43, INT-TC44, KNF15-TC01 | **Terpenuhi** |
+| **KF14** | KNF15 | UC16 | C17 - LaporanUlasanPage<br>C34 - LaporanController<br>C47 - Ulasan<br>C48 - Laporan | `src/views/laporan/form.ejs`<br>`src/controllers/LaporanController.js`<br>`src/models/Laporan.js`<br>`src/models/Ulasan.js` | UC16-TC01 *(Fail)*, UC16-TC02 *(Fail)* | INT-TC52, INT-TC53, KNF15-TC01 | **Belum Terpenuhi** *(UC16-TC01, UC16-TC02 Fail)* |
+| **KF15** | KNF16, KNF17 | UC17 | C18 - TinjauanPage<br>C35 - ModerasiAkunController<br>C42 - Admin<br>C48 - Laporan | `src/views/admin/laporan.ejs`<br>`src/controllers/ModerasiAkunController.js`<br>`src/models/Laporan.js` | UC17-TC01, UC17-TC02 | C48-UT02 s.d. C48-UT05, INT-TC45, INT-TC46, INT-TC47, KNF16-TC01 *(Fail)*, KNF17-TC01 | **Belum Terpenuhi** *(KNF16-TC01 Fail)* |
+| **KF16** | KNF16, KNF18 | UC17 | C18 - TinjauanPage<br>C35 - ModerasiAkunController<br>C42 - Admin<br>C48 - Laporan | `src/views/admin/laporan.ejs`<br>`src/controllers/ModerasiAkunController.js`<br>`src/models/Laporan.js` | UC17-TC01, UC17-TC02 | C48-UT02 s.d. C48-UT05, INT-TC45, INT-TC46, INT-TC47, KNF16-TC01 *(Fail)*, KNF18-TC01 *(Fail)* | **Belum Terpenuhi** *(KNF16-TC01, KNF18-TC01 Fail)* |
+| **KF17** | KNF01, KNF19 | UC18 | C19 - HistoryPage<br>C36 - RiwayatController<br>C46 - SesiKonsultasi | `src/views/transaksi/riwayat-list.ejs`<br>`src/views/transaksi/riwayat-chat.ejs`<br>`src/controllers/RiwayatController.js`<br>`src/models/Riwayat.js` | UC18-TC01 *(Belum diuji)*, UC18-TC02 *(Belum diuji)* | C36-UT01 *(Fail)*, C36-UT02, INT-TC38 *(Fail)*, INT-TC39, KNF01-TC01, KNF19-TC01 *(Fail)* | **Belum Terpenuhi** *(C36-UT01, INT-TC38, KNF19 Fail)* |
+| **KF18** | KNF20 | UC19<br>UC20 | C20 - LiveChatMasyarakatPage<br>C21 - LiveChatAdminPage<br>C37 - LiveChatController<br>C50 - LiveChat | `src/views/livechat/masyarakat.ejs`<br>`src/views/livechat/admin.ejs`<br>`src/public/js/livechat.js`<br>`src/controllers/LiveChatController.js`<br>`src/socket/livechat.js`<br>`src/models/LiveChat.js` | UC19-TC01<br>UC20-TC01 | C50-UT01 s.d. C50-UT04, INT-TC48, INT-TC49, INT-TC50, KNF20-TC01 | **Terpenuhi** |
+| **KF19** | - | UC21 | C22 - PembayaranPage<br>C38 - PembayaranController<br>C49 - Pembayaran | `src/views/transaksi/pembayaran.ejs`<br>`src/controllers/PembayaranController.js`<br>`src/services/PaymentGateway.js`<br>`src/models/Pembayaran.js` | UC21-TC01 *(Fail)* | PG-UT01 s.d. PG-UT03, C49-UT01, C49-UT02, C49-UT03 *(Fail)*, INT-TC31, INT-TC32, INT-TC33 *(Fail)*, INT-TC34 | **Belum Terpenuhi** *(UC21-TC01, C49-UT03, INT-TC33 Fail)* |
+| **KF20** | - | UC22 | C23 - PencairanDanaPage<br>C39 - PencairanDanaController<br>C51 - PencairanDana | `src/views/transaksi/pencairan.ejs`<br>`src/controllers/PencairanController.js`<br>`src/services/PaymentGateway.js`<br>`src/models/PencairanDana.js` | UC22-TC01, UC22-TC02 | PG-UT04, PG-UT05, C51-UT01 s.d. C51-UT04, INT-TC40, INT-TC41, INT-TC42 | **Terpenuhi** |
+
+---
 
 Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 
-| ID KNF | Parameter | KF/UC Terkait | Test Case |
-| :--- | :--- | :--- | :--- |
-| *KNF01* | *Reliability* | *KF05 / UC03* | *KNF01-TC01* |
-| *KNFXX* | *[Parameter]* | *[KFXX / UCXX atau -]* | *[KNFXX-TCYY]* |
-| *...* | *...* | *...* | *...* |
+| ID KNF | Parameter | KF / UC Terkait | Test Case | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- |
+| **KNF01** | Response Time | KF01, KF02, KF03, KF04, KF17 / UC01–UC05, UC18 | KNF01-TC01 | **Pass** |
+| **KNF02** | Response Time | KF05 / UC06 | KNF02-TC01 | **Fail** |
+| **KNF03** | Security | KF07 / UC07 | KNF03-TC01 | **Fail** |
+| **KNF04** | Response Time | KF06, KF07 / UC07 | KNF04-TC01 | **Pass** |
+| **KNF05** | Reliability | KF08 / UC08 | KNF05-TC01 | **Fail** |
+| **KNF06** | Response Time | KF08 / UC08 | KNF06-TC01 | **Pass** |
+| **KNF07** | Reliability | KF09 / UC09 | KNF07-TC01 | **Fail** |
+| **KNF08** | Response Time | KF09 / UC09 | KNF08-TC01 | **Fail** |
+| **KNF09** | Ergonomy | KF11 / UC12 | KNF09-TC01 | **Fail** |
+| **KNF10** | Security | KF11 / UC12 | KNF10-TC01 | **Fail** |
+| **KNF11** | Availability | KF09, KF11 / UC09, UC10, UC12 | KNF11-TC01 | **Fail** |
+| **KNF12** | Availability | KF10 / UC11 | KNF12-TC01 | **Pass** |
+| **KNF13** | Availability | KF11 / UC12 | KNF13-TC01 | **Fail** |
+| **KNF14** | Reliability | KF12 / UC13 | KNF14-TC01 | **Fail** |
+| **KNF15** | Security | KF13, KF14 / UC14, UC15, UC16 | KNF15-TC01 | **Pass** |
+| **KNF16** | Response Time | KF15, KF16 / UC17 | KNF16-TC01 | **Fail** |
+| **KNF17** | Security | KF15 / UC17 | KNF17-TC01 | **Pass** |
+| **KNF18** | Response Time | KF16 / UC17 | KNF18-TC01 | **Fail** |
+| **KNF19** | Security | KF17 / UC18 | KNF19-TC01 | **Fail** |
+| **KNF20** | Response Time | KF18 / UC19, UC20 | KNF20-TC01 | **Pass** |
+| **KNF21** | Constraint | KF07 / UC07 | KNF21-TC01 | **Fail** |
+| **KNF22** | Constraint | KF08 / UC08 | KNF22-TC01 | **Pass** |
