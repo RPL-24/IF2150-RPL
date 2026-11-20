@@ -1,0 +1,259 @@
+# Logbook Pekerjaan 
+
+## Tugas Besar IF2150 - Rekayasa Perangkat Lunak
+
+| Informasi | Keterangan |
+|---|---|
+| Kelas | 01 |
+| Nomor Kelompok | 10 |
+| Nama Kelompok | Ducklings |
+| Nama Perangkat Lunak | *antri.in* |
+
+**Anggota Kelompok:**
+
+| NIM | Nama |
+|---|---|
+| 13525145 | Muhammad Nur Fikri Hariyawan |
+| 13525085 | Bayu Palamarta Wirawan |
+| 13525133 | Chatima Anandakhorita |
+| 13525148 | Athallah Nanda Andita |
+| 13525091 | Muhammad Fauzi Muharam |
+
+---
+
+### Daftar Isi
+* [Milestone 1](#milestone-1)
+* [Milestone 2](#milestone-2)
+* [Milestone 3](#milestone-3)
+* [Milestone 4](#milestone-4)
+* [Milestone 5](#milestone-5)
+* [Milestone 6](#milestone-6)
+* [Milestone 7](#milestone-7)
+* [Milestone 8](#milestone-8)
+* [Milestone 9](#milestone-9)
+
+
+---
+
+### Milestone 1
+**Periode:** 27-08-2026 - 02-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *29-08-2026* | *Bayu Palamarta Wirawan* | *Menambahkan identitas anggota kelompok dan nama asisten pada dokumen milestone dan form asistensi* | *0,1* | *Done* | *-* | 
+| *29-08-2026* | *Bayu Palamarta Wirawan* | *Menambahkan bab 3 bagian 3.1* | *0,5* | *Done* | *Saya cukup kesulitan menentukan apakah pihak restoran sebaiknya dibagi lagi menjadi beberapa aktor lainnya* | 
+| *30-08-2026* | *Bayu Palamarta Wirawan* | *Menambahkan bab 3 bagian 3.2* | *1* | *Done* | *Saya merasa bahwa sulit untuk merangkum hanya 1 tujuan/nilai untuk masing-masing user sehingga saya membuat beberapa tujuan/nilai* | 
+| *30-08-2026* | *Athallah Nanda Andita* | *Menambahkan bab 2 bagian 2.1* | *1* | *Done* | *Terdapat sedikit kendala saya dalam memahami beberapa fitur yang harus di deskripsikan dalam perangkat lunak kami* |
+| *30-08-2026* | *Muhammad Fauzi Muharram* | *Menambahkan bab 1 bagian 1.1 dan 1.2* | *1* | *Done* | *-* | 
+| *30-08-2026* | *Muhammad Fauzi Muharram* | *Merapihkan dan mencari data untuk bab 1* | *1* | *Done* | *-* |
+| *30-08-2026* | *Muhammad Nur Fikri Hariyawan* | *Menambahkan bab 2 bagian 2.2* | *1* | *Done* | *Terdapat kendala dalam mencari referensi* |
+| *30-08-2026* | *Muhammad Nur Fikri Hariyawan* | *Memperbaiki lampiran data* | *0.2* | *Done* | *-* |
+| *30-08-2026* | *Chatima Anandakhorita* | *Menambahkan penjelasan bab 2 bagian 2.2* | *0.5* | *Done* | *-* |
+| *31-08-2026* | *Bayu Palamarta Wirawan* | *Membuat diagram 1,2, dan 4* | *2.5* | *Done* | *Saya cukup kesulitan waktu menentukan alurnya* |
+| *31-08-2026* | *Athallah Nanda Andita* | *Berdiskusi dan menambahkan bab 3 bagian 3.3* | *0.5* | *Done* | *-* |
+| *31-08-2026* | *Muhammad Fauzi Muharram* | *Berdiskusi dan menambahkan bab 3 bagian 3.3* | *0.5* | *Done* | *-* |
+| *31-08-2026* | *Muhammad Nur Fikri Hariyawan* | *Berdiskusi dan menambahkan bab 3 bagian 3.3* | *0.5* | *Done* | *-* |
+| *02-09-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki ID User Story bagian 3.3* | *0.5* | *Done* | *-* |
+| *02-09-2026* | *Athallah Nanda Andita* | *Berdiskusi dan menambahkan form AI usage* | *0.25* | *Done* | *-* |
+| *02-09-2026* | *Athallah Nanda Andita* | *Menambahkan tanta tangan anggota ke assets* | *0.25* | *Done* | *-* |
+| *02-09-2026* | *Muhammad Fauzi Muharram* | *Berdiskusi dan menambahkan form AI usage* | *0.25* | *Done* | *-* |
+
+**Catatan/Evaluasi Milestone 1:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+
+### Milestone 2
+**Periode:** 02-09-2026 - 09-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *03-09-2026* | *Bayu Palamarta Wirawan* | *Melakukan sync fork Milestone 2* | *0.25* | *Done* | *-* |
+| *04-09-2026* | *Bayu Palamarta Wirawan* | *Menambahkan bagian 1.2, 2.1, 2.2, dan bagian 2.3* | *1* | *Done* | *-* |
+| *06-09-2026* | *Bayu Palamarta Wirawan* | *Menambahkan bagian 1.1, memperbaiki 2.2, dan menambahkan bagian 2.1 serta 2.2 sesuai hasil asistensi* | *1* | *Done* | *-* |
+| *06-09-2026* | *Chatima Anandakhorita* | *Menambahkan pemetaan kebutuhan, bagian 2.3, untuk setiap Deskripsi Aktivitas pada bagian 2.2* | *1* | *Done* | *-* |
+| *07-09-2026* | *Bayu Palamarta Wirawan* | *Menambahkan sebagian kebutuhan fungsional* | *1* | *Done* | *-* |
+| *07-09-2026* | *Athallah Nanda Andita* | *Menambahkan bagian 2.5 kebutuhan non fungsional* | *1* | *Done* | *-* |
+| *08-09-2026* | *Chatima Anandakhorita* | *Memperbaiki kesalahan pada bagian 2.3 setelah diberikan masukan oleh asisten, terutama menambahkan pemetaan kebutuhan berupa aturan hukum yang berlaku pada bisnis dan kebutuhan yang sebelumnya lupa untuk ditambahkan* | *1* | *Done* | *-* | 
+| *08-09-2026* | *Bayu Palamarta Wirawan* | *Menambahkan kebutuhan-kebutuhan fungsional lainnya dan memperbaiki format 2.4* | *2* | *Done* | *-* |
+| *09-09-2026* | *Athallah Nanda Andita* | *Memperbaiki kesalahan penomoran pada bagian 2.3, 2.4, dan 2.5* | *1* | *Done* | *-* |
+|*09-09-2026* |*Muhammad Fauzi Muharam* |*Melengkapi bab 1.1,  fix A08, add KNF13* | *2*|*Done* | | |
+|*09-09-2026* |*Muhammad Nur Fikri Hariyawan* |*Mengisi form asistensi* | *1.5*| *Done* | *-* |
+|*09-09-2026* |*Muhammad Nur Fikri Hariyawan* |*Menambahkan kebutuhan fungsional* | *0.5*| *Done* | *-* |
+
+
+**Catatan/Evaluasi Milestone 2:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+### Milestone 3
+**Periode:** 09-09-2026 - 16-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *11-09-2026* | *Bayu Palamarta Wirawan* | *Melakukan sync fork Milestone 3* | *0.25* | *Done* | *-* |
+| *12-09-2026* | *Muhammad Fauzi Muharam* | *Membagi tugas dan menambahkan UC01 serta UC05* | *2* | *Done* | *-* |
+| *12-09-2026* | *Bayu Palamarta Wirawan* | *Menambahkan UC06, UC08, dan membuat diagram awal* | *2* | *Done* | *-* |
+| *13-09-2026* | *Chatima Anandakhorita* | *Menambahkan UC02 serta skenarionya* | *1,5* | *Done* | *-* |
+| *14-09-2026* | *Chatima Anandakhorita* | *Menambahkan US10, US11, A09, A10, R29, R30, R31, dan R32* | *2* | *Done* | *-* |
+| *14-09-2026* | *Bayu Palamarta Wirawan* | *Melengkapi UC06 dan UC08, melengkapi peran admin, dan memperbaiki diagram* | *2* | *Done* | *Sempat kesulitan untuk menentukan cara menyusun diagram* |
+| *15-09-2026* | *Bayu Palamarta Wirawan* | *Membuat diagram final* | *1* | *Done* | *Sempat kesulitan karena beberapa garis di diagram overlap. Namun diagram akhir ditetapkan berdasarkan pertimbangan kelompok dan asisten* |
+| *15-09-2026* | *Muhammad Fauzi Muharam* | *Membuat form asistensi dan renaming file* | *0.5* | *Done* | *-* |
+| *15-09-2026* | *Athallah Nanda Andita* | *Menambahkan UC12 dan UC15 di bagian 3.2 dan 3.4* | *1* | *Done* | *Bagian 3.2 untuk KF UC12 dan UC15 sempat kosong karena belum dibuat* |
+| *15-09-2026* | *Muhammad Nur Fikri Hariyawan* | *Menambahkan KF19, KF20, KF21, UC03 dan UC09* | *1.5* | *Done* | *-* |
+| *15-09-2026* | *Chatima Anandakhorita* | *Menambahkan UC10, UC11, beserta skenario masing-masing* | *2* | *Done* | *-* |
+| *16-09-2026* | *Athallah Nanda Andita* | *Memperbaiki UC12 dan UC15 di bagian 3.4* | *0.25* | *Done* | *-* |
+| *16-09-2026* | *Muhammad Nur Fikri Hariyawan* | *Memperbaiki UC3, KF19, dan KF20 pada bagian bab 2 dan bab 3.4.3* | *0.25* | *Done* | *-* |
+| *16-09-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki UC2 dan UC4* | *0.5* | *Done* | *-* |
+
+**Catatan/Evaluasi Milestone 3:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+### Milestone 4
+**Periode:** 16-09-2026 - 23-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *20-09-2026* | *Bayu Palamarta Wirawan* | *Melakukan sync fork Milestone 4* | *0.5* | *Done* | *-* |
+| *20-09-2026* | *Bayu Palamarta Wirawan* | *Membuat diagram kelas UC06, UC07, dan UC08* | *1* | *Done* | *-* |
+| *20-09-2026* | *Muhammad Fauzi Muharam* | *Mendefinisikan kelas serta membuat diagram untuk UC 04, 05, 13, dan 14* | *2* | *Done* | *-* |
+| *20-09-2026* | *Chatima Anandakhorita* | *Mendefinisikan kelas untuk UC01 dan UC02 serta membuat diagram kelasnya* | *2* | *Done* | *-* |
+| *20-09-2026* | *Athallah Nanda Andita* | *Membuat dan menambahkan diagram kelas untuk UC03, UC12, serta UC15* | *0.5* | *Done* | *-* |
+| *20-09-2026* | *Athallah Nanda Andita* | *Membuat identifikasi kelas beserta penjelasannya untuk UC03, UC12, dan UC15 serta memperbaiki penomoran* | *1.25* | *Done* | *-* |
+| *20-09-2026* | *Muhammad Nur Fikri Hariyawan* | *Menambah subbab UC09-UC11* | *1* | *Done* | *-* |
+| *21-09-2026* | *Chatima Anandakhorita* | *Merapikan dan menyerasikan kembali ID dari seluruh kelas yang terdefinisi pada M4* | *1* | *Done* | *-* |
+| *21-09-2026* | *Muhammad Nur Fikri Hariyawan* | *Membuat Diagram dan penjelasan UC09-UC11* | *1* | *Done* | *-* |
+| *21-09-2026* | *Bayu Palamarta Wirawan* | *Melengkapi 35 kelas secara keseluruhan* | *1* | *Done* | *-* |
+| *22-09-2026* | *Bayu Palamarta Wirawan* | *Membuat diagram kelas secara keseluruhan* | *3* | *Done* | *Kesulitan mencari posisi yang tepat supaya tidak bertabrakan* |
+| *22-09-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki UC06, UC07, UC08* | *1* | *Done* | *-* |
+| *22-09-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki 4.1* | *1* | *Done* | *-* |
+| *22-09-2026* | *Chatima Anandakhorita* | *Memperbaiki 4.2.1 dan 4.2.2 setelah revisi asistensi, menambahkan kelas-kelas yang dibutuhkan* | *1* | *Done* | *-* |
+| *22-09-2026* | *Athallah Nanda Andita* | *Memperbaiki diagram dan kelas UC03* | *0.5* | *Done* | *-* |
+| *23-09-2026* | *Athallah Nanda Andita* | *Memperbaiki nama kelas dan diagram kelas UC03, UC12, UC15 agar sesuai camelcase* | *0.5* | *Done* | *-* |
+| *23-09-2026* | *Muhammad Fauzi Muharam* | *Merevisi UC 04, 05, 13, dan 14 sesuai hasil asistensi* | *2.5* | *Done* | *-* |
+| *23-09-2026* | *Athallah Nanda Andita* | *Menambahkan atribut dan metode/operasi untuk diagram kelas keseluruhan* | *1.5* | *Done* | *-* |
+| *23-09-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki Diagram Kelas Utama* | *0.5* | *Done* | *-* |
+| *23-09-2026* | *Muhammad Fauzi Muharam* | *Membuat Traceability* | *1.5* | *Done* | *-* |
+| *23-09-2026* | *Muhammad Nur Fikri Hariyawan* | *Memperbaiki UC09-UC11* | *1* | *Done* | *-* |
+
+### Milestone 5
+**Periode:** 23-09-2026 - 30-09-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *25-09-2026* | *Bayu Palamarta Wirawan* | *Melakukan inisialisasi Milestone 5* | *0.2* | *Done* | *-* |
+| *27-09-2026* | *Bayu Palamarta Wirawan* | *Menyalin data dari Milestone sebelumnya ke Milestone 5* | *2* | *Done* | *-* |
+| *29-09-2026* | *Bayu Palamarta Wirawan* | *Generalisasi sistem pembayaran* | *0.5* | *Done* | *-* |
+| *29-09-2026* | *Bayu Palamarta Wirawan* | *Menambahkan 2.5* | *0.5* | *Done* | *-* |
+| *29-09-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki 1.4* | *0.1* | *Done* | *-* |
+| *29-09-2026* | *Chatima Anandakhorita* | *Memeriksa dan melakukan cross-check Bab 3 dan Bab 4 M5 agar konsisten dengan milestone-milestone sebelumnya* | *1.5* | *Done* | *-* |
+| *30-09-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki kelas di Bab 5 dan 6* | *1* | *Done* | *-* |
+| *30-09-2026* | *Bayu Palamarta Wirawan* | *Mengisi Form Asistensi* | *0.5* | *Done* | *-* |
+| *30-09-2026* | *Muhammad Fauzi Muharam* | *Melengkapi ikhtisar dan referensi* | *1* | *Done* | *-* |
+| *30-09-2026* | *Muhammad Fauzi Muharam* | *Melengkapi 2.2* | *1* | *Done* | *-* |
+| *30-09-2026* | *Muhammad Nur Fikri Hariyawan* | *Menambah penjelasan pada 1.2* | *1.5* | *Done* | *-* |
+| *30-09-2026* | *Chatima Anandakhorita* | *Menambahkan dan menyempurnakan isi dari Bab 3 dan Bab 4 milestone 5* | *1.5* | *Done* | *-* |
+| *30-09-2026* | *Athallah Nanda Andita* | *Membantu mengecek bab 2 dan membantu membuat kerangka awal untuk deskripsi umum perangkat lunak* | *1* | *Done* | *-* |
+
+**Catatan/Evaluasi Milestone 5:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+### Milestone 6
+**Periode:** 2-10-2026 - 7-10-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *4-10-2026* | *Bayu Palamarta Wirawan* | *Melakukan inisialisasi Milestone 6* | *0.5* | *Done* | *-* |
+| *5-10-2026* | *Chatima Anandakhorita* | *Menambahkan tabel Bab 2* | *1* | *Done* | *-* |
+| *5-10-2026* | *Bayu Palamarta Wirawan* | *Mengembangkan Bab 1* | *1* | *Done* | *-* |
+| *5-10-2026* | *Athallah Nanda Andita* | *Menambahkan Bab 3 bagian 3.1 Logical View * | *1.5* | *Done* | *-* |
+| *7-10-2026* | *Chatima Anandakhorita* | *Memperbaiki kekurangan pada tabel Bab 2 setelah evaluasi.* | *0.5* | *Done* | *-* |
+| *7-10-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki kekurangan pada Bab 1* | *1* | *Done* | *-* |
+| *7-10-2026* | *Muhammad Nur Fikri Hariyawan* | *Mengisi form asistensi* | *0.5* | *Done* | *-* |
+| *7-10-2026* | *Muhammad Fauzi Muiharam* | *Membuat Process View* | *2* | *Done* | *-* |
+
+
+
+**Catatan/Evaluasi Milestone 6:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+### Milestone 7
+**Periode:** 7-10-2026 - 21-10-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *14-10-2026* | *Bayu Palamarta Wirawan* | *Melakukan inisialisasi Milestone 7* | *1* | *Done* | *-* |
+| *18-10-2026* | *Bayu Palamarta Wirawan* | *Mengerjakan Bab 3 bagian UC06 - UC08, Bab 4, dan Bab 5* | *3* | *Done* | *Awalnya kesulitan bagaimana memulai membuat* |
+| *18-10-2026* | *Chatima Anandakhorita* | *Mengerjakan Bab 3 bagian UC01* | *2* | *Done* | *Bingung dengan konsep Sequence Diagram dan cara membuatnya* |
+| *18-10-2026* | *Athallah Nanda Andita* | *Mengerjakan Bab 3 bagian UC03, UC12, dan UC15* | *2.5* | *Done* | *-* |
+| *18-10-2026* | *Muhammad Fauzi Muharam* | *Membuat diagram pada Bab 3 bagian UC04, 05, 13, 14* | *3* | *Done* | *-* |
+| *19-10-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki diagram pada Bab 3 bagian UC06 - UC08* | *1* | *Done* | *-* |
+| *19-10-2026* | *Chatima Anandakhorita* | *Membuat Form-Asistensi untuk M7* | *1* | *Done* | *-* |
+| *20-10-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki inkonsistensi M7 dengan dokumen sebelumnya* | *1* | *Done* | *-* |
+| *20-10-2026* | *Chatima Anandakhorita* | *Revisi Bab 3 bagian UC01* | *1* | *Done* | *-* |
+| *21-10-2026* | *Athallah Nanda Andita* | *Memperbaiki Class Diagram UC03, UC12, dan UC15 agar memperlihatkan multisiplitas* | *0.5* | *Done* | *-* |
+| *21-10-2026* | *Athallah Nanda Andita* | *Menambahkan bagian 1.6 Deskripsi Umum Dokumen* | *0.25* | *Done* | *-* |
+| *21-10-2026* | *Muhammad Nur Fikri Hariyawan* | *Menambahkan bagian 3,9 hingga 3.11 dan memperbiki penomoran pada tabel dan foto* | *3* | *Done* | *-* |
+| *21-10-2026* | *Bayu Palamarta Wirawan* | *Melengkapi Development Tools* | *0.5* | *Done* | *-* |
+| *21-10-2026* | *Muhammad Fauzi Muharam* | *Melengkapi isi 1.1* | *0.3* | *Done* | *-* |
+| *21-10-2026* | *Chatima Anandakhorita* | *Menyelesaikan Bab 3 UC02* | *4* | *Done* | *Lama karena banyak skenarionya saja* |
+
+
+
+**Catatan/Evaluasi Milestone 7:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+### Milestone 8
+**Periode:** 22-10-2026 - 28-10-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| *23-10-2026* | *Bayu Palamarta Wirawan* | *Melakukan inisialisasi Milestone 8* | *1* | *Done* | *-* |
+| *23-10-2026* | *Bayu Palamarta Wirawan* | *Mengerjakan Bab 5 Kelas 31 - 42* | *3* | *Done* | *-* |
+|*24-10-2026*|*Muhammad Fauzi Muharam*|*Membuat antarmuka antri.in*|*2*|*Done*|
+| *26-10-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki kelas perancangan* | *0.5* | *Done* | *-* |
+| *26-10-2026* | *Bayu Palamarta Wirawan* | *Membuat Form Asistensi* | *0.5* | *Done* | *-* |
+| *26-10-2026* | *Chatima Anandakhorita* | *Mengerjakan Bab 5 Kelas 1-10* | *3* | *Done* | *-* |
+| *26-10-2026* | *Chatima Anandakhorita* | *Memperbaiki kesalahan penulisan pada implementasi Bab 5 Kelas 1-10* | *0.2* | *Done* | *-* |
+| *27-10-2026* | *Muhammad Nur Fikri Hariyawan* | *Mengerjakan Bab 5 Kelas 11-20* | *2.4* | *Done* | *-* |
+| *28-10-2026* | *Athallah Nanda Andita* | *Mengerjakan Bab 5 Kelas 21 - 30* | *2.5* | *Done* | *-* |
+| *28-10-2026* | *Chatima Anandakhorita* | *Memperbaiki 1.1, 1..4, kemudian menambahkan 1.6* | *1* | *Done* | *-* |
+| *28-10-2026* | *Muhammad Fauzi Muharam* | *Melengkapi bab 6* | *2* | *Done* | *-* |
+
+**Catatan/Evaluasi Milestone 8:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+### Milestone 9
+**Periode:** 29-10-2026 - 13-11-2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| *29-10-2026* | *Bayu Palamarta Wirawan* | *Melakukan inisialisasi Milestone 9* | *1* | *Done* | *-* |
+| *31-10-2026* | *Muhammad Fauzi Muharam* | *Membangun implementasi awal antri.in (UC01-UC15, MVC TypeScript + PostgreSQL/PGlite) dengan bantuan AI (Claude Code) sebagai kode referensi kelompok* | *4* | *Done* | *Stack belum disepakati kelompok sejak awal* |
+| *31-10-2026* | *Muhammad Fauzi Muharam* | *Menyusun pembagian tugas, checklist per anggota, dan daftar file yang di-push tiap anggota (K01_G10_Pembagian-Tugas.md, K01_G10_Daftar-File.md)* | *0.5* | *Done* | *-* |
+| *01-11-2026* | *Muhammad Fauzi Muharam* | *Iterasi 2 dengan bantuan AI: notifikasi, ulasan & rating, profil restoran, foto menu, ganti/lupa kata sandi, simulator antrean dummy, ERD* | *2* | *Done* | *-* |
+| *02-11-2026* | *Muhammad Fauzi Muharam* | *Membandingkan kode login Bayu (React/Express) dengan kode referensi dan memutuskan arsitektur bersama kelompok* | *1.5* | *Done* | *Dua arsitektur berbeda dikerjakan paralel* |
+| *02-11-2026* | *Muhammad Fauzi Muharam* | *Payment gateway sandbox (AntriPay: QR, VA, kartu + OTP, webhook HMAC, refund) dan perapian layout desktop & mobile, dengan bantuan AI* | *1.5* | *Done* | *-* |
+| *02-11-2026* | *Muhammad Fauzi Muharam* | *Push fondasi proyek (setup, utilitas, kerangka UI, CSS) ke repo kelompok* | *2* | *To Do* | *-* |
+| *4-11-2026* | *Bayu Palamarta Wirawan* | *Membuat Database* | *2* | *Done* | *-* |
+| *5-11-2026* | *Bayu Palamarta Wirawan* | *Mengimplementasi registrasi, login, logout* | *3* | *Done* | *-* |
+| *05-11-2026* | *Muhammad Fauzi Muharam* | *Push UC08 kelola menu & stok, notifikasi, dan profil restoran beserta test* | *2* | *To Do* | *-* |
+| *6-11-2026* | *Bayu Palamarta Wirawan* | *Mengimplementasi pemesanan* | *3* | *Done* | *-* |
+| *6-11-2026* | *Athallah Nanda Andita* | *Implementasi keluhan pelanggan* | *2.5* | *Done* | *-* |
+| *6-11-2026* | *Athallah Nanda Andita* | *Implementasi penghapusan restoran* | *3* | *Done* | *-* |
+| *8-11-2026* | *Bayu Palamarta Wirawan* | *Menerima implementasi antrean* | *1* | *Done* | *-* |
+| *8-11-2026* | *Athallah Nanda Andita* | *Implementasi ulasan* | *3* | *Done* | *-* |
+| *6-11-2026* | *Chatima Anandakhorita* | *Mengimplementasi fitur pencarian* | *2* | *Done* | *-* |
+| *6-11-2026* | *Chatima Anandakhorita* | *Mengimplementasi permitraan restoran* | *2* | *Done* | *-* |
+| *8-11-2026* | *Bayu Palamarta Wirawan* | *Menerima implementasi antrean* | *1* | *Done* | *-* |
+| *8-11-2026* | *Chatima Anandakhorita* | *Memperbaiki fitur pencarian* | *1* | *Done* | *-* |
+| *8-11-2026* | *Chatima Anandakhorita* | *Memperbaiki implementasi permitraan restoran* | *1* | *Done* | *-* |
+| *8-11-2026* | *Chatima Anandakhorita* | *Implementasi sistem pembayaran* | *2* | *Done* | *-* |
+| *8-11-2026* | *Chatima Anandakhorita* | *Menambahkan dummy antrean* | *1* | *Done* | *-* |
+| *8-11-2026* | *Muhammad Nur Fikri Hariyawan* | *Implementasi Antrean* | *3.5* | *Done* | *-* |
+| *8-11-2026* | *Muhammad Nur Fikri Hariyawan* | *Implementasi Kuota* | *2.4* | *Done* | *-* |
+| *9-11-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki testing dengan helper* | *1* | *Done* | *-* |
+| *9-11-2026* | *Chatima Anandakhorita* | *Membuat form asistensi* | *1* | *Done* | *-* |
+| *10-11-2026* | *Bayu Palamarta Wirawan* | *Memperbaiki isu kredensial database* | *1* | *Done* | *-* |
+| *11-11-2026* | *Chatima Anandakhorita* | *Menambahkan bagian "Teknologi" pada README di dalam src dan testing mengikuti perintah README* | *2* | *Done* | *-* |
+
+
+**Catatan/Evaluasi Milestone 9:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+---
+
+
+``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``

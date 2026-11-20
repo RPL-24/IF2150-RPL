@@ -1,0 +1,106 @@
+# Deklarasi Penggunaan AI
+
+## Tugas Besar IF2150 - Rekayasa Perangkat Lunak
+
+| Informasi | Keterangan |
+|---|---|
+| Kelas | 01 |
+| Nomor Kelompok | 10 |
+| Nama Kelompok | Ducklings |
+| Nama Perangkat Lunak | *antri.in* |
+
+**Anggota Kelompok:**
+
+| NIM | Nama |
+|---|---|
+| 13525145 | Muhammad Nur Fikri Hariyawan |
+| 13525085 | Bayu Palamarta Wirawan |
+| 13525133 | Chatima Anandakhorita |
+| 13525148 | Athallah Nanda Andita |
+| 13525091 | Muhammad Fauzi Muharam |
+
+---
+
+### Daftar Isi
+* [Milestone 1](#milestone-1)
+* [Milestone 2](#milestone-2)
+* [Milestone 3](#milestone-3)
+* [Milestone 4](#milestone-4)
+* [Milestone 5](#milestone-5)
+* [Milestone 6](#milestone-6)
+* [Milestone 7](#milestone-7)
+* [Milestone 8](#milestone-8)
+* [Milestone 9](#milestone-9)
+
+---
+
+### Log Penggunaan AI per Milestone
+
+Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (misal: *generate* fungsi algoritma yang kompleks, *generate* draf dokumen SKPL/DPPL, atau *debugging* error utama). 
+*Penggunaan sepele seperti memperbaiki *typo* atau auto-complete satu baris kode tidak perlu dicatat.*
+
+### Milestone 1
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Mencari tahu cara menuangkan data di laporan* | *"Katanya boleh pakai curhatan warga X, gimana cara bikin album twit tertentu"* | *AI menyarankan untuk menyajikan data dalam tabel. saya terima saran dari AI dan saya sesuaikan dengan data saya.* |
+| | | | | |
+
+### Milestone 2
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Memperbaiki bahasa penulisan yang kurang tepat dan baku* | *"Tolong ubah teks yang telah saya buat sehingga menjadi lebih formal untuk penulisan laporan."* | *AI memberikan hasil parafrase teks yang telah diberikan sehingga lebih cocok untuk dimasukkan ke file-file tugas.* |
+| | | | | |
+
+### Milestone 3
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Memperbaiki bahasa penulisan agar lebih formal* | *"Ubahlah teks berikut menjadi lebih formal demi sebuah laporan"* | *AI memberikan hasil parafrase teks yang telah diberikan sehingga lebih formal.* |
+| | | | | |
+
+### Milestone 4
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *ChatGPT* | *Merangkum kelas-kelas yang digunakan di berbagai use case* | *"Berdasarkan Bab 4.2 Diagram Kelas per Use Case dan 3.2 Identifikasi Use Case, rangkumlah semua kelas yang terdapat pada perangkat lunak"* | *Saya membaca dan menghapus data-data yang kurang akurat baik dari deskripsi atau lokasi Use Case* |
+| | | | | |
+
+### Milestone 5
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Menambah kata agar kalimat tidak terlalu pendek* | *"tambahkan kata kata agar kalimat tersebut terlihat panjang tanpa menghilangkan inti dari kalimat yang saya berikan"* | *Saya membaca ulang apakah kalimat yang dibikin tidak menyimpang dari inti kalimat yang saya berikan* |
+| | | | | |
+
+### Milestone 7
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Mengecek dan memperbaiki diagram* | *"cek diagram sequence dan diagram yang sudah saya buat apakah sudah sesuai, dna jika ada yang perlu diubah beritahu bagian mana saja yang perlu diubah"* | *Saya membaca ulang hasil yang dicek AI dan memperbaikinya jika sesuai* |
+| | | | | |
+
+### Milestone 8
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Mengecek Ketepatan Algoritma* | *"Apakah algoritma yang ditulis tepat tanpa kesalahan logika?"* | *Saya menyesuaikan algoritma yang ditulis agar tidak salah* |
+| *Claude* | *Membuat antarmuka Antri.in* | *"Berdasarkan dokumen-dokumen yang aku lampirkan, buatkan antarmuka antri.in"* | *Saya melakukan beberapa kali iterasi agar antarmuka bagus dan sesuai kesepakatan tim* |
+| | | | | |
+
+### Milestone 9
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *ChatGPT* | *Mengestimasi waktu pengerjaan antri.in* | *"Berdasarkan dokumen yang diberikan, berapa lama waktu yang diperlukan untuk menyelesaikan antri.in dalam kelompok berisi 5 pemula"* | *Kami merencanakan dan menyesuaikan pengerjaan fitur-fitur yang diperlukan dengan waktu yang disediakan* |
+| *Claude* | *Mengetahui cara menghubungkan tautan untuk laporan implementasi* | *"Cara melakukan tautan issue, commit, branching, dan pull request di github"* | *Saya menyesuaikan cara menulis tautan dengan tautan yang sebenarnya* |
+| *Claude* | *Membuat template pengerjaan aplikasi* | *"Siapkan template aplikasi antri.in sesuai dengan dokumen yang aku lampirkan"* | *Kami memahami isi kode dan melakukan penyesuaian kode untuk memastikan bisa bekerja dengan benar* |
+| *Claude* | *Mengetahui cara membuat database* | *"Bagaimana cara membuat database PostgreSQL 15+ berdasarkan schema.sql berikut"* | *Kami membuat database baru sesuai langkah-langkah dan menguji apakah bisa berjalan dengan baik* |
+| *Claude* | *Mengetahui kebenaran kode yang sudah dibuat* | *"Dari kode yang sudah aku buat ini, apakah sudah sesuai dengan notasi fungsional"* | *Kami mengetahui salahnya dan memperbaikinya* |
+| | | | | |
+
+---
+### Pernyataan Integritas dan Persetujuan
+
+Kami yang bertanda tangan di bawah ini menyatakan bahwa seluruh log penggunaan AI di atas adalah benar. Kami telah memvalidasi seluruh hasil AI dan bertanggung jawab penuh atas orisinalitas, keamanan, dan kebenaran hasil akhir dari tugas ini.
+
+| Tanda Tangan | Nama Anggota |
+| :---: | :--- |
+| <img src="./assets/tanda_tangan_anggota/ttd-anggota1.jpeg" width="100"> | **[13525145 - Muhammad Nur Fikri Hariyawan]** |
+| <img src="./assets/tanda_tangan_anggota/ttd-anggota2.jpeg" width="100"> | **[13525085 - Bayu Palamarta Wirawan]** |
+| <img src="./assets/tanda_tangan_anggota/ttd-anggota3.jpeg" width="100"> | **[13525133 - Chatima Anandakhorita]** |
+| <img src="./assets/tanda_tangan_anggota/ttd-anggota4.jpg" width="100"> | **[13525148 - Athallah Nanda Andita]** |
+| <img src="./assets/tanda_tangan_anggota/ttd-anggota5.jpeg" width="100"> | **[13525091 - Muhammad Fauzi Muharam]** |
