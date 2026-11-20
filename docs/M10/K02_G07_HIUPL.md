@@ -450,6 +450,143 @@ Tabel 4.2.5b. Ringkasan Cakupan Kelas C19
 | ID Algoritma yang tercakup | *`Algo-C19-01`, `Algo-C19-02`, `Algo-C19-03`* |
 | Coverage (wajib ≥ 70%) | *Vitest 5.0.5 dengan provider V8 melaporkan 100% baris, 97,67% cabang, 100% pernyataan, dan 100% fungsi untuk `NotificationController.ts`, serta 100% pada seluruh metrik untuk `notification.ts`. Bukti dicantumkan pada Subbab 4.6.* |
 
+### 4.2.6 Kelas Produk
+
+**ID Kelas:** *C02*<br>
+**Nama Kelas:** *Produk*<br>
+**Tingkat:** *Mendalam*
+
+Pengujian operasi pada kelas Produk (`Algo-C02-01` sampai `Algo-C02-08`) dijalankan dengan Vitest melalui `src/tests/models.test.ts`.
+
+Tabel 4.2.6. Hasil Pengujian Unit Kelas C02
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C02-UT01* | *`setNamaProduk()`* | *Negatif* | *Isi nama produk dengan spasi saja.* | *Operasi ditolak dengan pesan “Nama produk wajib diisi”.* | *Operasi menghasilkan error “Nama produk wajib diisi”.* | *Pass* |
+| *C02-UT02* | *`setNamaProduk()`, `getNamaProduk()`* | *Normal* | *Isi nama produk “  Nasi Goreng ” (spasi di tepi).* | *Nama tersimpan tanpa spasi tepi.* | *`getNamaProduk()` mengembalikan “Nasi Goreng”.* | *Pass* |
+| *C02-UT03* | *`setTag()`, `getTag()`* | *Batas* | *Isi tag “ Makanan ”, “makanan”, “Nasi   Goreng”, dan teks kosong.* | *Tag dinormalisasi ke huruf kecil, spasi dirapikan, duplikat dan teks kosong dibuang.* | *`getTag()` mengembalikan “makanan” dan “nasi goreng”.* | *Pass* |
+| *C02-UT04* | *`DAFTAR_TAG`* | *Normal* | *Periksa daftar tag yang tersedia.* | *Daftar memuat “Makanan utama”.* | *Daftar memuat “Makanan utama”.* | *Pass* |
+| *C02-UT05* | *`setHargaJual()`* | *Batas* | *Isi harga jual 0.* | *Operasi ditolak dengan pesan “Input Takaran / Harga Jual Tidak Valid”.* | *Operasi menghasilkan error “Input Takaran / Harga Jual Tidak Valid”.* | *Pass* |
+| *C02-UT06* | *`setHargaJual()`* | *Negatif* | *Isi harga jual `NaN`.* | *Operasi ditolak dengan error.* | *Operasi menghasilkan error.* | *Pass* |
+| *C02-UT07* | *`setHargaJual()`, `getHargaJual()`* | *Normal* | *Isi harga jual 18.000.* | *Harga jual tersimpan.* | *`getHargaJual()` mengembalikan 18.000.* | *Pass* |
+| *C02-UT08* | *`getHasilResep()`* | *Normal* | *Baca hasil resep pada objek baru.* | *Nilai bawaan 1.* | *`getHasilResep()` mengembalikan 1.* | *Pass* |
+| *C02-UT09* | *`setHasilResep()`* | *Batas* | *Isi hasil resep 0.* | *Operasi ditolak dengan pesan “Hasil resep harus berupa bilangan bulat lebih dari 0”.* | *Operasi menghasilkan error dengan pesan tersebut.* | *Pass* |
+| *C02-UT10* | *`setHasilResep()`* | *Negatif* | *Isi hasil resep 2,5 (bukan bilangan bulat).* | *Operasi ditolak dengan error.* | *Operasi menghasilkan error.* | *Pass* |
+| *C02-UT11* | *`setHasilResep()`, `getHasilResep()`* | *Normal* | *Isi hasil resep 10.* | *Hasil resep tersimpan.* | *`getHasilResep()` mengembalikan 10.* | *Pass* |
+| *C02-UT12* | *`setMargin()`, `getMargin()`* | *Normal* | *Isi margin −320 (margin negatif).* | *Margin negatif diterima dan tersimpan.* | *`getMargin()` mengembalikan −320.* | *Pass* |
+| *C02-UT13* | *`setMargin()`* | *Negatif* | *Isi margin `Infinity`.* | *Operasi ditolak dengan error.* | *Operasi menghasilkan error.* | *Pass* |
+
+Tabel 4.2.6b. Ringkasan Cakupan Kelas C02
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *`getNamaProduk()`, `setNamaProduk()`, `getTag()`, `setTag()`, `getHargaJual()`, `setHargaJual()`, `getMargin()`, `setMargin()`* |
+| Operasi yang diuji | *Seluruh operasi pada DPPL, ditambah `getHasilResep()` dan `setHasilResep()`. Operasi `getStatusPeringatan()` dan `setStatusPeringatan()` belum diuji pada berkas ini.* |
+| ID Algoritma yang tercakup | *`Algo-C02-01` sampai `Algo-C02-08`* |
+| Coverage (wajib ≥ 70%) | *93,93% statement / 88,88% cabang. Bukti pada Subbab 4.6.* |
+
+### 4.2.7 Kelas BahanBaku
+
+**ID Kelas:** *C03*<br>
+**Nama Kelas:** *BahanBaku*<br>
+**Tingkat:** *Mendalam*
+
+Pengujian operasi pada kelas BahanBaku (`Algo-C03-01` sampai `Algo-C03-03`) dijalankan dengan Vitest melalui `src/tests/models.test.ts`.
+
+Tabel 4.2.7. Hasil Pengujian Unit Kelas C03
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C03-UT01* | *`BahanBaku()`, `getNamaBahan()`* | *Negatif* | *Buat bahan baku dengan nama kosong, harga beli 10, satuan “gram”.* | *Pembuatan ditolak dengan pesan “Nama bahan baku wajib diisi”.* | *Operasi menghasilkan error dengan pesan tersebut.* | *Pass* |
+| *C03-UT02* | *`BahanBaku()`, `setHargaBeli()`* | *Batas* | *Buat bahan baku “Gula” dengan harga beli 0.* | *Pembuatan ditolak dengan pesan “Input Takaran / Harga Jual Tidak Valid”.* | *Operasi menghasilkan error dengan pesan tersebut.* | *Pass* |
+| *C03-UT03* | *`BahanBaku()`, `setSatuan()`* | *Negatif* | *Buat bahan baku “Gula” dengan satuan berisi spasi saja.* | *Pembuatan ditolak dengan pesan “Satuan bahan baku wajib diisi”.* | *Operasi menghasilkan error dengan pesan tersebut.* | *Pass* |
+| *C03-UT04* | *`getSatuan()`* | *Normal* | *Buat bahan baku “Gula” dengan harga beli 16 tanpa satuan.* | *Satuan bernilai bawaan “unit”.* | *`getSatuan()` mengembalikan “unit”.* | *Pass* |
+| *C03-UT05* | *`setHargaBeli()`, `getHargaBeli()`* | *Normal* | *Ubah harga beli bahan “Gula” dari 16 menjadi 18.* | *Harga beli diperbarui.* | *`getHargaBeli()` mengembalikan 18.* | *Pass* |
+| *C03-UT06* | *`setSatuan()`, `getSatuan()`* | *Normal* | *Ubah satuan dari “gram” menjadi “kg”.* | *Satuan diperbarui.* | *`getSatuan()` mengembalikan “kg”.* | *Pass* |
+| *C03-UT07* | *`getNamaBahan()`* | *Normal* | *Baca nama bahan setelah pembaruan harga beli dan satuan.* | *Nama tidak berubah.* | *`getNamaBahan()` mengembalikan “Gula”.* | *Pass* |
+
+Tabel 4.2.7b. Ringkasan Cakupan Kelas C03
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *`getNamaBahan()`, `getHargaBeli()`, `setHargaBeli()`* |
+| Operasi yang diuji | *Seluruh operasi pada DPPL, ditambah `getSatuan()` dan `setSatuan()`.* |
+| ID Algoritma yang tercakup | *`Algo-C03-01` sampai `Algo-C03-03`* |
+| Coverage (wajib ≥ 70%) | *100% statement / 81,81% cabang. Bukti pada Subbab 4.6.* |
+
+### 4.2.8 Kelas ResepBahan
+
+**ID Kelas:** *C04*<br>
+**Nama Kelas:** *ResepBahan*<br>
+**Tingkat:** *Mendalam*
+
+Pengujian operasi pada kelas ResepBahan (`Algo-C04-01` dan `Algo-C04-02`) dijalankan dengan Vitest melalui `src/tests/models.test.ts`.
+
+Tabel 4.2.8. Hasil Pengujian Unit Kelas C04
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C04-UT01* | *`ResepBahan()`, `setTakaran()`* | *Negatif* | *Buat resep bahan “Beras” dengan takaran −1.* | *Pembuatan ditolak dengan pesan “Takaran harus lebih dari 0”.* | *Operasi menghasilkan error dengan pesan tersebut.* | *Pass* |
+| *C04-UT02* | *`getTakaran()`* | *Normal* | *Buat resep bahan “Beras” dengan takaran 150.* | *Takaran tersimpan.* | *`getTakaran()` mengembalikan 150.* | *Pass* |
+| *C04-UT03* | *`getBahan()`* | *Normal* | *Baca bahan dari resep yang sama.* | *Mengembalikan objek bahan yang sama.* | *`getBahan()` mengembalikan objek bahan “Beras” yang sama.* | *Pass* |
+| *C04-UT04* | *`setTakaran()`* | *Batas* | *Ubah takaran menjadi 0.* | *Operasi ditolak dengan error.* | *Operasi menghasilkan error.* | *Pass* |
+
+Tabel 4.2.8b. Ringkasan Cakupan Kelas C04
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *`getTakaran()`, `setTakaran()`* |
+| Operasi yang diuji | *Seluruh operasi pada DPPL, ditambah `getBahan()`.* |
+| ID Algoritma yang tercakup | *`Algo-C04-01`, `Algo-C04-02`* |
+| Coverage (wajib ≥ 70%) | *100% statement / 100% cabang. Bukti pada Subbab 4.6.* |
+
+### 4.2.9 Kelas MarginController
+
+**ID Kelas:** *C11*<br>
+**Nama Kelas:** *MarginController*<br>
+**Tingkat:** *Mendalam*
+
+Pengujian operasi pada kelas MarginController (`Algo-C11-01` sampai `Algo-C11-04`) beserta fungsi perhitungan pendukungnya dijalankan dengan Vitest melalui `src/tests/marginController.test.ts` dan `src/tests/margin.test.ts`. Respons Supabase disimulasikan dengan *mock*. Operasi `validasiNamaProduk()` diuji melalui `validasiInput()`, sedangkan `simpanProdukBaru()` dan `simpanResep()` diuji melalui `simpanProduk()`.
+
+Tabel 4.2.9. Hasil Pengujian Unit Kelas C11
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C11-UT01* | *`validasiInput()`* | *Normal* | *Resep Beras takaran 1 (Rp 15.000), Ayam takaran 2 (Rp 45.000), Kecap takaran 250 (Rp 40), hasil resep 10, harga jual Rp 20.000. Harga bahan diambil dari mock basis data.* | *Total biaya Rp 115.000, HPP Rp 11.500, margin Rp 8.500, persentase margin 42,5%.* | *Preview menghasilkan total biaya 115.000, HPP 11.500, margin 8.500, dan persentase margin 42,5%.* | *Pass* |
+| *C11-UT02* | *`validasiNamaProduk()` melalui `validasiInput()`* | *Negatif* | *Mock basis data melaporkan nama produk sudah ada.* | *Ditolak dengan pesan “Nama Produk Sudah Pernah Dibuat”.* | *Operasi menghasilkan error dengan pesan tersebut.* | *Pass* |
+| *C11-UT03* | *`validasiInput()`* | *Negatif* | *Resep berisi bahan dengan takaran 0.* | *Ditolak dengan pesan “Takaran harus lebih dari 0”.* | *Operasi menghasilkan error dengan pesan tersebut.* | *Pass* |
+| *C11-UT04* | *`validasiInput()`* | *Negatif* | *Resep berisi bahan Beras dua kali.* | *Ditolak dengan pesan “Bahan baku tidak boleh duplikat dalam satu resep”.* | *Operasi menghasilkan error dengan pesan tersebut.* | *Pass* |
+| *C11-UT05* | *`validasiInput()`* | *Negatif* | *Resep berisi bahan baru bernama “beras” padahal bahan tersebut sudah ada.* | *Ditolak dengan pesan yang memuat “sudah ada, pilih dari daftar”.* | *Operasi menghasilkan error dengan pesan tersebut.* | *Pass* |
+| *C11-UT06* | *`validasiInput()`* | *Negatif* | *Hasil resep 2,5 (bukan bilangan bulat).* | *Ditolak dengan pesan “Hasil resep harus berupa bilangan bulat lebih dari 0”.* | *Operasi menghasilkan error dengan pesan tersebut.* | *Pass* |
+| *C11-UT07* | *`validasiInput()`* | *Batas* | *Harga jual Rp 5.000 dengan resep Ayam takaran 2 dan hasil resep 10.* | *HPP Rp 9.000 dan margin −Rp 4.000 (margin negatif tetap dihitung).* | *Preview menghasilkan HPP 9.000 dan margin −4.000.* | *Pass* |
+| *C11-UT08* | *`simpanProduk()`, `simpanProdukBaru()`, `simpanResep()`* | *Normal* | *Preview dengan bahan Beras (takaran 1) dan bahan baru Bumbu (Rp 15.000, pak, takaran 1), lalu `simpanProduk()`.* | *Produk tersimpan dengan hasil resep 10, margin 17.000, dan tag “makanan utama”. Bahan baru Bumbu tersimpan. Resep tersimpan 2 baris.* | *Data yang dikirim ke mock sesuai: hasil resep 10, margin 17.000, tag “makanan utama”, bahan Bumbu 15.000 pak, dan 2 baris resep.* | *Pass* |
+| *C11-UT09* | *`simpanProduk()`* | *Negatif* | *Mock penyimpanan resep dibuat gagal.* | *Operasi menghasilkan error dan produk yang sudah tersimpan dibatalkan.* | *Operasi menghasilkan error “gagal” dan produk `p1` dihapus.* | *Pass* |
+| *C11-UT10* | *`simpanProduk()`* | *Negatif* | *Jalankan `simpanProduk()` sebelum preview dihitung.* | *Ditolak dengan pesan “Hitung preview margin terlebih dahulu”.* | *Operasi menghasilkan error dengan pesan tersebut.* | *Pass* |
+| *C11-UT11* | *`hitungTotalBiaya()`* | *Normal* | *Daftar bahan contoh pada rancangan I-06.* | *Total biaya Rp 130.000.* | *Mengembalikan 130.000.* | *Pass* |
+| *C11-UT12* | *`hitungHpp()`* | *Normal* | *Daftar bahan contoh I-06 dengan 10 porsi.* | *HPP Rp 13.000 per porsi.* | *Mengembalikan 13.000.* | *Pass* |
+| *C11-UT13* | *`hitungMargin()`, `hitungPersenMargin()`* | *Normal* | *Harga jual Rp 20.000 dan HPP Rp 13.000.* | *Margin Rp 7.000 dan persentase 35%.* | *Mengembalikan margin 7.000 dan persentase 35.* | *Pass* |
+| *C11-UT14* | *`hitungHpp()`, `hitungMargin()`* | *Batas* | *Hitung HPP tanpa menyebutkan porsi, harga jual Rp 18.000.* | *Porsi bawaan 1: HPP Rp 7.520, margin Rp 10.480.* | *Mengembalikan HPP 7.520 dan margin 10.480.* | *Pass* |
+| *C11-UT15* | *`hitungHpp()`* | *Batas* | *Satu bahan (harga 100, takaran 2) dengan porsi 0, lalu `NaN`.* | *Porsi tidak valid diperlakukan sebagai 1, HPP 200.* | *Mengembalikan 200 pada kedua masukan.* | *Pass* |
+| *C11-UT16* | *`hitungMargin()`, `hitungPersenMargin()`* | *Negatif* | *Harga jual Rp 5.000 dengan HPP Rp 5.320.* | *Margin −320 dan persentase −6,4%.* | *Mengembalikan margin −320 dan persentase −6,4.* | *Pass* |
+| *C11-UT17* | *`hitungHpp()`* | *Batas* | *Satu bahan dengan harga 0,1 dan takaran 3.* | *HPP 0,3 (tanpa galat floating point).* | *Mengembalikan 0,3.* | *Pass* |
+| *C11-UT18* | *`hitungPersenMargin()`* | *Batas* | *Harga jual 0 dan margin 100.* | *Persentase margin 0.* | *Mengembalikan 0.* | *Pass* |
+| *C11-UT19* | *`parseAngka()`* | *Normal* | *Masukan “18000”.* | *18.000.* | *Mengembalikan 18.000.* | *Pass* |
+| *C11-UT20* | *`parseAngka()`* | *Normal* | *Masukan “18.000” dan “1.500.000”.* | *Titik dibaca sebagai pemisah ribuan: 18.000 dan 1.500.000.* | *Mengembalikan 18.000 dan 1.500.000.* | *Pass* |
+| *C11-UT21* | *`parseAngka()`* | *Normal* | *Masukan “2,5” dan “0,250”.* | *Koma dibaca sebagai desimal: 2,5 dan 0,25.* | *Mengembalikan 2,5 dan 0,25.* | *Pass* |
+| *C11-UT22* | *`parseAngka()`* | *Normal* | *Masukan “1.500,50”.* | *1.500,5.* | *Mengembalikan 1.500,5.* | *Pass* |
+| *C11-UT23* | *`parseAngka()`* | *Negatif* | *Masukan teks kosong, “abc”, “12a”, dan “-5”.* | *Seluruhnya menghasilkan `NaN`.* | *Mengembalikan `NaN` untuk keempat masukan.* | *Pass* |
+| *C11-UT24* | *`escapeLike()`* | *Normal* | *Masukan “50%_off”.* | *Karakter `%` dan `_` diloloskan.* | *Mengembalikan “50\%\_off”.* | *Pass* |
+| *C11-UT25* | *`formatRupiah()`* | *Batas* | *Masukan 10.480, −320, dan 0.* | *“Rp 10.480”, “-Rp 320”, dan “Rp 0”.* | *Mengembalikan ketiga nilai tersebut.* | *Pass* |
+| *C11-UT26* | *`formatPersen()`* | *Normal* | *Masukan 35 dan −6,4.* | *“35,0%” dan “-6,4%”.* | *Mengembalikan “35,0%” dan “-6,4%”.* | *Pass* |
+
+Tabel 4.2.9b. Ringkasan Cakupan Kelas C11
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *`validasiNamaProduk()`, `validasiInput()`, `simpanProdukBaru()`, `simpanResep()`* |
+| Operasi yang diuji | *Seluruh operasi pada DPPL, diuji melalui `validasiInput()` dan `simpanProduk()`, ditambah fungsi pendukung pada `margin.ts`.* |
+| ID Algoritma yang tercakup | *`Algo-C11-01` sampai `Algo-C11-04`* |
+| Coverage (wajib ≥ 70%) | *84,72% statement / 74,69% cabang untuk `MarginController.ts` dan `margin.ts` bersama. Per berkas: `MarginController.ts` 81,89% statement / 67,24% cabang, `margin.ts` 96,42% statement / 92% cabang. Bukti pada Subbab 4.6.* |
 <br>
 
 ## 4.3 Pengujian Integrasi
@@ -576,6 +713,8 @@ Tabel 4.6. Bukti Hasil Pengujian
 | ID Pengujian | Bukti Hasil Pengujian |
 | :--- | :--- |
 | *C01-UT01 – C01-UT02* | *[Keluaran Vitest untuk dua unit test `PemilikUsaha`](./assets/bukti-pengujian/C01-unit-test.png).* |
+| *C02-UT01 – C02-UT13, C03-UT01 – C03-UT07, C04-UT01 – C04-UT04, C02–C04 (coverage)* | *[Keluaran Vitest dan coverage `Produk.ts`, `BahanBaku.ts`, dan `ResepBahan.ts`](./assets/bukti-pengujian/C02-C04-unit-test-coverage.png).* |
+| *C11-UT01 – C11-UT26, C11 (coverage)* | *[Keluaran Vitest dan coverage `MarginController.ts` dan `margin.ts`](./assets/bukti-pengujian/C11-unit-test-coverage.png).* |
 | *C06-UT01 – C06-UT11, C06 (coverage)* | *[Keluaran Vitest dan coverage `AuthController.ts`](./assets/bukti-pengujian/C06-unit-test-coverage.png).* |
 | *INT-TC-AUTH-01, INT-TC-AUTH-02* | *[Beranda setelah registrasi berhasil](./assets/bukti-pengujian/UC01-01-registrasi-berhasil-beranda.jpeg). Bukti juga digunakan pada UC01-TC01.* |
 | *INT-TC-AUTH-03* | *[Profil akun uji pada hasil filter Supabase](./assets/bukti-pengujian/UC01-01-profil-terbuat-supabase.png). Bukti juga digunakan pada UC01-TC01.* |
