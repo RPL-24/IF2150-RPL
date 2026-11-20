@@ -830,7 +830,63 @@ Tabel 4.6. Bukti Hasil Pengujian
 | :--- | :--- |
 | *C02-UT01 – C02-UT08* | *[Sisipkan hasil keluaran unit test]* |
 | *C02 (coverage)* | *[Sisipkan laporan coverage kelas C02]* |
-| *INT-TC01* | *[Sisipkan bukti pengujian integrasi]* |
+| INT-TC01 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC01 Normal: registrasi masyarakat tersimpan di basis data dengan sandi ter-hash (90 ms)`. Hasil: **Pass**. |
+| INT-TC02 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC02 Gagal: registrasi dengan email yang sudah terdaftar ditolak dan tidak menambah baris (6 ms)`. Hasil: **Pass**. |
+| INT-TC03 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC03 Normal: registrasi mitra menyimpan akun berstatus menunggu, 4 dokumen, dan berkasnya (80 ms)`. Hasil: **Pass**. |
+| INT-TC04 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC04 Gagal: registrasi mitra tanpa dokumen BAS ditolak, tidak ada akun, berkas unggahan dihapus (207 ms)`. Hasil: **Pass**. |
+| INT-TC05 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC05 Normal: login masyarakat dengan kredensial benar membuat sesi dan membuka beranda (115 ms)`. Hasil: **Pass**. |
+| INT-TC06 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC06 Gagal: login dengan kata sandi salah tidak membuat sesi (99 ms)`. Hasil: **Pass**. |
+| INT-TC07 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC07 Gagal: akun mitra login di halaman masyarakat ditolak karena peran tidak sesuai (72 ms)`. Hasil: **Pass**. |
+| INT-TC08 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC08 Gagal: akun yang diblokir saat masih login langsung kehilangan akses (75 ms)`. Hasil: **Pass**. |
+| INT-TC09 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC09 Gagal: mitra yang belum terverifikasi tidak bisa membuka halaman pengajuan konsultasi (72 ms)`. Hasil: **Pass**. |
+| INT-TC10 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC10 Gagal: penolakan tanpa catatan ditolak sistem, status mitra tidak berubah (2 ms)`. Hasil: **Pass**. |
+| INT-TC11 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC11 Normal: admin memverifikasi mitra, status akun dan validitas dokumen diperbarui (3 ms)`. Hasil: **Pass**. |
+| INT-TC12 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC12 Normal: mitra mengubah profil, data tersimpan di tabel MitraPengacara (2 ms)`. Hasil: **Pass**. |
+| INT-TC13 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC13 Gagal: profil dengan deskripsi kosong ditolak, data lama tidak berubah (2 ms)`. Hasil: **Pass**. |
+| INT-TC14 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC14 Normal: mitra menambah slot jadwal, baris baru tersimpan di JadwalKetersediaan (14 ms)`. Hasil: **Pass**. |
+| INT-TC15 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC15 Gagal: slot yang bertumpuk dengan slot lain ditolak, tidak ada baris baru (8 ms)`. Hasil: **Pass**. |
+| INT-TC16 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC16 Normal: unggah dokumen legalitas tersimpan (basis data dan berkas) dan status kembali menunggu (8 ms)`. Hasil: **Pass**. |
+| INT-TC17 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC17 Gagal: unggah dokumen berformat .txt ditolak, tidak tersimpan, berkas dihapus (210 ms)`. Hasil: **Pass**. |
+| INT-TC18 | `tests/integrasi/03-searchlaw-halolaw.test.js`: `✓ INT-TC18 Normal: pencarian dengan kata kunci mengembalikan peraturan yang tersimpan di basis data (7 ms)`. Hasil: **Pass**. |
+| INT-TC19 | `tests/integrasi/03-searchlaw-halolaw.test.js`: `✓ INT-TC19 Gagal: kata kunci yang tidak cocok menampilkan pesan hasil kosong (2 ms)`. Hasil: **Pass**. |
+| INT-TC20 | `tests/integrasi/03-searchlaw-halolaw.test.js`: `✓ INT-TC20 Normal: kasus tersimpan lalu daftar mitra difilter sesuai tag kasus (6 ms)`. Hasil: **Pass**. |
+| INT-TC21 | `tests/integrasi/03-searchlaw-halolaw.test.js`: `✓ INT-TC21 Gagal: deskripsi kasus kurang dari 10 karakter ditolak dan tidak tersimpan (3 ms)`. Hasil: **Pass**. |
+| INT-TC22 | `tests/integrasi/03-searchlaw-halolaw.test.js`: `✓ INT-TC22 Gagal: filter yang tidak dipenuhi mitra mana pun menampilkan pesan kosong (2 ms)`. Hasil: **Pass**. |
+| INT-TC23 | `tests/integrasi/04-konsultasi.test.js`: `✓ INT-TC23 Normal: memilih slot kosong membuat sesi berstatus menunggu tanggapan mitra (21 ms)`. Hasil: **Pass**. |
+| INT-TC24 | `tests/integrasi/04-konsultasi.test.js`: `✓ INT-TC24 Gagal: slot yang sudah dipesan orang lain ditolak (tidak terjadi dobel booking) (2 ms)`. Hasil: **Pass**. |
+| INT-TC25 | `tests/integrasi/04-konsultasi.test.js`: `✓ INT-TC25 Gagal: penolakan tanpa catatan ditolak sistem, status sesi tidak berubah (2 ms)`. Hasil: **Pass**. |
+| INT-TC26 | `tests/integrasi/04-konsultasi.test.js`: `✓ INT-TC26 Normal: mitra menerima permintaan, status sesi menjadi terjadwal (2 ms)`. Hasil: **Pass**. |
+| INT-TC27 | `tests/integrasi/04-konsultasi.test.js`: `✓ INT-TC27 Gagal: permintaan yang sudah ditanggapi tidak bisa ditanggapi ulang (2 ms)`. Hasil: **Pass**. |
+| INT-TC28 | `tests/integrasi/04-konsultasi.test.js`: `✓ INT-TC28 Normal: pesan terkirim real-time ke mitra dan tersimpan terenkripsi di basis data (383 ms)`. Hasil: **Pass**. |
+| INT-TC29 | `tests/integrasi/04-konsultasi.test.js`: `✓ INT-TC29 Gagal: sesi yang belum lunas tidak bisa membuka chat dan pesan tidak tersimpan (5 ms)`. Hasil: **Pass**. |
+| INT-TC30 | `tests/integrasi/04-konsultasi.test.js`: `✓ INT-TC30 Gagal: koneksi socket tanpa login ditolak (3 ms)`. Hasil: **Pass**. |
+| INT-TC31 | `tests/integrasi/05-transaksi.test.js`: `✓ INT-TC31 Gagal: data kartu tidak valid ditolak sebelum dikirim ke gateway, tidak ada transaksi tercatat (81 ms)`. Hasil: **Pass**. |
+| INT-TC32 | `tests/integrasi/05-transaksi.test.js`: `✓ INT-TC32 Gagal: gateway menolak kartu, transaksi tercatat gagal, sesi tidak lunas, saldo mitra tetap (5 ms)`. Hasil: **Pass**. |
+| INT-TC33 | `tests/integrasi/05-transaksi.test.js`: `✕ INT-TC33 Normal: gateway menyetujui, transaksi tercatat berhasil, sesi lunas, saldo mitra bertambah (5 ms)`. Hasil: **Fail**.<br>Pesan galat test runner: `Expected: 302` / `Received: 500` pada `expect(res.status).toBe(302)` (`tests/integrasi/05-transaksi.test.js:71`). Server membalas HTTP 500 saat pembayaran dengan kartu `4111111111111111`. |
+| INT-TC34 | `tests/integrasi/05-transaksi.test.js`: `✓ INT-TC34 Gagal: bila satu query di dalam transaksi gagal, seluruh perubahan dibatalkan (rollback) (4 ms)`. Hasil: **Pass**. |
+| INT-TC35 | `tests/integrasi/05-transaksi.test.js`: `✓ INT-TC35 Normal: ulasan sesi yang selesai tersimpan dan rating mitra dihitung ulang (5 ms)`. Hasil: **Pass**. |
+| INT-TC36 | `tests/integrasi/05-transaksi.test.js`: `✓ INT-TC36 Gagal: ulasan tanpa rating ditolak dan tidak tersimpan (4 ms)`. Hasil: **Pass**. |
+| INT-TC37 | `tests/integrasi/05-transaksi.test.js`: `✓ INT-TC37 Gagal: ulasan untuk sesi yang belum selesai ditolak (3 ms)`. Hasil: **Pass**. |
+| INT-TC38 | `tests/integrasi/05-transaksi.test.js`: `✕ INT-TC38 Normal: riwayat sesi menampilkan isi chat yang dapat dibaca (bukan teks terenkripsi) (397 ms)`. Hasil: **Fail**.<br>Pesan galat test runner: `expect(received).not.toContain("enc:v1:")` gagal (`tests/integrasi/05-transaksi.test.js:150`). Halaman `/transaksi/riwayat/:idSesi` menampilkan isi pesan sebagai `enc:v1:H5E/VWCsgrslwC/L:...` di dalam `<div class="bubble saya">`, bukan teks asli. |
+| INT-TC39 | `tests/integrasi/05-transaksi.test.js`: `✓ INT-TC39 Gagal: masyarakat lain tidak dapat membuka riwayat sesi milik orang lain (3 ms)`. Hasil: **Pass**. |
+| INT-TC40 | `tests/integrasi/05-transaksi.test.js`: `✓ INT-TC40 Normal: pencairan disetujui gateway, tercatat berhasil, saldo mitra berkurang (2 ms)`. Hasil: **Pass**. |
+| INT-TC41 | `tests/integrasi/05-transaksi.test.js`: `✓ INT-TC41 Gagal: nominal melebihi saldo ditolak, tidak ada pencairan tercatat, saldo tetap (5 ms)`. Hasil: **Pass**. |
+| INT-TC42 | `tests/integrasi/05-transaksi.test.js`: `✓ INT-TC42 Normal: data tetap ada setelah server dimatikan dan dinyalakan ulang (538 ms)`. Hasil: **Pass**. |
+| INT-TC43 | `tests/integrasi/06-laporan-livechat.test.js`: `✓ INT-TC43 Normal: laporan pelanggaran akun tersimpan berstatus menunggu (4 ms)`. Hasil: **Pass**. |
+| INT-TC44 | `tests/integrasi/06-laporan-livechat.test.js`: `✓ INT-TC44 Gagal: laporan tanpa deskripsi ditolak dan tidak tersimpan (2 ms)`. Hasil: **Pass**. |
+| INT-TC45 | `tests/integrasi/06-laporan-livechat.test.js`: `✓ INT-TC45 Normal: admin menyetujui laporan, akun terlapor diblokir dan tidak bisa login (76 ms)`. Hasil: **Pass**. |
+| INT-TC46 | `tests/integrasi/06-laporan-livechat.test.js`: `✓ INT-TC46 Gagal: laporan yang sudah ditinjau tidak dapat diproses ulang (4 ms)`. Hasil: **Pass**. |
+| INT-TC47 | `tests/integrasi/06-laporan-livechat.test.js`: `✓ INT-TC47 Normal: admin menolak laporan, status ditolak dan akun terlapor tetap aktif (5 ms)`. Hasil: **Pass**. |
+| INT-TC48 | `tests/integrasi/06-laporan-livechat.test.js`: `✓ INT-TC48 Normal: pesan masyarakat membuat sesi live chat, admin menerima dan membalas secara real-time (15 ms)`. Hasil: **Pass**. |
+| INT-TC49 | `tests/integrasi/06-laporan-livechat.test.js`: `✓ INT-TC49 Normal: admin menyelesaikan sesi live chat, status tersimpan selesai (2 ms)`. Hasil: **Pass**. |
+| INT-TC50 | `tests/integrasi/06-laporan-livechat.test.js`: `✓ INT-TC50 Gagal: saat tidak ada admin standby, pesan ditolak dan sesi live chat tidak dibuat (4 ms)`. Hasil: **Pass**. |
+| INT-TC51 | `tests/integrasi/01-autentikasi.test.js`: `✓ INT-TC51 Normal: login admin (tabel Admin) membuka halaman admin (73 ms)`. Hasil: **Pass**. |
+| INT-TC52 | `tests/integrasi/06-laporan-livechat.test.js`: `✓ INT-TC52 Normal: mitra melaporkan ulasan pada profilnya, laporan tersimpan dengan idUlasan (74 ms)`. Hasil: **Pass**. |
+| INT-TC53 | `tests/integrasi/06-laporan-livechat.test.js`: `✓ INT-TC53 Gagal: mitra tidak dapat melaporkan ulasan milik mitra lain (91 ms)`. Hasil: **Pass**. |
+| INT-TC54 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC54 Normal: cek status verifikasi dengan username menampilkan status dari basis data (3 ms)`. Hasil: **Pass**. |
+| INT-TC55 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC55 Gagal: username mitra yang tidak terdaftar ditolak dengan pesan (3 ms)`. Hasil: **Pass**. |
+| INT-TC56 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC56 Normal: dashboard mitra menampilkan ringkasan yang sesuai dengan basis data (9 ms)`. Hasil: **Pass**. |
+| INT-TC57 | `tests/integrasi/02-mitra.test.js`: `✓ INT-TC57 Gagal: akun masyarakat tidak dapat membuka dashboard mitra (89 ms)`. Hasil: **Pass**. |
 | *UC01-TC01* | *[Sisipkan tangkapan layar UC01-TC01 sesuai prosedur pengujian]* |
 | *UC01-TC02* | *[Sisipkan tangkapan layar UC01-TC02 sesuai prosedur pengujian]* |
 | *KNF01-TC01* | *[Sisipkan bukti pengukuran parameter KNF01-TC01]* |
