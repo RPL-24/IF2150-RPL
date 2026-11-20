@@ -543,6 +543,25 @@ Tabel 4.6. Bukti Hasil Pengujian
 | *UC01-TC01* | *[Sisipkan tangkapan layar UC01-TC01 sesuai prosedur pengujian]* |
 | *UC01-TC02* | *[Sisipkan tangkapan layar UC01-TC02 sesuai prosedur pengujian]* |
 | *KNF01-TC01* | *[Sisipkan bukti pengukuran parameter KNF01-TC01]* |
+| *C07-UT01 - C07-UT16* | <img alt="C07-UT" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C07-UT.png" width="600"> |
+| *C07 (coverage)* | <img alt="C07-Coverage" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C07-coverage.png" width="600"> |
+| *C08-UT01 - C08-UT20* | <img alt="C08-UT" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C08-UT.png" width="600"> |
+| *C08 (coverage)* | <img alt="C08-Coverage" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C08-coverage.png" width="600"> |
+| *C19-UT01 - C19-UT15* | <img alt="C19-UT" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C19-UT.png" width="600"> |
+| *C20-UT01 - C20-UT24* | <img alt="C19-UT" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C20-UT.png" width="600"> |
+| *C02-UT40 - C02-UT42* | <img alt="C20-UT" src="./assets/bukti-test/unit-test/ut-uc03-uc04/C02-UT.png" width="600"> |
+| *INT-TC40 - INT-TC47* | <img alt="UC03-UC04-INT" src="./assets/bukti-test/integration-test/UC03-UC04-INT.png" width="600"> |
+| *UC03-TC01* | <img alt="UC03-TC01" src="./assets/bukti-test/uc-test/uc-uc03-uc04/UC03-TC01.png" width="300"> |
+| *UC03-TC02* | <img alt="UC03-TC02" src="./assets/bukti-test/uc-test/uc-uc03-uc04/UC03-TC02.png" width="300"> |
+| *UC03-TC03* | <img alt="UC03-TC03" src="./assets/bukti-test/uc-test/uc-uc03-uc04/UC03-TC03-1.png" width="300"> <br> <img alt="UC03-TC03" src="./assets/bukti-test/uc-test/uc-uc03-uc04/UC03-TC03-2.png" width="300"> |
+| *UC03-TC04* | <img alt="UC03-TC04" src="./assets/bukti-test/uc-test/uc-uc03-uc04/UC03-TC04.png" width="300"> |
+| *UC03-TC05* | <img alt="UC03-TC05" src="./assets/bukti-test/uc-test/uc-uc03-uc04/UC03-TC05.png" width="300"> |
+| *UC04-TC01* | <img alt="UC04-TC01" src="./assets/bukti-test/uc-test/uc-uc03-uc04/UC04-TC01-1.png" width="300"> <br> <img alt="UC04-TC01" src="./assets/bukti-test/uc-test/uc-uc03-uc04/UC04-TC01-1.png" width="300"> |
+| *UC04-TC02* | <img alt="UC04-TC02" src="./assets/bukti-test/uc-test/uc-uc03-uc04/UC04-TC02.png" width="300"> |
+| *UC04-TC03* | <img alt="UC04-TC03" src="./assets/bukti-test/uc-test/uc-uc03-uc04/UC04-TC03.png" width="300"> |
+| *UC04-TC04* | <img alt="UC04-TC04" src="./assets/bukti-test/uc-test/uc-uc03-uc04/UC04-TC04.png" width="300"> |
+| *KNF09-TC01* | <img alt="KNF09-TC01" src="./assets/bukti-test/knf-test/knf-uc03-uc04/KNF09-TC01-1.png" width="600"> <br> <img alt="KNF09-TC01" src="./assets/bukti-test/knf-test/knf-uc03-uc04/KNF09-TC01-2.png" width="600"> <br> <img alt="KNF09-TC01" src="./assets/bukti-test/knf-test/knf-uc03-uc04/KNF09-TC01-3.png" width="600"> <br> <img alt="KNF09-TC01" src="./assets/bukti-test/knf-test/knf-uc03-uc04/KNF09-TC01-4.png" width="600"> <br> <img alt="KNF09-TC01" src="./assets/bukti-test/knf-test/knf-uc03-uc04/KNF09-TC01-5.png" width="00"> |
+| *KNF10-TC01* | <img alt="KNF10-TC01" src="./assets/bukti-test/knf-test/knf-uc03-uc04/KNF10-TC01-1.png" width="600"> <br> <img alt="KNF10-TC01" src="./assets/bukti-test/knf-test/knf-uc03-uc04/KNF10-TC01-2.png" width="600"> <br> <img alt="KNF10-TC01" src="./assets/bukti-test/knf-test/knf-uc03-uc04/KNF10-TC01-3.png" width="600"> |
 | *...* | *...* |
 
 <br>
