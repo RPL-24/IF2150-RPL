@@ -271,7 +271,7 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | *C06* | *AuthController* | *Mendalam* | *Memuat validasi registrasi dan login serta keamanan autentikasi.* | *[isi]* |
 | *C07* | *LoginPage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis, teruji lewat test case use case.* | *-* |
 | *C08* | *ResetPasswordPage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis, teruji lewat test case use case.* | *-* |
-| *C09* | *ResetPasswordController* | *Mendalam* | *Memuat validasi dan proses pengaturan ulang password.* | *[isi]* |
+| *C09* | *ResetPasswordController* | *Mendalam* | *Memuat validasi dan proses pengaturan ulang password.* | *C09-UT01 – C09-UT18* |
 | *C10* | *AddProductPage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis. Perhitungan dan penyimpanan didelegasikan ke C11.* | *-* |
 | *C11* | *MarginController* | *Mendalam* | *Memuat validasi input, perhitungan HPP dan margin, serta penyimpanan produk dan resep.* | *[isi]* |
 | *C12* | *EditProductPage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis, teruji lewat test case use case.* | *-* |
@@ -288,7 +288,7 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | *C23* | *PriceHistoryPage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis, teruji lewat test case use case.* | *-* |
 | *C24* | *PriceHistoryController* | *Mendalam* | *Belum diimplementasikan pada tag v9.0 (berkas kosong), sehingga tidak dapat diuji.* | *-* |
 | *C25* | *ProfilePage* | *Tidak perlu* | *Kelas antarmuka tanpa logika bisnis, teruji lewat test case use case.* | *-* |
-| *C26* | *ProfileController* | *Mendalam* | *Memuat validasi data profil serta proses pembaruan dan pengakhiran sesi.* | *[isi]* |
+| *C26* | *ProfileController* | *Mendalam* | *Memuat validasi data profil serta proses pembaruan dan pengakhiran sesi.* | *C26-UT01 – C26-UT11* |
 | *...* | *...* | *...* | *...* | *...* |
 
 ## 4.2 Pengujian Unit Kelas
@@ -587,6 +587,83 @@ Tabel 4.2.9b. Ringkasan Cakupan Kelas C11
 | Operasi yang diuji | *Seluruh operasi pada DPPL, diuji melalui `validasiInput()` dan `simpanProduk()`, ditambah fungsi pendukung pada `margin.ts`.* |
 | ID Algoritma yang tercakup | *`Algo-C11-01` sampai `Algo-C11-04`* |
 | Coverage (wajib ≥ 70%) | *84,72% statement / 74,69% cabang untuk `MarginController.ts` dan `margin.ts` bersama. Per berkas: `MarginController.ts` 81,89% statement / 67,24% cabang, `margin.ts` 96,42% statement / 92% cabang. Bukti pada Subbab 4.6.* |
+
+### 4.2.10 Kelas ResetPasswordController
+
+**ID Kelas:** *C09*
+**Nama Kelas:** *ResetPasswordController*
+**Tingkat:** *Mendalam*
+
+Pengujian operasi `validateData()`, `kirimTautan()`, `terimaTautan()`, `akhiriSesiPemulihan()`, serta fungsi `bacaTautanReset()` dilakukan menggunakan Vitest melalui `src/tests/resetPasswordController.test.ts`. Layanan Supabase Auth, pemeriksaan akun, dan pembentukan URL disimulasikan menggunakan *mock*. Pengujian mencakup kasus normal, batas, dan negatif pada validasi input, pembacaan token, pengiriman tautan reset, pembentukan sesi pemulihan, serta pengakhiran sesi.
+
+Tabel 4.2.10. Hasil Pengujian Unit Kelas C09
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C09-UT01* | *`bacaTautanReset()`* | *Normal* | *Masukkan URL recovery dengan `access_token=abc`, `refresh_token=def`, dan `type=recovery` pada fragment URL.* | *Kedua token berhasil diekstraksi dari URL.* | *Fungsi mengembalikan tipe `token`, access token `abc`, dan refresh token `def`.* | *Pass* |
+| *C09-UT02* | *`bacaTautanReset()`* | *Negatif* | *Masukkan URL `pross://home` yang bukan tautan reset.* | *URL dikenali sebagai tautan bukan reset.* | *Fungsi mengembalikan `{ tipe: 'bukan-reset' }`.* | *Pass* |
+| *C09-UT03* | *`bacaTautanReset()`* | *Negatif* | *Masukkan URL recovery dengan `error=access_denied` dan `error_code=otp_expired`.* | *Tautan ditolak karena kedaluwarsa.* | *Fungsi mengembalikan tipe `galat` dengan `PESAN_TAUTAN_TIDAK_VALID`.* | *Pass* |
+| *C09-UT04* | *`bacaTautanReset()`* | *Negatif* | *Masukkan URL `pross://reset-password` tanpa token.* | *Tautan ditolak karena token tidak tersedia.* | *Fungsi mengembalikan tipe `galat` dengan `PESAN_TAUTAN_TIDAK_VALID`.* | *Pass* |
+| *C09-UT05* | *`validateData()`* | *Batas* | *Masukkan email berupa spasi dan password `null`.* | *Validasi ditolak dengan pesan email kosong.* | *Operasi menghasilkan `PESAN_EMAIL_KOSONG`.* | *Pass* |
+| *C09-UT06* | *`validateData()`* | *Negatif* | *Masukkan email `x@y.id` dengan mock pemeriksaan akun mengembalikan `false`.* | *Validasi ditolak karena akun tidak terdaftar.* | *Operasi menghasilkan `PESAN_AKUN_TIDAK_DITEMUKAN`.* | *Pass* |
+| *C09-UT07* | *`validateData()`* | *Normal* | *Masukkan email terdaftar `sari@dapur.id` dan password `null`.* | *Validasi mengembalikan `true` tanpa mengubah password.* | *Operasi mengembalikan `true` dan daftar pembaruan password tetap kosong.* | *Pass* |
+| *C09-UT08* | *`validateData()`* | *Negatif* | *Masukkan email terdaftar dengan password lemah `abc`.* | *Password ditolak tanpa melakukan pembaruan.* | *Operasi menghasilkan `PESAN_PASSWORD_LEMAH` dan pembaruan password tidak dipanggil.* | *Pass* |
+| *C09-UT09* | *`validateData()`* | *Normal* | *Masukkan email terdaftar dan password valid `Abcdef12`.* | *Validasi berhasil dan password baru diteruskan ke layanan pembaruan.* | *Operasi mengembalikan `true` dan mock mencatat pembaruan password `Abcdef12`.* | *Pass* |
+| *C09-UT10* | *`validateData()`* | *Negatif* | *Masukkan email `sari@dapur.id` ketika email sesi aktif adalah `lain@dapur.id`.* | *Pembaruan ditolak karena email tidak sesuai dengan sesi aktif.* | *Operasi menghasilkan `PESAN_AKUN_TIDAK_DITEMUKAN` dan password tidak diperbarui.* | *Pass* |
+| *C09-UT11* | *`kirimTautan()`* | *Normal* | *Kirim permintaan reset untuk email `  Sari@Dapur.id ` dengan mock Expo Linking.* | *Email dinormalisasi dan tautan dikirim dengan URL redirect aplikasi.* | *Mock menerima email `sari@dapur.id` dan `redirectTo: pross://reset-password`.* | *Pass* |
+| *C09-UT12* | *`kirimTautan()`* | *Negatif* | *Kirim permintaan reset saat mock pemeriksaan akun menyatakan email tidak terdaftar.* | *Permintaan ditolak dan email reset tidak dikirim.* | *Operasi menghasilkan `PESAN_AKUN_TIDAK_DITEMUKAN` dan daftar pemanggilan reset kosong.* | *Pass* |
+| *C09-UT13* | *`kirimTautan()`* | *Negatif* | *Simulasikan Supabase mengembalikan error `email rate limit exceeded`.* | *Error pengiriman email diteruskan kepada pemanggil.* | *Operasi menghasilkan error `email rate limit exceeded`.* | *Pass* |
+| *C09-UT14* | *`terimaTautan()`* | *Negatif* | *Masukkan URL `pross://home` yang bukan tautan reset.* | *URL diabaikan dan sesi tidak dibuat.* | *Operasi mengembalikan tipe `bukan-reset` dan `setSession()` tidak dipanggil.* | *Pass* |
+| *C09-UT15* | *`terimaTautan()`* | *Normal* | *Masukkan URL recovery yang memuat access token `abc` dan refresh token `def`.* | *Token digunakan untuk membentuk sesi dan email pengguna dikembalikan.* | *Mock `setSession()` menerima kedua token dan operasi mengembalikan email `sari@dapur.id`.* | *Pass* |
+| *C09-UT16* | *`terimaTautan()`* | *Negatif* | *Masukkan token recovery ketika mock `setSession()` mengembalikan error `invalid`.* | *Proses pemulihan mengembalikan pesan tautan tidak valid.* | *Operasi mengembalikan tipe `galat` dengan `PESAN_TAUTAN_TIDAK_VALID`.* | *Pass* |
+| *C09-UT17* | *`terimaTautan()`* | *Negatif* | *Masukkan URL recovery dengan `error_code=otp_expired`.* | *Sesi tidak dibuat karena tautan kedaluwarsa.* | *Operasi mengembalikan tipe `galat` dan `setSession()` tidak dipanggil.* | *Pass* |
+| *C09-UT18* | *`akhiriSesiPemulihan()`* | *Normal* | *Panggil operasi pengakhiran sesi pemulihan.* | *Proses logout dijalankan satu kali.* | *Mock `signOut()` tercatat dipanggil satu kali.* | *Pass* |
+
+Tabel 4.2.10b. Ringkasan Cakupan Kelas C09
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *`validateData()`, `resetPassword()`* |
+| Operasi yang diuji | *`validateData()`, `kirimTautan()`, `terimaTautan()`, `akhiriSesiPemulihan()`, dan fungsi `bacaTautanReset()`.* |
+| ID Algoritma yang tercakup | *Perlu disesuaikan dengan ID algoritma C09 pada DPPL.* |
+| Jumlah test | *18 test, seluruhnya Pass.* |
+| Coverage (wajib ≥ 70%) | *Vitest 5.0.5 dengan provider V8 melaporkan 98,03% baris, 97,22% cabang, 98,03% pernyataan, dan 100% fungsi untuk `ResetPasswordController.ts`. Bukti dicantumkan pada Subbab 4.6.* |
+
+
+### 4.2.11 Kelas ProfileController
+
+**ID Kelas:** *C26*
+**Nama Kelas:** *ProfileController*
+**Tingkat:** *Mendalam*
+
+Pengujian operasi `muatProfil()`, `validateProfileData()`, `updateProfileData()`, dan `processLogout()` dilakukan menggunakan Vitest melalui `src/tests/profileController.test.ts`. Layanan Supabase Auth dan operasi basis data disimulasikan menggunakan *mock*. Pengujian mencakup pemuatan profil, validasi data, pembaruan informasi akun, pemeriksaan email terdaftar, dan pengakhiran sesi dengan kasus normal, batas, serta negatif.
+
+Tabel 4.2.11. Hasil Pengujian Unit Kelas C26
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *C26-UT01* | *`muatProfil()`* | *Normal* | *Mock profil berisi username `sari`, email `sari@dapur.id`, serta nama usaha dan nomor telepon bernilai `null`.* | *Data profil dimuat dan atribut opsional `null` dikonversi menjadi string kosong.* | *Username dan email sesuai, sedangkan `getNamaUsaha()` dan `getNoTelp()` mengembalikan string kosong.* | *Pass* |
+| *C26-UT02* | *`validateProfileData()`* | *Normal* | *Masukkan nama usaha `Dapur Bu Sari`, email valid, dan nomor telepon `0812 3456 7890`.* | *Validasi menerima data profil yang sah, termasuk nomor telepon dengan spasi.* | *Operasi mengembalikan `true`.* | *Pass* |
+| *C26-UT03* | *`validateProfileData()`* | *Batas* | *Masukkan nama usaha dan nomor telepon kosong dengan email valid.* | *Validasi berhasil karena kedua atribut bersifat opsional.* | *Operasi mengembalikan `true`.* | *Pass* |
+| *C26-UT04* | *`validateProfileData()`* | *Negatif* | *Masukkan email dengan format tidak valid `sari@`.* | *Validasi menolak email dengan `ValidationError`.* | *Operasi menghasilkan `PESAN_EMAIL_TIDAK_VALID` dengan tipe `ValidationError`.* | *Pass* |
+| *C26-UT05* | *`validateProfileData()`* | *Negatif* | *Masukkan nomor telepon `08abc` yang mengandung huruf.* | *Validasi menolak nomor telepon yang bukan angka.* | *Operasi menghasilkan `PESAN_TELP_TIDAK_VALID`.* | *Pass* |
+| *C26-UT06* | *`updateProfileData()`* | *Normal* | *Ubah nama usaha dan nomor telepon dengan email yang sama, tetapi berbeda huruf kapital.* | *Nama usaha dan nomor telepon disimpan setelah normalisasi tanpa meminta perubahan email.* | *Mock menyimpan `nama_usaha: Dapur Bu Sari` dan `no_telp: 0812 3456 7890`. Pembaruan email tidak dipanggil dan `emailPerluKonfirmasi` bernilai `false`.* | *Pass* |
+| *C26-UT07* | *`updateProfileData()`* | *Normal* | *Ubah email menjadi `Baru@Dapur.id` yang belum digunakan akun lain.* | *Email baru dinormalisasi dan proses konfirmasi email diperlukan.* | *Mock menerima `baru@dapur.id` dan `emailPerluKonfirmasi` bernilai `true`.* | *Pass* |
+| *C26-UT08* | *`updateProfileData()`* | *Negatif* | *Ubah email menjadi `lain@dapur.id` ketika mock pemeriksaan akun menyatakan email sudah digunakan.* | *Pembaruan ditolak dan data profil tidak disimpan.* | *Operasi menghasilkan pesan `Email sudah digunakan akun lain`. Tidak ada pembaruan profil atau email.* | *Pass* |
+| *C26-UT09* | *`updateProfileData()`* | *Negatif* | *Simulasikan Supabase menolak perubahan email dengan pesan `Email address "x@y.z" is invalid`.* | *Error diteruskan dan pembaruan nama usaha maupun nomor telepon dibatalkan.* | *Operasi menghasilkan error yang mengandung `is invalid`, dan daftar pembaruan profil kosong.* | *Pass* |
+| *C26-UT10* | *`processLogout()`* | *Normal* | *Panggil operasi logout dengan mock Supabase berhasil.* | *Sesi diakhiri melalui pemanggilan `signOut()` satu kali.* | *Mock `signOut()` tercatat dipanggil satu kali.* | *Pass* |
+| *C26-UT11* | *`processLogout()`* | *Negatif* | *Simulasikan Supabase mengembalikan error `gagal logout` ketika proses logout dijalankan.* | *Controller meneruskan error logout kepada pemanggil.* | *Operasi menghasilkan error `gagal logout`.* | *Pass* |
+
+Tabel 4.2.11b. Ringkasan Cakupan Kelas C26
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | *Perlu dicocokkan dengan daftar operasi C26 pada DPPL.* |
+| Operasi yang diuji | *`muatProfil()`, `validateProfileData()`, `updateProfileData()`, dan `processLogout()`.* |
+| ID Algoritma yang tercakup | *Perlu dicocokkan dengan ID algoritma C26 pada DPPL.* |
+| Jumlah test | *11 test, seluruhnya Pass.* |
+| Coverage (wajib ≥ 70%) | *Vitest 5.0.5 dengan provider V8 melaporkan 100% baris, 100% cabang, 100% pernyataan, dan 100% fungsi untuk `ProfileController.ts`. Bukti dicantumkan pada Subbab 4.6.* |
+
 <br>
 
 ## 4.3 Pengujian Integrasi
@@ -683,6 +760,32 @@ Tabel 4.4.10. Hasil Pengujian Use Case UC10
 | *UC10-TC01* | *KF22* | *Normal — menerima dan membuka notifikasi perubahan harga* | *Ubah harga beli bahan baku tanpa membuat produk merugi, lalu ketuk push notification perubahan harga yang muncul.* | *Bahan Nasi Rp2.600 → Rp1.000.* | *Push notification perubahan harga bahan muncul. Saat diketuk, aplikasi terbuka di halaman utama.* | *Push notification perubahan harga tampil. Setelah diketuk, aplikasi membuka halaman utama dan Nasi Goreng Suwir tampil dengan margin Rp7.000 tanpa ikon peringatan.* | *Pass* |
 | *UC10-TC02* | *KF22* | *Alternatif 1 — mengabaikan push notification* | *Ubah harga beli bahan baku, abaikan push notification, lalu buka menu notifikasi dari halaman utama.* | *Bahan Nasi Rp2.000 → Rp3.000.* | *Notifikasi perubahan harga tetap tersimpan dan tampil pada daftar menu notifikasi.* | *Menu Notifikasi menampilkan “Harga Nasi naik +50%” berstatus belum dibaca, bersama notifikasi sebelumnya yang dikelompokkan per hari.* | *Pass* |
 
+### 4.4.11 Use Case UC11 — Mengubah Data Akun
+
+**ID Use Case:** *UC11*
+**Nama Use Case:** *Mengubah Data Akun*
+
+Pengujian dilakukan untuk memverifikasi kemampuan pengguna mengubah informasi akun pada halaman Profil sesuai KF23. Pengujian mencakup skenario normal dan kasus negatif ketika email yang digunakan telah terdaftar pada akun lain.
+
+Tabel 4.4.11. Hasil Pengujian Use Case UC11
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *UC11-TC01* | *KF23* | *Normal — mengubah data akun* | *Login menggunakan akun uji, buka halaman Profil, ubah nama usaha dan nomor telepon, lalu simpan perubahan. Buka kembali halaman Profil untuk memastikan perubahan tersimpan.* | *Nama usaha `Dapur Bu Sari`, nomor telepon `081234567890`, dan email tetap.* | *Aplikasi menyimpan perubahan data akun dan menampilkan informasi profil yang telah diperbarui.* | *Pengujian manual dilaporkan berhasil. Detail perubahan data dan hasil pemeriksaan setelah membuka kembali halaman Profil belum dicatat secara terpisah.* | *Pass* |
+| *UC11-TC02* | *KF23* | *Negatif — email sudah digunakan akun lain* | *Login menggunakan akun uji, buka halaman Profil, ubah email menjadi email yang sudah digunakan akun lain, lalu simpan perubahan.* | *Email yang sudah terdaftar pada akun lain.* | *Aplikasi menolak perubahan email, menampilkan pesan kesalahan, dan tidak menyimpan perubahan data akun.* | *Pengujian manual dilaporkan berhasil. Pesan kesalahan yang tampil dan hasil pemeriksaan data akun belum dicatat secara terpisah.* | *Pass* |
+
+### 4.4.12 Use Case UC12 — Keluar dari Akun
+
+**ID Use Case:** *UC12*
+**Nama Use Case:** *Keluar dari Akun*
+
+Tabel 4.4.12. Hasil Pengujian Use Case UC12
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *UC12-TC01* | *KF24* | *Normal — konfirmasi logout* | *Login ke aplikasi, buka halaman Profil, tekan tombol Logout, lalu pilih Ya pada dialog konfirmasi.* | *Pilihan Ya pada dialog konfirmasi logout.* | *Aplikasi mengakhiri sesi pengguna dan mengalihkan tampilan ke halaman Login.* | *Pengujian manual dilaporkan berhasil. Tampilan setelah logout dan hasil pemeriksaan sesi belum didokumentasikan secara terpisah.* | *Pass* |
+| *UC12-TC02* | *KF24* | *Alternatif 1 — membatalkan logout* | *Login ke aplikasi, buka halaman Profil, tekan tombol Logout, lalu pilih Tidak pada dialog konfirmasi.* | *Pilihan Tidak pada dialog konfirmasi logout.* | *Dialog ditutup, pengguna tetap berada pada halaman Profil, dan sesi login tetap aktif.* | *Pengujian manual dilaporkan berhasil. Kondisi halaman dan sesi setelah pembatalan belum didokumentasikan secara terpisah.* | *Pass* |
+
 <br>
 
 ## 4.5 Pengujian Kebutuhan Non-Fungsional (KNF)
@@ -695,6 +798,8 @@ Tabel 4.5. Hasil Pengujian KNF
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | *KNF01-TC01* | *KNF01* | *Response time* | *Pendaftaran akun baru ke basis data selesai dalam waktu kurang dari 3 detik.* | *Tiga percobaan dengan akun baru pada Samsung Galaxy S25 FE melalui jaringan XL. Durasi diukur dari rekaman layar sejak tombol Daftar ditekan hingga Beranda pertama kali tampil. Keberadaan profil diperiksa terpisah di Supabase.* | *Durasi 2,18 detik, 1,96 detik, dan 1,14 detik. Rata-rata 1,76 detik dan maksimum 2,18 detik. Profil akun uji ditemukan di `public.tbl_pemilik_usaha` pada pemeriksaan UC01-TC01.* | *Pass berdasarkan waktu respons yang teramati dari sisi aplikasi.* |
 | *KNF02-TC01* | *KNF02* | *Ergonomi* | *Formulir registrasi hanya berisi tiga kolom yang mencakup nama, email, dan password.* | *Inspeksi visual dan tangkapan layar formulir registrasi I-02.* | *Formulir menampilkan empat kolom yang mencakup username, email, password, dan konfirmasi password.* | *Fail. Jumlah dan nama kolom berbeda dari SKPL. Tindak lanjutnya adalah menyelaraskan formulir dan spesifikasi, termasuk keputusan penggunaan username dan konfirmasi password.* |
+| *KNF03-TC01* | *KNF03* | *Reliability* | *Data akun baru harus tersimpan ke basis data tanpa kehilangan, kerusakan, atau duplikasi data setelah registrasi berhasil.* | *Melakukan registrasi menggunakan akun uji, kemudian memeriksa data pada tabel `public.tbl_pemilik_usaha` melalui Supabase SQL Editor. Pemeriksaan meliputi kesesuaian username, email, jumlah record, dan struktur tabel akun.* | *Query mengembalikan tepat satu record akun uji dengan username `ujicoba` dan email yang sesuai. Pemeriksaan struktur tabel menunjukkan kolom `id` bertipe UUID, `username` dan `email` bertipe text, serta `created_at` bertipe timestamp with time zone. Tidak ditemukan duplikasi pada hasil pencarian akun uji.* | *Pass (berdasarkan pemeriksaan akun uji).* |
+| *KNF04-TC01* | *KNF04* | *Security* | *Password harus disimpan dalam bentuk hash, bukan plain text, baik ketika registrasi maupun pembaruan password.* | *Memeriksa penyimpanan password pada tabel `auth.users` menggunakan Supabase SQL Editor. Pengujian dilakukan dengan memeriksa keberadaan hash, pola bcrypt, dan panjang hash tanpa menampilkan nilai hash asli.* | *Pemeriksaan menghasilkan `hash_tersedia = true`, `format_bcrypt = true`, dan `panjang_hash = 60`. Hal ini menunjukkan password akun uji tersimpan dengan format bcrypt. Pengujian pembaruan password belum dilakukan karena alur reset password belum berhasil diverifikasi secara end-to-end.* | *Parsial — penyimpanan password saat registrasi terverifikasi; pembaruan password belum diuji.* |
 | *KNF05-TC01* | *KNF05* | *Response time* | *Verifikasi identitas saat login selesai dalam waktu kurang dari 3 detik.* | *Tiga percobaan login via email dan tiga percobaan via username. Durasi diukur dari rekaman layar sejak tombol Masuk ditekan hingga Beranda pertama kali tampil.* | *Email 1,76 detik, 0,79 detik, dan 0,47 detik, dengan rata-rata 1,01 detik. Username 1,27 detik, 0,75 detik, dan 0,56 detik, dengan rata-rata 0,86 detik. Durasi maksimum dari keenam percobaan adalah 1,76 detik.* | *Pass berdasarkan waktu respons yang teramati dari sisi aplikasi.* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
@@ -740,6 +845,12 @@ Tabel 4.6. Bukti Hasil Pengujian
 | *KNF01-TC01* | *Rekaman registrasi [percobaan 1](./assets/bukti-pengujian/KNF01-registrasi-01.mp4), [percobaan 2](./assets/bukti-pengujian/KNF01-registrasi-02.mp4), dan [percobaan 3](./assets/bukti-pengujian/KNF01-registrasi-03.mp4).* |
 | *KNF02-TC01* | *[Tangkapan layar empat kolom formulir registrasi I-02](./assets/bukti-pengujian/KNF02-form-registrasi.jpeg).* |
 | *KNF05-TC01* | *Rekaman login via email [1](./assets/bukti-pengujian/KNF05-login-email-01.mp4), [2](./assets/bukti-pengujian/KNF05-login-email-02.mp4), dan [3](./assets/bukti-pengujian/KNF05-login-email-03.mp4). Rekaman login via username [1](./assets/bukti-pengujian/KNF05-login-username-01.mp4), [2](./assets/bukti-pengujian/KNF05-login-username-02.mp4), dan [3](./assets/bukti-pengujian/KNF05-login-username-03.mp4).* |
+| *UC11-TC01* | *[Hasil perubahan data profil](./assets/bukti-pengujian/UC11-01-ubah-profil.png).* |
+| *UC11-TC02* | *[Pengujian penolakan email duplikat](./assets/bukti-pengujian/UC11-02-email-duplikat.png).* |
+| *UC12-TC01* | *[Halaman Login setelah logout](./assets/bukti-pengujian/UC12-01-logout-berhasil.png).* |
+| *UC12-TC02* | *[Halaman Profil setelah membatalkan logout](./assets/bukti-pengujian/UC12-02-batal-logout.png).* |
+| *KNF03-TC01* | *[Hasil pemeriksaan data akun pada Supabase](./assets/bukti-pengujian/KNF03-data-akun.png).* |
+| *KNF04-TC01* | *[Hasil pemeriksaan format bcrypt pada Supabase Auth](./assets/bukti-pengujian/KNF04-password-hash.png). Pengujian perubahan password belum dilakukan.* |
 
 <br>
 
@@ -759,6 +870,8 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 | *KF04* | *KNF05* | *UC02* | *C01 — PemilikUsaha<br>C06 — AuthController<br>C07 — LoginPage* | *`src/models/PemilikUsaha.ts`<br>`src/controllers/AuthController.ts`<br>`src/views/LoginPage.tsx`<br>`src/supabase/functions/login-with-username/index.ts`* | *UC02-TC01, UC02-TC02, UC02-TC03, UC02-TC04* | *C06-UT06 – C06-UT11, INT-TC-AUTH-04, INT-TC-AUTH-05, KNF05-TC01* |
 | *KF20* | *-* | *UC09* | *C17 — Notifikasi<br>C18 — PushNotificationUI<br>C19 — NotificationController* | *`src/models/Notifikasi.ts`<br>`src/services/PushNotificationUI.ts`<br>`src/controllers/NotificationController.ts`<br>`src/controllers/notification.ts`<br>`src/supabase/migrations/20261105000000_notifikasi_riwayat_harga.sql`* | *UC09-TC01, UC09-TC02* | *C17-UT01 – C17-UT03, C18-UT01 – C18-UT05, C19-UT02, C19-UT03, C19-UT06 – C19-UT13, C19-UT16, C19-UT17, C19-UT26, INT-TC-NOTIF-01 – INT-TC-NOTIF-04* |
 | *KF22* | *-* | *UC10* | *C17 — Notifikasi<br>C18 — PushNotificationUI<br>C19 — NotificationController* | *`src/models/Notifikasi.ts`<br>`src/services/PushNotificationUI.ts`<br>`src/controllers/NotificationController.ts`<br>`src/controllers/notification.ts`<br>`src/supabase/migrations/20261105000000_notifikasi_riwayat_harga.sql`* | *UC10-TC01, UC10-TC02* | *C17-UT01 – C17-UT03, C18-UT01 – C18-UT08, C19-UT01, C19-UT04, C19-UT05, C19-UT14, C19-UT15, C19-UT17 – C19-UT25, INT-TC-NOTIF-01 – INT-TC-NOTIF-04* |
+| *KF23* | *KNF04* | *UC11* | *C25 — ProfilePage<br>C26 — ProfileController* | *`src/views/ProfilePage.tsx`<br>`src/controllers/ProfileController.ts`* | *UC11-TC01, UC11-TC02* | *C26-UT01 – C26-UT09, KNF04-TC01 (parsial)* |
+| *KF24* | *-* | *UC12* | *C25 — ProfilePage<br>C26 — ProfileController* | *`src/views/ProfilePage.tsx`<br>`src/controllers/ProfileController.ts`* | *UC12-TC01, UC12-TC02* | *C26-UT10, C26-UT11* |
 | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
 
 Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
@@ -768,4 +881,6 @@ Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 | *KNF01* | *Response time* | *KF01, KF02 / UC01* | *KNF01-TC01* |
 | *KNF02* | *Ergonomi* | *KF01 / UC01* | *KNF02-TC01* |
 | *KNF05* | *Response time* | *KF04 / UC02* | *KNF05-TC01* |
+| *KNF03* | *Reliability* | *KF02 / UC01* | *KNF03-TC01* |
+| *KNF04* | *Security* | *KF01, KF23 / UC01, UC11* | *KNF04-TC01 (parsial)* |
 | *...* | *...* | *...* | *...* |
