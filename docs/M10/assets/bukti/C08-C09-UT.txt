@@ -1,0 +1,29 @@
+﻿node.exe : PASS tests/unit/ViewModulD.test.js
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (PASS tests/unit/ViewModulD.test.js:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  HalamanPercakapan (C08)
+    √ C08-UT01 [Normal] validasiInputKosong: teks berisi karakter mengembalikan false (7 ms)
+    √ C08-UT02 [Negatif] validasiInputKosong: string kosong, hanya spasi, atau bukan string mengembalikan true (8 ms)
+    √ C08-UT03 [Normal] kirimPesan: mengirim POST /api/percakapan/:id/pesan, menampilkan gelembung, dan mengosongkan input (37 ms)
+    √ C08-UT04 [Negatif] kirimPesan: pesan kosong atau melebihi 2000 karakter ditolak tanpa memanggil API (2 ms)
+    √ C08-UT05 [Normal] showDaftarPercakapan: merender item daftar, cuplikan, dan memperbarui penanda belum dibaca (3 ms)
+    √ C08-UT06 [Normal] showPercakapan: mengurutkan pesan menurut waktuKirim serta memasang tautan Kebijakan Privasi dan Laporkan (10 ms)
+    √ C08-UT07 [Negatif] bukaPercakapan: respons 403 menampilkan panel akses ditolak dan mengosongkan daftar pesan (KF35) (3 ms)
+    √ C08-UT08 [Negatif] mulaiPercakapanDariBarang: penjual diblokir (403) menampilkan penolakan tanpa membuka ruang (1 ms)
+  PanelNotifikasi (C09)
+    √ C09-UT01 [Normal] tampilkanPenandaBelumDibaca: angka > 0 menampilkan badge, 0 atau negatif menyembunyikannya (2 ms)
+    √ C09-UT02 [Normal] tampilkanDaftarNotifikasi: merender daftar beserta titik belum dibaca dan keadaan kosong (2 ms)
+    √ C09-UT03 [Normal] klikNotifikasi: memanggil PATCH /:id/baca, memperbarui badge, dan mengarahkan ke /percakapan (2 ms)
+    √ C09-UT04 [Normal] tandaiSemuaDibaca: memanggil PATCH /api/notifikasi/baca-semua dan menandai semua dibaca (1 ms)
+    √ C09-UT05 [Negatif] periksaDukunganPush: menyembunyikan tombol push bila peramban tidak mendukung atau kunciPublik null (2 ms)
+    √ C09-UT06 [Normal] kelasIkonJenis: memetakan jenis notifikasi ke kelas ikon yang sesuai (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       14 passed, 14 total
+Snapshots:   0 total
+Time:        1.152 s
+Ran all test suites matching tests/unit/ViewModulD.test.js.

@@ -1,0 +1,43 @@
+﻿
+> itbeli@0.1.0 test:db
+> jest --runInBand --config jest.db.config.js --verbose --no-color tests/db/ModulD.test.js
+
+  console.warn
+    Web Push dilewati: VAPID_PUBLIC_KEY/VAPID_PRIVATE_KEY belum diatur.
+
+      29 |     if (!this.vapidTerkonfigurasi()) {
+      30 |       if (!this.sudahCatatTanpaVapid) {
+    > 31 |         console.warn('Web Push dilewati: VAPID_PUBLIC_KEY/VAPID_PRIVATE_KEY belum diatur.');
+         |                 ^
+      32 |         this.sudahCatatTanpaVapid = true;
+      33 |       }
+      34 |       return false;
+
+      at PushNotifikasiAdapter.warn [as kirimPush] (integrasi/PushNotifikasiAdapter.js:31:17)
+      at NotifikasiController.kirimPush [as kirimPushNotifikasi] (controllers/NotifikasiController.js:50:34)
+      at kirimPushNotifikasi (controllers/NotifikasiController.js:42:40)
+
+node.exe : PASS tests/db/ModulD.test.js
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (PASS tests/db/ModulD.test.js:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  Integrasi Modul D dengan PostgreSQL dan Web Push lokal (komponen nyata)
+    √ INT-TC46 mulai percakapan baru (201) dan percakapan ganda memakai ulang ruang yang sama (200) tanpa duplikat (UC16, KF31) (81 ms)
+    √ INT-TC47 mulai percakapan menolak listing sendiri (400), penjual diblokir (403), barang tidak ada (404), dan tanpa sesi (401) (39 ms)
+    √ INT-TC48 kirim pesan tersimpan terenkripsi di tabel pesan, tidak memuat teks asli, dan terbaca peserta (UC17, KF32, KF36) (96 ms)
+    √ INT-TC49 kirim pesan menyimpan notifikasi in-app untuk penerima tanpa isi pesan dan bisa ditandai dibaca (KF34, KF36) (90 ms)
+    √ INT-TC50 non-peserta (pengguna lain dan admin) ditolak 403 saat membuka maupun mengirim pesan (UC16 Alt 3, KF35) (41 ms)
+    √ INT-TC51 daftar percakapan terurut terbaru, memuat cuplikan dan hitung belum dibaca, lalu nol setelah dibuka (UC18, KF33, KF34) (198 ms)
+    √ INT-TC52 tandai semua notifikasi dibaca mengubah seluruh status_baca menjadi true di tabel notifikasi (KF34) (86 ms)
+    √ INT-TC53 LanggananPush simpan, upsert endpoint sama, baca per akun, dan hapus pada tabel nyata (KF34) (33 ms)
+    √ INT-TC54 PushNotifikasiAdapter mengirim permintaan Web Push sungguhan (VAPID + aes128gcm) ke push service lokal (KF34, Algo-071) (39 ms)
+    √ INT-TC55 PushNotifikasiAdapter menghapus langganan di PostgreSQL saat push service membalas 404 atau 410 (KF34, Algo-071) (36 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       10 passed, 10 total
+Snapshots:   0 total
+Time:        2.524 s, estimated 4 s
+Ran all test suites matching tests/db/ModulD.test.js.

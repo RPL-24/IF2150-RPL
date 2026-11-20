@@ -1,0 +1,22 @@
+﻿node.exe : PASS tests/unit/PushNotifikasiAdapter.test.js
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (PASS tests/unit...Adapter.test.js:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  PushNotifikasiAdapter (C44, Algo-071)
+    √ C44-UT01 [Negatif] kirimPush: tanpa VAPID mengembalikan false tanpa mengirim dan hanya mencatat log sekali (177 ms)
+    √ C44-UT02 [Batas] kirimPush: akun tanpa langganan mengembalikan false tanpa memanggil web-push (6 ms)
+    √ C44-UT03 [Normal] kirimPush: mengirim payload { judul, isi, tautan } dengan kunci VAPID ke setiap langganan (7 ms)
+    √ C44-UT04 [Negatif] kirimPush: status 410 dari push service menghapus langganan kedaluwarsa dan tetap mengirim ke sisanya (7 ms)
+    √ C44-UT05 [Negatif] kirimPush: status 404 dari push service menghapus langganan dan mengembalikan false bila tidak ada yang berhasil (6 ms)
+    √ C44-UT06 [Negatif] kirimPush: galat 500 tidak menghapus langganan dan mengembalikan false (6 ms)
+    √ C44-UT07 [Negatif] kirimPush: galat saat mengambil daftar langganan ditangani tanpa melempar dan mengembalikan false (6 ms)
+    √ C44-UT08 [Normal] getKunciPublik dan vapidTerkonfigurasi: mengembalikan kunci publik saat VAPID lengkap dan null bila salah satu kosong (11 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       8 passed, 8 total
+Snapshots:   0 total
+Time:        1.187 s
+Ran all test suites matching tests/unit/PushNotifikasiAdapter.test.js.

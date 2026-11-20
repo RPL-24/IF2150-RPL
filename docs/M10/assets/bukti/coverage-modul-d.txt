@@ -1,0 +1,216 @@
+﻿=== COVERAGE UNIT TEST (npx jest --runInBand --coverage) ===
+node.exe : PASS tests/integration/ModerasiAPI.test.js
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (PASS tests/inte...rasiAPI.test.js:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+PASS tests/unit/NotifikasiController.test.js
+PASS tests/unit/PercakapanController.test.js
+PASS tests/unit/PushNotifikasiAdapter.test.js
+PASS tests/integration/SsoAPI.test.js
+PASS tests/unit/ViewModulD.test.js
+PASS tests/unit/ModelModulD.test.js
+PASS tests/unit/Kriptografi.test.js
+PASS tests/integration/AkunAPI.test.js
+PASS tests/integration/AlurModulA.test.js
+PASS tests/integration/PercakapanAPI.test.js
+PASS tests/integration/ListingAPI.test.js
+PASS tests/integration/LaporanAPI.test.js
+PASS tests/integration/AlurModulE.test.js
+PASS tests/unit/ViewModulE.test.js
+PASS tests/unit/ModerasiController.test.js
+PASS tests/unit/AkunController.test.js
+PASS tests/unit/ModelAkun.test.js
+PASS tests/unit/BarangModel.test.js
+PASS tests/unit/LaporanModel.test.js
+PASS tests/unit/LaporanController.test.js
+PASS tests/unit/ListingService.test.js
+PASS tests/unit/BarangKatalog.test.js
+PASS tests/unit/DokumenLegalController.test.js
+PASS tests/unit/SurelAdapter.test.js
+PASS tests/unit/ViewKatalog.test.js
+PASS tests/unit/Otorisasi.test.js
+PASS tests/unit/LogAdmin.test.js
+PASS tests/unit/FilterController.test.js
+PASS tests/unit/PenyimpananBerkasBlob.test.js
+PASS tests/unit/KatalogController.test.js
+PASS tests/unit/KonfigurasiEnv.test.js
+PASS tests/unit/HalamanOtentikasi.test.js
+PASS tests/unit/PencarianController.test.js
+----------------------------|---------|----------|---------|---------|-------------------------------------------------------------------------------------------------------------------------------
+File                        | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                                                                                             
+----------------------------|---------|----------|---------|---------|-------------------------------------------------------------------------------------------------------------------------------
+All files                   |   74.75 |     59.9 |   79.65 |   75.78 |                                                                                                                               
+ src                        |   86.84 |       25 |   33.33 |   86.84 |                                                                                                                               
+  app.js                    |   86.84 |       25 |   33.33 |   86.84 | 32,38-39,51-52                                                                                                                
+ src/config                 |   93.75 |       80 |      50 |   93.33 |                                                                                                                               
+  db.js                     |      80 |       50 |       0 |      80 | 10                                                                                                                            
+  env.js                    |     100 |    82.14 |     100 |     100 | 24-32,36                                                                                                                      
+ src/controllers            |   96.79 |    92.63 |   95.38 |   97.98 |                                                                                                                               
+  AkunController.js         |    96.1 |     94.5 |     100 |   98.34 | 244-245                                                                                                                       
+  BarangController.js       |   66.66 |      100 |    62.5 |      75 | 6,8,10                                                                                                                        
+  DokumenLegalController.js |     100 |      100 |     100 |     100 |                                                                                                                               
+  FilterController.js       |     100 |      100 |     100 |     100 |                                                                                                                               
+  KatalogController.js      |     100 |      100 |     100 |     100 |                                                                                                                               
+  LaporanController.js      |     100 |    84.48 |     100 |     100 | 51,54-55,75-89                                                                                                                
+  ModerasiController.js     |     100 |     87.5 |     100 |     100 | 68,84-92,100,140,157-163,212,277-291,332                                                                                      
+  NotifikasiController.js   |   89.83 |    94.87 |   78.57 |   88.46 | 16-24,123-148                                                                                                                 
+  PencarianController.js    |     100 |      100 |     100 |     100 |                                                                                                                               
+  PercakapanController.js   |     100 |      100 |     100 |     100 |                                                                                                                               
+  SsoController.js          |   94.77 |    92.47 |     100 |   98.14 | 211,222                                                                                                                       
+ src/integrasi              |     100 |      100 |     100 |     100 |                                                                                                                               
+  PushNotifikasiAdapter.js  |     100 |      100 |     100 |     100 |                                                                                                                               
+  SurelAdapter.js           |     100 |      100 |     100 |     100 |                                                                                                                               
+ src/models                 |   95.32 |    85.38 |   95.16 |   95.67 |                                                                                                                               
+  Admin.js                  |     100 |      100 |     100 |     100 |                                                                                                                               
+  Akun.js                   |     100 |      100 |     100 |     100 |                                                                                                                               
+  Barang.js                 |     100 |       86 |     100 |     100 | 46-57,116,174,219                                                                                                             
+  BuktiLaporan.js           |   95.65 |    73.33 |     100 |     100 | 14,29,38                                                                                                                      
+  DokumenLegal.js           |     100 |      100 |     100 |     100 |                                                                                                                               
+  FotoBarang.js             |   96.29 |    77.77 |     100 |     100 | 17-23,43,65                                                                                                                   
+  LanggananPush.js          |     100 |      100 |     100 |     100 |                                                                                                                               
+  Laporan.js                |     100 |    88.88 |     100 |     100 | 50-52,139                                                                                                                     
+  ListingPenjual.js         |   17.39 |        0 |       0 |   17.39 | 7-39                                                                                                                          
+  LogAdmin.js               |     100 |      100 |     100 |     100 |                                                                                                                               
+  LogAudit.js               |   96.55 |    33.33 |     100 |     100 | 18,40-64                                                                                                                      
+  Notifikasi.js             |     100 |      100 |     100 |     100 |                                                                                                                               
+  Penjual.js                |     100 |      100 |     100 |     100 |                                                                                                                               
+  Percakapan.js             |     100 |      100 |     100 |     100 |                                                                                                                               
+  Pesan.js                  |     100 |      100 |     100 |     100 |                                                                                                                               
+  ReferensiListing.js       |     100 |      100 |     100 |     100 |                                                                                                                               
+  SesiLogin.js              |     100 |      100 |     100 |     100 |                                                                                                                               
+  TokenVerifikasi.js        |     100 |      100 |     100 |     100 |                                                                                                                               
+ src/pendukung              |     100 |      100 |     100 |     100 |                                                                                                                               
+  Kriptografi.js            |     100 |      100 |     100 |     100 |                                                                                                                               
+  Otorisasi.js              |     100 |      100 |     100 |     100 |                                                                                                                               
+ src/penyimpanan            |   98.59 |    73.33 |   71.42 |     100 |                                                                                                                               
+  PenyimpananBerkas.js      |   98.59 |    73.33 |   71.42 |     100 | 22,81-94,106,122,136                                                                                                          
+ src/routes                 |   86.46 |    71.83 |   93.02 |   86.36 |                                                                                                                               
+  akunRoutes.js             |   96.59 |    76.31 |     100 |   96.15 | 53,93,131                                                                                                                     
+  barangRoutes.js           |   95.83 |    83.33 |     100 |   95.23 | 21                                                                                                                            
+  dokumenLegalRoutes.js     |     100 |       75 |     100 |     100 | 21                                                                                                                            
+  katalogRoutes.js          |    62.5 |        0 |       0 |   71.42 | 10-11,18-19                                                                                                                   
+  laporanRoutes.js          |   81.81 |    57.14 |     100 |   81.81 | 61-69                                                                                                                         
+  moderasiRoutes.js         |    76.8 |    73.91 |     100 |    76.8 | 19,29-30,50,61-62,87-88,125,136-137,173,184-185,221,232-233,247,255,269,280-281,309,320-321,336,349,360-361                   
+  notifikasiRoutes.js       |   94.73 |       80 |   83.33 |   94.73 | 22                                                                                                                            
+  percakapanRoutes.js       |     100 |      100 |     100 |     100 |                                                                                                                               
+ src/services               |      74 |    70.58 |   69.56 |   84.61 |                                                                                                                               
+  ListingService.js         |      74 |    70.58 |   69.56 |   84.61 | 37,64,67-78                                                                                                                   
+ src/views/js               |   39.45 |    25.13 |   40.54 |   40.51 |                                                                                                                               
+  DasborAdmin.js            |    17.9 |    11.98 |   30.55 |   18.75 | 18-267,295-296,307-308,314,331-374,385-387,394-396,419-420,429-430,439-472,481-567,584-586                                    
+  HalamanPercakapan.js      |   63.97 |     38.4 |   59.45 |   64.48 | 20-44,51-52,60-62,69-70,73-74,149,170-172,185-186,194-233,256-259,275,290-291,399-400,403-405,414,417,428-501,549-555,564-567 
+  PanelNotifikasi.js        |   34.76 |    29.94 |   31.57 |   35.61 | 23-220,231-240,312-314,360,381-386,397-440,462-480,489-491                                                                    
+----------------------------|---------|----------|---------|---------|-------------------------------------------------------------------------------------------------------------------------------
+
+Test Suites: 34 passed, 34 total
+Tests:       658 passed, 658 total
+Snapshots:   0 total
+Time:        10.109 s, estimated 16 s
+Ran all test suites.
+
+=== COVERAGE INTEGRASI NYATA MODUL D (npm run test:db -- tests/db/ModulD.test.js --coverage) ===
+
+> itbeli@0.1.0 test:db
+> jest --runInBand --config jest.db.config.js --coverage --no-color tests/db/ModulD.test.js
+
+  console.warn
+    Web Push dilewati: VAPID_PUBLIC_KEY/VAPID_PRIVATE_KEY belum diatur.
+
+      29 |     if (!this.vapidTerkonfigurasi()) {
+      30 |       if (!this.sudahCatatTanpaVapid) {
+    > 31 |         console.warn('Web Push dilewati: VAPID_PUBLIC_KEY/VAPID_PRIVATE_KEY belum diatur.');
+         |                 ^
+      32 |         this.sudahCatatTanpaVapid = true;
+      33 |       }
+      34 |       return false;
+
+      at PushNotifikasiAdapter.warn [as kirimPush] (integrasi/PushNotifikasiAdapter.js:31:17)
+      at NotifikasiController.kirimPush [as kirimPushNotifikasi] (controllers/NotifikasiController.js:50:34)
+      at kirimPushNotifikasi (controllers/NotifikasiController.js:42:40)
+
+node.exe : PASS tests/db/ModulD.test.js
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (PASS tests/db/ModulD.test.js:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  Integrasi Modul D dengan PostgreSQL dan Web Push lokal (komponen nyata)
+    √ INT-TC46 mulai percakapan baru (201) dan percakapan ganda memakai ulang ruang yang sama (200) tanpa duplikat (UC16, KF31) (84 ms)
+    √ INT-TC47 mulai percakapan menolak listing sendiri (400), penjual diblokir (403), barang tidak ada (404), dan tanpa sesi (401) (42 ms)
+    √ INT-TC48 kirim pesan tersimpan terenkripsi di tabel pesan, tidak memuat teks asli, dan terbaca peserta (UC17, KF32, KF36) (93 ms)
+    √ INT-TC49 kirim pesan menyimpan notifikasi in-app untuk penerima tanpa isi pesan dan bisa ditandai dibaca (KF34, KF36) (91 ms)
+    √ INT-TC50 non-peserta (pengguna lain dan admin) ditolak 403 saat membuka maupun mengirim pesan (UC16 Alt 3, KF35) (44 ms)
+    √ INT-TC51 daftar percakapan terurut terbaru, memuat cuplikan dan hitung belum dibaca, lalu nol setelah dibuka (UC18, KF33, KF34) (205 ms)
+    √ INT-TC52 tandai semua notifikasi dibaca mengubah seluruh status_baca menjadi true di tabel notifikasi (KF34) (88 ms)
+    √ INT-TC53 LanggananPush simpan, upsert endpoint sama, baca per akun, dan hapus pada tabel nyata (KF34) (35 ms)
+    √ INT-TC54 PushNotifikasiAdapter mengirim permintaan Web Push sungguhan (VAPID + aes128gcm) ke push service lokal (KF34, Algo-071) (44 ms)
+    √ INT-TC55 PushNotifikasiAdapter menghapus langganan di PostgreSQL saat push service membalas 404 atau 410 (KF34, Algo-071) (35 ms)
+
+----------------------------|---------|----------|---------|---------|----------------------------------------------------------------------------------
+File                        | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                                                
+----------------------------|---------|----------|---------|---------|----------------------------------------------------------------------------------
+All files                   |   34.16 |    14.35 |   25.91 |    37.3 |                                                                                  
+ src                        |   81.57 |        0 |       0 |   81.57 |                                                                                  
+  app.js                    |   81.57 |        0 |       0 |   81.57 | 32,38-39,48-52                                                                   
+ src/config                 |   81.25 |    73.33 |     100 |   86.66 |                                                                                  
+  db.js                     |     100 |       50 |     100 |     100 | 5                                                                                
+  env.js                    |   72.72 |       75 |     100 |      80 | 13-14                                                                            
+ src/controllers            |    27.4 |    13.29 |   20.76 |   30.34 |                                                                                  
+  AkunController.js         |   12.98 |        0 |    3.84 |   16.52 | 44-201,215-287                                                                   
+  BarangController.js       |   33.33 |        0 |       0 |   41.66 | 6-12                                                                             
+  DokumenLegalController.js |   28.57 |        0 |       0 |   33.33 | 7-14                                                                             
+  FilterController.js       |   12.82 |        0 |       0 |   14.28 | 10-76                                                                            
+  KatalogController.js      |    23.8 |        0 |       0 |   26.31 | 11-59                                                                            
+  LaporanController.js      |   13.23 |        0 |       0 |   14.28 | 15-148                                                                           
+  ModerasiController.js     |   10.59 |        0 |       0 |   10.88 | 22-333                                                                           
+  NotifikasiController.js   |   74.57 |    71.79 |   64.28 |   82.69 | 16-24,43,107,118-148                                                             
+  PencarianController.js    |      25 |        0 |       0 |      30 | 9-30                                                                             
+  PercakapanController.js   |   89.77 |    66.07 |     100 |   97.26 | 93,129                                                                           
+  SsoController.js          |   12.68 |        0 |       0 |   15.74 | 17-27,34-45,55-225                                                               
+ src/integrasi              |   79.16 |       60 |   66.66 |   80.85 |                                                                                  
+  PushNotifikasiAdapter.js  |   85.71 |    61.53 |      75 |   88.23 | 23,65,71-72                                                                      
+  SurelAdapter.js           |   61.53 |       50 |      50 |   61.53 | 21-26                                                                            
+ src/models                 |   38.36 |    15.97 |   32.52 |   40.64 |                                                                                  
+  Admin.js                  |      60 |      100 |       0 |      60 | 8-13                                                                             
+  Akun.js                   |    19.6 |    11.11 |    7.69 |   20.83 | 24-79,90-134                                                                     
+  Barang.js                 |   28.37 |       20 |      20 |   29.41 | 21,58-78,95-231                                                                  
+  BuktiLaporan.js           |   13.04 |        0 |       0 |   14.28 | 7-54                                                                             
+  DokumenLegal.js           |      20 |        0 |       0 |   21.05 | 13-62                                                                            
+  FotoBarang.js             |   18.51 |     5.55 |    12.5 |   20.83 | 7-51,66-70                                                                       
+  LanggananPush.js          |   94.11 |       50 |     100 |     100 | 16                                                                               
+  Laporan.js                |   14.54 |        0 |       0 |   16.32 | 25-144                                                                           
+  ListingPenjual.js         |   17.39 |        0 |       0 |   17.39 | 7-39                                                                             
+  LogAdmin.js               |   16.66 |        0 |       0 |   18.75 | 7-43                                                                             
+  LogAudit.js               |   10.34 |        0 |       0 |   11.11 | 10-81                                                                            
+  Notifikasi.js             |   95.45 |       20 |     100 |     100 | 16-47                                                                            
+  Percakapan.js             |     100 |     90.9 |     100 |     100 | 97                                                                               
+  Pesan.js                  |   95.65 |       50 |     100 |     100 | 18                                                                               
+  ReferensiListing.js       |     100 |      100 |     100 |     100 |                                                                                  
+  SesiLogin.js              |      85 |    33.33 |      75 |   89.47 | 59-64                                                                            
+  TokenVerifikasi.js        |   20.83 |        0 |       0 |   21.73 | 15-80                                                                            
+ src/pendukung              |   63.49 |    45.16 |   63.63 |    66.1 |                                                                                  
+  Kriptografi.js            |   78.12 |       25 |   66.66 |   80.64 | 19-26,49,57                                                                      
+  Otorisasi.js              |   48.38 |    52.17 |      60 |      50 | 26-29,44-55                                                                      
+ src/penyimpanan            |   11.26 |     4.44 |    7.14 |   11.94 |                                                                                  
+  PenyimpananBerkas.js      |   11.26 |     4.44 |    7.14 |   11.94 | 22-136                                                                           
+ src/routes                 |   36.92 |     4.22 |   25.58 |   38.31 |                                                                                  
+  akunRoutes.js             |   27.27 |        0 |       0 |   30.76 | 34,40-43,51-55,59-63,67-70,74-77,87,91-95,99-103,107-110,114-125,129-137,151-155 
+  barangRoutes.js           |   66.66 |        0 |       0 |   76.19 | 8-9,19-21                                                                        
+  dokumenLegalRoutes.js     |   55.55 |        0 |       0 |   55.55 | 8-12                                                                             
+  katalogRoutes.js          |    62.5 |        0 |       0 |   71.42 | 10-11,18-19                                                                      
+  laporanRoutes.js          |    40.9 |        0 |       0 |    40.9 | 34-69                                                                            
+  moderasiRoutes.js         |    14.4 |        0 |       0 |    14.4 | 16-30,39-62,71-88,97-137,146-185,194-233,242-281,290-321,330-361                 
+  notifikasiRoutes.js       |   94.73 |       80 |   83.33 |   94.73 | 28                                                                               
+  percakapanRoutes.js       |    90.9 |      100 |     100 |      90 | 15-16                                                                            
+ src/services               |       7 |        0 |       0 |   10.76 |                                                                                  
+  ListingService.js         |       7 |        0 |       0 |   10.76 | 7-85                                                                             
+----------------------------|---------|----------|---------|---------|----------------------------------------------------------------------------------
+Test Suites: 1 passed, 1 total
+Tests:       10 passed, 10 total
+Snapshots:   0 total
+Time:        2.695 s, estimated 3 s
+Ran all test suites matching tests/db/ModulD.test.js.
+
