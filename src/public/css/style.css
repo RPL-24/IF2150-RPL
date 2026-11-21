@@ -1,0 +1,520 @@
+/* ---------- Font ---------- */
+@font-face { font-family: "Public Sans"; font-style: normal; font-weight: 400; font-display: swap;
+  src: url("/fonts/public-sans-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Public Sans"; font-style: normal; font-weight: 500; font-display: swap;
+  src: url("/fonts/public-sans-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Public Sans"; font-style: normal; font-weight: 600; font-display: swap;
+  src: url("/fonts/public-sans-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Public Sans"; font-style: normal; font-weight: 700; font-display: swap;
+  src: url("/fonts/public-sans-latin-700-normal.woff2") format("woff2"); }
+
+/* ---------- Warna dan ukuran (ubah di sini, berlaku di semua halaman) ---------- */
+:root {
+  --cokelat-tua: #402821;   /* teks utama, tombol */
+  --cokelat: #926E57;       /* garis, teks sekunder, kartu */
+  --krem: #F2F1EE;          /* latar halaman */
+  --kuning: #F1E6AD;        /* header dan footer */
+  --biru-muda: #EDF4FA;     /* latar pendukung (tabel, chat) */
+  --biru-muda-2: #DDE5F1;   /* latar pendukung yang lebih tua */
+  --putih: #FFFFFF;
+  --tautan: #0088FF;
+
+  --sukses-teks: #2D5A34;
+  --sukses-latar: #E2EFDC;
+  --error-teks: #8F2D22;
+  --error-latar: #F7E0DB;
+
+  --lengkung: 40px;         /* kelengkungan tombol */
+  --tinggi-header: 96px;
+}
+
+/* ---------- Dasar ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 18px; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  line-height: 1.5;
+  color: var(--cokelat-tua);
+  background: var(--krem);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--tautan); }
+h1, h2, h3 { margin: 0 0 12px; font-weight: 500; line-height: 1.25; }
+h1 { font-size: 40px; }
+h2 { font-size: 34px; }
+h3 { font-size: 26px; }
+p  { margin: 0 0 14px; }
+
+.konten {
+  flex: 1;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 44px 64px;
+}
+.sempit { max-width: 1000px; margin: 0 auto; }
+
+/* ---------- Header ---------- */
+.header { background: var(--kuning); height: var(--tinggi-header); }
+.header-isi {
+  height: 100%;
+  max-width: 1150px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+.header-polos .header-isi { grid-template-columns: 1fr; justify-items: center; }
+
+.logo { display: inline-flex; align-items: center; }
+.logo img { height: 78px; width: auto; display: block; }
+
+.judul-header {
+  display: flex; align-items: center; gap: 10px;
+  margin: 0; font-size: 44px; font-weight: 700; line-height: 1;
+}
+.judul-header svg { width: 42px; height: 42px; }
+
+.header-kanan { display: flex; justify-content: flex-end; align-items: center; gap: 26px; }
+.ikon-tombol {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; padding: 0; border: 0; background: none;
+  color: var(--cokelat-tua); cursor: pointer; border-radius: 50%;
+}
+.ikon-tombol:hover { background: rgba(64, 40, 33, .08); }
+.ikon-tombol svg { width: 46px; height: 46px; }
+
+/* menu profil (tanpa JavaScript, memakai <details>) */
+.profil { position: relative; }
+.profil summary { list-style: none; }
+.profil summary::-webkit-details-marker { display: none; }
+.profil-menu {
+  position: absolute; right: 0; top: 60px; z-index: 10; min-width: 220px;
+  padding: 16px 18px; background: var(--putih);
+  border: 1px solid var(--cokelat); border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(64, 40, 33, .15);
+}
+.profil-menu strong { display: block; }
+.profil-menu small { display: block; color: var(--cokelat); margin-bottom: 10px; }
+.profil-menu a { color: var(--cokelat-tua); font-weight: 600; text-decoration: none; }
+.profil-menu a:hover { text-decoration: underline; }
+.profil-menu a { display: block; padding: 4px 0; white-space: nowrap; }
+
+/* ---------- Footer ---------- */
+.isian-telepon {
+  display: flex; margin-bottom: 14px;
+  border: 1px solid var(--cokelat);
+}
+.isian-telepon .kode-negara {
+  display: flex; align-items: center; padding: 0 16px;
+  font-size: 20px; color: var(--cokelat);
+  border-right: 1px solid var(--cokelat);
+}
+.isian-telepon input { border: 0; flex: 1; min-width: 0; }
+.footer { background: var(--kuning); color: var(--cokelat); margin-top: auto; }
+.footer-isi {
+  max-width: 1150px; margin: 0 auto; padding: 26px 0 30px;
+  display: grid; grid-template-columns: 340px 1.3fr 1fr; gap: 24px;
+}
+.footer .logo img { height: 76px; }
+.footer h4 { margin: 0 0 8px; font-size: 22px; font-weight: 500; }
+.footer p, .footer li { margin: 0 0 4px; font-size: 18px; line-height: 1.4; }
+.footer ul { margin: 0; padding: 0; list-style: none; }
+.footer .kontak-tambahan { margin-top: 12px; }
+
+/* ---------- Tombol (melengkung 40px) ---------- */
+.tombol, .btn {
+  display: inline-flex; align-items: center; justify-content: center; text-align: center;
+  min-height: 56px; padding: 12px 40px;
+  font: 500 22px/1.2 "Public Sans", system-ui, sans-serif;
+  color: var(--putih); background: var(--cokelat-tua);
+  border: 2px solid var(--cokelat-tua); border-radius: var(--lengkung);
+  cursor: pointer; text-decoration: none;
+  transition: opacity .15s, background .15s;
+}
+.tombol:hover, .btn:hover { opacity: .88; }
+.tombol:focus-visible, .btn:focus-visible { outline: 3px solid var(--cokelat); outline-offset: 2px; }
+.tombol-garis { background: transparent; color: var(--cokelat-tua); }
+.tombol-garis:hover { background: rgba(64, 40, 33, .06); opacity: 1; }
+.tombol-penuh { width: 100%; }
+.tombol-kecil { min-height: 44px; padding: 8px 24px; font-size: 18px; }
+.tombol-cokelat { background: var(--cokelat); border-color: var(--cokelat); }
+.aksi-form { margin-top: 18px; }   /* bungkus tombol di bawah isian formulir */
+
+/* ---------- Kotak, kartu ---------- */
+.kotak { border: 1px solid var(--cokelat); padding: 28px; }
+.kotak-judul {
+  border: 1px solid var(--cokelat); color: var(--cokelat);
+  padding: 14px 44px; font-size: 24px; margin-bottom: 24px;
+}
+.kartu, .card {
+  background: var(--putih); border: 1px solid var(--cokelat); border-radius: 24px;
+  padding: 28px; margin: 0 auto 24px; max-width: 520px;
+}
+.kartu-lebar { max-width: none; }
+
+/* ---------- Formulir ---------- */
+label { display: block; margin: 14px 0 6px; font-size: 20px; }
+.isian, input[type="text"], input[type="email"], input[type="password"],
+input[type="number"], input[type="date"], input[type="time"], input[type="search"],
+select, textarea {
+  width: 100%; padding: 12px 16px;
+  font: 400 20px/1.3 "Public Sans", system-ui, sans-serif;
+  color: var(--cokelat-tua); background: transparent;
+  border: 1px solid var(--cokelat); border-radius: 0;
+}
+textarea { min-height: 140px; resize: vertical; }
+::placeholder { color: var(--cokelat); opacity: 1; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--cokelat-tua); outline-offset: 0; }
+.centang { display: flex; align-items: center; gap: 14px; margin: 14px 0 16px; font-size: 20px; }
+.centang input { width: 26px; height: 26px; margin: 0; accent-color: var(--cokelat-tua); }
+.centang label { margin: 0; }
+.bantuan-form { color: var(--cokelat); font-size: 16px; margin-top: 4px; }
+
+/* ---------- Pesan sukses / error ---------- */
+.alert { padding: 12px 18px; border-radius: 14px; margin-bottom: 14px; font-size: 18px; }
+.alert-sukses { background: var(--sukses-latar); color: var(--sukses-teks); }
+.alert-error  { background: var(--error-latar);  color: var(--error-teks); }
+
+/* ---------- Chip / tag keahlian ---------- */
+.chip {
+  display: inline-block; padding: 2px 10px;
+  font-size: 18px; line-height: 1.4;
+  color: var(--cokelat); background: var(--putih); border-radius: 6px;
+}
+.chip::before { content: "\2713"; margin-right: 4px; font-size: .85em; }
+.chip-label { border-radius: var(--lengkung); padding: 4px 16px; }
+.chip-label::before { content: none; }
+.baris-chip { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.baris-filter { margin: 0 0 24px 8px; }
+
+/* ---------- Kartu mitra pengacara (halaman daftar mitra) ---------- */
+.daftar-mitra { display: grid; gap: 36px; }
+.kartu-mitra {
+  display: grid; grid-template-columns: 162px 1fr auto; align-items: center; gap: 30px;
+  padding: 28px 44px 28px 64px;
+  background: var(--cokelat); color: var(--kuning);
+  border: 1px solid var(--cokelat-tua); border-radius: 72px;
+}
+.kartu-mitra .foto { width: 162px; height: 162px; object-fit: cover; background: #D8D9DC; display: block; }
+.kartu-mitra h3 { margin: 0 0 4px; font-size: 36px; font-weight: 400; color: var(--kuning); }
+.kartu-mitra .deskripsi { margin: 0 0 10px; max-width: 790px; font-size: 24px; line-height: 1.17; color: var(--kuning); }
+.kartu-mitra .tombol { width: 195px; min-height: 92px; font-size: 22px; padding: 12px 20px; }
+
+/* ---------- Tabel ---------- */
+.tabel { width: 100%; border-collapse: collapse; background: var(--putih); }
+.tabel th, .tabel td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--biru-muda-2); }
+.tabel th { background: var(--biru-muda-2); font-weight: 600; }
+.tabel tr:nth-child(even) td { background: var(--biru-muda); }
+
+/* ---------- Halaman login ---------- */
+.login-panel { display: grid; grid-template-columns: 530px 1fr; gap: 96px; padding: 28px; }
+.login-judul { font-size: 20px; font-weight: 400; text-align: center; margin: 0 0 18px; }
+.login-form .isian { margin-bottom: 14px; }
+.login-samping { padding-top: 0; }
+.login-samping a.lupa { display: inline-block; font-size: 20px; margin-bottom: 36px; text-decoration: none; }
+.login-samping p { font-size: 20px; line-height: 1.3; margin-bottom: 14px; }
+.login-bagian { margin-top: 48px; }
+.login-bagian h2 { font-size: 36px; margin-bottom: 12px; }
+.login-bagian p { font-size: 20px; line-height: 1.3; max-width: 380px; margin-bottom: 18px; }
+.login-bagian .isian { width: 300px; display: block; margin-bottom: 18px; }
+.login-bagian .tombol { width: 300px; }
+
+/* ---------- Landing page ---------- */
+.landing-hero { text-align: center; padding: 48px 0 32px; }
+.landing-hero h1 { font-size: 48px; margin: 0 0 14px; }
+.landing-hero p { font-size: 22px; max-width: 640px; margin: 0 auto; line-height: 1.4; }
+
+.landing-pilihan {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+  margin: 16px 0 40px;
+}
+.kartu-peran { display: flex; flex-direction: column; gap: 14px; }
+.kartu-peran h2 { font-size: 30px; margin: 0; }
+.kartu-peran p { font-size: 20px; line-height: 1.3; margin: 0 0 8px; flex: 1; }
+
+.landing-tamu { text-align: center; padding-bottom: 48px; }
+.landing-tamu p { font-size: 20px; margin-bottom: 14px; }
+
+@media (max-width: 720px) {
+  .landing-pilihan { grid-template-columns: 1fr; }
+  .landing-hero h1 { font-size: 34px; }
+}
+
+/* ---------- Registrasi mitra ---------- */
+.judul-seksi { font-size: 24px; margin: 22px 0 12px; }
+input[type="file"] { width: 100%; font-size: 18px; margin-bottom: 8px; }
+
+/* ---------- Beranda mitra (UI-31) ---------- */
+.dashboard-mitra { max-width: 780px; margin: 0 auto; padding: 36px 16px 56px; }
+.sapaan { font-size: 30px; margin: 0 0 22px; }
+.judul-bagian { font-size: 17px; font-weight: 400; margin: 20px 0 8px; }
+.judul-baris { display: flex; justify-content: space-between; align-items: baseline; }
+.judul-baris a { font-size: 16px; }
+
+.baris-statistik, .baris-kartu {
+  display: grid; gap: 8px; padding: 8px;
+  background: var(--putih); border-radius: 6px;
+}
+.baris-statistik { grid-template-columns: 1.15fr 1.15fr .8fr 1.35fr; }
+.baris-kartu { grid-template-columns: repeat(3, 1fr); }
+
+.kartu-stat, .kartu-mini {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 12px 14px; border-radius: 14px;
+  background: var(--cokelat); color: var(--kuning);
+}
+.kartu-stat strong, .kartu-mini strong { font-size: 22px; font-weight: 500; line-height: 1.15; }
+.kartu-stat span, .kartu-mini span { font-size: 14px; color: var(--putih); }
+.kartu-stat strong svg { width: 1em; height: 1em; margin-right: 6px; vertical-align: -.12em; }
+
+.kolom-sesi { display: flex; flex-direction: column; gap: 8px; }
+.kosong-dashboard { margin: 0; padding: 18px; background: var(--putih); border-radius: 6px; }
+
+@media (max-width: 720px) {
+  .baris-statistik { grid-template-columns: 1fr 1fr; }
+  .baris-kartu { grid-template-columns: 1fr; }
+}
+
+/* -------- SearchLaw -------- */
+
+.searchlaw-input {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 5px;
+  background: white;
+}
+
+.searchlaw-input input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  padding: 10px 14px;
+  background: transparent;
+}
+
+.searchlaw-tombol-cari {
+  border: none;
+  border-radius: 9px;
+  padding: 9px 20px;
+  cursor: pointer;
+}
+
+.searchlaw-filter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.searchlaw-tombol-filter {
+  padding: 5px 12px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  background: white;
+  cursor: not-allowed;
+}
+
+.searchlaw-container {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.searchlaw-kartu {
+  padding: 16px 8px;
+}
+
+.searchlaw-kartu + .searchlaw-kartu {
+  border-top: 1px solid #eee;
+}
+
+.searchlaw-kartu h3 {
+  margin: 8px 0;
+}
+
+.searchlaw-kartu-bawah {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.searchlaw-kosong {
+  padding: 20px 8px;
+  text-align: center;
+}
+
+.judul-tengah { text-align: center; }
+.jarak-atas { margin-top: 24px; }
+.centang.bintang { margin: 0; }
+
+/* ---------- Riwayat ---------- */
+.kartu-riwayat { grid-template-columns: 1fr auto; border-radius: 40px; padding: 24px 40px; }
+.kartu-mitra .deskripsi.kecil { font-size: 18px; }
+.aksi-riwayat { display: grid; gap: 10px; }
+.tombol-terang { color: var(--kuning); border-color: var(--kuning); }
+
+.kartu-header-chat { grid-template-columns: 1fr; border-radius: 40px; padding: 18px 40px; margin-bottom: 24px; }
+
+.bubble-baris { display: flex; margin-bottom: 12px; }
+.bubble-baris.saya { justify-content: flex-end; }
+.bubble-baris.lawan { justify-content: flex-start; }
+.bubble {
+  max-width: 70%; padding: 10px 18px; border-radius: 18px;
+  border: 1px solid var(--cokelat);
+}
+.bubble.saya { background: var(--cokelat); color: var(--kuning); }
+.bubble.lawan { background: var(--putih); color: var(--cokelat-tua); }
+.bubble small { display: block; font-size: 13px; opacity: .7; }
+
+/* ---------- Pencairan dana ---------- */
+.saldo { color: var(--sukses-teks); }
+.input-nominal { max-width: 280px; }
+.form-rekening input + input { margin-top: 10px; }
+.baris-transaksi { padding: 12px 0; border-bottom: 1px solid var(--biru-muda-2); }
+.nominal { color: var(--sukses-teks); }
+.badge { display: inline-block; padding: 2px 12px; margin: 0 0 0 8px; }
+/* ---------- Filter daftar mitra ---------- */
+.form-filter { margin: 28px 0; display: grid; gap: 14px; }
+.chip-pilih {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  padding: 4px 14px; font-size: 18px; background: var(--putih);
+  border: 1px solid var(--cokelat); border-radius: var(--lengkung);
+}
+.aksi-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.isian-kecil { width: auto; }
+
+/* ---------- Menu utama header (UI-03) ---------- */
+.nav-utama { display: flex; align-items: center; gap: 14px; }
+.nav-utama a {
+  padding: 8px 22px; border-radius: 40px;
+  font-size: 22px; color: var(--cokelat-tua); text-decoration: none;
+}
+.nav-utama a:hover { background: rgba(64, 40, 33, .08); }
+.nav-utama a[aria-current="page"] { background: rgba(255, 255, 255, .45); }
+
+/* ---------- Beranda masyarakat: dua kartu fitur ---------- */
+.beranda-fitur {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 72px;
+  max-width: 1150px; margin: 56px auto 40px;
+}
+.kartu-fitur {
+  display: flex; flex-direction: column; justify-content: center; gap: 30px;
+  min-height: 320px; padding: 48px 56px;
+  background: var(--cokelat); color: var(--kuning);
+  border-radius: 56px; text-decoration: none;
+  box-shadow: 0 8px 14px rgba(64, 40, 33, .35);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.kartu-fitur:hover, .kartu-fitur:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 20px rgba(64, 40, 33, .4);
+}
+.kartu-fitur h2 {
+  display: flex; align-items: center; margin: 0;
+  font-size: 72px; font-weight: 700; line-height: 1;
+}
+.kartu-fitur p { margin: 0; max-width: 420px; font-size: 24px; line-height: 1.3; }
+
+/* ikon: lup menimpa huruf "S" (sesuai desain), telepon di kanan judul */
+.ikon-lup { width: 1.15em; height: 1.15em; margin-right: -.9em; transform: translateY(.06em); flex: none; }
+.ikon-telepon { width: .8em; height: .8em; margin-left: 8px; flex: none; }
+
+@media (max-width: 900px) {
+  .beranda-fitur { grid-template-columns: 1fr; gap: 32px; margin-top: 24px; }
+  .kartu-fitur { min-height: 0; padding: 36px 32px; border-radius: 40px; }
+  .kartu-fitur h2 { font-size: 48px; }
+  .nav-utama a { padding: 6px 12px; font-size: 18px; }
+}
+
+/* ---------- Menu header mitra ---------- */
+.menu-header { display: flex; gap: 40px; align-items: center; }
+.menu-header a { color: var(--cokelat-tua); font-size: 24px; font-weight: 500; text-decoration: none; }
+.menu-header a:hover { text-decoration: underline; }
+
+/* ---------- Halaman profil mitra dan jadwal (UI-28) ---------- */
+.kartu-mitra.tanpa-tombol { grid-template-columns: 162px 1fr; }
+.baris-jadwal { display: flex; justify-content: space-between; align-items: center; margin: 28px 0 24px; }
+.baris-jadwal h2 { margin: 0; font-size: 34px; }
+.aksi-baris { display: flex; gap: 16px; }
+.jadwal-grid { display: grid; grid-template-columns: 530px 1fr; gap: 90px; align-items: start; }
+
+.kalender { border: 1px solid var(--cokelat); border-radius: 24px; padding: 24px 28px; }
+.kalender-atas { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.kalender-atas select { width: auto; padding: 8px 12px; border-radius: 12px; font-size: 22px; color: var(--cokelat); }
+.panah { font-size: 36px; line-height: 1; color: var(--cokelat); text-decoration: none; padding: 0 12px; }
+.kalender table { width: 100%; border-collapse: collapse; text-align: center; }
+.kalender th { color: var(--cokelat); font-weight: 400; font-size: 18px; padding-bottom: 10px; }
+.kalender td { padding: 4px 0; }
+.hari { position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; border-radius: 12px; font-size: 24px; color: var(--cokelat); text-decoration: none; }
+a.hari:hover { background: rgba(64, 40, 33, .08); }
+.hari.dipilih { background: var(--cokelat-tua); color: var(--putih); }
+.hari.pudar { opacity: .45; }
+.hari.ada-slot::after { content: ""; position: absolute; bottom: 5px; width: 6px; height: 6px;
+  border-radius: 50%; background: currentColor; }
+
+.waktu h2 { margin-bottom: 4px; }
+.judul-tengah { text-align: center; }
+.petunjuk { color: var(--cokelat); font-size: 20px; }
+.slot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  background: var(--putih); border: 1px solid var(--cokelat); border-radius: 36px;
+  padding: 18px 20px 18px 30px; margin-bottom: 22px; font-size: 34px; }
+.slot .tombol { min-height: 52px; padding: 8px 32px; font-size: 22px; }
+.slot input[type="time"] { width: 150px; padding: 8px 10px; font-size: 22px; border-radius: 12px; }
+.slot-ubah, .slot-baru { font-size: 24px; }
+.slot-baru { border-style: dashed; background: transparent; }
+.aksi-slot { display: flex; gap: 10px; }
+.aksi-slot .tombol { min-height: 44px; padding: 8px 20px; font-size: 18px; }
+
+/* ---------- Halaman form sempit (edit profil, edit dokumen) ---------- */
+.halaman-form { max-width: 636px; margin: 0 auto; }
+.halaman-form h1 { font-size: 36px; margin: 0 0 18px; }
+.halaman-form .kotak h3 { font-size: 26px; font-weight: 400; margin-bottom: 20px; }
+
+/* ---------- Form kasus HaloLaw (UI-05) ---------- */
+.judul-form-kasus { text-align: center; font-size: 28px; font-weight: 400; margin: 28px 0 16px; }
+.isian-area {
+  width: 100%; min-height: 160px; padding: 16px 20px; resize: vertical;
+  font: inherit; font-size: 20px; color: var(--cokelat-tua);
+  background: transparent; border: 1px solid var(--cokelat);
+}
+.isian-area::placeholder { color: var(--cokelat); }
+.form-kasus h3 { font-size: 22px; font-weight: 400; color: var(--cokelat); margin: 24px 0 10px; }
+.daftar-centang { display: grid; gap: 10px; }
+.daftar-centang label { display: flex; align-items: center; gap: 12px; font-size: 18px; }
+.aksi-tengah { display: flex; justify-content: center; margin: 28px 0 48px; }
+.aksi-tengah .tombol { min-width: 320px; }
+/* ---------- Edit dokumen legalitas ---------- */
+.field-baca { border: 1px solid var(--cokelat); padding: 12px 18px; margin-bottom: 16px;
+  max-width: 528px; font-size: 20px; }
+.field-baca small { display: block; color: var(--cokelat); font-size: 20px; }
+.baris-dokumen { margin-bottom: 18px; }
+.label-dok { display: block; font-size: 20px; margin-bottom: 6px; }
+.wajib { color: #8F0000; font-weight: 700; margin-left: 4px; }
+.tombol-unggah { display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 3px 10px;
+  font-size: 18px; color: var(--cokelat); border: 2px solid var(--cokelat); border-radius: 8px; cursor: pointer; }
+.tombol-unggah input { display: none; }
+.tombol-unggah svg { width: 20px; height: 20px; }
+.nama-berkas { margin-left: 12px; color: var(--cokelat); font-size: 16px; }
+
+/* ---------- Status Registrasi (UI Status Registrasi) ---------- */
+.langkah { list-style: none; margin: 0; padding: 0; }
+.langkah li { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px; }
+.langkah-nomor { flex: none; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+  background: #8E8E93; color: var(--putih); font-size: 22px; font-weight: 600; }
+.langkah-selesai .langkah-nomor { background: #17A558; }
+.langkah-berjalan .langkah-nomor { background: var(--cokelat); }
+.langkah-ditolak .langkah-nomor { background: var(--error-teks); }
+.langkah strong { display: block; font-size: 20px; }
+.langkah small { display: block; color: var(--cokelat); font-size: 16px; }

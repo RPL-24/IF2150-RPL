@@ -1,0 +1,37 @@
+{
+  "name": "lawhub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "db:init": "node db/init.js",
+    "db:seed-konsultasi": "node db/seed-konsultasi.js",
+    "test": "jest --runInBand",
+    "test:integrasi": "jest --runInBand tests/integrasi",
+    "test:unit": "jest tests/unit --runInBand"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^18.0.9",
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "multer": "^2.5.0",
+    "socket.io": "^4.8.4"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2",
+    "nodemon": "^3.1.14",
+    "socket.io-client": "^4.8.4",
+    "supertest": "^7.3.2"
+  }
+}

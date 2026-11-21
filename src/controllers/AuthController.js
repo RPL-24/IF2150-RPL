@@ -1,0 +1,56 @@
+const MitraPengacara = require('../models/MitraPengacara');
+const bcrypt = require('bcryptjs');
+const Akun = require('../models/Akun');
+
+exports.tampilLogin = (req, res) => {
+  if (req.session.user) return res.redirect('/' + req.session.user.peran);
+  res.render('auth/login');
+};
+
+exports.tampilLoginMasyarakat = (req, res) => {
+  if (req.session.user) return res.redirect('/' + req.session.user.peran);
+  res.render('auth/login-masyarakat');
+}
+
+exports.prosesLogin = (req, res) => {
+  const { email, kataSandi } = req.body;
+
+  const isLoginMasyarakat = req.path === '/login-masyarakat';
+
+  const halamanLogin = req.path === '/login-masyarakat'
+    ? '/login-masyarakat'
+    : '/login';
+
+  const peranBoleh = isLoginMasyarakat ? ['masyarakat'] : ['mitra', 'admin'];
+
+  const akun = Akun.cariByEmail(email);
+
+  if (!akun || !bcrypt.compareSync(kataSandi, akun.sandi)) {
+    req.flash('error', 'Email atau kata sandi salah');
+    return res.redirect(halamanLogin);
+  }
+
+  if (akun.statusAkun === 'diblokir') {
+    req.flash('error', 'Akun Anda diblokir');
+    return res.redirect(halamanLogin);
+  }
+
+  // Validasi role
+  if (!peranBoleh.includes(akun.peran)) {
+    req.flash('error', 'Email terdaftar pada peran lain. Silakan login pada halaman yang sesuai peran.');
+    return res.redirect(halamanLogin);
+  }
+
+  req.session.user = { id: akun.id, nama: akun.nama, peran: akun.peran };
+
+  // mitra yang belum terverifikasi diarahkan ke halaman Status Registrasi
+  if (akun.peran === 'mitra') {
+    const profil = MitraPengacara.infoProfil(akun.id);
+    if (profil && profil.statusVerifikasi !== 'terverifikasi') return res.redirect('/mitra/status-verifikasi');
+  }
+  res.redirect('/' + akun.peran);
+};
+
+exports.logout = (req, res) => {
+  req.session.destroy(() => res.redirect('/login'));
+};
